@@ -1494,7 +1494,9 @@
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="example">
-					<xsl:call-template name="deriveExample"/>
+					<xsl:call-template name="deriveExample">
+						<xsl:with-param name="datatype" select="$datatype"/>
+					</xsl:call-template>
 				</xsl:variable>
 				<xsl:value-of select="'&quot;type&quot;: &quot;array&quot;,'"/>
 				<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value,'&quot;')"/>
@@ -1541,7 +1543,9 @@
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="example">
-					<xsl:call-template name="deriveExample"/>
+					<xsl:call-template name="deriveExample">
+						<xsl:with-param name="datatype" select="$datatype"/>
+					</xsl:call-template>
 				</xsl:variable>
 				<xsl:value-of select="concat('&quot;type&quot;: &quot;',$datatype,'&quot;')"/>
 				<xsl:value-of select="concat(',&quot;title&quot;: &quot;',ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value,'&quot;')"/>
@@ -1724,8 +1728,12 @@
 	</xsl:template>
 	
 	<xsl:template name="deriveExample">
+		<xsl:param name="datatype" select="'string'"/>
 		<xsl:choose>
 			<!-- Some scalar typse can have one or more facets which restrict the allowed value. -->
+			<xsl:when test="ep:example != '' and $datatype = 'integer'">
+				<xsl:value-of select="concat(',&quot;example&quot;: ',ep:example)"/>
+			</xsl:when>
 			<xsl:when test="ep:example != ''">
 				<xsl:value-of select="concat(',&quot;example&quot;: &quot;',ep:example,'&quot;')"/>
 			</xsl:when>
