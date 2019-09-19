@@ -26,9 +26,10 @@
                 </style>
             </head>
             <body>
-                <h1><xsl:value-of select="$subpath"/></h1>
+                <p><xsl:value-of select="$subpath"/></p>
                 <p>Imvertor: <xsl:value-of select="imf:get-xparm('run/version')"/></p>
                 <p>Model release: <xsl:value-of select="imf:get-xparm('appinfo/release-name')"/></p>
+                <hr/>
                 <xsl:apply-templates select="/book/chapter"/>
             </body>
         </html>
@@ -48,5 +49,24 @@
         <xsl:param name="diagram-id"/>
         <xsl:value-of select="concat('Images/',$diagram-id,'.png')"/>
     </xsl:function>
+    
+    <xsl:function name="imf:create-section-header-name" as="element()">
+        <xsl:param name="section"/>
+        <xsl:param name="level"/>
+        <xsl:param name="type"/>
+        <xsl:param name="language-model"/>
+        <xsl:param name="name"/>
+        
+        <xsl:variable name="art" select="if ($level eq 3) then concat('Artikel ', (count($section/preceding-sibling::*:section)),' ') else ()"/>
+       
+        <xsl:element name="{imf:get-section-header-element-name($level)}">
+            <xsl:sequence select="$art"/>
+            <xsl:sequence select="imf:translate-i3n($type,$language-model,())"/>
+            <xsl:sequence select="' '"/>
+            <xsl:sequence select="$name"/>
+        </xsl:element>
+    
+    </xsl:function>
+    
     
 </xsl:stylesheet>
