@@ -19,10 +19,11 @@
 	
 	<xsl:variable name="serialisation" select="$message-sets/ep:parameters/ep:parameter[ep:name='serialisation']/ep:value"/>
 	<xsl:variable name="stylesheet-code" as="xs:string">YAMLH</xsl:variable>
-	<xsl:variable name="standard-yaml-headers-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-yaml-headers-file'))"/>
-	<xsl:variable name="standard-yaml-parameters-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-yaml-parameters-file'))"/>
-	<xsl:variable name="geonovum-yaml-parameters-url" select="concat(imf:get-config-parameter('geonovum-components-url'),imf:get-config-parameter('standard-yaml-parameters-file'))"/>
-	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-json-components-file'))"/>
+	<xsl:variable name="standard-yaml-headers-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-yaml-headers-path'))"/>
+	<xsl:variable name="standard-yaml-parameters-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-yaml-parameters-path'))"/>
+	<xsl:variable name="standard-yaml-responses-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-yaml-responses-path'))"/>
+	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
+	<xsl:variable name="geonovum-yaml-parameters-url" select="concat(imf:get-config-parameter('geonovum-components-url'),imf:get-config-parameter('geonovum-yaml-parameters-file'))"/>
 	
 	<xsl:template match="ep:message-sets">
 		<xsl:apply-templates select="ep:message-set"/>
@@ -392,7 +393,10 @@
 						<xsl:text>&#xa;            minimum: 1</xsl:text>
 					</xsl:if>
 					<xsl:choose>
-						<xsl:when test="$expand = true() and $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']">
+						<!-- De volgende when wordt tijdelijk uitgeschakeld. Voorlopig worden er dus geen customized 'expand' parameters gegenereerd
+							 ook al is deze in het BSM gedefinieerd. Voor nu wordt gebruik gemaakt van de in de common.yaml gedefinieerde 'expand'
+							 parameter. Om de code niet te veel te wijzigen heb ik de choose intact gelaten en een lege otherwise toegevoegd. -->
+						<!--xsl:when test="$expand = true() and $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']">
 							<xsl:variable name="expandParam" select="$checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']"/>
 							<xsl:variable name="datatype">
 								<xsl:choose>
@@ -502,10 +506,11 @@
 									<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',$expandParam/ep:type-name,'&quot;')"/>
 								</xsl:when>
 							</xsl:choose>
-						</xsl:when>
+						</xsl:when-->
 						<xsl:when test="$expand = true()">
 							<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'expand&quot;')"/>
 						</xsl:when>
+						<xsl:otherwise/>
 					</xsl:choose>
 					<xsl:if test="$sort = true()">
 						<xsl:text>&#xa;        - in: query</xsl:text>
@@ -596,13 +601,25 @@
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
-						<xsl:text>&#xa;        - in: path</xsl:text>
-						<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-						<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
-						<xsl:text>&#xa;          required: true</xsl:text>
-						<xsl:text>&#xa;          schema:</xsl:text>
 						<xsl:choose>
+							<xsl:when test="upper-case(ep:name) = 'FIELDS'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'fields&quot;')"/>
+							</xsl:when>
+							<xsl:when test="upper-case(ep:name) = 'UUID'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
+							</xsl:when>
+							<xsl:when test="upper-case(ep:name) = 'PEILDATUM'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'peildatum&quot;')"/>
+							</xsl:when>
+							<xsl:when test="upper-case(ep:name) = 'PERIODEVAN'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'periodevan&quot;')"/>
+							</xsl:when>
 							<xsl:when test="ep:data-type">
+								<xsl:text>&#xa;        - in: path</xsl:text>
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          required: true</xsl:text>
+								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
 								<xsl:variable name="format">
 									<xsl:call-template name="deriveFormat">
@@ -625,7 +642,12 @@
 								</xsl:if>
 							</xsl:when>
 							<xsl:when test="ep:type-name">
-								<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
+								<xsl:text>&#xa;        - in: path</xsl:text>
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          required: true</xsl:text>
+								<xsl:text>&#xa;          schema:</xsl:text>
+								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
 							</xsl:when>
 						</xsl:choose>
 					</xsl:for-each>
@@ -1352,48 +1374,31 @@
 		<xsl:param name="crsParamPresent"/>
 		
 		<xsl:if test="contains($berichttype,'Po') or $queryParamsPresent">
-			<xsl:sequence select="imf:Foutresponse('400','Bad Request')"/>
+			<xsl:sequence select="imf:Foutresponse('400')"/>
 		</xsl:if>
-		<xsl:sequence select="imf:Foutresponse('401','Unauthorized')"/>
-		<xsl:sequence select="imf:Foutresponse('403','Forbidden')"/>
+		<xsl:sequence select="imf:Foutresponse('401')"/>
+		<xsl:sequence select="imf:Foutresponse('403')"/>
 		<xsl:if test="$pathParamsPresent">
-			<xsl:sequence select="imf:Foutresponse('404','Not Found')"/>
+			<xsl:sequence select="imf:Foutresponse('404')"/>
 		</xsl:if>
-		<xsl:sequence select="imf:Foutresponse('406','Not Acceptable')"/>
-		<xsl:sequence select="imf:Foutresponse('409','Conflict')"/>
-		<xsl:sequence select="imf:Foutresponse('410','Gone')"/>
+		<xsl:sequence select="imf:Foutresponse('406')"/>
+		<xsl:sequence select="imf:Foutresponse('409')"/>
+		<xsl:sequence select="imf:Foutresponse('410')"/>
 		<xsl:if test="$crsParamPresent">
-			<xsl:sequence select="imf:Foutresponse('412','Precondition Failed')"/>
+			<xsl:sequence select="imf:Foutresponse('412')"/>
 		</xsl:if>
-		<xsl:sequence select="imf:Foutresponse('415','Unsupported Media Type')"/>
-		<xsl:sequence select="imf:Foutresponse('429','Too Many Requests')"/>
-		<xsl:sequence select="imf:Foutresponse('500','Internal Server Error')"/>
-		<xsl:sequence select="imf:Foutresponse('default','Er is een onverwachte fout opgetreden.')"/>
+		<xsl:sequence select="imf:Foutresponse('415')"/>
+		<xsl:sequence select="imf:Foutresponse('429')"/>
+		<xsl:sequence select="imf:Foutresponse('500')"/>
+		<xsl:sequence select="imf:Foutresponse('501')"/>
+		<xsl:sequence select="imf:Foutresponse('503')"/>
+		<xsl:sequence select="imf:Foutresponse('default')"/>
 	</xsl:function>
 	
 	<xsl:function name="imf:Foutresponse">
 		<xsl:param name="foutcode"/>
-		<xsl:param name="omschrijving"/>
 		<xsl:text>&#xa;        '</xsl:text><xsl:value-of select="$foutcode"/><xsl:text>':</xsl:text>
-		<xsl:text>&#xa;          description: </xsl:text><xsl:value-of select="$omschrijving"/>
-		<xsl:text>&#xa;          headers:</xsl:text>
-		<xsl:text>&#xa;            api-version:</xsl:text>
-		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'api_version&quot;')"/>
-		<xsl:text>&#xa;          content:</xsl:text>
-		<xsl:text>&#xa;            application/problem+json:</xsl:text>
-		<xsl:text>&#xa;              schema:</xsl:text>
-		<xsl:text>&#xa;                $ref: </xsl:text>
-		<xsl:variable name="FoutBerichtType">
-			<xsl:choose>
-				<xsl:when test="$foutcode = '400'">
-					<xsl:value-of select="'ValidatieFoutbericht'"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="'Foutbericht'"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:value-of select="concat('&quot;',$standard-json-components-url,$FoutBerichtType,'&quot;')"/>
+		<xsl:text>&#xa;          $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-responses-url,$foutcode,'&quot;')"/>
 	</xsl:function>
 
 <?x	<xsl:template match="ep:documentation">

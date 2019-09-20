@@ -17,7 +17,7 @@
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
 	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
 	
-	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-json-components-file'))"/>
+	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
 	<xsl:variable name="standard-geojson-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-geojson-components-file'))"/>
 	<!--<xsl:variable name="standard-json-components-url" select="'http://www.test.nl/'"/>	
 	<xsl:variable name="standard-geojson-components-url" select="'http://www.test.nl/'"/>-->
@@ -1764,16 +1764,6 @@
 				<xsl:otherwise>object</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
-
-
-		<!-- ROME: Deze toevoeging (nav #490159) geeft een warning in Swaggerhub. -->
-		<xsl:if test="empty(parent::ep:choice)">
-			<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:name,'&quot;,')"/>
-		</xsl:if>
-
-
-		<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
 		<xsl:variable name="documentation">
 			<xsl:apply-templates select="ep:documentation"/>
 			<xsl:if test="$debugging">
@@ -1787,12 +1777,22 @@
 			</xsl:if>
 		</xsl:variable>
 		<xsl:variable name="type-name" select="ep:type-name"/>
-		<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-		<xsl:sequence select="$documentation"/>
-		<xsl:value-of select="'&quot;,'"/>
+		<xsl:variable name="titleTypeAndDescriptionContent">
+			<!-- ROME: Deze toevoeging (nav #490159) geeft een warning in Swaggerhub. -->
+			<xsl:if test="empty(parent::ep:choice)">
+				<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:name,'&quot;,')"/>
+			</xsl:if>
+			<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
+			<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+			<xsl:sequence select="$documentation"/>
+			<xsl:value-of select="'&quot;'"/>
+		</xsl:variable>
+
+		<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
 		<xsl:choose>
 			<!-- Depending on the occurence-type and the type of construct content is generated. -->
 			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
+				<xsl:sequence select="concat($titleTypeAndDescriptionContent,',')"/>
 				<xsl:if test="$maxOccurs != 'unbounded'">
 					<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
 				</xsl:if>
@@ -1804,13 +1804,16 @@
 				<xsl:value-of select="'}'"/>
 			</xsl:when>
 			<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
-				<xsl:value-of select="'&quot;properties&quot;: {'"/>
-				<xsl:value-of select="'&quot;href&quot;: {'"/>
-				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'Href&quot;')"/>
+				<xsl:value-of select="'&quot;allOf&quot;: ['"/>
+				<xsl:value-of select="'{'"/>
+				<xsl:sequence select="$titleTypeAndDescriptionContent"/>
+				<xsl:value-of select="'},{'"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'HalLink&quot;')"/>
 				<xsl:value-of select="'}'"/>
-				<xsl:value-of select="'}'"/>
+				<xsl:value-of select="']'"/>
 			</xsl:when>
-			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+			<!--xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+				<xsl:sequence select="concat($titleTypeAndDescriptionContent,',')"/>
 				<xsl:if test="$maxOccurs != 'unbounded'">
 					<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
 				</xsl:if>
@@ -1830,13 +1833,38 @@
 				<xsl:value-of select="'}'"/>
 				<xsl:value-of select="'}'"/>
 				<xsl:value-of select="'}'"/>
+			</xsl:when-->
+			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+				<xsl:sequence select="concat($titleTypeAndDescriptionContent,',')"/>
+				<xsl:if test="$maxOccurs != 'unbounded'">
+					<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+				</xsl:if>
+				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+				</xsl:if>
+				<xsl:value-of select="'&quot;items&quot;: {'"/>
+				<xsl:value-of select="'&quot;allOf&quot;: ['"/>
+				<xsl:value-of select="'{'"/>
+				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
+				<xsl:value-of select="'&quot;description&quot;: &quot;uri van een van de volgende mogelijke typen ',$elementName,': '"/>
+				<xsl:apply-templates select="//ep:construct[ep:tech-name = $type-name]" mode="supertype-association-in-links">
+					<xsl:sort select="ep:tech-name" order="ascending"/>
+				</xsl:apply-templates>
+				<xsl:value-of select="'&quot;'"/>
+				<xsl:value-of select="'},{'"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'HalLink&quot;')"/>
+				<xsl:value-of select="'}'"/>
+				<xsl:value-of select="']'"/>
+				<xsl:value-of select="'}'"/>
 			</xsl:when>
 			<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
-				<xsl:value-of select="'&quot;properties&quot;: {'"/>
-				<xsl:value-of select="'&quot;href&quot;: {'"/>
-				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'Href&quot;')"/>
+				<xsl:value-of select="'&quot;allOf&quot;: ['"/>
+				<xsl:value-of select="'{'"/>
+				<xsl:sequence select="$titleTypeAndDescriptionContent"/>
+				<xsl:value-of select="'},{'"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'HalLink&quot;')"/>
 				<xsl:value-of select="'}'"/>
-				<xsl:value-of select="'}'"/>
+				<xsl:value-of select="']'"/>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:value-of select="'}'"/>
