@@ -81,6 +81,11 @@
             <abbrev>BHR-GT</abbrev>
         </registratieobject>
         <registratieobject>
+            <name lang="nl">Geologisch booronderzoek</name>
+            <name lang="en">Borehole research-Geological</name>
+            <abbrev>BHR-G</abbrev>
+        </registratieobject>
+        <registratieobject>
             <name lang="nl">Bodemkundig wandonderzoek</name>
             <name lang="en">Soil face research</name>
             <abbrev>SFR</abbrev>
