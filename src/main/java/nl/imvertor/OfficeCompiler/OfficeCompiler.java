@@ -111,6 +111,13 @@ public class OfficeCompiler extends Step {
 				if (vr.contains("msword")) {
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_MSWORD_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_MSWORD_XSLPATH") : false;
 					if (succeeds) processDoc(fn,"msword.html","appinfo/msword-documentation-filename","properties/WORK_MSWORD_FILE");
+					// copy along the msword template file (docm), if any
+					String path = configurator.getXParm("system/configuration-owner-msword-folder",false);
+					if (path != null) { 
+						AnyFolder mswordFolder = new AnyFolder(path);
+						if (mswordFolder.isDirectory()) 
+							mswordFolder.copy(new AnyFolder(configurator.getXParm("system/work-cat-folder-path") + "/msword"));
+					}
 				}
 				if (vr.contains("respec")) {
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_RESPEC_XSLPATH") : false;

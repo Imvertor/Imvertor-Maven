@@ -165,4 +165,7 @@
       <IMVERTOR_METAMODEL_Geonovum-MIMLM_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-Geonovum-MIMLM-html-respec.xsl</IMVERTOR_METAMODEL_Geonovum-MIMLM_MODELDOC_RESPEC_XSLPATH>
       
    </properties>
+   <system>
+      <configuration-owner-msword-folder>${system/inp-folder-path}/cfg/owners/msword</configuration-owner-msword-folder>
+   </system>
 </config>
