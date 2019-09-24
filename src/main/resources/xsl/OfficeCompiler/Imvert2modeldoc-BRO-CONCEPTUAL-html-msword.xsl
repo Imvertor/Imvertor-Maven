@@ -30,10 +30,49 @@
                 <p>Imvertor: <xsl:value-of select="imf:get-xparm('run/version')"/></p>
                 <p>Model release: <xsl:value-of select="imf:get-xparm('appinfo/release-name')"/></p>
                 <hr/>
-                <xsl:apply-templates select="/book/chapter"/>
+                <xsl:variable name="resolved">
+                    <xsl:apply-templates select="/book/chapter"/>
+                </xsl:variable>
+                <xsl:apply-templates select="$resolved//section[@level = '3' and exists(preceding-sibling::section)]" mode="reorder"/>
+                <section id="" level="3">
+                    <h1>Artikel 4 Het domeinmodel</h1>
+                    <xsl:sequence select="$resolved//div[@class = 'imageinfo overview']"/>
+                </section>
             </body>
         </html>
     </xsl:template>
+    
+    <xsl:template match="node()|@*" mode="reorder">
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="div[img]" mode="reorder">
+        <!-- remove -->
+    </xsl:template>
+    
+    <xsl:template match="h3" mode="reorder">
+        <h1>
+            <xsl:apply-templates mode="#current"/>
+        </h1>
+    </xsl:template>
+    
+    <xsl:template match="h4" mode="reorder">
+        <h2>
+            <xsl:apply-templates mode="#current"/>
+        </h2>
+    </xsl:template>
+    
+    <xsl:template match="h5" mode="reorder">
+        <h3>
+            <xsl:apply-templates mode="#current"/>
+        </h3>
+    </xsl:template>
+    
+    
+    
+    
     
     <xsl:function name="imf:insert-chapter-intro" as="item()*">
         <xsl:param name="chapter" as="element(chapter)"/>
