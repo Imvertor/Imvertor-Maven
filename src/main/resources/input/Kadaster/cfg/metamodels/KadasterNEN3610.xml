@@ -34,12 +34,12 @@
     <profiles>
         <profile lang="nl"> 
             <id>NKGNL</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>NEN3610-KAD Grouping (NL)</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
             <id>NKGEN</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>NEN3610-KAD Grouping (EN)</desc>
         </profile>
     </profiles>

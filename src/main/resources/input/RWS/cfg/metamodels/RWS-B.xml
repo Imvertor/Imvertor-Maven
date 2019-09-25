@@ -16,12 +16,12 @@
    <profiles>
       <profile lang="nl">
          <id>RWSBNL</id>
-         <release>0.9</release>
+         <!-- <release/> identical to Imvertor release -->
          <desc>RWS-B-DSO Grouping (NL)</desc> 
       </profile>
       <profile lang="en">
          <id>RWSBEN</id>
-         <release>0.9</release>
+         <!-- <release/> identical to Imvertor release -->
          <desc>RWS-B-DSO Grouping (EN)</desc>
       </profile>
    </profiles>

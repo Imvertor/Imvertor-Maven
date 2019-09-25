@@ -17,12 +17,12 @@
     <profiles>
         <profile lang="nl">
             <id>KKGNEDNL</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>KKG-NED Grouping (NL)</desc> 
         </profile>
         <profile lang="en">
             <id>KKGNEDEN</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>KKG-NED Grouping (EN)</desc>
         </profile>
     </profiles>

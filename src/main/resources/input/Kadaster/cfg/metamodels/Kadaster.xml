@@ -37,12 +37,12 @@
     <profiles>
         <profile lang="nl">
             <id>KGNL</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>Kadaster Grouping (NL)</desc> 
         </profile>
         <profile lang="en">
             <id>KGEN</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>Kadaster Grouping (EN)</desc>
         </profile>
     </profiles>

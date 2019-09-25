@@ -33,12 +33,12 @@
     <profiles>
         <profile lang="nl">
             <id>NGGNL</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>NEN3610 Geonovum Grouping (NL)</desc> 
         </profile>
         <profile lang="en">
             <id>NGGEN</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>NEN3610 Geonovum Grouping (EN)</desc>
         </profile>
     </profiles>

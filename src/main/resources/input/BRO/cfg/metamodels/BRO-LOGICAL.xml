@@ -18,7 +18,7 @@
             <release>0.9.3</release>
             <desc>NEN3610-BRO Grouping (NL)</desc> 
         </profile>
-        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+        <profile lang="en">
             <id>NBGEN</id>
             <release>0.9.3</release>
             <desc>NEN3610-BRO Grouping (EN)</desc>

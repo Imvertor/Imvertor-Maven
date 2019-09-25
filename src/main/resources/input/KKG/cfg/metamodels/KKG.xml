@@ -21,12 +21,12 @@
     <profiles>
         <profile lang="nl">
             <id>KKGNL</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>KKG Grouping (NL)</desc> 
         </profile>
         <profile lang="en">
             <id>KKGEN</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>KKG Grouping (EN)</desc>
         </profile>
         

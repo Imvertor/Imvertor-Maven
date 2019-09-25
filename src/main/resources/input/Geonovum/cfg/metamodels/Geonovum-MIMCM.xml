@@ -15,12 +15,12 @@
     <profiles>
         <profile lang="nl"> 
             <id>MCGGNL</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>MIMCM-Geonovum Grouping (NL)</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
             <id>MCGGEN</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>MIMCM-Geonovum Grouping (EN)</desc>
         </profile>
     </profiles>

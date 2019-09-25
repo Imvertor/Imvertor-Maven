@@ -17,12 +17,12 @@
     <profiles>
         <profile lang="nl">
             <id>KKGISONL</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>KKG-ISO Grouping (NL)</desc> 
         </profile>
         <profile lang="en">
             <id>KKGISOEN</id>
-            <release>0.9</release>
+            <!-- <release/> identical to Imvertor release -->
             <desc>KKG-ISO Grouping (EN)</desc>
         </profile>
     </profiles>
