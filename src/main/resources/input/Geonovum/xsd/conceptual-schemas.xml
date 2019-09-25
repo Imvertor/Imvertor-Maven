@@ -280,7 +280,7 @@
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>LineStringSegment</cs:name>
-                        <cs:asAttribute>LineStringPropertyType</cs:asAttribute>
+                        <cs:asAttribute>LineStringType</cs:asAttribute>
                         <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
@@ -502,10 +502,18 @@
                <cs:Construct>
                   <cs:name>Measure</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#Measure</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>MeasureType</cs:name>
+                        <cs:name>Measure</cs:name>
+                        <cs:asAttribute>MeasureType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                         <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
@@ -594,7 +602,7 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>xs:AnyURI</cs:name>
+                        <cs:name>xs:anyURI</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>

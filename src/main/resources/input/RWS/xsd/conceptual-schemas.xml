@@ -506,7 +506,7 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>xs:AnyURI</cs:name>
+                        <cs:name>xs:anyURI</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
