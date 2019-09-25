@@ -559,7 +559,7 @@
         </xsl:copy>
     </xsl:template>
     <xsl:template match="section[@level ge '7']" mode="remove-deep-sections">
-        <div>
+        <div class="deepheader">
             <xsl:apply-templates select="node()|@*" mode="#current"/>
         </div>
     </xsl:template>
