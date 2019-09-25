@@ -721,9 +721,17 @@
         <!-- check if the package is external -->
         <xsl:variable name="external-package" select="$external-schemas[imvert:name = $package-name]"/>
         
+        <xsl:variable name="defining-class" select="imf:get-class($uml-type,$package-name)"/>
+        <xsl:variable name="defining-package" select="$defining-class/.."/>
+        
         <xsl:choose>
             <xsl:when test="exists($external-package)">
                 <xsl:value-of select="concat($external-package/imvert:short-name,':',$uml-type)"/>
+            </xsl:when>
+            <xsl:when test="$package-name and empty($defining-package)">
+                <!-- this is a class that is not known. This is the case for nilreasons on scalar types, we need to create a class for that. -->  
+                <xsl:variable name="short-name" select="$document-packages[imvert:name = $package-name]/imvert:short-name"/>
+                <xsl:value-of select="concat($short-name,':',$uml-type)"/>
             </xsl:when>
             <xsl:otherwise>
                 
@@ -747,10 +755,6 @@
                             else ()"/>
                 
                 <xsl:variable name="scalar" select="$all-scalars[@id=$base-type][last()]"/>
-                
-                <?x 
-                <xsl:message select="concat('/',$uml-type, '/',$package-name, '/',imf:get-display-name($defining-class), '/',$uml-type-name, '/',$primitive-type, '/',$base-type, '/')"></xsl:message>
-                x?>                
                 
                 <xsl:choose>
                     <xsl:when test="$base-type"> 
