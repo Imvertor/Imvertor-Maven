@@ -266,14 +266,11 @@
     </xsl:template>    
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]">
-        <xsl:sequence select="imf:debug(.,'A codelist')"/>
         <xs:simpleType name="{imvert:name}">
-            <xsl:sequence select="imf:get-annotation(.)"/>
+            <xsl:variable name="data-location" select="imf:get-appinfo-location(.)"/>
+            <xsl:sequence select="imf:get-annotation(.,(),$data-location)"/>
             <xs:restriction base="xs:string">
-                <xsl:for-each select="imvert:enum">
-                    <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
-                    <xs:enumeration value="{.}"/>
-                </xsl:for-each>
+                <xsl:sequence select="imf:create-datatype-property(.)"/>
             </xs:restriction>
         </xs:simpleType>
     </xsl:template>    
