@@ -1774,7 +1774,6 @@
         <xsl:variable name="name" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-NAME')"/>
         <xsl:variable name="definition" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-DEFINITION')"/>
         <xsl:variable name="explanation" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-DESCRIPTION')"/>
-        <xsl:message select="name($definition[1])"/>
         <xsl:variable name="pnam" select="if ($name) then concat('Name: ', $name) else ()"/>
         <xsl:variable name="pdef" select="if ($definition) then concat('Definition: ', normalize-space(string-join($definition,' '))) else ()"/>
         <xsl:variable name="pexp" select="if ($explanation) then concat('Explanation: ', normalize-space(string-join($explanation,' '))) else ()"/>
