@@ -23,7 +23,6 @@
         <xsl:variable name="body" as="element()">
             <ep:construct 
                 xsi:schemaLocation="http://www.imvertor.org/schema/endproduct {$ep-schema-path}">
-                <xsl:sequence select="imf:msg-comment(.,'DEBUG','Start hier------------------------------------------------------------------------------------------',())"/>
                 <ep:parameters>
                     <xsl:sequence select="imf:set-parameter('subpath',imvert:subpath)"/>
                 </ep:parameters>
@@ -199,6 +198,7 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:get-names(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
+            <xsl:sequence select="imf:get-data-location(.)"/>
             <ep:data-type>ep:string</ep:data-type>
         </ep:construct>
     </xsl:template>
@@ -252,6 +252,7 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:get-names(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
+            <xsl:sequence select="imf:get-data-location(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="imvert:attributes/imvert:attribute">
                     <xsl:sort select="imvert:position" data-type="number"/>
@@ -283,6 +284,7 @@
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
             <xsl:sequence select="imf:get-props(.)"/>
+            <xsl:sequence select="imf:get-data-location(.)"/>
             <xsl:sequence select="imf:get-meta(.)"/>
         </ep:construct>
     </xsl:template>
@@ -409,7 +411,8 @@
         ep:pattern | 
         ep:formal-pattern | 
         ep:alias | 
-        ep:example" 
+        ep:example |
+        ep:data-location" 
         mode="remove-empty-elements">
         <xsl:if test="normalize-space()">
             <xsl:next-match/>
@@ -458,6 +461,13 @@
                 <xsl:sequence select="imf:get-note-value($def)"/>  
             </ep:definition>
         </ep:documentation>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-data-location" as="element(ep:data-location)?">
+        <xsl:param name="this"/>
+        <ep:data-location>
+            <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-DATALOCATION')"/>
+        </ep:data-location>
     </xsl:function>
     
     <xsl:function name="imf:get-nillable" as="element()?">

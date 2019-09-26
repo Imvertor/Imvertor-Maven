@@ -39,7 +39,8 @@
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:sequence select="imf:ep-to-namevaluepair('title',ep:name)"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('description',string-join(ep:documentation/ep:definition/*,'; '))"/>
+                    <xsl:variable name="added-location" select="if (ep:data-location) then concat(' Locatie: ',ep:data-location) else ()"/>
+                    <xsl:sequence select="imf:ep-to-namevaluepair('description',concat(string-join(ep:documentation/ep:definition/*,'; '),$added-location))"/>
                     <xsl:choose>
                         <xsl:when test="ep:ref and (ep:min-occurs or ep:max-occurs)">
                             <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Ref with occurs [1]',$n)"/>
