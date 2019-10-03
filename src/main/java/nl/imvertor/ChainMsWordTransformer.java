@@ -27,7 +27,6 @@ import nl.imvertor.MsWordTransformer.MsWordTransformer;
 import nl.imvertor.ReadmeCompiler.ReadmeCompiler;
 import nl.imvertor.ReleaseCompiler.ReleaseCompiler;
 import nl.imvertor.Reporter.Reporter;
-import nl.imvertor.RunAnalyzer.RunAnalyzer;
 import nl.imvertor.RunInitializer.RunInitializer;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Release;
