@@ -33,12 +33,12 @@
             <xsl:when test="$notes-format = ('markdown')">
                 <xsl:text>**</xsl:text>
                 <xsl:apply-templates mode="notes"/>
-                <xsl:text>**</xsl:text>
+                <xsl:value-of select="if (ends-with(.,' ')) then '** ' else '**'"/>  <!--fix <b>text <b></b> -->
             </xsl:when>
             <xsl:when test="$notes-format = ('mediawiki')">
                 <xsl:text>'''</xsl:text>
                 <xsl:apply-templates mode="notes"/>
-                <xsl:text>'''</xsl:text>
+                <xsl:value-of select="if (ends-with(.,' ')) then '&quot;&quot;&quot; ' else '&quot;&quot;&quot;'"/> <!--fix <b>text <b></b> -->
             </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates mode="notes"/>
@@ -50,12 +50,12 @@
             <xsl:when test="$notes-format = ('markdown')">
                 <xsl:text>*</xsl:text>
                 <xsl:apply-templates mode="notes"/>
-                <xsl:text>*</xsl:text>
+                <xsl:value-of select="if (ends-with(.,' ')) then '* ' else '*'"/>
             </xsl:when>
             <xsl:when test="$notes-format = ('mediawiki')">
                 <xsl:text>''</xsl:text>
                 <xsl:apply-templates mode="notes"/>
-                <xsl:text>''</xsl:text>
+                <xsl:value-of select="if (ends-with(.,' ')) then '&quot;&quot; ' else '&quot;&quot;'"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates mode="notes"/>
