@@ -99,13 +99,14 @@
                     alleen deze constructie als geen subtype van een ander product.
                 -->
                 <xsl:if test="$collection-class and empty($super-products)">
+                    <xsl:variable name="allow-multiple-collections" select="imf:boolean(imf:get-config-parameter('imvertor-allow-multiple-collections'))"/>
                     <imvert:association>
                         <xsl:sequence select="imf:create-output-element('imvert:name',imf:get-config-parameter('imvertor-translate-association-components'))"/>
                         <xsl:sequence select="imf:create-output-element('imvert:type-name',$collection-name)"/>
                         <xsl:sequence select="imf:create-output-element('imvert:type-id',$collection-id)"/>
                         <xsl:sequence select="imf:create-output-element('imvert:type-package',$collection-package-name)"/>
                         <xsl:sequence select="imf:create-output-element('imvert:min-occurs','1')"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:max-occurs','1')"/>
+                        <xsl:sequence select="imf:create-output-element('imvert:max-occurs',if ($allow-multiple-collections) then 'unbounded' else '1')"/>
                         <xsl:sequence select="imf:create-output-element('imvert:position','999')"/>
                     </imvert:association>
                 </xsl:if>

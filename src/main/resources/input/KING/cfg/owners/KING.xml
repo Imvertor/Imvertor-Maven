@@ -62,7 +62,8 @@
     <parameter name="package-name-typen">Typen</parameter>
     <parameter name="imvertor-translate-association-components">components</parameter>
     <parameter name="imvertor-translate-suffix-components">Components</parameter>
-
+    <parameter name="imvertor-allow-multiple-collections">false</parameter>
+    
     <!-- 
         other configurable info
     -->
