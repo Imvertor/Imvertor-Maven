@@ -287,7 +287,7 @@
             <xsl:when test="$item/text() = 'Meetwaarde'">
                 <part>
                     <item>&#160;&#160;Naam</item>
-                    <item>Meetwaarde</item>
+                    <item>Meetwaarde <xsl:value-of select="$context/part[@type = 'CFG-DOC-PATROON']/item[2]/text()"/></item>
                 </part>
                 <part>
                     <item>&#160;&#160;Type</item>
