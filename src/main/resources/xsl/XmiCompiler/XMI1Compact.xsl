@@ -62,8 +62,9 @@
         external package should not occur in the model-mode
     -->    
     <xsl:variable name="external-packages" select="$all-packages[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-external-package')]"/>
-    
-    <xsl:variable name="app-package" select="($model-packages,$application-packages)[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name($application-package-name,'package-name')]"/>
+   
+    <xsl:variable name="processable-packs" select="($model-packages,$application-packages)"/>
+    <xsl:variable name="app-package" select="$processable-packs[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name($application-package-name,'package-name')]"/>
     <xsl:variable name="containing-packages" select="$app-package/ancestor::UML:Package"/>
     
     <xsl:variable name="known-classes" select="($app-package,$external-packages)//UML:Class"/>
@@ -79,7 +80,7 @@
                     <!-- NIEUWE CASUS -->
                     <xsl:choose>
                         <xsl:when test="empty($app-package)">
-                            <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($application-packages/@name,';')))"/>
+                            <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($processable-packs/@name,';')))"/>
                         </xsl:when>
                         <xsl:when test="count($app-package) ne 1">
                             <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>
@@ -108,7 +109,7 @@
                             <xsl:sequence select="imf:msg('ERROR','No project found for: [1], searched for [2]', ($application-package-name,$project-name))"/>
                         </xsl:when>
                         <xsl:when test="empty($app-package)">
-                            <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($application-packages/@name,';')))"/>
+                            <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($processable-packs/@name,';')))"/>
                         </xsl:when>
                         <xsl:when test="count($app-package) ne 1">
                             <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>
