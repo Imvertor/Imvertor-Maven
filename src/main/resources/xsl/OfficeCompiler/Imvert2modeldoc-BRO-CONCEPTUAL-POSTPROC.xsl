@@ -250,7 +250,7 @@
                             <xsl:value-of select="concat(regex-group(2),' of meer')"/>
                         </xsl:when>
                         <xsl:when test="normalize-space(regex-group(2)) and normalize-space(regex-group(4))">
-                            <xsl:value-of select="concat(regex-group(2),'-',regex-group(4))"/>
+                            <xsl:value-of select="concat(regex-group(2),' .. ',regex-group(4))"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="regex-group(2)"/>
@@ -442,6 +442,26 @@
         </xsl:choose>
     </xsl:function>
     
+    <!-- verwijder de markers aan eind van de naam van image --> 
+    <xsl:variable name="image-marker" select="('overzicht', 'detail')"/>
+    
+    <xsl:template match="section[@type='IMAGEMAP']/content/part[@type='CFG-DOC-NAAM']/item[2]">
+        <xsl:variable name="toks" select="tokenize(.,'\s-\s')"/>
+        <xsl:choose>
+            <xsl:when test="$toks[last()] = $image-marker">
+                <item>
+                    <xsl:sequence select="string-join(subsequence($toks,1,count($toks) - 1),'- ')"/>
+                </item>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>  
+    
+    
+    
+    
     <xsl:function name="bro:generate-unit">
         <xsl:param name="unit-ucum"/>
         <!-- mapping ucum eenheid - uitgeschreven eenheid -->
@@ -471,20 +491,52 @@
         <xsl:param name="min"/>
         <xsl:param name="max"/>
         <xsl:choose>
-            <!-- bij min en max: waarde = [minimumwaarde] tot [maximumwaarde]-->
             <xsl:when test="$min and $max">
                 <xsl:value-of select="concat($min, ' tot ', $max)"/>
             </xsl:when>
             <!-- bij alleen min: waarde = vanaf [minimumwaarde]-->
             <xsl:when test="$min">
-                <xsl:value-of select="concat('Vanaf ', $min)"/>
+                <xsl:value-of select="concat('vanaf ', $min)"/>
             </xsl:when>
             <!-- bij alleen max: waarde = tot [maximumwaarde]-->
             <xsl:when test="$max">
-                <xsl:value-of select="concat('Tot ', $max)"/>
+                <xsl:value-of select="concat('tot ', $max)"/>
             </xsl:when>
             <!-- in alle andere gevallen ontbreekt het gegeven"-->
             <xsl:otherwise/>
         </xsl:choose>
     </xsl:function>
+    
+    <?x ik snap de vraag niet van BRO
+    <xsl:function name="bro:generate-minmax-occurs">
+        <xsl:param name="min"/>
+        <xsl:param name="max"/>
+        <xsl:message select="concat('[',$min,',',$max,']')"></xsl:message>
+        <xsl:choose>
+            <!-- bij min en max: waarde = [minimumwaarde] tot [maximumwaarde]-->
+            <xsl:when test="$min = '0' and $max = '1'">
+                <xsl:value-of select="'geen of 1'"/>
+            </xsl:when>
+            <xsl:when test="$min = '0' and $max = '*'">
+                <xsl:value-of select="'geen, 1 of meer'"/>
+            </xsl:when>
+            <xsl:when test="$min = '0' and $max">
+                <xsl:value-of select="concat('geen of 1 tot ', $max)"/>
+            </xsl:when>
+            <xsl:when test="$min and $max">
+                <xsl:value-of select="concat($min, ' tot ', $max)"/>
+            </xsl:when>
+            <!-- bij alleen min: waarde = vanaf [minimumwaarde]-->
+            <xsl:when test="$min">
+                <xsl:value-of select="concat('vanaf ', $min)"/>
+            </xsl:when>
+            <!-- bij alleen max: waarde = tot [maximumwaarde]-->
+            <xsl:when test="$max">
+                <xsl:value-of select="concat('tot ', $max)"/>
+            </xsl:when>
+            <!-- in alle andere gevallen ontbreekt het gegeven"-->
+            <xsl:otherwise/>
+        </xsl:choose>
+    </xsl:function>
+    x?>
 </xsl:stylesheet>

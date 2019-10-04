@@ -62,6 +62,8 @@
     <xsl:variable name="has-material-history" select="exists(//imvert:tagged-value[@id = 'CFG-TV-INDICATIONMATERIALHISTORY']/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     <xsl:variable name="has-formal-history" select="exists(//imvert:tagged-value[@id = 'CFG-TV-INDICATIONFORMALHISTORY']/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     
+    <xsl:variable name="has-imbroa" select="//imvert:attribute/imvert:stereotype/@id = 'stereotype-name-imbroa'"/>
+    
     <xsl:template match="/imvert:packages">
         <book name="{imvert:application}" subpath="{$subpath}" type="{imvert:stereotype}" id="{imvert:id}" generator-version="{$imvertor-version}" generator-date="{$generation-date}">
             
@@ -484,22 +486,22 @@
         <xsl:variable name="incoming-assocs-non-recursive" select="$incoming-assocs[../../imvert:id ne $id]"/>
         
         <xsl:variable name="r1" as="element()*">
-            <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
             <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="#current"/>
             <xsl:if test="$include-incoming-associations">
                 <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="#current">
                     <xsl:with-param name="incoming" select="true()"/>
                 </xsl:apply-templates>
             </xsl:if>
+            <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
         </xsl:variable>
         <xsl:variable name="r2" as="element()*">
-            <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
             <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="#current"/>
             <xsl:if test="$include-incoming-associations">
                 <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="#current">
                     <xsl:with-param name="incoming" select="true()"/>
                 </xsl:apply-templates>
             </xsl:if>
+            <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
         </xsl:variable>
         <xsl:if test="exists(($r1,$r2))">
             <section type="SHORT-ASSOCIATIONS">
@@ -609,8 +611,11 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist','stereotype-name-enumeration')]" mode="content">
         <xsl:variable name="is-codelist" select="imvert:stereotype/@id = ('stereotype-name-codelist')"/>
-        <!-- All BRO tables are IMBRO/A tables, holding 4 columns.  -->
-        <xsl:variable name="is-imbro-list" select="imf:get-config-string('cli','owner') eq 'BRO'"/>
+        <!-- 
+            All BRO tables are IMBRO/A tables, holding 4 columns.
+            When all values are imbro/a this is redundant info, so in that case we do not add the IMBRO/A coumns.
+        -->
+        <xsl:variable name="is-imbro-list" select="(imf:get-config-string('cli','owner') eq 'BRO') and $has-imbroa"/>
         <!-- Check if ANY value has an alias, in that case assume a code column should be added -->
         <xsl:variable name="has-code" select="exists(imvert:attributes/imvert:attribute/imvert:alias)"/>
         <section 

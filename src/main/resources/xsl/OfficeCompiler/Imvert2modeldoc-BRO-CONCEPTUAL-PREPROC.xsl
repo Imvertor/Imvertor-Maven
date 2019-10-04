@@ -33,6 +33,7 @@
     <!-- 
         (1) verander alle gegevensgroeptypen in objecttypen
         (2) selecteer specifieke tagged values voor Registratieobjecttype
+        (3) als mogelijk geen waarde = nee dan niet tonen
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
@@ -97,6 +98,11 @@
             <xsl:apply-templates select="imvert:tagged-value[@id = 'CFG-TV-DEFINITION']"/>
             <xsl:apply-templates select="imvert:tagged-value[@id = 'CFG-TV-POPULATION']"/>
         </xsl:copy>
+    </xsl:template>
+    
+    <!-- (3) -->
+    <xsl:template match="imvert:tagged-value[@id = 'CFG-TV-VOIDABLE' and imvert:value = 'Nee']">
+        <!-- skip -->
     </xsl:template>
     
     <!-- defaults -->

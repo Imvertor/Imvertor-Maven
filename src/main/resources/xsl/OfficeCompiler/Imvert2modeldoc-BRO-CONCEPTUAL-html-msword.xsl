@@ -97,10 +97,11 @@
         <xsl:param name="name"/>
         
         <xsl:variable name="art" select="if ($level eq 3) then concat('Artikel ', (count($section/preceding-sibling::*:section)),' ') else ()"/>
-       
+        <xsl:variable name="trans" select="imf:translate-i3n($type,$language-model,())"/>
+        
         <xsl:element name="{imf:get-section-header-element-name($level)}">
             <xsl:sequence select="$art"/>
-            <xsl:sequence select="imf:translate-i3n($type,$language-model,())"/>
+            <xsl:sequence select="if ($trans = 'Uitbreidbare waardelijsten') then 'Beschrijving van uitbreidbare waardelijsten' else $trans"/>
             <xsl:sequence select="' '"/>
             <xsl:sequence select="$name"/>
         </xsl:element>

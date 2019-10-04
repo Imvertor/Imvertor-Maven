@@ -473,20 +473,20 @@
     </xsl:function>
     
     <!-- return the largest value taken from the sequence passed. -->
-    <xsl:function name="imf:largest" as="item()">
-        <xsl:param name="seq" as="item()+"/>
+    <xsl:function name="imf:largest" as="item()?">
+        <xsl:param name="seq" as="item()*"/>
         <xsl:sequence select="imf:sort($seq)[last()]"/>
     </xsl:function>
     
     <!-- return the smallest value taken from the sequence passed. -->
-    <xsl:function name="imf:smallest" as="item()">
-        <xsl:param name="seq" as="item()+"/>
+    <xsl:function name="imf:smallest" as="item()?">
+        <xsl:param name="seq" as="item()*"/>
         <xsl:sequence select="imf:sort($seq)[1]"/>
     </xsl:function>
     
     <!-- sort a sequence in ascending order. -->
     <xsl:function name="imf:sort" as="item()*">
-        <xsl:param name="seq" as="item()+"/>
+        <xsl:param name="seq" as="item()*"/>
         <xsl:for-each select="$seq">
             <xsl:sort select="." order="ascending"/>
             <xsl:sequence select="."/>
