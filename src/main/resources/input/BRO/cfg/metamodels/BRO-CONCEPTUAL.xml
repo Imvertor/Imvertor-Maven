@@ -15,12 +15,12 @@
     <profiles>
         <profile lang="nl"> 
             <id>MBGNL</id>
-            <release>0.9.3</release>
+            <release>0.9.4</release>
             <desc>MIM-BRO Grouping (NL)</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
             <id>MBGEN</id>
-            <release>0.9.3</release>
+            <release>0.9.4</release>
             <desc>MIM-BRO Grouping (EN)</desc>
         </profile>
     </profiles>
