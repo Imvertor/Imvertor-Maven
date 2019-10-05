@@ -194,6 +194,7 @@
     
     <xsl:template match="content" mode="detail">
         <table width="100%">
+            <xsl:apply-templates select="part[1]" mode="detail-tabletype"/>
             <xsl:apply-templates select="part[1]" mode="detail-colgroup"/>
             <tbody>
                 <xsl:if test="exists(itemtype)">
@@ -215,6 +216,18 @@
         </th>
     </xsl:template>
     
+    <xsl:template match="part" mode="detail-tabletype">
+        <xsl:variable name="type" select="ancestor::section/@type"/>
+        <xsl:choose>
+            <xsl:when test="$type = ('CONTENTS-REFERENCELIST','DETAIL-CODELIST','DETAIL-REFERENCELIST','DETAIL-ENUMERATION')">
+                <xsl:attribute name="class">list</xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- no css classes -->
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+   
     <xsl:template match="part" mode="detail-colgroup">
         <!-- number of items in this part -->
         <xsl:variable name="items" select="count(item)"/>

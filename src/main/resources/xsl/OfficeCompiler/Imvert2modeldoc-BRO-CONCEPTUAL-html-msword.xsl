@@ -21,8 +21,13 @@
                 </title>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <style>
-                    table tbody tr th {text-align: left; vertical-align: top;} 
+                    table tbody tr th,
                     table tbody tr td {text-align: left; vertical-align: top;} 
+                    
+                    table.list { border-collapse: collapse; }
+                    table.list tbody tr th {background-color: #d3d3d3;}
+                    table.list tbody tr th,
+                    table.list tbody tr td {border: 1px solid black;}
                 </style>
             </head>
             <body>
@@ -48,8 +53,8 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="div[img]" mode="reorder">
-        <!-- remove -->
+    <xsl:template match="div[@class = 'imageinfo overview']" mode="reorder">
+       <!-- remove -->
     </xsl:template>
     
     <xsl:template match="h3" mode="reorder">
