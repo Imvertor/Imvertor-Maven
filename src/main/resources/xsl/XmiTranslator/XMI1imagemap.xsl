@@ -37,7 +37,8 @@
     version="2.0">
     
     <xsl:import href="../common/Imvert-common.xsl"/>
-   
+    <xsl:import href="common.xsl"/>
+    
     <xsl:variable name="stylesheet-code">IMVIM</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
@@ -45,7 +46,12 @@
 
     <xsl:template match="/">
         <imvert-imap:diagrams>
-            <xsl:apply-templates select="//UML:Diagram"/>
+            <xsl:for-each-group select="//UML:Diagram" group-by="@owner"> 
+                <xsl:for-each select="current-group()">
+                    <xsl:sort select="imf:compile-sort-key(.)"/>
+                    <xsl:apply-templates select="."/>
+                </xsl:for-each>
+            </xsl:for-each-group>
         </imvert-imap:diagrams>
     </xsl:template>
     
