@@ -961,6 +961,16 @@
                   </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
+                  <cs:name>Tekst</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:string</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
                   <cs:name>Tekst100</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
@@ -1031,7 +1041,7 @@
                   </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
-                  <cs:name>Coördinatenpaar</cs:name>
+                  <cs:name>Coordinatenpaar</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
