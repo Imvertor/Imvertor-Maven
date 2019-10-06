@@ -33,6 +33,7 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
+    <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
     <!-- 
         This stylesheet pre-processes the UML in accordance with 10-129r1_Geography_Markup_Language_GML_Version_3.3.pdf 
@@ -55,6 +56,7 @@
         <xsl:variable name="collection-name" select="concat(imvert:name,imf:get-config-parameter('imvertor-translate-suffix-components'))"/>
         <xsl:variable name="collection-id" select="concat('collection_', generate-id(.))"/>
         <xsl:variable name="collection-package-name" select="../imvert:name"/>
+        <xsl:variable name="is-includable" select="imf:boolean(imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-INCLUDABLE'))"/>
         <xsl:variable name="collection-class" as="element()?">
             <!-- when no collection type class referenced, roll your own --> 
             <!-- IM-110 but only when buildcollection yes -->
@@ -82,6 +84,11 @@
                                     </imvert:association>
                                 </xsl:for-each>
                             </imvert:associations>
+                            <imvert:tagged-values>
+                                <imvert:tagged-value id="CFG-TV-INCLUDABLE" origin="system">
+                                    <imvert:value><xsl:value-of select="$is-includable"/></imvert:value>
+                                </imvert:tagged-value>
+                            </imvert:tagged-values>
                         </imvert:class>
                     </xsl:if>
                 </xsl:if>
@@ -93,7 +100,9 @@
             <xsl:apply-templates select="@*"/>
             <xsl:apply-templates select="*[not(self::imvert:associations)]"/>
             <imvert:associations>
-                <xsl:sequence select="imvert:associations/imvert:association"/>
+                <xsl:apply-templates select="imvert:associations/imvert:association">
+                    <xsl:with-param name="is-includable" select="$is-includable"/>
+                </xsl:apply-templates>
                 <!-- 
                     IM-136 
                     alleen deze constructie als geen subtype van een ander product.
@@ -114,6 +123,18 @@
         </xsl:copy>
         
         <xsl:sequence select="$collection-class"/>
+    </xsl:template>
+    
+    <xsl:template match="imvert:association">
+        <xsl:param name="is-includable"/>
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*"/>
+            <imvert:tagged-values>
+                <imvert:tagged-value id="CFG-TV-INCLUDABLE" origin="system">
+                    <imvert:value><xsl:value-of select="$is-includable"/></imvert:value>
+                </imvert:tagged-value>
+            </imvert:tagged-values>
+        </xsl:copy>
     </xsl:template>
     
     <!-- 2 Create ref packages -->

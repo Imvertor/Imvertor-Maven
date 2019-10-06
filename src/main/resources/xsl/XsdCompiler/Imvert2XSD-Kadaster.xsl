@@ -392,9 +392,8 @@
         <xsl:variable name="supertype-package-name" select="$supertype/imvert:type-package"/>
         <xsl:variable name="supertype-substitutiongroup" select="$supertype/imvert:xsd-substitutiongroup"/> 
         <xsl:variable name="abstract" select="imvert:abstract"/>
-        
+        <xsl:variable name="is-includable" select="imf:boolean(imf:get-tagged-value(.,'##CFG-TV-INCLUDABLE'))"/>
         <xsl:variable name="data-location" select="imf:get-appinfo-location(.)"/>
-        
         <!-- all classes are element + complex type declaration; except for datatypes (<<datatype>>). -->
         <xsl:variable name="is-choice-member" select="$document-classes[imvert:stereotype/@id = ('stereotype-name-union') and imvert:attributes/imvert:attribute/imvert:type-id = $type-id]"/>
         
@@ -505,19 +504,21 @@
                                 <xsl:sequence select="imf:create-element-property(.)"/>
                             </xsl:for-each>
                             <?x associates komen niet meer voor?
-                        <!-- then add associates for association class -->
-                        <xsl:if test="imvert:associates">
-                            <xsl:variable name="assoc-id" select="imvert:associates/imvert:target/imvert:id"/>
-                            <xsl:variable name="association-class" select="$document//imvert:class[imvert:id=$assoc-id]"/>
-                            <xs:element ref="{imf:get-qname($association-class)}"/>
-                        </xsl:if>
-                        ?>
+                            <!-- then add associates for association class -->
+                            <xsl:if test="imvert:associates">
+                                <xsl:variable name="assoc-id" select="imvert:associates/imvert:target/imvert:id"/>
+                                <xsl:variable name="association-class" select="$document//imvert:class[imvert:id=$assoc-id]"/>
+                                <xs:element ref="{imf:get-qname($association-class)}"/>
+                            </xsl:if>
+                            ?>
                         </xsl:variable>
                         <xsl:if test="exists($atts)">
                             <xs:sequence>
                                 <xsl:sequence select="$atts"/>
                             </xs:sequence>
                         </xsl:if>
+                        <xsl:sequence select="imf:add-xmlbase($is-includable)"/>
+                        
                         <!-- XML attributes are declared last -->
                         <!-- when <<ObjectType>> and no supertypes, assign id. -->
                         <!-- TODO enhance / Check if external schema provides ID
@@ -766,6 +767,8 @@
         <xsl:variable name="data-location" select="imf:get-appinfo-location($this)"/>
         
         <xsl:variable name="has-key" select="$defining-class/imvert:attributes/imvert:attribute[imvert:stereotype/@id = 'stereotype-name-key']"/>
+        
+        <xsl:variable name="is-includable" select="imf:boolean(imf:get-tagged-value($this,'##CFG-TV-INCLUDABLE'))"/>
         
         <mark nillable="{$is-nillable}" nilreason="{$has-nilreason}">
             <xsl:choose>
@@ -1586,4 +1589,10 @@
         
     </xsl:function>
     
+    <xsl:function name="imf:add-xmlbase" as="element(xs:attribute)?">
+        <xsl:param name="is-includable"/>
+        <xsl:if test="$is-includable">
+            <xs:attribute ref="xml:base" use="optional"/>
+        </xsl:if>
+    </xsl:function>
 </xsl:stylesheet>

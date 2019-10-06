@@ -364,6 +364,24 @@
             </stereotypes>
         </tv>
         
+        <tv norm="space" id="CFG-TV-INCLUDABLE">
+            <derive>yes</derive>
+            <name lang="nl">Is includeerbaar</name>
+            <name lang="en">Is includable</name>
+            <desc lang="nl">
+                Deze constructie kan via xi:include worden geincludeerd in het document. 
+                De equivalente constructie in het XML schema, of constructies daarbinnen, krijgt hierdoor dan een optioneel attribuut xml:base bijgevoegd.
+            </desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-product</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+        </tv>
+        
     </tagged-values>
     
     

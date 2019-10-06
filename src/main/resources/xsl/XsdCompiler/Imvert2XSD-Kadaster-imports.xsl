@@ -104,7 +104,6 @@
                 <xsl:variable name="schema-def" select="$schema-defs[imvert:prefix = $prefix]"/>
                 <xsl:variable name="schema-namespace" select="$schema-def[1]/imvert:namespace"/>
                 <xsl:variable name="schema-subpath" select="$schema-def[1]/imvert:result-file-subpath"/>
-                
                 <!-- 
                     The steps to take back to the xsd folder, for all generated model schemas 
                     This is the number of folders in the subpath, and two added folders for application name & release. 
@@ -112,6 +111,20 @@
                 <xsl:variable name="steps-back" select="functx:repeat-string('../',count(tokenize($my-subpath,'/')) - 1)"/>     
                 
                 <xsl:choose>
+                    <xsl:when test="$prefix = 'xml'">
+                        <!-- native -->
+                        <xsl:choose>
+                            <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
+                                <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+                                    schemaLocation="https://www.w3.org/2001/03/xml.xsd"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+                                    schemaLocation="{$steps-back}1998/namespace/xml.xsd"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <namespace prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/> 
+                    </xsl:when>
                     <xsl:when test="$prefix = 'xs'">
                         <!-- native -->
                         <namespace prefix="xs" uri="http://www.w3.org/2001/XMLSchema"/> 
@@ -146,7 +159,7 @@
           
         </xsl:variable>
         
-        <xsl:result-document href="{$my-fullpath}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+        <xsl:result-document href="{$my-fullpath}" method="xml" indent="yes" encoding="UTF-8">
             <xsl:variable name="doc">
                 <xsl:copy>
                     <xsl:copy-of select="@*"/>
