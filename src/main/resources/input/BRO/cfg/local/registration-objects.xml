@@ -95,12 +95,6 @@
             <name lang="en">Soil face research test</name>
             <abbrev>SFR-test</abbrev>
         </registratieobject>
-        <registratieobject>
-            <name lang="nl">Grondwaterstandonderzoek</name>
-            <name lang="en">Groundwater level dossier</name>
-            <abbrev>GLD</abbrev>
-        </registratieobject>
-        
     </domein>
     <domein>
         <name lang="nl">Bodemkwaliteit</name>
