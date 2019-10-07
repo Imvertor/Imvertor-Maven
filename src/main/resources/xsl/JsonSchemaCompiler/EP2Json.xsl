@@ -17,7 +17,7 @@
     
     <xsl:template match="/ep:construct">
         <JSON> <!-- this root element will be stripped, the json is completely wrapped within { .. } -->
-            <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_schema','http://json-schema.org/draft-05/schema#')"></xsl:sequence>
+            <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_schema','http://json-schema.org/draft-06/schema#')"></xsl:sequence>
             <xsl:sequence select="imf:ep-to-namevaluepair('title',imf:get-ep-parameter(.,'subpath'))"/>
             <json>
                 <definitions>
