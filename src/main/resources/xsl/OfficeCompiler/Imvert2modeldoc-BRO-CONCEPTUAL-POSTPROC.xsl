@@ -182,7 +182,7 @@
     <xsl:template match="part[@type = ('CFG-DOC-INDICATIEAUTHENTIEK')]/item[2]">
         <xsl:choose>
             <xsl:when test="normalize-space() = 'Basisgegeven'">
-                <xsl:copy>Basisgegeven (niet-authentiek)</xsl:copy>
+                <xsl:copy>Niet-authentiek</xsl:copy>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:next-match/>
@@ -243,14 +243,16 @@
             <xsl:analyze-string select="$card" regex="^(\[\s)?(.)(\s\.\.\s(.))?(\s\])?$">
                 <xsl:matching-substring>
                     <xsl:choose>
+                        <?x
                         <xsl:when test="regex-group(2) = '0' and regex-group(4) = '*'">
                             <xsl:value-of select="'0, 1 of meer'"/>
                         </xsl:when>
                         <xsl:when test="normalize-space(regex-group(4)) = '*'">
                             <xsl:value-of select="concat(regex-group(2),' of meer')"/>
                         </xsl:when>
+                        ?>
                         <xsl:when test="normalize-space(regex-group(2)) and normalize-space(regex-group(4))">
-                            <xsl:value-of select="concat(regex-group(2),' .. ',regex-group(4))"/>
+                            <xsl:value-of select="concat(regex-group(2),'.. ',regex-group(4))"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="regex-group(2)"/>
@@ -507,36 +509,4 @@
         </xsl:choose>
     </xsl:function>
     
-    <?x ik snap de vraag niet van BRO
-    <xsl:function name="bro:generate-minmax-occurs">
-        <xsl:param name="min"/>
-        <xsl:param name="max"/>
-        <xsl:message select="concat('[',$min,',',$max,']')"></xsl:message>
-        <xsl:choose>
-            <!-- bij min en max: waarde = [minimumwaarde] tot [maximumwaarde]-->
-            <xsl:when test="$min = '0' and $max = '1'">
-                <xsl:value-of select="'geen of 1'"/>
-            </xsl:when>
-            <xsl:when test="$min = '0' and $max = '*'">
-                <xsl:value-of select="'geen, 1 of meer'"/>
-            </xsl:when>
-            <xsl:when test="$min = '0' and $max">
-                <xsl:value-of select="concat('geen of 1 tot ', $max)"/>
-            </xsl:when>
-            <xsl:when test="$min and $max">
-                <xsl:value-of select="concat($min, ' tot ', $max)"/>
-            </xsl:when>
-            <!-- bij alleen min: waarde = vanaf [minimumwaarde]-->
-            <xsl:when test="$min">
-                <xsl:value-of select="concat('vanaf ', $min)"/>
-            </xsl:when>
-            <!-- bij alleen max: waarde = tot [maximumwaarde]-->
-            <xsl:when test="$max">
-                <xsl:value-of select="concat('tot ', $max)"/>
-            </xsl:when>
-            <!-- in alle andere gevallen ontbreekt het gegeven"-->
-            <xsl:otherwise/>
-        </xsl:choose>
-    </xsl:function>
-    x?>
 </xsl:stylesheet>

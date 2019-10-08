@@ -38,9 +38,23 @@
                 <xsl:variable name="resolved">
                     <xsl:apply-templates select="/book/chapter"/>
                 </xsl:variable>
-                <xsl:apply-templates select="$resolved//section[@level = '3' and exists(preceding-sibling::section)]" mode="reorder"/>
+                <section>
+                    <h1>Artikel 1 Definitie van registratieobject, entiteiten en attributen</h1>
+                    <section>
+                        <h2>Registratieobject</h2>
+                        <xsl:apply-templates select="$resolved/section/section[2]" mode="reorder"/>
+                    </section>
+                    <section>
+                        <h2>Entiteiten en attributen</h2>
+                        <xsl:apply-templates select="$resolved/section/section[3]" mode="reorder"/>
+                    </section>
+                </section>
+                <section>
+                    <h1>Artikel 2 Uitbreidbare waardelijsten</h1>
+                    <xsl:apply-templates select="$resolved/section/section[4]/section" mode="reorder"/>
+                </section>
                 <section id="" level="3">
-                    <h1>Artikel 4 Het domeinmodel</h1>
+                    <h1>Artikel 3 Het domeinmodel</h1>
                     <xsl:sequence select="$resolved//div[@class = 'imageinfo overview']"/>
                 </section>
             </body>
@@ -57,22 +71,20 @@
        <!-- remove -->
     </xsl:template>
     
-    <xsl:template match="h3" mode="reorder">
-        <h1>
-            <xsl:apply-templates mode="#current"/>
-        </h1>
+    <xsl:template match="h1|h2|h3" mode="reorder">
+      <!-- remove -->
     </xsl:template>
     
     <xsl:template match="h4" mode="reorder">
-        <h2>
-            <xsl:apply-templates mode="#current"/>
-        </h2>
-    </xsl:template>
-    
-    <xsl:template match="h5" mode="reorder">
         <h3>
             <xsl:apply-templates mode="#current"/>
         </h3>
+    </xsl:template>
+    
+    <xsl:template match="h5" mode="reorder">
+        <h4>
+            <xsl:apply-templates mode="#current"/>
+        </h4>
     </xsl:template>
     
     
@@ -101,12 +113,10 @@
         <xsl:param name="language-model"/>
         <xsl:param name="name"/>
         
-        <xsl:variable name="art" select="if ($level eq 3) then concat('Artikel ', (count($section/preceding-sibling::*:section)),' ') else ()"/>
         <xsl:variable name="trans" select="imf:translate-i3n($type,$language-model,())"/>
         
         <xsl:element name="{imf:get-section-header-element-name($level)}">
-            <xsl:sequence select="$art"/>
-            <xsl:sequence select="if ($trans = 'Uitbreidbare waardelijsten') then 'Beschrijving van uitbreidbare waardelijsten' else $trans"/>
+            <xsl:sequence select="$trans"/>
             <xsl:sequence select="' '"/>
             <xsl:sequence select="$name"/>
         </xsl:element>

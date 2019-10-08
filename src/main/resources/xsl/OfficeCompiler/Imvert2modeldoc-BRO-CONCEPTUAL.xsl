@@ -31,13 +31,13 @@
                 <part>
                     <item>Naam</item>
                     <item>
-                        <xsl:value-of select="tokenize(/imvert:packages/imvert:application,'\(|\)')[1]"/>
+                        <xsl:value-of select="imf:get-tagged-value(.,'##CF-TV-NAAM')"/>
                     </item>
                 </part>
                 <part>
                     <item>Code</item>
                     <item>
-                        <xsl:value-of select="tokenize(/imvert:packages/imvert:application,'\(|\)')[2]"/>
+                        <xsl:value-of select="imf:get-tagged-value(.,'##CF-TV-CODE')"/>
                     </item>
                 </part>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-REGISTRATIEOBJECT')"/>
