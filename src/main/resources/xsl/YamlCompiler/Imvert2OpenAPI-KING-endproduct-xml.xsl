@@ -81,6 +81,7 @@
 		<xsl:choose>
 			<xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-SERIALISATION'))">
 				<xsl:sequence select="imf:msg($packages,'WARNING','For an Open API interface a serialisation must be defined. Define one using the tv Serialisatie.', ())" />
+				<xsl:value-of select="'hal+json'"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-SERIALISATION')"/>
@@ -108,8 +109,6 @@
 		<xsl:apply-templates select="/ep:rough-messages" />
 	</xsl:variable>
 	
-	<!-- ROME: Bij het bepalen van de waarde van de volgende variabele moet misschien nog de waarde van een evt. 
-		 tv expand worden meegenomen. Zie RM #490314. -->
 	<xsl:variable name="expandconfigurations">
 		<!-- Within this variable for each message it's determined if the expand paramater is applicable. -->
 		<ep:expandconfiguration>
@@ -117,7 +116,7 @@
 				<ep:message messagetype="{@messagetype}" berichtcode="{@berichtcode}">
 					<ep:name><xsl:value-of select="ep:name"/></ep:name>
 					<xsl:choose>
-						<xsl:when test=".//ep:construct[@type = 'association']//ep:contains-non-id-attributes = 'true'">
+						<xsl:when test=".//ep:construct[@type = 'association']//ep:contains-non-id-attributes = 'true' and $kv-serialisation = 'hal+json'">
 							<ep:expand>true</ep:expand>
 						</xsl:when>
 						<xsl:otherwise>
@@ -173,20 +172,10 @@
 						<xsl:sequence select="imf:create-output-element('ep:value', $kv-administrator-e-mail)" />
 					</ep:parameter>
 				</xsl:if>
-				<xsl:choose>
-					<xsl:when test="$kv-serialisation!=''">
-						<ep:parameter>
-							<xsl:sequence select="imf:create-output-element('ep:name', 'serialisation')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', $kv-serialisation)" />
-						</ep:parameter>
-					</xsl:when>
-					<xsl:otherwise>
-						<ep:parameter>
-							<xsl:sequence select="imf:create-output-element('ep:name', 'serialisation')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', 'hal+json')" />
-						</ep:parameter>
-					</xsl:otherwise>
-				</xsl:choose>
+				<ep:parameter>
+					<xsl:sequence select="imf:create-output-element('ep:name', 'serialisation')" />
+					<xsl:sequence select="imf:create-output-element('ep:value', $kv-serialisation)" />
+				</ep:parameter>
 			</ep:parameters>
 			<ep:name><xsl:value-of select="ep:name"/></ep:name>
 			<ep:imvertor-generator-version><xsl:value-of select="ep:imvertor-generator-version"/></ep:imvertor-generator-version>
@@ -326,6 +315,7 @@
 			</xsl:if>
 		</xsl:variable>
 		<xsl:variable name="berichtcode" select="@berichtcode" />
+		<xsl:variable name="messageCategory" select="substring($berichtcode,1,2)"/>
 		<xsl:variable name="messagetype" select="@messagetype" />
 		<xsl:sequence select="imf:create-debug-comment($berichtcode,$debugging)" />
 
@@ -354,6 +344,10 @@
 							<xsl:sequence select="imf:create-output-element('ep:value', @messagetype)" />
 						</ep:parameter>
 						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'messageCategory')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $messageCategory)" />
+						</ep:parameter>
+						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
 							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
 						</ep:parameter>
@@ -373,7 +367,14 @@
 						</ep:parameter>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'pagination')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', @pagination)" />
+							<xsl:choose>
+								<xsl:when test="@pagination = 'true' and $kv-serialisation = 'hal+json'">
+									<xsl:sequence select="imf:create-output-element('ep:value', @pagination)" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
+								</xsl:otherwise>
+							</xsl:choose>
 						</ep:parameter>
 						<xsl:if test="$messagetype = 'request' and @fields">
 							<ep:parameter>
@@ -395,7 +396,13 @@
 						</xsl:if>
 						<ep:parameter> 
 							<xsl:sequence select="imf:create-output-element('ep:name', 'operationId')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', @operationId)" />
+							<xsl:choose>
+								<xsl:when test="@operationId = '' and $messageCategory = 'Gr'"><xsl:sequence select="imf:create-output-element('ep:value', concat('getresource',$tech-name))" /></xsl:when>
+								<xsl:when test="@operationId = '' and $messageCategory = 'Gc'"><xsl:sequence select="imf:create-output-element('ep:value', concat('getcollection',$tech-name))" /></xsl:when>
+								<xsl:otherwise>
+									<xsl:sequence select="imf:create-output-element('ep:value', @operationId)" />
+								</xsl:otherwise>
+							</xsl:choose>
 						</ep:parameter>
 					</ep:parameters>
 				</xsl:when>
@@ -405,6 +412,10 @@
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
 							<xsl:sequence select="imf:create-output-element('ep:value', @messagetype)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'messageCategory')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $messageCategory)" />
 						</ep:parameter>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
@@ -424,7 +435,14 @@
 						</xsl:if>
 						<ep:parameter> 
 							<xsl:sequence select="imf:create-output-element('ep:name', 'operationId')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', @operationId)" />
+							<xsl:choose>
+								<xsl:when test="@operationId = '' and $messageCategory = 'Pa'"><xsl:sequence select="imf:create-output-element('ep:value', concat('patch',$tech-name))" /></xsl:when>
+								<xsl:when test="@operationId = '' and $messageCategory = 'Po'"><xsl:sequence select="imf:create-output-element('ep:value', concat('post',$tech-name))" /></xsl:when>
+								<xsl:when test="@operationId = '' and $messageCategory = 'Pu'"><xsl:sequence select="imf:create-output-element('ep:value', concat('put',$tech-name))" /></xsl:when>
+								<xsl:otherwise>
+									<xsl:sequence select="imf:create-output-element('ep:value', @operationId)" />
+								</xsl:otherwise>
+							</xsl:choose>
 						</ep:parameter>
 					</ep:parameters>
 				</xsl:when>
