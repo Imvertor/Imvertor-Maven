@@ -150,8 +150,11 @@
 						<xsl:when test="ep:parameters/ep:parameter[ep:name='operationId']/ep:value !=''">
 							<xsl:value-of select="ep:parameters/ep:parameter[ep:name='operationId']/ep:value"/>
 						</xsl:when>
+						<xsl:when test="contains($berichttype,'Gr')">
+							<xsl:value-of select="concat('getResource',ep:tech-name)"/>
+						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="ep:tech-name"/>
+							<xsl:value-of select="concat('getCollection',ep:tech-name)"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
@@ -160,9 +163,9 @@
 					<xsl:sequence select="imf:msg(.,'ERROR','There is more than one message having the operationId [1].', ($operationId))" />								
 				</xsl:if>
 				<!-- The tv custom_path_facet should, if present, have the correct format without a slash. We remove slashes from the tv but also generate a warning if a slash is present. -->
-				<xsl:variable name="messageCategory" select="substring-before($berichttype,'0')"/>
+				<xsl:variable name="messageCategory" select="ep:parameters/ep:parameter[ep:name='messageCategory']/ep:value"/>
 				<xsl:variable name="relatedResponseMessage">
-					<xsl:sequence select="//ep:message[ep:name = $rawMessageName and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response']"/>
+					<xsl:sequence select="//ep:message[ep:name = $rawMessageName and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]"/>
 				</xsl:variable>
 				<xsl:variable name="responseConstructName" select="$relatedResponseMessage/ep:message/ep:seq/ep:construct/ep:type-name"/>
 
@@ -334,14 +337,18 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<xsl:choose>
+				<!-- De volgende choose wordt tijdelijk uitgeschakeld. Voorlopig worden er nl. geen customized 'expand' parameters gegenereerd
+					 ook al is deze in het BSM gedefinieerd. Voor nu wordt gebruik gemaakt van de in de common.yaml gedefinieerde 'expand'
+					 parameter. 
+					 Indien het gebruik van custom expand parameters toch weer wordt toegestaan dan moet ook de when even verderop weer worden geractiveerd. -->
+				<!--xsl:choose>
 					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand'] and $serialisation = 'json'">
 						<xsl:sequence select="imf:msg(.,'WARNING',' The serialisation for this OAS3 interface is json, an expand attribute is only applicable for hal+json.', ($messageName))" />			
 					</xsl:when>
 					<xsl:when test="$expand = false() and $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']">
 						<xsl:sequence select="imf:msg(.,'WARNING','An expand attribute is not applicable for the [1] message.', ($messageName))" />			
 					</xsl:when>
-				</xsl:choose>
+				</xsl:choose-->
 				<xsl:variable name="pagination" as="xs:boolean">
 					<xsl:choose>
 						<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true' and $serialisation = 'hal+json'">
@@ -395,7 +402,8 @@
 					<xsl:choose>
 						<!-- De volgende when wordt tijdelijk uitgeschakeld. Voorlopig worden er dus geen customized 'expand' parameters gegenereerd
 							 ook al is deze in het BSM gedefinieerd. Voor nu wordt gebruik gemaakt van de in de common.yaml gedefinieerde 'expand'
-							 parameter. Om de code niet te veel te wijzigen heb ik de choose intact gelaten en een lege otherwise toegevoegd. -->
+							 parameter. Om de code niet te veel te wijzigen heb ik de choose intact gelaten en een lege otherwise toegevoegd. 
+							 Indien deze when geheractiveerd moet worden heractiveer dan ook de check op het voorkomen van $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']. -->
 						<!--xsl:when test="$expand = true() and $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']">
 							<xsl:variable name="expandParam" select="$checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']"/>
 							<xsl:variable name="datatype">
@@ -769,6 +777,7 @@
 					<xsl:with-param name="berichttype" select="$berichttype"/>
 					<xsl:with-param name="meervoudigeNaamResponseTree" select="$meervoudigeNaamResponseTree"/>
 					<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+					<xsl:with-param name="responseConstructName" select="$responseConstructName"/>
 				</xsl:call-template>
 				<xsl:variable name="queryParamsPresent" select="boolean($checkedUriStructure//ep:uriPart/ep:param[@path = 'false'] or empty($checkedUriStructure//ep:uriPart/ep:param/@path))"/>
 				<xsl:variable name="pathParamsPresent" select="boolean($checkedUriStructure//ep:uriPart/ep:param[@path = 'true'])"/>
@@ -777,7 +786,7 @@
 				<xsl:text>&#xa;      - </xsl:text><xsl:value-of select="$tag" />
 			</xsl:when>
 			<xsl:when test="(contains($berichttype,'Po') or contains($berichttype,'Pa') or contains($berichttype,'Pu')) and $messagetype = 'request'">
-				<xsl:variable name="messageCategory" select="substring-before($berichttype,'01')"/>
+				<xsl:variable name="messageCategory" select="ep:parameters/ep:parameter[ep:name='messageCategory']/ep:value"/>
 				<xsl:variable name="operationId">
 					<xsl:choose>
 						<xsl:when test="ep:parameters/ep:parameter[ep:name='operationId']/ep:value !=''">
@@ -1247,6 +1256,7 @@
 							<xsl:with-param name="berichttype" select="$berichttype"/>
 							<xsl:with-param name="meervoudigeNaamResponseTree" select="$meervoudigeNaamResponseTree"/>
 							<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+							<xsl:with-param name="responseConstructName" select="$responseConstructName"/>
 						</xsl:call-template>
 					</xsl:when>
 					<xsl:otherwise>
@@ -1275,6 +1285,7 @@
 		<xsl:param name="berichttype"/>
 		<xsl:param name="meervoudigeNaamResponseTree"/>
 		<xsl:param name="rawMessageName"/>
+		<xsl:param name="responseConstructName"/>
 		
 		<xsl:text>&#xa;        '200':</xsl:text>
 		<xsl:text>&#xa;          description: "Zoekactie geslaagd"</xsl:text>
@@ -1304,15 +1315,18 @@
 			<!-- For the response type message related to the current message generate the next refs to the toplevel component within the 
 						 json part of the yaml file. -->
 			<xsl:choose>
-				<xsl:when test="$serialisation = 'json'">
+				<xsl:when test="$serialisation = 'json' and ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
+					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
+				</xsl:when>
+				<xsl:when test="$serialisation = 'json' and ep:parameters/ep:parameter[ep:name='messageCategory']/ep:value = 'Gc'">
 					<xsl:text>&#xa;                type: array</xsl:text>
 					<xsl:text>&#xa;                items:</xsl:text>
-					<xsl:text>&#xa;                  $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
+					<xsl:text>&#xa;                  $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
 				</xsl:when>
 				<xsl:when test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
-					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
+					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
 				</xsl:when>
-				<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu')">
+				<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')">
 					<xsl:text>&#xa;                type: object</xsl:text>
 					<xsl:text>&#xa;                properties:</xsl:text>
 					<xsl:text>&#xa;                  _links:</xsl:text>
@@ -1331,6 +1345,9 @@
 					<xsl:text>&#xa;                        type: array</xsl:text>
 					<xsl:text>&#xa;                        items:</xsl:text>
 					<xsl:text>&#xa;                          $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
+				</xsl:when>
+				<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu')">
+					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
 				</xsl:when>
 			</xsl:choose>
 		</xsl:for-each>
