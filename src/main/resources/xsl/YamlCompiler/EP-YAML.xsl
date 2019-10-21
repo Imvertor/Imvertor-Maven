@@ -1327,24 +1327,7 @@
 					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
 				</xsl:when>
 				<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')">
-					<xsl:text>&#xa;                type: object</xsl:text>
-					<xsl:text>&#xa;                properties:</xsl:text>
-					<xsl:text>&#xa;                  _links:</xsl:text>
-					<xsl:choose>
-						<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">
-							<xsl:text>&#xa;                    $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-components-url,'HalPaginationLinks&quot;')"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:text>&#xa;                    $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-components-url,'HalCollectionLinks&quot;')"/>
-						</xsl:otherwise>
-					</xsl:choose>
-					<xsl:text>&#xa;                  _embedded:</xsl:text>
-					<xsl:text>&#xa;                    type: object</xsl:text>
-					<xsl:text>&#xa;                    properties:</xsl:text>
-					<xsl:text>&#xa;                      </xsl:text><xsl:value-of select="$meervoudigeNaamResponseTree"/><xsl:text>:</xsl:text>
-					<xsl:text>&#xa;                        type: array</xsl:text>
-					<xsl:text>&#xa;                        items:</xsl:text>
-					<xsl:text>&#xa;                          $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
+					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName"/><xsl:text>HalCollectie'</xsl:text>
 				</xsl:when>
 				<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu')">
 					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
@@ -1390,9 +1373,7 @@
 		<xsl:param name="pathParamsPresent"/>
 		<xsl:param name="crsParamPresent"/>
 		
-		<xsl:if test="contains($berichttype,'Po') or $queryParamsPresent">
-			<xsl:sequence select="imf:Foutresponse('400')"/>
-		</xsl:if>
+		<xsl:sequence select="imf:Foutresponse('400')"/>
 		<xsl:sequence select="imf:Foutresponse('401')"/>
 		<xsl:sequence select="imf:Foutresponse('403')"/>
 		<xsl:if test="$pathParamsPresent">
