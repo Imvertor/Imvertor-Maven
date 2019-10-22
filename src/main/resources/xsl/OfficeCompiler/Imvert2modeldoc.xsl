@@ -486,7 +486,9 @@
         <xsl:variable name="incoming-assocs-non-recursive" select="$incoming-assocs[../../imvert:id ne $id]"/>
         
         <xsl:variable name="r1" as="element()*">
-            <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="#current"/>
+            <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="#current">
+                <xsl:sort select="imvert:position" order="ascending"/>
+            </xsl:apply-templates>
             <xsl:if test="$include-incoming-associations">
                 <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="#current">
                     <xsl:with-param name="incoming" select="true()"/>
@@ -495,7 +497,9 @@
             <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
         </xsl:variable>
         <xsl:variable name="r2" as="element()*">
-            <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="#current"/>
+            <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="#current">
+                <xsl:sort select="../imvert:position" order="ascending"/>
+            </xsl:apply-templates>
             <xsl:if test="$include-incoming-associations">
                 <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="#current">
                     <xsl:with-param name="incoming" select="true()"/>
