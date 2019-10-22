@@ -252,7 +252,7 @@
                         </xsl:when>
                         ?>
                         <xsl:when test="normalize-space(regex-group(2)) and normalize-space(regex-group(4))">
-                            <xsl:value-of select="concat(regex-group(2),'.. ',regex-group(4))"/>
+                            <xsl:value-of select="concat(regex-group(2),'..',regex-group(4))"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="regex-group(2)"/>

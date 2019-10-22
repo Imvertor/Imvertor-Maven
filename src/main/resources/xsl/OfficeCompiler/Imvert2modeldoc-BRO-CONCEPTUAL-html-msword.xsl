@@ -41,6 +41,10 @@
                 <section>
                     <h1>Artikel 1 Definitie van registratieobject, entiteiten en attributen</h1>
                     <section>
+                        <h2>Het domeinmodel</h2>
+                        <xsl:apply-templates select="$resolved/section/section[1]" mode="reorder"/>
+                    </section>
+                    <section>
                         <h2>Registratieobject</h2>
                         <xsl:apply-templates select="$resolved/section/section[2]" mode="reorder"/>
                     </section>
@@ -50,12 +54,8 @@
                     </section>
                 </section>
                 <section>
-                    <h1>Artikel 2 Uitbreidbare waardelijsten</h1>
+                    <h1>Artikel 2 Beschrijving van uitbreidbare waardelijsten    </h1>
                     <xsl:apply-templates select="$resolved/section/section[4]/section" mode="reorder"/>
-                </section>
-                <section id="" level="3">
-                    <h1>Artikel 3 Het domeinmodel</h1>
-                    <xsl:sequence select="$resolved//div[@class = 'imageinfo overview']"/>
                 </section>
             </body>
         </html>
@@ -65,10 +65,6 @@
         <xsl:copy>
             <xsl:apply-templates select="node()|@*" mode="#current"/>
         </xsl:copy>
-    </xsl:template>
-    
-    <xsl:template match="div[@class = 'imageinfo overview']" mode="reorder">
-       <!-- remove -->
     </xsl:template>
     
     <xsl:template match="h1|h2|h3" mode="reorder">
@@ -86,10 +82,6 @@
             <xsl:apply-templates mode="#current"/>
         </h4>
     </xsl:template>
-    
-    
-    
-    
     
     <xsl:function name="imf:insert-chapter-intro" as="item()*">
         <xsl:param name="chapter" as="element(chapter)"/>
