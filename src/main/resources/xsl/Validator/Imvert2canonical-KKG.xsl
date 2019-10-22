@@ -91,7 +91,7 @@
                     <xsl:sequence select="imf:msg(.,$parse/error)"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:sequence select="imf:create-output-element('imvert:fraction-digits',$parse/pre)"/>
+                    <xsl:sequence select="imf:create-output-element('imvert:fraction-digits',$parse/post)"/>
                     <xsl:sequence select="imf:create-output-element('imvert:total-digits',xs:integer($parse/pre) + xs:integer($parse/post))"/>
                 </xsl:otherwise>
             </xsl:choose>
