@@ -32,7 +32,7 @@
                         shortName: "msgdoc"
                     };
                 </script>
-                <style type="text/css">
+                <style type="text/css"><![CDATA[
                     th, td {
                         vertical-align: top;
                     }
@@ -45,7 +45,13 @@
                     .deepheader {
                         margin-top: 1em;
                     }
-                </style>
+                    .supplier {
+                        color: gray;
+                    }
+                    .supplier::after {
+                        content: " - ";
+                     }
+                ]]></style>
             </head>
             <body>
                 <section id="abstract">
