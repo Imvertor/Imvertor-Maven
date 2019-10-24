@@ -1180,7 +1180,7 @@
     <xsl:function name="imf:get-position-value" as="xs:string?">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="default" as="xs:string?"/>
-        <xsl:variable name="positions" select="imf:get-tagged-values($this,('positie','position','Positie','Position'),true())/@value"/>
+        <xsl:variable name="positions" select="imf:get-tagged-values($this,('positie','position','Positie','Position'),(),true())[1]"/>
         <xsl:variable name="positions-1" select="if (matches($positions[1],'\d+')) then $positions[1] else ()"/>
         <xsl:variable name="positions-2" select="if (matches($positions[2],'\d+')) then $positions[2] else ()"/>
         <xsl:value-of select="normalize-space(
