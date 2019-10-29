@@ -43,6 +43,11 @@
             <type-map formal-lang="xs">decimal</type-map>
         </scalar>
         
+        <scalar id="scalar-any">
+            <name lang="nl">ANY</name>
+            <type-map formal-lang="xs">#any</type-map>
+        </scalar>
+        
     </scalars>
     
 </metamodel>
