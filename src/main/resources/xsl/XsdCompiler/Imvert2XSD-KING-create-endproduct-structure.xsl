@@ -12,8 +12,6 @@
 	xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 	xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
 
-	<xsl:import href="../common/Imvert-common.xsl" />
-
 	<xsl:output indent="yes" method="xml" encoding="UTF-8"/>
 
 	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-endproduct-structure</xsl:variable>
