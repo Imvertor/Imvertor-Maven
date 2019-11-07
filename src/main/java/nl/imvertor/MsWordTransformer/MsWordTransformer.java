@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 VNG/KING
+ * Copyright (C) 2019 Armatiek Solution BV
  * 
  * This file is part of Imvertor.
  *
@@ -20,7 +20,6 @@
 
 package nl.imvertor.MsWordTransformer;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 

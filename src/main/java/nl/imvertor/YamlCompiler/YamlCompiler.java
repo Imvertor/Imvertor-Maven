@@ -50,6 +50,8 @@ public class YamlCompiler extends Step {
 		String jsonschemarules = configurator.getJsonSchemarules();
 	    if (jsonschemarules.equals("JSON-KINGBSM")) {
 			generateKING();
+		} else if (jsonschemarules.equals("JSON-IHWBSM")) {
+			generateKING();
 		} else
 			runner.error(logger,"Schemarules not implemented: " + jsonschemarules);
 		

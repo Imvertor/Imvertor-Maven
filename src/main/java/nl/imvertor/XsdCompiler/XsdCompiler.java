@@ -101,13 +101,23 @@ public class XsdCompiler extends Step {
 				generateBsmXsdKING();
 				done = true;
 			}  
+		} else if (owner.equals("IHW")) {
+			if (xmlschemarules.equals("XML-IHWUGM")) {
+				generateUgmXsdKING();
+				done = true;
+			} else if (xmlschemarules.equals("XML-IHWBSM")) {
+				generateBsmXsdKING();
+				done = true;
+			}  
 		} else if (owner.equals("BRO")) {
 			if (xmlschemarules.equals("XML-ISO19136")) {
 				generateXsdBRO();
 				supplyExternalSchemas();
 				done = true;
 			} 
-		} else if (owner.equals("RWS")) {
+		}
+		/*
+		 else if (owner.equals("RWS")) {
 			if (xmlschemarules.equals("XML-RWS-L")) {
 				generateUgmXsdKING();
 				done = true;
@@ -125,7 +135,8 @@ public class XsdCompiler extends Step {
 				done = true;
 			} 		
 		} 
-		
+		*/
+			
         if (!done) 
         	runner.error(logger,"Schemarules " + xmlschemarules + " not implemented for owner " + owner);
 		

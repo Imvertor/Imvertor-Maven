@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 VNG/KING
+ * Copyright (C) 2019 Armatiek Solutions BV
  * 
  * This file is part of Imvertor.
  *
