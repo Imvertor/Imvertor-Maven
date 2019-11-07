@@ -7,20 +7,11 @@
                       ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
    <cs:mappings>
       <cs:Mapping>
-         <cs:name>BRO_GITHUB</cs:name>
-         <cs:use>
-            <cs-ref:MapRef xlink:href="#SampleExternalModelA"/>
-         </cs:use>
-      </cs:Mapping>
-      <cs:Mapping>
-         <cs:name>BRO_GEOSTANDAARDEN</cs:name>
+         <cs:name>IHW_GEOSTANDAARDEN</cs:name>
          <cs:use>
             <cs-ref:MapRef xlink:href="#GML321"/>
-            <cs-ref:MapRef xlink:href="#SWE201"/>
-            <cs-ref:MapRef xlink:href="#OM200"/>
             <cs-ref:MapRef xlink:href="#CIT10"/>
             <cs-ref:MapRef xlink:href="#GEX10"/>
-            <cs-ref:MapRef xlink:href="#SAM202"/>
             <cs-ref:MapRef xlink:href="#INSPIRE"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-GEO"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-SOIL"/>
@@ -472,117 +463,6 @@
                      <cs:XsdType>
                         <cs:name>Measure</cs:name>
                         <cs:asAttribute>MeasureType</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                        <cs:hasNilreason>false</cs:hasNilreason>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-            </cs:constructs>
-         </cs:Map>
-         <cs:Map>
-            <cs:id>SWE201</cs:id>
-            <cs:namespace>http://www.opengis.net/swe/2.0</cs:namespace>
-            <cs:location>http://www.opengis.net/swe/2.0/swe-profile.xsd</cs:location>
-            <cs:phase>3</cs:phase>
-            <cs:version>2.0.1</cs:version>
-            <cs:release>BROPROFILE</cs:release>
-            <cs:forSchema>
-               <cs-ref:ConceptualSchemaRef xlink:href="#SWE-CP-BRO"/>
-            </cs:forSchema>
-            <cs:constructs>
-               <cs:Construct>
-                  <cs:name>UnitReference</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:catalogEntries>
-                     <cs:CatalogEntry>
-                        <cs:name>#UnitReference</cs:name>
-                     </cs:CatalogEntry>
-                  </cs:catalogEntries>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>UnitReference</cs:name>
-                        <cs:asAttribute>UnitReference</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                        <cs:hasNilreason>false</cs:hasNilreason>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-            </cs:constructs>
-         </cs:Map>
-         <cs:Map>
-            <cs:id>SAM202</cs:id>
-            <cs:namespace>http://www.opengis.net/sampling/2.0</cs:namespace>
-            <cs:location>https://schema.broservices.nl/profile/sa/1.0/sa-profile.xsd</cs:location>
-            <cs:phase>3</cs:phase>
-            <cs:version>2.0.2</cs:version>
-            <cs:release>BROPROFILE</cs:release>
-            <cs:forSchema>
-               <cs-ref:ConceptualSchemaRef xlink:href="#SF-CP-BRO"/>
-            </cs:forSchema>
-            <cs:constructs>
-               <cs:Construct>
-                  <cs:name>SF_SamplingFeature</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:catalogEntries>
-                     <cs:CatalogEntry>
-                        <cs:name>#SF_SamplingFeature</cs:name>
-                     </cs:CatalogEntry>
-                  </cs:catalogEntries>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>SF_SamplingFeature</cs:name>
-                        <cs:asAttribute>SF_SamplingFeatureType</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                        <cs:hasNilreason>false</cs:hasNilreason>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-            </cs:constructs>
-         </cs:Map>
-         <cs:Map>
-            <cs:id>OM200</cs:id>
-            <cs:namespace>http://www.opengis.net/om/2.0</cs:namespace>
-            <cs:location>https://schema.broservices.nl/profile/om/1.0/om-profile.xsd</cs:location>
-            <cs:phase>3</cs:phase>
-            <cs:version>2.0.0</cs:version>
-            <cs:release>BROPROFILE</cs:release>
-            <cs:forSchema>
-               <cs-ref:ConceptualSchemaRef xlink:href="#OM-CP-BRO"/>
-            </cs:forSchema>
-            <cs:constructs>
-               <cs:Construct>
-                  <cs:name>OM_Observation</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:catalogEntries>
-                     <cs:CatalogEntry>
-                        <cs:name>#Observation</cs:name>
-                     </cs:CatalogEntry>
-                  </cs:catalogEntries>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>OM_Observation</cs:name>
-                        <cs:asAttribute>OM_ObservationType</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                        <cs:hasNilreason>false</cs:hasNilreason>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>OM_Process</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:catalogEntries>
-                     <cs:CatalogEntry>
-                        <cs:name>#Process</cs:name>
-                     </cs:CatalogEntry>
-                  </cs:catalogEntries>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>OM_Process</cs:name>
-                        <cs:asAttribute>OM_ProcessType</cs:asAttribute>
                         <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                         <cs:primitive>false</cs:primitive>
                         <cs:hasNilreason>false</cs:hasNilreason>
