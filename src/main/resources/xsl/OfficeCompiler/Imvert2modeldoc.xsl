@@ -1137,7 +1137,15 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-FORMALPATTERN'))"/>         
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-FORMAAT'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($relation/imvert:baretype,false()))"/>         
+                    <xsl:choose>
+                        <xsl:when test="$relation/imvert:type-id">
+                            <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office($relation/imvert:type-id)"/>          
+                            <xsl:sequence select="imf:create-part-2(.,imf:create-link($defining-class,'global',$relation/imvert:type-name/@original))"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($relation/imvert:baretype,false()))"/>         
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-LENGTH'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-LENGTH'))"/>         

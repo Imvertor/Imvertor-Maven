@@ -34,6 +34,11 @@
         </section>
     </notes-rule>
     
+    <notes-rule lang="nl">
+        <section title="Populatie" tagged-value="CFG-TV-POPULATION">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
     
     
 </notes-rules>

@@ -65,7 +65,7 @@
         </tv>
         
         <!-- niet te verwarren met cfg-tv-reasonnovalue -->
-        <tv norm="space" id="CFG-TV-EXPLAINNOVALUE">
+        <tv norm="note" id="CFG-TV-EXPLAINNOVALUE">
             <name lang="nl">Reden geen waarde</name>
             <name lang="en">Reason no value</name>
             <desc lang="nl"><!--TODO--></desc>
@@ -87,6 +87,17 @@
                 <value default="no">See package</value>
             </declared-values>
             
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-CODE">
+            <name lang="nl">Code</name>
+            <name lang="en">Code</name>
+            <desc lang="nl">Verkorte naam van een registratieobject, bijv. GAR, GLD</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+            </stereotypes>
         </tv>
     </tagged-values>
 </tagset>

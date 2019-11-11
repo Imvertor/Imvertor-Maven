@@ -31,13 +31,13 @@
                 <part>
                     <item>Naam</item>
                     <item>
-                        <xsl:value-of select="imf:get-tagged-value(.,'##CF-TV-NAAM')"/>
+                        <xsl:value-of select="imf:get-tagged-value(.,'##CFG-TV-NAME')"/>
                     </item>
                 </part>
                 <part>
                     <item>Code</item>
                     <item>
-                        <xsl:value-of select="imf:get-tagged-value(.,'##CF-TV-CODE')"/>
+                        <xsl:value-of select="imf:get-tagged-value(.,'##CFG-TV-CODE')"/>
                     </item>
                 </part>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-REGISTRATIEOBJECT')"/>
@@ -49,17 +49,23 @@
     <xsl:function name="imf:initialize-modeldoc" as="item()*">
         
         <!-- the abbreviation for the registration object must be set here; this is part of the path in GIT where the catalog is uploaded -->
-        <xsl:variable name="namespace" select="$imvert-document/imvert:packages/imvert:base-namespace"/>
-        <xsl:variable name="abbrev" select="tokenize($namespace,'/')[last()]" as="xs:string?"/>
-        <xsl:variable name="object" select="$configuration-registration-objects-doc//registratieobject[abbrev = $abbrev]"/>
+        <xsl:variable name="registratieobject" select="$imvert-document//imvert:class[imvert:name = 'Registratieobject']"/>
+        <xsl:variable name="ro-abbrev" select="imf:get-tagged-value($registratieobject,'##CFG-TV-CODE')" as="xs:string?"/>
+        <xsl:variable name="object" select="$configuration-registration-objects-doc//registratieobject[abbrev = $ro-abbrev]"/>
         
         <!--check if known. -->
         <xsl:choose>
+            <xsl:when test="empty($registratieobject)">
+                <xsl:sequence select="imf:msg($imvert-document,'ERROR','No class with name [1] found',('Registratieobject'))"/>
+            </xsl:when>
+            <xsl:when test="empty($ro-abbrev)">
+                <xsl:sequence select="imf:msg($imvert-document,'ERROR','No code found for [1]',('Registratieobject'))"/>
+            </xsl:when>
             <xsl:when test="empty($object)">
-                <xsl:sequence select="imf:msg($imvert-document,'ERROR','The abbreviation [1] taken from [2] is not valid',($abbrev,$namespace))"/>
+                <xsl:sequence select="imf:msg($imvert-document,'ERROR','The abbreviation/code [1] is not valid',($ro-abbrev))"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:set-config-string('appinfo','registration-object-abbreviation',$abbrev)"/>
+                <xsl:sequence select="imf:set-config-string('appinfo','registration-object-abbreviation',$ro-abbrev)"/>
             </xsl:otherwise>
         </xsl:choose>
         

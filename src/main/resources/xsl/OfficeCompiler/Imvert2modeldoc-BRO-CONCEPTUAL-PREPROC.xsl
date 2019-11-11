@@ -94,6 +94,7 @@
     <!-- (2) -->
     <xsl:template match="imvert:class[imvert:name = 'Registratieobject']/imvert:tagged-values">
         <xsl:copy>
+            <xsl:apply-templates select="imvert:tagged-value[@id = 'CFG-TV-CODE']"/>
             <xsl:apply-templates select="imvert:tagged-value[@id = 'CFG-TV-NAME']"/>
             <xsl:apply-templates select="imvert:tagged-value[@id = 'CFG-TV-DEFINITION']"/>
             <xsl:apply-templates select="imvert:tagged-value[@id = 'CFG-TV-POPULATION']"/>

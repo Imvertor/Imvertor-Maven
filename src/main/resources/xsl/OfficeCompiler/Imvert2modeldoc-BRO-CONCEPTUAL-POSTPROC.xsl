@@ -423,23 +423,42 @@
                     <item>Waardelijst niet uitbreidbaar</item>
                 </part>
             </xsl:when>
-            <!-- anders is het een uitbreidbare waardelijst (codelist of referentielijst) -->
             <xsl:otherwise> 
-                <part>
-                    <item>&#160;&#160;Naam</item>
-                    <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item"/></item></item>
-                </part>
-                <part>
-                    <item>&#160;&#160;Type</item>
-                    <item>Waardelijst uitbreidbaar</item>
-                </part>
-                <!-- alleen genereren als er een IMBRO/A domein is -->
-                <xsl:for-each select="$context/part[@type = 'CFG-DOC-DOMAIN-IMBROA']">
-                    <part>
-                        <item>&#160;&#160;Domein IMBRO/A</item>
-                        <item><xsl:value-of select="./item[2]/text()"/></item>
-                    </part>                    
-                </xsl:for-each>
+                <xsl:variable name="defining-class-item" select="$context/part[@type = 'CFG-DOC-FORMAAT']/item[2]/item"/>
+                <xsl:variable name="defining-class-id" select="$defining-class-item/@idref"/>
+                <xsl:variable name="defining-class" select="root($context)//section[@id-global = $defining-class-id]"/>
+                <xsl:variable name="defining-class-type" select="$defining-class/@type"/>
+                <xsl:choose>
+                    <!-- een lijst? -->
+                    <xsl:when test="$defining-class-type = ('DETAIL-CODELIST','CONTENTS-REFERENCELIST')">
+                        <part>
+                            <item>&#160;&#160;Naam</item>
+                            <item><xsl:sequence select="$defining-class-item"/></item>
+                        </part>
+                        <part>
+                            <item>&#160;&#160;Type</item>
+                            <item>Waardelijst uitbreidbaar</item>
+                        </part>
+                        <!-- alleen genereren als er een IMBRO/A domein is -->
+                        <xsl:for-each select="$context/part[@type = 'CFG-DOC-DOMAIN-IMBROA']">
+                            <part>
+                                <item>&#160;&#160;Domein IMBRO/A</item>
+                                <item><xsl:value-of select="./item[2]/text()"/></item>
+                            </part>                    
+                        </xsl:for-each>
+                    </xsl:when>
+                    <!-- anders een niet verder bekende waarde; toon gewoon de naam van het type -->
+                    <xsl:otherwise>
+                        <part>
+                            <item>&#160;&#160;Naam</item>
+                            <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item"/></item></item>
+                        </part>
+                        <part>
+                            <item>&#160;&#160;Type</item>
+                            <item><xsl:value-of select="$item"/></item>
+                        </part>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -473,7 +492,7 @@
             <xsl:when test="$unit-ucum = 'Cel'">°C (graden Celcius)</xsl:when>
             <xsl:when test="$unit-ucum = 'deg'">° (graden)</xsl:when>
             <xsl:when test="$unit-ucum = 'g/cm3'">g/cm3 (gram/kubieke centimeter)</xsl:when>
-            <xsl:when test="$unit-ucum = 'kPa'">kPa (kiloPascal)</xsl:when>
+            <xsl:when test="$unit-ucum = 'kPa'">kPa (kilopascal)</xsl:when>
             <xsl:when test="$unit-ucum = 'm'">m (meter)</xsl:when>
             <xsl:when test="$unit-ucum = 'm/(24.h)'">m/24h (meters per etmaal)</xsl:when>
             <xsl:when test="$unit-ucum = 'mm'">mm (millimeter)</xsl:when>
@@ -482,7 +501,20 @@
             <xsl:when test="$unit-ucum = 'nT'">nT (nanoTesla)</xsl:when>
             <xsl:when test="$unit-ucum = 's'">s (seconde)</xsl:when>
             <xsl:when test="$unit-ucum = 'S/m'">S/m (Siemens/meter)</xsl:when>
+          
             <xsl:when test="$unit-ucum = 'um'">µm (micrometer)</xsl:when>
+            <xsl:when test="$unit-ucum = 'mm/h'">mm/h (millimeter per uur)</xsl:when>
+            <xsl:when test="$unit-ucum = 'm/s'">m/s (meter per seconde)</xsl:when>
+            <xsl:when test="$unit-ucum = 'cm/cm'">cm/cm (centimeter per centimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'g'">g (gram)</xsl:when>
+            <xsl:when test="$unit-ucum = 'cm3'">cm3 (kubieke centimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'cm'">cm (centimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'cm/dag'">cm/dag (centimeter per dag)</xsl:when>
+            <xsl:when test="$unit-ucum = 'cm H2O'">cm H2O (centimeter waterkolom)</xsl:when>
+            <xsl:when test="$unit-ucum = 'g/g'">g/g (gram/gram)</xsl:when>
+            <xsl:when test="$unit-ucum = 'cm-1'">cm-1 (per centimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'g/kg'">g/kg (gram per kilogram)</xsl:when>
+          
             <xsl:otherwise>
                 <xsl:value-of select="$unit-ucum"/>
             </xsl:otherwise>
