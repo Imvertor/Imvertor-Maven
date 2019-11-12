@@ -26,7 +26,7 @@
     <xsl:variable name="has-multiple-domains" select="count(/book/chapter/section[@type='DOMAIN']) gt 1"/>
     
     <xsl:template match="/book/chapter">
-        <section id='{@type}' class="normative" level="1"> 
+        <section id='{@type}' class="normative"> 
             <h2>
                 <xsl:value-of select="imf:translate-i3n(@title,$language-model,())"/>
             </h2>
@@ -36,7 +36,7 @@
             <xsl:variable name="r" as="item()*">
                 <xsl:apply-templates select="section" mode="domain"/>
             </xsl:variable>
-            <xsl:apply-templates select="$r" mode="remove-deep-sections"/>
+            <xsl:apply-templates select="$r" mode="windup"/>
         </section>
     </xsl:template>
     
@@ -73,25 +73,25 @@
                     <xsl:variable name="diagram" select="$imagemap/imvert-imap:diagram[imvert-imap:id = $diagram-id]"/>
                     <xsl:variable name="diagram-path" select="imf:insert-diagram-path($diagram-id)"/>
                     <xsl:variable name="diagram-css-class" select="if ($diagram/imvert-imap:purpose = 'CFG-IMG-OVERVIEW') then 'overview' else ''"/>
+                    <xsl:variable name="caption-desc" select="content/part[@type='CFG-DOC-DESCRIPTION']/item[2]"/>
                     
                     <div class="imageinfo {$diagram-css-class}">
-                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}"/>
+                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
                         <map name="imagemap-{$diagram-id}">
                             <xsl:for-each select="$diagram/imvert-imap:map">
                                 <xsl:variable name="section-id" select="imvert-imap:for-id"/>
                                 <xsl:variable name="section" select="$document//*[@uuid = $section-id]"/><!-- expected are: section or item; but can be anything referenced from within graph by imagemap -->
                                 <xsl:if test="$section">
-                                    <xsl:variable name="section-name" select="$section/name"/>
+                                    <xsl:variable name="section-name" select="$section/@name"/>
                                     <area 
                                         shape="rect" 
-                                        coords="{imvert-imap:loc[@type = 'imgL']},{imvert-imap:loc[@type = 'imgB']},{imvert-imap:loc[@type = 'imgR']},{imvert-imap:loc[@type = 'imgT']}" 
-                                        alt="{$section-name}" 
+                                        alt="{$section-name}"
+                                        coords="{imvert-imap:loc[@type = 'imgL']},{imvert-imap:loc[@type = 'imgT']},{imvert-imap:loc[@type = 'imgR']},{imvert-imap:loc[@type = 'imgB']}" 
                                         href="#graph_{$section-id}"/>
                                 </xsl:if>
                             </xsl:for-each>
                         </map>
                         <!-- create the caption -->
-                        <xsl:variable name="caption-desc" select="content/part[@type='CFG-DOC-DESCRIPTION']/item[2]"/>
                         <p>
                             <b>
                                 <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
@@ -335,7 +335,8 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:variable>
-                    <xsl:sequence select="subsequence($groups,1,$items - 1)"/> <!-- remove the last colgroup; this will fill up the rest of the table space -->     
+                    <xsl:sequence select="subsequence($groups,1,$items - 1)"/> 
+                    <colgroup/><!-- final colgroup fills up the rest of the table space -->     
                 </xsl:when>
                 
                 <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->
@@ -592,15 +593,32 @@
         <xsl:value-of select="."/>
     </xsl:template>
     
-    <xsl:template match="node()|@*" mode="remove-deep-sections">
+    <xsl:template match="*" mode="windup">
+        <xsl:element name="{local-name(.)}"><!-- removing all namespaces -->
+            <xsl:apply-templates select="node()|@*" mode="#current"/>
+        </xsl:element>
+    </xsl:template>
+    <xsl:template match="node()|@*" mode="windup" priority="-1">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*" mode="#current"/>
         </xsl:copy>
     </xsl:template>
-    <xsl:template match="section[@level ge '7']" mode="remove-deep-sections">
+    <xsl:template match="section[@level ge '7']" mode="windup">
         <div class="deepheader">
             <xsl:apply-templates select="node()|@*" mode="#current"/>
         </div>
+    </xsl:template>
+    <xsl:template match="section/@level" mode="windup">
+        <!-- remove -->
+    </xsl:template>
+    <xsl:template match="table/@width" mode="windup">
+        <xsl:attribute name="style" select="concat('width: ',.,';')"/>
+    </xsl:template>
+    <xsl:template match="colgroup/@width" mode="windup">
+        <xsl:attribute name="style" select="concat('width: ',.,';')"/>
+    </xsl:template>
+    <xsl:template match="a/@name" mode="windup">
+        <xsl:attribute name="id" select="."/>
     </xsl:template>
     
     <xsl:function name="imf:create-anchors" as="element()*">
@@ -608,9 +626,11 @@
         <xsl:if test="$section-or-item/@uuid">
             <a class="anchor" name="graph_{$section-or-item/@uuid}"/>
         </xsl:if>
+        <!--
         <xsl:if test="$section-or-item/@id">
             <a class="anchor" name="{$section-or-item/@id}"/>
         </xsl:if>
+        -->
     </xsl:function>
     
     <xsl:function name="imf:get-section-level" as="xs:integer">
