@@ -49,8 +49,8 @@
     <xsl:function name="imf:initialize-modeldoc" as="item()*">
         
         <!-- the abbreviation for the registration object must be set here; this is part of the path in GIT where the catalog is uploaded -->
-        <xsl:variable name="registratieobject" select="$imvert-document//imvert:class[imvert:name = 'Registratieobject']"/>
-        <xsl:variable name="ro-abbrev" select="imf:get-tagged-value($registratieobject,'##CFG-TV-CODE')" as="xs:string?"/>
+        <xsl:variable name="registratieobject" select="$imvert-document//imvert:class[imvert:name = ('Registratieobject','RegistrationObject')]"/>
+        <xsl:variable name="ro-abbrev" select="if (exists($registratieobject)) then imf:get-most-relevant-compiled-taggedvalue($registratieobject,'##CFG-TV-CODE') else ()" as="xs:string?"/>
         <xsl:variable name="object" select="$configuration-registration-objects-doc//registratieobject[abbrev = $ro-abbrev]"/>
         
         <!--check if known. -->

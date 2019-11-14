@@ -9,6 +9,19 @@
   <!-- add specs here to be merged with the calling tvsets -->
     
     <tagged-values xml:id="tagset">
+        <tv id="CFG-TV-DATERECORDED">
+            <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+            <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            <stereo minmax="0..1">stereotype-name-composite</stereo><!-- TODO remove? -->
+            <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+            <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+            <stereo minmax="0..1">stereotype-name-codelist</stereo>
+            <stereo minmax="0..1">stereotype-name-union</stereo>
+            <stereo minmax="0..1">stereotype-name-relation-role</stereo>     
+            <stereo minmax="0..1">stereotype-name-complextype</stereo>
+        </tv>
+        
         <tv id="CFG-TV-SOURCE">
             <stereotypes>
                 <stereo minmax="1..1" default="BRO">stereotype-name-objecttype</stereo>
