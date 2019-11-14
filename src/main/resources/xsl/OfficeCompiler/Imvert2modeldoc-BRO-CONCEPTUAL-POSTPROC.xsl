@@ -286,6 +286,7 @@
         <xsl:param name="item" as="element()"/>
         <xsl:param name="context" as="element()"/>
         <xsl:variable name="item-text" select="normalize-space($item)"/>
+        
         <xsl:choose>
             <xsl:when test="$item-text = 'Meetwaarde'">
                 <part>
@@ -425,16 +426,15 @@
                 </part>
             </xsl:when>
             <xsl:otherwise> 
-                <xsl:variable name="defining-class-item" select="$context/part[@type = 'CFG-DOC-FORMAAT']/item[2]/item"/>
-                <xsl:variable name="defining-class-id" select="$defining-class-item/@idref"/>
-                <xsl:variable name="defining-class" select="root($context)//section[@id-global = $defining-class-id]"/>
-                <xsl:variable name="defining-class-type" select="$defining-class/@type"/>
+                <xsl:variable name="defining-class-section" select="root($context)//section[@id = concat('detail_class_Model_',$item)]"/>
+                <xsl:variable name="defining-class-type" select="$defining-class-section/parent::section/@type"/>
                 <xsl:choose>
                     <!-- een lijst? -->
-                    <xsl:when test="$defining-class-type = ('DETAIL-CODELIST','CONTENTS-REFERENCELIST')">
+                    <xsl:when test="$defining-class-type = ('CONTENTS-CODELIST','CONTENTS-REFERENCELIST')">
+                        <xsl:message select="concat('LIJST ', $item)"></xsl:message>
                         <part>
                             <item>&#160;&#160;Naam</item>
-                            <item><xsl:sequence select="$defining-class-item"/></item>
+                            <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item"/></item></item>
                         </part>
                         <part>
                             <item>&#160;&#160;Type</item>
@@ -450,13 +450,10 @@
                     </xsl:when>
                     <!-- anders een niet verder bekende waarde; toon gewoon de naam van het type -->
                     <xsl:otherwise>
+                        <xsl:message select="concat('TYPE  ', $item)"></xsl:message>
                         <part>
                             <item>&#160;&#160;Naam</item>
                             <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item"/></item></item>
-                        </part>
-                        <part>
-                            <item>&#160;&#160;Type</item>
-                            <item><xsl:value-of select="$item"/></item>
                         </part>
                     </xsl:otherwise>
                 </xsl:choose>
