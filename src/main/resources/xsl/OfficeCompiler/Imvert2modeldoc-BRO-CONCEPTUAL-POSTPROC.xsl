@@ -285,8 +285,9 @@
     <xsl:function name="bro:generate-domain">
         <xsl:param name="item" as="element()"/>
         <xsl:param name="context" as="element()"/>
+        <xsl:variable name="item-text" select="normalize-space($item)"/>
         <xsl:choose>
-            <xsl:when test="$item/text() = 'Meetwaarde'">
+            <xsl:when test="$item-text = 'Meetwaarde'">
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item>Meetwaarde <xsl:value-of select="$context/part[@type = 'CFG-DOC-PATROON']/item[2]/text()"/></item>
@@ -317,7 +318,7 @@
                     </part>
                 </xsl:for-each>
             </xsl:when>
-            <xsl:when test="$item/text()='Aantal'">
+            <xsl:when test="$item-text='Aantal'">
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item>Aantal <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTH']/item[2]/text()"/></item>
@@ -339,19 +340,19 @@
                     </part>
                 </xsl:for-each>
             </xsl:when>
-            <xsl:when test="$item/text()='Nummer'">
+            <xsl:when test="$item-text='Nummer'">
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item>Nummer <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTH']/item[2]/text()"/></item>
                 </part>
             </xsl:when>
-            <xsl:when test="$item/text()='Tekst'">
+            <xsl:when test="$item-text='Tekst'">
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item>Tekst <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTH']/item[2]/text()"/></item>
                 </part>
             </xsl:when>
-            <xsl:when test="$item/text()='Registratieobjectcode'">
+            <xsl:when test="$item-text='Registratieobjectcode'">
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item>Registratieobjectcode</item>
@@ -396,7 +397,7 @@
                     <item><xsl:value-of select="$item"/></item>
                 </part>                
             </xsl:when>
-            <xsl:when test="$item/text()='Organisatie'">                
+            <xsl:when test="$item-text='Organisatie'">                
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item>Organisatie</item>
@@ -406,7 +407,7 @@
                     <item>Keuze</item>
                 </part>
             </xsl:when>
-            <xsl:when test="$item/text() = ('IndicatieJaNee', 'Kwaliteitsregime')">   
+            <xsl:when test="$item-text = ('IndicatieJaNee', 'Kwaliteitsregime')">   
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item><xsl:value-of select="$item"/></item>
