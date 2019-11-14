@@ -431,7 +431,6 @@
                 <xsl:choose>
                     <!-- een lijst? -->
                     <xsl:when test="$defining-class-type = ('CONTENTS-CODELIST','CONTENTS-REFERENCELIST')">
-                        <xsl:message select="concat('LIJST ', $item)"></xsl:message>
                         <part>
                             <item>&#160;&#160;Naam</item>
                             <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item"/></item></item>
@@ -450,7 +449,6 @@
                     </xsl:when>
                     <!-- anders een niet verder bekende waarde; toon gewoon de naam van het type -->
                     <xsl:otherwise>
-                        <xsl:message select="concat('TYPE  ', $item)"></xsl:message>
                         <part>
                             <item>&#160;&#160;Naam</item>
                             <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item"/></item></item>

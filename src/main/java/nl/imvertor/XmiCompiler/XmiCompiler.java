@@ -125,7 +125,7 @@ public class XmiCompiler extends Step {
 				if (!f1.equals(f2) || mustReread) {
 					runner.info(logger,"Reading" + filespec);
 					String projectname = configurator.getXParm("cli/owner") + ": " + configurator.getXParm("cli/project");
-					String modelname = (configurator.isTrue("cli", "sys_supportsexternal",true)) ? null : configurator.getXParm("cli/application");
+					String modelname = configurator.getXParm("cli/application");
 					
 					// clean the XMI folder here
 					(new OutputFolder(configurator.getXParm("system/work-xmi-folder-path",true))).clear(false);
@@ -219,42 +219,7 @@ public class XmiCompiler extends Step {
 		return runner.succeeds();
 
 	}
-	
-	/*
-	 * this is a full export of all packages; suboptimal and therefore replaced. 
-	 * 
-	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile) throws Exception {
-		String ownerName = configurator.getXParm("cli/owner");
-		String projectName = configurator.getXParm("cli/project");
-		String pn = ownerName + ": " + projectName;
 		
-		eapFile.open();
-		String rootPackageGUID = eapFile.getProjectPackageGUID(pn);
-		System.out.println(rootPackageGUID);
-		eapFile.close();
-		if (rootPackageGUID.equals("")) {
-			runner.error(logger,"Cannot find any project labeled \"" + pn + "\"", null, "CFAPL");
-			return null;
-		} else {
-			return eapFile.exportToXmiFile(xmifile.getCanonicalPath(), rootPackageGUID);
-		}
-	}
-	*/
-	
-	/*
-	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile) throws Exception {
-		eapFile.open();
-		String rootPackageGUID = eapFile.getRootPackageGUID();
-		XmlFile r = eapFile.exportToXmiFile(xmifile.getCanonicalPath(), rootPackageGUID);
-		eapFile.close();
-		return r;
-	}
-	
-	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile, String projectName) throws Exception {
-		return exportEapToXmi(eapFile, xmifile,projectName,null);
-	}
-	*/
-	
 	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile, String projectName, String modelName) throws Exception {
 		eapFile.open();
 		String packageGUID = (modelName == null) ? eapFile.getProjectPackageGUID(projectName) : eapFile.getModelPackageGUID(projectName, modelName);
@@ -270,25 +235,6 @@ public class XmiCompiler extends Step {
 		return r;
 	}
 	
-	/*
-	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile, String modelName) throws Exception {
-		XmlFile r = null;
-		Vector<Package> models = eapFile.getModelsByName(modelName);
-		if (models.size() > 1) 
-			runner.error(logger,"More than one model found by name " + modelName);
-		else if (models.size() == 0) 
-			runner.error(logger,"No model found by name " + modelName);
-		else {
-			Package model = models.get(0);
-			String modelGUID = eapFile.getPackageGUID(model);
-			// determine which project this is in
-			r = eapFile.exportToXmiFile(xmifile.getCanonicalPath(), projectGUID);
-			
-		}
-		return r;
-	}
-	*/
-	
 	/**
 	 * Fix on EA bug. XMI must not contain invalid character references. Hope this solves it.
 	 * 
@@ -300,22 +246,6 @@ public class XmiCompiler extends Step {
 		String c = xmiFile.getContent();
 		if (c.contains("&#5"))
 			xmiFile.setContent(StringUtils.replacePattern(c, "&#5[0-9]{4};", "?"));
-		
-		/*
-		AnyFile outFile = new AnyFile(File.createTempFile("cleanXMI.", ".xmi"));
-		outFile.deleteOnExit();
-		FileWriter writer = outFile.getWriter(false);
-		String line = xmiFile.getNextLine();
-		while (line != null) {
-			line = StringUtils.replacePattern(line, "&#5[0-9]{4};", "X");
-			writer.write(line + "\n");
-			line = xmiFile.getNextLine();
-		}
-		writer.flush();
-		writer.close();
-		outFile.copyFile(xmiFile);
-		*/
-		
 	}
 	
 	private void migrateXMI(XmlFile xmiFile) throws Exception {
