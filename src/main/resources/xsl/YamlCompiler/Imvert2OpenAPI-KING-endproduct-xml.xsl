@@ -908,6 +908,9 @@
 						<xsl:otherwise>false</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+				<xsl:variable name="SIM-supplier" select="imf:get-trace-suppliers-for-construct($construct,1)[@project='SIM'][1]" />
+				<xsl:variable name="SIM-construct" select="if ($SIM-supplier) then imf:get-trace-construct-by-supplier($SIM-supplier,$imvert-document) else ()" />
+				<xsl:variable name="SIM-name" select="($SIM-construct/imvert:name, imvert:name)[1]" />
 				
 				<ep:construct>
 					<ep:parameters>
@@ -924,6 +927,10 @@
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'abstract')" />
 							<xsl:sequence select="imf:create-output-element('ep:value', $abstract)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
 						</ep:parameter>
 					</ep:parameters>
 
@@ -1504,7 +1511,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<ep:seq>
-						<xsl:if test="@type=('class','requestclass')">
+						<xsl:if test="$type=('class','requestclass')">
 							<xsl:sequence select="imf:create-debug-comment(concat('OAS25000, id: ',$id),$debugging)" />
 							<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 						</xsl:if>
