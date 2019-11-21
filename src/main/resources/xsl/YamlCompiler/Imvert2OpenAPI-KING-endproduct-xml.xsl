@@ -1666,6 +1666,7 @@
 		<xsl:variable name="id" select="imvert:id"/>
 		<!--xsl:variable name="is-id" select="imvert:is-id"/-->
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
+		<xsl:variable name="type-is-GM-external" select="(exists(imvert:conceptual-schema-type) and contains(imvert:conceptual-schema-type,'GM_')) or contains(imvert:baretype,'GM_')"/>		
 		<xsl:variable name="doc">
 			<xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
 				<ep:definition>
@@ -1706,8 +1707,6 @@
 			</ep:tagged-values>
 		</xsl:variable-->
 
-		<xsl:variable name="type-is-GM-external" select="(exists(imvert:conceptual-schema-type) and contains(imvert:conceptual-schema-type,'GM_')) or contains(imvert:baretype,'GM_')"/>		
-
 		<xsl:choose>
 			<xsl:when test="imvert:type-name = 'NEN3610ID'">
 				<ep:construct>
@@ -1742,6 +1741,10 @@
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS28500, id: ',imvert:id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
+					
+					<!-- ROME: Ik vraag me af of de volgende choose nog wel noodzakelijk is. In het geval van GMtypes wordt er nu immers een $ref geplaatst naar 
+						 'https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/geojson.yaml#/GeoJSONGeometry'.
+						 De documentatie die hier gegenereerd wordt heeft dus geen toepassing volgens mij. -->
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
 							<xsl:call-template name="documentationUnknown"/>
@@ -1754,6 +1757,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
 					<xsl:call-template name="attributeFacets">
 						<xsl:with-param name="min-Occurs" select="imvert:min-occurs"/>
+						<xsl:with-param name="type-is-GM-external" select="$type-is-GM-external"/>
 					</xsl:call-template>
 				</ep:construct>
 			</xsl:when>
@@ -1971,11 +1975,11 @@
 
 	<xsl:template name="attributeFacets">
 		<xsl:param name="min-Occurs"/>
-
+		<xsl:param name="type-is-GM-external" select="false()"/>
+		
 		<xsl:variable name="id" select="imvert:id"/>
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
 		<xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" />
-		<xsl:variable name="type-is-GM-external" select="(exists(imvert:conceptual-schema-type) and contains(imvert:conceptual-schema-type,'GM_')) or contains(imvert:baretype,'GM_')"/>		
 		
 		<xsl:choose>
 			<xsl:when test="imvert:type-name = 'NEN3610ID'">

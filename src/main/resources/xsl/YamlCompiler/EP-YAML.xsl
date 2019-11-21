@@ -24,6 +24,8 @@
 	<xsl:variable name="standard-yaml-responses-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-yaml-responses-path'))"/>
 	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
 	<xsl:variable name="geonovum-yaml-parameters-url" select="concat(imf:get-config-parameter('geonovum-components-url'),imf:get-config-parameter('geonovum-yaml-parameters-file'))"/>
+
+	<xsl:variable name="Response406Required" select="boolean(//ep:construct/ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external')"/>
 	
 	<xsl:template match="ep:message-sets">
 		<xsl:apply-templates select="ep:message-set"/>
@@ -736,8 +738,14 @@
 							<xsl:when test="upper-case(ep:name) = 'PEILDATUM'">
 								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'peildatum&quot;')"/>
 							</xsl:when>
-							<xsl:when test="upper-case(ep:name) = 'PERIODEVAN'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'periodevan&quot;')"/>
+							<xsl:when test="upper-case(ep:name) = 'DATUMTOTENMET'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'datumtotenmet&quot;')"/>
+							</xsl:when>
+							<xsl:when test="upper-case(ep:name) = 'DATUMVAN'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'datumvan&quot;')"/>
+							</xsl:when>
+							<xsl:when test="upper-case(ep:name) = 'API-VERSION'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'api-version&quot;')"/>
 							</xsl:when>
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;        - in: query</xsl:text>
@@ -1398,7 +1406,9 @@
 		<xsl:if test="$pathParamsPresent">
 			<xsl:sequence select="imf:Foutresponse('404')"/>
 		</xsl:if>
-		<xsl:sequence select="imf:Foutresponse('406')"/>
+		<xsl:if test="$Response406Required">
+			<xsl:sequence select="imf:Foutresponse('406')"/>
+		</xsl:if>
 		<xsl:sequence select="imf:Foutresponse('409')"/>
 		<xsl:sequence select="imf:Foutresponse('410')"/>
 		<xsl:if test="$crsParamPresent">
