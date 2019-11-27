@@ -1297,6 +1297,301 @@
 					$acceptCrsParamPresent)))"/>
 				<xsl:text>&#xa;      tags: </xsl:text>
 				<xsl:text>&#xa;      - </xsl:text><xsl:value-of select="$tag" />
+				
+			</xsl:when>
+			<xsl:when test="contains($berichttype,'De') and $messagetype = 'request'">
+				<!-- This processes all ep:message elements representing the request tree of the Gr and Gc messages. -->
+				<xsl:variable name="operationId">
+					<xsl:choose>
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='operationId']/ep:value !=''">
+							<xsl:value-of select="ep:parameters/ep:parameter[ep:name='operationId']/ep:value"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat('deleteResource',ep:tech-name)"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:if test="count(//ep:message[ep:parameters[ep:parameter[ep:name='messagetype' and ep:value='request'] and ep:parameter[ep:name='operationId' and ep:value = $operationId]]]) > 1 
+							 or count(//ep:message/ep:tech-name = $operationId) > 1">
+					<xsl:sequence select="imf:msg(.,'ERROR','There is more than one message having the operationId [1].', ($operationId))" />								
+				</xsl:if>
+				<!-- The tv custom_path_facet should, if present, have the correct format without a slash. We remove slashes from the tv but also generate a warning if a slash is present. -->
+				<xsl:variable name="messageCategory" select="ep:parameters/ep:parameter[ep:name='messageCategory']/ep:value"/>
+				<xsl:variable name="relatedResponseMessage">
+					<xsl:sequence select="//ep:message[ep:name = $rawMessageName and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]"/>
+				</xsl:variable>
+				
+				
+				
+				<!--xsl:variable name="responseConstructName" select="$relatedResponseMessage/ep:message/ep:seq/ep:construct/ep:type-name"/>
+
+				<xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstructName]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode' and contains(ep:value,$berichttype)]]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/-->
+				<!--xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstructName]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/-->
+				<!--xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstructName]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response']/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/-->
+				
+				<xsl:variable name="determinedUriStructure">
+					<!-- This variable contains a structure determined from the messageName. -->
+					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
+						<xsl:choose>
+							<xsl:when test="contains($messageName,'{') and contains($messageName,'/')">
+								<xsl:sequence select="imf:determineUriStructure(substring-after($messageName,'/'))"/>
+							</xsl:when>
+							<xsl:when test="contains($messageName,'/')">
+								<ep:uriPart>
+									<ep:entityName><xsl:value-of select="lower-case(substring-after($messageName,'/'))"/></ep:entityName>
+								</ep:uriPart>
+							</xsl:when>
+						</xsl:choose>
+					</ep:uriStructure>
+				</xsl:variable>
+				<xsl:variable name="calculatedUriStructure">
+					<!-- This  variable contains a similar structure as the variable determinedUriStructure but this time determined from 
+						 the request tree. -->
+					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
+						<xsl:choose>
+							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct])">
+								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$construct)"/>
+							</xsl:when>
+							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
+								<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct,$rawMessageName))"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<ep:uriPart>
+									<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
+									<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getParameters"/>
+								</ep:uriPart>
+								<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getUriPart"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</ep:uriStructure>
+				</xsl:variable>
+				<xsl:variable name="checkedUriStructure">
+					<!-- Within this variable the variables determinedUriStructure and the calculatedUriStructure are compared with eachother
+						 and durng that process a comparable structure as in those variables is generated. It's also determined if a parameter
+						 is a query or a path parameter. -->
+					<xsl:variable name="checkOnParameters">
+						<xsl:for-each select="$determinedUriStructure//ep:uriPart">
+							<xsl:if test="contains(ep:entityName,'{') or contains(ep:entityName,'}')">Y</xsl:if>
+						</xsl:for-each>
+					</xsl:variable>
+					<xsl:choose>
+						<xsl:when test="contains($checkOnParameters,'Y')">
+							<!-- Within the path 2 parameter uriparts are placed after eachother. -->
+							<xsl:sequence select="imf:msg(.,'WARNING','Within the message [1] 2 parameters are placed after eachother.', ($rawMessageName))" />			
+							<ep:uriStructure/>
+						</xsl:when>
+						<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
+							<!-- If the amount of entities withn the determined structure is larger than within the calculated structure
+								 comparisson isn't possible and a warnings is generated. The structure within the padtype class doesn't fit with the structure within the query tree.
+								 This might be caused by names not being equal within both structures or by missing structure parts within the query tree. -->
+							<xsl:sequence select="imf:msg(.,'WARNING','The structure of the padtype class within the message [1] does not comply with the structure within the query tree.', ($rawMessageName))" />			
+							<ep:uriStructure/>
+						</xsl:when>
+						<xsl:otherwise>
+							<!-- Process the calculated uristructure with the checkUriStructure template. -->
+							<xsl:for-each select="$calculatedUriStructure/ep:uriStructure">
+								<ep:uriStructure>
+									<xsl:call-template name="checkUriStructure">
+										<xsl:with-param name="uriPart2Check" select="1"/>
+										<xsl:with-param name="determinedUriStructure" select="$determinedUriStructure"/>
+										<xsl:with-param name="calculatedUriStructure" select="$calculatedUriStructure"/>
+										<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+									</xsl:call-template>
+								</ep:uriStructure>
+							</xsl:for-each>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
+				<!--xsl:variable name="analyzedResponseStructure">
+					<ep:analyzedStructure name="{$rawMessageName}" responseConstructName="{$responseConstructName}">
+						<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $responseConstructName]" mode="getCharacteristics"/>
+						<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $responseConstructName]" mode="getConstruct4Characteristics"/>
+					</ep:analyzedStructure>
+				</xsl:variable-->
+
+				<xsl:if test="$checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
+								and empty(following-sibling::ep:uriPart[ep:param])]">
+
+					<!-- If the checkedUriStructure contains uriparts with entitynames that are not part of the path and without param elements
+						 a warning is generated. -->
+					<xsl:variable name="falseAndEmptyUriParts">
+						<xsl:for-each select="$checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0]">
+							<xsl:value-of select="ep:entityName"/>
+							<xsl:if test="following-sibling::ep:uriPart">
+								<xsl:text>, </xsl:text>
+							</xsl:if>
+						</xsl:for-each>
+					</xsl:variable>
+					<xsl:choose>
+						<xsl:when test="contains($falseAndEmptyUriParts,',')">
+							<xsl:sequence select="imf:msg(.,'WARNING','The request tree of the message [1] contains empty entities ([2]) which are not part of the message.', ($messageName,$falseAndEmptyUriParts))" />			
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:msg(.,'WARNING','The request tree of the message [1] contains the empty entity ([2]) which is not part of the message.', ($messageName,$falseAndEmptyUriParts))" />			
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:if>
+
+				
+				<!-- If desired we could also generate a warning which states the message name as derived from the calculated urstructure.
+					 For now this has been disabled. -->
+<?x				<xsl:variable name="calculatedMessageName">
+					<xsl:for-each select="$calculatedUriStructure//ep:uriPart">
+						<xsl:text>/</xsl:text><xsl:value-of select="ep:entityName"/>
+						<xsl:for-each select="ep:param">
+							<xsl:text>/{</xsl:text><xsl:value-of select="ep:name"/><xsl:text>}</xsl:text>
+						</xsl:for-each>
+					</xsl:for-each>
+				</xsl:variable>
+				
+				<xsl:if test="$messageName != $calculatedMessageName">
+					<!--<xsl:message select="concat('WARNING: The messagename (',$messageName,') is not correct, according to the request tree in the model it should be ',$calculatedMessageName,'.')"/>-->
+					<xsl:sequence select="imf:msg(.,'WARNING','The messagename ([1]) is not correct, according to the request tree in the model it should be [2].', ($messageName,$calculatedMessageName))" />			
+				</xsl:if> ?>
+				
+				<xsl:variable name="method">delete</xsl:variable>
+	
+				<!-- For each message the next structure is generated. -->
+				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
+				<xsl:text>&#xa;      operationId: </xsl:text><xsl:value-of select="$operationId" />
+				<xsl:text>&#xa;      description: "</xsl:text><xsl:value-of select="$documentation" /><xsl:text>"</xsl:text>
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[@path = 'true']">
+					<!-- If parameters apply the parameters section is generated. -->
+					<xsl:text>&#xa;      parameters: </xsl:text>
+					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[@path = 'true']">
+						<xsl:sort select="ep:name" order="ascending"/>
+						<!-- Loop over de path ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a path parameter. -->
+						<xsl:variable name="datatype">
+							<xsl:choose>
+								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">
+									<xsl:value-of select="'string'"/>
+								</xsl:when>
+								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'year'">
+									<xsl:value-of select="'integer'"/>
+								</xsl:when>
+								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'yearmonth'">
+									<xsl:value-of select="'integer'"/>
+								</xsl:when>
+								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'dateTime'">
+									<xsl:value-of select="'string'"/>
+								</xsl:when>
+								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'postcode'">
+									<xsl:value-of select="'string'"/>
+								</xsl:when>
+								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'boolean'">
+									<xsl:value-of select="'boolean'"/>
+								</xsl:when>
+								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'string'">
+									<xsl:value-of select="'string'"/>
+								</xsl:when>
+								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'integer'">
+									<xsl:value-of select="'integer'"/>
+								</xsl:when>
+								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'decimal'">
+									<xsl:value-of select="'number'"/>
+								</xsl:when>
+								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'uri'">
+									<xsl:value-of select="'string'"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name">
+									<xsl:variable name="type" select="ep:type-name"/>
+									<xsl:variable name="enumtype" select="$message-sets//ep:message-set/ep:construct[ep:tech-name = $type]/ep:data-type"/>
+									<xsl:choose>
+										<xsl:when test="substring-after($enumtype, 'scalar-') = 'date'">
+											<xsl:value-of select="'string'"/>
+										</xsl:when>
+										<xsl:when test="substring-after($enumtype, 'scalar-') = 'year'">
+											<xsl:value-of select="'integer'"/>
+										</xsl:when>
+										<xsl:when test="substring-after($enumtype, 'scalar-') = 'yearmonth'">
+											<xsl:value-of select="'integer'"/>
+										</xsl:when>
+										<xsl:when test="substring-after($enumtype, 'scalar-') = 'dateTime'">
+											<xsl:value-of select="'string'"/>
+										</xsl:when>
+										<xsl:when test="substring-after($enumtype, 'scalar-') = 'postcode'">
+											<xsl:value-of select="'string'"/>
+										</xsl:when>
+										<xsl:when test="substring-after($enumtype, 'scalar-') = 'boolean'">
+											<xsl:value-of select="'boolean'"/>
+										</xsl:when>
+										<xsl:when test="substring-after($enumtype, 'scalar-') = 'string'">
+											<xsl:value-of select="'string'"/>
+										</xsl:when>
+										<xsl:when test="substring-after($enumtype, 'scalar-') = 'integer'">
+											<xsl:value-of select="'integer'"/>
+										</xsl:when>
+										<xsl:when test="substring-after($enumtype, 'scalar-') = 'decimal'">
+											<xsl:value-of select="'number'"/>
+										</xsl:when>
+										<xsl:when test="substring-after($enumtype, 'scalar-') = 'uri'">
+											<xsl:value-of select="'string'"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="'string'"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="'string'"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<xsl:choose>
+							<xsl:when test="upper-case(ep:name) = 'UUID'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
+							</xsl:when>
+							<xsl:when test="ep:data-type">
+								<xsl:text>&#xa;        - in: path</xsl:text>
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          required: true</xsl:text>
+								<xsl:text>&#xa;          schema:</xsl:text>
+								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
+								<xsl:variable name="format">
+									<xsl:call-template name="deriveFormat">
+										<xsl:with-param name="incomingType">
+											<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+										</xsl:with-param>
+									</xsl:call-template>
+								</xsl:variable>
+								<xsl:variable name="facets">
+									<xsl:call-template name="deriveFacets">
+										<xsl:with-param name="incomingType">
+											<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+										</xsl:with-param>
+									</xsl:call-template>
+								</xsl:variable>
+								<xsl:value-of select="$format"/>
+								<xsl:value-of select="$facets"/>
+								<xsl:if test="ep:example">
+									<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
+								</xsl:if>
+							</xsl:when>
+							<xsl:when test="ep:type-name">
+								<xsl:text>&#xa;        - in: path</xsl:text>
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          required: true</xsl:text>
+								<xsl:text>&#xa;          schema:</xsl:text>
+								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
+							</xsl:when>
+						</xsl:choose>
+					</xsl:for-each>
+				</xsl:if>
+				<xsl:text>&#xa;      responses:</xsl:text>
+				<xsl:call-template name="response200">
+					<xsl:with-param name="berichttype" select="'delete'"/>
+					<xsl:with-param name="meervoudigeNaamResponseTree" select="''"/>
+					<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+					<xsl:with-param name="responseConstructName" select="''"/>
+				</xsl:call-template>
+				<xsl:sequence select="imf:Foutresponse('202')"/>
+				<xsl:sequence select="imf:Foutresponse('204')"/>
+				<xsl:sequence select="imf:Foutresponse('404')"/>
+				<xsl:text>&#xa;      tags: </xsl:text>
+				<xsl:text>&#xa;      - </xsl:text><xsl:value-of select="$tag" />
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
@@ -1308,52 +1603,61 @@
 		<xsl:param name="responseConstructName"/>
 		
 		<xsl:text>&#xa;        '200':</xsl:text>
-		<xsl:text>&#xa;          description: "Zoekactie geslaagd"</xsl:text>
+		<xsl:choose>
+			<xsl:when test="$berichttype = 'delete'">
+				<xsl:text>&#xa;          description: "Verwijderactie geslaagd"</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>&#xa;          description: "Zoekactie geslaagd"</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>&#xa;          headers:</xsl:text>
 		<xsl:text>&#xa;            api-version:</xsl:text>
 		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'api_version&quot;')"/>
-		<xsl:text>&#xa;            warning:</xsl:text>
-		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'warning&quot;')"/>
-		<xsl:if test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value='collection' and ep:parameters/ep:parameter[ep:name='pagination']/ep:value='true' and $serialisation = 'hal+json'">
-			<!-- In case of a collection type message and if pagination and hal+json applies create the following properties. -->
-			<xsl:text>&#xa;            X-Pagination-Page:</xsl:text>
-			<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Page&quot;')"/>
-			<xsl:text>&#xa;            X-Pagination-Limit:</xsl:text>
-			<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Limit&quot;')"/>
-		</xsl:if>
-		<xsl:text>&#xa;            X-Rate-Limit-Limit:</xsl:text>
-		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Limit&quot;')"/>
-		<xsl:text>&#xa;            X-Rate-Limit-Remaining:</xsl:text>
-		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Remaining&quot;')"/>
-		<xsl:text>&#xa;            X-Rate-Limit-Reset:</xsl:text>
-		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Reset&quot;')"/>
-		<xsl:text>&#xa;          content:</xsl:text>
-		<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
-		<xsl:text>&#xa;              schema:</xsl:text>
-		<xsl:for-each
-			select="../ep:message[ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype] and ep:name = $rawMessageName]">
-			<!-- For the response type message related to the current message generate the next refs to the toplevel component within the 
+		<xsl:if test="$berichttype != 'delete'">
+			<xsl:text>&#xa;            warning:</xsl:text>
+			<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'warning&quot;')"/>
+			<xsl:if test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value='collection' and ep:parameters/ep:parameter[ep:name='pagination']/ep:value='true' and $serialisation = 'hal+json'">
+				<!-- In case of a collection type message and if pagination and hal+json applies create the following properties. -->
+				<xsl:text>&#xa;            X-Pagination-Page:</xsl:text>
+				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Page&quot;')"/>
+				<xsl:text>&#xa;            X-Pagination-Limit:</xsl:text>
+				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Limit&quot;')"/>
+			</xsl:if>
+			<xsl:text>&#xa;            X-Rate-Limit-Limit:</xsl:text>
+			<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Limit&quot;')"/>
+			<xsl:text>&#xa;            X-Rate-Limit-Remaining:</xsl:text>
+			<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Remaining&quot;')"/>
+			<xsl:text>&#xa;            X-Rate-Limit-Reset:</xsl:text>
+			<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Reset&quot;')"/>
+			<xsl:text>&#xa;          content:</xsl:text>
+			<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
+			<xsl:text>&#xa;              schema:</xsl:text>
+			<xsl:for-each
+				select="../ep:message[ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype] and ep:name = $rawMessageName]">
+				<!-- For the response type message related to the current message generate the next refs to the toplevel component within the 
 						 json part of the yaml file. -->
-			<xsl:choose>
-				<xsl:when test="$serialisation = 'json' and ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
-					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
-				</xsl:when>
-				<xsl:when test="$serialisation = 'json' and ep:parameters/ep:parameter[ep:name='messageCategory']/ep:value = 'Gc'">
-					<xsl:text>&#xa;                type: array</xsl:text>
-					<xsl:text>&#xa;                items:</xsl:text>
-					<xsl:text>&#xa;                  $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
-				</xsl:when>
-				<xsl:when test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
-					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" />Hal<xsl:text>'</xsl:text>
-				</xsl:when>
-				<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')">
-					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName"/><xsl:text>HalCollectie'</xsl:text>
-				</xsl:when>
-				<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu')">
-					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
-				</xsl:when>
-			</xsl:choose>
-		</xsl:for-each>
+				<xsl:choose>
+					<xsl:when test="$serialisation = 'json' and ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
+						<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
+					</xsl:when>
+					<xsl:when test="$serialisation = 'json' and ep:parameters/ep:parameter[ep:name='messageCategory']/ep:value = 'Gc'">
+						<xsl:text>&#xa;                type: array</xsl:text>
+						<xsl:text>&#xa;                items:</xsl:text>
+						<xsl:text>&#xa;                  $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
+					</xsl:when>
+					<xsl:when test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
+						<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" />Hal<xsl:text>'</xsl:text>
+					</xsl:when>
+					<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')">
+						<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName"/><xsl:text>HalCollectie'</xsl:text>
+					</xsl:when>
+					<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu')">
+						<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
+					</xsl:when>
+				</xsl:choose>
+			</xsl:for-each>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="response201">

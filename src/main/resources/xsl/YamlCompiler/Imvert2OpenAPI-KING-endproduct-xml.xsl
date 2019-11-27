@@ -446,6 +446,37 @@
 						</ep:parameter>
 					</ep:parameters>
 				</xsl:when>
+				<xsl:when test="contains($berichtcode,'De')">
+					<ep:parameters>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', @messagetype)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'messageCategory')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $messageCategory)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
+						</ep:parameter>
+						<xsl:if test="$messagetype = 'request'">
+							<ep:parameter>
+								<xsl:sequence select="imf:create-output-element('ep:name', 'tag')" />
+								<xsl:sequence select="imf:create-output-element('ep:value', @tag)" />
+							</ep:parameter>
+						</xsl:if>
+						<ep:parameter> 
+							<xsl:sequence select="imf:create-output-element('ep:name', 'operationId')" />
+							<xsl:choose>
+								<xsl:when test="@operationId = '' and $messageCategory = 'De'"><xsl:sequence select="imf:create-output-element('ep:value', concat('delete',$tech-name))" /></xsl:when>
+								<xsl:otherwise>
+									<xsl:sequence select="imf:create-output-element('ep:value', @operationId)" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</ep:parameter>
+					</ep:parameters>
+				</xsl:when>
 			</xsl:choose>
 			<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 			<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />

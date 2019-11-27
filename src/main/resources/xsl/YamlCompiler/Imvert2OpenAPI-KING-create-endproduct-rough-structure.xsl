@@ -217,7 +217,7 @@
 						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-padrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type 'padrelatie'. If that's the case an error message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;padrelatie&quot; occurs, only associations with that kind of stereotype or of stereotype &quot;entiteitrelatie&quot; are processed for messages with berichttype ',$berichtcode,'.')"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;padrelatie&quot; is present, for messages with berichttype ',$berichtcode,' such an association has to be present.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
@@ -241,13 +241,13 @@
 					</xsl:when>
 					<xsl:when
 						test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
-						<xsl:sequence select="imf:create-debug-comment('A11500]',$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment('A11050]',$debugging)" />
 						<!-- For the get messages a ep:rough-message structure representing the 'response' tree is generated but also one respresenting
 							 the 'request' tree.  -->
 						<xsl:for-each
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'response']">
 							
-							<xsl:sequence select="imf:create-debug-comment('A11750]',$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment('A11100]',$debugging)" />
 							<ep:rough-message messagetype="response" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}" operationId="{$operationId}">
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-response-message: ',imvert:name/@original),$debugging)" />
@@ -262,7 +262,7 @@
 						<xsl:for-each
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
 
-							<xsl:sequence select="imf:create-debug-comment('A12000]',$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment('A11150]',$debugging)" />
 							<ep:rough-message messagetype="request"	berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}" operationId="{$operationId}">
 								<xsl:if test="not(empty($fields))">
 									<xsl:attribute name="fields" select="$fields"/>
@@ -281,12 +281,8 @@
 										<xsl:attribute name="sort" select="$sort"/>
 									</xsl:when>
 								</xsl:choose>
-								<xsl:if test="not(empty($sort))">
-									<xsl:attribute name="fields" select="$sort"/>
-								</xsl:if>
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
-	
 								<xsl:sequence
 									select="imf:create-output-element('ep:name', $messagename)" />
 								<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
@@ -304,7 +300,7 @@
 				</xsl:choose>
 			</xsl:when>
 			<xsl:when test="contains($berichtcode,'Pa') or contains($berichtcode,'Po') or contains($berichtcode,'Pu')">
-				<xsl:sequence select="imf:create-debug-comment('A12500]',$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment('A12000]',$debugging)" />
 				<xsl:choose>
 					<xsl:when test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type 'entiteitrelatie'. If that's the case an error message is generated. -->
@@ -340,7 +336,7 @@
 					<xsl:when test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-padrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type padrelatie'. If that's the case an error message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' no association with the stereotype &quot;padrelatie&quot; occurs, only associations with that kind of stereotype are processed for messages with berichttype ',$berichtcode,'.')"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;padrelatie&quot; is present, for messages with berichttype ',$berichtcode,' such an association has to be present.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
@@ -366,7 +362,7 @@
 						<xsl:for-each
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'response']">
 							
-							<xsl:sequence select="imf:create-debug-comment('A12750]',$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment('A12050]',$debugging)" />
 							<ep:rough-message messagetype="response" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}" operationId="{$operationId}">
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-response-message: ',imvert:name/@original),$debugging)" />
@@ -386,7 +382,7 @@
 								<xsl:if test="not(empty($customPathFacet))">
 									<xsl:attribute name="customPathFacet" select="$customPathFacet"/>
 								</xsl:if>
-								<xsl:sequence select="imf:create-debug-comment('A13000]',$debugging)" />
+								<xsl:sequence select="imf:create-debug-comment('A12100]',$debugging)" />
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-requestbody-message: ',imvert:name/@original),$debugging)" />
 								
@@ -407,7 +403,7 @@
 								<xsl:if test="not(empty($customPathFacet))">
 									<xsl:attribute name="customPathFacet" select="$customPathFacet"/>
 								</xsl:if>
-								<xsl:sequence select="imf:create-debug-comment('A13000]',$debugging)" />
+								<xsl:sequence select="imf:create-debug-comment('A12150]',$debugging)" />
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
 								
@@ -423,6 +419,107 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<!-- This otherwise should never occur. -->
+						<xsl:sequence
+							select="imf:create-debug-comment('Otherwise-tak',$debugging)" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="contains($berichtcode,'De')">
+				<xsl:sequence select="imf:create-debug-comment('A13000]',$debugging)" />
+				<xsl:choose>
+					<xsl:when
+						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
+						<!-- It's not allowed to have no associations of type 'entiteitrelatie'. If that's the case an error message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype or of stereotype &quot;padrelatie&quot; are processed for messages with berichttype ',$berichtcode,'.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="count(imvert:associations/imvert:association[imvert:name = 'response']) = 1">
+						<!-- In case of a De messagetype no association with the name 'response' is allowed. 
+						     If this association is present an error message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; is allowed.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1)">
+						<!-- In case of a De messagetype it's required to have one and not more than one association with the name 'request'. 
+						     If this isn't the case an error message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; is present. For messages with berichttype &quot;',$berichtcode,'&quot; 1 (and only 1) has to be present.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-padrelatie')]) = 0">
+						<!-- It's not allowed to have no associations of type 'padrelatie'. If that's the case an error message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;padrelatie&quot; is present, for messages with berichttype ',$berichtcode,' such an association has to be present.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="not(count(imvert:associations/imvert:association[imvert:name = 'pad']) = 1)">
+						<!-- In case of a De messagetype it's required to have one and not more than one association with the name 'pad'. 
+						     If this isn't the case an error message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no or more than 1 association with the stereotype &quot;padrelatie&quot; and the name &quot;pad&quot; is present. For messages with berichttype &quot;',$berichtcode,'&quot; 1 (and only 1) has to be present.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="imvert:associations/imvert:association[imvert:name != 'request' and imvert:name != 'pad']">
+						<!-- In case the De messagetype has one or more associations not having the name 'request' or 'pad' an error
+						     message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; one or more associations are present with a name not equal to &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
+						<xsl:sequence select="imf:create-debug-comment('A13050]',$debugging)" />
+						<!-- For the delete messages a ep:rough-message structure representing the 'request' tree is generated.  -->
+						<xsl:for-each
+							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
+							
+							<xsl:sequence select="imf:create-debug-comment('A13100]',$debugging)" />
+							<ep:rough-message messagetype="request"	berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}" operationId="{$operationId}">
+								<xsl:if test="not(empty($fields))">
+									<xsl:variable name="msg"
+										select="concat('The tagged value fields is not allowed on a ',$berichtcode,' messageclass.')"
+										as="xs:string" />
+									<xsl:sequence select="imf:msg('ERROR',$msg)" />
+								</xsl:if>
+								<xsl:if test="$customPathFacet != ''">
+									<xsl:variable name="msg"
+										select="concat('The tagged value customPathFacet is not allowed on a ',$berichtcode,' messageclass.')"
+										as="xs:string" />
+									<xsl:sequence select="imf:msg('ERROR',$msg)" />
+								</xsl:if>
+								<xsl:if test="not(empty($sort)) and contains($berichtcode,'De')">
+									<xsl:variable name="msg"
+										select="concat('The tagged value sort is not allowed on a ',$berichtcode,' messageclass.')"
+										as="xs:string" />
+									<xsl:sequence select="imf:msg('ERROR',$msg)" />
+								</xsl:if>
+								<xsl:sequence
+									select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
+								
+								<xsl:sequence
+									select="imf:create-output-element('ep:name', $messagename)" />
+								<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
+								<xsl:sequence
+									select="imf:create-output-element('ep:type-id', $messagetypeid)" />
+								<xsl:apply-templates select="." mode="create-rough-message-content" />
+							</ep:rough-message>
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise>
+						<!-- This otherwise can occur when. -->
 						<xsl:sequence
 							select="imf:create-debug-comment('Otherwise-tak',$debugging)" />
 					</xsl:otherwise>
