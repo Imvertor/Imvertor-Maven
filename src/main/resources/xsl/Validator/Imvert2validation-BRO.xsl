@@ -22,20 +22,12 @@
     
     <xsl:variable name="application-package" select="//imvert:package[imf:boolean(imvert:is-root-package)]"/>
     
-    <xsl:variable name="registration-object" select="//imvert:class[imvert:name = ('Registratieobject','RegistrationObject')]"/>
     <!-- 
         Document validation; this validates the root (application-)package.
     -->
     <xsl:template match="/imvert:packages">
-        <imvert:report>
-            
-            <xsl:sequence select="imf:report-error(., 
-                count($registration-object) ne 1, 
-                'Model records [1] registration objects, expected exactly one', count($registration-object))"/>
-            
-            <!-- process the application package -->
-            <xsl:apply-templates select="imvert:package[imf:member-of(.,$application-package)]"/>
-        </imvert:report>
+        <!-- process the application package -->
+        <xsl:apply-templates select="imvert:package[imf:member-of(.,$application-package)]"/>
     </xsl:template>
       
     <!-- 

@@ -19,15 +19,8 @@
     
     <xsl:import href="Imvert2validation-BRO.xsl"/>
     
-    <xsl:variable name="registration-object" select="//imvert:class[imvert:name = ('Registratieobject','RegistrationObject')]"/>
-
     <xsl:template match="/imvert:packages" priority="1">
         <imvert:report>
-      
-            <xsl:sequence select="imf:report-error(., 
-                count($registration-object) ne 1, 
-                'Model records [1] registration objects, expected exactly one', count($registration-object))"/>
-            
             <xsl:next-match/>
         </imvert:report>
     </xsl:template>
