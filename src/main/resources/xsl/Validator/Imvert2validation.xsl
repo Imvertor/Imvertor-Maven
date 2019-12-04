@@ -170,9 +170,15 @@
                 <xsl:sequence select="$document-classes"></xsl:sequence>
             </classes>
               
+            <xsl:variable name="c" select="imf:check-unique-name($document-classes)"/>
+            <xsl:sequence select="imf:report-error(., 
+                exists($c), 
+                'Multiple constructs found with same name: [1]', 
+                imf:string-group(for $cc in $c return imf:get-display-name($cc)))"/>
+                
             <!-- determine if all constructs are unique -->
             <xsl:apply-templates select="*" mode="unique-id"/>
-                
+            
             <!-- process the application package -->
             <xsl:apply-templates select="imvert:package"/>
         </imvert:report>
@@ -1484,6 +1490,16 @@
         <xsl:sequence select="imf:report-error($this, 
             not(matches($this/imvert:release,$release-pattern)), 
             'Release must be specified and takes the form YYYYMMDD')"/>
+    </xsl:function>
+    
+    <!-- return the elements that are considered to be duplicate of this element -->
+    <xsl:function name="imf:check-unique-name" as="element()*">
+        <xsl:param name="elements"></xsl:param>
+        <xsl:for-each-group select="$elements" group-by="imvert:name">
+            <xsl:if test="current-group()[2]">
+                <xsl:sequence select="current-group()"/>
+            </xsl:if>
+        </xsl:for-each-group>
     </xsl:function>
     
 </xsl:stylesheet>
