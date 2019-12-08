@@ -21,7 +21,9 @@
 package nl.imvertor.common.file;
 
 import java.io.File;
+import java.nio.charset.MalformedInputException;
 
+import org.apache.jena.atlas.RuntimeIOException;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.RiotException;
 import org.apache.jena.util.FileUtils;
@@ -67,6 +69,9 @@ public class ShaclFile extends RdfFile {
 			dataShape = JenaUtil.createMemoryModel();
 			dataShape.read(this.getFileInputStream(), "",
 					FileUtils.langTurtle);
+			
+		} catch (RuntimeIOException ie) {
+			configurator.getRunner().error(logger,"Jena IO error: " + ie.getMessage());
 			
 		} catch (RiotException re) {
 			configurator.getRunner().error(logger,re.getMessage());

@@ -20,6 +20,8 @@
 
 package nl.imvertor.ShaclCompiler;
 
+import java.nio.charset.StandardCharsets;
+
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Configurator;
@@ -91,6 +93,7 @@ public class ShaclCompiler extends Step {
 			if (configurator.isTrue("cli","validateshacl",false)) { 
 				ShaclFile shapesGraphFile = new ShaclFile(Configurator.getInstance().getBaseFolder().getCanonicalPath() + "/etc/ttl/KKG.ttl");
 				ShaclFile bigFile = new ShaclFile(configurator.getXParm("properties/BIG_SHACL_FILE_PATH"));
+				bigFile.setEncoding(StandardCharsets.UTF_8.name());
 				bigFile.setContent("### SHAPES GRAPH FILE COPY ###\n" + shapesGraphFile.getContent() + "\n### SHACL FILE COPY ###\n" + shaclFile.getContent());
 				bigFile.validate(configurator);
 			}
