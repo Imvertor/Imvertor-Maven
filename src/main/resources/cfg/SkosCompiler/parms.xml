@@ -19,27 +19,27 @@
 -->
 <config>
    <id>
-      <name>SHACL compiler</name>
+      <name>SKOS compiler</name>
       <version-control>$Id: parms.xml 7509 2016-04-25 13:30:29Z arjan $</version-control>
    </id>
    
    <cli-parms>
       <cli-parm>
-         <name>createshacl</name>
+         <name>createskos</name>
          <arg>yes|no</arg>
-         <tip>Yes if SHACL RDF must be generated</tip>
+         <tip>Yes if SKOS RDF must be generated</tip>
          <required>false</required>
-      </cli-parm> 
+      </cli-parm>
       <cli-parm>
-         <name>shaclrules</name>
+         <name>skosrules</name>
          <arg>name</arg>
-         <tip>The name of the SHACL rules file</tip>
+         <tip>The name of the SKOS rules file</tip>
          <required>false</required>
       </cli-parm> 
       <cli-parm>
-         <name>validateshacl</name>
+         <name>validateskos</name>
          <arg>yes|no</arg>
-         <tip>Yes if SHACL RDF must be validated after it has been generated</tip>
+         <tip>Yes if SKOS RDF must be validated after it has been generated</tip>
          <required>false</required>
       </cli-parm> 
       
@@ -47,18 +47,18 @@
   
    <properties>
    
-      <BIG_SHACL_FILE_PATH>${system/work-imvert-folder-path}/imvertor.35.shacl-big.ttl</BIG_SHACL_FILE_PATH>   
+      <BIG_SKOS_FILE_PATH>${system/work-imvert-folder-path}/imvertor.35.skos-big.ttl</BIG_SKOS_FILE_PATH>   
    
-      <RESULT_SHACL_FILE_PATH>${system/work-imvert-folder-path}/imvertor.35.shacl.ttl</RESULT_SHACL_FILE_PATH>   
+      <RESULT_SKOS_FILE_PATH>${system/work-imvert-folder-path}/imvertor.35.skos.ttl</RESULT_SKOS_FILE_PATH>   
       
-      <RESULT_SHACL_APPLICATION_FOLDER>${system/work-shacl-folder-path}</RESULT_SHACL_APPLICATION_FOLDER>
+      <RESULT_SKOS_APPLICATION_FOLDER>${system/work-skos-folder-path}</RESULT_SKOS_APPLICATION_FOLDER>
       
-      <IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH>Imvert2SHACL-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH>
+      <IMVERTOR_METAMODEL_BRO_SKOS_XSLPATH>Imvert2SKOS-BRO.xsl</IMVERTOR_METAMODEL_BRO_SKOS_XSLPATH>
       
    </properties>
    
    <system>
-      <configuration-shaclrules-file>${system/inp-folder-path}/cfg/shaclrules/${cli/shaclrules}.xml</configuration-shaclrules-file>
+      <configuration-skosrules-file>${system/inp-folder-path}/cfg/skosrules/${cli/skosrules}.xml</configuration-skosrules-file>
    </system>
    
 </config>

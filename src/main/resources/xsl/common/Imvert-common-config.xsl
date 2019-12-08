@@ -49,6 +49,7 @@
     <xsl:variable name="configuration-xmlschemarules-name" select="imf:get-config-string('system','configuration-xmlschemarules-file')"/>
     <xsl:variable name="configuration-jsonschemarules-name" select="imf:get-config-string('system','configuration-jsonschemarules-file')"/>
     <xsl:variable name="configuration-shaclrules-name" select="imf:get-config-string('system','configuration-shaclrules-file')"/>
+    <xsl:variable name="configuration-skosrules-name" select="imf:get-config-string('system','configuration-skosrules-file')"/>
     
     <xsl:variable name="configuration-file" select="imf:document(imf:get-config-string('properties','WORK_CONFIG_FILE'),true())"/>
     
@@ -63,6 +64,7 @@
     <xsl:variable name="configuration-xmlschemarules-file" select="$configuration-file/config/xmlschema-rules"/>
     <xsl:variable name="configuration-jsonschemarules-file" select="$configuration-file/config/jsonschema-rules"/>
     <xsl:variable name="configuration-shaclrules-file" select="$configuration-file/config/shacl-rules"/>
+    <xsl:variable name="configuration-skosrules-file" select="$configuration-file/config/skos-rules"/>
     
     <xsl:variable name="configuration-i3n-name" select="imf:get-config-string('system','configuration-i3n-file')"/>
     <xsl:variable name="configuration-i3n-file" select="imf:document($configuration-i3n-name,true())"/>

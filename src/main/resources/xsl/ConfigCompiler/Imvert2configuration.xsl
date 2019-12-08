@@ -47,6 +47,7 @@
     <xsl:variable name="configuration-xmlschemarules-doc" select="imf:document($configuration-xmlschemarules-name)"/><!-- not required -->
     <xsl:variable name="configuration-jsonschemarules-doc" select="imf:document($configuration-jsonschemarules-name)"/><!-- not required -->
     <xsl:variable name="configuration-shaclrules-doc" select="imf:document($configuration-shaclrules-name)"/><!-- not required -->
+    <xsl:variable name="configuration-skosrules-doc" select="imf:document($configuration-skosrules-name)"/><!-- not required -->
     
     <xsl:variable name="configuration-owner-file" select="imf:prepare-config($configuration-owner-doc)"/>
     <xsl:variable name="configuration-metamodel-file" select="imf:prepare-config($configuration-metamodel-doc)"/>
@@ -58,7 +59,8 @@
     <xsl:variable name="configuration-xmlschemarules-file" select="imf:prepare-config($configuration-xmlschemarules-doc)"/><!-- not required -->
     <xsl:variable name="configuration-jsonschemarules-file" select="imf:prepare-config($configuration-jsonschemarules-doc)"/><!-- not required -->
     <xsl:variable name="configuration-shaclrules-file" select="imf:prepare-config($configuration-shaclrules-doc)"/><!-- not required -->
-   
+    <xsl:variable name="configuration-skosrules-file" select="imf:prepare-config($configuration-skosrules-doc)"/><!-- not required -->
+    
     <xsl:variable name="metamodel-name" select="imf:get-normalized-name(imf:get-config-string('cli','metamodel'),'system-name')"/>
     <xsl:variable name="tvset-name" select="imf:get-normalized-name(imf:get-config-string('cli','tvset'),'system-name')"/>
     
@@ -76,6 +78,7 @@
                 <xsl:sequence select="$configuration-docrules-file"/>
                 <xsl:sequence select="$configuration-versionrules-file"/>
                 <xsl:sequence select="$configuration-shaclrules-file"/>
+                <xsl:sequence select="$configuration-skosrules-file"/>
             </config>
         </xsl:variable>
         <xsl:variable name="config-compact">
@@ -388,6 +391,16 @@
                     <xsl:apply-templates select="." mode="#current"/>
                 </xsl:for-each>
             </shacl-rules>
+            
+            <skos-rules root="true">
+                <xsl:variable name="skos-rules" select="skos-rules"/> 
+                <xsl:for-each select="$skos-rules//vocabularies">
+                    <xsl:apply-templates select="." mode="#current"/>
+                </xsl:for-each>
+                <xsl:for-each select="$skos-rules//node-mapping">
+                    <xsl:apply-templates select="." mode="#current"/>
+                </xsl:for-each>
+            </skos-rules>
             
         </config>
     </xsl:template>

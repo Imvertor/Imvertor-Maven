@@ -220,6 +220,7 @@
       <configuration-docrules-file>${system/inp-folder-path}/cfg/docrules/${cli/docrules}.xml</configuration-docrules-file>
       <configuration-versionrules-file>${system/inp-folder-path}/cfg/versionrules/${cli/versionrules}.xml</configuration-versionrules-file>
       <configuration-shaclrules-file>${system/inp-folder-path}/cfg/shaclrules/${cli/shaclrules}.xml</configuration-shaclrules-file>
+      <configuration-skosrules-file>${system/inp-folder-path}/cfg/skosrules/${cli/skosrules}.xml</configuration-skosrules-file>
       <configuration-metamodel-file>${system/inp-folder-path}/cfg/metamodels/${cli/metamodel}.xml</configuration-metamodel-file>
       <configuration-i3n-file>${system/inp-folder-path}/cfg/i3n/translation.xml</configuration-i3n-file>
    </system>

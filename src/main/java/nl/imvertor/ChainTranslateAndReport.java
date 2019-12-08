@@ -41,6 +41,7 @@ import nl.imvertor.RunAnalyzer.RunAnalyzer;
 import nl.imvertor.RunInitializer.RunInitializer;
 import nl.imvertor.SchemaValidator.SchemaValidator;
 import nl.imvertor.ShaclCompiler.ShaclCompiler;
+import nl.imvertor.SkosCompiler.SkosCompiler;
 import nl.imvertor.Validator.Validator;
 import nl.imvertor.XmiCompiler.XmiCompiler;
 import nl.imvertor.XmiTranslator.XmiTranslator;
@@ -84,6 +85,7 @@ public class ChainTranslateAndReport {
 			configurator.getCli(ImvertCompiler.STEP_NAME);
 			configurator.getCli(XsdCompiler.STEP_NAME);
 			configurator.getCli(ShaclCompiler.STEP_NAME);
+			configurator.getCli(SkosCompiler.STEP_NAME);
 			configurator.getCli(EpCompiler.STEP_NAME);
 			configurator.getCli(JsonSchemaCompiler.STEP_NAME);
 			configurator.getCli(YamlCompiler.STEP_NAME);
@@ -201,6 +203,9 @@ public class ChainTranslateAndReport {
 				     
 				    if (configurator.isTrue("cli","createshacl",false)) 
 				    	succeeds = succeeds && (new ShaclCompiler()).run();
+		
+				    if (configurator.isTrue("cli","createskos",false)) 
+				    	succeeds = succeeds && (new SkosCompiler()).run();
 		
 				    if (configurator.isTrue("cli","createyaml",false)) 
 			    		succeeds = succeeds && (new YamlCompiler()).run();

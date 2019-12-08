@@ -28,6 +28,8 @@
     
     xmlns:ekf="http://EliotKimber/functions"
 
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+
     exclude-result-prefixes="#all"
     version="2.0">
 
@@ -463,8 +465,26 @@
     </xsl:function>
     
     <xsl:function name="imf:ttl-value" as="xs:string?">
-        <xsl:param name="string" as="xs:string?"/>
+        <xsl:param name="item" as="item()*"/>
         <xsl:param name="type" as="xs:string?"/>
+        <xsl:variable name="strings" as="xs:string*">
+            <xsl:choose>
+                <xsl:when test="$item/xhtml:body">
+                    <xsl:for-each select="$item/xhtml:body/*">
+                        <xsl:value-of select="."/>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:when test="$item/*">
+                    <xsl:for-each select="$item/*">
+                        <xsl:value-of select="."/>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$item"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="string" select="string-join($strings,'\n')"/>
         <xsl:choose>
             <xsl:when test="not(normalize-space($string))">
                 <!-- skip -->
@@ -492,7 +512,7 @@
             <xsl:variable name="tv" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',.))"/>
             <xsl:variable name="map" select="imf:ttl-map($tv/@id)"/>
             <xsl:if test="exists($tv) and exists($map)">
-                <xsl:value-of select="imf:ttl(($map, imf:ttl-value(string($tv),$map/@type)))"/>
+                <xsl:value-of select="imf:ttl(($map, imf:ttl-value($tv,$map/@type)))"/>
             </xsl:if>
         </xsl:for-each>
     </xsl:function>

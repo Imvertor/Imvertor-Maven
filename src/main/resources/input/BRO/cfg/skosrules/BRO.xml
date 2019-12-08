@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<skos-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <name>BRO</name>
+  
+    <!-- 
+        BRO SKOS rules 
+    -->
+    <vocabularies>
+        
+        <base>http://ONBEKEND/</base>
+                                    
+        <vocabulary>
+            <prefix>rdf</prefix>
+            <URI>http://www.w3.org/1999/02/22-rdf-syntax-ns#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>rdfs</prefix>
+            <URI>http://www.w3.org/2000/01/rdf-schema#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>skos</prefix>
+            <URI>http://www.w3.org/2004/02/skos/core#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>dct</prefix>
+            <URI>http://purl.org/dc/terms/</URI>
+        </vocabulary>        
+
+    </vocabularies>
+    
+    <node-mapping>
+        <!-- 
+            Alleen de tagged values die hier zijn opgenomen worden omgezet naar een regel in TTL SKOS 
+        -->
+        <map id="CFG-TV-DEFINITION" type="3q" lang="#all">skos:definition</map>
+        <map id="CFG-TV-SOURCEOFDEFINITION" type="2q" lang="#all">dct:source</map>
+        <map id="CFG-TV-DESCRIPTION" type="2q" lang="#all">skos:scopeNote</map>
+    </node-mapping>
+    
+</skos-rules>
