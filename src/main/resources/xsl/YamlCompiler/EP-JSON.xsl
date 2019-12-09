@@ -2432,6 +2432,12 @@
 	
 	<xsl:template match="ep:construct" mode="embedded">
 		<!-- This template generates for each association an embedded properties with a reference to an embedded type. -->
+		<xsl:variable name="typeName" select="ep:type-name"/>
+		<xsl:variable name="sourceName">
+			<xsl:for-each select="//ep:construct[ep:tech-name = $typeName]">
+				<xsl:value-of select="ep:parameters/ep:parameter[ep:name = 'meervoudigeNaam']/ep:value"/>
+			</xsl:for-each>
+		</xsl:variable>
 		<xsl:variable name="elementName">
 			<xsl:choose>
 				<xsl:when test="not(empty(ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value))">
@@ -2453,7 +2459,6 @@
 				<xsl:otherwise>object</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="typeName" select="ep:type-name"/>
 		<xsl:variable name="title">
 			<xsl:choose>
 				<xsl:when test="not(empty(ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value))">
@@ -2559,13 +2564,13 @@
 						<xsl:value-of select="'},'"/>
 						<xsl:value-of select="'&quot;readOnly&quot;: true,'"/>
 						<xsl:value-of select="'&quot;uniqueItems&quot;: true,'"/>
-						<xsl:value-of select="concat('&quot;example&quot;: &quot;datapunt.voorbeeldgemeente.nl/api/v1/',$elementName,'/123456789&quot;')"/>
+						<xsl:value-of select="concat('&quot;example&quot;: &quot;datapunt.voorbeeldgemeente.nl/api/v1/',$sourceName,'/123456789&quot;')"/>
 					</xsl:when>
 					<xsl:when test="$occurence-type != 'array' and (ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')">
 						<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
 						<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;,'"/>
 						<xsl:value-of select="'&quot;readOnly&quot;: true,'"/>
-						<xsl:value-of select="concat('&quot;example&quot;: &quot;datapunt.voorbeeldgemeente.nl/api/v1/',$elementName,'/123456789&quot;')"/>
+						<xsl:value-of select="concat('&quot;example&quot;: &quot;datapunt.voorbeeldgemeente.nl/api/v1/',$sourceName,'/123456789&quot;')"/>
 					</xsl:when>
 <?x					<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
 						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>

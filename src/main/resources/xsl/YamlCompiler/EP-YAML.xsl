@@ -1587,7 +1587,6 @@
 					<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
 					<xsl:with-param name="responseConstructName" select="''"/>
 				</xsl:call-template>
-				<xsl:sequence select="imf:Foutresponse('202')"/>
 				<xsl:sequence select="imf:Foutresponse('204')"/>
 				<xsl:sequence select="imf:Foutresponse('404')"/>
 				<xsl:text>&#xa;      tags: </xsl:text>
