@@ -879,6 +879,16 @@
                   </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
+                  <cs:name>Datuminterval</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>DatePeriodType</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>        
+              <cs:Construct>
                   <cs:name>KvK-nummer</cs:name>
                   <cs:name>ChamberOfCommerceNumber</cs:name>
                   <cs:sentinel>false</cs:sentinel>
