@@ -81,6 +81,11 @@
                 <xsl:sequence select="$configuration-skosrules-file"/>
             </config>
         </xsl:variable>
+        <?x
+        <xsl:result-document href="file:/c:/temp/xml.xml">
+            <xsl:sequence select="$config-raw"/>
+        </xsl:result-document>
+        x?>
         <xsl:variable name="config-compact">
             <xsl:apply-templates select="$config-raw" mode="finish-config"/>
         </xsl:variable>
