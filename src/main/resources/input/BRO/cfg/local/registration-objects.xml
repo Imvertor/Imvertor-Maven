@@ -65,11 +65,13 @@
             <name lang="en">Seismic survey</name>
             <abbrev>SMS</abbrev>
         </registratieobject>
+        <!--
         <registratieobject>
             <name lang="nl">Booronderzoek</name>
             <name lang="en">Borehole research</name>
             <abbrev>BHR</abbrev>
         </registratieobject>
+        -->
         <registratieobject>
             <name lang="nl">Bodemkundig booronderzoek</name>
             <name lang="en">Borehole research-Pedology</name>
