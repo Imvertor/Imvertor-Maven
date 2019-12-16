@@ -1111,13 +1111,16 @@
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
-						<xsl:text>&#xa;        - in: path</xsl:text>
-						<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-						<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
-						<xsl:text>&#xa;          required: true</xsl:text>
-						<xsl:text>&#xa;          schema:</xsl:text>
 						<xsl:choose>
+							<xsl:when test="upper-case(ep:name) = 'UUID'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
+							</xsl:when>
 							<xsl:when test="ep:data-type">
+								<xsl:text>&#xa;        - in: path</xsl:text>
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          required: true</xsl:text>
+								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
 								<xsl:variable name="format">
 									<xsl:call-template name="deriveFormat">
@@ -1140,6 +1143,11 @@
 								</xsl:if>
 							</xsl:when>
 							<xsl:when test="ep:type-name">
+								<xsl:text>&#xa;        - in: path</xsl:text>
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          required: true</xsl:text>
+								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
 							</xsl:when>
 						</xsl:choose>

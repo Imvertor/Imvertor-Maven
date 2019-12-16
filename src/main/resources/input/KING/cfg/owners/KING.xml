@@ -121,6 +121,6 @@
     <parameter name="geonovum-yaml-parameters-file">parameters.yaml#/</parameter>
     <parameter name="standard-geojson-components-file">geojson.yaml#/</parameter>
     
-    <parameter name="yamlCompiler-stylesheets-version">20191209</parameter>
+    <parameter name="yamlCompiler-stylesheets-version">20191216</parameter>
     
 </project-owner>    
