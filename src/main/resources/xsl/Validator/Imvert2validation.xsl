@@ -151,6 +151,7 @@
         ('stereotype-name-enumeration')"/>
     
     <xsl:variable name="allow-scalar-in-union" select="imf:boolean($configuration-metamodel-file//features/feature[@name='allow-scalar-in-union'])"/>
+    <xsl:variable name="unique-normalized-class-names" select="$configuration-metamodel-file//features/feature[@name='unique-normalized-class-names']"/>
     
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
@@ -166,14 +167,10 @@
             <xsl:attribute name="version" select="imf:get-config-string('appinfo','version')"/>
             <xsl:attribute name="phase" select="imf:get-config-string('appinfo','phase')"/>
             
-            <classes>
-                <xsl:sequence select="$document-classes"></xsl:sequence>
-            </classes>
-              
             <xsl:variable name="c" select="imf:check-unique-name($document-classes)"/>
             <xsl:sequence select="imf:report-error(., 
-                exists($c), 
-                'Multiple constructs found with same name: [1]', 
+                $unique-normalized-class-names = 'model' and exists($c), 
+                'Multiple constructs with same name: [1]  found in model', 
                 imf:string-group(for $cc in $c return imf:get-display-name($cc)))"/>
                 
             <!-- determine if all constructs are unique -->
@@ -206,6 +203,13 @@
     
     <xsl:template match="imvert:package[imf:member-of(.,$domain-package)]" priority="101">
         <xsl:sequence select="imf:track('Validating package [1]',imvert:name)"/>
+        
+        <xsl:variable name="c" select="imf:check-unique-name(imvert:class)"/>
+        <xsl:sequence select="imf:report-error(., 
+            $unique-normalized-class-names = 'domain' and exists($c), 
+            'Multiple constructs with same name [1] found in domain [2]', 
+            (imf:string-group(for $cc in $c return imf:get-display-name($cc)),imf:get-display-name(.)))"/>
+        
         <!--x
         <xsl:sequence select="imf:report-error(., 
             not(matches(imvert:version,imf:get-config-parameter('domain-version-regex'))), 
@@ -348,16 +352,18 @@
     <xsl:template match="imvert:package[imf:member-of(.,$domain-package)]" priority="50">
         <!--setup-->
         <xsl:variable name="is-schema-package" select="if (imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')) then true() else false()"/>
-        <xsl:variable name="classnames" select="distinct-values(imf:get-duplicates(imvert:class/imvert:name))" as="xs:string*"/>
         <xsl:variable name="xref-objects" select="imvert:class[imvert:stereotype/@id = $xref-element-stereotypes]"/>
         <xsl:variable name="application" select="ancestor::imvert:package[imvert:stereotype/@id = $top-package-stereotypes][1]"/>
           <!--validation -->
         <xsl:sequence select="imf:report-error(., 
             not($is-schema-package), 
             'Domain package must have the domain stereotype.')"/>
+        <?x replaced by test on $unique-normalized-class-names
         <xsl:sequence select="imf:report-error(., 
+        <xsl:variable name="classnames" select="distinct-values(imf:get-duplicates(imvert:class/imvert:name))" as="xs:string*"/>
             not(empty($classnames)), 
             'Duplicate class name within (sub)package(s): [1]',$classnames)"/>
+        x?>
         <xsl:sequence select="imf:report-error(., 
             ancestor::imvert:package[imf:member-of(.,$domain-package)],
             'Domain packages cannot be nested')"/>
@@ -1494,7 +1500,7 @@
     
     <!-- return the elements that are considered to be duplicate of this element -->
     <xsl:function name="imf:check-unique-name" as="element()*">
-        <xsl:param name="elements"></xsl:param>
+        <xsl:param name="elements" as="element()*"/>
         <xsl:for-each-group select="$elements" group-by="imvert:name">
             <xsl:if test="current-group()[2]">
                 <xsl:sequence select="current-group()"/>

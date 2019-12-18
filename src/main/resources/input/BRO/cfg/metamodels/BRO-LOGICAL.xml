@@ -28,7 +28,7 @@
     <features>
         <feature name="allow-multiple-supertypes">false</feature>
         <feature name="allow-scalar-in-union">true</feature>
-        
+        <feature name="unique-normalized-class-names">domain</feature>
     </features>
     
    <!-- <stereotypes>

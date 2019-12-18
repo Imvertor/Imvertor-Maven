@@ -54,6 +54,7 @@
         <feature name="role-based">false<!-- specify in concrete metamodel: true|false --></feature>
         <feature name="allow-multiple-supertypes">false<!-- specify in concrete metamodel: true|false --></feature>
         <feature name="allow-scalar-in-union">false<!-- specify in concrete metamodel: true|false --></feature>
+        <feature name="unique-normalized-class-names">domain<!-- specify in concrete metamodel: model|domain --></feature>
     </features>
     
     <stereotypes xml:id="stereotypes">
