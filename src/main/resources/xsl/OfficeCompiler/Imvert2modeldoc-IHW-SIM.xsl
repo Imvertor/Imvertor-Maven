@@ -24,7 +24,7 @@
         <xsl:variable name="namespace" select="$imvert-document/imvert:packages/imvert:base-namespace"/>
         <xsl:variable name="abbrev" select="tokenize($namespace,'/')[last()]" as="xs:string?"/>
         
-        <xsl:sequence select="imf:set-config-string('appinfo','registration-object-abbreviation',$abbrev)"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','model-abbreviation',$abbrev)"/>
         
     </xsl:function>
     

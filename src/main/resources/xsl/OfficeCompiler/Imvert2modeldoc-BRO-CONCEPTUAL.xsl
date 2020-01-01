@@ -65,7 +65,7 @@
                 <xsl:sequence select="imf:msg($imvert-document,'ERROR','The abbreviation/code [1] is not valid',($ro-abbrev))"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:set-config-string('appinfo','registration-object-abbreviation',$ro-abbrev)"/>
+                <xsl:sequence select="imf:set-config-string('appinfo','model-abbreviation',$ro-abbrev)"/>
             </xsl:otherwise>
         </xsl:choose>
         

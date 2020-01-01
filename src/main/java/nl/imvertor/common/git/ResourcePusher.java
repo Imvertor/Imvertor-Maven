@@ -49,18 +49,18 @@ public class ResourcePusher {
 	 */
 	public Iterable<PushResult> push(String commitMessage) throws Exception {
 
-		Runner runner = Configurator.getInstance().getRunner();
+		//Runner runner = Configurator.getInstance().getRunner();
 
 		if (!gitopen) git = Git.open(localWorkDir);
 
 		try {
-			runner.debug(logger, "GITHUB", "Adding files to local repository ...");
+			//runner.debug(logger, "GITHUB", "Adding files to local repository ...");
 			/* Add the source files (that were not already added) to the repository: */
 			git.add()
 				.addFilepattern(".")
 				.call();
 
-			runner.debug(logger, "GITHUB", "Comitting files to local repository ...");
+			//runner.debug(logger, "GITHUB", "Comitting files to local repository ...");
 			/* Commit the files to the repository: */
 			git.commit()
 				.setMessage(commitMessage)
@@ -68,7 +68,7 @@ public class ResourcePusher {
 				.setAuthor(user, email)
 			 	.call();
 			
-			runner.debug(logger, "GITHUB", "Pushing files to remote repository \"" + remoteRepositoryURI + "\" ...");
+			//runner.debug(logger, "GITHUB", "Pushing files to remote repository \"" + remoteRepositoryURI + "\" ...");
 			/* Push all changes to the remote server: */
 			return git.push()
 				.setCredentialsProvider(new UsernamePasswordCredentialsProvider(user, pass))
@@ -98,9 +98,9 @@ public class ResourcePusher {
 
 	public Iterable<PushResult> push(File srcDir, String commitMessage) throws Exception {
 
-		Runner runner = Configurator.getInstance().getRunner();
+		//Runner runner = Configurator.getInstance().getRunner();
 
-		runner.debug(logger, "GITHUB", "Copying files from the source directory \"" + localWorkDir.getAbsolutePath() + "\" to local work directory ...");
+		//runner.debug(logger, "GITHUB", "Copying files from the source directory \"" + localWorkDir.getAbsolutePath() + "\" to local work directory ...");
 		/* Copy the source files over the local repository */
 		FileUtils.copyDirectory(srcDir, localWorkDir);
 
@@ -119,12 +119,12 @@ public class ResourcePusher {
 	 * @param username
 	 *          username to login to remote repository
 	 * @param password
-	 *          password to login to remote repository * @return a Git object
+	 *          password to login to remote repository 
 	 * @throws Exception
 	 */
 	public void prepare(String remoteRepositoryURI, File localWorkDir, String username, String password, String email) throws Exception {
 
-		Runner runner = Configurator.getInstance().getRunner();
+		//Runner runner = Configurator.getInstance().getRunner();
 
 		this.remoteRepositoryURI = remoteRepositoryURI;
 		this.localWorkDir = localWorkDir;
@@ -139,7 +139,7 @@ public class ResourcePusher {
 		/* Create the Git instance: */
 		File gitFile = new File(localWorkDir, ".git");
 		if (!gitFile.isDirectory()) {
-			runner.debug(logger, "GITHUB", "Cloning remote git repository \"" + remoteRepositoryURI + "\" to local work directory \"" + localWorkDir.getAbsolutePath() + "\" ...");
+			//runner.debug(logger, "GITHUB", "Cloning remote git repository \"" + remoteRepositoryURI + "\" to local work directory \"" + localWorkDir.getAbsolutePath() + "\" ...");
 
 			/* Local work directory does not exists; clone remot repository: */
 			FileUtils.cleanDirectory(localWorkDir);
@@ -148,7 +148,7 @@ public class ResourcePusher {
 					.setDirectory(localWorkDir)
 					.call();
 		} else if (!gitopen) {
-			runner.debug(logger, "GITHUB", "Opening existing local repository \"" + localWorkDir.getAbsolutePath() + "\" ...");
+			//runner.debug(logger, "GITHUB", "Opening existing local repository \"" + localWorkDir.getAbsolutePath() + "\" ...");
 			/* Open the existing local repository: */
 			git = Git.open(localWorkDir);
 		}
@@ -161,7 +161,7 @@ public class ResourcePusher {
 			File workdir = new File("c:/temp/git");
 
 			// start up the local work folder
-			rp.prepare("https://github.com/Armatiek/jgittest.git", workdir, "ArjanLoeffen", AnyFile.getFileContent("q:/git.txt"),"arjan.loeffen@armatiek.nl");
+			rp.prepare("https://github.com/Armatiek/jgittest", workdir, "ArjanLoeffen", AnyFile.getFileContent("i:/git.txt"),"arjan.loeffen@armatiek.nl");
 			
 			// copy file to that work folder
 			AnyFile testfile = new AnyFile(workdir,"test1.txt");

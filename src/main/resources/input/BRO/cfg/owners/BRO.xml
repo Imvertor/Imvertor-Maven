@@ -72,7 +72,7 @@
     <parameter name="derivation-client-scalar-check">false</parameter>
     
     <!-- location of the codelist contents, to be extracted when parameter includedoclist=yes -->
-    <parameter name="doclist-xml-url">https://raw.githubusercontent.com/BROprogramma/[appinfo/registration-object-abbreviation]/gh-pages/lists/[temp/latest-list-key].xml</parameter>
+    <parameter name="doclist-xml-url">https://raw.githubusercontent.com/BROprogramma/[appinfo/model-abbreviation]/gh-pages/lists/[temp/latest-list-key].xml</parameter>
     
     <!--x
     <parameter name="application-version-regex">^\S+$</parameter>

@@ -194,10 +194,13 @@ public class OfficeCompiler extends Step {
 	private void passGIThub(File officeFile) throws Exception {
 		AnyFolder catfolder = new AnyFolder(officeFile.getParent());
 		
-		String gitemail     	        = configurator.getServerProperty("git.email"); // email address
-		String gituser     	            = configurator.getServerProperty("git.user"); // user name
-		String gitpass     	            = configurator.getServerProperty("git.pass"); // password
-		String gitlocal     	        = configurator.getServerProperty("git.local"); // location of local git repositories 
+		String gitcfg = configurator.mergeParms(configurator.getXParm("cli/gitcfg")); //name of the git configuration
+		String postfix = "." + gitcfg;
+		
+		String gitemail     	        = configurator.getServerProperty("git.email" + postfix); // email address
+		String gituser     	            = configurator.getServerProperty("git.user" + postfix); // user name
+		String gitpass     	            = configurator.getServerProperty("git.pass" + postfix); // password
+		String gitlocal     	        = configurator.getServerProperty("git.local" + postfix); // location of local git repositories 
 			
 		String giturl     	            = configurator.mergeParms(configurator.getXParm("cli/giturl")); //url of web page
 		String gitpath     	            = configurator.mergeParms(configurator.getXParm("cli/gitpath")); //subpath to repos

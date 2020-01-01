@@ -92,6 +92,24 @@
       </cli-parm> 
       
       <cli-parm>
+         <name>gitcfg</name>
+         <arg>name</arg>
+         <tip>Name of the GIT configuration used by Imvertor to gain access to the GIT repository. The name must have been configured in the server.</tip>
+         <required>When officepass is set to "git"</required>
+      </cli-parm>  
+      <cli-parm>
+         <name>giturl</name>
+         <arg>URL</arg>
+         <tip>URL of the Github IO (pages) location</tip>
+         <required>When officepass is set to "git"</required>
+      </cli-parm>  
+      <cli-parm>
+         <name>gitcomment</name>
+         <arg>string</arg>
+         <tip>Description to pass as comment when committing to GIT.</tip>
+         <required>When officepass is set to "git"</required>
+      </cli-parm>  
+      <cli-parm>
          <name>gitpath</name>
          <arg>path</arg>
          <tip>Subpath to the remote GIT repository, starting with / e.g. /MyOrganization/MyRepository</tip>
