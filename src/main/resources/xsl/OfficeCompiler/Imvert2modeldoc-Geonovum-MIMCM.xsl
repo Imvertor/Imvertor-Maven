@@ -21,8 +21,12 @@
     <xsl:function name="imf:initialize-modeldoc" as="item()*">
         
         <!-- the abbreviation for the model must be set here; this is part of the path in GIT where the catalog is uploaded -->
+        <xsl:variable name="passoffice" select="imf:get-config-string('cli','passoffice','none')" as="xs:string?"/>
         <xsl:variable name="model-abbrev" select="imf:get-tagged-value($imvert-document/imvert:packages,'##CFG-TV-ABBREV')" as="xs:string?"/>
         <xsl:choose>
+            <xsl:when test="$passoffice eq 'none'">
+                <!-- no problem, abbreviation not required -->
+            </xsl:when>
             <xsl:when test="empty($model-abbrev)">
                 <xsl:sequence select="imf:msg($imvert-document/imvert:packages,'ERROR','No tagged value [1] found for this model', (imf:get-config-name-by-id('CFG-TV-ABBREV')))"/>
             </xsl:when>

@@ -158,10 +158,12 @@ public class ResourcePusher {
 	public static void main(String[] args) {
 		try {
 			ResourcePusher rp = new ResourcePusher();
-			File workdir = new File("c:/temp/git");
+			File workdir = new File("c:/temp/git-geonovum");
 
 			// start up the local work folder
-			rp.prepare("https://github.com/Armatiek/jgittest", workdir, "ArjanLoeffen", AnyFile.getFileContent("i:/git.txt"),"arjan.loeffen@armatiek.nl");
+			//rp.prepare("https://github.com/Armatiek/jgittest", workdir, "ArjanLoeffen", AnyFile.getFileContent("i:/git.txt"),"arjan.loeffen@armatiek.nl");
+			
+			rp.prepare("https://github.com/Geonovum/IMG", workdir, "gn-bot", "YN5pTj2kim2KCz", "github@geonovum.nl");
 			
 			// copy file to that work folder
 			AnyFile testfile = new AnyFile(workdir,"test1.txt");
