@@ -848,6 +848,16 @@
                <cs-ref:ConceptualSchemaRef xlink:href="#RO-BRO"/>
             </cs:forSchema>
             <cs:constructs>
+              <cs:Construct>
+                  <cs:name>Aantal</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:integer</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
                <cs:Construct>
                   <cs:name>Aantal4</cs:name>
                   <cs:sentinel>false</cs:sentinel>
