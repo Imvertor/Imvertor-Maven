@@ -258,8 +258,8 @@
 
 						<!-- The regular constructs are generated here. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-01000-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS01000"
+							"--------------Debuglocatie-01100-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS01100"
 							},
 						</xsl:if>
 
@@ -284,8 +284,8 @@
 					<xsl:sequence select='$entiteiten'/>
 				</xsl:if>
 				<xsl:if test="$debugging">
-					,"--------------Debuglocatie-02000-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "OAS02000"
+					,"--------------Debuglocatie-01200-<xsl:value-of select="generate-id()"/>": {
+					"Debug": "OAS01200"
 					}
 				</xsl:if>	
 			</xsl:when>
@@ -336,8 +336,8 @@
 						<xsl:variable name="type-name" select="ep:type-name"/>
 						<!-- The regular constructs are generated here. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-01000-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS01000"
+							"--------------Debuglocatie-01300-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS01300"
 							},
 						</xsl:if>
 						<xsl:call-template name="construct"/>
@@ -352,8 +352,8 @@
 					<xsl:sequence select='$entiteiten'/>
 				</xsl:if>
 				<xsl:if test="$debugging">
-					,"--------------Debuglocatie-02000-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "OAS02000"
+					,"--------------Debuglocatie-01400-<xsl:value-of select="generate-id()"/>": {
+					"Debug": "OAS01400"
 					}
 				</xsl:if>				
 			</xsl:otherwise>
@@ -447,8 +447,8 @@
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-03000-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS03000"
+							"--------------Debuglocatie-01500-<xsl:value-of select="generate-id()"/>": {
+								"Debug": "OAS01500"
 							},
 						</xsl:if>
 						<xsl:choose>
@@ -553,8 +553,8 @@
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-03010-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS03000"
+							"--------------Debuglocatie-01600-<xsl:value-of select="generate-id()"/>": {
+								"Debug": "OAS01600"
 							},
 						</xsl:if>
 						<xsl:call-template name="construct"/>
@@ -661,8 +661,8 @@
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-03000-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS03000"
+							"--------------Debuglocatie-01700-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS01700"
 							},
 						</xsl:if>
 						<xsl:call-template name="construct"/>
@@ -755,8 +755,8 @@
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-03010-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS03000"
+							"--------------Debuglocatie-01800-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS01800"
 							},
 						</xsl:if>
 						<xsl:call-template name="construct"/>
@@ -775,8 +775,8 @@
 		</xsl:choose> ?>
 		
 		<xsl:if test="$debugging">
-			,"--------------Debuglocatie-02500-<xsl:value-of select="generate-id()"/>": {
-			"Einde Debug": "OAS02500"
+			,"--------------Debuglocatie-01900-<xsl:value-of select="generate-id()"/>": {
+			"Einde Debug": "OAS01900"
 			}
 		</xsl:if>
 		<!-- Loop over global superclass constructs which are refered to from constructs within the messages. -->
@@ -798,8 +798,8 @@
 				<xsl:sort select="ep:tech-name" order="ascending"/>
 				<!-- Only regular constructs are generated. -->
 				<xsl:if test="$debugging">
-					"--------------Debuglocatie-04000-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "OAS04000"
+					"--------------Debuglocatie-02000-<xsl:value-of select="generate-id()"/>": {
+					"Debug": "OAS02000"
 					},
 				</xsl:if>
 				<xsl:call-template name="construct"/>
@@ -970,8 +970,8 @@
 
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<xsl:if test="$debugging">
-								"--------------Debuglocatie-05000-<xsl:value-of select="generate-id()"/>": {
-									"Debug": "OAS05000"
+								"--------------Debuglocatie-02100-<xsl:value-of select="generate-id()"/>": {
+									"Debug": "OAS02100"
 								},
 							</xsl:if>
 							<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'_links&quot;: {' )"/>
@@ -990,8 +990,8 @@
 							<xsl:value-of select="'}'"/>
 							<xsl:value-of select="'}'"/>
 							<xsl:if test="$debugging">
-								,"--------------Einde-05500-<xsl:value-of select="generate-id()"/>": {
-									"Debug": "OAS05500"
+								,"--------------Einde-02100-<xsl:value-of select="generate-id()"/>": {
+									"Debug": "OAS02100"
 								}
 			
 							</xsl:if>
@@ -1058,8 +1058,8 @@
 							
 							<xsl:if test="contains($content,'{')">
 								<xsl:if test="$debugging">
-									"--------------Debuglocatie-07000-<xsl:value-of select="generate-id()"/>": {
-										"Debug": "OAS07000"
+									"--------------Debuglocatie-02200-<xsl:value-of select="generate-id()"/>": {
+										"Debug": "OAS02200"
 									},
 								</xsl:if>
 								<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'_embedded&quot;: {' )"/>
@@ -1072,8 +1072,8 @@
 								<xsl:value-of select="'}'"/>
 								<xsl:value-of select="'}'"/>
 								<xsl:if test="$debugging">
-									,"--------------Einde-07500-<xsl:value-of select="generate-id()"/>": {
-										"Debug": "OAS07500"
+									,"--------------Einde-02200-<xsl:value-of select="generate-id()"/>": {
+										"Debug": "OAS02200"
 									}
 								</xsl:if>
 								<xsl:value-of select="','"/>
@@ -1125,8 +1125,8 @@
 									  ]">
 							<xsl:sort select="ep:tech-name" order="ascending"/>
 							<xsl:if test="$debugging">
-								"--------------Debuglocatie-09000-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS09000"
+								"--------------Debuglocatie-02300-<xsl:value-of select="generate-id()"/>": {
+								"Debug": "OAS02300"
 								},
 							</xsl:if>
 							<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'_embedded&quot;: {')"/>
@@ -1136,8 +1136,8 @@
 							<xsl:value-of select="'}'"/>
 							<xsl:value-of select="'}'"/>
 							<xsl:if test="$debugging">
-								,"--------------Einde-09500-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS09500"
+								,"--------------Einde-02300-<xsl:value-of select="generate-id()"/>": {
+								"Debug": "OAS02300"
 								}
 							</xsl:if>
 							<xsl:if test="position() != last()">
@@ -1226,8 +1226,8 @@
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-03000-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS03000"
+							"--------------Debuglocatie-02400-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS02400"
 							},
 						</xsl:if>
 						<xsl:call-template name="construct"/>
@@ -1294,8 +1294,8 @@
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-03010-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS03000"
+							"--------------Debuglocatie-02500-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS02500"
 							},
 						</xsl:if>
 						<xsl:call-template name="construct"/>
@@ -1357,16 +1357,16 @@
 		<xsl:param name="typeName"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-12000-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS12000"
+			"--------------Debuglocatie-02600-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS02600"
 			},
 		</xsl:if>
 		<xsl:apply-templates select="ep:choice">
 			<xsl:with-param name="typeName" select="$typeName"/>
 		</xsl:apply-templates>
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-13000-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS13000"
+			"--------------Debuglocatie-02700-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS02700-<xsl:value-of select="../ep:tech-name"/>"
 			},
 		</xsl:if>
 			<!-- Only for the association constructs properties have to be generated. This is not applicable for supertype-association 
@@ -1498,8 +1498,8 @@
 			<xsl:param name="typeName"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-14000-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS14000"
+			"--------------Debuglocatie-02800-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS02800"
 			},
 		</xsl:if>
 
@@ -1724,8 +1724,8 @@
 					</xsl:if>
 					<xsl:if test="$associationProperties != '' and $serialisation = 'json'">
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-15050-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS15050"
+							"--------------Debuglocatie-02900-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS02900"
 							},
 						</xsl:if>
 						<xsl:sequence select="$associationProperties"/>
@@ -1737,8 +1737,8 @@
 				
 				
 				<xsl:if test="$debugging">
-					"--------------Debuglocatie-15000-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "OAS15000"
+					"--------------Debuglocatie-03000-<xsl:value-of select="generate-id()"/>": {
+					"Debug": "OAS03000"
 					},
 				</xsl:if>
 				<xsl:choose>
@@ -1751,8 +1751,8 @@
 						</xsl:if>
 						<xsl:if test="$associationProperties != ''">
 							<xsl:if test="$debugging">
-								"--------------Debuglocatie-15050-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS15050"
+								"--------------Debuglocatie-03100-<xsl:value-of select="generate-id()"/>": {
+								"Debug": "OAS03100"
 								},
 							</xsl:if>
 							<xsl:sequence select="$associationProperties"/>
@@ -1824,8 +1824,8 @@
 						<xsl:if test="$grouping != 'resource'">
 							<xsl:value-of select="'}'"/>
 							<xsl:if test="$debugging">
-								,"--------------Einde-15500-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS15500"
+								,"--------------Einde-03200-<xsl:value-of select="generate-id()"/>": {
+								"Debug": "OAS03200"
 								}
 							</xsl:if>
 						</xsl:if>
@@ -1840,8 +1840,8 @@
 		<!-- Enummeration constructs are processed here. -->
 		<xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-16000-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS16000"
+			"--------------Debuglocatie-03300-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS03300"
 			},
 		</xsl:if>
 		<xsl:value-of select="concat('&quot;', $elementName,'&quot;: {' )"/>
@@ -1870,8 +1870,8 @@
 		<xsl:value-of select="']'"/>
 		<xsl:value-of select="'}'"/>
 		<xsl:if test="$debugging">
-			,"--------------Einde-16500-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS16500"
+			,"--------------Einde-03400-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS03400"
 			}
 		</xsl:if>
 	</xsl:template>
@@ -1885,8 +1885,8 @@
         <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-17000-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS17000"
+			"--------------Debuglocatie-03500-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS03500"
 			},
 		</xsl:if>
  
@@ -1975,8 +1975,8 @@
 		<xsl:value-of select="'}'"/>
 
 		<xsl:if test="$debugging">
-			,"--------------Einde-17500-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS17500"
+			,"--------------Einde-03600-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS03600"
 			}
 		</xsl:if>
    </xsl:template> ?>
@@ -2413,7 +2413,7 @@
 		</xsl:if>
 	</xsl:template>
 	
-	<xsl:template match="//ep:construct" mode="supertype-association-in-links">
+	<xsl:template match="ep:construct" mode="supertype-association-in-links">
 		<xsl:apply-templates select="ep:choice" mode="supertype-association-in-links"/>
 	</xsl:template>
 	
@@ -2480,12 +2480,9 @@
 				<!-- ROME: Deze toevoeging (nav #490159) geeft een warning in Swaggerhub. -->
 				<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
 					<xsl:value-of select="concat('&quot;title&quot;: &quot;',$title,'&quot;,')"/>
-				</xsl:if>
-				
-				
-				<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
 					<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
 				</xsl:if>
+				
 				<xsl:choose>
 					<!-- Depending on the occurence-type and the type of construct content is generated. -->
 					<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
@@ -2633,23 +2630,74 @@
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template match="//ep:construct" mode="supertype-association-in-embedded">
+	<xsl:template match="ep:construct" mode="supertype-association-in-embedded">
 		<xsl:apply-templates select="ep:choice" mode="supertype-association-in-embedded"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:choice" mode="supertype-association-in-embedded">
 		<xsl:value-of select="'&quot;oneOf&quot; : ['"/>
-		<xsl:apply-templates select="//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value='subclass']" mode="subclass-embedded">
+		<!--xsl:apply-templates select="//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value='subclass']" mode="subclass-embedded"-->
+		<xsl:apply-templates select="ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value='subclass']" mode="subclass-embedded">
 			<xsl:sort select="ep:tech-name" order="ascending"/>
 		</xsl:apply-templates>
 		<xsl:value-of select="']'"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:construct" mode="subclass-embedded">
-		<xsl:value-of select="concat('{ &quot;$ref&quot; : &quot;',$json-topstructure,'/',ep:type-name,'Hal&quot; }')"/>
-		<xsl:if test="position() != last()">
-			<xsl:value-of select="','"/>
+		
+		<xsl:variable name="type-name" select="ep:type-name"/>
+		
+		<!-- The following variable indicates the necessity to place a ref to a subclass within an embedded component. If only id-type attributes are present the subclass isn't placed.
+			 Also the superclass attributes of the subclass are taken into account. -->
+		<xsl:variable name="indicatorNonIdProperties" as="xs:boolean">
+			<xsl:choose>
+				<xsl:when test="//ep:construct[ep:tech-name=$type-name]/ep:seq/ep:construct/ep:parameters[ep:parameter[ep:name='is-id']/ep:value ='false']">
+					<xsl:value-of select="true()"/>
+				</xsl:when>
+				<xsl:when test="//ep:construct[ep:tech-name=$type-name]/ep:seq[not(ep:construct/ep:parameters[ep:parameter[ep:name='is-id']/ep:value ='false']) and ep:construct/ep:ref]">
+					<xsl:variable name="indicatorNonIdPropertiesInRef">
+						<xsl:sequence select="imf:determineIndicatorNonIdProperties($type-name)"/>
+					</xsl:variable>
+					<xsl:choose>
+						<xsl:when test="contains($indicatorNonIdPropertiesInRef,'true')">
+							<xsl:value-of select="true()"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="false()"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="false()"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
+		<xsl:if test="$indicatorNonIdProperties">
+			<xsl:value-of select="concat('{ &quot;$ref&quot; : &quot;',$json-topstructure,'/',ep:type-name,'Hal&quot; }')"/>
+			<xsl:if test="position() != last()">
+				<xsl:value-of select="','"/>
+			</xsl:if>
 		</xsl:if>
 	</xsl:template>
-
+	
+	<xsl:function name="imf:determineIndicatorNonIdProperties">
+		<xsl:param name="type-name"/>
+		
+		<xsl:for-each select="$message-set//ep:construct[ep:tech-name=$type-name]/ep:seq/ep:construct[ep:ref]">
+			<xsl:variable name="type-nameRefConstruct" select="ep:ref"/>
+			<xsl:choose>
+				<xsl:when test="$message-set//ep:construct[ep:tech-name = $type-nameRefConstruct]/ep:seq/ep:construct/ep:parameters[ep:parameter[ep:name='is-id']/ep:value ='false']">
+					<xsl:value-of select="'true;'"/>
+				</xsl:when>
+				<xsl:when test="$message-set//ep:construct[ep:tech-name = $type-nameRefConstruct]/ep:seq[not(ep:construct/ep:parameters[ep:parameter[ep:name='is-id']/ep:value ='false']) and ep:construct/ep:ref]">
+					<xsl:sequence select="imf:determineIndicatorNonIdProperties($type-nameRefConstruct)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="'false;'"/>
+				</xsl:otherwise>
+			</xsl:choose>						
+		</xsl:for-each>
+	</xsl:function>
+	
 </xsl:stylesheet>
