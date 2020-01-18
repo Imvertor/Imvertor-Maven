@@ -13,7 +13,6 @@
     
     <xsl:import href="common/Imvert2modeldoc-html-respec.xsl"/>
     
-    
     <xsl:function name="imf:insert-chapter-intro" as="item()*">
         <xsl:param name="chapter" as="element(chapter)"/>
         <p>

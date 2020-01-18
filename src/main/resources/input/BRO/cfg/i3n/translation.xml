@@ -275,19 +275,15 @@
         <trans lang="en">Catalog</trans>
     </item>
     <item>
-        <key>BRO-DOMAINMODEL</key>
+        <key>SPECIAL-DOMAINMODEL</key>
         <trans lang="nl">Het domeinmodel</trans>
     </item>
     <item>
-        <key>BRO-REGISTRATIONOBJECT</key>
-        <trans lang="nl">Registratieobject</trans>
-    </item>
-    <item>
-        <key>BRO-OTHEROBJECTS</key>
+        <key>SPECIAL-OTHEROBJECTS</key>
         <trans lang="nl">Entiteiten en attributen</trans>
     </item>
     <item>
-        <key>BRO-LISTS</key>
+        <key>SPECIAL-LISTS</key>
         <trans lang="nl">Uitbreidbare waardelijsten</trans>
     </item>
     

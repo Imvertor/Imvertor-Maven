@@ -31,12 +31,12 @@
     <xsl:template match="section[@type = 'DOMAIN']">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
-            <section type="BRO-DOMAINMODEL">
+            <section type="SPECIAL-DOMAINMODEL">
                 <xsl:apply-templates select="section[@type = 'IMAGEMAPS']"/>
             </section>
             <!-- registratieobject wordt bovenaan apart gezet -->
             <xsl:apply-templates select="section[@type = 'OVERVIEW-OBJECTTYPE']/section[@type = 'OBJECTTYPE' and @name = 'Registratieobject']"/>   
-            <section type="BRO-OTHEROBJECTS">
+            <section type="SPECIAL-OTHEROBJECTS">
                 <xsl:variable name="sections" as="element()*">
                     <xsl:apply-templates select="section[@type = 'OVERVIEW-OBJECTTYPE']/section[@type = 'OBJECTTYPE' and not(@name = 'Registratieobject')]"/>
                     <xsl:apply-templates select=".//section[@type = 'DETAIL-COMPOSITE']"/> <!-- omgezet naar objecttypen -->
@@ -46,7 +46,7 @@
                     <xsl:sequence select="."/>
                 </xsl:for-each>
             </section>
-            <section type="BRO-LISTS">
+            <section type="SPECIAL-LISTS">
                 <!-- minder kopjes lijsten -->
                 <xsl:apply-templates select="/book/chapter[@type = 'lis']/section/section"/>
             </section>

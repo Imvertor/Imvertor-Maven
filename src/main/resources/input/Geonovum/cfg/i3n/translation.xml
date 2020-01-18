@@ -61,7 +61,7 @@
     </item>
     <item>
         <key>GERELATEERDOBJECTTYPE</key>
-        <trans lang="nl">Gerelateerd objecttype</trans>
+        <trans lang="nl">Gerelateerd entiteittype</trans>
         <trans lang="en">Related featureType</trans>
     </item>
     <item>    
@@ -95,6 +95,11 @@
         <trans lang="en">Description</trans>
     </item>
     <item>
+        <key>VOORBEELD</key>
+        <trans lang="nl">Voorbeeld</trans>
+        <trans lang="en">Example</trans>
+    </item>
+    <item>
         <key>DATUMOPNAME</key>
         <trans lang="nl">Datum opname</trans>
         <trans lang="en">Date recorded</trans>
@@ -125,6 +130,17 @@
         <key>RELATIESOORT</key>
         <trans lang="nl">Relatiesoort</trans>
         <trans lang="en">Association type</trans>
+    </item>
+    
+    <item>
+        <key>IMBRO</key>
+        <trans lang="nl">IMBRO</trans>
+        <trans lang="en">IMBRO</trans>
+    </item>
+    <item>
+        <key>IMBROA</key>
+        <trans lang="nl">IMBRO/A</trans>
+        <trans lang="en">IMBRO/A</trans>
     </item>
     
     <!-- system defined types -->
@@ -172,14 +188,14 @@
     <item>
         <key>OBJECTTYPE</key>
         <key>FEATURETYPE</key>
-        <trans lang="nl">Objecttype</trans>
+        <trans lang="nl"><!-- Entiteittype --></trans> <!-- excluded from heads -->
         <trans lang="en">FeatureType</trans>
     </item>
     <item>
         <key>RELATIEKLASSE</key>
         <key>ASSOCIATIONCLASS</key>
         <trans lang="nl">Relatieklasse</trans>       
-        <trans lang="en">Association class</trans>
+        <trans lang="en">Association dlass</trans>
         
     </item>
     <item>
@@ -219,14 +235,16 @@
         <trans lang="nl">Keuze element</trans>
         <trans lang="en">Choice element</trans>
     </item>
+    
     <item>
-        <key>GESTRUCTUREERD DATATYPE</key>
         <key>STRUCTUREDDATATYPE</key>
+        <key>GESTRUCTUREERD DATATYPE</key>
         <trans lang="nl">Gestructureerd datatype</trans>
         <trans lang="en">Structured datatype</trans>
     </item>
     <item>
         <key>PRIMITIVEDATATYPE</key>
+        <key>PRIMITIEF DATATYPE</key>
         <trans lang="nl">Primitief datatype</trans>
         <trans lang="en">Primitive datatype</trans>
     </item>
@@ -238,7 +256,7 @@
     <item>
         <key>GEGEVENSGROEPTYPE</key>
         <key>COMPOSITE</key>
-        <trans lang="nl">Gegevensgroeptype</trans>
+        <trans lang="nl"><!--Gegevensgroeptype--></trans><!-- excluded from heads -->
         <trans lang="en">Grouptype</trans>
         
     </item>
@@ -253,9 +271,22 @@
 
     <item>
         <key>CHAPTER-CATALOG</key>
-        <trans lang="nl">Catalogus</trans>
+        <trans lang="nl">Gegevensdefinitie</trans>
         <trans lang="en">Catalog</trans>
     </item>
+    <item>
+        <key>SPECIAL-DOMAINMODEL</key>
+        <trans lang="nl">Het domeinmodel</trans>
+    </item>
+    <item>
+        <key>SPECIAL-OTHEROBJECTS</key>
+        <trans lang="nl">Entiteiten en attributen</trans>
+    </item>
+    <item>
+        <key>SPECIAL-LISTS</key>
+        <trans lang="nl">Uitbreidbare waardelijsten</trans>
+    </item>
+    
     <item>
         <key>CHAPTER-LISTS</key>
         <trans lang="nl">Inhoud van waardenlijsten</trans>
@@ -273,7 +304,7 @@
     </item>
     <item>
         <key>OVERVIEW-OBJECTTYPE</key>
-        <trans lang="nl">Objecttypen</trans>
+        <trans lang="nl">Entiteittypen</trans>
         <trans lang="en">Featuretypes</trans>
     </item>
     <item>
@@ -319,7 +350,7 @@
 
     <item>
         <key>DETAILS-OBJECTTYPE</key>
-        <trans lang="nl">Objecttype details</trans>
+        <trans lang="nl">Entiteittype details</trans>
         <trans lang="en">Featuretype details</trans>
     </item>
     <item>
@@ -348,6 +379,10 @@
         <trans lang="en">Union details</trans>
     </item>
     <item>
+        <key>DETAILS-STRUCTUREDDATATYPE</key>
+        <trans lang="nl">Gestructureerde datatypen</trans>
+    </item>
+    <item>
         <key>DETAILS-DATATYPE</key>
         <trans lang="nl">Primitief type details</trans>
         <trans lang="en">Primitive type details</trans>
@@ -355,8 +390,8 @@
 
     <item>
         <key>DETAIL-ATTRIBUTE</key>
-        <trans lang="nl">Attribuutsoort details</trans>
-        <trans lang="en">AttributeType details</trans>
+        <trans lang="nl"><!--Attribuutsoort details--></trans>
+        <trans lang="en"><!--AttributeType details--></trans>
     </item>
     <item>
         <key>DETAIL-ASSOCIATION</key>
@@ -385,19 +420,19 @@
     </item>
     <item>
         <key>DETAIL-CODELIST</key>
-        <trans lang="nl">Codelijst details</trans>
-        <trans lang="en">Codelist details</trans>
+        <trans lang="nl"><!--Codelijst details--></trans>
+        <trans lang="en"><!--Codelist details--></trans>
     </item>
     <item>
         <key>DETAIL-COMPOSITE</key>
-        <trans lang="nl">Gegevensgroeptype details</trans>
-        <trans lang="en">GroupType details</trans>
+        <trans lang="nl"><!--Gegevensgroeptype details--></trans>
+        <trans lang="en"><!--GroupType details--></trans>
     </item>
     
     <item>
         <key>CONTENTS-REFERENCELIST</key>
-        <trans lang="nl">Referentielijst inhoud</trans>
-        <trans lang="en">Reference list contents</trans>
+        <trans lang="nl"><!--Referentielijst inhoud--></trans>
+        <trans lang="en"><!--Reference list contents--></trans>
     </item>
     <item>
         <key>CONTENTS-CODELIST</key>
@@ -409,7 +444,7 @@
         <trans lang="nl">Enumeratie inhoud</trans>
         <trans lang="en">Enumeration contents</trans>
     </item>
-
+    
     <item>
         <key>ATTRIBUTE</key>
         <trans lang="nl">Attribuutsoort</trans>
@@ -435,7 +470,7 @@
     <item>
         <key>SHORT-ASSOCIATIONS</key>
         <trans lang="nl">Overzicht relaties</trans>
-        <trans lang="en">AssociationType overview</trans>
+        <trans lang="en">Overview of associations</trans>
     </item>
     <item>
         <key>SHORT-TYPERELATIONS</key>
@@ -445,14 +480,18 @@
     <item>
         <key>SHORT-DATAELEMENTS</key>
         <trans lang="nl">Overzicht data elementen</trans>
+        <trans lang="en">Data elements overview</trans>
     </item>
     <item>
         <key>SHORT-UNIONELEMENTS</key>
         <trans lang="nl">Overzicht keuze elementen</trans>
+        <trans lang="en">Union elements overview</trans>
+        
     </item>
     <item>
         <key>SHORT-REFERENCEELEMENTS</key>
         <trans lang="nl">Overzicht referentie elementen</trans>
+        <trans lang="en">Reference elements overview</trans>
     </item>
     
     <item>
@@ -469,7 +508,7 @@
     <item>
         <key>DIAGRAM-NAME</key>
         <trans lang="nl">Naam</trans>
-        <trans lang="en">Name</trans>
+        <trans lang="en">itemtype</trans>
     </item>
     <item>
         <key>DIAGRAM-DESCRIPTION</key>
@@ -485,9 +524,14 @@
         <trans lang="en">Name</trans>
     </item>
     <item>
+        <key>VALUE</key>
+        <trans lang="nl">Waarde</trans>
+        <trans lang="en">Value</trans>
+    </item>
+    <item>
         <key>DEFINITION</key>
-        <trans lang="nl">Definitie</trans>
-        <trans lang="en">Definition</trans>
+        <trans lang="nl">Omschrijving</trans>
+        <trans lang="en">Description</trans>
     </item>
     
     <item>
@@ -545,52 +589,66 @@
     <item>
         <key>DATAELEMENT-NAME</key>
         <trans lang="nl">Data element</trans>
+        <trans lang="en">Data element</trans>
     </item>
     <item>
         <key>DATAELEMENT-DEFINITION</key>
         <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
     </item>
     <item>
         <key>DATAELEMENT-FORMAT</key>
         <trans lang="nl">Formaat</trans>
+        <trans lang="en">Format</trans>
     </item>
     <item>
         <key>DATAELEMENT-CARD</key>
         <trans lang="nl">Card</trans>
+        <trans lang="en">Card</trans>
     </item>
     
     <item>
         <key>UNIONELEMENT-NAME</key>
         <trans lang="nl">Union element</trans>
+        <trans lang="en">Union element</trans>
     </item>
     <item>
         <key>UNIONELEMENT-DEFINITION</key>
         <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
     </item>
     <item>
         <key>UNIONELEMENT-FORMAT</key>
         <trans lang="nl">Formaat</trans>
+        <trans lang="en">Format</trans>
     </item>
     <item>
         <key>UNIONELEMENT-CARD</key>
         <trans lang="nl">Card</trans>
+        <trans lang="en">Card</trans>
     </item>
     
     <item>
         <key>REFERENCEELEMENT-NAME</key>
         <trans lang="nl">Referentie element</trans>
+        <trans lang="en">Reference element</trans>
+        
     </item>
     <item>
         <key>REFERENCEELEMENT-DEFINITION</key>
         <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
+        
     </item>
     <item>
         <key>REFERENCEELEMENT-FORMAT</key>
         <trans lang="nl">Formaat</trans>
+        <trans lang="en">Foermat</trans>
     </item>
     <item>
         <key>REFERENCEELEMENT-CARD</key>
         <trans lang="nl">Card</trans>
+        <trans lang="en">Card</trans>
     </item>
     
     <!-- intermediate text -->
