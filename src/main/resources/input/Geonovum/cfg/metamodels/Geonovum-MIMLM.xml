@@ -4,31 +4,31 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- 
-        Geonovum follows KKG ISO (alt 2)
+        Geonovum follows NEN3610
         
         Including scalars.
     --> 
-    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
+    <xi:include href="../../../Geonovum/cfg/metamodels/Geonovum-NEN3610.xml"/>
     
-    <name>Geonovum</name>
+    <name>Geonovum MIMLM</name>
     
     <profiles>
         <profile lang="nl"> 
-            <id>MLGGNL</id>
-            <!-- <release/> identical to Imvertor release -->
-            <desc>MIMLM-Geonovum Grouping (NL)</desc> 
+            <id>NBGNL</id>
+            <release>0.9.3</release>
+            <desc>NEN3610-BRO Grouping (NL)</desc> 
         </profile>
-        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
-            <id>MLGGEN</id>
-            <!-- <release/> identical to Imvertor release -->
-            <desc>MIMLM-Geonovum Grouping (EN)</desc>
+        <profile lang="en">
+            <id>NBGEN</id>
+            <release>0.9.3</release>
+            <desc>NEN3610-BRO Grouping (EN)</desc>
         </profile>
     </profiles>
     
-    <stereotypes xml:id="stereotypes">
-        <stereo id="stereotype-name-codelist">
-            <name lang="nl">Codelist</name>
-        </stereo>       
-    </stereotypes>
+    <features>
+        <feature name="allow-multiple-supertypes">false</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+        <feature name="unique-normalized-class-names">domain</feature>
+    </features>
     
 </metamodel>
