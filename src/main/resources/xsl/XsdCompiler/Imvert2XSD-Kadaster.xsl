@@ -456,7 +456,9 @@
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:sequence select="imf:debug(.,'A choice member')"/>
-                                    <xs:element ref="{imf:get-qname($defining-class)}"/>  
+                                    <xsl:variable name="minOccurs" select="if (imvert:min-occurs) then imvert:min-occurs else '1'"/>
+                                    <xsl:variable name="maxOccurs" select="if (imvert:max-occurs) then imvert:max-occurs else '1'"/>
+                                    <xs:element ref="{imf:get-qname($defining-class)}" minOccurs="{$minOccurs}" maxOccurs="{$maxOccurs}"/>  
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:for-each>

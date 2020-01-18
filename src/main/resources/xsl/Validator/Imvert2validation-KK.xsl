@@ -49,11 +49,13 @@
         <xsl:variable name="designation" select="$defining-class/imvert:designation"/>
         <xsl:variable name="is-designated-interface" select="$defining-class/imvert:stereotype/@id = (('stereotype-name-interface'))"/>
        
+        <?x
         <!-- Jira IM-420 -->
         <xsl:sequence select="imf:report-warning(., 
             not($is-grouptype) and not($designation=('datatype','enumeration') or $is-designated-interface or empty($defining-class)), 
             'Type of [1] must be a datatype, but is [2].', (imf:string-group($this/imvert:stereotype),imf:string-group($defining-class/imvert:stereotype)))"/>
-       
+        x?>
+        
         <xsl:sequence select="imf:report-warning(., 
             $is-grouptype and not($has-grouptype), 
             'Type of [1] must be an attribute group, but is [2].', (imf:string-group($this/imvert:stereotype),imf:string-group($defining-class/imvert:stereotype)))"/>
