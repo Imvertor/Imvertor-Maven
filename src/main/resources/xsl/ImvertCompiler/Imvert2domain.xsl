@@ -20,7 +20,7 @@
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-
+    
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
@@ -59,21 +59,11 @@
     <xsl:variable name="domain-mapping" as="node()*">
         <xsl:for-each select="$base-package/descendant-or-self::imvert:package">
             <xsl:variable name="domain" select="ancestor-or-self::imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')][1]"/>
-            <map sd-name="{imvert:name}" d-name="{if ($domain) then $domain/imvert:name else imvert:name}"/>
+            <map sd-name="{imvert:name}" sd-id="{imvert:id}" d-name="{if ($domain) then $domain/imvert:name else imvert:name}"/>
         </xsl:for-each>
     </xsl:variable>
     
     <xsl:template match="/imvert:packages">
-        <!-- test the mapping first; no different mappings subdomain-domain are allowed -->
-        <!--TODO If subdomains have same name: disallow, so error! -->
-        <xsl:variable name="duplicate-subdomain-names" as="xs:string*">
-            <xsl:for-each-group select="$domain-mapping" group-by="@sd-name">
-                <xsl:if test="distinct-values(current-group()/@d-name)[2]">
-                    <xsl:value-of select="current-grouping-key()"/>
-                </xsl:if>
-            </xsl:for-each-group>
-        </xsl:variable>
-     
         <imvert:packages>
             <xsl:sequence select="*[not(self::imvert:package or self::imvert:filters)]"/>
             <xsl:sequence select="imf:create-output-element('imvert:base-namespace',$base-package/imvert:namespace)"/>
@@ -92,11 +82,6 @@
                 <xsl:when test="empty($base-package/imvert:namespace)">
                     <xsl:sequence select="imf:msg('ERROR','No root namespace defined.')"/>
                 </xsl:when>
-                <!-- IM129 
-                <xsl:when test="exists($duplicate-subdomain-names)">
-                    <xsl:sequence select="imf:msg('ERROR',concat('Subdomain name(s) occur(s) within different domains: ' , string-join($duplicate-subdomain-names,', ')))"/>
-                </xsl:when>
-                -->
                 <xsl:otherwise>
                     <xsl:apply-templates select="imvert:package"/>
                 </xsl:otherwise>
@@ -114,7 +99,19 @@
     </xsl:template>
     
     <xsl:template match="imvert:type-package">
-        <xsl:sequence select="imf:create-output-element('imvert:type-package',($domain-mapping[@sd-name=current()]/@d-name)[1])"/>
+        <xsl:variable name="type-id" select="../imvert:type-id"/>
+        <xsl:variable name="type-package" select="$base-package/descendant-or-self::imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package') and .//imvert:id = $type-id]"/>
+        <xsl:choose>
+            <xsl:when test="../imvert:baretype">
+               <!-- remove -->
+            </xsl:when>
+            <xsl:when test=". eq $type-package/imvert:name">
+                <xsl:copy-of select="."/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:create-output-element('imvert:type-package',($type-package/imvert:name,.)[1])"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="imvert:class">
@@ -126,14 +123,14 @@
             </xsl:for-each>
         </imvert:class>
     </xsl:template>
-
+    
     <xsl:template match="*">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
-
+    
     <!-- Return all packages that the element is part of, that are (within) a domain package -->
     <xsl:function name="imf:get-package-structure" as="element()*">
         <xsl:param name="this" as="element()"/>
