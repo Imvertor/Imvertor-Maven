@@ -226,12 +226,12 @@
         <trans lang="en">Choice</trans>
     </item>
     <item>
-        <key>UNION ELMENT</key>
+        <key>UNION ELEMENT</key>
         <trans lang="nl">Union element</trans>
         <trans lang="en">Union element</trans>
     </item>
     <item>
-        <key>KEUZE ELMENT</key>
+        <key>KEUZE ELEMENT</key>
         <trans lang="nl">Keuze element</trans>
         <trans lang="en">Choice element</trans>
     </item>
