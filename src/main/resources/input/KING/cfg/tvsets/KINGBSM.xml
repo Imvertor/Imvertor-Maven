@@ -644,7 +644,7 @@
         </tv>
         <tv norm="space" id="CFG-TV-INSERTDESCRIPTIONFROM">
             <name lang="nl">toelichting opnemen vanaf</name>
-            <desc lang="nl">Het model van waaraf de toelichting moet worden opgenomen.</desc>
+            <desc lang="nl">Het model vanaf waar de toelichting moet worden opgenomen.</desc>
             <derive>no</derive>
             <inherit>no</inherit>
             <stereotypes>
