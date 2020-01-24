@@ -94,6 +94,19 @@
         </xsl:choose>
     </xsl:template>
     
+    <xsl:template match="xhtml:sup | xhtml:sub" mode="notes">
+        <xsl:choose>
+            <xsl:when test="$notes-format = ('markdown','mediawiki')">
+                <xsl:value-of select="concat('&lt;',local-name(.),'&gt;')"/>
+                <xsl:apply-templates mode="#current"/>
+                <xsl:value-of select="concat('&lt;/',local-name(.),'&gt;')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates mode="notes"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
     <xsl:template match="*" mode="notes">
         <xsl:apply-templates mode="notes"/>
     </xsl:template>
