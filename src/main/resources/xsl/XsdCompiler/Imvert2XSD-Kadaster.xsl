@@ -103,7 +103,7 @@
                 Do we need to reference external schema's? 
                 If so, a reference is made to the name of the external schema.
             -->
-            <xsl:variable name="externals" select="//(imvert:type-package|imvert:supertype[not(imvert:stereotype/@id = ('stereotype-name-static-generalization'))]/imvert:type-package)[.=$external-schema-names]"/>
+            <xsl:variable name="externals" select="//imvert:type-package[.=$external-schema-names]"/>
             <xsl:for-each-group select="$externals" group-by=".">
                 <xsl:for-each select="current-group()[1]"><!-- singleton imvert:type-package element--> 
                     <xsl:variable name="external-package" select="imf:get-construct-by-id(../imvert:type-package-id)"/>
