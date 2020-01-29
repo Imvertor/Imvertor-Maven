@@ -141,6 +141,13 @@
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
+    <xsl:template match="imvert:target">
+        <xsl:copy>
+            <xsl:attribute name="display-name" select="imf:get-display-name(.)"/>
+            <xsl:attribute name="formal-name" select="imf:get-construct-formal-name(.)"/>
+            <xsl:apply-templates/>
+        </xsl:copy>
+    </xsl:template>
     
     <xsl:template match="imvert:position">
         <!-- get the tagged value that sets the position ans use that value; if no such tagged value, use the current value -->

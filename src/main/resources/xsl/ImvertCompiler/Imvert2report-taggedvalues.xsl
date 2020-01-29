@@ -85,7 +85,10 @@
                             If derived, the applicationrelease is specified ("origin"), otherwise "(here)" is shown.
                             Note that some tagged values of the supplier are not derived, an therefore not shown here.
                         </p>
-                        <p>The following system defined tagged values are not shown: <xsl:value-of select="string-join($system-defined-tagged-value-names,', ')"/></p>
+                        <xsl:variable name="ns" select="string-join($system-defined-tagged-value-names,', ')"/>
+                        <xsl:if test="normalize-space($ns)">
+                            <p>The following system defined tagged values are not shown: <xsl:value-of select="$ns"/></p>
+                        </xsl:if>
                     </div>           
                     <table class="tablesorter"> 
                         <xsl:variable name="rows" as="element(tr)*">
