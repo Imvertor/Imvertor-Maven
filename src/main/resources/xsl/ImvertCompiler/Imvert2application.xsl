@@ -76,7 +76,7 @@
                 <xsl:for-each-group select="$external-packages[
                     imf:boolean(imvert:class/imvert:sentinel) 
                     or 
-                    (imvert:class/imvert:id = $result-packages//(imvert:type-id | imvert:supertype/imvert:type-id)) 
+                    (imvert:class/imvert:id = $result-packages//imvert:type-id) 
                     or 
                     imvert:stereotype/@id = ('stereotype-name-system-package')]" 
                     group-by="imvert:id">
@@ -107,14 +107,6 @@
     </xsl:template>
     
     <xsl:template match="imvert:type-id" mode="finalize">
-        <xsl:copy-of select="."/>
-        <xsl:if test="not(../imvert:type-package)">
-            <xsl:variable name="id" select="imf:get-package-id(.)"/>
-            <xsl:sequence select="imf:create-output-element('imvert:type-package',imf:get-construct-by-id($id)/imvert:name)"/>  
-            <xsl:sequence select="imf:create-output-element('imvert:type-package-id',$id)"/>
-        </xsl:if>
-    </xsl:template>
-    <xsl:template match="imvert:supertype/imvert:type-id" mode="finalize">
         <xsl:copy-of select="."/>
         <xsl:if test="not(../imvert:type-package)">
             <xsl:variable name="id" select="imf:get-package-id(.)"/>
