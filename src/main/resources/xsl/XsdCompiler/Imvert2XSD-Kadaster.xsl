@@ -1421,7 +1421,12 @@
     -->
     <xsl:function name="imf:get-xsd-filename" as="xs:string">
         <xsl:param name="this" as="node()"/>
-        <xsl:value-of select="concat($application-package-name,'_',$this/imvert:name,'_v',replace($this/imvert:version,'\.','_'),'.xsd')"/>
+        
+        <xsl:sequence select="imf:set-config-string('work','xsd-domain',$this/imvert:name,true())"/>
+        <xsl:sequence select="imf:set-config-string('work','xsd-version',replace($this/imvert:version,'\.','_'),true())"/>
+        <xsl:sequence select="imf:set-config-string('work','xsd-application',$application-package-name,true())"/>
+        
+        <xsl:value-of select="imf:merge-parms(imf:get-config-string('cli','xsdfilename'))"/>
     </xsl:function>
     
     <!-- 
