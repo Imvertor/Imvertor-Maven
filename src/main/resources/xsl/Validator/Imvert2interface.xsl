@@ -174,7 +174,16 @@
             <xsl:value-of select="$outside-package-name"/>
         </imvert:type-package>
     </xsl:template>
-  
+    <xsl:template match="imvert:supplier-package[. = 'OUTSIDE']">
+        <!-- replace this package name by the mapped name -->    
+        <xsl:variable name="type-id" select="../imvert:supplier-id"/>
+        <xsl:variable name="outside-class" select="$outside-mapped-classes[imvert:id = $type-id]"/>
+        <xsl:variable name="outside-package-name" select="$outside-class/@cn"/>
+        <imvert:supplier-package original="{$outside-package-name}" origin="OUTSIDE">
+            <xsl:value-of select="$outside-package-name"/>
+        </imvert:supplier-package>
+    </xsl:template>
+    
     <xsl:template match="node()" mode="#all">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
