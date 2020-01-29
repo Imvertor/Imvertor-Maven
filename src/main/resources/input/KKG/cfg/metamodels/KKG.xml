@@ -63,7 +63,7 @@
             For each stereotype, define a formal name, the name(s) in UML, description, the construct(s) to which the stereotype applies, and possible rules.
         -->
       
-        <stereo id="stereotype-name-relatieklasse">
+        <stereo id="stereotype-name-relatieklasse" primary="yes">
             <name lang="nl">Relatieklasse</name>
             <name lang="en">AssociationClass</name>
             <desc lang="en">
@@ -76,7 +76,7 @@
             <construct>class</construct>
         </stereo>
        
-        <stereo id="stereotype-name-composite">
+        <stereo id="stereotype-name-composite" primary="yes">
             <name lang="nl">Gegevensgroeptype</name>
             <name lang="en">AttributeGroupType</name>
             <desc lang="en">
@@ -88,7 +88,7 @@
             </desc>
             <construct>class</construct>
         </stereo>
-        <stereo id="stereotype-name-attribute">
+        <stereo id="stereotype-name-attribute" primary="yes">
             <name lang="nl">Attribuutsoort</name>
             <name lang="en">AttributeType</name>
             <desc lang="en">The type to which an attribute may belong.</desc>
@@ -96,7 +96,7 @@
             <construct>attribute</construct>
         </stereo>
       
-        <stereo id="stereotype-name-externekoppeling">
+        <stereo id="stereotype-name-externekoppeling" primary="yes">
             <name lang="nl">Externe koppeling</name>
             <name lang="en">ExternalLink</name>
             <desc lang="en">An association that allows an object type of an external information model from the perspective of its own information model to be 
@@ -106,7 +106,7 @@
             <construct>association</construct>
         </stereo>
         <!-- IM-215 -->
-        <stereo id="stereotype-name-data-element">
+        <stereo id="stereotype-name-data-element" primary="yes">
             <name lang="nl">Data element</name>
             <name lang="en">DataElement</name>
             <desc lang="en">
@@ -115,7 +115,7 @@
             <construct>attribute</construct>
         </stereo>
        
-        <stereo id="stereotype-name-attributegroup">
+        <stereo id="stereotype-name-attributegroup" primary="yes">
             <name lang="nl">Gegevensgroep</name>
             <name lang="en">AttributeGroup</name>
             <desc lang="en">
@@ -126,7 +126,7 @@
             <construct>attribute</construct>
         </stereo>
         
-        <stereo id="stereotype-name-union">
+        <stereo id="stereotype-name-union" primary="yes">
             <name lang="nl">Union</name>
             <name lang="en">Union</name>
             <desc lang="en">
@@ -141,7 +141,7 @@
             </desc>
             <construct>datatype</construct>
         </stereo>
-        <stereo id="stereotype-name-union-element">
+        <stereo id="stereotype-name-union-element" primary="yes">
             <name lang="nl">Union element</name>
             <name lang="en">UnionElement</name>
             <desc lang="en">
@@ -154,14 +154,14 @@
             <construct>attribute</construct>
         </stereo>
 
-        <stereo id="stereotype-name-simpletype">
+        <stereo id="stereotype-name-simpletype" primary="yes">
             <name lang="nl">Primitief datatype</name>
             <name lang="en">PrimitiveDatatype</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl"></desc>
             <construct>datatype</construct>
         </stereo>
-        <stereo id="stereotype-name-complextype">
+        <stereo id="stereotype-name-complextype" primary="yes">
             <name lang="nl">Gestructureerd datatype</name>
             <name lang="en">StructuredDatatype</name>
             <desc lang="en">TODO</desc>
@@ -174,7 +174,7 @@
             <construct>datatype</construct>
         </stereo>
         <!-- a imvert:stereotype value -->
-        <stereo id="stereotype-name-objecttype">
+        <stereo id="stereotype-name-objecttype" primary="yes">
             <name lang="nl">Objecttype</name>
             <name lang="en">FeatureType</name>
             <desc lang="en">TODO</desc>
@@ -193,7 +193,7 @@
             <profile color="WHITE" fontcolor="BLACK" border="WHITE"/> <!-- white is 16777215, black is 0 -->
         </stereo>
 
-        <stereo id="stereotype-name-referentielijst">
+        <stereo id="stereotype-name-referentielijst" primary="yes">
             <name lang="nl">Referentielijst</name>
             <name lang="en">Referencelist</name>
             <desc lang="en">TODO</desc>
@@ -204,7 +204,7 @@
             </desc>
             <construct>datatype</construct>
         </stereo>
-        <stereo id="stereotype-name-referentie-element">
+        <stereo id="stereotype-name-referentie-element" primary="yes">
             <name lang="nl">Referentie element</name>
             <name lang="en">ReferenceElement</name>
             <desc lang="en">TODO</desc>
@@ -217,7 +217,7 @@
             <construct>attribute</construct>
         </stereo>
        
-        <stereo id="stereotype-name-codelist">
+        <stereo id="stereotype-name-codelist" primary="yes">
             <name lang="nl">Codelist</name>
             <name lang="en">Codelist</name>
             <desc lang="en">TODO</desc>
@@ -236,7 +236,7 @@
             <construct>enumeration</construct>
         </stereo>
 
-        <stereo id="stereotype-name-enumeration">
+        <stereo id="stereotype-name-enumeration" primary="yes">
             <name lang="nl">Enumeratie</name>
             <name lang="en">Enumeration</name>
             <desc lang="en">
@@ -248,7 +248,7 @@
             <construct>datatype</construct>
             <construct>enumeration</construct>
         </stereo>
-        <stereo id="stereotype-name-enum">
+        <stereo id="stereotype-name-enum" primary="yes">
             <name lang="nl">Enumeratiewaarde</name>
             <name lang="en">Enum</name>
             <desc lang="en">A single element in an enumeration</desc>
@@ -256,14 +256,14 @@
             <construct>attribute</construct>
         </stereo>
         
-        <stereo id="stereotype-name-system-reference-package">
+        <stereo id="stereotype-name-system-reference-package" primary="yes">
             <name lang="nl">System-reference-package</name>
             <name lang="en">System-reference-package</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">Een package dat door het systeem is aangemaakt om referentie-elementen te bevatten.</desc>
             <construct>package</construct>
         </stereo>
-        <stereo id="stereotype-name-system-reference-class">
+        <stereo id="stereotype-name-system-reference-class" primary="yes">
             <name lang="nl">System-reference-class</name>
             <name lang="en">System-reference-class</name>
             <desc lang="en">TODO</desc>
@@ -294,14 +294,14 @@
             <construct>association</construct>
         </stereo>
        
-        <stereo id="stereotype-name-relatiesoort">
+        <stereo id="stereotype-name-relatiesoort" primary="yes">
             <name lang="en">Relationkind</name>
             <name lang="nl">Relatiesoort</name>
             <desc lang="nl">De soort waartoe een relatie kan behoren.</desc>
             <construct>association</construct>
         </stereo>
         
-        <stereo id="stereotype-name-relation-role">
+        <stereo id="stereotype-name-relation-role" primary="yes">
             <name lang="nl">Relatierol</name>
             <name lang="en">AssociationRole</name>
             <desc lang="nl">De benaming van de manier waarop een object deelneemt aan een relatie met een ander object.</desc>
@@ -310,7 +310,7 @@
         
         <!-- generic -->
       
-        <stereo id="stereotype-name-generalization">
+        <stereo id="stereotype-name-generalization" primary="yes">
             <name lang="nl">Generalisatie</name>
             <name lang="en">InheritanceRelation</name>
             <construct>generalization</construct>

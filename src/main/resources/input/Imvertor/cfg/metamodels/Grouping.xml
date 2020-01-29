@@ -17,39 +17,39 @@
         <!-- 
             For each stereotype, define a formal name, the name(s) in UML, description, the construct(s) to which the stereotype applies, and possible rules.
         -->
-        <stereo id="stereotype-name-system-package">
+        <stereo id="stereotype-name-system-package" primary="yes">
             <name lang="nl">System</name>
             <name lang="en">System</name>
             <desc lang="nl">Een package dat is opgebouwd door de software ten behoeve van verwerking.</desc>
             <construct>package</construct>
         </stereo>
 
-        <stereo id="stereotype-name-domain-package">
+        <stereo id="stereotype-name-domain-package" primary="yes">
             <name lang="en">Domain</name>
             <name lang="nl">Domein</name>
             <desc lang="nl">Een package waarvan de daarin opgenomen constructies als één geheel worden beheerd, en waarvan dus een gezamenlijke versie wordt onderhouden</desc>
             <construct>package</construct>
         </stereo>
         
-        <stereo id="stereotype-name-application-package">
+        <stereo id="stereotype-name-application-package" primary="yes">
             <name lang="en">Application</name>
             <name lang="nl">Toepassing</name>
             <desc lang="nl">Een package dat een volledige applicatie beschrijft, en dus niet slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
             <construct>package</construct>
         </stereo>
-        <stereo id="stereotype-name-project-package">
+        <stereo id="stereotype-name-project-package" primary="yes">
             <name lang="en">Project</name>
             <name lang="nl">Project</name>
             <desc lang="nl">Een package dat een project bevat, dwz. een base of application package, eventueel met external packages.</desc>
             <construct>package</construct>
         </stereo>
-        <stereo id="stereotype-name-base-package">
+        <stereo id="stereotype-name-base-package" primary="yes">
             <name lang="en">Basemodel</name>
             <name lang="nl">Basismodel</name>
             <desc lang="nl">Een package dat slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
             <construct>package</construct>
         </stereo>
-        <stereo id="stereotype-name-external-package">
+        <stereo id="stereotype-name-external-package" primary="yes">
             <name lang="en">External</name>
             <name lang="nl">Extern</name>
             <desc lang="nl">
@@ -74,7 +74,7 @@
             <construct>package</construct>
         </stereo>
         
-        <stereo id="stereotype-name-interface">
+        <stereo id="stereotype-name-interface" primary="yes">
             <name lang="en">Interface</name>
             <name lang="nl">Interface</name>
             <desc lang="nl">Een constructie in een gemeenschappelijk maar niet opgenomen model, welke een compleet modelelement in dat model representeert.</desc>
@@ -82,7 +82,7 @@
             <construct>datatype</construct>
         </stereo>
         
-        <stereo id="stereotype-name-view-package">
+        <stereo id="stereotype-name-view-package" primary="yes">
             <name lang="en">View</name>
             <name lang="nl">View</name>
             <desc lang="nl">Een groepering van objecttypen die gespecificeerd zijn in een extern informatiemodel en vanuit het perspectief van het 
@@ -130,21 +130,21 @@
         
         <!-- generic -->
 
-        <stereo id="stereotype-name-product">
+        <stereo id="stereotype-name-product" primary="yes">
             <name lang="en">Product</name>
             <name lang="nl">Product</name>
             <desc lang="nl">TODO</desc>
             <construct>class</construct>
             <toplevel>true</toplevel>
         </stereo>
-        <stereo id="stereotype-name-service">
+        <stereo id="stereotype-name-service" primary="yes">
             <name lang="en">Service</name>
             <name lang="nl">Service</name>
             <desc lang="nl">TODO</desc>
             <construct>class</construct>
             <toplevel>true</toplevel>
         </stereo>
-        <stereo id="stereotype-name-process">
+        <stereo id="stereotype-name-process" primary="yes">
             <name lang="en">Process</name>
             <name lang="nl">Process</name>
             <desc lang="nl">TODO</desc>
@@ -163,19 +163,19 @@
         </stereo>
         
         <!-- REDMINE #487891 -->
-        <stereo id="stereotype-name-att-proxy">
+        <stereo id="stereotype-name-att-proxy" primary="yes">
             <name lang="nl">Attribuutsoort_proxy</name>
             <name lang="en">AttributeTypeProxy</name>
             <desc lang="nl">A proxy is TODO</desc>
             <construct>attribute</construct>
         </stereo>
-        <stereo id="stereotype-name-obj-proxy">
+        <stereo id="stereotype-name-obj-proxy" primary="yes">
             <name lang="nl">Objecttype_proxy</name>
             <name lang="en">FeatureTypeProxy</name>
             <desc lang="nl">A proxy is TODO</desc>
             <construct>class</construct>
         </stereo>
-        <stereo id="stereotype-name-grp-proxy">
+        <stereo id="stereotype-name-grp-proxy" primary="yes">
             <name lang="nl">Gegevensgroeptype_proxy</name>
             <name lang="en">AttributeGroupProxy</name>
             <desc lang="nl">A proxy is TODO</desc>

@@ -267,7 +267,7 @@
                 
                 <stereotypes>
                     <xsl:for-each-group select="$metamodel//stereotypes/stereo" group-by="@id">
-                        <stereo id="{current-grouping-key()}">
+                        <stereo id="{current-grouping-key()}" primary="{(current-group()/@primary)[last()]}">
                             <xsl:variable name="stereo-group" select="current-group()"/>
                             <xsl:apply-templates select="imf:distinct($stereo-group/name[@lang=($language,'#all')])" mode="#current"/> 
                             <xsl:apply-templates select="($stereo-group/desc[@lang=($language,'#all')])[last()]" mode="#current"/>

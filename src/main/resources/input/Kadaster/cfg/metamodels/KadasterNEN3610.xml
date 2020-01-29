@@ -75,13 +75,13 @@
             <construct>class</construct>
         </stereo>
         
-        <stereo id="stereotype-name-koppelklasse">
+        <stereo id="stereotype-name-koppelklasse" primary="yes">
             <name lang="nl">Koppelklasse</name>
             <name lang="en">LinkType</name>
             <construct>class</construct>
         </stereo>
     
-        <stereo id="stereotype-name-meervoudige-relatieklasse">
+        <stereo id="stereotype-name-meervoudige-relatieklasse" primary="yes">
             <name lang="nl">Meervoudige Relatieklasse</name>
             <name lang="en">MultipleAssociationClass</name>
             <desc lang="nl">	
@@ -97,19 +97,19 @@
             <construct>class</construct>
         </stereo>
         
-        <stereo id="stereotype-name-static-liskov">
+        <stereo id="stereotype-name-static-liskov" primary="yes">
             <name lang="nl">Static liskov</name>
             <name lang="en">StaticLiskov</name>
             <construct>generalization</construct>
         </stereo>
         
-        <stereo id="stereotype-name-static-generalization">
+        <stereo id="stereotype-name-static-generalization" primary="yes">
             <name lang="nl">Static</name>
             <name lang="en">Static</name>
             <construct>generalization</construct>
         </stereo>
         
-        <stereo id="stereotype-name-dynamic-generalization">
+        <stereo id="stereotype-name-dynamic-generalization" primary="yes">
             <name lang="nl">Dynamisch</name>
             <name lang="en">Dynamic</name>
             <construct>generalization</construct>

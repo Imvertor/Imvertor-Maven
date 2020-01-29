@@ -56,7 +56,7 @@
             For each stereotype, define a formal name, the name(s) in UML, description, the construct(s) to which the stereotype applies, and possible rules.
         -->
         
-        <stereo id="stereotype-name-external-objecttype">
+        <stereo id="stereotype-name-external-objecttype" primary="yes">
             <name lang="nl">extern</name>
             <name lang="en">external</name>
             <desc lang="en">

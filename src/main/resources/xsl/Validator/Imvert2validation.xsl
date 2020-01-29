@@ -172,9 +172,13 @@
                 $unique-normalized-class-names = 'model' and exists($c), 
                 'Multiple constructs with same name: [1]  found in model', 
                 imf:string-group(for $cc in $c return imf:get-display-name($cc)))"/>
-                
+            
             <!-- determine if all constructs are unique -->
             <xsl:apply-templates select="*" mode="unique-id"/>
+            
+            <!-- determine of all stereotypes may be combined -->
+            
+            <xsl:sequence select="for $construct in .//imvert:*[imvert:stereotype] return imf:check-primary-stereotypes($construct)"/>
             
             <!-- process the application package -->
             <xsl:apply-templates select="imvert:package"/>
@@ -395,11 +399,14 @@
     <xsl:template match="imvert:package[imf:member-of(.,$external-package)]">
         <!--setup-->
         <!--validation -->
+        <?x
         <xsl:sequence select="imf:report-error(., 
             imvert:stereotype/@id = ('stereotype-name-external-package') and 
             not(imf:is-conceptual(.)) and 
             not(normalize-space(imvert:location)), 
             'External non-conceptual packages must have a location tagged value',())"/>
+        x?>
+        
         <!-- check as regular package -->
         <xsl:next-match/>
     </xsl:template>
@@ -425,7 +432,9 @@
         <!--setup-->
         <xsl:variable name="this" select="."/>
         <xsl:variable name="packs-with-same-short-name" select="$schema-packages[imvert:short-name = $this/imvert:short-name]"/>
+        
         <!--validation -->
+        
         <!-- IM-85 -->
         <xsl:sequence select="imf:report-error(., 
             (count($packs-with-same-short-name) gt 1), 
@@ -986,6 +995,11 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <xsl:template match="imvert:association">
+        
+        <xsl:next-match/>  
+    </xsl:template>
+    
     <xsl:template match="imvert:position">
         <!--setup-->
         <xsl:variable name="position" select="."/>
@@ -1508,4 +1522,13 @@
         </xsl:for-each-group>
     </xsl:function>
     
+    <xsl:function name="imf:check-primary-stereotypes">
+        <xsl:param name="this"/>
+        <xsl:variable name="stereo-ids" select="$this/imvert:stereotype/@id"/>
+        <xsl:variable name="stereo-primary-ids" select="if (count($stereo-ids) gt 1) then (for $s in $stereo-ids return if (imf:get-config-stereotype-is-primary($s)) then $s else ()) else ()"/>
+        <xsl:sequence select="imf:report-error($this, 
+            (count($stereo-primary-ids) gt 1), 
+            'Invalid combination of stereotypes: [1]', imf:string-group(for $s in $stereo-primary-ids return imf:get-config-name-by-id($s)))"/>
+                    
+    </xsl:function>
 </xsl:stylesheet>

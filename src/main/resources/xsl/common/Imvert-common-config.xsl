@@ -116,6 +116,12 @@
         <xsl:sequence select="imf:boolean($v/toplevel)"/>
     </xsl:function>
     
+    <!-- true when any stereotype passed identifies a primary construct, i.e. the stereotype is the primary way to describe the construct and cannot be mixed with other primary stereotypes -->
+    <xsl:function name="imf:get-config-stereotype-is-primary" as="xs:boolean">
+        <xsl:param name="id" as="xs:string"/>
+        <xsl:sequence select="imf:boolean(normalize-space($configuration-metamodel-file//stereotypes/stereo[@id = $id]/@primary))"/>
+    </xsl:function>
+    
     <xsl:function name="imf:get-config-stereotypes" as="xs:string*">
         <xsl:param name="names" as="xs:string*"/>
         <xsl:param name="must-exist" as="xs:boolean"/>
