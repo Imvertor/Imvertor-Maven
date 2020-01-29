@@ -105,6 +105,9 @@
             <xsl:when test="../imvert:baretype">
                <!-- remove -->
             </xsl:when>
+            <xsl:when test="../imvert:type-package/@origin = 'OUTSIDE'">
+                <!-- remove -->
+            </xsl:when>
             <xsl:when test=". eq $type-package/imvert:name">
                 <xsl:copy-of select="."/>
             </xsl:when>
