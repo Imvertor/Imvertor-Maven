@@ -25,6 +25,8 @@
     
     <xsl:variable name="has-multiple-domains" select="count(/book/chapter/section[@type='DOMAIN']) gt 1"/>
     
+    <xsl:variable name="document-ids" select="for $id in //@id return string($id)"/>
+
     <xsl:template match="/book/chapter">
         <section id='{@type}' class="normative"> 
             <h2>
@@ -575,7 +577,7 @@
                     <xsl:apply-templates mode="#current"/>
                 </a>
             </xsl:when>
-            <xsl:when test="exists(@idref)">
+            <xsl:when test="exists(@idref) and imf:is-valid-idref(@idref)">
                 <a class="link" href="#{@idref}">
                     <xsl:apply-templates mode="#current"/>
                 </a>
@@ -626,11 +628,9 @@
         <xsl:if test="$section-or-item/@uuid">
             <a class="anchor" name="graph_{$section-or-item/@uuid}"/>
         </xsl:if>
-        <!--
         <xsl:if test="$section-or-item/@id">
             <a class="anchor" name="{$section-or-item/@id}"/>
         </xsl:if>
-        -->
     </xsl:function>
     
     <xsl:function name="imf:get-section-level" as="xs:integer">
@@ -660,6 +660,11 @@
             <xsl:sequence select="' '"/>
             <xsl:sequence select="$name"/>
         </xsl:element>
+    </xsl:function>
+    
+    <xsl:function name="imf:is-valid-idref" as="xs:boolean">
+        <xsl:param name="idref" as="xs:string"/>
+        <xsl:sequence select="$document-ids = $idref"/>
     </xsl:function>
     
 </xsl:stylesheet>
