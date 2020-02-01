@@ -5,10 +5,10 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
     <!-- 
-        EIGENAAR follows NEN3610
+        LOGICAL follows CONCEPTUAL
     --> 
-    <xi:include href="../../../Geonovum/cfg/tvsets/NEN3610.xml"/>  
+    <xi:include href="EIGENAAR-CONCEPTUAL.xml"/>  
     
-    <name>EIGENAAR CONCEPTUEEL</name>
+    <name>EIGENAAR LOGISCH</name>
     
 </tagset>

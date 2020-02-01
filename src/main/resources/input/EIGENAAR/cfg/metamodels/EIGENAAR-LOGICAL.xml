@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- 
+        EIGENAAR follows KKG ISO (alt 2)
+        
+        Including scalars.
+    --> 
+    <xi:include href="EIGENAAR-CONCEPTUAL.xml"/>
+    
+    <name>EIGENAAR LOGISCH</name>
+    
+</metamodel>

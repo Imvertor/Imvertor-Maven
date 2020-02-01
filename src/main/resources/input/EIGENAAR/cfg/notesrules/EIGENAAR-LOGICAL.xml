@@ -4,8 +4,8 @@
 -->
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../KKG/cfg/notesrules/KKG-ISO.xml"/>
+    <xi:include href="EIGENAAR-CONCEPTUAL.xml"/>
     
-    <name>EIGENAAR</name> 
+    <name>EIGENAAR LOGISCH</name> 
     
 </notes-rules>

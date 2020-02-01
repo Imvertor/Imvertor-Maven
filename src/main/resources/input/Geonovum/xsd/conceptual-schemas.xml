@@ -527,9 +527,7 @@
                   </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>TimePeriod</cs:name>
-                        <cs:asAttribute>TimePeriodType</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:name>MeasureType</cs:name>
                         <cs:primitive>false</cs:primitive>
                         <cs:hasNilreason>false</cs:hasNilreason>
                      </cs:XsdType>

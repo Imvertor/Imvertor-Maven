@@ -10,7 +10,7 @@
     --> 
     <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
     
-    <name>EIGENAAR</name>
+    <name>EIGENAAR CONCEPTUEEL</name>
     
     <profiles>
         <profile lang="nl"> 
