@@ -36,6 +36,53 @@
 	<xsl:variable name="check-scalar-derivation" select="imf:boolean(imf:get-config-parameter('derivation-client-scalar-check'))"/>
 	
 	<!-- 
+		Combine all tagged values. 
+		This returns the HTML for the tagged value with special markers between the derived value parts. 
+	-->
+	<xsl:function name="imf:get-compiled-tagged-value-as-html" as="item()*">
+		<xsl:param name="construct" as="element()"/> <!-- any construct that may have tagged values -->
+		<xsl:param name="tv-ids" as="xs:string+"/>
+		
+		<xsl:variable name="tvs" select="imf:get-all-compiled-tagged-values($construct,true())" as="element(tv)*"/>
+		
+		<xsl:for-each select="$tv-ids">
+			<xsl:variable name="tv" select="$tvs[@id = current()]"/>
+			<xsl:if test="empty($tv)">
+				<html:p><!-- not found--></html:p>
+			</xsl:if>
+			<xsl:for-each select="$tvs[@id = current()]">
+				<xsl:choose>
+					<xsl:when test="position() = 1">
+						<!-- first is the construct passed -->
+						<xsl:sequence select="imf:get-compiled-tagged-value-as-html-show-value(.)"/>
+					</xsl:when>
+					<xsl:when test="imf:boolean($derive-documentation)">
+						<html:p class="supplierMark">
+							<xsl:value-of select="concat(imf:get-config-parameter('documentation-separator'),@application,' (', @release, ')',imf:get-config-parameter('documentation-separator'))"/>
+						</html:p>
+						<xsl:sequence select="imf:get-compiled-tagged-value-as-html-show-value(.)"/>
+					</xsl:when>
+				</xsl:choose>
+			</xsl:for-each>
+		</xsl:for-each>
+		
+	</xsl:function>
+	
+	<xsl:function name="imf:get-compiled-tagged-value-as-html-show-value" as="item()*">
+		<xsl:param name="tv" as="element(tv)"/>
+		<xsl:choose>
+			<xsl:when test="$tv/*">
+				<xsl:sequence select="$tv/node()"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<html:p>
+					<xsl:value-of select="$tv"/>
+				</html:p>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:function>
+	
+	<!-- 
 		Combine all imvert documentation elements. 
 		This returns the HTML for the documentation with special markers between the derived documentation parts. 
 	-->

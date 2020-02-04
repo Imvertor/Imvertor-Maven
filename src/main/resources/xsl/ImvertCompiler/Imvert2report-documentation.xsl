@@ -127,7 +127,7 @@
                         <xsl:apply-templates select="." mode="documentation"/>
                     </xsl:for-each> 
                 </xsl:variable>
-                <xsl:sequence select="imf:create-result-table($rows,'construct:30,documentation:70','table-doc')"/>
+                <xsl:sequence select="imf:create-result-table($rows,'construct:25,definition:25,description:25,explanation:25,','table-doc')"/>
             </content>
         </page>
     </xsl:template>
@@ -135,7 +135,9 @@
     <xsl:template match="imvert:package | imvert:class | imvert:attribute | imvert:association" mode="documentation">
         <row xmlns="">
             <xsl:sequence select="imf:create-output-element('cell',imf:get-compiled-name-struct(.),$empty, false())"/>
-            <xsl:sequence select="imf:create-output-element('cell',imf:get-compiled-documentation-as-html(.),$empty, false())"/>
+            <xsl:sequence select="imf:create-output-element('cell',imf:get-compiled-tagged-value-as-html(.,'CFG-TV-DEFINITION'),$empty, false())"/>
+            <xsl:sequence select="imf:create-output-element('cell',imf:get-compiled-tagged-value-as-html(.,'CFG-TV-DESCRIPTION'),$empty, false())"/>
+            <xsl:sequence select="imf:create-output-element('cell',imf:get-compiled-tagged-value-as-html(.,'CFG-TV-EXPLANATION'),$empty, false())"/>
         </row>
         <xsl:for-each select="imvert:class | imvert:attributes/imvert:attribute | imvert:associations/imvert:association">
             <xsl:sort select="imvert:name" order="ascending"/>

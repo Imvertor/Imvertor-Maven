@@ -29,5 +29,10 @@
     <notes-rule lang="nl">
         <section title="Voorbeeld" tagged-value="CFG-TV-EXAMPLE" process="lines"/>
     </notes-rule>
+ 
+    <notes-rule lang="nl">
+        <section title="Uitleg" tagged-value="CFG-TV-EXPLANATION" process="lines"/>
+    </notes-rule>
+    
     
 </notes-rules>
