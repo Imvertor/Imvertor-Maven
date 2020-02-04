@@ -493,8 +493,8 @@
             <xsl:when test="$unit-ucum = 'm/(24.h)'">m/24h (meters per etmaal)</xsl:when>
             <xsl:when test="$unit-ucum = 'mm'">mm (millimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'mm2'">mm2 (vierkante millimeter)</xsl:when>
-            <xsl:when test="$unit-ucum = 'MPa'">MPa (megaPascal)</xsl:when>
-            <xsl:when test="$unit-ucum = 'nT'">nT (nanoTesla)</xsl:when>
+            <xsl:when test="$unit-ucum = 'MPa'">MPa (megapascal)</xsl:when>
+            <xsl:when test="$unit-ucum = 'nT'">nT (nanotesla)</xsl:when>
             <xsl:when test="$unit-ucum = 's'">s (seconde)</xsl:when>
             <xsl:when test="$unit-ucum = 'S/m'">S/m (Siemens/meter)</xsl:when>
           
@@ -511,6 +511,8 @@
             <xsl:when test="$unit-ucum = 'cm-1'">cm-1 (per centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'g/kg'">g/kg (gram per kilogram)</xsl:when>
           
+            <xsl:when test="$unit-ucum = 'cm3/cm3'">kubieke centimeter/kubieke centimeter</xsl:when>
+            
             <xsl:otherwise>
                 <xsl:value-of select="$unit-ucum"/>
             </xsl:otherwise>
