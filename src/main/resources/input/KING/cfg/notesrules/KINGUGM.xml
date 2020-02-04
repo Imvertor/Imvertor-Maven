@@ -10,8 +10,14 @@
     
     <notes-format>markdown</notes-format><!-- plain, markdown, mediawiki -->
     
-    <notes-rule lang="nl" default="Omschrijving">
+    <notes-rule lang="nl" default="Definitie">
+        <section title="Definitie" tagged-value="CFG-TV-DEFINITION">
+            <!-- no labels -->
+        </section>
         <section title="Omschrijving" tagged-value="CFG-TV-DESCRIPTION">
+            <!-- no labels -->
+        </section>
+        <section title="Patroon" tagged-value="CFG-TV-FORMALPATTERN">
             <!-- no labels -->
         </section>
     </notes-rule>
