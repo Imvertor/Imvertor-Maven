@@ -29,16 +29,11 @@
                 <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
                 <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
-                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
-                <stereo minmax="0..1">stereotype-name-codelist</stereo>
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
                 <stereo minmax="0..1">stereotype-name-union</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
                 <stereo minmax="0..1">stereotype-name-union-element</stereo>
-                <stereo minmax="0..1">stereotype-name-enum</stereo>
-                <stereo minmax="0..1">stereotype-name-external-package</stereo>
-                <stereo minmax="0..1">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
         
