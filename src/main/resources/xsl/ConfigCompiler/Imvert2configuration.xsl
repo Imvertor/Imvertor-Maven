@@ -380,6 +380,7 @@
                 <xsl:apply-templates select="($doc-rules//show-properties)[last()]" mode="#current"/>
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
+                    <xsl:sort select="@order" order="ascending"/>
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>
                 <xsl:for-each-group select="$doc-rules//image-purpose[name/@lang=($language,'#all')]" group-by="@id">

@@ -69,7 +69,7 @@
         </levels>
     </doc-rule>
     
-    <doc-rule id="CFG-DOC-NAAM">
+   <doc-rule id="CFG-DOC-NAAM" order="000">
         <!-- 
             you may specify @lang on the name; in that case, that name will appear in documentation for that language.
         -->
@@ -90,7 +90,8 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -102,9 +103,11 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
+   
+       
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-ALTERNATIEVENAAM">
+    <doc-rule id="CFG-DOC-ALTERNATIEVENAAM" order="010">
         <name lang="nl">Alternatieve naam</name>
         <name lang="en">Alternative name</name>
         <levels>
@@ -113,11 +116,12 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-MNEMONIC">
+    <doc-rule id="CFG-DOC-MNEMONIC" order="020">
         <name lang="nl">Mnemonic</name>
         <name lang="en">Mnemonic</name>
         <levels>
@@ -126,7 +130,7 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-HERKOMST">
+    <doc-rule id="CFG-DOC-HERKOMST" order="030">
         <name lang="nl">Herkomst</name>
         <name lang="en">Origin</name>
         <levels>
@@ -135,7 +139,9 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -147,7 +153,7 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-DEFINITIE">
+    <doc-rule id="CFG-DOC-DEFINITIE" order="040">
         <name lang="nl">Definitie</name>
         <name lang="en">Definition</name>
         <levels>
@@ -156,8 +162,10 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REGISTRATIEOBJECT</level><!-- special case! -->
             
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
@@ -170,7 +178,7 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-HERKOMSTDEFINITIE">
+    <doc-rule id="CFG-DOC-HERKOMSTDEFINITIE" order="050">
         <name lang="nl">Herkomst definitie</name>
         <name lang="en">Origin of definition</name>
         <levels>
@@ -179,7 +187,8 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -193,7 +202,7 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-TOELICHTING">
+    <doc-rule id="CFG-DOC-TOELICHTING" order="200">
         <name lang="nl">Toelichting</name>
         <name lang="en">Explanation</name>
         <levels>
@@ -202,7 +211,8 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -217,14 +227,7 @@
         </levels>
     </doc-rule>
     
-    <doc-rule id="CFG-DOC-MNEMONIC">
-        <name lang="nl">Mnemonic</name>
-        <name lang="en">Mnemonic</name>
-        <levels>
-           <!-- NERGENS? -->
-        </levels>
-    </doc-rule>
-    <doc-rule id="CFG-DOC-MOGELIJKGEENWAARDE">
+    <doc-rule id="CFG-DOC-MOGELIJKGEENWAARDE" order="130">
         <name lang="nl">Mogelijk geen waarde</name>
         <name lang="en">Voidable</name>
         <levels>
@@ -235,9 +238,9 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEMATERIELEHISTORIE">
-        <name lang="nl">Indicatie materiële historie</name>
-        <name lang="en">Indication material history</name>
+    <doc-rule id="CFG-DOC-EXPLAINNOVALUE" order="140">
+        <name lang="nl">Reden geen waarde</name>
+        <name lang="en">Void reason</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
@@ -246,9 +249,10 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEFORMELEHISTORIE">
-        <name lang="nl">Indicatie formele historie</name>
-        <name lang="en">Indication formal history</name>
+    
+    <doc-rule id="CFG-DOC-INDICATIEMATERIELEHISTORIE" order="080">
+        <name lang="nl">Materiële geschiedenis</name>
+        <name lang="en">Material history</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
@@ -257,7 +261,18 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEINONDERZOEK">
+    <doc-rule id="CFG-DOC-INDICATIEFORMELEHISTORIE" order="090">
+        <name lang="nl">Formele geschiedenis</name>
+        <name lang="en">Formal history</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-INDICATIEINONDERZOEK" order="100">
         <name lang="nl">Indicatie in onderzoek</name>
         <name lang="en">Indication under investigation</name>
         <levels>
@@ -268,7 +283,7 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-AANDUIDINGSTRIJDIGHEIDNIETIGHEID">
+    <doc-rule id="CFG-DOC-AANDUIDINGSTRIJDIGHEIDNIETIGHEID" order="110">
         <name lang="nl">Aanduiding strijdigheid/nietigheid</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -278,7 +293,7 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEKARDINALITEIT">
+    <doc-rule id="CFG-DOC-INDICATIEKARDINALITEIT" order="070">
         <name lang="nl">Indicatie kardinaliteit</name>
         <name lang="en">Indication multiplicity</name>
         <levels>
@@ -292,9 +307,9 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEAUTHENTIEK">
-        <name lang="nl">Indicatie authentiek</name>
-        <name lang="en">Indication authentic</name>
+    <doc-rule id="CFG-DOC-INDICATIEAUTHENTIEK" order="060">
+        <name lang="nl">Juridische status</name>
+        <name lang="en">Legal status</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
@@ -304,17 +319,35 @@
         </levels>
     </doc-rule>
     
-    <doc-rule id="CFG-DOC-REGELS">
+    <doc-rule id="CFG-DOC-REGELS" order="120">
         <name lang="nl">Regels</name>
         <name lang="en">Rules</name>
         <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-OBJECTTYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>        </levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>        
+        </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-PATROON">
+    <doc-rule id="CFG-DOC-REGELS-IMBROA" order="125">
+        <name lang="nl">Regels IMBRO/A</name>
+        <name lang="en">Rules IMBRO/A</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-OBJECTTYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>        
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-PATROON" order="150">
         <name lang="nl">Patroon</name>
         <name lang="en">Pattern</name>
         <levels>
@@ -323,9 +356,26 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-FORMAAT">
+    <doc-rule id="CFG-DOC-FORMEELPATROON" order="160">
+        <name lang="nl">Formeel patroon</name>
+        <name lang="en">Formal pattern</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-FORMAAT" order="170">
         <name lang="nl">Formaat</name>
         <name lang="en">Format</name>
         <levels>
@@ -336,27 +386,66 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-RELATIESOORT">
+    <doc-rule id="CFG-DOC-LENGTH" order="180">
+        <name lang="nl">Lengte</name>
+        <name lang="en">Length</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-DOMAIN-IMBROA" order="190">
+        <name lang="nl">Formaat IMBRO/A</name>
+        <name lang="en">Format IMBRO/A</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-RELATIESOORT" order="210">
         <name lang="nl">Relatiesoort</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-GERELATEERDOBJECTTYPE">
+    <doc-rule id="CFG-DOC-GERELATEERDOBJECTTYPE" order="220">
         <name lang="nl">Gerelateerd objecttype</name>
         <name lang="en">Associated objecttype</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEAFLEIDBAAR">
-        <name lang="nl">Indicatie afleidbaar</name>
-        <name lang="en">May be derived</name>
+    <doc-rule id="CFG-DOC-INDICATIEAFLEIDBAAR" order="230">
+        <name lang="nl">Is afgeleid</name>
+        <name lang="en">Is derived</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-TRACE">
+    <doc-rule id="CFG-DOC-UNITOFMEASURE" order="240">
+        <name lang="nl">Meeteenheid</name>
+        <name lang="en">Unit of measure</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MINIMUMVALUE" order="250">
+        <name lang="nl">Minimumwaarde</name>
+        <name lang="en">MinInclusive</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MAXIMUMVALUE" order="260">
+        <name lang="nl">Maximumwaarde</name>
+        <name lang="en">MaxInclusive</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-TRACE" order="270">
         <name lang="nl">Onderliggende constructies</name>
         <name lang="en">Underlying constructs</name>
         <levels>
@@ -365,7 +454,8 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -378,5 +468,13 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-POPULATIE" order="280">
+        <name lang="nl">Populatie</name>
+        <name lang="en">Population</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REGISTRATIEOBJECT</level><!-- special case! -->
+        </levels>
+    </doc-rule>
+    
     
 </doc-rules>

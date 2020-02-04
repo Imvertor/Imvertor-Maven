@@ -25,7 +25,7 @@
         <marker lang="en">detail</marker>
     </image-purpose>
     
-    <doc-rule id="CFG-DOC-NORMNAAM">
+    <doc-rule id="CFG-DOC-NORMNAAM" order="000">
         <name lang="nl">Naam (genormaliseerd)</name>
         <name lang="en">Name (normalized)</name>
         <levels>
@@ -33,7 +33,7 @@
         </levels>
     </doc-rule>
     
-    <doc-rule id="CFG-DOC-NAAM">
+    <doc-rule id="CFG-DOC-NAAM" order="005">
         <!-- 
             you may specify @lang on the name; in that case, that name will appear in documentation for that language.
         -->
@@ -69,14 +69,14 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-ALTERNATIEVENAAM">
+    <doc-rule id="CFG-DOC-ALTERNATIEVENAAM" order="010">
         <name lang="nl">Alternatieve naam</name>
         <name lang="en">Alternative name</name>
         <levels>
            <!-- none -->
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-MNEMONIC">
+    <doc-rule id="CFG-DOC-MNEMONIC" order="020">
         <name lang="nl">Mnemonic</name>
         <name lang="en">Mnemonic</name>
         <levels>
@@ -85,14 +85,14 @@
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-GERELATEERDOBJECTTYPE">
+    <doc-rule id="CFG-DOC-GERELATEERDOBJECTTYPE" order="030">
         <name lang="nl">Gerelateerd objecttype</name>
         <name lang="en">Associated objecttype</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-HERKOMST">
+    <doc-rule id="CFG-DOC-HERKOMST" order="040">
         <name lang="nl">Herkomst</name>
         <name lang="en">Origin</name>
         <levels>
@@ -114,7 +114,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-DEFINITIE">
+    <doc-rule id="CFG-DOC-DEFINITIE" order="050">
         <name lang="nl">Definitie</name>
         <name lang="en">Definition</name>
         <levels>
@@ -138,7 +138,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-HERKOMSTDEFINITIE">
+    <doc-rule id="CFG-DOC-HERKOMSTDEFINITIE" order="060">
         <name lang="nl">Herkomst definitie</name>
         <name lang="en">Origin of definition</name>
         <levels>
@@ -162,7 +162,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-DATUMOPNAME">
+    <doc-rule id="CFG-DOC-DATUMOPNAME" order="070">
         <name lang="nl">Datum opname</name>
         <name lang="en">Date</name>
         <levels>
@@ -185,7 +185,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-DATALOCATIE">
+    <doc-rule id="CFG-DOC-DATALOCATIE" order="080">
         <name lang="nl">Data locatie</name>
         <name lang="en">Data location</name>
         <levels>
@@ -193,7 +193,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-UNIEKEAANDUIDING">
+    <doc-rule id="CFG-DOC-UNIEKEAANDUIDING" order="090">
         <name lang="nl">Unieke aanduiding</name>
         <name lang="en">Identifier</name>
         <levels>
@@ -203,7 +203,7 @@
             <!--<level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>-->
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-POPULATIE">
+    <doc-rule id="CFG-DOC-POPULATIE" order="100">
         <name lang="nl">Populatie</name>
         <name lang="en">Population</name>
         <levels>
@@ -212,7 +212,7 @@
            <!-- <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level> -->
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-KWALITEITSBEGRIP">
+    <doc-rule id="CFG-DOC-KWALITEITSBEGRIP" order="110">
         <name lang="nl">Kwaliteit</name>
         <name lang="en">Quality</name>
         <levels>
@@ -221,7 +221,7 @@
           <!--  <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level> -->
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEABSTRACTOBJECT">
+    <doc-rule id="CFG-DOC-INDICATIEABSTRACTOBJECT" order="120">
         <name lang="nl">Indicatie abstract object</name>
         <name lang="en">Abstract object</name>
         <levels>
@@ -229,7 +229,7 @@
         </levels>
     </doc-rule>
     
-    <doc-rule id="CFG-DOC-MNEMONIC">
+    <doc-rule id="CFG-DOC-MNEMONIC" order="130">
         <name lang="nl">Mnemonic</name>
         <name lang="en">Mnemonic</name>
         <levels>
@@ -237,7 +237,7 @@
         </levels>
     </doc-rule>
     
-    <doc-rule id="CFG-DOC-MOGELIJKGEENWAARDE">
+    <doc-rule id="CFG-DOC-MOGELIJKGEENWAARDE" order="140">
         <name lang="nl">Mogelijk geen waarde</name>
         <name lang="en">Voidable</name>
         <levels>
@@ -248,7 +248,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEMATERIELEHISTORIE">
+    <doc-rule id="CFG-DOC-INDICATIEMATERIELEHISTORIE" order="150">
         <name lang="nl">Indicatie materiële historie</name>
         <name lang="en">Indication material history</name>
         <levels>
@@ -259,7 +259,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEFORMELEHISTORIE">
+    <doc-rule id="CFG-DOC-INDICATIEFORMELEHISTORIE" order="160">
         <name lang="nl">Indicatie formele historie</name>
         <name lang="en">Indication formal history</name>
         <levels>
@@ -270,7 +270,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEINONDERZOEK">
+    <doc-rule id="CFG-DOC-INDICATIEINONDERZOEK" order="170">
         <name lang="nl">Indicatie in onderzoek</name>
         <name lang="en">Indication under investigation</name>
         <levels>
@@ -281,7 +281,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-AANDUIDINGSTRIJDIGHEIDNIETIGHEID">
+    <doc-rule id="CFG-DOC-AANDUIDINGSTRIJDIGHEIDNIETIGHEID" order="180">
         <name lang="nl">Aanduiding strijdigheid/nietigheid</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -291,7 +291,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEKARDINALITEIT">
+    <doc-rule id="CFG-DOC-INDICATIEKARDINALITEIT" order="190">
         <name lang="nl">Indicatie kardinaliteit</name>
         <name lang="en">Indication multiplicity</name>
         <levels>
@@ -305,7 +305,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEAUTHENTIEK">
+    <doc-rule id="CFG-DOC-INDICATIEAUTHENTIEK" order="200">
         <name lang="nl">Indicatie authentiek</name>
         <name lang="en">Indication authentic</name>
         <levels>
@@ -317,7 +317,7 @@
         </levels>
     </doc-rule>
     
-    <doc-rule id="CFG-DOC-REGELS">
+    <doc-rule id="CFG-DOC-REGELS" order="210">
         <name lang="nl">Regels</name>
         <name lang="en">Rules</name>
         <levels>
@@ -325,9 +325,10 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
-            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>        </levels>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>      
+        </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-FORMAAT">
+    <doc-rule id="CFG-DOC-FORMAAT" order="220">
         <name lang="nl">Formaat</name>
         <name lang="en">Format</name>
         <levels>
@@ -338,7 +339,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-PATROON">
+    <doc-rule id="CFG-DOC-PATROON" order="230">
         <name lang="nl">Patroon</name>
         <name lang="en">Pattern</name>
         <levels>
@@ -351,34 +352,34 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-FORMEELPATROON">
+    <doc-rule id="CFG-DOC-FORMEELPATROON" order="240">
         <name lang="nl">Formeel patroon</name>
         <name lang="en">Formal pattern</name>
         <levels>
             <!-- NOT FOR SIM -->
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-RELATIESOORT">
+    <doc-rule id="CFG-DOC-RELATIESOORT" order="250">
         <name lang="nl">Relatiesoort</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-INDICATIEAFLEIDBAAR">
+    <doc-rule id="CFG-DOC-INDICATIEAFLEIDBAAR" order="260">
         <name lang="nl">Indicatie afleidbaar</name>
         <name lang="en">May be derived</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-WAARDEAFLEIDBAAR">
+    <doc-rule id="CFG-DOC-WAARDEAFLEIDBAAR" order="270">
         <name lang="nl">Waarde afleidbaar</name>
         <name lang="en">Value may be derived</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-TRACE">
+    <doc-rule id="CFG-DOC-TRACE" order="280">
         <name lang="nl">Onderliggende constructies</name>
         <name lang="en">Underlying constructs</name>
         <levels>

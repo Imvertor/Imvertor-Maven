@@ -22,6 +22,8 @@
         <section title="Concept" tagged-value="CFG-TV-CONCEPT" process="lines">
             <!-- content is URI; may be several lines where each line holds a TV value  -->
         </section>
+        <section title="Explanation" tagged-value="CFG-TV-EXPLANATION" process="lines"/>
+
     </notes-rule>
     
     <notes-rule lang="nl" default="Definitie">
@@ -34,6 +36,7 @@
         <section title="Begrip" tagged-value="CFG-TV-CONCEPT" process="lines">
             <!-- content is URI; may be several lines where each line holds a TV value  -->
         </section>
+        <section title="Uitleg" tagged-value="CFG-TV-EXPLANATION" process="lines"/>
     </notes-rule>
     
 </notes-rules>

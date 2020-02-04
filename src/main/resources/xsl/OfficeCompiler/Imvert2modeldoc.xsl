@@ -1040,6 +1040,9 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-TOELICHTING'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DESCRIPTION'))"/>
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-UITLEG'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-EXPLANATION'))"/>
+                </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-VOORBEELD'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-EXAMPLE'))"/>
                 </xsl:when>
