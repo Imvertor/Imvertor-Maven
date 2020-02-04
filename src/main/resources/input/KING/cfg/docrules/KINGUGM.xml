@@ -4,8 +4,6 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="KING.xml"/>
-    
     <xi:include href="KINGSIM.xml"/>
     
     <name>KING UGM</name>
