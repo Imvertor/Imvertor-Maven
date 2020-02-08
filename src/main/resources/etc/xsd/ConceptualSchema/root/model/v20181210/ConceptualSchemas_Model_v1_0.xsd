@@ -178,6 +178,16 @@
                </xs:restriction>
             </xs:simpleType>
          </xs:element>
+         <xs:element name="originalName" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The original (display) name of the Construct.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
          <xs:element name="desc" minOccurs="0" maxOccurs="1">
             <xs:simpleType>
                <xs:restriction base="xs:string">

@@ -199,15 +199,17 @@
             </xsl:when>
             <xsl:when test="imf:is-conceptual($class)">
                 <!-- class in a conceptual schema package -->
+                <xsl:variable name="original-name" select="@original"/>
                 <xsl:variable name="map" select="imf:get-conceptual-schema-map($pack/imvert:namespace,$conceptual-schema-mapping-name)"/>
-                <xsl:variable name="mapped-xsd-type" select="$map/cs:constructs/cs:Construct[cs:name = current()/@original]/cs:xsdTypes/cs:XsdType"/>
+                <xsl:variable name="construct" select="$map/cs:constructs/cs:Construct[(cs:originalName,cs:name)[1] = $original-name]"/>
+                <xsl:variable name="mapped-xsd-type" select="$construct/cs:xsdTypes/cs:XsdType"/>
                 <xsl:choose>
                     <xsl:when test="empty($map)">
-                        <xsl:message>NO SUCH MAP <xsl:value-of select="$pack/imvert:namespace"/></xsl:message>
+                        <xsl:sequence select="imf:msg(..,'ERROR','Cannot determine the map for namespace [1]',($pack/imvert:namespace))"/>
                     </xsl:when>
-                    <xsl:when test="empty($map/cs:constructs/cs:Construct[cs:name = current()/@original])">
-                        <xsl:message>NO SUCH CONSTRUCT <xsl:value-of select="@original"/></xsl:message>
-                   </xsl:when>
+                    <xsl:when test="empty($construct)">
+                        <xsl:sequence select="imf:msg(..,'ERROR','Cannot find a construct [1] in the map for namespace [2]',($original-name, $pack/imvert:namespace))"/>
+                    </xsl:when>
                     <xsl:when test="$mapped-xsd-type">
                         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-type',.)"/>
                         <xsl:if test="imf:boolean($mapped-xsd-type/cs:primitive)">
@@ -227,11 +229,8 @@
                             </xsl:when>
                         </xsl:choose>
                     </xsl:when>
-                    <xsl:when test="empty($map)">
-                        <xsl:sequence select="imf:msg(..,'ERROR','Cannot determine the map for namespace [1]',($pack/imvert:namespace))"/>
-                    </xsl:when>
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:msg(..,'ERROR','Cannot resolve interface name [1] in namespace [2] when using mapping [3]',(.,$pack/imvert:namespace,$conceptual-schema-mapping-name))"/>
+                        <xsl:sequence select="imf:msg(..,'ERROR','Cannot resolve interface name [1] in namespace [2] when using mapping [3]',($original-name,$pack/imvert:namespace,$conceptual-schema-mapping-name))"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
