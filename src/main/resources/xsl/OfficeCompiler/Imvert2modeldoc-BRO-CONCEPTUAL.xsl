@@ -49,23 +49,18 @@
     <xsl:function name="imf:initialize-modeldoc" as="item()*">
         
         <!-- the abbreviation for the registration object must be set here; this is part of the path in GIT where the catalog is uploaded -->
-        <xsl:variable name="registratieobject" select="$imvert-document//imvert:class[imvert:name = ('Registratieobject','RegistrationObject')]"/>
-        <xsl:variable name="ro-abbrev" select="if (exists($registratieobject)) then imf:get-most-relevant-compiled-taggedvalue($registratieobject,'##CFG-TV-CODE') else ()" as="xs:string?"/>
-        <xsl:variable name="object" select="$configuration-registration-objects-doc//registratieobject[abbrev = $ro-abbrev]"/>
+        <xsl:variable name="abbrev" select="imf:get-tagged-value($imvert-document/*,'##CFG-TV-ABBREV')" as="xs:string?"/>
+        <xsl:variable name="object" select="$configuration-registration-objects-doc//registratieobject[abbrev = $abbrev]"/>
         
-        <!--check if known. -->
         <xsl:choose>
-            <xsl:when test="empty($registratieobject)">
-                <xsl:sequence select="imf:msg($imvert-document,'ERROR','No class with name [1] found',('Registratieobject'))"/>
-            </xsl:when>
-            <xsl:when test="empty($ro-abbrev)">
-                <xsl:sequence select="imf:msg($imvert-document,'ERROR','No code found for [1]',('Registratieobject'))"/>
+            <xsl:when test="empty($abbrev)">
+                <xsl:sequence select="imf:msg($imvert-document,'ERROR','No [1] found for this model',imf:get-config-name-by-id('CFG-TV-ABBREV'))"/>
             </xsl:when>
             <xsl:when test="empty($object)">
-                <xsl:sequence select="imf:msg($imvert-document,'ERROR','The abbreviation/code [1] is not valid',($ro-abbrev))"/>
+                <xsl:sequence select="imf:msg($imvert-document,'ERROR','The [1] value [2] is not valid',(imf:get-config-name-by-id('CFG-TV-ABBREV'), $abbrev))"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:set-config-string('appinfo','model-abbreviation',$ro-abbrev)"/>
+                <xsl:sequence select="imf:set-config-string('appinfo','model-abbreviation',$abbrev)"/>
             </xsl:otherwise>
         </xsl:choose>
         
