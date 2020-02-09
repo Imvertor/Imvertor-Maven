@@ -4,9 +4,9 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <name>KKG</name>
-    <desc lang="en">Metamodel for common constructs in MIM models</desc>
-    <desc lang="nl">Metamodel voor gemeenschappelijkheden in MIM modellen</desc>
+    <name>MIM 1.0</name>
+    <desc lang="en">Metamodel for common constructs in MIM 1.0 models</desc>
+    <desc lang="nl">Metamodel voor gemeenschappelijkheden in MIM 1.0 modellen</desc>
     
     <!-- 
         this metamodel is subject to standard Grouping conventions 
@@ -16,22 +16,22 @@
     <!-- 
         scalars specified separately 
     -->
-    <xi:include href="KKG-scalar.xml"/>
+    <xi:include href="MIM10-scalar.xml"/>
 
     <profiles>
         <profile lang="nl">
-            <id>KKGNL</id>
+            <id>MIM10NL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>KKG Grouping (NL)</desc> 
+            <desc>MIM10 Grouping (NL)</desc> 
         </profile>
         <profile lang="en">
-            <id>KKGEN</id>
+            <id>MIM10EN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>KKG Grouping (EN)</desc>
+            <desc>MIM10 Grouping (EN)</desc>
         </profile>
         
         <!-- and include the visual conventions -->     
-        <xi:include href="../../../KKG/cfg/visuals/KKG.xml"/>
+        <xi:include href="../../../MIM/cfg/visuals/MIM10.xml"/>
     
     </profiles>
     

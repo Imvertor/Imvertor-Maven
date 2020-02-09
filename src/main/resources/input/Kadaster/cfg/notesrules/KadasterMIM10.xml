@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../MIM/cfg/notesrules/MIM10-ISO.xml"/>
+    
+    <name>Kadaster MIM 1.0</name>
+  
+</notes-rules>
