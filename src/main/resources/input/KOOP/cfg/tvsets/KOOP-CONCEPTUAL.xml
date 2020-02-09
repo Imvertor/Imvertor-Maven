@@ -5,9 +5,9 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
     <!-- 
-        KOOP follows KKG ISO
+        KOOP follows MIM10 ISO
     --> 
-    <xi:include href="../../../KKG/cfg/tvsets/KKG-ISO.xml"/>
+    <xi:include href="../../../MIM/cfg/tvsets/MIM10-ISO.xml"/>
     
     <name>KOOP</name>
     

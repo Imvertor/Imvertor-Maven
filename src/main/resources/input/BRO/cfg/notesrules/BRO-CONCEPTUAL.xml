@@ -4,9 +4,9 @@
 -->
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../KKG/cfg/notesrules/KKG-ISO.xml"/>
+    <xi:include href="../../../MIM/cfg/notesrules/MIM10-ISO.xml"/>
     
-    <name>BRO</name>
+    <name>BRO </name>
     
     <notes-format>markdown</notes-format><!-- plain, markdown, mediawiki -->
     

@@ -7,7 +7,7 @@
     <!-- 
         DSO follows MIM ISO
     --> 
-    <xi:include href="../../../KKG/cfg/tvsets/KKG-ISO.xml"/>
+    <xi:include href="../../../MIM/cfg/tvsets/MIM10-ISO.xml"/>
     
     <name>MIM-C-DSO</name>
     

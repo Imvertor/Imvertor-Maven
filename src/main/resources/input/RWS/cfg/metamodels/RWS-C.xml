@@ -4,11 +4,11 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- 
-        RWS follows KKG ISO (alt 2)
+        RWS follows MIM10 ISO (alt 2)
         
         Including scalars.
     --> 
-    <xi:include href="../../../DSO/cfg/metamodels/MIM-C-DSO.xml"/>
+    <xi:include href="../../../DSO/cfg/metamodels/MIM10-C-DSO.xml"/>
     
     <name>RWS-C</name>
     

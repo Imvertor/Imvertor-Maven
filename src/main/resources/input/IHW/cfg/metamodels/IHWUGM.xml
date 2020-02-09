@@ -24,7 +24,7 @@
     -->
     
     <!-- IHW follows MIM requirements -->
-    <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM10.xml"/>
 
     <name>IHWUGM</name>
     

@@ -5,7 +5,7 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
     <!-- 
-        KOOP follows KKG
+        KOOP follows MIM10
     --> 
     <xi:include href="../../../Geonovum/cfg/tvsets/NEN3610.xml"/>
     

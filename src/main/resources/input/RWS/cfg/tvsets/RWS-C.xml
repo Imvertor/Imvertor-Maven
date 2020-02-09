@@ -5,7 +5,7 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
     <!-- 
-        RWS follows KKG ISO
+        RWS follows MIM10 ISO
     --> 
     <xi:include href="../../../DSO/cfg/tvsets/MIM-C-DSO.xml"/>
     

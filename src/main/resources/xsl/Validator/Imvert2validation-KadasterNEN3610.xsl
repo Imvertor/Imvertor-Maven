@@ -29,13 +29,13 @@
     version="2.0">
 
     <!-- 
-        Kadaster KKG validation extends Kadaster validation.
+        Kadaster MIM validation extends Kadaster validation.
         
         TODO check or rearrange.
         
     -->
     
-    <xsl:import href="Imvert2validation-KadasterKKG.xsl"/>
+    <xsl:import href="Imvert2validation-KadasterMIM10.xsl"/>
    
     <xsl:template match="imvert:class" priority="1"> <!-- in aanvulling op standaard kadaster checks -->
         

@@ -20,7 +20,7 @@
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
    <!-- IHW follows MIM requirements -->
-   <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
+   <xi:include href="../../../MIM/cfg/metamodels/MIM10.xml"/>
 
    <name>IHWSIM</name>
    

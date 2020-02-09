@@ -39,7 +39,9 @@
     <xsl:variable name="configuration-metamodel-files" select="string-join($configuration-metamodel-file//name[parent::metamodel],', ')"/>
     <xsl:variable name="configuration-tagset-files" select="string-join($configuration-tvset-file//name[parent::tagset],', ')"/>
     <xsl:variable name="configuration-xmlschemarules-files" select="string-join($configuration-xmlschemarules-file//name[parent::xmlschema-rules],', ')"/>
-
+    
+    <xsl:variable name="configuration-tree-file" select="imf:document(imf:get-xparm('properties/WORK_CONFIG_TREE_FILE'))"/>
+    
     <xsl:template match="/config">
         <report>
             <step-display-name>Config compiler</step-display-name>
@@ -54,12 +56,21 @@
             <page>
                 <title>Configuration</title>
                 <intro>
-                    <p>This is a representation of the configuration used in processing the model.</p>
+                    <p>This is a representation of the configuration used in processing the model. 
+                        Note that any specification included will be overridden by any specification of an including configuration.</p>
                 </intro>
                 <content>
                     <div>
+                        <h1>Configuration dependencies</h1>
+                        <xsl:apply-templates select="$configuration-tree-file/*" mode="tree"/>
+                    </div>
+                    <div>
                         <h1>Owner</h1>
                         <xsl:apply-templates select="." mode="owner"/>
+                    </div>
+                    <div>
+                        <h1>Metamodel: features</h1>
+                        <xsl:apply-templates select="." mode="metamodel-features"/>
                     </div>
                     <div>
                         <h1>Metamodel: scalars</h1>
@@ -103,6 +114,26 @@
             </xsl:for-each>
         </xsl:variable>
         <xsl:sequence select="imf:create-result-table-by-tr($rows,'parameter:30,value:50,config:20','table-owner')"/>
+    </xsl:template>
+
+    <xsl:template match="/config" mode="metamodel-features">
+        <xsl:variable name="rows" as="element(tr)*">
+            <xsl:for-each select="$configuration-metamodel-file/features/feature">
+                <xsl:sort select="@name"/>
+                <tr>
+                    <td>
+                        <xsl:value-of select="@name"/>
+                    </td>
+                    <td>
+                        <xsl:value-of select="."/>
+                    </td>
+                    <td>
+                        <xsl:value-of select="@src"/>
+                    </td>
+                </tr>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'feature:30,value:50,config:20','table-feature')"/>
     </xsl:template>
 
     <xsl:template match="/config" mode="metamodel-scalars">
@@ -209,6 +240,31 @@
             <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:20,applicable tagged values:80','table-stereo-tv')"/>
         </div>
     </xsl:template>
+    
+    <xsl:template match="config" mode="tree">
+        <ul>
+            <xsl:apply-templates select="includes" mode="tree"/>
+        </ul>
+    </xsl:template>
+    
+    <xsl:template match="includes" mode="tree">
+        <li>
+            <p>
+                <i><xsl:value-of select="@type"/>: </i>
+                <b><xsl:value-of select="@name"/></b>
+                <xsl:if test="normalize-space(@desc)">
+                    <xsl:text> -- </xsl:text>
+                    <xsl:value-of select="@desc"/>
+                </xsl:if>
+            </p>
+            <xsl:if test="*">
+                <ul>
+                    <xsl:apply-templates select="includes" mode="#current"/>
+                </ul>
+            </xsl:if>
+        </li>
+    </xsl:template>
+    
     
     <!--
      <tv id="CFG-TV-SOURCE" norm="space">

@@ -5,12 +5,12 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- 
-        Geonovum NEN3610 follows KKG-ISO-EN
+        Geonovum NEN3610 follows MIM10-ISO-EN
     --> 
-    <xi:include href="../../../KKG/cfg/tvsets/KKG-ISO.xml"/>
+    <xi:include href="../../../MIM/cfg/tvsets/MIM10-ISO.xml"/>
     
     <name>MIMCM</name>
-    <desc lang="en">Tagset for MIM conformant KKG-ISO extensions</desc>
-    <desc lang="nl">Tags voor MIM vereiste KKG-ISO uitbreidingen</desc>
+    <desc lang="en">Tagset for MIM conformant MIM10-ISO extensions</desc>
+    <desc lang="nl">Tags voor MIM vereiste MIM10-ISO uitbreidingen</desc>
    
 </tagset>

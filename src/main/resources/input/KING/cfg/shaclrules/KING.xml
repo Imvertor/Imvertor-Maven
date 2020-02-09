@@ -21,7 +21,7 @@
     <!-- 
         KING specific SHACL rules 
     -->
-    <xi:include href="KINGKKG.xml"/>
+    <xi:include href="KINGMIM10.xml"/>
   
     <name>KING</name>
   

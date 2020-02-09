@@ -4,7 +4,7 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- 
-        EIGENAAR follows KKG ISO (alt 2)
+        EIGENAAR follows MIM10 ISO (alt 2)
         
         Including scalars.
     --> 

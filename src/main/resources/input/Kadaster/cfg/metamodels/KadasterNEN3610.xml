@@ -86,12 +86,12 @@
             <name lang="en">MultipleAssociationClass</name>
             <desc lang="nl">	
                 Een relatiesoort waarover gegevens over de relatie tussen een object een veelvoud aan andere objecten (in de vorm van een derde soort object) worden vastgelegd.
-                Vermijdt ambiguiteit met KKG Relatieklasse.
+                Vermijdt ambiguiteit met MIM10 Relatieklasse.
                 Voorbeeld: Perceel wordt "gefilieerd" naar meerdere andere percelen (splitsing en samenvoeging).
             </desc>
             <desc lang="en">
                 A type of relationship about which data about the relationship between an object and a multitude of other objects (in the form of a third type of object) are recorded.
-                 Avoids ambiguity with KKG AssociationClass.
+                 Avoids ambiguity with MIM10 AssociationClass.
                  Example: Plot is "filmed" into several other parcels (split and merge).
             </desc>
             <construct>class</construct>

@@ -21,7 +21,7 @@
     <!-- 
         Kadaster specific SHACL rules 
     -->
-    <xi:include href="KadasterKKG.xml"/>
+    <xi:include href="KadasterMIM10.xml"/>
   
     <name>Kadaster</name>
   

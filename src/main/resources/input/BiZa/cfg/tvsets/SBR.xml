@@ -99,7 +99,7 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-attribute</stereo> <!-- TODO niet op KKG -->
+                <stereo minmax="0..1">stereotype-name-attribute</stereo> <!-- TODO niet op MIM10 -->
                 <stereo minmax="0..1">stereotype-name-composite</stereo><!-- TODO remove? -->
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
@@ -128,7 +128,7 @@
             <desc lang="nl">De naam in natuurlijke of formele taal; afhankelijk van gekozen aanpak. Een alternatieve naam.</desc>
             <desc lang="en">The name in natural or formal language; depends on the chosen approach. An alternative name.</desc>
             <derive>yes</derive>
-            <extract-from-notes>yes</extract-from-notes><!-- value may be read from notes field usig KKG-ISO scheme -->
+            <extract-from-notes>yes</extract-from-notes><!-- value may be read from notes field usig MIM10-ISO scheme -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>

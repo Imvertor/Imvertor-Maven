@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <name>MIM 1.1</name>
+    <desc lang="en">Metamodel for common constructs in MIM 1.1 models</desc>
+    <desc lang="nl">Metamodel voor gemeenschappelijkheden in MIM 1.1 modellen</desc>
+    
+    <!-- 
+        this metamodel is extension of MIM 1.0
+    -->
+    <xi:include href="MIM10.xml"/>
+    
+    <!-- 
+        override scalars 
+    -->
+    <xi:include href="MIM11-scalar.xml"/>
+    
+    <profiles>
+        <profile lang="nl">
+            <id>MIM11NL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM11 Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en">
+            <id>MIM11EN</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM11 Grouping (EN)</desc>
+        </profile>
+        <!-- 
+            visual conventions are same as MIM 1.0
+        -->     
+        <visuals>
+            <!-- no adaptions -->
+        </visuals>
+    </profiles>
+      
+    <stereotypes xml:id="stereotypes">
+        
+        <stereo id="stereotype-name-union" primary="yes">
+            <name lang="nl">Keuze</name>
+            <name lang="en">Union</name>
+        </stereo>
+   
+        <stereo id="stereotype-name-union-element" primary="yes">
+            <name lang="nl">Keuze element</name>
+            <name lang="en">UnionElement</name>
+            <construct>attribute</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-codelist" primary="yes">
+            <name lang="nl">Codelijst</name>
+            <name lang="en">Codelist</name>
+        </stereo>
+        
+    </stereotypes>    
+</metamodel>

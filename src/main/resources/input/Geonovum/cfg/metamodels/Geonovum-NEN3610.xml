@@ -19,8 +19,8 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <!-- Geonovum NEN3610 follows KKG ISO requirements -->
-    <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
+    <!-- Geonovum NEN3610 follows MIM10 ISO requirements -->
+    <xi:include href="../../../MIM/cfg/metamodels/MIM10.xml"/>
    
     <name>Geonovum NEN3610</name>
     

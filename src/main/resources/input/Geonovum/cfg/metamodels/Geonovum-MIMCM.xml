@@ -4,11 +4,11 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- 
-        Geonovum follows KKG ISO (alt 2)
+        Geonovum follows MIM10 ISO (alt 2)
         
         Including scalars.
     --> 
-    <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM10.xml"/>
     
     <name>Geonovum MIMCM</name>
     

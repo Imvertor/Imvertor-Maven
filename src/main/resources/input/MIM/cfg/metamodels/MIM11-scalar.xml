@@ -17,12 +17,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<shacl-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <!-- 
-        IHW specific SHACL rules 
-    -->
-    <xi:include href="IHWMIM10.xml"/>
-  
-    <name>IHW</name>
-  
-</shacl-rules>
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+ 
+    <name>MIM 1.1 scalar</name>
+
+    <desc lang="nl">Metamodel voor MIM informatiemodellen: Scalaire typen</desc>
+    
+    <xi:include href="MIM10-scalar.xml"/>
+    
+    <scalars xml:id="scalars">
+       <!-- no adaptions -->      
+    </scalars>
+    
+</metamodel>

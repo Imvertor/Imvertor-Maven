@@ -5,13 +5,13 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- 
-        Geonovum NEN3610 follows KKG-ISO-EN
+        Geonovum NEN3610 follows MIM10-ISO-EN
     --> 
-    <xi:include href="../../../KKG/cfg/tvsets/KKG-ISO.xml"/>
+    <xi:include href="../../../MIM/cfg/tvsets/MIM10-ISO.xml"/>
     
     <name>NEN3610</name>
-    <desc lang="en">Tagset for NEN3610 conformant KKG-ISO extensions</desc>
-    <desc lang="nl">Tags voor NEN3610 vereiste KKG-ISO uitbreidingen</desc>
+    <desc lang="en">Tagset for NEN3610 conformant MIM10-ISO extensions</desc>
+    <desc lang="nl">Tags voor NEN3610 vereiste MIM10-ISO uitbreidingen</desc>
     
     <tagged-values>
         <tv norm="space" id="CFG-TV-DATERECORDED">

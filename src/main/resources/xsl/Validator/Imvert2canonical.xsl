@@ -99,6 +99,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:designation = 'datatype' and empty(imvert:stereotype)]">
+        <xsl:sequence select="imf:msg(.,'WARNING','Datatype has no (known) stereotype: assuming [1]',(imf:get-config-name-by-id('stereotype-name-simpletype')))"/>
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
             <imvert:stereotype origin="system" id="stereotype-name-simpletype">

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <name>MIM 1.1 ISO</name>
+    
+    <desc lang="en">Metamodel voor MIM 1.1 ISO uitwisselingsmodellen</desc>
+    <desc lang="nl">Metamodel for MIM 1.1 ISO exchange models</desc>
+    
+    <!-- 
+        override by 1.1 settings 
+    -->
+    <xi:include href="MIM11.xml"/>
+    
+    <profiles>
+        <profile lang="nl">
+            <id>MIM11ISONL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM11-ISO Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en">
+            <id>MIM11ISOEN</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM11-ISO Grouping (EN)</desc>
+        </profile>
+    </profiles>
+    
+    <features>
+        <feature name="role-based">true</feature>
+    </features>
+    
+    <stereotypes xml:id="stereotypes">
+        
+    </stereotypes>
+
+</metamodel>

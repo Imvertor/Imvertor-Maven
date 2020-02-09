@@ -4,11 +4,11 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- 
-        DSO follows KKG ISO (alt 2)
+        DSO follows MIM10 ISO (alt 2)
         
         Including scalars.
     --> 
-    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM10-ISO.xml"/>
     
     <name>MIM-C-DSO</name>
     

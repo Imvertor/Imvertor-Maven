@@ -29,7 +29,7 @@
     version="2.0">
 
     <!-- 
-         Kadaster KKG canonization extends Kadaster canonization.
+         Kadaster MIM canonization extends Kadaster canonization.
         
          THIS STYLESHEET IS CALLED IN THE CHAIN AND WORKS ON THE RESULTS OF THE PREVIOUS CHAIN CANONIZATION 
     -->

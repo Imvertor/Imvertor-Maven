@@ -81,11 +81,19 @@
                 <xsl:sequence select="$configuration-skosrules-file"/>
             </config>
         </xsl:variable>
-        <?x
+        
+        <!-- create a short tre-like representation of this config for referecing purposes; this will reappear in the documentation -->
+        <xsl:variable name="tree-includes">
+            <xsl:apply-templates select="$config-raw" mode="tree-includes"/>
+        </xsl:variable>
+        
         <xsl:result-document href="file:/c:/temp/xml.xml">
             <xsl:sequence select="$config-raw"/>
         </xsl:result-document>
-        x?>
+        <xsl:result-document href="{imf:file-to-url(imf:get-xparm('properties/WORK_CONFIG_TREE_FILE'))}">
+            <xsl:sequence select="$tree-includes"/>
+        </xsl:result-document>
+        
         <xsl:variable name="config-compact">
             <xsl:apply-templates select="$config-raw" mode="finish-config"/>
         </xsl:variable>
@@ -222,7 +230,8 @@
             
             <metamodel root="true">
                 <xsl:variable name="metamodel" select="metamodel"/>
-                <xsl:apply-templates select="$metamodel/name" mode="#current"/>
+                <!-- Names override previously assigned names -->
+                <xsl:sequence select="imf:fetch-applicable-name($metamodel/name)"/>
                 <xsl:apply-templates select="$metamodel/desc" mode="#current"/>
                 
                 <profiles>
@@ -241,7 +250,7 @@
                     <xsl:for-each-group select="$metamodel//scalars/scalar" group-by="@id">
                         <scalar id="{current-grouping-key()}">
                             <xsl:variable name="scalar-group" select="current-group()"/>
-                            <xsl:apply-templates select="imf:distinct($scalar-group/name[@lang=($language,'#all')])" mode="#current"/>
+                            <xsl:sequence select="imf:fetch-applicable-name($scalar-group/name)"/>
                             <xsl:apply-templates select="($scalar-group/type)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($scalar-group/fraction-digits)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($scalar-group/max-length)[last()]" mode="#current"/>
@@ -269,7 +278,7 @@
                     <xsl:for-each-group select="$metamodel//stereotypes/stereo" group-by="@id">
                         <stereo id="{current-grouping-key()}" primary="{(current-group()/@primary)[last()]}">
                             <xsl:variable name="stereo-group" select="current-group()"/>
-                            <xsl:apply-templates select="imf:distinct($stereo-group/name[@lang=($language,'#all')])" mode="#current"/> 
+                            <xsl:sequence select="imf:fetch-applicable-name($stereo-group/name)"/>
                             <xsl:apply-templates select="($stereo-group/desc[@lang=($language,'#all')])[last()]" mode="#current"/>
                             <xsl:for-each-group select="$stereo-group/construct" group-by=".">
                                 <xsl:variable name="construct-group" select="current-group()"/>
@@ -329,9 +338,7 @@
                             <xsl:apply-templates select="($tv-group/@cross-meta)[last()]" mode="#current"/>
                             
                             <!-- hier: de laatste naam binnen dezelfde taal -->
-                            <!--<xsl:apply-templates select="imf:distinct($tv-group/name)" mode="#current"/>-->
-                            <xsl:apply-templates select="($tv-group/name)[last()]" mode="#current"/>
-                            
+                            <xsl:sequence select="imf:fetch-applicable-name($tv-group/name)"/>
                             <xsl:apply-templates select="($tv-group/desc[@lang=($language,'#all')])[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/derive)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/inherit)[last()]" mode="#current"/>
@@ -425,7 +432,24 @@
     <xsl:template match="@*" mode="finish-config">
         <xsl:copy/>
     </xsl:template>
-   
+    
+    <xsl:template match="config" mode="tree-includes">
+        <config>
+            <xsl:apply-templates mode="#current"/>
+        </config>
+    </xsl:template>
+    <xsl:template match="*[@type = 'config']" mode="tree-includes">
+        <includes type="{local-name()}" name="{name}" desc="{imf:fetch-applicable-name(desc)}">
+            <xsl:apply-templates mode="#current"/>
+        </includes>
+    </xsl:template>
+    <xsl:template match="*" mode="tree-includes">
+        <xsl:apply-templates mode="#current"/>
+    </xsl:template>
+    <xsl:template match="text()" mode="tree-includes">
+        <!-- skip -->
+    </xsl:template>
+    
    <!-- 
        determine the distinct values, based on what is considered to be distinct in processing configuration elements 
        That is: the content and all attributes are the same. The config elements are duplicated in this sense.
@@ -452,4 +476,10 @@
         <xsl:value-of select="$r"/>
     </xsl:function>
     
+    <xsl:function name="imf:fetch-applicable-name" as="element()?">
+        <xsl:param name="names"/>
+        <xsl:for-each-group select="$names" group-by="@lang">
+            <xsl:apply-templates select="current-group()[last()]" mode="finish-config"/>
+        </xsl:for-each-group>
+    </xsl:function>
 </xsl:stylesheet>

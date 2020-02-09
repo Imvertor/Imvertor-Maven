@@ -6,7 +6,7 @@
     <!-- 
         Geonovum follows MIM
     --> 
-    <xi:include href="../../../KKG/cfg/comparerules/KKG.xml"/>
+    <xi:include href="../../../MIM/cfg/comparerules/MIM10.xml"/>
     
     <name>Geonovum</name>
     

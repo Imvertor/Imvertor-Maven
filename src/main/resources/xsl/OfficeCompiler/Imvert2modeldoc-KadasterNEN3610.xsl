@@ -10,7 +10,7 @@
     version="2.0">
     
     <!--
-        This stylesheet creates an XML modeldoc and adds Kadaster KKG specific capabilities.
+        This stylesheet creates an XML modeldoc and adds Kadaster MIM specific capabilities.
         
         It overrides some imported plugin functions.
     -->

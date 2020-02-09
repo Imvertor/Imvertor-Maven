@@ -4,11 +4,11 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- 
-        BRO follows KKG ISO (alt 2)
+        BRO follows MIM 1.1 ISO (alt 2)
         
         Including scalars.
     --> 
-    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM11-ISO.xml"/>
     
     <name>CM</name>
     
@@ -37,7 +37,6 @@
     <features>
         <feature name="allow-multiple-supertypes">true</feature>
         <feature name="allow-scalar-in-union">true</feature>
-        
     </features>
     
     <stereotypes>
