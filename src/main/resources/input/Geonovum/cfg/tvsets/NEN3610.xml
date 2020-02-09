@@ -9,7 +9,7 @@
     --> 
     <xi:include href="../../../MIM/cfg/tvsets/MIM10-ISO.xml"/>
     
-    <name>NEN3610</name>
+    <name>Geonovum NEN3610</name>
     <desc lang="en">Tagset for NEN3610 conformant MIM10-ISO extensions</desc>
     <desc lang="nl">Tags voor NEN3610 vereiste MIM10-ISO uitbreidingen</desc>
     

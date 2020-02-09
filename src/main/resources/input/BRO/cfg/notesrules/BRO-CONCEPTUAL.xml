@@ -6,7 +6,7 @@
   
     <xi:include href="../../../MIM/cfg/notesrules/MIM10-ISO.xml"/>
     
-    <name>BRO </name>
+    <name>BRO CONCEPTUAL</name>
     
     <notes-format>markdown</notes-format><!-- plain, markdown, mediawiki -->
     

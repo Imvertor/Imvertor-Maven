@@ -6,7 +6,7 @@
   
     <xi:include href="../../../MIM/cfg/notesrules/MIM10-ISO.xml"/>
     
-    <name>IHWUGM</name>
+    <name>IHW UGM</name>
     
     <desc>IHWUGM assumes descriptions to be the default.</desc>
     

@@ -24,7 +24,7 @@
     --> 
     <xi:include href="../../../BP/cfg/comparerules/default.xml"/>
     
-    <name>IHWBSM</name>
+    <name>IHW BSM</name>
     
     <!-- for tagged values: -->
   

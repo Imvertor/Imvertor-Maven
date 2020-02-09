@@ -6,6 +6,6 @@
   
     <xi:include href="../../../MIM/cfg/notesrules/MIM10-ISO.xml"/>
     
-    <name>IHW</name>
+    <name>IHW SIM</name>
     
 </notes-rules>

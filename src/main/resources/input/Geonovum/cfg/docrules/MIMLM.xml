@@ -6,7 +6,7 @@
   
     <xi:include href="Geonovum.xml"/>
     
-    <name>Geonovum LM</name>
+    <name>Geonovum MIM10 LM</name>
     
     <desc>Geonovum specific requirements on logical documentation.</desc>
     

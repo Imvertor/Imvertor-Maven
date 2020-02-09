@@ -9,7 +9,7 @@
     --> 
     <xi:include href="../../../MIM/cfg/tvsets/MIM10-ISO.xml"/>
     
-    <name>MIMCM</name>
+    <name>Geonovum MIMCM</name>
     <desc lang="en">Tagset for MIM conformant MIM10-ISO extensions</desc>
     <desc lang="nl">Tags voor MIM vereiste MIM10-ISO uitbreidingen</desc>
    

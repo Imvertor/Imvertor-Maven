@@ -18,7 +18,7 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <shacl-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <name>IHW MIM</name>
+    <name>IHW MIM 1.0</name>
     <!-- 
         IHW MIM specific SHACL rules 
     -->

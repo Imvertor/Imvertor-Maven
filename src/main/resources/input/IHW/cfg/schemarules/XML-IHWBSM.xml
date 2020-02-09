@@ -19,7 +19,7 @@
 -->
 <xmlschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <name>IHWBSM</name>
+    <name>IHW BSM</name>
     <desc lang="en">Rule for processing BSM models to XML schemas</desc>
     <desc lang="nl">Regels voor het verwerken van BSM modellen tot XML schema's</desc>
     

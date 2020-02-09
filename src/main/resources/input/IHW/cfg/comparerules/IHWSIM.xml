@@ -23,7 +23,7 @@
     --> 
     <xi:include href="../../../BP/cfg/comparerules/default.xml"/>
     
-    <name>IHWSIM</name>
+    <name>IHW SIM</name>
     
     <!-- for tagged values: -->
   

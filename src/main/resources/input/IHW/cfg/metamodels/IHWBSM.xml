@@ -22,7 +22,7 @@
    <!-- TODO ga uit van UGM maar alleen de pacakge struktuur wijkt enigzins af. Dit anders oplossen?-->
    <xi:include href="IHWUGM.xml"/>
    
-   <name>IHWBSM</name>
+   <name>IHW BSM</name>
    
    <desc lang="nl">Metamodel voor IHW informatie modellen: bericht specificatie model</desc>
    <desc lang="en">Metamodel for IHW information models: bericht specificatie model</desc>

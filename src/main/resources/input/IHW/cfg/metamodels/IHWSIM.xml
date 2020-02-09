@@ -22,7 +22,7 @@
    <!-- IHW follows MIM requirements -->
    <xi:include href="../../../MIM/cfg/metamodels/MIM10.xml"/>
 
-   <name>IHWSIM</name>
+   <name>IHW SIM</name>
    
    <desc lang="en">Metamodel for IHW information models: semantisch informatiemodel</desc>
    

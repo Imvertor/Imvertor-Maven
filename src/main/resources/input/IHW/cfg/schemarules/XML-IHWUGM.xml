@@ -21,7 +21,7 @@
     <!-- 
         IHW specific rules for UGM XML schemas
     -->
-    <name>IHWUGM</name>
+    <name>IHW UGM</name>
     <desc lang="en">Rule for processing UGM models to XML schemas</desc>
     <desc lang="nl">Regels voor het verwerken van UGM modellen tot XML schema's</desc>
     

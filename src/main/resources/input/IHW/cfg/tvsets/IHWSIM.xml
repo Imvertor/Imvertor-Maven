@@ -24,7 +24,7 @@
     <!-- IHW refines grouping -->
     <xi:include href="Grouping.xml"/>
     
-    <name>IHWSIM</name>
+    <name>IHW SIM</name>
     <tagged-values>
       
         <tv norm="space" id="CFG-TV-AANDUIDINGSTRIJDIGHEIDNIETIGHEID">

@@ -21,7 +21,7 @@
     
     <xi:include href="../../../Geonovum/cfg/schemarules/XML-ISO19136.xml"/>
     
-    <name>EIGENAAR</name>
+    <name>EIGENAAR ISO19136</name>
     
     <!-- 
         EIGENAAR specific rules 

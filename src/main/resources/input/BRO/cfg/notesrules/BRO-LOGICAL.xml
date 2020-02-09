@@ -4,7 +4,7 @@
 -->
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <name>MIM 1.0 ISO</name>
+    <name>BRO LOGICAL</name>
     
     <desc>These are the schemes to apply to notes fields in order to determine the tagged values.</desc>
     

@@ -10,7 +10,7 @@
     --> 
     <xi:include href="../../../MIM/cfg/metamodels/MIM11-ISO.xml"/>
     
-    <name>CM</name>
+    <name>BRO CONCEPTUAL</name>
     
     <profiles>
         <profile lang="nl"> 

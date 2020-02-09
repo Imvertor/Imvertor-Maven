@@ -3,6 +3,8 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
+    <name>IHW</name>
+    
     <!-- 
         Linking strategy: link by EAID or NAME 
     -->
