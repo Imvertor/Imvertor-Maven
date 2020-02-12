@@ -159,11 +159,11 @@
             <xsl:apply-templates select="part[@type = 'CFG-DOC-FORMAAT']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/>
-            <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEMATERIELEHISTORIE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEAFLEIDBAAR']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-MOGELIJKGEENWAARDE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-EXPLAINNOVALUE']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>
         </content>
     </xsl:template>
     
