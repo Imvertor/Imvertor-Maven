@@ -240,7 +240,7 @@
     <xsl:function name="imf:new-card">
         <xsl:param name="card"/>
         <xsl:if test="normalize-space($card)">
-            <xsl:analyze-string select="$card" regex="^(\[\s)?(.)(\s\.\.\s(.))?(\s\])?$">
+            <xsl:analyze-string select="$card" regex="^(\[\s)?(.+?)(\s\.\.\s(.+?))?(\s\])?$">
                 <xsl:matching-substring>
                     <xsl:choose>
                         <?x
