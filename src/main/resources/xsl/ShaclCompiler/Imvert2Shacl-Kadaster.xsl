@@ -548,6 +548,7 @@
             <xsl:when test="$imvertor-type-name = 'scalar-string'">xsd:string</xsl:when>
             <xsl:when test="$imvertor-type-name = 'scalar-integer'">xsd:integer</xsl:when>
             <xsl:when test="$imvertor-type-name = 'scalar-decimal'">xsd:decimal</xsl:when>
+            <xsl:when test="$imvertor-type-name = 'scalar-real'">xsd:decimal</xsl:when>
             <xsl:when test="$imvertor-type-name = 'scalar-boolean'">xsd:boolean</xsl:when>
             <xsl:when test="$imvertor-type-name = 'scalar-datetime'">xsd:dateTime</xsl:when>
             <xsl:when test="$imvertor-type-name = 'scalar-year'">xsd:gYear</xsl:when>

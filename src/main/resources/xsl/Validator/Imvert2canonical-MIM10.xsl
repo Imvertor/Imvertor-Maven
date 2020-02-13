@@ -82,7 +82,7 @@
             <xsl:sequence select="if ($parse/error) then imf:msg(.,$parse/error) else ()"/>
         </xsl:copy>
     </xsl:template>
-    <xsl:template match="imvert:attribute[imvert:type-name = 'scalar-decimal']" priority="4">
+    <xsl:template match="imvert:attribute[imvert:type-name = ('scalar-decimal','scalar-real')]" priority="4"><!-- TODO actually, decimal is not a MIM10 concept -->
         <xsl:variable name="parse" select="imf:parse-scalar-length(imf:get-tagged-value(.,'##CFG-TV-LENGTH'))"/>
         <xsl:copy>
             <xsl:apply-templates/>

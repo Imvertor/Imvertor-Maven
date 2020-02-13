@@ -26,7 +26,12 @@
     <xi:include href="MIM10-scalar.xml"/>
     
     <scalars xml:id="scalars">
-       <!-- no adaptions -->      
+        <scalar id="scalar-decimal">
+            <name lang="nl">DECIMAL</name>
+            <desc lang="nl">Zie [iso-19103] (subtype van ISO Number). Vrij vertaald: een decimal is een gegevenstype waarin het getal een exacte waarde vertegenwoordigt, als een eindige weergave van een decimaal getal. Aangezien veel valuta's decimaal zijn, hebben deze weergaven de voorkeur bij het omgaan met dergelijke waarden. Opmerking 1: Dit verschilt van real, want real is een geschatte waarde en Decimal is exact. Opmerking 2: t.a.v. positieve en negatieve getalen en + en – tekens: zie Integer.</desc>
+            <name lang="en">DECIMAL</name>
+            <type-map formal-lang="xs">decimal</type-map>
+        </scalar>
     </scalars>
     
 </metamodel>

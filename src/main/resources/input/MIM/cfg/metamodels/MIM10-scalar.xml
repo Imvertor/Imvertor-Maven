@@ -27,6 +27,7 @@
         
         <scalar id="scalar-string">
             <name lang="nl">CHARACTERSTRING</name>
+            <desc lang="nl">Zie [iso-19103]. Vrij vertaald: alle alfanumerieke tekens en speciale tekens die horen bij de gekozen characterset (standaard UTF-8), dus met diakrieten, white spaces, \-teken en newlines of HTML opmaak e.d. Mag starten met spatie. De maximale lengte is onbepaald. Opmerking: getallen (ISO Numbers) met voorloopnullen worden opgenomen als CharacterString, met een patroon of formeel patroon. Bij het metagegeven Waardenverzameling attribuutsoort wordt dit dan (ook) gespecificeerd.</desc>
             <name lang="en">CHARACTERSTRING</name>
             <desc lang="en">A CharacterString is an arbitrary-length sequence of characters including accents and special characters from
                 repertoire of one of the adopted character sets (ISO 19103, Draft Technical Specification 19103, Geographic information - Conceptual
@@ -36,11 +37,13 @@
         </scalar>
         <scalar id="scalar-boolean">
             <name lang="nl">BOOLEAN</name>
+            <desc lang="nl">Indicatie met mogelijke waarden True, false, 1 of 0. True en 1 hebben een identieke betekenis: Ja. False en 0 hebben een identieke betekenis: Nee. Opmerking: t.a.v. Ja of Nee. Wanneer u de Ja of Nee wilt gebruiken, gebruik dan bv. een Enumeratie genaamd Indicatie, of gebruik AN met een lengte en een (formeel) patroon.</desc>
             <name lang="en">BOOLEAN</name>
             <type-map formal-lang="xs">boolean</type-map>
         </scalar>
-        <scalar id="scalar-decimal">
+        <scalar id="scalar-real">
             <name lang="nl">REAL</name>
+            <desc lang="nl">Zie [iso-19103] (subtype van ISO Number). Vrij vertaald: een real is een zwevendekommagetal, waarbij de precisie bepaald wordt door het aantal getoonde cijfers. Het getoonde getal is een schatting en geeft niet noodzakelijk de exacte waarde weer. Opmerking 1: Dit verschilt van decimal, want decimal is een exacte waarde en real is geschat. Opmerking 2: t.a.v. positieve en negatieve getalen en + en – tekens: zie Integer.</desc>
             <name lang="en">REAL</name>
             <type>string</type>
             <type-map formal-lang="xs">decimal</type-map>
@@ -49,12 +52,14 @@
         </scalar>
         <scalar id="scalar-integer">
             <name lang="nl">INTEGER</name>
+            <desc lang="nl">Zie [iso-19103] (subtype van ISO Number). Vrij vertaald: geheel getal, lengte is minimaal 1 en maximale lengte is onbepaald, zonder voorloopnullen. Opmerking: t.a.v. positieve en negatieve getalen en + en – tekens: bijvoorbeeld -2,0 Het (formeel) patroon geeft aan of een + en/of - teken gebruikt mag worden in het gegeven.</desc>
             <name lang="en">INTEGER</name>
             <type-map formal-lang="xs">integer</type-map>
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-date">
             <name lang="nl">DATE</name>
+            <desc lang="nl"> 	4-cijferig jaar, 2-cijferig maand, 2-cijferig dag uitgedrukt in yyyy-mm-dd conform https://en.wikipedia.org/wiki/ISO_8601</desc>
             <name lang="en">DATE</name>
             <type-map formal-lang="xs">date</type-map>
             <?x
@@ -68,6 +73,7 @@
         </scalar>    
         <scalar id="scalar-datetime">
             <name lang="nl">DATETIME</name>
+            <desc lang="nl">yyyy-mm-ddThh:mm:ss conform https://en.wikipedia.org/wiki/ISO_8601</desc>
             <name lang="en">DATETIME</name>
             <type-map formal-lang="xs">dateTime</type-map>
             <?x
@@ -79,21 +85,25 @@
         </scalar>
         <scalar id="scalar-year">
             <name lang="nl">YEAR</name>
+            <desc lang="nl">4-cijferig jaar uitgedrukt in yyyy conform https://en.wikipedia.org/wiki/ISO_8601</desc>
             <name lang="en">YEAR</name>
             <type-map formal-lang="xs">gYear</type-map>
         </scalar>
         <scalar id="scalar-day">
             <name lang="nl">DAY</name>
+            <desc lang="nl">2-cijferige dag uitgedrukt in dd conform https://en.wikipedia.org/wiki/ISO_8601</desc>
             <name lang="en">DAY</name>
             <type-map formal-lang="xs">gDay</type-map>
         </scalar>
         <scalar id="scalar-month">
             <name lang="nl">MONTH</name>
+            <desc lang="nl">2-cijferige maand uitgedrukt in mm conform https://en.wikipedia.org/wiki/ISO_8601</desc>
             <name lang="en">MONTH</name>
             <type-map formal-lang="xs">gMonth</type-map>
         </scalar>
         <scalar id="scalar-uri">
             <name lang="nl">URI</name>
+            <desc lang="nl">Unieke identificatie op internet conform RFC3986 en de URI-strategie Linked Open Data. Gestandaardiseerde manier om op het internet dingen (pagina's met informatie, objecten, datasets) uniek te identificeren.</desc>
             <name lang="en">URI</name>
             <type-map formal-lang="xs">anyURI</type-map>
         </scalar>

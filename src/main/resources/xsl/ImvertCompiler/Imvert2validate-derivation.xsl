@@ -245,6 +245,7 @@
         <xsl:variable name="supplier-is-string" select="$supplier/imvert:type-name = 'scalar-string'"/>
         <xsl:variable name="supplier-is-int" select="$supplier/imvert:type-name = 'scalar-integer'"/>
         <xsl:variable name="supplier-is-dec" select="$supplier/imvert:type-name = 'scalar-decimal'"/>
+        <xsl:variable name="supplier-is-real" select="$supplier/imvert:type-name = 'scalar-real'"/>
         
         <xsl:choose>
             <xsl:when test="$client/imvert:type-name = 'scalar-string'">
@@ -278,14 +279,15 @@
                     'Client type size must be equal or smaller than [1]',
                     ($supplier/imvert:total-digits))"/>
             </xsl:when>
-            <xsl:when test="$client/imvert:type-name = 'scalar-decimal'">
+            <xsl:when test="$client/imvert:type-name = ('scalar-decimal','scalar-real')">
                 <xsl:sequence select="imf:report-error($client,not($supplier-is-dec),
-                    'Client type [1] is not a [2].', ('scalar-decimal',$supplier/imvert:type-name))"/>
+                    'Client type [1] is not a [2].', (imf:get-config-name-by-id($client/imvert:type-name),$supplier/imvert:type-name))"/>
                 <xsl:sequence select="imf:report-error($client,xs:integer($client/imvert:total-digits) gt xs:integer($supplier/imvert:total-digits),
                     'Client type size must be equal or smaller than [1]',($supplier/imvert:total-digits))"/>
                 <xsl:sequence select="imf:report-error($client,xs:integer($client/imvert:faction-digits) gt xs:integer($supplier/imvert:total-digits),
                     'Client type size must be equal or smaller than [1]',($supplier/imvert:fraction-digits))"/>
             </xsl:when>
+          
             <xsl:when test="$client/imvert:type-name = ('scalar-date', 'scalar-datetime', 'scalar-time', 'scalar-boolean', 'scalar-year', 'scalar-month', 'scalar-day')">
                 <xsl:sequence select="imf:report-error($client,not($client/imvert:type-name = $supplier/imvert:type-name),
                     'Client type [1] is not equal to supplier type [2].', 

@@ -657,7 +657,7 @@
         <xsl:variable name="type-is-datatype" select="$type/imvert:stereotype/@id = ('stereotype-name-simpletype')"/>
         <xsl:variable name="type-is-complextype" select="$type/imvert:stereotype/@id = ('stereotype-name-complextype')"/>
         
-        <xsl:variable name="type-is-scalar-non-emptyable" select="$applicable-attribute/imvert:type-name = ('scalar-integer','scalar-decimal')"/>
+        <xsl:variable name="type-is-scalar-non-emptyable" select="$applicable-attribute/imvert:type-name = ('scalar-integer','scalar-decimal','scalar-real')"/>
         <xsl:variable name="type-is-scalar-empty" select="$applicable-attribute/imvert:type-name = ('scalar-date','scalar-year','scalar-yearmonth','scalar-datetime','scalar-postcode','scalar-boolean')"/>
         <xsl:variable name="type-is-enumeration" select="$type/imvert:stereotype/@id = ('stereotype-name-enumeration')"/>
         <xsl:variable name="type-is-union" select="$type/imvert:stereotype/@id = ('stereotype-name-union')"/>
@@ -1079,7 +1079,7 @@
                                 <xsl:sequence select="$facetten"/>
                             </xs:restriction>
                         </xsl:when>
-                        <xsl:when test="imvert:type-name = 'scalar-decimal'">
+                        <xsl:when test="imvert:type-name = ('scalar-decimal','scalar-real')">
                             <xs:restriction base="xs:decimal">
                                 <xsl:sequence select="$facetten"/>
                             </xs:restriction>
