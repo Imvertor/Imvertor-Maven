@@ -200,8 +200,8 @@
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-referentie-element" primary="yes">
-            <name lang="nl">Element</name>
-            <name lang="en">Element</name>
+            <name lang="nl">Tabel Element</name>
+            <name lang="en">Table Element</name>
             <desc lang="nl">Een eigenschap van een referentielijst.</desc>
             <construct>attribute</construct>
         </stereo>
