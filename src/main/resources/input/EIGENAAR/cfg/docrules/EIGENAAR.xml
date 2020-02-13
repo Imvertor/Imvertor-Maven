@@ -52,6 +52,7 @@
         <!-- markers are placed after the name of the diagram, as in "Sample simple constructs - overzicht" -->
         <marker lang="nl">overzicht</marker>
         <marker lang="en">overview</marker>
+        <show-caption>yes</show-caption>
     </image-purpose>
     
     <image-purpose id="CFG-IMG-DETAIL">
@@ -59,6 +60,7 @@
         <name lang="en">Detail diagram</name>
         <marker lang="nl">detail</marker>
         <marker lang="en">detail</marker>
+        <show-caption>yes</show-caption>
     </image-purpose>
     
     <doc-rule id="CFG-DOC-NORMNAAM">

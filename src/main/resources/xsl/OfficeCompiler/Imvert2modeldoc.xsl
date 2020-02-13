@@ -1424,20 +1424,27 @@
                     <xsl:for-each select="$diagrams-in-construct">
                         <xsl:if test="exists(imvert-imap:purpose)">
                             <section type="IMAGEMAP" name="{imvert-imap:name}" id="{imvert-imap:id}">
-                                <content>
-                                    <part type="CFG-DOC-NAAM">
-                                        <item>
-                                            <xsl:value-of select="imf:plugin-translate-i3n('DIAGRAM-NAME',true())"/>
-                                        </item>
-                                        <item><xsl:value-of select="imvert-imap:name"/></item>
-                                    </part>
-                                    <part type="CFG-DOC-DESCRIPTION">
-                                        <item>
-                                            <xsl:value-of select="imf:plugin-translate-i3n('DIAGRAM-DESCRIPTION',true())"/>
-                                        </item>
-                                        <item><xsl:value-of select="imvert-imap:documentation"/></item>
-                                    </part>
-                                </content>
+                               <xsl:choose>
+                                   <xsl:when test="imf:boolean(imvert-imap:show-caption)">
+                                       <content>
+                                           <part type="CFG-DOC-NAAM">
+                                               <item>
+                                                   <xsl:value-of select="imf:plugin-translate-i3n('DIAGRAM-NAME',true())"/>
+                                               </item>
+                                               <item><xsl:value-of select="imvert-imap:name"/></item>
+                                           </part>
+                                           <part type="CFG-DOC-DESCRIPTION">
+                                               <item>
+                                                   <xsl:value-of select="imf:plugin-translate-i3n('DIAGRAM-DESCRIPTION',true())"/>
+                                               </item>
+                                               <item><xsl:value-of select="imvert-imap:documentation"/></item>
+                                           </part>
+                                       </content>
+                                   </xsl:when>
+                                   <xsl:otherwise>
+                                       <empty/><!-- signals empty content; section will not be removed as "empty"--> 
+                                   </xsl:otherwise>
+                               </xsl:choose>
                             </section>    
                         </xsl:if>
                     </xsl:for-each>
@@ -1482,6 +1489,9 @@
     <xsl:template match="section" mode="section-cleanup">
         <xsl:choose>
             <xsl:when test="exists(.//item)">
+                <xsl:next-match/>
+            </xsl:when>
+            <xsl:when test="exists(.//empty)">
                 <xsl:next-match/>
             </xsl:when>
             <xsl:otherwise>
