@@ -22,8 +22,11 @@ package nl.imvertor.XmiCompiler;
 
 import java.io.File;
 
+import javax.xml.xpath.XPathConstants;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.w3c.dom.NodeList;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
@@ -69,7 +72,7 @@ public class XmiCompiler extends Step {
 		// check what file is passed on the command line.
 		
 		AnyFile umlFile = new AnyFile(configurator.getFile(configurator.getXParm("cli/umlfile")));
-		boolean mustReread = configurator.isTrue("cli", "refreshxmi", false);
+		boolean refreshXmi = configurator.isTrue("cli", "refreshxmi", false);
 
 		EapFile eapFile = umlFile.getExtension().toLowerCase().equals("eap") ? new EapFile(umlFile) : null;
 		XmiFile xmiFile = umlFile.getExtension().toLowerCase().equals("xmi") ? new XmiFile(umlFile) : null;
@@ -112,6 +115,7 @@ public class XmiCompiler extends Step {
 		} else {
 			String filespec = " " + passedFile + " (" + activeFileOrigin + ")";
 			activeFile = new XmlFile(configurator.getXParm("properties/WORK_XMI_FOLDER") + File.separator + passedFile.getName() + ".xmi");
+			String compactXmiFilePath = activeFile.getCanonicalPath() + ".compact.xmi";
 			
 			if (passedFile instanceof EapFile) {
 				// EAP is provided
@@ -122,10 +126,14 @@ public class XmiCompiler extends Step {
 				if (activeFile.exists()) 
 					f1 = (idFile.exists()) ? idFile.getContent() : "";
 				String f2 = passedFile.getFileInfo();
-				if (!f1.equals(f2) || mustReread) {
+				
+				String projectname = configurator.getXParm("cli/owner") + ": " + configurator.getXParm("cli/project");
+				String modelname = configurator.getXParm("cli/application");
+		
+				Boolean noSuchModel = checkModel(compactXmiFilePath,projectname,modelname); // when changing the requested model and EA export has not changed, determine that EA should be re-read.
+				
+				if (!f1.equals(f2) || refreshXmi || noSuchModel) {
 					runner.info(logger,"Reading" + filespec);
-					String projectname = configurator.getXParm("cli/owner") + ": " + configurator.getXParm("cli/project");
-					String modelname = configurator.getXParm("cli/application");
 					
 					// clean the XMI folder here
 					(new OutputFolder(configurator.getXParm("system/work-xmi-folder-path",true))).clear(false);
@@ -197,7 +205,7 @@ public class XmiCompiler extends Step {
 					migrateXMI(activeFile);
 				
 				configurator.setXParm("system/xmi-export-file-path",activeFile.getCanonicalPath());
-				configurator.setXParm("system/xmi-file-path",activeFile.getCanonicalPath() + ".compact.xmi");
+				configurator.setXParm("system/xmi-file-path",compactXmiFilePath);
 				
 				// now compact the XMI file: remove all irrelevant sections
 				runner.debug(logger,"CHAIN", "Compacting XMI: " + activeFile.getCanonicalPath());
@@ -260,4 +268,16 @@ public class XmiCompiler extends Step {
 		outFile.copyFile(xmiFile);
 	}
 	
+	private Boolean checkModel(String compactXmiFilePath, String projectname, String modelname) {
+		// the passed file is an EAP. The export is in the XMI workfolder
+		XmlFile f = new XmlFile(compactXmiFilePath);
+		try {
+			NodeList models = (NodeList) f.xpathToObject("/XMI/XMI.content[1]/*:Model[1]/*:Namespace.ownedElement[1]/*:Package[1][@name = '" + modelname + "']",null,XPathConstants.NODESET);
+			return models.getLength() != 1;
+		} catch (Exception e) {
+			return true; // something happened; check.
+		}
+		
+		
+	}
 }
