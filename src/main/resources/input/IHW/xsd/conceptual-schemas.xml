@@ -16,6 +16,8 @@
             <cs-ref:MapRef xlink:href="#INSPIRE-GEO"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-SOIL"/>
             <cs-ref:MapRef xlink:href="#NEN3610"/>
+            <cs-ref:MapRef xlink:href="#CITYGML"/>
+            <cs-ref:MapRef xlink:href="#IMGEO211"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
@@ -52,6 +54,19 @@
             <cs:shortName>nen3610</cs:shortName>
             <cs:desc>NEN3610 (2011)</cs:desc>
             <cs:url>http://www.bro.nl/conceptual-schemas/nen3610/1.0/</cs:url>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>CITYGML</cs:id>
+            <cs:shortName>CityGML</cs:shortName>
+            <cs:desc>CityGML...</cs:desc>
+            <cs:url>https://www.opengeospatial.org/standards/citygml</cs:url>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>IMGEO</cs:id>
+            <cs:shortName>IMGEO</cs:shortName>
+            <cs:desc>IMGEO...</cs:desc>
+            <cs:url>https://www.geonovum.nl/geo-standaarden/bgt-imgeo</cs:url>
+            <cs:catalogUrl>http://imgeo.geostandaarden.nl/def/imgeo-object/[entry]</cs:catalogUrl>
          </cs:ConceptualSchema>
          <cs:Map>
             <cs:id>GML321</cs:id>
@@ -847,6 +862,113 @@
                         <cs:hasNilreason>false</cs:hasNilreason>
                      </cs:XsdType>
                   </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Kunstwerk</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/Kunstwerk</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Kunstwerk</cs:name>
+                        <cs:asAttribute>Kunstwerk</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>CITYGML</cs:id>
+            <cs:namespace>http://www.opengis.net/citygml/relief/2.0</cs:namespace>
+            <cs:location>http://schemas.opengis.net/citygml/relief/2.0/relief.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>2.0</cs:version>
+            <cs:release>20120201</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#CITYGML"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>ReliefFeature</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>ReliefFeature</cs:name>
+                        <cs:asAttribute>ReliefFeatureType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>IMGEO211</cs:id>
+            <cs:namespace>http://www.geostandaarden.nl/imgeo/2.1</cs:namespace>
+            <cs:location>https://register.geostandaarden.nl/gmlapplicatieschema/imgeo/2.1.1/imgeo.xsd</cs:location>
+            <cs:phase>0</cs:phase>
+            <cs:version>2.1.1</cs:version>
+            <cs:release>20130329</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#IMGEO"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>AuxiliaryTrafficArea</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>BuildingPart</cs:name>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>BuildingPart</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>BridgeConstructionElement</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>FunctioneelGebied</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Kunstwerkdeel</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>OnbegroeidTerreindeel</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>OndersteunendWaterdeel</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>OverigBouwwerk</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>PlantCover</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Put</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Scheiding</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>TrafficArea</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>TunnelPart</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Waterdeel</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Waterinrichtingselement</cs:name>
                </cs:Construct>
             </cs:constructs>
          </cs:Map>
