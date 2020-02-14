@@ -20,7 +20,7 @@
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
    <!-- IHW follows MIM requirements -->
-   <xi:include href="../../../MIM/cfg/metamodels/MIM10.xml"/>
+   <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
 
    <name>IHW SIM</name>
    
@@ -29,12 +29,12 @@
    <profiles>
       <profile lang="nl"> 
          <id>IHWSIMNL</id>
-         <release>1.0</release>
+         <release>1.1</release>
          <desc>IHWSIM Grouping (NL)</desc> 
       </profile>
       <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
          <id>IHWSIMEN</id>
-         <release>1.0</release>
+         <release>1.1</release>
          <desc>IHWSIM Grouping (EN)</desc>
       </profile>
    </profiles>

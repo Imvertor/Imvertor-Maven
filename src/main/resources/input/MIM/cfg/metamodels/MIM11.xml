@@ -37,6 +37,10 @@
         </visuals>
     </profiles>
       
+    <features>
+        <feature name="allow-multiple-supertypes">true<!-- specify in concrete metamodel: true|false --></feature>
+    </features>
+    
     <stereotypes xml:id="stereotypes">
         
         <stereo id="stereotype-name-union" primary="yes">

@@ -24,7 +24,7 @@
     -->
     
     <!-- IHW follows MIM requirements -->
-    <xi:include href="../../../MIM/cfg/metamodels/MIM10.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
 
     <name>IHW UGM</name>
     
@@ -37,12 +37,12 @@
     <profiles>
         <profile lang="nl"> 
             <id>IHWUGMNL</id>
-            <release>1.0</release>
+            <release>1.1</release>
             <desc>IHWUGM Grouping (NL)</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
             <id>IHWUGMEN</id>
-            <release>1.0</release>
+            <release>1.1</release>
             <desc>IHWUGM Grouping (EN)</desc>
         </profile>
     </profiles>
