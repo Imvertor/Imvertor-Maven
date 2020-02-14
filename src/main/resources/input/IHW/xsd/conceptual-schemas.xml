@@ -469,6 +469,24 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Curve</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Curve</cs:name>
+                        <cs:asAttribute>CurvePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+                  <cs:rdfTypes>
+                     <cs:RdfType>
+                        <cs:name>rdfs:Datatype</cs:name>
+                     </cs:RdfType>
+                  </cs:rdfTypes>
+               </cs:Construct>
             </cs:constructs>
          </cs:Map>
          <cs:Map>
