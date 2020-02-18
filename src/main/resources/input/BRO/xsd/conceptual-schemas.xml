@@ -1074,7 +1074,7 @@
                   </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
-                  <cs:name>Coordinatenpaar</cs:name>
+                  <cs:name>CoRdinatenpaar</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
