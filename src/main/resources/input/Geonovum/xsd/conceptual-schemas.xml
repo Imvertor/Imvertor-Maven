@@ -623,6 +623,16 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+               <cs:Construct>
+                  <cs:name>doubleList</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>gml:doubleList</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
             </cs:constructs>
          </cs:Map>
          <cs:Map>
