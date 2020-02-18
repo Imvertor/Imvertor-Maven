@@ -1653,7 +1653,6 @@
         <xsl:param name="attribute" as="element(imvert:attribute)"/>
         <xsl:choose>
             <xsl:when test="empty($attribute/imvert:type-id) and exists($attribute/imvert:baretype) and count($all-simpletype-attributes[imvert:name = $attribute/imvert:name]) gt 1">
-               <!--xx <xsl:message select="concat($attribute/imvert:name, ';', $attribute/@display-name)"/> xx-->
                 <xsl:value-of select="concat($name,imf:get-effective-name($attribute/../..))"/>
             </xsl:when>
             <xsl:otherwise>

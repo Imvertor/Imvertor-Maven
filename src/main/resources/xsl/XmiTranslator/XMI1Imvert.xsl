@@ -805,7 +805,6 @@
                         <xsl:variable name="positions" select="regex-group(2)"/>
                         <xsl:variable name="decimals" select="regex-group(4)"/>
                         <xsl:variable name="pattern" select="regex-group(5)"/>
-                        <!--<xsl:message select="string-join(($type-name, $type, $positions, $decimals,$pattern),', ')"></xsl:message>-->
                         <xsl:choose>
                             <xsl:when test="$type='AN'">
                                 <xsl:sequence select="imf:create-output-element('imvert:type-name','scalar-string')"/><!-- used to be 'char' -->
@@ -1439,12 +1438,6 @@
         <xsl:variable name="role" select="imf:element-by-id($id)"/>
         <!-- classifier role may also be identified through package2 tagged value. Take any classifier role with package2 is same as the ID -->
         <xsl:variable name="croles" select="$document-classifier-roles[UML:ModelElement.taggedValue/UML:TaggedValue[@tag='package2' and @value=$id]]"/>
-        <!--X
-        <xsl:message select="'-'"></xsl:message>
-        <xsl:message select="string($id)"></xsl:message>
-        <xsl:message select="concat('1>', string-join(for $r in $role return name($r),', '))"></xsl:message>
-        <xsl:message select="concat('2>', string-join(for $c in $croles return name($c),', '))"></xsl:message>
-        X-->
         <xsl:sequence select="if (exists($role)) then $role else $croles"/>
     </xsl:function>
     

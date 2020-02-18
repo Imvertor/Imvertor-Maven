@@ -44,10 +44,6 @@
         <xsl:param name="construct" as="element(cs:Construct)?"/> <!-- the construct that is part of a conceptual map -->
            
         <xsl:variable name="conceptual-schema" select="imf:get-schema-for-construct($construct)"/>
-        <xsl:message select="$conceptual-schema/cs:id"></xsl:message>
-        <xsl:message select="$conceptual-schema/cs:catalogUrl"></xsl:message>
-        <xsl:message select="$construct/cs:catalogEntries/cs:CatalogEntry/cs:name"></xsl:message>
-        
         <xsl:sequence select="if ($conceptual-schema/cs:catalogUrl) then replace($conceptual-schema/cs:catalogUrl,'\[entry\]',string($construct/cs:catalogEntries/cs:CatalogEntry/cs:name)) else ()"/>
  
     </xsl:function>
@@ -109,19 +105,6 @@
         </xsl:variable>
         <xsl:sequence select="$selected-mapping"/>
        
-        <?x
-        <xsl:message>--</xsl:message>
-        <xsl:message select="$url"></xsl:message>
-        <xsl:message>--1</xsl:message>
-        <xsl:message select="$use-mapping"></xsl:message>
-        <xsl:message>--2</xsl:message>
-        <xsl:message select="$selected-mapping/cs:id"></xsl:message>
-        <xsl:message>--3</xsl:message>
-        <xsl:message select="$conceptual-schema-ids"></xsl:message>
-        <xsl:message>--4</xsl:message>
-        <xsl:message select="count($maps)"></xsl:message>
-        x?>
-        
     </xsl:function>
     
     <xsl:function name="imf:resolve-cs-ref" as="element()?">

@@ -141,7 +141,6 @@
         <xsl:variable name="is-not-anonymous" select="exists(($id-attribute-inherited,$id-attribute-inheriting))"/>
         <xsl:variable name="is-not-id-voidable" select="not($id-attribute-inherited/imvert:stereotype/@id = ('stereotype-name-voidable'))"/>
         
-        <!--<xsl:message select="concat($class/imvert:name, ' - ', $is-objecttype, ' - ', $is-not-static, ' - ', $is-not-lonely, ' - ', $is-not-sad, ' - ', $is-not-anonymous, ' - ', $is-not-id-voidable)"></xsl:message>-->
         <xsl:sequence select="$is-objecttype and ($is-not-static or $is-not-lonely or $is-not-sad) and $is-not-anonymous and $is-not-id-voidable"/>
     </xsl:function>
     

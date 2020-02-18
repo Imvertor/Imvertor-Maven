@@ -637,7 +637,6 @@
                         <xsl:sequence select="imf:create-data-comment('Tip',cp:tip)"/>   
                     </xsl:variable>
                     <xsl:if test="exists($comment-lines)">
-                   <!--x     <xsl:message select="string-join((string($construct-col), string($construct-row), $comment-lines[last()]),':')"></xsl:message>   x-->
                         <comment ref="{$construct-col}{$construct-row}" authorId="0" > <!-- TODO ? shapeId="comment_{$sheet-number}_{$message-row}" -->
                             <text>
                                 <xsl:sequence select="$comment-lines"/>

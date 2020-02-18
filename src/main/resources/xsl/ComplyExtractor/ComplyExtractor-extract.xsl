@@ -130,12 +130,6 @@
         <!-- list of all start row numbers; skip the header at position 1  -->
         <xsl:variable name="start-row-nrs" select="for $r in ($worksheet-rows[position() gt 1 and not(imf:get-cell-info(.,1,$sheet-nr)/@val = '')]) return xs:integer($r/@r)" as="xs:integer*"/>
         
-        <!--
-        <xsl:message select="concat('2>', count($worksheet-rows))"/>
-        <xsl:message select="concat('2>', $last-r)"/>
-        <xsl:message select="concat('2>', count($start-row-nrs))"/>
-        -->
-        
         <xsl:for-each select="$start-row-nrs">
             <xsl:variable name="index" select="position()"/>
             <xsl:variable name="cur-r" select="."/>
@@ -147,12 +141,6 @@
           
             <xsl:variable name="cur-row" select="$worksheet-rows[xs:integer(@r) eq $cur-r]"/>
             <xsl:variable name="following-rows" select="$worksheet-rows[xs:integer(@r) gt $cur-r and xs:integer(@r) lt $next-r]"/>
-            
-            <!--
-            <xsl:message select="concat('1>', count($worksheet-rows))"/>
-            <xsl:message select="concat('1>', string-join(for $s in $start-row-nrs return string($s),' '))"/>
-            <xsl:message select="concat('1>', count($following-rows))"/>
-            -->
             
             <!-- the last column is the last for the first row. All columns are filled and named. -->
             <xsl:variable name="last-col" select="count($worksheet-rows[@r eq '1']/*:c)"/>
