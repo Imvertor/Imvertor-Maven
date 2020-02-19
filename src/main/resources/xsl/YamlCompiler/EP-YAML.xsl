@@ -148,7 +148,7 @@
 			<xsl:when test="(contains($berichttype,'Gr') or contains($berichttype,'Gc')) and $messagetype = 'request'">
 				<!-- This processes all ep:message elements representing the request tree of the Gr and Gc messages. -->
 				<xsl:if test="$debugging">
-					# ---------Debuglocatie-01000
+					# ---------Debuglocatie-01000,  XPath: <xsl:sequence select="imf:xpath-string(.)"/>
 				</xsl:if>
 				<xsl:variable name="operationId">
 					<xsl:choose>
@@ -803,7 +803,7 @@
 			</xsl:when>
 			<xsl:when test="(contains($berichttype,'Po') or contains($berichttype,'Pa') or contains($berichttype,'Pu')) and $messagetype = 'request'">
 				<xsl:if test="$debugging">
-					# ---------Debuglocatie-02000
+					# ---------Debuglocatie-02000,  XPath: <xsl:sequence select="imf:xpath-string(.)"/>
 				</xsl:if>
 				<xsl:variable name="messageCategory" select="ep:parameters/ep:parameter[ep:name='messageCategory']/ep:value"/>
 				<xsl:variable name="operationId">
@@ -1316,7 +1316,7 @@
 			<xsl:when test="contains($berichttype,'De') and $messagetype = 'request'">
 				<!-- This processes all ep:message elements representing the request tree of the Gr and Gc messages. -->
 				<xsl:if test="$debugging">
-					# ---------Debuglocatie-03000
+					# ---------Debuglocatie-03000,  XPath: <xsl:sequence select="imf:xpath-string(.)"/>
 				</xsl:if>
 				<xsl:variable name="operationId">
 					<xsl:choose>
