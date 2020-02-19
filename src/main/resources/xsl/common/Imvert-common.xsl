@@ -512,6 +512,36 @@
        <xsl:sequence select="$debugging"/>
     </xsl:function>
     
+    <xsl:function name="imf:generate-debug-comment">
+        <xsl:param name="type"/>
+        <xsl:param name="debugText"/>
+        <xsl:param name="context-item"/>
+        <xsl:if test="$debugging">
+            <xsl:choose>
+                <xsl:when test="$type = 'xml'">
+                    <xsl:comment select="concat('Debuglocatie ', $debugText,':',imf:xpath-string($context-item))"/>
+                </xsl:when>
+                <xsl:when test="$type = 'json'">
+                    <xsl:text>"--------------Debuglocatie-</xsl:text><xsl:value-of select="$debugText"/><xsl:text>": {
+					"Debug": "</xsl:text><xsl:sequence select="imf:xpath-string($context-item)"/><xsl:text>"
+				},</xsl:text>
+                </xsl:when>
+                <xsl:when test="$type = 'yaml'">
+                    <xsl:text># ---------Debuglocatie-</xsl:text><xsl:value-of select="$debugText"/><xsl:text>-- </xsl:text><xsl:sequence select="imf:xpath-string($context-item)"/>
+                </xsl:when>
+            </xsl:choose>
+        </xsl:if>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-debug-comment-with-xpath">
+        <xsl:param name="text" as="xs:string"/>
+        <xsl:param name="debugging" as="xs:boolean"/>
+        <xsl:param name="node"/>
+        <xsl:if test="$debugging">
+            <xsl:sequence select="imf:create-debug-comment(concat($text,' XPath: ',imf:xpath-string($node)),$debugging)"/>
+        </xsl:if>      
+    </xsl:function>
+    
     <xsl:function name="imf:create-debug-comment">
         <xsl:param name="text" as="xs:string"/>
         <xsl:param name="debugging" as="xs:boolean"/>
@@ -1237,4 +1267,19 @@
         <xsl:sequence select="$tv-element/node()"/>
     </xsl:function>
 
+    <xsl:function name="imf:xpath-string">
+        <xsl:param name="node"/>
+        
+        <xsl:variable name="xpath-string">
+            <xsl:for-each select="$node/ancestor-or-self::*">
+                <xsl:text />/<xsl:value-of select="name()" />
+                <xsl:if test="parent::*">
+                    <xsl:text />[<xsl:number />]<xsl:text />
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+        
+        <xsl:value-of select="string-join($xpath-string,'')"/>
+    </xsl:function>
+    
 </xsl:stylesheet>

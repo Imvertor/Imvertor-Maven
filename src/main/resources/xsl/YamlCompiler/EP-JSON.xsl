@@ -198,9 +198,9 @@
 
 						<!-- The regular constructs are generated here. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-01000-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS01000"
-							},
+							"--------------Debuglocatie-01000 ": {
+			                "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			                },
 						</xsl:if>
 						
 						<xsl:sequence select="imf:createHalComponent($elementName,.)"/>
@@ -258,8 +258,8 @@
 
 						<!-- The regular constructs are generated here. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-01100-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS01100"
+							"--------------Debuglocatie-01100 ": {
+							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 							},
 						</xsl:if>
 
@@ -284,8 +284,8 @@
 					<xsl:sequence select='$entiteiten'/>
 				</xsl:if>
 				<xsl:if test="$debugging">
-					,"--------------Debuglocatie-01200-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "OAS01200"
+					,"--------------Debuglocatie-01200 ": {
+					"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 					}
 				</xsl:if>	
 			</xsl:when>
@@ -336,8 +336,8 @@
 						<xsl:variable name="type-name" select="ep:type-name"/>
 						<!-- The regular constructs are generated here. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-01300-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS01300"
+							"--------------Debuglocatie-01300 ": {
+							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 							},
 						</xsl:if>
 						<xsl:call-template name="construct"/>
@@ -352,8 +352,8 @@
 					<xsl:sequence select='$entiteiten'/>
 				</xsl:if>
 				<xsl:if test="$debugging">
-					,"--------------Debuglocatie-01400-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "OAS01400"
+					,"--------------Debuglocatie-01400 ": {
+					"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 					}
 				</xsl:if>				
 			</xsl:otherwise>
@@ -447,8 +447,8 @@
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-01500-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS01500"
+							"--------------Debuglocatie-01500 ": {
+							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 							},
 						</xsl:if>
 						<xsl:choose>
@@ -553,8 +553,8 @@
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-01600-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS01600"
+							"--------------Debuglocatie-01600 ": {
+							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 							},
 						</xsl:if>
 						<xsl:call-template name="construct"/>
@@ -661,8 +661,8 @@
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-01700-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS01700"
+							"--------------Debuglocatie-01700 ": {
+							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 							},
 						</xsl:if>
 						<xsl:call-template name="construct"/>
@@ -755,8 +755,8 @@
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-01800-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS01800"
+							"--------------Debuglocatie-01800 ": {
+							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 							},
 						</xsl:if>
 						<xsl:call-template name="construct"/>
@@ -775,8 +775,8 @@
 		</xsl:choose> ?>
 		
 		<xsl:if test="$debugging">
-			,"--------------Debuglocatie-01900-<xsl:value-of select="generate-id()"/>": {
-			"Einde Debug": "OAS01900"
+			,"--------------Debuglocatie-01900 ": {
+			"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 			}
 		</xsl:if>
 		<!-- Loop over global superclass constructs which are refered to from constructs within the messages. -->
@@ -798,9 +798,9 @@
 				<xsl:sort select="ep:tech-name" order="ascending"/>
 				<!-- Only regular constructs are generated. -->
 				<xsl:if test="$debugging">
-					"--------------Debuglocatie-02000-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "OAS02000"
-					},
+					"--------------Debuglocatie-02000 ": {
+			        "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			        },
 				</xsl:if>
 				<xsl:call-template name="construct"/>
 				<xsl:if test="position() != last()">
@@ -970,9 +970,9 @@
 
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<xsl:if test="$debugging">
-								"--------------Debuglocatie-02100-<xsl:value-of select="generate-id()"/>": {
-									"Debug": "OAS02100"
-								},
+								"--------------Debuglocatie-02100 ": {
+			                    "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			                    },
 							</xsl:if>
 							<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'_links&quot;: {' )"/>
 							<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
@@ -990,10 +990,9 @@
 							<xsl:value-of select="'}'"/>
 							<xsl:value-of select="'}'"/>
 							<xsl:if test="$debugging">
-								,"--------------Einde-02100-<xsl:value-of select="generate-id()"/>": {
-									"Debug": "OAS02100"
-								}
-			
+								,"------------Einde-Debuglocatie-02100 ": {
+			                    "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			                    }
 							</xsl:if>
 							<xsl:if test="position() != last()">
 								<!-- As long as the current construct isn't the last global constructs (that has itself a construct of 'association' type) 
@@ -1058,9 +1057,9 @@
 							
 							<xsl:if test="contains($content,'{')">
 								<xsl:if test="$debugging">
-									"--------------Debuglocatie-02200-<xsl:value-of select="generate-id()"/>": {
-										"Debug": "OAS02200"
-									},
+									"--------------Debuglocatie-02200 ": {
+			                        "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			                        },
 								</xsl:if>
 								<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'_embedded&quot;: {' )"/>
 								<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
@@ -1072,9 +1071,9 @@
 								<xsl:value-of select="'}'"/>
 								<xsl:value-of select="'}'"/>
 								<xsl:if test="$debugging">
-									,"--------------Einde-02200-<xsl:value-of select="generate-id()"/>": {
-										"Debug": "OAS02200"
-									}
+									,"-------------Einde-Debuglocatie-02200 ": {
+			                        "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			                        }
 								</xsl:if>
 								<xsl:value-of select="','"/>
 							</xsl:if>
@@ -1125,9 +1124,9 @@
 									  ]">
 							<xsl:sort select="ep:tech-name" order="ascending"/>
 							<xsl:if test="$debugging">
-								"--------------Debuglocatie-02300-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS02300"
-								},
+								"--------------Debuglocatie-02300 ": {
+			                    "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			                    },
 							</xsl:if>
 							<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'_embedded&quot;: {')"/>
 							<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
@@ -1136,9 +1135,9 @@
 							<xsl:value-of select="'}'"/>
 							<xsl:value-of select="'}'"/>
 							<xsl:if test="$debugging">
-								,"--------------Einde-02300-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS02300"
-								}
+								,"--------------Einde-02300 ": {
+			                    "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			                    }
 							</xsl:if>
 							<xsl:if test="position() != last()">
 								<!-- As long as the current construct isn't the last global constructs 
@@ -1226,9 +1225,9 @@
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-02400-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS02400"
-							},
+							"--------------Debuglocatie-02400 ": {
+			                "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			                },
 						</xsl:if>
 						<xsl:call-template name="construct"/>
 						<xsl:if test="position() != last()">
@@ -1294,9 +1293,9 @@
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-02500-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS02500"
-							},
+							"--------------Debuglocatie-02500 ": {
+			                "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			                },
 						</xsl:if>
 						<xsl:call-template name="construct"/>
 						<xsl:if test="position() != last()">
@@ -1357,16 +1356,16 @@
 		<xsl:param name="typeName"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-02600-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS02600"
+			"--------------Debuglocatie-02600 ": {
+			"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 			},
 		</xsl:if>
 		<xsl:apply-templates select="ep:choice">
 			<xsl:with-param name="typeName" select="$typeName"/>
 		</xsl:apply-templates>
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-02700-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS02700-<xsl:value-of select="../ep:tech-name"/>"
+			"--------------Debuglocatie-02700 ": {
+			"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 			},
 		</xsl:if>
 			<!-- Only for the association constructs properties have to be generated. This is not applicable for supertype-association 
@@ -1498,8 +1497,8 @@
 			<xsl:param name="typeName"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-02800-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS02800"
+			"--------------Debuglocatie-02800 ": {
+			"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 			},
 		</xsl:if>
 
@@ -1724,9 +1723,9 @@
 					</xsl:if>
 					<xsl:if test="$associationProperties != '' and $serialisation = 'json'">
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-02900-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS02900"
-							},
+							"--------------Debuglocatie-02900 ": {
+			                "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			                },
 						</xsl:if>
 						<xsl:sequence select="$associationProperties"/>
 					</xsl:if>
@@ -1737,9 +1736,9 @@
 				
 				
 				<xsl:if test="$debugging">
-					"--------------Debuglocatie-03000-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "OAS03000"
-					},
+					"--------------Debuglocatie-03000 ": {
+			        "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			        },
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="$mode = 'onlyLinksAndEmbedded'">
@@ -1751,9 +1750,9 @@
 						</xsl:if>
 						<xsl:if test="$associationProperties != ''">
 							<xsl:if test="$debugging">
-								"--------------Debuglocatie-03100-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS03100"
-								},
+								"--------------Debuglocatie-03100 ": {
+			                	"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			                	},
 							</xsl:if>
 							<xsl:sequence select="$associationProperties"/>
 						</xsl:if>
@@ -1824,9 +1823,9 @@
 						<xsl:if test="$grouping != 'resource'">
 							<xsl:value-of select="'}'"/>
 							<xsl:if test="$debugging">
-								,"--------------Einde-03200-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS03200"
-								}
+								,"--------------Debuglocatie-03200 ": {
+			                	"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			                	}
 							</xsl:if>
 						</xsl:if>
 					</xsl:otherwise>
@@ -1840,8 +1839,8 @@
 		<!-- Enummeration constructs are processed here. -->
 		<xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-03300-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS03300"
+			"--------------Debuglocatie-03300 ": {
+			"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 			},
 		</xsl:if>
 		<xsl:value-of select="concat('&quot;', $elementName,'&quot;: {' )"/>
@@ -1870,8 +1869,8 @@
 		<xsl:value-of select="']'"/>
 		<xsl:value-of select="'}'"/>
 		<xsl:if test="$debugging">
-			,"--------------Einde-03400-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS03400"
+			,"--------------Debuglocatie-03400 ": {
+			"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 			}
 		</xsl:if>
 	</xsl:template>
@@ -1885,8 +1884,8 @@
         <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-03500-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS03500"
+			"--------------Debuglocatie-03500 ": {
+			"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 			},
 		</xsl:if>
  
@@ -1935,7 +1934,9 @@
 		<xsl:value-of select="'&quot;properties&quot;: {'"/>
 		
 <!--		<xsl:if test="$debugging">
-			"//<xsl:value-of select="concat('OAS00500: ',generate-id())"/>": "",
+			"--------------Debuglocatie-00500 ": {
+			"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			},
 		</xsl:if>-->
 
 		<!-- All constructs (that don't have association type constructs) within the current construct are processed here. -->
@@ -1943,7 +1944,9 @@
 			<xsl:variable name="name" select="substring-after(ep:type-name, ':')"/>
 
 <!--			<xsl:if test="$debugging">
-				"//<xsl:value-of select="concat('OAS00600: ',generate-id())"/>": "",
+				"--------------Debuglocatie-00600 ": {
+			    "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			    },
 			</xsl:if>
 -->
 			<xsl:call-template name="property"/>
@@ -1975,8 +1978,8 @@
 		<xsl:value-of select="'}'"/>
 
 		<xsl:if test="$debugging">
-			,"--------------Einde-03600-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS03600"
+			,"--------------Debuglocatie-03600 ": {
+			"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 			}
 		</xsl:if>
    </xsl:template> ?>

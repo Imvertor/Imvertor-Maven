@@ -183,7 +183,7 @@
 				<!-- The ep:message-set element contains the messages of the interface. 
 					 It's possible to have more than one ep:message-set elements but for Open API interfaces only one ep:message-set 
 					 element is present. -->
-				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS00500',$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS00500',$debugging,.)" />
 
 				<xsl:sequence select="imf:create-output-element('ep:name', $packages/imvert:application)" />
 				<xsl:sequence select="imf:create-output-element('ep:release', $packages/imvert:release)" />
@@ -193,12 +193,12 @@
 
 				<xsl:sequence select="imf:track('Constructing the OpenAPI message constructs')" />
 
-				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS01000',$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS01000',$debugging,.)" />
 				<!-- Start the processing of each ep:rough-message element. -->
 				<xsl:apply-templates select="ep:rough-message" />
 
 				<xsl:sequence select="imf:track('Constructing the constructs related to the OpenAPI messages')" />
-				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS01500',$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS01500',$debugging,.)" />
 
 				<!-- CREATING GLOBAL CONSTRUCTS
 					 Each class can be refered to several times and so appear on more than one location within the rough-message structure.
@@ -208,26 +208,26 @@
 					select="//ep:superconstruct"
 					group-by="ep:name">
 					<!-- This for-each-group processes al superconstructs within the rough-message structure. -->
-					<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS02000',$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS02000',$debugging,.)" />
 					<!-- All global constructs need to be provided with the berichtcode and messagetype they apply to, 
 						 to be able to decide how to proces them in a following step. -->
 					<xsl:variable name="berichtcode" select="ancestor::ep:rough-message/@berichtcode"/>
 					<xsl:variable name="messagetype" select="ancestor::ep:rough-message/@messagetype"/>
-					<xsl:sequence select="imf:create-debug-comment(concat('Berichtcode=',$berichtcode),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('Berichtcode=',$berichtcode),$debugging,.)" />
 					<xsl:apply-templates select="current-group()[1]" mode="as-global-type">
 						<xsl:with-param name="berichtcode" select="$berichtcode"/>
 						<xsl:with-param name="messagetype" select="$messagetype"/>
 					</xsl:apply-templates>
 				</xsl:for-each-group>
 				
-				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS02250',$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS02250',$debugging,.)" />
 				<xsl:for-each-group 
 					select="//ep:construct[@type!='complex-datatype' and @type!='table-datatype' and @type!='groepCompositieAssociation']"
 					group-by="ep:name">
 					<!-- This for-each-group processes al constructs within the rough-message structure which are not of 'complex-datatype', 
 						 'table-datatype' or 'groepCompositieAssociation' type. Those type of constructs, except the groepCompositieAssociation' 
 						 type which doesn't lead to global constructs at all, are processed after this for-each-group. -->
-					<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS02500',$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS02500',$debugging,.)" />
 					<xsl:sequence select="imf:create-debug-comment(concat('Groupname: ',ep:name),$debugging)" />
 					<!-- All global constructs need to be provided with the berichtcode and messagetype they apply to, 
 						 to be able to decide how to proces them in a following step. -->
@@ -239,12 +239,12 @@
 					</xsl:apply-templates>
 				</xsl:for-each-group>
 				
-				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS03000',$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS03000',$debugging,.)" />
 				<xsl:for-each-group 
 					select="//ep:construct[@type='complex-datatype']"
 					group-by="ep:type-id">
 					<!-- This for-each-group processes al constructs within the rough-message structure which are of 'complex-datatype' type. -->
-					<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS035000',$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS035000',$debugging,.)" />
 					<!-- All global constructs need to be provided with the berichtcode and messagetype they apply to, 
 						 to be able to decide how to proces them in a following step. -->
 					<xsl:variable name="berichtcode" select="ancestor::ep:rough-message/@berichtcode"/>
@@ -255,12 +255,12 @@
 					</xsl:apply-templates>
 				</xsl:for-each-group>
 				
-				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS03500',$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS03500',$debugging,.)" />
 				<xsl:for-each-group 
 					select="//ep:construct[@type='table-datatype']"
 					group-by="ep:type-id">
 					<!-- This for-each-group processes al constructs within the rough-message structure which are of 'table-datatype' type. -->
-					<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS035000',$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS035000',$debugging,.)" />
 					<!-- All global constructs need to be provided with the berichtcode and messagetype they apply to, 
 						 to be able to decide how to proces them in a following step. -->
 					<xsl:variable name="berichtcode" select="ancestor::ep:rough-message/@berichtcode"/>
@@ -281,7 +281,7 @@
 
 	<!-- Takes care of processing individual ep:rough-message elements to ep:message elements. -->
 	<xsl:template match="ep:rough-message">
-		<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS04000',$debugging)" />
+		<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS04000',$debugging,.)" />
 
 		<xsl:variable name="id" select="ep:id" as="xs:string" />
 
@@ -333,7 +333,7 @@
 			<xsl:value-of select="$expandconfigurations//ep:message[ep:name=$name and @berichtcode=$berichtcode]/ep:expand"/>
 		</xsl:variable>
 		
-		<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS04500',$debugging)" />
+		<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS04500',$debugging,.)" />
 
 		<ep:message>
 			<xsl:choose>
@@ -491,7 +491,7 @@
 			<xsl:if test=".//ep:construct">
 				<!-- If the rough-message has an ep:construct element, which actually should always be the case, the following template 
 					 will be applied. -->
-				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS05000',$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS05000',$debugging,.)" />
 				<ep:seq>
 					<!-- Within the template call the cardinality params get the value '-' to express cardinality is of no importance 
 						 in this situation. -->
@@ -514,7 +514,7 @@
 		<xsl:param name="minOccurs" />
 		<xsl:param name="maxOccurs" />
 
-		<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS05500',$debugging)" />
+		<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS05500',$debugging,.)" />
 		
 		<xsl:variable name="name" select="ep:name" as="xs:string" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(ep:tech-name, 'element-name')" as="xs:string" />
@@ -564,34 +564,34 @@
 		<xsl:if test="$debugging">
 			<xsl:choose>
 				<xsl:when test="ep:id and @type = 'association'">
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS06000, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS06000, id: ',$id),$debugging,.)" />
 				</xsl:when>
 				<xsl:when test="ep:id and @type = 'groepCompositie'">
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS06500, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS06500, id: ',$id),$debugging,.)" />
 				</xsl:when>
 				<xsl:when test="ep:id and @type = 'association-class'">
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS07000, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS07000, id: ',$id),$debugging,.)" />
 				</xsl:when>
 				<xsl:when test="ep:id-refering-association and @type = 'class'">
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS07500, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS07500, id: ',$id),$debugging,.)" />
 				</xsl:when>
 				<xsl:when test="ep:id-refering-association and @type = 'requestclass'">
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS08000, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS08000, id: ',$id),$debugging,.)" />
 				</xsl:when>
 				<xsl:when test="ep:id and @type = 'class'">
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS08500, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS08500, id: ',$id),$debugging,.)" />
 				</xsl:when>
 				<xsl:when test="ep:id and @type = 'subclass'">
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS09000, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS09000, id: ',$id),$debugging,.)" />
 				</xsl:when>
 				<xsl:when test="ep:id and @type = 'attribute'">
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS09500, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS09500, id: ',$id),$debugging,.)" />
 				</xsl:when>
 				<xsl:when test="ep:type-id and (@type = 'complex-datatype' or @type = 'table-datatype')">
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS10000, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS10000, id: ',$id),$debugging,.)" />
 				</xsl:when>
 				<xsl:when test="ep:type-id">
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS10500, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS10500, id: ',$id),$debugging,.)" />
 				</xsl:when>
 			</xsl:choose>
 		</xsl:if>
@@ -628,7 +628,7 @@
 				<!-- If the current ep:construct is an association-class no ep:construct element is generated. All attributes of that 
 					 related class are directly placed within the current ep:construct. Also the child ep:superconstructs and 
 					 ep:constructs (if present) are processed. -->
-				<xsl:sequence select="imf:create-debug-comment(concat('OAS11000, id: ',$id),$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11000, id: ',$id),$debugging,.)" />
 				<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 				<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
 				<xsl:apply-templates select="ep:construct" mode="as-local-type">
@@ -675,7 +675,7 @@
 							<xsl:sequence select="imf:create-output-element('ep:value', @type)" />
 						</ep:parameter>
 					</ep:parameters>
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS11500, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11500, id: ',$id),$debugging,.)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 					<xsl:choose>
@@ -737,7 +737,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</ep:parameters>
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS11500, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11500, id: ',$id),$debugging,.)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 					<xsl:choose>
@@ -855,7 +855,7 @@
 					</ep:parameters>
 					
 					<xsl:sequence select="imf:create-debug-comment(concat('Result check on id attributes: ',$contains-non-id-attributes),$debugging)" />
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS12000, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS12000, id: ',$id),$debugging,.)" />
 
 					<xsl:sequence select="imf:create-output-element('ep:name', $construct/imvert:name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($construct/imvert:name, 'element-name'))" />
@@ -907,7 +907,7 @@
 						</ep:parameter>
 					</ep:parameters>
 					
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS12500, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS12500, id: ',$id),$debugging,.)" />
 					
 					<xsl:sequence select="imf:create-output-element('ep:name', ../ep:name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $groupname)" />
@@ -965,7 +965,7 @@
 						</ep:parameter>
 					</ep:parameters>
 
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS13000, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS13000, id: ',$id),$debugging,.)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 					<xsl:choose>
@@ -997,7 +997,7 @@
 						</ep:parameter>
 					</ep:parameters>
 
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS132500, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS132500, id: ',$id),$debugging,.)" />
 
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
@@ -1022,15 +1022,15 @@
 							   kan de choose worden verwijderd. Voor nu is hiij uitgeschakeld. -->
 <?x					<xsl:choose>
 						<xsl:when test="$minOccurs = '-'">
-							<xsl:sequence select="imf:create-debug-comment(concat('OAS14000, id: ',$id),$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS14000, id: ',$id),$debugging,.)" />
 						</xsl:when>
 						<xsl:when test="not($minOccurs = '')">
-							<xsl:sequence select="imf:create-debug-comment(concat('OAS14500, id: ',$id),$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS14500, id: ',$id),$debugging,.)" />
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', $minOccurs)" />
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', $maxOccurs)" />
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:sequence select="imf:create-debug-comment(concat('OAS15000, id: ',$id),$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS15000, id: ',$id),$debugging,.)" />
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
 						</xsl:otherwise>
@@ -1072,7 +1072,7 @@
 						</ep:parameter>
 					</ep:parameters>
 					
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS16000, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS16000, id: ',$id),$debugging,.)" />
 					
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
@@ -1089,15 +1089,15 @@
 							   kan de choose worden verwijderd. Voor nu is hij uitgeschakeld. -->
 <?x					<xsl:choose>
 						<xsl:when test="$minOccurs = '-'">
-							<xsl:sequence select="imf:create-debug-comment(concat('OAS16500, id: ',$id),$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS16500, id: ',$id),$debugging,.)" />
 						</xsl:when>
 						<xsl:when test="not($minOccurs = '')">
-							<xsl:sequence select="imf:create-debug-comment(concat('OAS17000, id: ',$id),$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS17000, id: ',$id),$debugging,.)" />
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', $minOccurs)" />
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', $maxOccurs)" />
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:sequence select="imf:create-debug-comment(concat('OAS17500, id: ',$id),$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS17500, id: ',$id),$debugging,.)" />
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
 						</xsl:otherwise>
@@ -1117,7 +1117,7 @@
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name($construct/imvert:name, 'type-name')" as="xs:string" />
 		
-		<xsl:sequence select="imf:create-debug-comment(concat('OAS18000, id: ',$id),$debugging)" />
+		<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS18000, id: ',$id),$debugging,.)" />
 
 		<ep:construct>
 			<ep:name><xsl:value-of select="$construct/imvert:name/@original"/></ep:name>
@@ -1169,7 +1169,7 @@
 			<xsl:value-of select="$expandconfigurations//ep:message[ep:name=$name and @berichtcode=$berichtcode and @messagetype=$messagetype]/ep:expand"/>
 		</xsl:variable>
 
-		<xsl:sequence select="imf:create-debug-comment(concat('OAS18500, id: ',$id,', ',$name),$debugging)" />
+		<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS18500, id: ',$id,', ',$name),$debugging,.)" />
 		
 		<ep:construct>
 			<ep:parameters>
@@ -1221,18 +1221,18 @@
 				</xsl:apply-templates>
 				
 				<xsl:for-each-group select="ep:construct[@xor]" group-by="@xor">
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS18520, tech-name: ',ep:tech-name),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS18520, tech-name: ',ep:tech-name),$debugging,.)" />
 					<xsl:call-template name="constraint">
 						<xsl:with-param name="constraintType" select="'xor'"/>
 					</xsl:call-template>
 				</xsl:for-each-group>
 				<xsl:for-each-group select="ep:construct[@or]" group-by="@or">
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS18540, tech-name: ',ep:tech-name),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS18540, tech-name: ',ep:tech-name),$debugging,.)" />
 					<xsl:call-template name="constraint">
 						<xsl:with-param name="constraintType" select="'or'"/>
 					</xsl:call-template>
 				</xsl:for-each-group>
-				<xsl:sequence select="imf:create-debug-comment(concat('OAS18560, tech-name: ',ep:tech-name),$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS18560, tech-name: ',ep:tech-name),$debugging,.)" />
 				<xsl:apply-templates select="ep:construct[empty(@xor) and empty(@or)]" mode="as-local-type" >
 					<xsl:with-param name="berichtcode" select="$berichtcode"/>
 					<xsl:with-param name="messagetype" select="$messagetype"/>
@@ -1259,7 +1259,7 @@
 		<xsl:param name="berichtcode"/>
 		<xsl:param name="messagetype"/>
 
-		<xsl:sequence select="imf:create-debug-comment(concat('OAS19000, tech-name: ',ep:tech-name),$debugging)" />
+		<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS19000, tech-name: ',ep:tech-name),$debugging,.)" />
 		
 		<xsl:variable name="name" select="ep:name" as="xs:string" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(ep:tech-name, 'element-name')" as="xs:string" />
@@ -1352,7 +1352,7 @@
 					<xsl:value-of select="$expandconfigurations//ep:message[ep:name=$messagename and @berichtcode=$berichtcode and @messagetype=$messagetype]/ep:expand"/>
 				</xsl:variable>
 				
-				<xsl:sequence select="imf:create-debug-comment(concat('OAS19250, id: ',$id),$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS19250, id: ',$id),$debugging,.)" />
 				<ep:construct>
 					<xsl:variable name="meervoudigeNaam">
 						<xsl:sequence select="imf:getMeervoudigeNaam($construct,'entiteit',$messagename)"/>
@@ -1407,11 +1407,11 @@
 			<xsl:when test="@type='association'">
 					<!-- The association construct refering to a class construct doesn't have to be reproduced itself
 					 since in most cases (relations to groups are the exception) relation aren't represented within json. -->
-				<xsl:sequence select="imf:create-debug-comment(concat('OAS20000, id: ',$id),$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS20000, id: ',$id),$debugging,.)" />
 			</xsl:when>
 			<xsl:when test="@type = 'groepCompositie'">
 				<!-- if the ep:constructs is of 'groepCompositie' a global construct is generated. -->
-				<xsl:sequence select="imf:create-debug-comment(concat('OAS22500, id: ',$id),$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS22500, id: ',$id),$debugging,.)" />
 				<xsl:variable name="type" select="@type" />
 				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:name" />
 				<xsl:copy>
@@ -1446,10 +1446,10 @@
 					<ep:seq>
 						<!-- Within the groep all its attributes are adopted.
 							 Also eventual associated constructs are processed. -->
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS23000, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS23000, id: ',$id),$debugging,.)" />
 						<xsl:sequence select="imf:create-debug-comment(concat('Type-id: ',$type-id),$debugging)" />
 						<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS23500, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS23500, id: ',$id),$debugging,.)" />
 						<xsl:apply-templates select="ep:construct[@type!='class']" mode="as-local-type" >
 							<xsl:with-param name="berichtcode" select="$berichtcode"/>
 							<xsl:with-param name="messagetype" select="$messagetype"/>
@@ -1467,7 +1467,7 @@
 					 The ep:construct is replicated and in case of 'class','requestclass' type ep:constructs for imvert:attributes related to 
 					 that construct are placed. 
 					 Also the child ep:superconstructs and ep:constructs (if present) are processed. -->
-				<xsl:sequence select="imf:create-debug-comment(concat('OAS24500, id: ',$id),$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS24500, id: ',$id),$debugging,.)" />
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($id,$packages)" />
 				<xsl:variable name="abstract">
 					<xsl:choose>
@@ -1543,30 +1543,30 @@
 					</xsl:choose>
 					<ep:seq>
 						<xsl:if test="$type=('class','requestclass')">
-							<xsl:sequence select="imf:create-debug-comment(concat('OAS25000, id: ',$id),$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS25000, id: ',$id),$debugging,.)" />
 							<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 						</xsl:if>
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS25500, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS25500, id: ',$id),$debugging,.)" />
 						<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS26000, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS26000, id: ',$id),$debugging,.)" />
 						<xsl:for-each-group select="ep:construct[@xor and @type!='class']" group-by="@xor">
 							<xsl:call-template name="constraint">
 								<xsl:with-param name="constraintType" select="'xor'"/>
 							</xsl:call-template>
 						</xsl:for-each-group>
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS26150, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS26150, id: ',$id),$debugging,.)" />
 						<xsl:for-each-group select="ep:construct[@or and @type!='class']" group-by="@or">
 							<xsl:call-template name="constraint">
 								<xsl:with-param name="constraintType" select="'or'"/>
 							</xsl:call-template>
 						</xsl:for-each-group>
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS26300, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS26300, id: ',$id),$debugging,.)" />
 						<xsl:apply-templates select="ep:construct[empty(@xor) and empty(@or) and @type!='class']" mode="as-local-type" >
 						<!--xsl:apply-templates select="ep:construct[@type!='class']" mode="as-local-type"-->
 							<xsl:with-param name="berichtcode" select="$berichtcode"/>
 							<xsl:with-param name="messagetype" select="$messagetype"/>
 						</xsl:apply-templates>
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS26500, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS26500, id: ',$id),$debugging,.)" />
 					</ep:seq>
 				</xsl:copy>
 			</xsl:when>
@@ -1593,7 +1593,7 @@
 				<!-- if the ep:constructs is of 'complex-datatype' type its name differs from the one in the 5th when above. 
 					 It's name isn't based on the attribute using the type since it is more generic and used by more than one ep:construct.
 					 Also it's attributes and -->
-				<xsl:sequence select="imf:create-debug-comment(concat('OAS27000, id: ',$id),$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS27000, id: ',$id),$debugging,.)" />
 				<xsl:variable name="type" select="@type" />
 				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:name" />
 				<xsl:copy>
@@ -1626,9 +1626,9 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<ep:seq>
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS27500, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS27500, id: ',$id),$debugging,.)" />
 						<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS28000, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS28000, id: ',$id),$debugging,.)" />
 						<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
 
 						<!-- TODO: Nagaan of er in een complex-datatype type ep:construct associations voor kunnen komen. 
@@ -1641,7 +1641,7 @@
 			<xsl:when test="@type = 'table-datatype'">
 				<!-- if the ep:constructs is of 'table-datatype' type its name differs from the one in the when above. 
 					 It's name isn't based on the attribute using the type since it is more generic and used by more than one ep:construct. -->
-				<xsl:sequence select="imf:create-debug-comment(concat('OAS28100, id: ',$id),$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS28100, id: ',$id),$debugging,.)" />
 				<xsl:variable name="type" select="@type" />
 				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:name" />
 				<xsl:copy>
@@ -1674,7 +1674,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<ep:seq>
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS28200, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS28200, id: ',$id),$debugging,.)" />
 						<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 						
 						<!-- TODO: Nagaan of er in een table-datatype type ep:construct associations voor kunnen komen. 
@@ -1744,7 +1744,7 @@
 					<ep:parameters>
 						<xsl:call-template name="attributeParameters"/>
 					</ep:parameters>
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS28300, id: ',imvert:id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS28300, id: ',imvert:id),$debugging,.)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 					<xsl:choose>
@@ -1769,7 +1769,7 @@
 					<ep:parameters>
 						<xsl:call-template name="attributeParameters"/>
 					</ep:parameters>
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS28500, id: ',imvert:id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS28500, id: ',imvert:id),$debugging,.)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 					
@@ -1795,7 +1795,7 @@
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]/imvert:id">
 				<!-- Attributes of complex datatype type are not resolved within this template but with one of the ep:construct templates since 
 					 they are present within the rough message structure. -->
-				<xsl:sequence select="imf:create-debug-comment(concat('OAS29000, id: ',imvert:id),$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS29000, id: ',imvert:id),$debugging,.)" />
 			</xsl:when>
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]/imvert:id">
 				<!-- The content of ep:constructs based on attributes which refer to a tabelentiteit is determined by the imvert:attribute in 
@@ -1809,7 +1809,7 @@
 						<xsl:call-template name="attributeParameters"/>
 					</ep:parameters>
 
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS30000, id: ',imvert:id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS30000, id: ',imvert:id),$debugging,.)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 					<xsl:choose>
@@ -1834,7 +1834,7 @@
 						<xsl:call-template name="attributeParameters"/>
 					</ep:parameters>
 
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS30500, id: ',imvert:id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS30500, id: ',imvert:id),$debugging,.)" />
 <?x					<xsl:if test="$debugging">
 						<ep:suppliers>
 							<xsl:copy-of select="$suppliers" />
@@ -2077,7 +2077,7 @@
 			   Die taak moet nog een keer worden uitgevoerd. -->
 	<xsl:template match="imvert:class" mode="as-global-enumeration">
 		<!-- Following template creates global ep:constructs for enumeration/ -->
-		<xsl:sequence select="imf:create-debug-comment('OAS31000',$debugging)" />
+		<xsl:sequence select="imf:create-debug-comment-with-xpath('OAS31000',$debugging,.)" />
 		<xsl:variable name="compiled-name" select="imf:get-compiled-name(.)" />
 		<xsl:variable name="doc">
 			<xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
@@ -2119,7 +2119,7 @@
 	</xsl:template>
 
 	<xsl:template match="imvert:attribute" mode="as-local-enumeration">
-		<xsl:sequence select="imf:create-debug-comment('OAS32000',$debugging)" />
+		<xsl:sequence select="imf:create-debug-comment-with-xpath('OAS32000',$debugging,.)" />
 
 		<xsl:variable name="supplier" select="imf:get-trace-suppliers-for-construct(.,1)[@project='SIM'][1]" />
 		<xsl:variable name="construct" select="if ($supplier) then imf:get-trace-construct-by-supplier($supplier,$imvert-document) else ()" />
