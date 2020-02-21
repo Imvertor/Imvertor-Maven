@@ -9,22 +9,11 @@
 	
 	<xsl:output method="text" indent="yes" omit-xml-declaration="yes"/>
 	
-<?x	<xsl:function name="imf:createDocumentation()">
-		<xsl:param name="documentationNode"/>
-		
-		<xsl:variable name="value-format" select="lower-case($configuration-notesrules-file//notes-format)"/>
-
-				
-	</xsl:function> ?>
-	
 	<xsl:template match="ep:documentation">
 		<xsl:param name="definition" select="'yes'"/>
 		<xsl:param name="description" select="'yes'"/>
 		<xsl:param name="pattern" select="'yes'"/>
-
-		<!--xsl:if test="not(//ep:p/@format = 'markdown')">
-			<xsl:value-of select="'&quot;'"/>
-		</xsl:if-->
+		
 		<xsl:if test="$definition = 'yes'">
 			<xsl:apply-templates select="ep:definition"/>
 		</xsl:if>
@@ -34,73 +23,51 @@
 		<xsl:if test="$pattern = 'yes'">
 			<xsl:apply-templates select="ep:pattern"/>
 		</xsl:if>
-		<!--xsl:if test="not(//ep:p/@format = 'markdown')">
-			<xsl:value-of select="'&quot;'"/>
-		</xsl:if-->
 	</xsl:template>
 	
 	<xsl:template match="ep:definition">
-		<xsl:apply-templates select="ep:p"/>
+		<xsl:apply-templates select="ep:p[@level='SIM']"/>
+		<xsl:apply-templates select="ep:p[@level='UGM']"/>
+		<xsl:apply-templates select="ep:p[@level='BSM']"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:description">
-		<xsl:apply-templates select="ep:p"/>
+		<xsl:apply-templates select="ep:p[@level='SIM']"/>
+		<xsl:apply-templates select="ep:p[@level='UGM']"/>
+		<xsl:apply-templates select="ep:p[@level='BSM']"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:pattern">
 		<xsl:apply-templates select="ep:p"/>
 	</xsl:template>
 	
-<?x <xsl:template match="ep:p">
-		<!-- In een document waarin een van de ep:p elementen het @format 'markdown' heeft worden alle ep:p elementen als markdown verwerkt. -->
-	
-		<xsl:choose>
-			<xsl:when test="//ep:p/@format = 'markdown'">
-				<!--xsl:if test="not(../preceding-sibling::ep:definition) and not(../preceding-sibling::ep:description) and not(../preceding-sibling::ep:pattern)"><xsl:text>|\\n\\n</xsl:text></xsl:if-->
-				<xsl:choose>
-					<xsl:when test="@format = 'markdown'">
-						<xsl:apply-templates select="html:body" mode="markdown"/>
-					</xsl:when>
-					<xsl:when test="@format = 'plain'">
-<xsl:text>        </xsl:text><xsl:value-of select="normalize-space(translate(.,'&quot;','&#96;'))"/>
-						<xsl:if test="following-sibling::ep:p"><xsl:text>\\n\\n</xsl:text></xsl:if>
-					</xsl:when>
-					<xsl:otherwise>
-<xsl:text>        </xsl:text><xsl:value-of select="normalize-space(translate(.,'&quot;','&#96;'))"/>
-						<xsl:if test="following-sibling::ep:p"><xsl:text>\\n\\n</xsl:text></xsl:if>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<xsl:when test="@format = 'plain'">
-				<xsl:value-of select="normalize-space(translate(.,'&quot;','&#96;'))"/>
-				<xsl:if test="following-sibling::ep:p">
-					<xsl:text> </xsl:text>
-				</xsl:if>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="normalize-space(translate(.,'&quot;','&#96;'))"/>
-				<xsl:if test="following-sibling::ep:p">
-					<xsl:text> </xsl:text>
-				</xsl:if>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template> ?>
-	
-<xsl:template match="ep:p">
-	
+	<xsl:template match="ep:p">
 		<xsl:choose>
 			<!-- In een document waarin één van de ep:p elementen het @format 'markdown' heeft worden alle ep:p elementen als markdown verwerkt. -->
 			<xsl:when test="//ep:p/@format = 'markdown'">
 				<xsl:text>&lt;body&gt;</xsl:text>
 					<xsl:choose>
 						<xsl:when test="@format = 'markdown'">
-							<xsl:apply-templates select="html:body" mode="markdown"/>
+							<xsl:choose>
+								<xsl:when test="html:body">
+									<xsl:apply-templates select="html:body" mode="markdown"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:text>&lt;p&gt;</xsl:text>
+										<xsl:value-of select="normalize-space(translate(.,'&quot;','&#96;'))"/>
+									<xsl:text>&lt;/p&gt;</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:when>
 						<xsl:when test="@format = 'plain'">
-							<xsl:value-of select="normalize-space(translate(.,'&quot;','&#96;'))"/>
+							<xsl:text>&lt;p&gt;</xsl:text>
+								<xsl:value-of select="normalize-space(translate(.,'&quot;','&#96;'))"/>
+							<xsl:text>&lt;/p&gt;</xsl:text>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="normalize-space(translate(.,'&quot;','&#96;'))"/>
+							<xsl:text>&lt;p&gt;</xsl:text>
+								<xsl:value-of select="normalize-space(translate(.,'&quot;','&#96;'))"/>
+							<xsl:text>&lt;/p&gt;</xsl:text>
 						</xsl:otherwise>
 					</xsl:choose>
 				<xsl:text>&lt;/body&gt;</xsl:text>
@@ -197,21 +164,6 @@
 	<xsl:template match="html:li" mode="markdown">
 		<xsl:text>&lt;</xsl:text><xsl:value-of select="name()"/><xsl:text>&gt;</xsl:text>
 		<xsl:apply-templates select="*|text()" mode="markdown"/>
-		<!--<xsl:value-of select="normalize-space(translate(.,'&quot;','&#96;'))"/>-->
-		<!--<xsl:choose>
-			<xsl:when test="parent::html:ul and ancestor::html:li">
-<xsl:text>           </xsl:text><xsl:value-of select="concat('* ',normalize-space(translate(.,'&quot;','&#96;')))"/><xsl:text>\\n\\n</xsl:text>
-			</xsl:when>
-			<xsl:when test="parent::html:ol and ancestor::html:li">
-<xsl:text>           </xsl:text><xsl:number value="position()" format="1" />. <xsl:value-of select="normalize-space(translate(.,'&quot;','&#96;'))"/><xsl:text>\\n\\n</xsl:text>
-			</xsl:when>
-			<xsl:when test="parent::html:ul">
-<xsl:text>        </xsl:text>* <xsl:apply-templates select="html:*|text()" mode="markdown"/><xsl:text>\\n\\n</xsl:text>
-			</xsl:when>
-			<xsl:when test="parent::html:ol">
-<xsl:text>        </xsl:text><xsl:number value="position()" format="1" />. <xsl:apply-templates select="html:*|text()" mode="markdown"/><xsl:text>\\n\\n</xsl:text>
-			</xsl:when>
-		</xsl:choose>-->
 		<xsl:text>&lt;/</xsl:text><xsl:value-of select="name()"/><xsl:text>&gt;</xsl:text>
 	</xsl:template>
 	

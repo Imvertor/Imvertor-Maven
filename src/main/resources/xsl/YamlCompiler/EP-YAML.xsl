@@ -74,7 +74,7 @@
 		<xsl:text>&#xa;    url: https://www.voorbeeldgemeente.nl/api/</xsl:text><xsl:value-of select="concat($normalizedKVname,'/v', $major-version)"/>
         <xsl:text>&#xa;info:</xsl:text>
 		<xsl:text>&#xa;  title: </xsl:text><xsl:value-of select="$KVname"/>
-		<xsl:text>&#xa;  description: "</xsl:text> <xsl:apply-templates select="ep:documentation"><xsl:with-param name="definition" select="'no'"/><xsl:with-param name="pattern" select="'no'"/></xsl:apply-templates><xsl:text>"</xsl:text>
+		<xsl:text>&#xa;  description: "</xsl:text> <xsl:apply-templates select="ep:documentation"><xsl:with-param name="description" select="'no'"/><xsl:with-param name="pattern" select="'no'"/></xsl:apply-templates><xsl:text>"</xsl:text>
 		<!--xsl:text>&#xa;  description: "</xsl:text> <xsl:value-of select="normalize-space(ep:documentation)"/><xsl:text>"</xsl:text-->
         <xsl:text>&#xa;  version: "</xsl:text><xsl:value-of select="ep:patch-number"/><xsl:text>"</xsl:text>
 		<xsl:text>&#xa;  x-imvertor-generator-version: "</xsl:text><xsl:value-of select="../ep:imvertor-generator-version"/><xsl:text>"</xsl:text>
@@ -140,7 +140,7 @@
 		<xsl:variable name="construct" select="./ep:seq/ep:construct/ep:type-name"/>
 		<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
 		<xsl:variable name="documentation">
-			<xsl:text></xsl:text><xsl:apply-templates select="ep:documentation"><xsl:with-param name="definition" select="'no'"/><xsl:with-param name="pattern" select="'no'"/></xsl:apply-templates><xsl:text></xsl:text>
+			<xsl:text></xsl:text><xsl:apply-templates select="ep:documentation"><xsl:with-param name="description" select="'no'"/><xsl:with-param name="pattern" select="'no'"/></xsl:apply-templates><xsl:text></xsl:text>
 		</xsl:variable>
 		<xsl:variable name="berichttype" select="ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value"/>
 		<xsl:variable name="messagetype" select="ep:parameters/ep:parameter[ep:name='messagetype']/ep:value"/>
@@ -621,7 +621,7 @@
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;        - in: path</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 								<xsl:text>&#xa;          required: true</xsl:text>
 								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
@@ -648,7 +648,7 @@
 							<xsl:when test="ep:type-name">
 								<xsl:text>&#xa;        - in: path</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 								<xsl:text>&#xa;          required: true</xsl:text>
 								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
@@ -753,7 +753,7 @@
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;        - in: query</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 								<xsl:text>&#xa;          required: false</xsl:text>
 								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
@@ -780,7 +780,7 @@
 							<xsl:when test="ep:type-name">
 								<xsl:text>&#xa;        - in: query</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 								<xsl:text>&#xa;          required: false</xsl:text>
 								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
@@ -1124,7 +1124,7 @@
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;        - in: path</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 								<xsl:text>&#xa;          required: true</xsl:text>
 								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
@@ -1151,7 +1151,7 @@
 							<xsl:when test="ep:type-name">
 								<xsl:text>&#xa;        - in: path</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 								<xsl:text>&#xa;          required: true</xsl:text>
 								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
@@ -1239,7 +1239,7 @@
 						</xsl:variable>
 						<xsl:text>&#xa;        - in: query</xsl:text>
 						<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-						<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+						<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 						<xsl:text>&#xa;          required: false</xsl:text>
 						<xsl:text>&#xa;          schema:</xsl:text>
 						<xsl:choose>
@@ -1562,7 +1562,7 @@
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;        - in: path</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 								<xsl:text>&#xa;          required: true</xsl:text>
 								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
@@ -1589,7 +1589,7 @@
 							<xsl:when test="ep:type-name">
 								<xsl:text>&#xa;        - in: path</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 								<xsl:text>&#xa;          required: true</xsl:text>
 								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
@@ -1819,7 +1819,7 @@
 					<xsl:attribute name="is-id" select="'true'"/>
 				</xsl:if>
 				<ep:name><xsl:value-of select="lower-case(ep:name)"/></ep:name>
-				<ep:documentation><xsl:value-of select="ep:documentation"/></ep:documentation>
+				<xsl:copy-of select="ep:documentation"/>
 				<xsl:choose>
 					<xsl:when test="ep:data-type">
 						<ep:data-type><xsl:value-of select="ep:data-type"/></ep:data-type>
@@ -1980,7 +1980,7 @@
 										<ep:type-name><xsl:value-of select="$type-name"/></ep:type-name>
 									</xsl:when>
 								</xsl:choose>
-								<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
+								<xsl:copy-of select="ep:documentation"/>
 								<xsl:if test="$max-length != ''">
 									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
 								</xsl:if>
@@ -2018,7 +2018,7 @@
 										<ep:type-name><xsl:value-of select="$type-name"/></ep:type-name>
 									</xsl:when>
 								</xsl:choose>
-								<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
+								<xsl:copy-of select="ep:documentation"/>
 								<xsl:if test="$max-length != ''">
 									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
 								</xsl:if>
@@ -2053,8 +2053,7 @@
 										<ep:type-name><xsl:value-of select="$type-name"/></ep:type-name>
 									</xsl:when>
 								</xsl:choose>
-								<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
-								<xsl:if test="$max-length != ''">
+								<xsl:copy-of select="ep:documentation"/>								<xsl:if test="$max-length != ''">
 									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
 								</xsl:if>
 								<xsl:if test="$min-value != ''">
@@ -2096,7 +2095,7 @@
 										<ep:type-name><xsl:value-of select="$type-name"/></ep:type-name>
 									</xsl:when>
 								</xsl:choose>
-								<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
+								<xsl:copy-of select="ep:documentation"/>
 								<xsl:if test="$max-length != ''">
 									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
 								</xsl:if>

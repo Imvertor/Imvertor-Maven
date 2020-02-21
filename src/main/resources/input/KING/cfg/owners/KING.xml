@@ -21,7 +21,7 @@
     <name>KING</name>
     
     <!-- 
-        enter a list of CSS, JS, anything to be copied to the outut file, separate with ";" 
+        enter a list of CSS, JS, anything to be copied to the output file, separate with ";" 
     -->
     <parameter name="web-css">
         ../web/css/report.css;
@@ -121,6 +121,6 @@
     <parameter name="geonovum-yaml-parameters-file">parameters.yaml#/</parameter>
     <parameter name="standard-geojson-components-file">geojson.yaml#/</parameter>
     
-    <parameter name="yamlCompiler-stylesheets-version">20200219</parameter>
+    <parameter name="yamlCompiler-stylesheets-version">20200221</parameter>
     
 </project-owner>    

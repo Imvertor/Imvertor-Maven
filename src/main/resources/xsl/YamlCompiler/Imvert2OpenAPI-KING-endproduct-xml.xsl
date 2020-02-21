@@ -45,22 +45,14 @@
 	<xsl:variable name="packages" select="$messages/imvert:packages" />
 
 	<xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
-	<xsl:variable name="kv-description">
-		<xsl:if test="not(empty(imf:get-tagged-value($packages,'##CFG-TV-DESCRIPTION')))">
-			<ep:description>
-				<ep:p>
-					<xsl:sequence select="imf:get-tagged-value($packages,'##CFG-TV-DESCRIPTION')" />
+	<xsl:variable name="kv-definition">
+		<xsl:if test="not(empty(imf:get-tagged-value($packages,'##CFG-TV-DEFINITION')))">
+			<ep:definition>
+				<ep:p format="markdown" level="BSM">
+					<xsl:sequence select="imf:get-tagged-value($packages,'##CFG-TV-DEFINITION')" />
 				</ep:p>
-			</ep:description>
+			</ep:definition>
 		</xsl:if>
-		<?x
-			Volgende werkt niet maar zou n.m.m. wel moeten werken. 
-		<xsl:if test="not(empty(imf:merge-documentation($packages,'##CFG-TV-DESCRIPTION')))">
-			<ep:description>
-				<xsl:sequence select="imf:merge-documentation($packages,'##CFG-TV-DESCRIPTION')" />
-			</ep:description>
-		</xsl:if>
-		?>
 	</xsl:variable>
 	<xsl:variable name="project-url">
 		<xsl:choose>
@@ -189,7 +181,7 @@
 				<xsl:sequence select="imf:create-output-element('ep:release', $packages/imvert:release)" />
 				<xsl:sequence select="imf:create-output-element('ep:date', substring-before($packages/imvert:generated,'T'))" />
 				<xsl:sequence select="imf:create-output-element('ep:patch-number', $version)" />
-				<xsl:sequence select="imf:create-output-element('ep:documentation', $kv-description,'',false(),false())" />
+				<xsl:sequence select="imf:create-output-element('ep:documentation', $kv-definition,'',false(),false())" />
 
 				<xsl:sequence select="imf:track('Constructing the OpenAPI message constructs')" />
 
@@ -291,9 +283,9 @@
 		<xsl:variable name="this-construct" select="$packages//imvert:*[imvert:id = $id]" />
 		<xsl:variable name="doc">
 			<xsl:if
-				test="not(empty(imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')))">
+				test="not(empty(imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DEFINITION',$description-level)))">
 				<ep:definition>
-					<xsl:sequence select="imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')" />
+					<xsl:sequence select="imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DEFINITION',$description-level)" />
 				</ep:definition>
 			</xsl:if>
 			<xsl:if
@@ -596,17 +588,19 @@
 			</xsl:choose>
 		</xsl:if>
 		<!-- The construct variable holds the imvert construct which has an imvert:id equal to the 'id' variable. 
-			 So sometimes it's an attribute, sometimes an association amd sometimes a class. -->
+			 So sometimes it's an attribute, sometimes an association and sometimes a class. -->
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
         <xsl:variable name="doc">
         	<xsl:if test="not(empty($construct))">
-	            <xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
+        		<xsl:if test="not(empty(imf:merge-documentation-up-to-level($construct,'CFG-TV-DEFINITION',$description-level)))">
+	            	<!-- Contains the textual content of the 'notes' field. -->
 	                <ep:definition>
-	                    <xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DEFINITION')"/>
+	                    <xsl:sequence select="imf:merge-documentation-up-to-level($construct,'CFG-TV-DEFINITION',$description-level)"/>
 	                </ep:definition>
 	            </xsl:if>
         		<xsl:if test="not(empty(imf:merge-documentation-up-to-level($construct,'CFG-TV-DESCRIPTION',$description-level)))">
-	                <ep:description>
+        			<!-- Contains the textual content of the tagged value 'Toelichting'. -->
+        			<ep:description>
 	                	<xsl:if test="$debugging">
 	                		<xsl:attribute name="level" select="$description-level"/>
 	                	</xsl:if>
@@ -614,7 +608,8 @@
 	                </ep:description>
 	            </xsl:if>
 	            <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')))">
-	                <ep:pattern>
+	            	<!-- Contains the textual content of the tagged value 'Patroon'. -->
+	            	<ep:pattern>
 	                    <ep:p>
 	                        <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')"/>
 	                    </ep:p>
@@ -1142,9 +1137,9 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="doc">
-			<xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
+			<xsl:if test="not(empty(imf:merge-documentation-up-to-level($construct,'CFG-TV-DEFINITION',$description-level)))">
 				<ep:definition>
-					<xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DEFINITION')"/>
+					<xsl:sequence select="imf:merge-documentation-up-to-level($construct,'CFG-TV-DEFINITION',$description-level)"/>
 				</ep:definition>
 			</xsl:if>
 			<xsl:if test="not(empty(imf:merge-documentation-up-to-level($construct,'CFG-TV-DESCRIPTION',$description-level)))">
@@ -1289,9 +1284,9 @@
 			<xsl:choose>
 				<xsl:when test="not(empty($type-id))">
 					<xsl:variable name="this-construct" select="$packages//imvert:*[imvert:id = $type-id]" />
-					<xsl:if test="not(empty(imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')))">
+					<xsl:if test="not(empty(imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DEFINITION',$description-level)))">
 						<ep:definition>
-							<xsl:sequence select="imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')" />
+							<xsl:sequence select="imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DEFINITION',$description-level)" />
 						</ep:definition>
 					</xsl:if>
 					<xsl:if test="not(empty(imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DESCRIPTION',$description-level)))">
@@ -1312,9 +1307,9 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:variable name="this-construct" select="$packages//imvert:*[imvert:id = $id]" />
-					<xsl:if test="not(empty(imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')))">
+					<xsl:if test="not(empty(imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DEFINITION',$description-level)))">
 						<ep:definition>
-							<xsl:sequence select="imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')" />
+							<xsl:sequence select="imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DEFINITION',$description-level)" />
 						</ep:definition>
 					</xsl:if>
 					<xsl:if test="not(empty(imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DESCRIPTION',$description-level)))">
@@ -1699,9 +1694,9 @@
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
 		<xsl:variable name="type-is-GM-external" select="(exists(imvert:conceptual-schema-type) and contains(imvert:conceptual-schema-type,'GM_')) or contains(imvert:baretype,'GM_')"/>		
 		<xsl:variable name="doc">
-			<xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
+			<xsl:if test="not(empty(imf:merge-documentation-up-to-level($construct,'CFG-TV-DEFINITION',$description-level)))">
 				<ep:definition>
-					<xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DEFINITION')" />
+					<xsl:sequence select="imf:merge-documentation-up-to-level($construct,'CFG-TV-DEFINITION',$description-level)" />
 				</ep:definition>
 			</xsl:if>
 			<xsl:if test="not(empty(imf:merge-documentation-up-to-level($construct,'CFG-TV-DESCRIPTION',$description-level)))">
@@ -2080,9 +2075,9 @@
 		<xsl:sequence select="imf:create-debug-comment-with-xpath('OAS31000',$debugging,.)" />
 		<xsl:variable name="compiled-name" select="imf:get-compiled-name(.)" />
 		<xsl:variable name="doc">
-			<xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+			<xsl:if test="not(empty(imf:merge-documentation-up-to-level(.,'CFG-TV-DEFINITION',$description-level)))">
 				<ep:definition>
-					<xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')" />
+					<xsl:sequence select="imf:merge-documentation-up-to-level(.,'CFG-TV-DEFINITION',$description-level)" />
 				</ep:definition>
 			</xsl:if>
 			<xsl:if test="not(empty(imf:merge-documentation-up-to-level(.,'CFG-TV-DESCRIPTION',$description-level)))">
@@ -2255,7 +2250,6 @@
 		<xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())" />
 		<xsl:variable name="vals" select="$all-tv[@id = $tv-id]" />
 		<xsl:for-each select="$vals">
-			<!--xsl:variable name="p" select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))" /-->
 			<xsl:variable name="p">
 				<xsl:choose>
 					<xsl:when test=".//html:body">
@@ -2268,31 +2262,28 @@
 			</xsl:variable>
 			<xsl:choose>
 				<xsl:when test="$level = 'SIM' and not($p = '')">
-					<ep:p format="{$vals[1]/@format}">
+					<ep:p format="{$vals[1]/@format}" level="{@project}">
 						<xsl:if test="$debugging">
 							<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
 							<xsl:attribute name="val-level" select="@level"/>
-							<xsl:attribute name="level" select="@project"/>
 						</xsl:if>
 						<xsl:sequence select="$p" />
 					</ep:p>
 				</xsl:when>
 				<xsl:when test="$level = 'UGM' and (@project = 'UGM' or @project = 'BSM') and not($p = '')">
-					<ep:p format="{$vals[1]/@format}">
+					<ep:p format="{$vals[1]/@format}" level="{@project}">
 						<xsl:if test="$debugging">
 							<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
 							<xsl:attribute name="val-level" select="@level"/>
-							<xsl:attribute name="level" select="@project"/>
 						</xsl:if>
 						<xsl:sequence select="$p" />
 					</ep:p>
 				</xsl:when>
 				<xsl:when test="$level = 'BSM' and @project = 'BSM' and not($p = '')">
-					<ep:p format="{$vals[1]/@format}">
+					<ep:p format="{$vals[1]/@format}" level="{@project}">
 						<xsl:if test="$debugging">
 							<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
 							<xsl:attribute name="val-level" select="@level"/>
-							<xsl:attribute name="level" select="@project"/>
 						</xsl:if>
 						<xsl:sequence select="$p" />
 					</ep:p>
