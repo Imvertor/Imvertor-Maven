@@ -49,6 +49,23 @@
     
     <show-properties>config</show-properties> <!-- config, all, compact -->
     
+    <image-purpose id="CFG-IMG-OVERVIEW">
+        <name lang="nl">Overzichtsdiagram</name>
+        <name lang="en">Overview diagram</name>
+        <!-- markers are placed after the name of the diagram, as in "Sample simple constructs - overzicht" -->
+        <marker lang="nl">overzicht</marker>
+        <marker lang="en">overview</marker>
+        <show-caption>yes</show-caption>
+    </image-purpose>
+    
+    <image-purpose id="CFG-IMG-DETAIL">
+        <name lang="nl">Detaildiagram</name>
+        <name lang="en">Detail diagram</name>
+        <marker lang="nl">detail</marker>
+        <marker lang="en">detail</marker>
+        <show-caption>no</show-caption>
+    </image-purpose>
+    
     <doc-rule id="CFG-DOC-NORMNAAM" order="000">
         <name lang="nl">Naam (genormaliseerd)</name>
         <name lang="en">Name (normalized)</name>
