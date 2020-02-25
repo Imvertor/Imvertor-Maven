@@ -624,7 +624,7 @@
                   </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
-                  <cs:name>doubleList</cs:name>
+                  <cs:name>DoubleList</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
