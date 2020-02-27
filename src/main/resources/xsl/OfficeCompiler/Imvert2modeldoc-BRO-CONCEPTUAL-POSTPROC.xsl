@@ -88,6 +88,7 @@
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>
             
+            <?x
             <!-- relaties hierheen -->
             <xsl:variable name="r" as="element(item)*">
                 <xsl:for-each select="../section[@type = 'SHORT-ASSOCIATIONS']/content[@approach = 'target']/part/item[1]">
@@ -123,6 +124,7 @@
                      </item>
                 </part>
             </xsl:if>
+            x?>
         </content>
     </xsl:template>
     

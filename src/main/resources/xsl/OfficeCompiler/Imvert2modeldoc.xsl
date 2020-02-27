@@ -631,7 +631,7 @@
             <xsl:sequence select="imf:calculate-position(.)"/>
             <content>
                 <part>
-                    <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/>
+                    <?x <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/> x?>
                     <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
                 </part>
             </content>
@@ -691,7 +691,7 @@
             <xsl:sequence select="imf:calculate-position(.)"/>
             <content>
                 <part>
-                    <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/>
+                    <?x <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/> x?>
                     <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
                 </part>
             </content>
