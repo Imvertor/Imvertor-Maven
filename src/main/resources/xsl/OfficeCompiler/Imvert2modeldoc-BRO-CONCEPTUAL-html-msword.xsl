@@ -41,12 +41,12 @@
                 <section>
                     <h1>Artikel 1 Definitie van registratieobject, entiteiten en attributen</h1>
                     <section>
-                        <h2>Het domeinmodel</h2>
-                        <xsl:apply-templates select="$resolved/section/section[1]" mode="reorder"/>
-                    </section>
-                    <section>
                         <h2>Registratieobject</h2>
                         <xsl:apply-templates select="$resolved/section/section[2]" mode="reorder"/>
+                    </section>
+                    <section>
+                        <h2>Het domeinmodel</h2>
+                        <xsl:apply-templates select="$resolved/section/section[1]" mode="reorder"/>
                     </section>
                     <section>
                         <h2>Entiteiten en attributen</h2>
