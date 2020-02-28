@@ -785,8 +785,7 @@
                   </cs:xsdTypes>
                </cs:Construct>
               <cs:Construct>
-                 <cs:name>CoRdinatenpaar</cs:name><!-- The name after normalization. In this case different form the name used in the reference -->
-                 <cs:originalName>Coördinatenpaar</cs:originalName>
+                 <cs:name>Coördinatenpaar</cs:name>
                  <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>

@@ -25,6 +25,17 @@
         </profile>
     </profiles>
     
+    <naming>
+        <!-- package conventions as defined elsewhere -->
+        <class>
+            <format>AsIs</format>
+        </class>
+        <property>
+            <format>AsIs</format>
+        </property>
+        <!-- tv conventions as defined elsewhere -->
+    </naming>
+    
    <stereotypes>
         <stereo id="stereotype-name-imbroa">
             <name lang="en">IMBRO/A</name>
