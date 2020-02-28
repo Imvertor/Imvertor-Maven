@@ -785,7 +785,8 @@
                   </cs:xsdTypes>
                </cs:Construct>
               <cs:Construct>
-                 <cs:name>Coördinatenpaar</cs:name>
+                 <cs:name>CoRdinatenpaar</cs:name><!-- The name after normalization. In this case different form the name used in the reference -->
+                 <cs:originalName>Coördinatenpaar</cs:originalName>
                  <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
@@ -1080,6 +1081,31 @@
                         <cs:name>gml:PointType</cs:name>
                         <cs:asAttribute>gml:PointPropertyType</cs:asAttribute>
                         <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>BRO-SFR</cs:id>
+            <cs:namespace>http://www.broservices.nl/xsd/sfrcommon/1.0</cs:namespace>
+            <cs:desc>common definitions for BRO Soil Face Research</cs:desc>
+            <cs:location>https://schema.broservices.nl/xsd/sfrcommon/1.0/sfrcommon.xsd</cs:location>
+            <cs:phase>0</cs:phase>
+            <cs:version>1.0.0</cs:version>
+            <cs:release>20191127</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#RO-BRO"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>Bepalingscode</cs:name>
+                  <cs:name>DeterminationCode</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:string</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
