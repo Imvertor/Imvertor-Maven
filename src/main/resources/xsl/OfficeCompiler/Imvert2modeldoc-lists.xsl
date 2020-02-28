@@ -265,9 +265,9 @@
             </imvert:tagged-values>
         </imvert:attribute>
     </xsl:template>
-    <!-- BRO reference lists -->
     
-    <xsl:template match="/domeintabel/Parameter" mode="reflist">
+    <!-- BRO reference lists; vrije kolommen, zoals /domeintabel/GeologischeGrondsoort/* -->
+    <xsl:template match="/domeintabel/*" mode="reflist">
         <imvert:refelement>
             <xsl:for-each select="*">
                 <imvert:element>
