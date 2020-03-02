@@ -489,12 +489,12 @@
             <xsl:when test="$unit-ucum = '%'">% (procent)</xsl:when>
             <xsl:when test="$unit-ucum = 'Cel'">°C (graden Celcius)</xsl:when>
             <xsl:when test="$unit-ucum = 'deg'">° (graden)</xsl:when>
-            <xsl:when test="$unit-ucum = 'g/cm3'">g/cm3 (gram/kubieke centimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'g/cm3'">g/cm<sup>3</sup> (gram/kubieke centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'kPa'">kPa (kilopascal)</xsl:when>
             <xsl:when test="$unit-ucum = 'm'">m (meter)</xsl:when>
             <xsl:when test="$unit-ucum = 'm/(24.h)'">m/24h (meters per etmaal)</xsl:when>
             <xsl:when test="$unit-ucum = 'mm'">mm (millimeter)</xsl:when>
-            <xsl:when test="$unit-ucum = 'mm2'">mm2 (vierkante millimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'mm2'">mm<sup>2</sup> (vierkante millimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'MPa'">MPa (megapascal)</xsl:when>
             <xsl:when test="$unit-ucum = 'nT'">nT (nanotesla)</xsl:when>
             <xsl:when test="$unit-ucum = 's'">s (seconde)</xsl:when>
@@ -505,15 +505,15 @@
             <xsl:when test="$unit-ucum = 'm/s'">m/s (meter per seconde)</xsl:when>
             <xsl:when test="$unit-ucum = 'cm/cm'">cm/cm (centimeter per centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'g'">g (gram)</xsl:when>
-            <xsl:when test="$unit-ucum = 'cm3'">cm3 (kubieke centimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'cm3'">cm<sup>3</sup> (kubieke centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'cm'">cm (centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'cm/dag'">cm/dag (centimeter per dag)</xsl:when>
-            <xsl:when test="$unit-ucum = 'cm H2O'">cm H2O (centimeter waterkolom)</xsl:when>
+            <xsl:when test="$unit-ucum = 'cm H2O'">cm H<sub>2</sub>O (centimeter waterkolom)</xsl:when>
             <xsl:when test="$unit-ucum = 'g/g'">g/g (gram/gram)</xsl:when>
-            <xsl:when test="$unit-ucum = 'cm-1'">cm-1 (per centimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'cm-1'">cm<sup>-1</sup> (per centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'g/kg'">g/kg (gram per kilogram)</xsl:when>
             
-            <xsl:when test="$unit-ucum = 'cm3/cm3'">cm3/cm3 (kubieke centimeter/kubieke centimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'cm3/cm3'">cm<sup>3</sup>/cm<sup>3</sup> (kubieke centimeter/kubieke centimeter)</xsl:when>
             
             <xsl:otherwise>
                 <xsl:value-of select="$unit-ucum"/>
