@@ -304,7 +304,7 @@
                     <part>
                         <item>&#160;&#160;Eenheid</item>
                         <item>
-                            <xsl:value-of select="bro:generate-unit(.)"/>
+                            <xsl:sequence select="bro:generate-unit(.)"/>
                         </item>
                     </part>
                 </xsl:for-each>
@@ -481,7 +481,7 @@
     
     
     
-    <xsl:function name="bro:generate-unit">
+    <xsl:function name="bro:generate-unit" as="item()*">
         <xsl:param name="unit-ucum"/>
         <!-- mapping ucum eenheid - uitgeschreven eenheid -->
         <xsl:choose>
@@ -505,6 +505,7 @@
             <xsl:when test="$unit-ucum = 'm/s'">m/s (meter per seconde)</xsl:when>
             <xsl:when test="$unit-ucum = 'cm/cm'">cm/cm (centimeter per centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'g'">g (gram)</xsl:when>
+            <xsl:when test="$unit-ucum = 'g/cm3'">g/cm<sup>3</sup> (gram per kubieke centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'cm3'">cm<sup>3</sup> (kubieke centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'cm'">cm (centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'cm/dag'">cm/dag (centimeter per dag)</xsl:when>
