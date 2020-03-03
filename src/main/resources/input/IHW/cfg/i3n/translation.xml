@@ -231,6 +231,13 @@
     <!-- heading labels -->
 
     <item>
+        <key>CHAPTER-CATALOG</key>
+        <trans lang="nl">Gegevensdefinitie</trans>
+        <trans lang="en">Catalog</trans>
+    </item>
+    
+    
+    <item>
         <key>OVERVIEW-OBJECTTYPE</key>
         <trans lang="nl">Objecttype overzicht</trans>
     </item>
@@ -245,6 +252,11 @@
     <item>
         <key>OVERVIEW-REFERENCELIST</key>
         <trans lang="nl">Referentielijst overzicht</trans>
+    </item>
+    <item>
+        <key>OVERVIEW-CODELIST</key>
+        <trans lang="nl">Codelijsten overzicht</trans>
+        <trans lang="en">Codelist overview</trans>
     </item>
     <item>
         <key>OVERVIEW-UNION</key>
@@ -369,6 +381,12 @@
     <item>
         <key>NAME</key>
         <trans lang="nl">Naam</trans>
+        <trans lang="en">Name</trans>
+    </item>
+    <item>
+        <key>VALUE</key>
+        <trans lang="nl">Waarde</trans>
+        <trans lang="en">Value</trans>
     </item>
     <item>
         <key>DEFINITION</key>
@@ -390,6 +408,27 @@
     <item>
         <key>ATTRIBUTE-CARD</key>
         <trans lang="nl">Card</trans>
+    </item>
+    
+    <item>
+        <key>ASSOCIATION-NAME</key>
+        <trans lang="nl">Relatienaam met kardinaliteiten</trans>
+        <trans lang="en">Association name</trans>
+    </item>
+    <item>
+        <key>ROLE-NAME</key>
+        <trans lang="nl">Rol naam met kardinaliteiten</trans>
+        <trans lang="en">Role name</trans>
+    </item>
+    <item>
+        <key>ASSOCIATION-DEFINITION</key>
+        <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
+    </item>
+    <item>
+        <key>ROLE-DEFINITION</key>
+        <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
     </item>
     
     <item>
