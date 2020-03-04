@@ -430,6 +430,7 @@
             <xsl:otherwise> 
                 <xsl:variable name="defining-class-section" select="root($context)//section[@id = concat('detail_class_Model_',$item)]"/>
                 <xsl:variable name="defining-class-type" select="$defining-class-section/parent::section/@type"/>
+                <xsl:variable name="identifiers" select="$defining-class-section//itemtype[@is-id = 'true']"/>
                 <xsl:choose>
                     <!-- een lijst? -->
                     <xsl:when test="$defining-class-type = ('CONTENTS-CODELIST','CONTENTS-REFERENCELIST')">
@@ -440,6 +441,10 @@
                         <part>
                             <item>&#160;&#160;Type</item>
                             <item>Waardelijst uitbreidbaar</item>
+                        </part>
+                        <part>
+                            <item>&#160;&#160;Identificerend gegeven</item>
+                            <item><xsl:value-of select="string-join($identifiers,', ')"/></item>
                         </part>
                         <!-- alleen genereren als er een IMBRO/A domein is -->
                         <xsl:for-each select="$context/part[@type = 'CFG-DOC-DOMAIN-IMBROA']">

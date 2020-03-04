@@ -716,7 +716,7 @@
             <content>
                 <!-- the attributes are the names of the reference list columns. -->
                 <xsl:for-each select="imvert:attributes/imvert:attribute">
-                    <itemtype type="LABEL" name="{imvert:name}">
+                    <itemtype type="LABEL" name="{imvert:name}" is-id="{imf:boolean(imvert:is-id)}">
                         <xsl:value-of select="imvert:name/@original"/>
                     </itemtype>
                 </xsl:for-each>
