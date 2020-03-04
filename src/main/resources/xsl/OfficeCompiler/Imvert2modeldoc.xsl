@@ -691,8 +691,26 @@
             <xsl:sequence select="imf:calculate-position(.)"/>
             <content>
                 <part>
-                    <?x <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/> x?>
-                    <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+                    <item>
+                        <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+                        <item>
+                            <ol>
+                                <xsl:for-each select="imvert:attributes/imvert:attribute">
+                                    <xsl:variable name="def" select="imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION')"/>
+                                    <li>
+                                        <b><xsl:value-of select="imvert:name/@original"/></b>
+                                        <xsl:text>: </xsl:text>
+                                        <xsl:for-each select="$def"><!-- opgebouwd uit paragrafen -->
+                                            <xsl:sequence select="node()"/>
+                                            <xsl:if test="position() ne last()">
+                                                <br/>
+                                            </xsl:if>
+                                        </xsl:for-each>
+                                    </li>
+                                </xsl:for-each>
+                            </ol>
+                        </item>
+                    </item>
                 </part>
             </content>
             <content>
