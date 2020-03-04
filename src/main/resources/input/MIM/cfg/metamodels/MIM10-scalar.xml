@@ -23,6 +23,10 @@
 
     <desc lang="nl">Metamodel voor informatiemodellen door KING en Kadaster en Geonovum: Scalars </desc>
     
+    <features>
+        <feature name="supports-baretype-transformation">false<!-- specify in concrete metamodel: true|false --></feature><!-- transformation of AN2 to string, length 2 -->
+    </features>
+    
     <scalars xml:id="scalars">
         
         <scalar id="scalar-string">

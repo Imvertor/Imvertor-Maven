@@ -23,6 +23,10 @@
 
     <desc lang="en">Metamodel for Dutch Best Practices based registrations, scalars</desc>
     
+    <features>
+        <feature name="supports-baretype-transformation">true<!-- specify in concrete metamodel: true|false --></feature><!-- transformation of AN2 to string, length 2 -->
+    </features>
+    
     <scalars xml:id="scalars">
         
         <scalar id="scalar-string">
