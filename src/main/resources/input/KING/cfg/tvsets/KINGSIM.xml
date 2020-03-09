@@ -24,12 +24,17 @@
     <!-- KING refines grouping -->
     <xi:include href="Grouping.xml"/>
     
+    <xi:include href="KINGBSM-cross-SIM-and-UGM.xml"/>
+
     <name>KINGSIM</name>
     <tagged-values>
       
         <tv norm="space" id="CFG-TV-AANDUIDINGSTRIJDIGHEIDNIETIGHEID">
             <name lang="nl">Aanduiding strijdigheid/nietigheid</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                De aanduiding of te bevragen is dat de attribuutwaarde strijdig met de openbare orde dan wel nietig is.
+            </desc>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
                 <stereo minmax="1..1">stereotype-name-composite</stereo>
@@ -80,6 +85,11 @@
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                Indicatie of de materiële historie van de attribuutsoort te bevragen is.
+                Materiële historie geeft aan wanneer een verandering is opgetreden in de
+                werkelijkheid die heeft geleid tot veranderjng van de attribuutwaarde.
+            </desc>
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value default="yes">Nee</value>
@@ -96,6 +106,12 @@
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                Indicatie of de formele historie van de attribuutsoort te bevragen is.
+                Formele historie geeft aan wanneer in de administratie een verandering is
+                verwerkt van de attribuutwaarde (wanneer was de verandering bekend en
+                is deze verwerkt).
+            </desc>
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value default="yes">Nee</value>
@@ -106,6 +122,9 @@
         <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC">
             <name lang="nl">Indicatie authentiek</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                Aanduiding of het een authentiek gegeven (attribuutsoort) betreft.
+            </desc>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
                 <stereo minmax="1..1">stereotype-name-composite</stereo>
@@ -119,6 +138,9 @@
                 <stereo minmax="1..1">stereotype-name-composite</stereo>
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
+            <desc lang="nl">
+                Indicatie waarmee wordt aangegeven dat het gegeven ook geen waarde kan hebben.
+            </desc>
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value default="yes">Nee</value>
@@ -177,6 +199,9 @@
         </tv>
         <tv norm="note" id="CFG-TV-RULES">   <!-- in aanvulling op SBR -->
             <derive>yes</derive>
+            <desc lang="nl">
+                Optionaliteitsregels of waardebeperkende regels.
+            </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
@@ -187,6 +212,9 @@
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
             <derive>yes</derive>
+            <desc lang="nl">
+                Beschrijving van het gegevenspatroon van dit element. Dit kan de basis zijn voor een reguliere expressie.
+            </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
@@ -199,6 +227,7 @@
         
         <!-- REDMINE #487612 -->
         <!-- Internal packages are propagated to Grouping --> 
+        
        
     </tagged-values>
 </tagset>

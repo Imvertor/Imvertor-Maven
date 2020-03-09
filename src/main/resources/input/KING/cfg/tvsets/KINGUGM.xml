@@ -27,6 +27,8 @@
     -->
     <xi:include href="KINGUGM-cross-SIM.xml"/>
 
+    <xi:include href="KINGBSM-cross-SIM-and-UGM.xml"/>
+    
     <name>KINGUGM</name>
     
     <tagged-values>
