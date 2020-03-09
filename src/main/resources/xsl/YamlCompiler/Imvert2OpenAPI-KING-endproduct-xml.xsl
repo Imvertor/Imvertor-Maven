@@ -623,7 +623,7 @@
 				<!-- If the current ep:construct is an association-class no ep:construct element is generated. All attributes of that 
 					 related class are directly placed within the current ep:construct. Also the child ep:superconstructs and 
 					 ep:constructs (if present) are processed. -->
-				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11000, id: ',$id),$debugging,.)" />
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11010, id: ',$id),$debugging,.)" />
 				<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 				<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
 				<xsl:apply-templates select="ep:construct" mode="as-local-type">
@@ -641,6 +641,7 @@
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
 				<xsl:variable name="is-id" select="$attributeconstruct/imvert:is-id"/>
 				
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11020, id: ',$id),$debugging,.)" />
 				<ep:construct>
 					<ep:parameters>
 						<xsl:choose>
@@ -696,6 +697,7 @@
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
 				<xsl:variable name="is-id" select="$attributeconstruct/imvert:is-id"/>
 				
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11030, id: ',$id),$debugging,.)" />
 				<ep:construct>
 					<ep:parameters>
 						<xsl:choose>
@@ -783,6 +785,7 @@
 					<xsl:sequence select="imf:getMeervoudigeNaam($construct,'association',ancestor::ep:rough-message/ep:name)"/>
 				</xsl:variable> 
 				
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11040, id: ',$id),$debugging,.)" />
 				<xsl:sequence select="imf:create-debug-comment('At this level the expand attribute is neccessary to determine if an _embedded property has to be created. This is only the case if the attribute has the value true.',$debugging)" />
 				<xsl:sequence select="imf:create-debug-comment(concat('Meervoudige naam: ',$meervoudigeNaam),$debugging)" />
 
@@ -792,6 +795,9 @@
 							<xsl:for-each select="ep:construct[@type='subclass']">
 								<xsl:choose>
 									<xsl:when test="ep:contains-non-id-attributes = 'true'">
+										<xsl:text>#true</xsl:text>
+									</xsl:when>
+									<xsl:when test="contains(imf:checkSuperclassesOnId(./ep:superconstruct[@type='superclass']),'#true')">
 										<xsl:text>#true</xsl:text>
 									</xsl:when>
 									<xsl:otherwise>
@@ -804,6 +810,9 @@
 						<xsl:for-each select="ep:construct[@type='class']">
 							<xsl:choose>
 								<xsl:when test="ep:contains-non-id-attributes = 'true'">
+									<xsl:text>#true</xsl:text>
+								</xsl:when>
+								<xsl:when test="ep:superconstruct[@type='superclass' and ep:contains-non-id-attributes='true']">
 									<xsl:text>#true</xsl:text>
 								</xsl:when>
 								<xsl:otherwise>
@@ -869,6 +878,7 @@
 			</xsl:when>
 			<xsl:when test="@type='groepCompositieAssociation'">
 				<!-- If the current ep:construct is an association to a groepcompositie the groepcompositie construct is processed.  -->
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11050, id: ',$id),$debugging,.)" />
 				<xsl:apply-templates select="ep:construct" mode="as-local-type">
 					<xsl:with-param name="berichtcode" select="$berichtcode"/>
 					<xsl:with-param name="messagetype" select="$messagetype"/>
@@ -894,6 +904,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11060, id: ',$id),$debugging,.)" />
 				<ep:construct>
 					<ep:parameters>
 						<ep:parameter>
@@ -938,6 +949,7 @@
 				<xsl:variable name="SIM-construct" select="if ($SIM-supplier) then imf:get-trace-construct-by-supplier($SIM-supplier,$imvert-document) else ()" />
 				<xsl:variable name="SIM-name" select="($SIM-construct/imvert:name, imvert:name)[1]" />
 				
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11070, id: ',$id),$debugging,.)" />
 				<ep:construct>
 					<ep:parameters>
 						<ep:parameter>
@@ -983,6 +995,7 @@
 		            <xsl:copy-of select="$construct"/>
 		        </xsl:result-document> ?>
 				
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11080, id: ',$id),$debugging,.)" />
 				<xsl:variable name="typeid" select="$construct/imvert:type-id" />
 				<ep:construct>
 					<ep:parameters>
@@ -1049,6 +1062,7 @@
 						<xsl:otherwise>false</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+				<xsl:sequence select="imf:create-debug-comment-with-xpath(concat('OAS11090, id: ',$id),$debugging,.)" />
 				<ep:construct>
 					<ep:parameters>
 						<ep:parameter>
@@ -1487,6 +1501,12 @@
 				<xsl:copy>
 					<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
 					<ep:parameters>
+						<xsl:if test="ep:superconstruct[@type='superclass' and ep:contains-non-id-attributes='true']">
+							<ep:parameter>
+								<xsl:sequence select="imf:create-output-element('ep:name', 'contains-non-id-attributes')" />
+								<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
+							</ep:parameter>
+						</xsl:if>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
 

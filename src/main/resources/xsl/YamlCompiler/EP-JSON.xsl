@@ -367,82 +367,96 @@
 				<xsl:variable name="entiteiten">
 					<xsl:for-each select="ep:message-set/ep:construct
 						[ 
-						(
-						ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name
-						or
-						ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:choice/ep:construct/ep:type-name
-						) 
+								(
+								ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name
+								or
+								ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:choice/ep:construct/ep:type-name
+								) 
+							and 
+								not
+									(
+										ep:tech-name = //ep:message
+										[
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' 
+										]
+										/ep:*/ep:construct/ep:type-name
+									) 
+							and 
+								not(ep:enum) 
+							and 
+								(
+									(
+										(
+											contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+											or
+											contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+											or
+											contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
+										)
+										and 
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
+									) 
+								or 
+									(
+										( 
+											contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+											or
+											contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+											or
+											contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
+											or
+											contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+											or 	
+											contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
+										) 
+										and 
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
+									)
+								)
 						and 
-						not(
-						ep:tech-name = //ep:message
-						[
-						ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' 
-						]
-						/ep:*/ep:construct/ep:type-name
-						) 
-						and 
-						not(ep:enum) 
-						and 
-						(
-						(
-						(
-						contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
-						or
-						contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
-						or
-						contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
-						)
-						and 
-						ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
-						) 
-						or 
-						(
-						( 
-						contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
-						or
-						contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
-						or
-						contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
-						or
-						contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
-						or 	
-						contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
-						) 
-						and 
-						ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
-						)
-						)
-						and 
-						(
-						not(
-						ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
-						and 
-						ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:ref
-						)
-						and
-						not(
-						ep:tech-name = //ep:message-set/ep:construct/ep:choice/ep:construct
-						[ ep:parameters/ep:parameter[ep:name='type']/ep:value = 'subclass']
-						/ep:type-name
-						)
-						and
-						(
-						ep:parameters/ep:parameter[ep:name='type']/ep:value != '' 
-						and 
-						ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'
-						)
-						and
-						not(
-						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
-						and 
-						not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
-						)
-						)
-						or
-						(
-						ep:parameters/ep:parameter[ep:name='type']/ep:value='association' or
-						ep:parameters/ep:parameter[ep:name='type']/ep:value='supertype-association'
-						)
+							(
+									(
+										not
+											(
+												ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
+												and 
+												ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:ref
+											)
+									and
+										not
+											(
+												ep:tech-name = //ep:message-set/ep:construct/ep:choice/ep:construct
+												[ ep:parameters/ep:parameter[ep:name='type']/ep:value = 'subclass']
+												/ep:type-name
+											)
+									and
+										(
+											ep:parameters/ep:parameter[ep:name='type']/ep:value != '' 
+											and 
+											ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'
+										)
+									and
+									
+									
+										(
+											not
+												(
+													ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
+													and 
+													not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
+												)
+											or
+											ep:parameters[ep:parameter[ep:name='contains-non-id-attributes' and ep:value='true']]
+										)
+									
+									)
+								or
+									(
+										ep:parameters/ep:parameter[ep:name='type']/ep:value='association' 
+										or
+										ep:parameters/ep:parameter[ep:name='type']/ep:value='supertype-association'
+									)
+							)
 						]">
 						<xsl:sort select="ep:tech-name" order="ascending"/>
 						<!-- Only regular constructs are generated. -->
@@ -899,6 +913,8 @@
 													.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]]
 													or
 													empty(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id']]])
+													or
+													ep:parameters/ep:parameter[ep:name='contains-non-id-attributes' and ep:value='true']
 													)
 													and ep:seq/ep:*
 												)
@@ -1010,7 +1026,7 @@
 							<xsl:variable name="global-constructs-without-end-comma">
 								<xsl:sequence select="substring($global-constructs,1,$length - 1)"/>
 							</xsl:variable>
-							<xsl:sequence select="$global-constructs-without-end-comma"/>							
+							<xsl:sequence select="$global-constructs-without-end-comma"/>	
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="$global-constructs"/>
@@ -1780,7 +1796,7 @@
 								<xsl:when test="$serialisation='hal+json'">
 									<xsl:for-each select="ep:seq/ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value != 'association' or empty(ep:parameters/ep:parameter[ep:name='type']/ep:value)) and not(ep:seq) and not(empty(ep:min-occurs)) and ep:min-occurs > 0]">
 										<xsl:sort select="ep:tech-name" order="ascending"/>
-										<!-- Loops over requred constructs, which are required, are no associations and have no ep:seq. -->
+										<!-- Loops over required constructs, which are required, are no associations and have no ep:seq. -->
 										<xsl:value-of select="'&quot;'"/>
 										<xsl:value-of select="translate(ep:tech-name,'.','_')"/>
 										<xsl:value-of select="'&quot;'"/>
