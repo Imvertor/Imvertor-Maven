@@ -262,15 +262,6 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-SOURCEROLEPLURAL">
-            <name lang="nl">Source role in meervoud</name>
-            <desc lang="nl">
-                Voorziening om de source role een meervoudsnaam te kunnen geven. Op dit moment niet in gebruik. 
-            </desc>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
-            </stereotypes>
-        </tv>
         <tv id="CFG-TV-GROUPNAME">
             <name lang="nl">Groepsnaam</name>
             <name lang="en">Groupname</name>
