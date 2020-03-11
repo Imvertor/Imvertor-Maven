@@ -191,6 +191,7 @@
         <tv norm="note" id="CFG-TV-DESCRIPTION">   <!-- in aanvulling op SBR -->
             <name lang="nl">Toelichting</name>
             <derive>yes</derive>
+            <desc lang="nl">Aanvullende beschrijving van het construct met de bedoeling dat te verduidelijken.</desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>

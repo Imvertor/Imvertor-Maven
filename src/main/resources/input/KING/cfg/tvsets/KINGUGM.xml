@@ -36,6 +36,7 @@
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIEMATCHGEGEVEN">
             <name lang="nl">Indicatie matchgegeven</name>
             <derive>yes</derive>
+            <desc lang="nl">Indicatie dat het gegeven noodzakelijk is voor het kunnen identificeren van een object. Heeft alleen een toepassing binnen StUF schema's.</desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-composite</stereo>
@@ -51,6 +52,7 @@
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONAUTHENTIC">
             <name lang="nl">Indicatie authentiek</name>
             <derive>yes</derive>
+            <desc lang="nl">Aanduiding of het een authentiek gegeven (attribuutsoort) betreft. </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-composite</stereo>
@@ -94,6 +96,7 @@
         <tv norm="space" id="CFG-TV-INDICATIEINONDERZOEK">
             <name lang="nl">Indicatie in onderzoek</name>
             <derive>yes</derive><!-- UGM mag op supplier terugvallen, maar SIM is niet een supplier voor deze config, dus expliciet de naam opnemen.-->
+            <desc lang="nl">De indicatie of te bevragen is dat er twijfel is of is geweest aan de juistheid van de attribuutwaarde en dat een onderzoek wordt of is uitgevoerd naar de juistheid van de attribuutwaarde. </desc>
         </tv>
         
         <tv norm="space" validate="" rules="" id="CFG-TV-VERKORTEALIAS">
@@ -101,7 +104,7 @@
             <name lang="en">Short alias</name>
             <derive>no</derive>
             <desc lang="nl">Verkorte alias is een korte naam, die uiteindelijk gekoppeld is aan een namespace in XML schema. 
-                In feite is het dus een technisch configuratie-element.</desc>
+                In feite is het dus een technisch configuratie-element. Heeft alleen een toepassing binnen StUF schema's.</desc>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-application-package</stereo>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
@@ -112,6 +115,7 @@
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
             <derive>no</derive>
+            <desc lang="nl">Beschrijving van het gegevenspatroon van een element. Dit kan de basis zijn voor een reguliere expressie.</desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
@@ -124,6 +128,7 @@
             <name lang="nl">Formeel patroon</name>
             <name lang="en">Formal pattern</name>
             <derive>no</derive>
+            <desc>Formele notatie in de vorm van een reguliere expressie van het gegevenspatroon van een element.</desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -136,6 +141,7 @@
         <tv norm="compact" id="CFG-TV-VOIDABLE">
             <name lang="nl">Mogelijk geen waarde</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
+            <desc lang="nl">Indicatie waarmee wordt aangegeven dat het gegeven ook geen waarde kan hebben.</desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort -->
                 <stereo minmax="0..1">stereotype-name-composite</stereo><!-- SIM: Gegevensgroeptype -->
@@ -180,8 +186,8 @@
         <tv norm="note" id="CFG-TV-DESCRIPTION">
             <name lang="nl">Toelichting</name>
             <name lang="en">Description</name>
-            <desc lang="nl">Gebruikt om het description deel van de documentatie te vullen.</desc>
             <derive>yes</derive>
+            <desc lang="nl">Aanvullende beschrijving van het construct met de bedoeling dat te verduidelijken.</desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -204,7 +210,7 @@
         <tv norm="space"  id="CFG-TV-SUBSETLABEL">
             <name lang="nl">Restriction identifier</name>
             <name lang="en">Restriction identifier</name>
-            <desc lang="nl">Een label dat aan een construct kan worden toegekend om onderscheid mogelijk te maken tussen aangescherpte constructs die afgeleid zijn van eenzelfde construct.</desc>
+            <desc lang="nl">Een label dat aan een construct kan worden toegekend om onderscheid mogelijk te maken tussen aangescherpte constructs die afgeleid zijn van eenzelfde construct. Heeft alleen een functie bij het genereren van StUF schema's.</desc>
             <desc lang="en">A label assigned to any construct to be used for disambiguation in subset (restriction) constructs.</desc>
             <derive>yes</derive>
             <stereotypes>
@@ -228,7 +234,7 @@
         <!-- TODO PATCH, must be removed! -->
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIEKERNGEGEVEN">
             <name lang="nl">Indicatie kerngegeven</name>
-            <desc lang="nl">Indicatie om aan te kunnen geven of een gegeven deel uit maakt van de matchgegevens. Een groep van gegevens waarmee een entiteit gevonden kan worden.</desc>
+            <desc lang="nl">Indicatie om aan te kunnen geven of een gegeven deel uit maakt van de matchgegevens. Een groep van gegevens waarmee een entiteit gevonden kan worden. Heeft alleen een toepassing binnen StUF schema's. Deprecated.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>

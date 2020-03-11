@@ -37,6 +37,7 @@
             <name lang="nl">Definitie</name>
             <name lang="en">Definition</name>
             <derive>yes</derive>
+            <desc lang="nl">De beschrijving van de betekenis van de construct zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie of informatiemodel.</desc>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-objecttype</stereo>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
