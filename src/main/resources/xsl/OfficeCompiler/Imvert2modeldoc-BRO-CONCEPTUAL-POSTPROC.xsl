@@ -492,7 +492,7 @@
         <xsl:choose>
             <xsl:when test="$unit-ucum = '1'">dimensieloos</xsl:when>
             <xsl:when test="$unit-ucum = '%'">% (procent)</xsl:when>
-            <xsl:when test="$unit-ucum = 'Cel'">°C (graden Celcius)</xsl:when>
+            <xsl:when test="$unit-ucum = 'Cel'">°C (graden Celsius)</xsl:when>
             <xsl:when test="$unit-ucum = 'deg'">° (graden)</xsl:when>
             <xsl:when test="$unit-ucum = 'g/cm3'">g/cm<sup>3</sup> (gram/kubieke centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'kPa'">kPa (kilopascal)</xsl:when>
