@@ -205,11 +205,13 @@
 						
 						<xsl:sequence select="imf:createHalComponent($elementName,.)"/>
 						
-						<xsl:call-template name="construct"/>
-
-						<xsl:if test="position() != last()">
-							<!-- As long as the current construct isn't the last constructs that's refered to from the constructs within the messages 
-						 a comma separator has to be generated. -->
+						<xsl:variable name="construct">
+							<xsl:call-template name="construct"/>
+						</xsl:variable>
+						<xsl:sequence select="$construct"/>
+						<xsl:if test="position() != last() and $construct!=''">
+							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs
+								 and the variable $construct isn't empty a comma separator has to be generated. -->
 							<xsl:value-of select="','"/>
 						</xsl:if>
 					</xsl:for-each>
@@ -265,11 +267,13 @@
 
 						<xsl:sequence select="imf:createHalComponent($elementName,.)"/>
 						
-						<xsl:call-template name="construct"/>
-
-						<xsl:if test="position() != last()">
-							<!-- As long as the current construct isn't the last constructs that's refered to from the constructs within the messages 
-						 a comma separator has to be generated. -->
+						<xsl:variable name="construct">
+							<xsl:call-template name="construct"/>
+						</xsl:variable>
+						<xsl:sequence select="$construct"/>
+						<xsl:if test="position() != last() and $construct!=''">
+							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs
+								 and the variable $construct isn't empty a comma separator has to be generated. -->
 							<xsl:value-of select="','"/>
 						</xsl:if>
 					</xsl:for-each>
@@ -340,10 +344,13 @@
 							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 							},
 						</xsl:if>
-						<xsl:call-template name="construct"/>
-						<xsl:if test="position() != last()">
-							<!-- As long as the current construct isn't the last constructs that's refered to from the constructs within the messages 
-						 a comma separator has to be generated. -->
+						<xsl:variable name="construct">
+							<xsl:call-template name="construct"/>
+						</xsl:variable>
+						<xsl:sequence select="$construct"/>
+						<xsl:if test="position() != last() and $construct!=''">
+							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs
+								 and the variable $construct isn't empty a comma separator has to be generated. -->
 							<xsl:value-of select="','"/>
 						</xsl:if>
 					</xsl:for-each>
@@ -465,26 +472,28 @@
 							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 							},
 						</xsl:if>
-						<xsl:choose>
-							<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value='association' or
-								ep:parameters/ep:parameter[ep:name='type']/ep:value='supertype-association'">
-								<xsl:call-template name="construct">
-									<xsl:with-param name="mode" select="'onlyLinksAndEmbedded'"/>
-								</xsl:call-template>								
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:variable name="type-name" select="ep:type-name"/>
-								<xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
-								
-								<xsl:sequence select="imf:createHalComponent($elementName,.)"/>
-								
-								<xsl:call-template name="construct"/>
-							</xsl:otherwise>
-						</xsl:choose>
-
-						<xsl:if test="position() != last()">
-							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs a 
-								 comma separator has to be generated. -->
+						<xsl:variable name="construct">
+							<xsl:choose>
+								<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value='association' or
+									ep:parameters/ep:parameter[ep:name='type']/ep:value='supertype-association'">
+									<xsl:call-template name="construct">
+										<xsl:with-param name="mode" select="'onlyLinksAndEmbedded'"/>
+									</xsl:call-template>								
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:variable name="type-name" select="ep:type-name"/>
+									<xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
+									
+									<xsl:sequence select="imf:createHalComponent($elementName,.)"/>
+									
+									<xsl:call-template name="construct"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<xsl:sequence select="$construct"/>
+						<xsl:if test="position() != last() and $construct!=''">
+							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs
+								 and the variable $construct isn't empty a comma separator has to be generated. -->
 							<xsl:value-of select="','"/>
 						</xsl:if>
 					</xsl:for-each>
@@ -571,10 +580,13 @@
 							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 							},
 						</xsl:if>
-						<xsl:call-template name="construct"/>
-						<xsl:if test="position() != last()">
-							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs a 
-								 comma separator has to be generated. -->
+						<xsl:variable name="construct">
+							<xsl:call-template name="construct"/>
+						</xsl:variable>
+						<xsl:sequence select="$construct"/>
+						<xsl:if test="position() != last() and $construct!=''">
+							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs
+								 and the variable $construct isn't empty a comma separator has to be generated. -->
 							<xsl:value-of select="','"/>
 						</xsl:if>
 					</xsl:for-each>
@@ -679,10 +691,13 @@
 							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 							},
 						</xsl:if>
-						<xsl:call-template name="construct"/>
-						<xsl:if test="position() != last()">
-							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs a 
-								 comma separator has to be generated. -->
+						<xsl:variable name="construct">
+							<xsl:call-template name="construct"/>
+						</xsl:variable>
+						<xsl:sequence select="$construct"/>
+						<xsl:if test="position() != last() and $construct!=''">
+							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs
+								 and the variable $construct isn't empty a comma separator has to be generated. -->
 							<xsl:value-of select="','"/>
 						</xsl:if>
 					</xsl:for-each>
@@ -773,10 +788,13 @@
 							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 							},
 						</xsl:if>
-						<xsl:call-template name="construct"/>
-						<xsl:if test="position() != last()">
-							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs a 
-								 comma separator has to be generated. -->
+						<xsl:variable name="construct">
+							<xsl:call-template name="construct"/>
+						</xsl:variable>
+						<xsl:sequence select="$construct"/>
+						<xsl:if test="position() != last() and $construct!=''">
+							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs
+								 and the variable $construct isn't empty a comma separator has to be generated. -->
 							<xsl:value-of select="','"/>
 						</xsl:if>
 					</xsl:for-each>
@@ -816,10 +834,13 @@
 			        "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 			        },
 				</xsl:if>
-				<xsl:call-template name="construct"/>
-				<xsl:if test="position() != last()">
-					<!-- As long as the current construct isn't the last constructs that's refered to from the global constructs a comma separator 
-						 has to be generated. -->
+				<xsl:variable name="construct">
+					<xsl:call-template name="construct"/>
+				</xsl:variable>
+				<xsl:sequence select="$construct"/>
+				<xsl:if test="position() != last() and $construct!=''">
+					<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs
+						 and the variable $construct isn't empty a comma separator has to be generated. -->
 					<xsl:value-of select="','"/>
 				</xsl:if>
 			</xsl:for-each>
@@ -1245,10 +1266,13 @@
 			                "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
 			                },
 						</xsl:if>
-						<xsl:call-template name="construct"/>
-						<xsl:if test="position() != last()">
-							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs a 
-								 comma separator has to be generated. -->
+						<xsl:variable name="construct">
+							<xsl:call-template name="construct"/>
+						</xsl:variable>
+						<xsl:sequence select="$construct"/>
+						<xsl:if test="position() != last() and $construct!=''">
+							<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs
+								 and the variable $construct isn't empty a comma separator has to be generated. -->
 							<xsl:value-of select="','"/>
 						</xsl:if>
 					</xsl:for-each>
@@ -1704,7 +1728,6 @@
 						</xsl:when>
 					</xsl:choose>
 				</xsl:variable>
-				
 				<xsl:variable name="properties">
 					<xsl:value-of select="',&quot;properties&quot;: {'"/>
 					<!-- Loop over all constructs within the current construct (that don't have association type, supertype-association type and superclass type constructs) 
@@ -1750,14 +1773,13 @@
 					<xsl:value-of select="'}'"/>
 				</xsl:variable>
 				
-				
-				<xsl:if test="$debugging">
-					"--------------Debuglocatie-03000 ": {
-			        "XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
-			        },
-				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="$mode = 'onlyLinksAndEmbedded'">
+						<xsl:if test="$debugging">
+							"--------------Debuglocatie-03000 ": {
+							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+							},
+						</xsl:if>
 						<xsl:if test="$reference2links != ''">
 							<xsl:sequence select="$reference2links"/>
 						</xsl:if>
@@ -1773,7 +1795,20 @@
 							<xsl:sequence select="$associationProperties"/>
 						</xsl:if>
 					</xsl:when>
+					<!-- TODO: Volgende when moet vanuit een configuratie aan te sturen zijn. -->
+					<xsl:when test="$elementName = 'Datum_onvolledig'">
+						<xsl:if test="$debugging">
+							"--------------Debuglocatie-03020 ": {
+							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+							}
+						</xsl:if>
+					</xsl:when>
 					<xsl:otherwise>
+						<xsl:if test="$debugging">
+							"--------------Debuglocatie-03040 ": {
+							"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+							},
+						</xsl:if>
 						<xsl:if test="$grouping != 'resource'">
 							<!-- RM: Bepalen waarom dit noodzakelijk is. Ik twijfel er niet aan dat het nodig is maar ik wil weten waarom zodat ik het kan documenteren. -->
 							<xsl:value-of select="concat('&quot;', $elementName,'&quot;: {' )"/>
@@ -1848,7 +1883,6 @@
 				</xsl:choose>
 			</xsl:otherwise>
 		</xsl:choose>
-		
 	</xsl:template>
 	
 	<xsl:template name="enumeration">
@@ -2027,6 +2061,21 @@
 				<!-- If the property is a gml type this when applies. In all these case a standard content (except the documentation)
 					 is generated. -->
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-geojson-components-url,'GeoJSONGeometry&quot;')"/>
+			</xsl:when>
+			<xsl:when test="ep:type-name = 'Datum_onvolledig'">
+				<!-- If the property is a gml type this when applies. In all these case a standard content (except the documentation)
+					 is generated. -->
+				<xsl:value-of select="'&quot;allOff&quot;: ['"/>
+				<xsl:value-of select="'{'"/>
+				<xsl:variable name="documentation">
+					<xsl:apply-templates select="ep:documentation"/>
+				</xsl:variable>
+				<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+				<xsl:sequence select="$documentation"/>
+				<xsl:value-of select="'&quot;,'"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'Datum_onvolledig&quot;')"/>
+				<xsl:value-of select="'}'"/>
+				<xsl:value-of select="']'"/>
 			</xsl:when>
 			<xsl:when test="exists(ep:data-type) and (ep:max-occurs = 'unbounded' or ep:max-occurs > 1)">
 				<!-- If the construct has a ep:data-type element, a description, an optional format and, also optional, some facets have to be generated. -->
