@@ -1498,8 +1498,19 @@
 				<xsl:variable name="expand">
 					<xsl:value-of select="$expandconfigurations//ep:message[ep:name=$messagename and @berichtcode=$berichtcode and @messagetype=$messagetype]/ep:expand"/>
 				</xsl:variable>
+				
 				<xsl:copy>
 					<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
+					<xsl:variable name="endpointavailable">
+						<xsl:choose>
+							<xsl:when test="not(empty(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-ENDPOINTAVAILABLE')))">
+								<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-ENDPOINTAVAILABLE')" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="'Ja'"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
 					<ep:parameters>
 						<xsl:if test="ep:superconstruct[@type='superclass' and ep:contains-non-id-attributes='true']">
 							<ep:parameter>
@@ -1543,6 +1554,13 @@
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'abstract')" />
 							<xsl:sequence select="imf:create-output-element('ep:value', $abstract)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:variable name="tvs">
+								<xsl:sequence select="imf:get-compiled-tagged-values($construct,false())"/>
+							</xsl:variable>
+							<ep:name original="{$tvs/tv[@id='CFG-TV-ENDPOINTAVAILABLE']/@original-name}">endpointavailable</ep:name>
+							<xsl:sequence select="imf:create-output-element('ep:value', $endpointavailable)" />
 						</ep:parameter>
 					</ep:parameters>
 					
