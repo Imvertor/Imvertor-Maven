@@ -1919,6 +1919,10 @@
 			<xsl:variable name="entityName" select="ep:entityName"/>
 			<ep:uriPart>
 				<xsl:choose>
+					<xsl:when test="substring($rawMessageName,string-length($rawMessageName),1) = '/'">
+						<xsl:sequence select="imf:msg(.,'ERROR','The messagename [1] ends with a &quot;/&quot;, this is not allowed.', ($rawMessageName))" />			
+						<ep:entityName path="false"><xsl:value-of select="$entityName"/></ep:entityName>
+					</xsl:when>
 					<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:entityName = $entityName">
 						<!-- If the entityname of the current uriPart is equal to the entityname of the corresponding uriPart wthin the determined
 							 uri structure. The entity belongs to the path. -->

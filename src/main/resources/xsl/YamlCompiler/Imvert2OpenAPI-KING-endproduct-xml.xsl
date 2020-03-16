@@ -1498,8 +1498,19 @@
 				<xsl:variable name="expand">
 					<xsl:value-of select="$expandconfigurations//ep:message[ep:name=$messagename and @berichtcode=$berichtcode and @messagetype=$messagetype]/ep:expand"/>
 				</xsl:variable>
+				
 				<xsl:copy>
 					<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
+					<xsl:variable name="endpointavailable">
+						<xsl:choose>
+							<xsl:when test="not(empty(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-ENDPOINTAVAILABLE')))">
+								<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-ENDPOINTAVAILABLE')" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="'Ja'"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
 					<ep:parameters>
 						<xsl:if test="ep:superconstruct[@type='superclass' and ep:contains-non-id-attributes='true']">
 							<ep:parameter>
@@ -1543,6 +1554,13 @@
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'abstract')" />
 							<xsl:sequence select="imf:create-output-element('ep:value', $abstract)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:variable name="tvs">
+								<xsl:sequence select="imf:get-compiled-tagged-values($construct,false())"/>
+							</xsl:variable>
+							<ep:name original="{$tvs/tv[@id='CFG-TV-ENDPOINTAVAILABLE']/@original-name}">endpointavailable</ep:name>
+							<xsl:sequence select="imf:create-output-element('ep:value', $endpointavailable)" />
 						</ep:parameter>
 					</ep:parameters>
 					
@@ -2162,10 +2180,18 @@
 						<xsl:value-of select="normalize-space(translate($SIM-name,$chars2bTranslated,$chars2bTranslated2))"/>
 						<!--xsl:value-of select="translate(translate($SIM-name,$chars2bTranslated,$chars2bTranslated2),'_')"/-->
 					</xsl:variable>
-					<xsl:if test="$SIM-name != $normalizedName">
-						<!-- If the normalized-name isn't equal to the SIM-name a warning has to be generated. The goal of this warning is only point the attention of the messagedeveloper to the enumeration and ask him to cehck it. -->
-						<xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias. Therefore it has been generated from its description. This however contains characters other than a-z, A-Z or an underscore. Check if the resulting enumeration value is as desired.',(imvert:name))"/>						
-					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$SIM-name != $normalizedName">
+							<!-- If the normalized-name isn't equal to the SIM-name a warning has to be generated. The goal of this warning is to point the attention of the messagedeveloper only to the enumeration and ask him to check it. -->
+							<xsl:sequence select="imf:msg($construct,'WARNING','No alias defined for enumeration value [1] in the enumeration [2], it has been generated from its description. Check if the resulting description is as desired and correct it if not.',(imvert:name,../../imvert:name))"/>						
+							<!--xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias. Therefore it has been generated from its description. This however contains characters other than a-z, A-Z or an underscore. Check if the resulting enumeration value is as desired.',(imvert:name))"/-->						
+						</xsl:when>
+						<xsl:otherwise>
+							<!-- If the normalized-name is equal to the SIM-name also a warning has to be generated. The goal of this warning is to point the attention of the messagedeveloper to the enumeration and ask him to cehck it. -->
+							<xsl:sequence select="imf:msg($construct,'WARNING','No alias defined for enumeration value [1] in the enumeration [2], it has been generated from its description.',(imvert:name,../../imvert:name))"/>						
+							<!--xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias. Therefore it has been generated from its description.',(imvert:name))"/-->						
+						</xsl:otherwise>
+					</xsl:choose>
 					<ep:name><xsl:value-of select="$SIM-name" /></ep:name>
 					<ep:alias><xsl:value-of select="$normalizedName" /></ep:alias>
 				</xsl:when>

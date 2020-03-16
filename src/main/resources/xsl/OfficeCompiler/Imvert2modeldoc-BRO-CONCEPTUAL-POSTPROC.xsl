@@ -369,6 +369,20 @@
                     <item><xsl:value-of select="$context/part[@type = 'CFG-DOC-PATROON']/item[2]/text()"/></item>
                 </part>
             </xsl:when>
+            <xsl:when test="$item-text='Bepalingscode'">
+                <part>
+                    <item>&#160;&#160;Naam</item>
+                    <item>Bepalingscode</item>
+                </part>
+                <part>
+                    <item>&#160;&#160;Type</item>
+                    <item>Code</item>
+                </part>
+                <part>
+                    <item>&#160;&#160;Opbouw</item>
+                    <item><xsl:value-of select="$context/part[@type = 'CFG-DOC-PATROON']/item[2]/text()"/></item>
+                </part>
+            </xsl:when>
             <xsl:when test="$item[text()=('Datum', 'DatumTijd')]">
                 <part>
                     <item>&#160;&#160;Naam</item>
@@ -492,7 +506,7 @@
         <xsl:choose>
             <xsl:when test="$unit-ucum = '1'">dimensieloos</xsl:when>
             <xsl:when test="$unit-ucum = '%'">% (procent)</xsl:when>
-            <xsl:when test="$unit-ucum = 'Cel'">°C (graden Celcius)</xsl:when>
+            <xsl:when test="$unit-ucum = 'Cel'">°C (graden Celsius)</xsl:when>
             <xsl:when test="$unit-ucum = 'deg'">° (graden)</xsl:when>
             <xsl:when test="$unit-ucum = 'g/cm3'">g/cm<sup>3</sup> (gram/kubieke centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'kPa'">kPa (kilopascal)</xsl:when>

@@ -88,6 +88,7 @@
         <tv norm="space"  rules="NOC" id="CFG-TV-FUNCTIEBERICHTRELATIE">
             <name lang="nl">Functie berichtrelatie</name>
             <derive>no</derive>
+            <desc lang="nl">Geeft het karakter aan van de berichtrelatie. Heeft alleen een functie bij StUF schema generatie.</desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-berichtrelatie</stereo>
             </stereotypes>
@@ -100,6 +101,7 @@
         <tv norm="space"  rules="NOC" id="CFG-TV-FUNCTIEENTITEITRELATIE">
             <name lang="nl">Functie entiteitrelatie</name>
             <derive>no</derive>
+            <desc lang="nl">Geeft het karakter aan van de entiteitrelatie. Heeft alleen een functie bij StUF schema generatie.</desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-entiteitrelatie</stereo>
             </stereotypes>
@@ -270,10 +272,10 @@
             <stereotypes>
                 <!-- bericht typen -->
                 <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <?x <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
                 <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
                 <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo> ?>
             </stereotypes>
             <declared-values lang="nl">
                 <!-- Sort in request parameters YAML opnemen. -->
@@ -461,6 +463,7 @@
                 Geeft aan of er aan elke enumeratie simpleType ook een lege enumeratie toegevoegd moet worden.
                 Standaard wordt dit mee gegenereerd. Kan zowel op Koppelvlak niveau als op enumeration niveau worden 
                 gedefinieerd waarbij die op attribuutniveau die op op Koppelvlak niveau overrulled. 
+                Heeft alleen een functie bij het genereren van StUF schema's.
             </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-enumeration</stereo>
@@ -477,6 +480,7 @@
             <desc lang="nl">
                 Geeft aan of het StUF:noValue attribute in de XML-schema's mee gegenereerd wordt.
                 Standaard wordt dit mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+                Heeft alleen een functie bij het genereren van StUF schema's.
             </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
@@ -491,7 +495,8 @@
             <name lang="nl">e-types genereren</name>
             <desc lang="nl">
                 Geeft aan of de -e complexTypes in de XML-schema's mee gegenereerd moeten worden.
-                Standaard worden deze mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+                Standaard worden deze mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd.
+                Heeft alleen een functie bij het genereren van StUF schema's.
             </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
@@ -507,6 +512,7 @@
             <desc lang="nl">
                 Geeft aan of en zo ja hoe in de XML-schema's de 'tijdvakGeldigheid' elementen worden mee gegenereerd.
                 Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+                Heeft alleen een functie bij het genereren van StUF schema's.
             </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
@@ -522,7 +528,8 @@
             <name lang="nl">tijdstipRegistratie genereren</name>
             <desc lang="nl">
                 Geeft aan of en zo ja hoe in de XML-schema's de 'tijdstipRegistratie' elementen worden mee gegenereerd.
-                Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+                Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd.
+                Heeft alleen een functie bij het genereren van StUF schema's.
             </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
@@ -539,7 +546,8 @@
             <name lang="nl">extraElementen genereren</name>
             <desc lang="nl">
                 Geeft aan of er in de XML-schema's 'extraElementen' elementen moeten worden mee gegenereerd.
-                Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+                Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd.
+                Heeft alleen een functie bij het genereren van StUF schema's.
             </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
@@ -556,6 +564,7 @@
             <desc lang="nl">
                 Geeft aan of er in de XML-schema's 'aanvullendeElementen' elementen moeten worden mee gegenereerd.
                 Standaard worden deze optioneel mee gegenereerd. Kan alleen op  Koppelvlak niveau worden gedefinieerd. 
+                Heeft alleen een functie bij het genereren van StUF schema's.
             </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
@@ -571,7 +580,7 @@
         <tv id="CFG-TV-DEFINITION">
             <name lang="nl">Definitie</name>
             <name lang="en">Definition</name>
-            <desc lang="nl">Gebruikt om het definitie deel van de documentatie te vullen.</desc>
+            <desc lang="nl">De beschrijving van de betekenis van de construct zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie of informatiemodel.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
@@ -631,7 +640,7 @@
         </tv>
         <tv norm="space" id="CFG-TV-SERIALISATION">
             <name lang="nl">serialisatie</name>
-            <desc lang="nl">Het formaat waarin het koppelvlak uitgevoerd moet worden.</desc>
+            <desc lang="nl">Het JSON formaat waarin het koppelvlak uitgevoerd moet worden.</desc>
             <derive>no</derive>
             <inherit>no</inherit>
             <stereotypes>
