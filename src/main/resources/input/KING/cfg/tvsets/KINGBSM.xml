@@ -580,7 +580,7 @@
         <tv id="CFG-TV-DEFINITION">
             <name lang="nl">Definitie</name>
             <name lang="en">Definition</name>
-            <desc lang="nl">Gebruikt om het definitie deel van de documentatie te vullen.</desc>
+            <desc lang="nl">De beschrijving van de betekenis van de construct zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie of informatiemodel.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>

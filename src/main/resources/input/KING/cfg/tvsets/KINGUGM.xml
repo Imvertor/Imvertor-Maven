@@ -128,7 +128,7 @@
             <name lang="nl">Formeel patroon</name>
             <name lang="en">Formal pattern</name>
             <derive>no</derive>
-            <desc>Formele notatie in de vorm van een reguliere expressie van het gegevenspatroon van een element.</desc>
+            <desc lang="nl">Formele notatie in de vorm van een reguliere expressie van het gegevenspatroon van een element.</desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -292,7 +292,7 @@
         <tv norm="space" id="CFG-TV-ENDPOINTAVAILABLE">
             <name lang="nl">Endpoint beschikbaar</name>
             <desc lang="nl">
-                Voorziening waarmee kan worden aangegeven dat er voor een entiteit ook een resource endpoint beschikbaar is. 
+                Voorziening waarmee kan worden aangegeven dat er voor een entiteit al dan niet een resource endpoint beschikbaar is. 
             </desc>
             <derive>no</derive>
             <stereotypes>
