@@ -2180,10 +2180,18 @@
 						<xsl:value-of select="normalize-space(translate($SIM-name,$chars2bTranslated,$chars2bTranslated2))"/>
 						<!--xsl:value-of select="translate(translate($SIM-name,$chars2bTranslated,$chars2bTranslated2),'_')"/-->
 					</xsl:variable>
-					<xsl:if test="$SIM-name != $normalizedName">
-						<!-- If the normalized-name isn't equal to the SIM-name a warning has to be generated. The goal of this warning is only point the attention of the messagedeveloper to the enumeration and ask him to cehck it. -->
-						<xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias. Therefore it has been generated from its description. This however contains characters other than a-z, A-Z or an underscore. Check if the resulting enumeration value is as desired.',(imvert:name))"/>						
-					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$SIM-name != $normalizedName">
+							<!-- If the normalized-name isn't equal to the SIM-name a warning has to be generated. The goal of this warning is to point the attention of the messagedeveloper only to the enumeration and ask him to check it. -->
+							<xsl:sequence select="imf:msg($construct,'WARNING','No alias defined for enumeration value [1] in the enumeration [2], it has been generated from its description. Check if the resulting description is as desired and correct it if not.',(imvert:name,../../imvert:name))"/>						
+							<!--xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias. Therefore it has been generated from its description. This however contains characters other than a-z, A-Z or an underscore. Check if the resulting enumeration value is as desired.',(imvert:name))"/-->						
+						</xsl:when>
+						<xsl:otherwise>
+							<!-- If the normalized-name is equal to the SIM-name also a warning has to be generated. The goal of this warning is to point the attention of the messagedeveloper to the enumeration and ask him to cehck it. -->
+							<xsl:sequence select="imf:msg($construct,'WARNING','No alias defined for enumeration value [1] in the enumeration [2], it has been generated from its description.',(imvert:name,../../imvert:name))"/>						
+							<!--xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias. Therefore it has been generated from its description.',(imvert:name))"/-->						
+						</xsl:otherwise>
+					</xsl:choose>
 					<ep:name><xsl:value-of select="$SIM-name" /></ep:name>
 					<ep:alias><xsl:value-of select="$normalizedName" /></ep:alias>
 				</xsl:when>

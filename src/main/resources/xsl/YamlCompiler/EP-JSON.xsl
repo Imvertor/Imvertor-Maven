@@ -1951,18 +1951,33 @@
 		</xsl:if>
 		<xsl:value-of select="concat('&quot;', $elementName,'&quot;: {' )"/>
 		<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-		
-		<xsl:value-of select="'&quot;description&quot; : &quot;'"/>
+
 		<xsl:variable name="enumeration-documentation">
+			<xsl:value-of select="'&quot;description&quot; : &quot;'"/>
 			<xsl:if test="ep:documentation">
-				<xsl:apply-templates select="ep:documentation"/><xsl:text>:</xsl:text>
+				<xsl:apply-templates select="ep:documentation"/>
 			</xsl:if>
-			<xsl:for-each select="ep:enum">
-				<xsl:value-of select="concat('\n* `',ep:alias,'` - ',ep:name)"/>
-			</xsl:for-each>
+			<xsl:choose>
+				<!-- If the content of all ep:name elements is equal to their sibbling ep:alias elements no further documentation is generated. -->
+				<xsl:when test="count(ep:enum[ep:name=ep:alias])=count(ep:enum)"/>
+				<xsl:when test="//ep:p/@format = 'markdown'">
+					<xsl:text>&lt;body&gt;&lt;ul&gt;</xsl:text>
+						<xsl:for-each select="ep:enum">
+							<xsl:text>&lt;li&gt;</xsl:text><xsl:value-of select="concat('`',ep:alias,'` - ',ep:name)"/><xsl:text>&lt;/li&gt;</xsl:text>
+						</xsl:for-each>
+					<xsl:text>&lt;/ul&gt;&lt;/body&gt;</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<!--xsl:text>:</xsl:text-->
+					<xsl:for-each select="ep:enum">
+						<xsl:value-of select="concat('\n* `',ep:alias,'` - ',ep:name)"/>
+					</xsl:for-each>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:value-of select="'&quot;,'"/>
 		</xsl:variable>
 		<xsl:sequence select="$enumeration-documentation"/>
+
 		<xsl:value-of select="'&quot;enum&quot;: ['"/>
 		<xsl:for-each select="ep:enum">
 			<!-- Loop over all enum elements. -->
