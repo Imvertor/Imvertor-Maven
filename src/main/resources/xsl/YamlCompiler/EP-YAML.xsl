@@ -342,7 +342,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<!-- De volgende choose wordt tijdelijk uitgeschakeld. Voorlopig worden er nl. geen customized 'expand' parameters gegenereerd
+				<!-- De volgende choose wordt tijdelijk uitgeschakeld i.h.k.v. issue #490645. Voorlopig worden er nl. geen customized 'expand' parameters gegenereerd
 					 ook al is deze in het BSM gedefinieerd. Voor nu wordt gebruik gemaakt van de in de common.yaml gedefinieerde 'expand'
 					 parameter. 
 					 Indien het gebruik van custom expand parameters toch weer wordt toegestaan dan moet ook de when even verderop weer worden geractiveerd. -->
@@ -405,10 +405,11 @@
 						<xsl:text>&#xa;            minimum: 1</xsl:text>
 					</xsl:if>
 					<xsl:choose>
-						<!-- De volgende when wordt tijdelijk uitgeschakeld. Voorlopig worden er dus geen customized 'expand' parameters gegenereerd
+						<!-- De volgende when wordt tijdelijk uitgeschakeld i.h.k.v. issue #490645. Voorlopig worden er dus geen customized 'expand' parameters gegenereerd
 							 ook al is deze in het BSM gedefinieerd. Voor nu wordt gebruik gemaakt van de in de common.yaml gedefinieerde 'expand'
 							 parameter. Om de code niet te veel te wijzigen heb ik de choose intact gelaten en een lege otherwise toegevoegd. 
-							 Indien deze when geheractiveerd moet worden heractiveer dan ook de check op het voorkomen van $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']. -->
+							 Indien deze when geheractiveerd moet worden heractiveer dan ook de check op het voorkomen van 
+							 $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand'] iets eerder in deze code. -->
 						<!--xsl:when test="$expand = true() and $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']">
 							<xsl:variable name="expandParam" select="$checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']"/>
 							<xsl:variable name="datatype">
