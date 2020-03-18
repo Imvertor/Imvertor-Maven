@@ -349,6 +349,17 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-UNITOFMEASURE" order="185">
+        <name lang="nl">Meeteenheid</name>
+        <name lang="en">Unit of measure</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+        </levels>
+    </doc-rule> 
     <doc-rule id="CFG-DOC-RELATIESOORT" order="190">
         <name lang="nl">Relatiesoort</name>
         <levels>

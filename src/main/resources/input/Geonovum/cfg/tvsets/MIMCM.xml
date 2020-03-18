@@ -7,10 +7,27 @@
     <!-- 
         Geonovum NEN3610 follows MIM10-ISO-EN
     --> 
-    <xi:include href="../../../MIM/cfg/tvsets/MIM10-ISO.xml"/>
+    <xi:include href="Geonovum.xml"/>
     
     <name>Geonovum MIMCM</name>
     <desc lang="en">Tagset for MIM conformant MIM10-ISO extensions</desc>
     <desc lang="nl">Tags voor MIM vereiste MIM10-ISO uitbreidingen</desc>
    
+    <tagged-values>
+        <tv id="CFG-TV-UNITOFMEASURE">
+            <name lang="nl">Meeteenheid</name>
+            <name lang="en">Unit of measure</name>
+            <desc lang="nl">De meeteenheid van de opgegeven waarde.</desc>
+            <desc lang="en">The unit of measure of the value specified.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+            </stereotypes>
+        </tv>
+    </tagged-values>
+    
 </tagset>
