@@ -334,7 +334,7 @@
 				<xsl:variable name="method">get</xsl:variable>
 				<xsl:variable name="expand" as="xs:boolean">
 					<xsl:choose>
-						<xsl:when test="ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true' and $serialisation = 'hal+json'">
+						<xsl:when test="ep:parameters/ep:parameter[upper-case(ep:name)='EXPAND']/ep:value = 'true' and $serialisation = 'hal+json'">
 							<xsl:value-of select="true()"/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -342,18 +342,18 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<!-- De volgende choose wordt tijdelijk uitgeschakeld i.h.k.v. issue #490645. Voorlopig worden er nl. geen customized 'expand' parameters gegenereerd
-					 ook al is deze in het BSM gedefinieerd. Voor nu wordt gebruik gemaakt van de in de common.yaml gedefinieerde 'expand'
-					 parameter. 
-					 Indien het gebruik van custom expand parameters toch weer wordt toegestaan dan moet ook de when even verderop weer worden geractiveerd. -->
-				<!--xsl:choose>
-					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand'] and $serialisation = 'json'">
+				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'expand' attribute (dus parameter) wordt gegenereerd
+					 wordt gecheckt of deze wel terecht gedefiniëerd wordt. Dit is niet het geval als er geen hal+json wordt gegenereerd of als er 
+					 in de onderliggende resources geen non-id type attributen voorkomen. Wel mag er natuurlijk voor worden gekozen geen expand te
+					 definiëren terwijl dat wel zou mogen. -->
+				<xsl:choose>
+					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND'] and $serialisation = 'json'">
 						<xsl:sequence select="imf:msg(.,'WARNING',' The serialisation for this OAS3 interface is json, an expand attribute is only applicable for hal+json.', ($messageName))" />			
 					</xsl:when>
-					<xsl:when test="$expand = false() and $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']">
-						<xsl:sequence select="imf:msg(.,'WARNING','An expand attribute is not applicable for the [1] message.', ($messageName))" />			
+					<xsl:when test="$expand = false() and $checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND']">
+						<xsl:sequence select="imf:msg(.,'WARNING','An expand attribute is not applicable for the [1] message, remove it or make it applicable.', ($messageName))" />			
 					</xsl:when>
-				</xsl:choose-->
+				</xsl:choose>
 				<xsl:variable name="pagination" as="xs:boolean">
 					<xsl:choose>
 						<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true' and $serialisation = 'hal+json'">
@@ -388,7 +388,7 @@
 				<xsl:if test="$acceptCrsParamPresent or
 								contains($parametersRequired,'J') or 
 								$checkedUriStructure//ep:uriPart/ep:param[@path = 'true'] or 
-								$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false' and ep:name != 'expand']">
+								$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false' and upper-case(ep:name) != 'EXPAND']">
 					<!-- If parameters apply the parameters section is generated. -->
 					<xsl:text>&#xa;      parameters: </xsl:text>
 					<xsl:if test="$acceptCrsParamPresent">
@@ -404,128 +404,10 @@
 						<xsl:text>&#xa;            type: integer</xsl:text>
 						<xsl:text>&#xa;            minimum: 1</xsl:text>
 					</xsl:if>
-					<xsl:choose>
-						<!-- De volgende when wordt tijdelijk uitgeschakeld i.h.k.v. issue #490645. Voorlopig worden er dus geen customized 'expand' parameters gegenereerd
-							 ook al is deze in het BSM gedefinieerd. Voor nu wordt gebruik gemaakt van de in de common.yaml gedefinieerde 'expand'
-							 parameter. Om de code niet te veel te wijzigen heb ik de choose intact gelaten en een lege otherwise toegevoegd. 
-							 Indien deze when geheractiveerd moet worden heractiveer dan ook de check op het voorkomen van 
-							 $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand'] iets eerder in deze code. -->
-						<!--xsl:when test="$expand = true() and $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']">
-							<xsl:variable name="expandParam" select="$checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']"/>
-							<xsl:variable name="datatype">
-								<xsl:choose>
-									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'date'">
-										<xsl:value-of select="'string'"/>
-									</xsl:when>
-									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'year'">
-										<xsl:value-of select="'integer'"/>
-									</xsl:when>
-									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'yearmonth'">
-										<xsl:value-of select="'integer'"/>
-									</xsl:when>
-									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'dateTime'">
-										<xsl:value-of select="'string'"/>
-									</xsl:when>
-									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'postcode'">
-										<xsl:value-of select="'string'"/>
-									</xsl:when>
-									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'boolean'">
-										<xsl:value-of select="'boolean'"/>
-									</xsl:when>
-									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'string'">
-										<xsl:value-of select="'string'"/>
-									</xsl:when>
-									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'integer'">
-										<xsl:value-of select="'integer'"/>
-									</xsl:when>
-									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'decimal'">
-										<xsl:value-of select="'number'"/>
-									</xsl:when>
-									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'uri'">
-										<xsl:value-of select="'string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name">
-										<xsl:variable name="type" select="$expandParam/ep:type-name"/>
-										<xsl:variable name="enumtype" select="$message-sets//ep:message-set/ep:construct[ep:tech-name = $type]/ep:data-type"/>
-										<xsl:choose>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'date'">
-												<xsl:value-of select="'string'"/>
-											</xsl:when>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'year'">
-												<xsl:value-of select="'integer'"/>
-											</xsl:when>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'yearmonth'">
-												<xsl:value-of select="'integer'"/>
-											</xsl:when>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'dateTime'">
-												<xsl:value-of select="'string'"/>
-											</xsl:when>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'postcode'">
-												<xsl:value-of select="'string'"/>
-											</xsl:when>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'boolean'">
-												<xsl:value-of select="'boolean'"/>
-											</xsl:when>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'string'">
-												<xsl:value-of select="'string'"/>
-											</xsl:when>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'integer'">
-												<xsl:value-of select="'integer'"/>
-											</xsl:when>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'decimal'">
-												<xsl:value-of select="'number'"/>
-											</xsl:when>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'uri'">
-												<xsl:value-of select="'string'"/>
-											</xsl:when>
-											<xsl:otherwise>
-												<xsl:value-of select="'string'"/>
-											</xsl:otherwise>
-										</xsl:choose>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of select="'string'"/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:variable>
-							<xsl:text>&#xa;        - in: query</xsl:text>
-							<xsl:text>&#xa;          name: expand</xsl:text>
-							<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate($expandParam/ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
-							<xsl:text>&#xa;          required: false</xsl:text>
-							<xsl:text>&#xa;          schema:</xsl:text>
-							<xsl:choose>
-								<xsl:when test="$expandParam/ep:data-type">
-									<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
-									<xsl:variable name="format">
-										<xsl:call-template name="deriveFormat">
-											<xsl:with-param name="incomingType">
-												<xsl:value-of select="substring-after($expandParam/ep:data-type, 'scalar-')"/>
-											</xsl:with-param>
-										</xsl:call-template>
-									</xsl:variable>
-									<xsl:variable name="facets">
-										<xsl:call-template name="deriveFacets">
-											<xsl:with-param name="incomingType">
-												<xsl:value-of select="substring-after($expandParam/ep:data-type, 'scalar-')"/>
-											</xsl:with-param>
-										</xsl:call-template>
-									</xsl:variable>
-									<xsl:value-of select="$format"/>
-									<xsl:value-of select="$facets"/>
-									<xsl:if test="$expandParam/ep:example">
-										<xsl:text>&#xa;            example: </xsl:text><xsl:value-of select="$expandParam/ep:example"/>
-									</xsl:if>
-								</xsl:when>
-								<xsl:when test="$expandParam/ep:type-name">
-									<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',$expandParam/ep:type-name,'&quot;')"/>
-								</xsl:when>
-							</xsl:choose>
-						</xsl:when-->
-						<xsl:when test="$expand = true()">
-							<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'expand&quot;')"/>
-						</xsl:when>
-						<xsl:otherwise/>
-					</xsl:choose>
+					<!-- Als de expand parameter toegestaan is en ook voorkomt in de parametersclass wordt een referentie naar het expand component in de common.yaml geplaatst. -->
+					<xsl:if test="$expand = true() and $checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND']">
+						<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'expand&quot;')"/>
+					</xsl:if>
 					<xsl:if test="$sort = true()">
 						<xsl:text>&#xa;        - in: query</xsl:text>
 						<xsl:text>&#xa;          name: sorteer</xsl:text>
@@ -656,7 +538,7 @@
 							</xsl:when>
 						</xsl:choose>
 					</xsl:for-each>
-					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[ep:name != 'expand' and (empty(@path) or @path = 'false')]">
+					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name) != 'EXPAND' and (empty(@path) or @path = 'false')]">
 						<xsl:sort select="ep:name" order="ascending"/>
 						<!-- Loop over de query ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a query parameter. -->
 						<xsl:variable name="datatype">
