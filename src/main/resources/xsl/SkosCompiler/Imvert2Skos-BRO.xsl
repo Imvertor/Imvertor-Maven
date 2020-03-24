@@ -136,7 +136,7 @@
             imf:ttl-comment(('Construct:',imf:get-display-name($this), concat('(', string-join($this/imvert:stereotype,', ') ,')'))),
             concat(imf:ttl-get-uri-name($this),'&#10;'),
             imf:ttl(('a',concat($prefixSkos, ':Concept'))),
-            imf:ttl((concat($prefixSkos,':prefLabel'),imf:ttl-value($name,'2q'))),
+            imf:ttl((concat($prefixSkos,':prefLabel'),imf:ttl-value($name,'2q','nl'))),
             imf:ttl(('rdfs:label',imf:ttl-value($name,'2q'))))
         "/>
     </xsl:function>
@@ -163,6 +163,13 @@
     <xsl:function name="imf:ttl-value" as="xs:string?">
         <xsl:param name="item" as="item()*"/>
         <xsl:param name="type" as="xs:string?"/>
+        <xsl:sequence select="imf:ttl-value($item,$type,())"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:ttl-value" as="xs:string?">
+        <xsl:param name="item" as="item()*"/>
+        <xsl:param name="type" as="xs:string?"/>
+        <xsl:param name="lang" as="xs:string?"/>
         <xsl:variable name="strings" as="xs:string*">
             <xsl:choose>
                 <xsl:when test="$item/xhtml:body">
@@ -181,18 +188,19 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:variable name="string" select="string-join($strings,'\n')"/>
+        <xsl:variable name="langstr" select="if ($lang) then concat('@',$lang) else ()"/>
         <xsl:choose>
             <xsl:when test="not(normalize-space($string))">
                 <!-- skip -->
             </xsl:when>
             <xsl:when test="$type = '3q'">
-                <xsl:value-of select="concat($str3quot,imf:normalize-ttl-string($string),$str3quot)"/>
+                <xsl:value-of select="concat($str3quot,imf:normalize-ttl-string($string),$str3quot,$langstr)"/>
             </xsl:when>
             <xsl:when test="$type = '2q'">
-                <xsl:value-of select="concat($str2quot,imf:normalize-ttl-string($string),$str2quot)"/>
+                <xsl:value-of select="concat($str2quot,imf:normalize-ttl-string($string),$str2quot,$langstr)"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="concat($str1quot,imf:normalize-ttl-string($string),$str1quot)"/>
+                <xsl:value-of select="concat($str1quot,imf:normalize-ttl-string($string),$str1quot,$langstr)"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -208,7 +216,7 @@
             <xsl:variable name="tv" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',.))"/>
             <xsl:variable name="map" select="imf:ttl-map($tv/@id)"/>
             <xsl:if test="exists($tv) and exists($map)">
-                <xsl:value-of select="imf:ttl(($map, imf:ttl-value($tv,$map/@type)))"/>
+                <xsl:value-of select="imf:ttl(($map, imf:ttl-value($tv,$map/@type, if (imf:boolean($map/@requires-lang)) then 'nl' else ())))"/>
             </xsl:if>
         </xsl:for-each>
     </xsl:function>

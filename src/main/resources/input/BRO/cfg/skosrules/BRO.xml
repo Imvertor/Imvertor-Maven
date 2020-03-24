@@ -41,6 +41,10 @@
             <URI>http://www.w3.org/2004/02/skos/core#</URI>
         </vocabulary>
         <vocabulary>
+            <prefix>skosthes</prefix>
+            <URI>http://purl.org/iso25964/skos-thes#</URI>
+        </vocabulary>
+        <vocabulary>
             <prefix>dct</prefix>
             <URI>http://purl.org/dc/terms/</URI>
         </vocabulary>        
@@ -49,11 +53,13 @@
     
     <node-mapping>
         <!-- 
-            Alleen de tagged values die hier zijn opgenomen worden omgezet naar een regel in TTL SKOS 
+            Alleen de tagged values die hier zijn opgenomen worden omgezet naar een regel in TTL SKOS
+            
+            Requires-lang betekent: de taalcode @nl oid moet worden toegevoegd.
         -->
-        <map id="CFG-TV-DEFINITION" type="3q" lang="#all">skos:definition</map>
-        <map id="CFG-TV-SOURCEOFDEFINITION" type="2q" lang="#all">dct:source</map>
-        <map id="CFG-TV-DESCRIPTION" type="2q" lang="#all">skos:scopeNote</map>
+        <map id="CFG-TV-DEFINITION" type="3q" lang="#all" requires-lang="true">skos:definition</map>
+        <map id="CFG-TV-SOURCEOFDEFINITION" type="2q" lang="#all" requires-lang="false">dct:source</map>
+        <map id="CFG-TV-DESCRIPTION" type="2q" lang="#all" requires-lang="true">skos:scopeNote</map>
     </node-mapping>
     
 </skos-rules>
