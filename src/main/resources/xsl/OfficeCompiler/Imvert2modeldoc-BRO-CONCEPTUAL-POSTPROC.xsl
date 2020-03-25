@@ -513,7 +513,7 @@
             <xsl:when test="$unit-ucum = 'g/cm3'">g/cm<sup>3</sup> (gram/kubieke centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'kPa'">kPa (kilopascal)</xsl:when>
             <xsl:when test="$unit-ucum = 'm'">m (meter)</xsl:when>
-            <xsl:when test="$unit-ucum = 'm/d'">m/d (meters per etmaal)</xsl:when>
+            <xsl:when test="$unit-ucum = 'm/d'">m/d (meter per 24 uur)</xsl:when>
             <xsl:when test="$unit-ucum = 'mm'">mm (millimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'mm2'">mm<sup>2</sup> (vierkante millimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'MPa'">MPa (megapascal)</xsl:when>
@@ -529,7 +529,7 @@
             <xsl:when test="$unit-ucum = 'g/cm3'">g/cm<sup>3</sup> (gram per kubieke centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'cm3'">cm<sup>3</sup> (kubieke centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'cm'">cm (centimeter)</xsl:when>
-            <xsl:when test="$unit-ucum = 'cm/d'">cm/d (centimeter per dag)</xsl:when>
+            <xsl:when test="$unit-ucum = 'cm/d'">cm/d (centimeter per 24 uur)</xsl:when>
             <xsl:when test="$unit-ucum = 'cm H2O'">cm H<sub>2</sub>O (centimeter waterkolom)</xsl:when>
             <xsl:when test="$unit-ucum = 'g/g'">g/g (gram/gram)</xsl:when>
             <xsl:when test="$unit-ucum = 'cm-1'">cm<sup>-1</sup> (per centimeter)</xsl:when>
