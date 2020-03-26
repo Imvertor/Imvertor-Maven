@@ -88,6 +88,8 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo>
             </stereotypes>
         </tv>
         

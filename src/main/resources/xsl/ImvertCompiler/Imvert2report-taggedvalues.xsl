@@ -130,9 +130,9 @@
                         <xsl:variable name="rows" as="element(tr)*">
                             <xsl:variable name="set" as="element(imvert:tagged-value)*">
                                 <xsl:for-each select=".//imvert:class">
-                                    <xsl:sequence select="imvert:tagged-values/imvert:tagged-value[@id = ('CFG-TV-RULES','CFG-TV-RULES-IMBROA')]"/> 
+                                    <xsl:sequence select="imvert:tagged-values/imvert:tagged-value[@id = ('CFG-TV-RULES','CFG-TV-RULES-IMBROA','CFG-TV-EXPLAINNOVALUE')]"/> 
                                     <xsl:for-each select="imvert:attributes/imvert:attribute">
-                                        <xsl:sequence select="imvert:tagged-values/imvert:tagged-value[@id = ('CFG-TV-RULES','CFG-TV-RULES-IMBROA')]"/> 
+                                        <xsl:sequence select="imvert:tagged-values/imvert:tagged-value[@id = ('CFG-TV-RULES','CFG-TV-RULES-IMBROA','CFG-TV-EXPLAINNOVALUE')]"/> 
                                     </xsl:for-each>
                                 </xsl:for-each>
                             </xsl:variable>
@@ -143,7 +143,8 @@
                                 
                                 <!-- columns -->
                                 <xsl:variable name="col-RO" select="$abbrev"/>
-                                <xsl:variable name="col-Regime" select="if (@id = 'CFG-TV-RULES') then 'IMBRO' else 'IMBRO/A'"/>
+                                <xsl:variable name="col-Regime" select="if (@id = 'CFG-TV-RULES') then 'IMBRO' else if (@id = 'CFG-TV-RULES-IMBROA') then 'IMBRO/A' else '-'"/>
+                                <xsl:variable name="col-Regime-prefix" select="if (@id = 'CFG-TV-RULES') then 'IMBRO' else if (@id = 'CFG-TV-RULES-IMBROA') then 'IMBRO/A' else 'Nillable'"/>
                                 <xsl:variable name="col-Entiteit" select="$class/imvert:name/@original"/>
                                 <xsl:variable name="col-Attribuut" select="$attribute/imvert:name/@original"/>
                                
@@ -153,34 +154,25 @@
                                         <td><!--A-->
                                             <xsl:sequence select="$col-RO"/>
                                         </td>
-                                        <td><!--B--></td>
                                         <td><!--C-->
                                             <xsl:sequence select="$col-Regime"/>
                                         </td>
-                                        <td><!--D--></td>
-                                        <td><!--E--></td>
-                                        <td><!--F--></td>
                                         <td><!--G-->
                                             <xsl:value-of select="$col-Entiteit"/>
                                         </td>
-                                        <td><!--H--></td>
                                         <td><!--I-->
                                             <xsl:value-of select="$col-Attribuut"/>
                                         </td>
-                                        <td><!--J--></td>
-                                        <td><!--K--></td>
                                         <td><!--L-->
+                                            <i><xsl:value-of select="$col-Regime-prefix"/></i>
+                                            <br/>
                                             <xsl:sequence select="$subregel"/>
                                         </td>
-                                        <td><!--M--></td>
-                                        <td><!--N--></td>
-                                        <td><!--O--></td>
-                                        <td><!--P--></td>
                                     </tr>
                                 </xsl:for-each>
                             </xsl:for-each>
                         </xsl:variable>
-                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'RO:5,Geldig voor:5,Kwaliteitsregime:5,Story points:5,Story:5,Nr.:5,Entiteit:5,Nr.:5,Attribuut:5,Nr.:5,Regeltype:5,Regels:20,Cntrl:5,Standaard controle:5,Foutmelding:5','table-tv3')"/>
+                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'RO:5,Kwaliteitsregime:5,Entiteit:5,Attribuut:5,Regels:20','table-tv3')"/>
                     </table>
                 </div>
             </content>

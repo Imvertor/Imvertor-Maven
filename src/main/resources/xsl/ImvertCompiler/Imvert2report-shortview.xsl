@@ -67,8 +67,20 @@
                             <li>Remarks (Opmerkingen) (empty, for convenience)</li>
                         </ul>
                         <table>
-                            <xsl:apply-templates select="$domain-packages" mode="shortview-objecttype"/>
+                            <xsl:apply-templates select="$domain-packages" mode="shortview-objecttype">
+                                <xsl:with-param name="stereotype-id">stereotype-name-objecttype</xsl:with-param>
+                            </xsl:apply-templates>
                         </table>
+                    </div>
+                    
+                    <div>
+                        <h1>Groups</h1>
+                        <p>
+                            This table reports on "gegevensgroeptype" types, attributes and some properties of these constructs.
+                        </p>
+                        <xsl:apply-templates select="$domain-packages" mode="shortview-objecttype">
+                            <xsl:with-param name="stereotype-id">stereotype-name-composite</xsl:with-param>
+                        </xsl:apply-templates>
                     </div>
                     
                     <div class="intro">
@@ -98,9 +110,10 @@
     </xsl:template>
     
     <xsl:template match="imvert:package" mode="shortview-objecttype">
+        <xsl:param name="stereotype-id"/>
         <table class="tablesorter"> 
             <xsl:variable name="rows" as="element(tr)*">
-                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = 'stereotype-name-objecttype']" mode="#current"/>
+                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = $stereotype-id]" mode="#current"/>
             </xsl:variable>
             <xsl:sequence select="imf:create-result-table-by-tr($rows,'Naam:20,Mult:5,Waarde:15,Definitie:15,Regels:15,Toelichting:15,Opmerkingen:15','table-shortview-objecttypes')"/>
         </table>
@@ -109,7 +122,7 @@
     <xsl:template match="imvert:class" mode="shortview-objecttype">
         <tr class="shortviewHeader">
             <td>
-                <xsl:value-of select="imvert:name/@original"/>
+                <xsl:value-of select="imf:get-display-name(.)"/>
             </td>
             <td><!-- empty by design --></td>
             <td><!-- empty by design --></td>
@@ -129,7 +142,7 @@
     <xsl:template match="imvert:attribute" mode="shortview-objecttype">
         <tr>
             <td>
-                <xsl:value-of select="imvert:name/@original"/>
+                <xsl:value-of select="imf:get-display-name(.)"/>
             </td>
             <td>
                 <xsl:if test="not(imvert:min-occurs = '1') or not(imvert:max-occurs = '1')">
