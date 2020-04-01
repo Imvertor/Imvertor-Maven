@@ -33,6 +33,9 @@
         <property>
             <format>AsIs</format>
         </property>
+        <element>
+            <format>UpperCamel</format>
+        </element>
         <!-- tv conventions as defined elsewhere -->
     </naming>
     

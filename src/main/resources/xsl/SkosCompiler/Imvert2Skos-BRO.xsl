@@ -45,8 +45,10 @@
     <xsl:variable name="str1quot">'</xsl:variable>
     <xsl:variable name="apos">'</xsl:variable>
     
-    <xsl:variable name="mn" select="imf:extract(/imvert:packages/imvert:application,'[A-Za-z0-9]+')"/>
-    <xsl:variable name="prefixData" select="$mn"/>
+    <xsl:variable name="abbrev" select="imf:get-xparm('appinfo/model-abbreviation','UNKNOWN')"/>
+    <xsl:variable name="model-name" select="/imvert:packages/imvert:application"/>
+    <xsl:variable name="model-abbrev" select="lower-case(imf:extract($abbrev,'[A-Z]+'))"/>
+    <xsl:variable name="prefixData" select="$model-abbrev"/>
     <xsl:variable name="prefixSkos" select="'skos'"/>
     <xsl:variable name="baseurl" select="$configuration-skosrules-file/vocabularies/base"/>
     
@@ -64,13 +66,21 @@
     
         <!-- introduce this model -->
         <xsl:value-of select="imf:ttl-comment(())"/>
-        <xsl:value-of select="imf:ttl(('@prefix', concat($prefixData,':'), concat('&lt;',$baseurl,'skos/def/',$mn,'/&gt;'), '.'))"/>
+        <xsl:value-of select="imf:ttl(('@prefix', concat($prefixData,':'), concat('&lt;',$baseurl,$abbrev,'/&gt;'), '.'))"/>
+        <xsl:value-of select="imf:ttl-comment(())"/>
+        
+        <xsl:value-of select="concat(
+            concat('begrippenkader:', $abbrev,'&#10;'),
+            imf:ttl(('a','skos:ConceptScheme')),
+            imf:ttl(('rdfs:label',imf:ttl-value($model-name,'2q'))))
+            "/>
+        
         <xsl:value-of select="imf:ttl-comment(())"/>
         
         <!-- 
             process the imvertor info 
         -->
-        <xsl:apply-templates select="$document-packages"/>
+        <xsl:apply-templates select="$document-packages[empty(imvert:conceptual-schema-name)]"/><!-- skip packages that are external -->
         
     </xsl:template>
    
@@ -137,7 +147,8 @@
             concat(imf:ttl-get-uri-name($this),'&#10;'),
             imf:ttl(('a',concat($prefixSkos, ':Concept'))),
             imf:ttl((concat($prefixSkos,':prefLabel'),imf:ttl-value($name,'2q','nl'))),
-            imf:ttl(('rdfs:label',imf:ttl-value($name,'2q'))))
+            imf:ttl(('rdfs:label',imf:ttl-value($name,'2q'))),
+            imf:ttl(('skos:inScheme',concat('begrippenkader:',$abbrev))))
         "/>
     </xsl:function>
     
@@ -172,6 +183,11 @@
         <xsl:param name="lang" as="xs:string?"/>
         <xsl:variable name="strings" as="xs:string*">
             <xsl:choose>
+                <xsl:when test="$item[1] instance of xs:string">
+                    <xsl:for-each select="$item">
+                        <xsl:value-of select="."/>
+                    </xsl:for-each>
+                </xsl:when>
                 <xsl:when test="$item/xhtml:body">
                     <xsl:for-each select="$item/xhtml:body/*">
                         <xsl:value-of select="."/>
@@ -238,7 +254,7 @@
         <xsl:variable name="dn" select="subsequence(tokenize(imf:get-display-name($class),'\s\('),1,1)"/>
         <xsl:value-of select="concat('data:', string-join(tokenize($dn,'[^A-Za-z0-9]+'),'_'))"/>
         -->
-        <xsl:value-of select="concat($prefixData,':', $construct/@formal-name)"/>
+        <xsl:value-of select="concat($prefixData,':', imf:get-normalized-name($construct/imvert:name,'element-name'))"/>
     </xsl:function>
     
     <xsl:function name="imf:normalize-ttl-string">
