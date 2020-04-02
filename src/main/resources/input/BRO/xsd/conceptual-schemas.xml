@@ -586,6 +586,42 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+              <cs:Construct>
+                <cs:name>DataArray</cs:name>
+                <cs:sentinel>false</cs:sentinel>
+                <cs:catalogEntries>
+                 <cs:CatalogEntry>
+                  <cs:name>#DataArray</cs:name>
+                 </cs:CatalogEntry>
+                </cs:catalogEntries>
+                <cs:xsdTypes>
+                 <cs:XsdType>
+                  <cs:name>DataArray</cs:name>
+                  <cs:asAttribute>DataArrayType</cs:asAttribute>
+                  <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                  <cs:primitive>false</cs:primitive>
+                  <cs:hasNilreason>false</cs:hasNilreason>
+                 </cs:XsdType>
+                </cs:xsdTypes>
+              </cs:Construct>
+              <cs:Construct>
+                <cs:name>DataRecord</cs:name>
+                <cs:sentinel>false</cs:sentinel>
+                <cs:catalogEntries>
+                 <cs:CatalogEntry>
+                  <cs:name>#DataRecord</cs:name>
+                 </cs:CatalogEntry>
+                </cs:catalogEntries>
+                <cs:xsdTypes>
+                 <cs:XsdType>
+                  <cs:name>DataRecord</cs:name>
+                  <cs:asAttribute>DataRecordType</cs:asAttribute>
+                  <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                  <cs:primitive>false</cs:primitive>
+                  <cs:hasNilreason>false</cs:hasNilreason>
+                 </cs:XsdType>
+                </cs:xsdTypes>
+              </cs:Construct>
             </cs:constructs>
          </cs:Map>
          <cs:Map>
