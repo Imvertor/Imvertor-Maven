@@ -95,7 +95,13 @@
             <name lang="en">Soil face research test</name>
             <abbrev>SFR-test</abbrev>
         </registratieobject>
+        <registratieobject>
+            <name lang="nl">Toegepast geotechnisch booronderzoek</name>
+            <name lang="en">Applied research-Geotechnics</name>
+            <abbrev>BHR-AG</abbrev>
+        </registratieobject>
     </domein>
+    
     <domein>
         <name lang="nl">Bodemkwaliteit</name>
         <name lang="en">Soil Quality</name>
