@@ -25,9 +25,9 @@
     
     <!--
         Determine the type of any diagram image by "suffix", i.e. the diagram name after "-" as in "Objecttypen  – overzicht".
-        If no stategy ("none"), include all diagrams.
+        If no stategy ("none"), include no diagrams.
     -->
-    <diagram-type-strategy>none</diagram-type-strategy>
+    <diagram-type-strategy>suffix</diagram-type-strategy>
     
     <!--
         Include incoming associations in the short overview?
