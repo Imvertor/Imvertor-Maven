@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <!-- 
+        this metamodel is subject to standard Grouping conventions 
+    -->
+    <xi:include href="MIM10.xml"/>
+    
+    <name>MIM 1.1</name>
+    
+    <tagged-values>
+        
+        <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC"><!-- https://geonovum.github.io/MIM-Werkomgeving/#authentieke-gegevens -->
+            <declared-values lang="nl">
+                <value default="yes">Authentiek</value>
+                <value>Basisgegeven</value>
+                <value>Landelijk kerngegeven</value>
+                <value>Wettelijk gegeven</value>
+                <value>Overig</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value default="yes">TODO-Authentiek</value>
+                <value>TODO-Basisgegeven</value>
+                <value>TODO-Landelijk kerngegeven</value>
+                <value>TODO-Wettelijk gegeven</value>
+                <value>TODO-Overig</value>
+            </declared-values>
+        </tv>
+    
+    </tagged-values>
+</tagset>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <name>MIM 1.1 ISO</name>
+    
+    <desc lang="en">Metamodel for ISO conformant MIM11 extensions</desc>
+    <desc lang="nl">Metamodel voor ISO vereiste MIM11 uitbreidingen</desc>
+    
+    <desc lang="en"> This is the profile of MIM11 for ISO compliance.</desc>
+    
+    <xi:include href="MIM10-ISO.xml"/>
+    <xi:include href="MIM11.xml"/>
+    
+    <tagged-values>
+        <!-- TODO verschillen? -->
+    </tagged-values>
+    
+</tagset>
