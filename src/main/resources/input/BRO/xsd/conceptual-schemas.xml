@@ -962,7 +962,7 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>gml:Measure</cs:name>
+                        <cs:name>gml:MeasureType</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
