@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <name>Kennisnet UGM CROSS SIM</name>
+    <tagged-values>
+        <!-- this is the cross-meta specification for SIM tagged values used in UGM systems -->
+        
+        <tv id="CFG-TV-SOURCE" cross-meta="SIM">
+            <name lang="nl">Herkomst</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <!-- 
+           Definition
+        -->
+        <tv id="CFG-TV-DEFINITION" cross-meta="SIM">
+            <name lang="nl">Definitie</name>
+            <name lang="en">Definition</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="1..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="1..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="1..1">stereotype-name-complextype</stereo>
+                <stereo minmax="1..1">stereotype-name-union</stereo>
+                
+                <stereo minmax="1..1">stereotype-name-data-element</stereo>
+                <stereo minmax="1..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+                
+                <stereo minmax="1..1">stereotype-name-external-package</stereo>
+                <stereo minmax="1..1">stereotype-name-view-package</stereo>
+            </stereotypes>
+        </tv>
+    </tagged-values>
+</tagset>

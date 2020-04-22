@@ -109,6 +109,14 @@ public class XsdCompiler extends Step {
 				generateBsmXsdKING();
 				done = true;
 			}  
+		} else if (owner.equals("Kennisnet")) {
+			if (xmlschemarules.equals("XML-KennisnetUGM")) {
+				generateUgmXsdKING();
+				done = true;
+			} else if (xmlschemarules.equals("XML-KennisnetBSM")) {
+				generateBsmXsdKING();
+				done = true;
+			}  
 		} else if (owner.equals("BRO")) {
 			if (xmlschemarules.equals("XML-ISO19136")) {
 				generateXsdBRO();
@@ -184,12 +192,13 @@ public class XsdCompiler extends Step {
 			valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH","system/cur-imvertor-filepath");
 		
 		valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_XSD_POSTFORM_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_POSTFORM_XSLPATH","system/cur-imvertor-filepath");
-		valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_XSD_IMPORT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_IMPORT_XSLPATH","system/cur-imvertor-filepath");
-		
+
 		// for each model named to flatten, process
 		if (configurator.isTrue("cli","flattenschemas")) {
 			valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_FLATTEN_FILE","properties/IMVERTOR_FLATTEN_XSLPATH","system/cur-imvertor-filepath");
 		}
+		
+		valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_XSD_IMPORT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_IMPORT_XSLPATH","system/cur-imvertor-filepath");
 		
 		configurator.setXParm("system/schema-created","true");
 		

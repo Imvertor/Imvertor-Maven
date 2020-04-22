@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<project-owner type="config">
+    <name>Kennisnet</name>
+    
+    <!-- 
+        enter a list of CSS, JS, anything to be copied to the outut file, separate with ";" 
+    -->
+    <parameter name="web-css">
+        ../web/css/report.css;
+        ../web/themes/blue/style.css;
+    </parameter> 
+    
+    <parameter name="web-scripts">
+        ../web/script/jquery/jquery-latest.js;
+        ../web/script/tablesorter/jquery.tablesorter.min.js;
+    </parameter> 
+    
+    <parameter name="web-logo">../web/img/logo-Kennisnet-200px.png</parameter> 
+    <parameter name="web-logo-big">../web/img/logo-Kennisnet-400px.png</parameter> 
+    
+    <parameter name="pretext-encoding">
+        This schema is based on an UML specification, which is transformed by the Imvertor software. Imvertor modules are in the public domain, see http://www.imvertor.org.
+    </parameter>    
+
+    <!-- 
+        some constructs in UML have a fixed value
+    -->
+    <parameter name="fixed-identification-attribute-name">identificatie</parameter>
+    <parameter name="url-prefix-conceptual-schema">
+        http://www.kinggemeenten.nl/conceptual-schemas/ 
+        http://www.kadaster.nl/conceptual-schemas/
+    </parameter>
+    <parameter name="url-prefix-schema-waardelijsten">http://www.kinggemeenten.nl/schemas/waardelijsten/</parameter>
+    <parameter name="class-name-waardelijst">Waardelijst</parameter>
+
+    <!--
+        serialisation parameters, i.e. for translation to XSD or documentation.
+    -->
+    <parameter name="reference-suffix-id">_R</parameter> <!-- TODO reference-suffix-id etc  moeten helemaal niet meespelen; de stylesheet moet niet worden aangesoproken: Imvert2ref.xsl -->
+    <parameter name="reference-suffix-name">Ref</parameter>
+    <parameter name="reference-suffix-short">-ref</parameter>
+    
+    <parameter name="name-origin-system">system</parameter>
+    <parameter name="package-name-typen">Typen</parameter>
+    <parameter name="imvertor-translate-association-components">components</parameter>
+    <parameter name="imvertor-translate-suffix-components">Components</parameter>
+    <parameter name="imvertor-allow-multiple-collections">false</parameter>
+    
+    <!-- 
+        other configurable info
+    -->
+    <parameter name="documentation-formatting">inspire</parameter>
+    
+    <parameter name="documentation-separator">---</parameter>
+    <parameter name="documentation-separator-pattern">\n---*\n</parameter> <!-- two hyphens or more, must be limited by newlines. -->
+    
+    <parameter name="documentation-newline">&#10;</parameter>
+    <parameter name="concept-documentation-state-obsolete-uri">http://brk.kadaster.nl/id/lifecycle/afgekeurd</parameter>
+
+    <parameter name="local-mapping-notification">
+        This schema is provided by Kennisnet as a local copy, as a convenience to the user.
+        This schema may itself reference a local copy of the schema originally referenced by URI. 
+        The local reference takes the form of a relative path, and is introduced by Kennisnet.
+    </parameter>
+
+    <parameter name="diagram-export-format">PNG</parameter>
+    
+    <parameter name="concept-uri-template">https://unknown-concept-server/[concept]</parameter>
+    
+    <!-- allow client scalars to be compared to any type of supplier? -->  
+    <parameter name="derivation-client-scalar-check">true</parameter>
+    
+    <!--x
+    <parameter name="application-version-regex">^\S+$</parameter>
+    <parameter name="domain-version-regex">^\S+$</parameter>
+    x-->
+    
+    <patterns>
+        <p name="POSTCODE" FORMAT="regex">\d{4}[A-Z]{2}</p>
+    </patterns>
+    
+    <!-- 
+        relevante info voor Compliancy test generator 
+    -->
+    <!-- Validatie wordt uitgevoerd door het bericht als Soap aanroep (ingepakt in Soap envelop) te sturen naar: -->
+    <parameter name="complyextractor-URL">http://87.250.154.42:7080/opentunnel/201512345678/wus/stvadhoc</parameter>
+    
+    <!-- 
+        Which messages may be collapsed in the EA interface? 
+        This is a set defined by this owner which may be referenced as [system/collapse-key-set] as the value of -messagecollapsekeys 
+    -->  
+    <parameter name="message-collapse-keys">TV1NSBRF2 NAFFA NAFF1 TCBR1</parameter>
+    
+    <!-- URL of the standard JSON components are available --> 
+    <!--parameter name="standard-components-url">https://github.com/VNG-Realisatie/Haal-Centraal-BRP-bevragen/blob/master/api-specificatie/</parameter-->
+    <parameter name="standard-components-url">https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/</parameter>
+    <parameter name="geonovum-components-url">https://cdn.jsdelivr.net/gh/geonovum/kp-api-guidelines@1.0.0/components/</parameter>
+    <parameter name="standard-components-file">common.yaml</parameter>
+    <parameter name="standard-json-components-path">#/components/schemas/</parameter>
+    <parameter name="standard-yaml-headers-path">#/components/headers/</parameter>
+    <parameter name="standard-yaml-parameters-path">#/components/parameters/</parameter>
+    <parameter name="standard-yaml-responses-path">#/components/responses/</parameter>
+    <parameter name="geonovum-yaml-parameters-file">parameters.yaml#/</parameter>
+    <parameter name="standard-geojson-components-file">geojson.yaml#/</parameter>
+    
+    <parameter name="yamlCompiler-stylesheets-version">20191021</parameter>
+    
+</project-owner>    

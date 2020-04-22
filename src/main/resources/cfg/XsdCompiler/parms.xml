@@ -171,7 +171,7 @@
       
       <!-- flattening -->
       <IMVERTOR_FLATTEN_XSLPATH>flatten-xsd.xsl</IMVERTOR_FLATTEN_XSLPATH>
-      <WORK_FLATTEN_FILE>${system/work-imvert-folder-path}/imvertor.26.flatten.html</WORK_FLATTEN_FILE>
+      <WORK_FLATTEN_FILE>${system/work-imvert-folder-path}/imvertor.26.flatten.xml</WORK_FLATTEN_FILE>
       <!-- copy schemas -->
       <EXTERNAL_XSD_FOLDER>${system/inp-folder-path}/xsd</EXTERNAL_XSD_FOLDER>
       
