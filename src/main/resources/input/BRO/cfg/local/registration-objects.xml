@@ -240,5 +240,10 @@
             <name lang="en">Digital Geographical Model</name>
             <abbrev>DGM</abbrev>
         </registratieobject>
+        <registratieobject>
+            <name lang="nl">Grondwater Dynamiek Model</name>
+            <name lang="en">Groundwater Dynamics Model</name>
+            <abbrev>GDM</abbrev>
+        </registratieobject>
     </domein>
 </domeinen>
