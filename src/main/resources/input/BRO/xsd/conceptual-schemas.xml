@@ -632,8 +632,8 @@
                   </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>swe:Quantity</cs:name>
-                        <cs:asAttribute>swe:QuantityPropertyType</cs:asAttribute>
+                        <cs:name>Quantity</cs:name>
+                        <cs:asAttribute>QuantityPropertyType</cs:asAttribute>
                         <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                         <cs:primitive>false</cs:primitive>
                         <cs:hasNilreason>false</cs:hasNilreason>
