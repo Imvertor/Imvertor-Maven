@@ -783,7 +783,7 @@
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:debug($this,'Any type')"/>
-                    <xs:complexType>
+                    <xs:complexType mixed="true">
                         <xs:sequence>
                             <xs:any minOccurs="0" maxOccurs="unbounded">
                                 <xsl:attribute name="namespace" select="if (exists($package-name)) then $package-namespace else '##any'"/>
