@@ -22,12 +22,12 @@
         <profile lang="nl">
             <id>MIM11NL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM11 Grouping (NL)</desc> 
+            <desc>MIM11 Grouping NL</desc> 
         </profile>
         <profile lang="en">
             <id>MIM11EN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM11 Grouping (EN)</desc>
+            <desc>MIM11 Grouping EN</desc>
         </profile>
         <!-- 
             visual conventions are same as MIM 1.0

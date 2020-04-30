@@ -30,12 +30,12 @@
       <profile lang="nl"> 
          <id>KennisnetSIMNL</id>
          <release>1.1</release>
-         <desc>KennisnetSIM Grouping (NL)</desc> 
+         <desc>KennisnetSIM Grouping NL</desc> 
       </profile>
       <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
          <id>KennisnetSIMEN</id>
          <release>1.1</release>
-         <desc>KennisnetSIM Grouping (EN)</desc>
+         <desc>KennisnetSIM Grouping EN</desc>
       </profile>
    </profiles>
    

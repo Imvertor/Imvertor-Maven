@@ -30,12 +30,12 @@
       <profile lang="nl"> 
          <id>IHWSIMNL</id>
          <release>1.1</release>
-         <desc>IHWSIM Grouping (NL)</desc> 
+         <desc>IHWSIM Grouping NL</desc> 
       </profile>
       <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
          <id>IHWSIMEN</id>
          <release>1.1</release>
-         <desc>IHWSIM Grouping (EN)</desc>
+         <desc>IHWSIM Grouping EN</desc>
       </profile>
    </profiles>
    

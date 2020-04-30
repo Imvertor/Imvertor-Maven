@@ -16,12 +16,12 @@
         <profile lang="nl"> 
             <id>NBGNL</id>
             <release>0.9.3</release>
-            <desc>NEN3610-BRO Grouping (NL)</desc> 
+            <desc>NEN3610 BRO Grouping NL</desc> 
         </profile>
         <profile lang="en">
             <id>NBGEN</id>
             <release>0.9.3</release>
-            <desc>NEN3610-BRO Grouping (EN)</desc>
+            <desc>NEN3610 BRO Grouping EN</desc>
         </profile>
     </profiles>
     

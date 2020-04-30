@@ -38,12 +38,12 @@
         <profile lang="nl"> 
             <id>IHWUGMNL</id>
             <release>1.1</release>
-            <desc>IHWUGM Grouping (NL)</desc> 
+            <desc>IHWUGM Grouping NL</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
             <id>IHWUGMEN</id>
             <release>1.1</release>
-            <desc>IHWUGM Grouping (EN)</desc>
+            <desc>IHWUGM Grouping EN</desc>
         </profile>
     </profiles>
     

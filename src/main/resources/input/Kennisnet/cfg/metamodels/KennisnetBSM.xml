@@ -33,12 +33,12 @@
       <profile lang="nl"> 
          <id>KennisnetBSMNL</id>
          <release>1.0</release>
-         <desc>KennisnetBSM Grouping (NL)</desc> 
+         <desc>KennisnetBSM Grouping NL</desc> 
       </profile>
       <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
          <id>KennisnetBSMEN</id>
          <release>1.0</release>
-         <desc>KennisnetBSM Grouping (EN)</desc>
+         <desc>KennisnetBSM Grouping EN</desc>
       </profile>
    </profiles>
    

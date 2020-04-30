@@ -22,12 +22,12 @@
         <profile lang="nl">
             <id>MIM10NL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM10 Grouping (NL)</desc> 
+            <desc>MIM10 Grouping NL</desc> 
         </profile>
         <profile lang="en">
             <id>MIM10EN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM10 Grouping (EN)</desc>
+            <desc>MIM10 Grouping EN</desc>
         </profile>
         
         <!-- and include the visual conventions -->     

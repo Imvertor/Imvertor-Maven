@@ -37,12 +37,12 @@
       <profile lang="nl"> 
          <id>MIGNL</id>
          <release>1.0</release>
-         <desc>MIG Grouping (NL)</desc> 
+         <desc>MIG Grouping NL</desc> 
       </profile>
       <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
          <id>MIGEN</id>
          <release>1.0</release>
-         <desc>MIG Grouping (EN)</desc>
+         <desc>MIG Grouping EN</desc>
       </profile>
    </profiles>
    

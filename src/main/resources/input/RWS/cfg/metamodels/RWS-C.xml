@@ -16,12 +16,12 @@
         <profile lang="nl">
             <id>RWSCNL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>RWS-C-DSO Grouping (NL)</desc> 
+            <desc>RWS C DSO Grouping NL</desc> 
         </profile>
         <profile lang="en">
             <id>RWSCEN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>RWS-C-DSO Grouping (EN)</desc>
+            <desc>RWS C DSO Grouping EN</desc>
         </profile>
     </profiles>
     

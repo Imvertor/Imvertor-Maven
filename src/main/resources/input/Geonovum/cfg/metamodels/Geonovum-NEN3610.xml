@@ -34,12 +34,12 @@
         <profile lang="nl">
             <id>NGGNL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>NEN3610 Geonovum Grouping (NL)</desc> 
+            <desc>NEN3610 Geonovum Grouping NL</desc> 
         </profile>
         <profile lang="en">
             <id>NGGEN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>NEN3610 Geonovum Grouping (EN)</desc>
+            <desc>NEN3610 Geonovum Grouping EN</desc>
         </profile>
     </profiles>
     

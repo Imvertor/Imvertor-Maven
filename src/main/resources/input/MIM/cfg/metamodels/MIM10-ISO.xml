@@ -18,12 +18,12 @@
         <profile lang="nl">
             <id>MIM10ISONL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM10-ISO Grouping (NL)</desc> 
+            <desc>MIM10 ISO Grouping NL</desc> 
         </profile>
         <profile lang="en">
             <id>MIM10ISOEN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM10-ISO Grouping (EN)</desc>
+            <desc>MIM10 ISO Grouping EN</desc>
         </profile>
     </profiles>
     

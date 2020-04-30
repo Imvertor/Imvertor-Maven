@@ -18,12 +18,12 @@
         <profile lang="nl">
             <id>MIM10NEDNL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM10-NED Grouping (NL)</desc> 
+            <desc>MIM10 NED Grouping NL</desc> 
         </profile>
         <profile lang="en">
             <id>MIM10NEDEN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM10-NED Grouping (EN)</desc>
+            <desc>MIM10 NED Grouping EN</desc>
         </profile>
     </profiles>
     

@@ -38,12 +38,12 @@
         <profile lang="nl"> 
             <id>KennisnetUGMNL</id>
             <release>1.1</release>
-            <desc>KennisnetUGM Grouping (NL)</desc> 
+            <desc>KennisnetUGM Grouping NL</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
             <id>KennisnetUGMEN</id>
             <release>1.1</release>
-            <desc>KennisnetUGM Grouping (EN)</desc>
+            <desc>KennisnetUGM Grouping EN</desc>
         </profile>
     </profiles>
     

@@ -33,12 +33,12 @@
       <profile lang="nl"> 
          <id>IHWBSMNL</id>
          <release>1.0</release>
-         <desc>IHWBSM Grouping (NL)</desc> 
+         <desc>IHWBSM Grouping NL</desc> 
       </profile>
       <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
          <id>IHWBSMEN</id>
          <release>1.0</release>
-         <desc>IHWBSM Grouping (EN)</desc>
+         <desc>IHWBSM Grouping EN</desc>
       </profile>
    </profiles>
    

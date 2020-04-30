@@ -18,12 +18,12 @@
         <profile lang="nl">
             <id>RWSLNL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>RWS-L-DSO Grouping (NL)</desc> 
+            <desc>RWS L DSO Grouping NL</desc> 
         </profile>
         <profile lang="en">
             <id>RWSLEN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>RWS-L-DSO Grouping (EN)</desc>
+            <desc>RWS L DSO Grouping EN</desc>
         </profile>
     </profiles>
     

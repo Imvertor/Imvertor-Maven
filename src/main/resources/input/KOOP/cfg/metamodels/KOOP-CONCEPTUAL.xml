@@ -16,12 +16,12 @@
         <profile lang="nl"> 
             <id>MKGNL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM-KOOP Grouping (NL)</desc> 
+            <desc>MIM-KOOP Grouping NL</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
             <id>MKGEN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM-KOOP Grouping (EN)</desc>
+            <desc>MIM-KOOP Grouping EN</desc>
         </profile>
     </profiles>
     

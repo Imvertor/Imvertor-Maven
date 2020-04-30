@@ -38,12 +38,12 @@
         <profile lang="nl">
             <id>KGNL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>Kadaster Grouping (NL)</desc> 
+            <desc>Kadaster Grouping NL</desc> 
         </profile>
         <profile lang="en">
             <id>KGEN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>Kadaster Grouping (EN)</desc>
+            <desc>Kadaster Grouping EN</desc>
         </profile>
     </profiles>
     
