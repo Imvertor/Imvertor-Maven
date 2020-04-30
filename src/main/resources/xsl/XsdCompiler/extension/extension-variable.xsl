@@ -27,14 +27,19 @@
     
     version="2.0">
   
-    <xsl:function name="imf:get-variable">
-        <xsl:param name="name"/>
-        <xsl:sequence select="ext:imvertorGetVariable($name)"/>
-    </xsl:function>
-    <xsl:function name="imf:set-variable">
-        <xsl:param name="name"/>
-        <xsl:param name="value"/>
-        <xsl:sequence select="ext:imvertorSetVariable($name,$value)"/>
+    <xsl:function name="imf:get-variable" as="xs:string?">
+        <xsl:param name="name" as="xs:string"/>
+        <xsl:sequence select="imf:get-xparm(concat('variable/', imf:safe-variable-name($name)))"/>
     </xsl:function>
     
+    <xsl:function name="imf:set-variable" as="xs:string?">
+        <xsl:param name="name" as="xs:string"/>
+        <xsl:param name="value" as="xs:string"/>
+        <xsl:sequence select="imf:set-xparm(concat('variable/', imf:safe-variable-name($name)),$value)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:safe-variable-name" as="xs:string">
+        <xsl:param name="name" as="xs:string"/>
+        <xsl:value-of select="replace($name,'[^A-Za-z0-9\._-]','_')"/>
+    </xsl:function>
 </xsl:stylesheet>

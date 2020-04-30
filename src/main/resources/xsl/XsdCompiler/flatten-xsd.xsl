@@ -38,77 +38,34 @@
     
     <xsl:output method="xml" indent="yes"/>
         
-    <xsl:template match="/imvert:schemas">
-        <xsl:apply-templates select="imvert:schema/imvert:result-file-fullpath" mode="prepare"/>
-        <xsl:apply-templates select="imvert:schema"/>       
+    <xsl:template match="/">
+        <xsl:apply-templates select="*"/>       
     </xsl:template>
    
-    <xsl:template match="imvert:result-file-fullpath" mode="prepare"> 
-        <xsl:variable name="schema-name" select="tokenize(.,'/')[last()]"/>
-        <xsl:variable name="doc-loc" select="concat(.,'-flat.xsd')"/>
-        <xsl:sequence select="imf:set-variable(concat('MUST-COPY-',$schema-name),'1')"/>
-    </xsl:template>
-        
-    <xsl:template match="imvert:schema">
-        <xsl:variable name="doc-loc" select="concat(imvert:result-file-fullpath,'-flat.xsd')"/>
-            <xsl:sequence select="imf:set-variable('base-schema',$doc-loc)"/> 
-        <xsl:variable name="doc-result">
-            <xsl:apply-templates select="imvert:result-file-fullpath"/>
-        </xsl:variable>
-        <xsl:result-document href="{$doc-loc}">
-            <xsl:sequence select="$doc-result"/>
-        </xsl:result-document>
-    </xsl:template>
-     
-    <xsl:template match="imvert:result-file-fullpath">
-        <xsl:variable name="schema-name" select="tokenize(.,'/')[last()]"/>
-        <xsl:sequence select="imf:set-variable(concat(imf:get-variable('base-schema'),$schema-name),'1')"/>
-        <xsl:variable name="doc" select="imf:document(.,true())"/>
-        <xsl:apply-templates select="$doc/xs:schema" mode="root"/>
-    </xsl:template>
-    
     <xsl:template match="xs:schema" mode="root">
         <xs:schema>
-            <xsl:copy-of select="@elementFormDefault"/>
-            <xsl:copy-of select="@attributeFormDefault"/>
-            <xsl:copy-of select="@version"/>
+            <xsl:apply-templates select="@*"/>
             <xs:annotation>
                 <xsl:sequence select="xs:annotation/xs:appinfo"/>
                 <xs:appinfo source="http://www.imvertor.org/schema-info/mode">flat</xs:appinfo>
             </xs:annotation>
-            <xsl:apply-templates select="." mode="sub"/>
+            <xsl:apply-templates select="*"/>
         </xs:schema>
     </xsl:template>
     
-    <xsl:template match="xs:schema" mode="sub">
-        <xsl:apply-templates/>
+    <xsl:template match="xs:annotation">
+        <!-- skip, processed elsewhere -->
     </xsl:template>
     
-    <xsl:template match="xs:import">
-        <xsl:variable name="schema-name" select="tokenize(@schemaLocation,'/')[last()]"/>
-        <xsl:variable name="must-copy" select="imf:get-variable(concat('MUST-COPY-',$schema-name))"/>
-        <xsl:variable name="status" select="imf:get-variable(concat(imf:get-variable('base-schema'),$schema-name))"/>
-        <xsl:choose>
-            <xsl:when test="$status = '1'">
-                <!-- skip, already resolved -->
-            </xsl:when>
-            <xsl:when test="$must-copy = '1'">
-                <!-- must resolve --> 
-                <xsl:sequence select="imf:set-variable(concat(imf:get-variable('base-schema'),$schema-name),'1')"/>
-                <xsl:variable name="doc" select="imf:document(@schemaLocation,true())"/>
-                <xsl:comment select="concat('Start of ',@schemaLocation)"/>
-                <xsl:apply-templates select="$doc/xs:schema" mode="sub"/>
-                <xsl:comment select="concat('End of ',@schemaLocation)"/>
-            </xsl:when>            
-            <xsl:otherwise>
-                <!-- maintain the import -->
-                <xsl:sequence select="."/>
-            </xsl:otherwise>
-        </xsl:choose>
+    <xsl:template match="xs:complexType[@name = 'components' or ends-with(@name,'Components')]">
+        <!-- remove -->
     </xsl:template>
     
-    <xsl:template match="xs:annotation"/>
+    <xsl:template match="xs:element[@name = 'components' or ends-with(@name,'Components')]">
+        <!-- remove -->
+    </xsl:template>
     
+    <?x
     <xsl:template match="xs:element/@ref | xs:element/@type | xs:extension/@base">
         <xsl:variable name="ns" select="substring-before(.,':')"/>
         <xsl:variable name="val" select="substring-after(.,':')"/>
@@ -121,14 +78,15 @@
             </xsl:otherwise>    
         </xsl:choose>
     </xsl:template>
+    x?>
     
-    <xsl:template match="xs:*">
+    <xsl:template match="*">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
-  
+    
     <xsl:template match="@*">
         <xsl:copy-of select="."/>
     </xsl:template>
