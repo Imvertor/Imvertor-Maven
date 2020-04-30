@@ -560,7 +560,7 @@
          <cs:Map>
             <cs:id>SWE201</cs:id>
             <cs:namespace>http://www.opengis.net/swe/2.0</cs:namespace>
-            <cs:location>http://www.opengis.net/swe/2.0/swe-profile.xsd</cs:location>
+            <cs:location>https://schema.broservices.nl/profile/swe/1.0/swe-profile.xsd</cs:location>
             <cs:phase>3</cs:phase>
             <cs:version>2.0.1</cs:version>
             <cs:release>BROPROFILE</cs:release>
