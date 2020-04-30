@@ -159,6 +159,8 @@
                 </item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-FORMAAT']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-MINIMUMVALUE']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-MAXIMUMVALUE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEMATERIELEHISTORIE']"/>

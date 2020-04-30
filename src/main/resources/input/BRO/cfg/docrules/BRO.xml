@@ -92,7 +92,7 @@
                 
                 @show should be force, implied or none
                 @compile should be single or full (full is: complete derivation info)
-                @format should be plain (for future improvements).
+                @format should be plain or math.
             -->
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
@@ -444,14 +444,14 @@
         <name lang="nl">Minimumwaarde</name>
         <name lang="en">MinInclusive</name>
         <levels>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-ATTRIBUTE</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-MAXIMUMVALUE" order="260">
         <name lang="nl">Maximumwaarde</name>
         <name lang="en">MaxInclusive</name>
         <levels>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-ATTRIBUTE</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-TRACE" order="270">

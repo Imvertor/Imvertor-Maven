@@ -1007,6 +1007,9 @@
                    <xsl:when test="$format = 'plain'">
                        <xsl:sequence select="imf:create-element('item',$display-waarde)"/>          
                    </xsl:when>
+                   <xsl:when test="$format = 'math'">
+                       <xsl:sequence select="imf:create-element('item',imf:math($display-waarde))"/>          
+                   </xsl:when>
                    <xsl:otherwise>
                        <xsl:sequence select="imf:msg('FATAL','Unknown format: [1]',$format)"/>          
                    </xsl:otherwise>
@@ -1026,7 +1029,7 @@
         <xsl:for-each select="$configuration-docrules-file/doc-rule/levels/level[. = $level]">
            
             <xsl:variable name="doc-rule-id" select="../../@id"/>
-           
+            
             <xsl:choose>
                 <!-- 
                     create and entry "name", "target role name" or "name: target role name" 
@@ -1483,6 +1486,23 @@
     <xsl:function name="imf:calculate-position" as="attribute(position)">
         <xsl:param name="this" as="element()"/>
         <xsl:attribute name="position" select="count($this/preceding-sibling::*) + 1"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:math" as="item()*"><!--https://github.com/Imvertor/Imvertor-Maven/issues/119 -->
+        <xsl:param name="value" as="item()*"/>
+        <xsl:for-each select="$value">
+            <xsl:analyze-string select="." regex="([0-9\.]+)\*10\^(-?\d+)">
+                <xsl:matching-substring>
+                    <xsl:value-of select="concat(regex-group(1), '&#183;10')"/>
+                    <sup>
+                        <xsl:value-of select="regex-group(2)"/>
+                    </sup>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:value-of select="."/>
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </xsl:for-each>
     </xsl:function>
     
     <!-- ======== remove the sections that have @include set to false (as configured) =========== -->
