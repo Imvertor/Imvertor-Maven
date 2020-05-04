@@ -259,27 +259,27 @@
                 </xsl:if>
                 
                 <!-- XSD complextypes -->
-                <xsl:sequence select="imf:create-comment(.,'ALL PRODUCTS')"/>
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'ALL PRODUCTS')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-product','stereotype-name-featurecollection')]"/>
-                <xsl:sequence select="imf:create-comment(.,'ALL OBJECTTYPES')"/>
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'ALL OBJECTTYPES')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype')]"/>
-                <xsl:sequence select="imf:create-comment(.,'ALL ASSOCIATIONCLASSES')"/>
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'ALL ASSOCIATIONCLASSES')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]"/>
-                <xsl:sequence select="imf:create-comment(.,'ALL COMPLEX TYPES')"/>
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'ALL COMPLEX TYPES')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]"/>
-                <xsl:sequence select="imf:create-comment(.,'ALL ATTRIBUTEGROUPTYPES')"/>
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'ALL ATTRIBUTEGROUPTYPES')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]"/>
                 
                 <!-- XSD simpletypes -->
-                <xsl:sequence select="imf:create-comment(.,'ALL DATATYPES/PRIMITIVES')"/>
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'ALL DATATYPES/PRIMITIVES')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]"/>
-                <xsl:sequence select="imf:create-comment(.,'ALL ENUMERATIONS')"/>
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'ALL ENUMERATIONS')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]"/>
-                <xsl:sequence select="imf:create-comment(.,'ALL REFERENCELISTS')"/>
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'ALL REFERENCELISTS')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]"/>
-                <xsl:sequence select="imf:create-comment(.,'ALL CODELISTS')"/>
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'ALL CODELISTS')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]"/>
-                <xsl:sequence select="imf:create-comment(.,'ALL UNIONS')"/>
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'ALL UNIONS')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]"/>
                 
                 <!-- simple type attributes for attributes types that restrict a simple type; needed to set nilReason attribute -->
@@ -295,28 +295,30 @@
     </xsl:template>
         
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-product')]">
-        <xsl:sequence select="imf:create-comment(.,'A product')"/>
+        <xsl:sequence select="imf:create-xml-debug-comment(.,'A product')"/>
         <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
     </xsl:template>
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-featurecollection')]">
-        <xsl:sequence select="imf:create-comment(.,'A feature collection')"/>
+        <xsl:sequence select="imf:create-xml-debug-comment(.,'A feature collection')"/>
         
         <xsl:variable name="package-name" select="parent::imvert:package/imvert:name"/>
         <xsl:variable name="type-name" select="imvert:name"/>
-        <xsl:variable name="targets" select="imvert:associations/imvert:association/imvert:target"/>
+        <xsl:variable name="targets" select="imf:get-ISOrole-info(imvert:associations/imvert:association)"/>
         
         <!-- validate: check if the target roles are all called "featureMember"; this is an UML requirement -->
         
-        <xsl:sequence select="imf:report-error(.,
-            ($targets/imvert:role != 'featureMember'),
-            'Any [1] association to a feature member must be named [2]',(imf:get-config-name-by-id('stereotype-name-featurecollection'),'featureMember'))"/>
+        <xsl:for-each select="$targets">
+            <xsl:sequence select="imf:report-error(.,
+                ((imvert:role | imvert:name) != 'featureMember'),
+                'Any [1] association to a feature member must be named [2]',(imf:get-config-name-by-id('stereotype-name-featurecollection'),'featureMember'))"/>
+        </xsl:for-each>
         
         <xs:element name="{$type-name}" 
             type="{imf:get-type($type-name,$package-name)}Type" 
             substitutionGroup="gml:AbstractGML"/>
         <xs:complexType name="{$type-name}Type">
             <xs:complexContent>
-                <xs:extension base="gml:AbstractGMLType">
+                <xs:extension base="gml:AbstractFeatureType">
                     <xs:sequence minOccurs="0" maxOccurs="unbounded">
                         <xs:element name="featureMember">
                             <xs:complexType>
@@ -324,6 +326,11 @@
                                     <xs:extension base="gml:AbstractFeatureMemberType">
                                         <xs:sequence>
                                             <xs:element ref="gml:AbstractFeature"/>
+                                            
+                                            <!-- omdat imports worden opgelost op basis van prefixen van gerefereerde constructs, moeten we hier expliciet de betreffende elementen benoemen. -->
+                                            <xsl:for-each select="imvert:associations/imvert:association/imvert:type-id">
+                                                <xs:element-stub name="{imf:get-qname(imf:get-association-construct-by-id(.,/))}"/>
+                                            </xsl:for-each>    
                                         </xs:sequence>
                                     </xs:extension>
                                 </xs:complexContent>
@@ -336,21 +343,21 @@
     </xsl:template>
  
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype')]">
-        <xsl:sequence select="imf:create-comment(.,'An objecttype')"/>
+        <xsl:sequence select="imf:create-xml-debug-comment(.,'An objecttype')"/>
         <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
     </xsl:template>
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]">
-        <xsl:sequence select="imf:create-comment(.,'An attributegrouptype')"/>
+        <xsl:sequence select="imf:create-xml-debug-comment(.,'An attributegrouptype')"/>
         <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]">
-        <xsl:sequence select="imf:create-comment(.,'An association class')"/>
+        <xsl:sequence select="imf:create-xml-debug-comment(.,'An association class')"/>
         <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]">
-        <xsl:sequence select="imf:create-comment(.,'A complex datatype')"/>
+        <xsl:sequence select="imf:create-xml-debug-comment(.,'A complex datatype')"/>
         <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
     </xsl:template>
     
@@ -359,7 +366,7 @@
         <xsl:choose>
             <xsl:when test="$codelist-option = 'Option3'">
                 <xsl:variable name="codespace" select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DATALOCATION')"/>
-                <xsl:sequence select="imf:create-comment(.,concat('A codelist at option: ',$codelist-option))"/>
+                <xsl:sequence select="imf:create-xml-debug-comment(.,concat('A codelist at option: ',$codelist-option))"/>
                 <xs:complexType name="{imvert:name}{$Type-suffix}">
                     <xs:simpleContent>
                         <xs:restriction base="gml:CodeWithAuthorityType">
@@ -376,7 +383,7 @@
     </xsl:template>    
 
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]">
-        <xsl:sequence select="imf:create-comment(.,'A simple datatype')"/>
+        <xsl:sequence select="imf:create-xml-debug-comment(.,'A simple datatype')"/>
         <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
     </xsl:template>
     
@@ -395,12 +402,12 @@
     </xsl:template>    
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]">
-        <xsl:sequence select="imf:create-comment(.,'A referencelist')"/>
+        <xsl:sequence select="imf:create-xml-debug-comment(.,'A referencelist')"/>
         <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
     </xsl:template>    
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
-        <xsl:sequence select="imf:create-comment(.,'Datatype is a union')"/>
+        <xsl:sequence select="imf:create-xml-debug-comment(.,'Datatype is a union')"/>
         <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
         <!--x
         <xs:simpleType name="{imvert:name}{$Type-suffix}">
@@ -491,18 +498,18 @@
                                 ('stereotype-name-simpletype','stereotype-name-enumeration','stereotype-name-codelist','stereotype-name-complextype','stereotype-name-union'))"/>   
                             <xsl:choose>
                                 <xsl:when test="$defining-class-is-datatype">
-                                    <xsl:sequence select="imf:create-comment(.,'A choice member, which is a datatype')"/>
+                                    <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice member, which is a datatype')"/>
                                     <xsl:sequence select="imf:create-element-property(.)"/>
                                 </xsl:when>
                                 <xsl:when test="empty($defining-class) and $allow-scalar-in-union">
-                                    <xsl:sequence select="imf:create-comment(.,'A choice member, which is a scalar type')"/>
+                                    <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice member, which is a scalar type')"/>
                                     <xsl:sequence select="imf:create-element-property(.)"/>
                                 </xsl:when>
                                 <xsl:when test="empty($defining-class)">
                                     <xsl:sequence select="imf:msg(.,'ERROR', 'Unable to create a union of scalar types',())"/> <!-- IM-291, https://github.com/Imvertor/Imvertor-Maven/issues/44 -->
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:sequence select="imf:create-comment(.,'A choice member')"/>
+                                    <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice member')"/>
                                     <xs:element ref="{imf:get-qname($defining-class)}"/>  
                                 </xsl:otherwise>
                             </xsl:choose>
@@ -513,7 +520,7 @@
                             <xs:choice>
                                 <xsl:attribute name="minOccurs" select="if (imvert:min-occurs) then imvert:min-occurs else '1'"/>
                                 <xsl:attribute name="maxOccurs" select="if (imvert:max-occurs) then imvert:max-occurs else '1'"/>
-                                <xsl:sequence select="imf:create-comment(.,'A number of choices')"/>
+                                <xsl:sequence select="imf:create-xml-debug-comment(.,'A number of choices')"/>
                                 <xsl:sequence select="$atts"/>
                             </xs:choice>
                         </complex>
@@ -543,7 +550,7 @@
                         <xsl:variable name="atts" as="item()*">
                             <xsl:for-each select="imvert:attributes/imvert:attribute[not(imvert:type-name=$xml-attribute-type)] | imvert:associations/imvert:association">
                                 <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
-                                <xsl:sequence select="imf:create-comment(.,'An attribute or association')"/>
+                                <xsl:sequence select="imf:create-xml-debug-comment(.,'An attribute or association')"/>
                                 <xsl:sequence select="imf:create-element-property(.)"/>
                             </xsl:for-each>
                         </xsl:variable>
@@ -802,7 +809,7 @@
         <xsl:variable name="package-name" select="$this/ancestor::imvert:package[last()]/imvert:name"/>
         
         <xsl:variable name="name" select="$this/imvert:name"/>
-        <xsl:variable name="target-role-name" select="$this/imvert:target/imvert:role"/>
+        <xsl:variable name="target-role-name" select="if ($this/self::imvert:association) then imf:get-ISOrole-info($this)/(imvert:name | imvert:role) else ()"/>
         <xsl:variable name="found-type" select="imf:get-type($this/imvert:type-name,$this/imvert:type-package)"/>
       
         <xsl:variable name="is-any" select="$found-type = '#any'"/>
@@ -869,7 +876,7 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'Any type')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'Any type')"/>
                     <xs:complexType>
                         <xs:sequence>
                             <xs:any minOccurs="0" maxOccurs="unbounded">
@@ -885,7 +892,7 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'Mix of elements')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'Mix of elements')"/>
                     <xs:complexType mixed="true">
                         <!-- TODO how to define possible elements in mixed contents? -->
                     </xs:complexType>
@@ -897,7 +904,7 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'A keyed value')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A keyed value')"/>
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="xs:string">
@@ -914,7 +921,7 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'A postcode')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A postcode')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                     <xs:simpleType>
                         <xs:restriction base="xs:string">
@@ -932,7 +939,7 @@
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:create-comment($this,'A voidable incomplete datetime, date or time')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A voidable incomplete datetime, date or time')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xs:simpleContent>
@@ -963,7 +970,7 @@
                     <xsl:attribute name="type" select="imf:get-type($fixtype,$package-name)"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'An incomplete datetime, date or time')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'An incomplete datetime, date or time')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
@@ -974,7 +981,7 @@
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:create-comment($this,'A voidable primitive type')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A voidable primitive type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xs:simpleContent>
@@ -983,7 +990,7 @@
                                 When basetype, the type referenced in the extension is the generated type, 'Basetype_*', introduced at the end of the schema 
                             -->
                             <xsl:variable name="effective-type" select="if ($is-restriction) then imf:get-type($basetype-name,$package-name) else $type"/>
-                            <xsl:sequence select="imf:create-comment($this,if ($is-restriction) then 'A restriction on a primitive' else 'Not a restriction on a primitive')"/>
+                            <xsl:sequence select="imf:create-xml-debug-comment($this,if ($is-restriction) then 'A restriction on a primitive' else 'Not a restriction on a primitive')"/>
                             <xs:extension base="{$effective-type}">
                                 <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                                 <xsl:sequence select="imf:create-estimation($is-estimation)"/>
@@ -997,7 +1004,7 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'A restriction on a primitive type')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A restriction on a primitive type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xsl:choose>
                         <xsl:when test="false() and $is-estimation"> <!-- deactivated! -->
@@ -1030,7 +1037,7 @@
                     <xsl:choose>
                         <xsl:when test="exists($nonempty)">
                             <!-- strings may not be empty -->
-                            <xsl:sequence select="imf:create-comment($this,'A string, mode 1')"/>
+                            <xsl:sequence select="imf:create-xml-debug-comment($this,'A string, mode 1')"/>
                             <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                             <xs:simpleType>
                                 <xs:restriction base="{$type}">
@@ -1040,7 +1047,7 @@
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:attribute name="type" select="$type"/>
-                            <xsl:sequence select="imf:create-comment($this,'A string, mode 2')"/>
+                            <xsl:sequence select="imf:create-xml-debug-comment($this,'A string, mode 2')"/>
                             <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                         </xsl:otherwise>
                     </xsl:choose>
@@ -1053,7 +1060,7 @@
                     <xsl:attribute name="type" select="$type"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'A primitive type')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A primitive type')"/>
                     <xsl:sequence select="imf:get-annotation($this)"/>
                 </xs:element>
             </xsl:when>
@@ -1064,7 +1071,7 @@
                     <xsl:attribute name="type" select="$this/imvert:type-name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'A primitive type, after mapping')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A primitive type, after mapping')"/>
                     <xsl:sequence select="imf:get-annotation($this)"/>
                 </xs:element>
             </xsl:when>
@@ -1075,7 +1082,7 @@
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
                     <xsl:attribute name="type" select="if ($codelist-option = 'Option1') then 'gml:ReferenceType' else if ($codelist-option = 'Option2') then 'gml:CodeType' else concat($type,'Type')"/>
-                    <xsl:sequence select="imf:create-comment($this,concat('A nillable codelist attribute at ', $codelist-option))"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,concat('A nillable codelist attribute at ', $codelist-option))"/>
                     <xsl:sequence select="imf:get-annotation($this,(),$appinfo-codelist)"/>
                 </xs:element>
             </xsl:when>
@@ -1085,7 +1092,7 @@
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="type" select="if ($codelist-option = 'Option1') then 'gml:ReferenceType' else if ($codelist-option = 'Option2') then 'gml:CodeType' else concat($type,'Type')"/>
-                    <xsl:sequence select="imf:create-comment($this,concat('A codelist attribute at ', $codelist-option))"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,concat('A codelist attribute at ', $codelist-option))"/>
                     <xsl:sequence select="imf:get-annotation($this,(),$appinfo-codelist)"/>
                 </xs:element>
             </xsl:when>
@@ -1096,7 +1103,7 @@
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:create-comment($this,'A voidable enumeration')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A voidable enumeration')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xs:simpleContent>
@@ -1116,10 +1123,10 @@
                     <xsl:choose>
                         <xsl:when test="$is-nillable">
                             <xsl:attribute name="nillable">true</xsl:attribute>
-                            <xsl:sequence select="imf:create-comment($this,'A voidable conceptual complex type, a GML Measure')"/>
+                            <xsl:sequence select="imf:create-xml-debug-comment($this,'A voidable conceptual complex type, a GML Measure')"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:sequence select="imf:create-comment($this,'A conceptual complex type, a GML Measure')"/>
+                            <xsl:sequence select="imf:create-xml-debug-comment($this,'A conceptual complex type, a GML Measure')"/>
                         </xsl:otherwise>
                     </xsl:choose>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
@@ -1138,7 +1145,7 @@
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:create-comment($this,'A voidable complex type')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A voidable complex type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xsl:variable name="ext">
@@ -1148,7 +1155,7 @@
                         </xsl:variable>
                         <xsl:choose>
                             <xsl:when test="exists($defining-class/imvert:pattern)">
-                                <xsl:sequence select="imf:create-comment($this,'The referenced type is simplified by pattern')"/>
+                                <xsl:sequence select="imf:create-xml-debug-comment($this,'The referenced type is simplified by pattern')"/>
                                 <xs:simpleContent>
                                     <xsl:sequence select="$ext"/>
                                 </xs:simpleContent>
@@ -1170,7 +1177,7 @@
                     <xsl:attribute name="type" select="$type"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'A conceptual complex type')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A conceptual complex type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
@@ -1181,7 +1188,7 @@
                     <xsl:attribute name="type" select="concat($type,$EnumerationType-suffix)"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'A conceptual enumeration')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A conceptual enumeration')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
@@ -1192,7 +1199,7 @@
                     <xsl:attribute name="type" select="concat($type,$PropertyType-suffix)"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'A complex type')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A complex type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
@@ -1202,7 +1209,7 @@
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:create-comment($this,'A voidable datatype')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A voidable datatype')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xs:simpleContent>
@@ -1219,7 +1226,7 @@
                     <xsl:attribute name="type" select="concat($type,$Type-suffix)"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'An enumeration or datatype')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'An enumeration or datatype')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
@@ -1229,7 +1236,7 @@
                     <xsl:attribute name="ref" select="$type"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'No name and the type is external')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'No name and the type is external')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
@@ -1239,7 +1246,7 @@
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:create-comment($this,'The type of this property is a union, and voidable')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'The type of this property is a union, and voidable')"/>
                     <xsl:sequence select="imf:get-annotation($this)"/>
                     <xs:complexType>
                         <xs:complexContent>
@@ -1256,7 +1263,7 @@
                     <xsl:attribute name="type" select="concat($type,$PropertyType-suffix)"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'The type of this property is a union')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'The type of this property is a union')"/>
                     <xsl:sequence select="imf:get-annotation($this)"/>
                 </xs:element>
             </xsl:when>
@@ -1266,7 +1273,7 @@
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xs:complexType>
-                        <xsl:sequence select="imf:create-comment($this,'A member of a union')"/>
+                        <xsl:sequence select="imf:create-xml-debug-comment($this,'A member of a union')"/>
                         <xsl:sequence select="imf:get-annotation($this)"/>
                         <xs:complexContent>
                             <xs:extension base="gml:AbstractMemberType">
@@ -1288,7 +1295,7 @@
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="1"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:create-comment($this,'A voidable external type')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A voidable external type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xs:sequence>
@@ -1303,7 +1310,7 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="1"/>
-                    <xsl:sequence select="imf:create-comment($this,'An external type')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'An external type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <!-- TODO continue: introduce correct reference / see IM-59 -->
                     <xsl:variable name="reftype" select="$type"/>
@@ -1321,12 +1328,12 @@
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="1"/>
                     <xsl:attribute name="type" select="$type"/>
-                    <xsl:sequence select="imf:create-comment($this,'A conceptual type')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A conceptual type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
             <xsl:when test="not($defining-class)">
-                <xsl:sequence select="imf:create-comment($this,'No defining class!')"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'No defining class!')"/>
                 <xsl:sequence select="imf:msg('ERROR','Reference to an undefined class [1]',$type)"/>
                 <!-- this can be the case when this class is not part of a configured package, please correct in UML -->
             </xsl:when>
@@ -1336,7 +1343,7 @@
                     <xsl:attribute name="ref" select="$type"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'An unnamed association')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'An unnamed association')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
@@ -1345,7 +1352,7 @@
                 
                 <!-- note that association classes are resolved/flattened in UML; see 10-129r1_Geography_Markup_Language_GML_Version_3.3.pdf section 12.3 -->
                 
-                <xsl:sequence select="imf:create-comment($this,'An association')"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'An association')"/>
                 <xs:element minOccurs="{$this/imvert:min-occurs}" maxOccurs="{$this/imvert:max-occurs}">
                     <!-- 
                         When no role name specified, use the association name 
@@ -1365,7 +1372,7 @@
                         </xsl:otherwise>
                     </xsl:choose>
                     
-                    <xsl:sequence select="imf:create-comment($this,'An objecttype')"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'An objecttype')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:otherwise>
@@ -1755,20 +1762,6 @@
         
     </xsl:function>
     
-    <xsl:function name="imf:create-comment" as="comment()?">
-        <xsl:param name="info-node" as="node()"/>
-        <xsl:param name="text" as="xs:string"/>
-        <xsl:param name="parms" as="item()*"/>
-        <xsl:if test="$debugging">
-            <xsl:comment select="concat(imf:get-display-name($info-node),' - ',imf:insert-fragments-by-index($text,$parms))"/>
-        </xsl:if>
-    </xsl:function>
-    <xsl:function name="imf:create-comment" as="comment()?">
-        <xsl:param name="info-node" as="node()"/>
-        <xsl:param name="text" as="xs:string"/>
-        <xsl:sequence select="imf:create-comment($info-node,$text,())"/>
-    </xsl:function>
-    
     <xsl:function name="imf:compile-documentation">
         <xsl:param name="this"/>
         <xsl:variable name="name" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-NAME')"/>
@@ -1780,4 +1773,10 @@
         <xsl:value-of select="string-join(($pnam,$pdef,$pexp),'&#10;')"/>
     </xsl:function>
     
+    <!-- MIM variant kan zijn: rol of relatie. ISO vereist rol, maar ook relaties ondersteunen. Deze functie geeft een van beide terug afhankelijk van wat hij aantreft -->
+    
+    <xsl:function name="imf:get-ISOrole-info" as="element()*">
+        <xsl:param name="association" as="element()*"/>
+        <xsl:sequence select="for $a in $association return ($a/imvert:target,$a)[1]"/>
+    </xsl:function>
 </xsl:stylesheet>

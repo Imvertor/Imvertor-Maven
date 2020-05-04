@@ -63,4 +63,19 @@
         <xsl:sequence select="imf:debug-document($sequence,$filename,false(),true())"/>
     </xsl:function>
     
+    <xsl:function name="imf:create-xml-debug-comment" as="comment()?">
+        <xsl:param name="info-node" as="item()?"/>
+        <xsl:param name="text" as="xs:string"/>
+        <xsl:param name="parms" as="item()*"/>
+        <xsl:if test="$debugging">
+            <xsl:comment select="concat(if ($info-node) then imf:get-display-name($info-node) else concat('&quot;',$info-node,'&quot;'),' - ',imf:insert-fragments-by-index($text,$parms))"/>
+        </xsl:if>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-xml-debug-comment" as="comment()?">
+        <xsl:param name="info-node" as="item()?"/>
+        <xsl:param name="text" as="xs:string"/>
+        <xsl:sequence select="imf:create-xml-debug-comment($info-node,$text,())"/>
+    </xsl:function>
+    
 </xsl:stylesheet>

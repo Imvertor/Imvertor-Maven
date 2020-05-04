@@ -100,6 +100,8 @@
             <xsl:sequence select="for $qname in .//xs:restriction/@base return imf:get-prefix($qname)"/>
             <xsl:sequence select="for $qname in $uniontokens return imf:get-prefix($qname)"/>
             
+            <xsl:sequence select="for $qname in .//xs:element-stub/@name return imf:get-prefix($qname)"/>
+        
             <!-- https://github.com/Imvertor/Imvertor-Maven/issues/48
                 this is not required:
                 <xsl:sequence select="for $elm in .//xs:appinfo//* return if (contains(name($elm),':')) then imf:get-prefix(name($elm)) else ()"/> 
@@ -109,6 +111,8 @@
         <xsl:variable name="imports" as="node()*">
             <xsl:for-each select="distinct-values($qualifiers)[not(. = $my-qualifier)]">
                
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'qualifier at subpath [1]', ($my-subpath))"/>
+
                 <!-- determine for this prefix which schema is created -->
                 <xsl:variable name="prefix" select="."/>
                 <xsl:variable name="schema-def" select="$schema-defs[imvert:prefix = $prefix]"/>
@@ -185,7 +189,11 @@
         </xsl:result-document>
        
     </xsl:template>
-        
+   
+    <xsl:template match="xs:element-stub">
+        <!-- remove -->
+    </xsl:template>
+    
     <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
