@@ -25,9 +25,11 @@
             <cs-ref:MapRef xlink:href="#INSPIRE-GEO"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-SOIL"/>
             <cs-ref:MapRef xlink:href="#NEN3610"/>
+            <?x
             <cs-ref:MapRef xlink:href="#BRO"/>
             <cs-ref:MapRef xlink:href="#BRO-SAMPLE1"/>
             <cs-ref:MapRef xlink:href="#BRO-SAMPLE2"/>
+            x?>
             <cs-ref:MapRef xlink:href="#BRO-COMMON"/>
          </cs:use>
       </cs:Mapping>
@@ -776,6 +778,7 @@
                </cs:Construct>
             </cs:constructs>
          </cs:Map>
+         <?x
          <cs:Map>
             <cs:id>BRO</cs:id>
             <cs:namespace>http://determine/</cs:namespace>
@@ -902,6 +905,7 @@
                </cs:Construct>
             </cs:constructs>
          </cs:Map>
+         x?>
          <cs:Map>
             <cs:id>BRO-COMMON</cs:id>
             <cs:namespace>http://www.broservices.nl/xsd/brocommon/3.0</cs:namespace>
@@ -1127,6 +1131,19 @@
                   </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
+                  <cs:name>Coördinatenpaar</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>gml:PointType</cs:name>
+                        <cs:asAttribute>gml:PointPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <?x
+               <cs:Construct>
                   <cs:name>CoRdinatenpaar</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
@@ -1138,6 +1155,7 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+               x?>
             </cs:constructs>
          </cs:Map>
          <cs:Map>
