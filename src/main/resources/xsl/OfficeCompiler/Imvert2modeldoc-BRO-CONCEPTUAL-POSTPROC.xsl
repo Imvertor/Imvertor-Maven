@@ -159,8 +159,6 @@
                 </item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-FORMAAT']"/>
-            <xsl:apply-templates select="part[@type = 'CFG-DOC-MINIMUMVALUE']"/>
-            <xsl:apply-templates select="part[@type = 'CFG-DOC-MAXIMUMVALUE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEMATERIELEHISTORIE']"/>
@@ -312,12 +310,12 @@
                 </xsl:for-each>
                 <!-- alleen genereren als er een minimum en/of een maximumwaarde aanwezig is -->
                 <xsl:for-each
-                    select="$context[part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text() | part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text()]">
+                    select="$context[part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/node() | part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/node()]">
                     <part>
                         <item>&#160;&#160;Waardebereik</item>
                         <item>
-                            <xsl:value-of
-                                select="bro:generate-minmax($context/part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text(), $context/part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text())"
+                            <xsl:sequence
+                                select="bro:generate-minmax($context/part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/node(), $context/part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/node())"
                             />
                         </item>
                     </part>
@@ -338,8 +336,8 @@
                     <part>
                         <item>&#160;&#160;Waardebereik</item>
                         <item>
-                            <xsl:value-of
-                                select="bro:generate-minmax($context/part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text(), $context/part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text())"
+                            <xsl:sequence
+                                select="bro:generate-minmax($context/part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/node(), $context/part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/node())"
                             />
                         </item>
                     </part>
@@ -403,8 +401,8 @@
                     <part>
                         <item>&#160;&#160;Waardebereik</item>
                         <item>
-                            <xsl:value-of
-                                select="bro:generate-minmax($context/part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text(), $context/part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text())"
+                            <xsl:sequence
+                                select="bro:generate-minmax($context/part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/node(), $context/part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/node())"
                             />
                         </item>
                     </part>
@@ -545,22 +543,26 @@
         </xsl:choose>
     </xsl:function>
     
-    <xsl:function name="bro:generate-minmax">
-        <xsl:param name="min"/>
-        <xsl:param name="max"/>
+    <xsl:function name="bro:generate-minmax" as="item()*">
+        <xsl:param name="min" as="item()*"/>
+        <xsl:param name="max" as="item()*"/>
         <xsl:choose>
             <xsl:when test="$min and $max">
-                <xsl:value-of select="concat($min, ' tot ', $max)"/>
+                <xsl:sequence select="$min"/>
+                <xsl:value-of select="' tot '"/>
+                <xsl:sequence select="$max"/>
             </xsl:when>
             <!-- bij alleen min: waarde = vanaf [minimumwaarde]-->
             <xsl:when test="$min">
-                <xsl:value-of select="concat('vanaf ', $min)"/>
+                <xsl:value-of select="' vanaf '"/>
+                <xsl:sequence select="$min"/>
             </xsl:when>
             <!-- bij alleen max: waarde = tot [maximumwaarde]-->
             <xsl:when test="$max">
-                <xsl:value-of select="concat('tot ', $max)"/>
+                <xsl:value-of select="' tot '"/>
+                <xsl:sequence select="$max"/>
             </xsl:when>
-            <!-- in alle andere gevallen ontbreekt het gegeven"-->
+            <!-- in alle andere gevallen ontbreekt het gegeven -->
             <xsl:otherwise/>
         </xsl:choose>
     </xsl:function>
