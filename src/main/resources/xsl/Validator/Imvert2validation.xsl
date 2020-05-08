@@ -461,7 +461,7 @@
         <xsl:for-each select="imvert:supplier/@subpath">
             <xsl:sequence select="imf:report-error(../..,
                 not(imf:exists-imvert-supplier-doc(.)), 
-                'No such supplier document: [1]', .)"/>
+                'No supplier document found: [1]', .)"/> <!-- NB deze melding NSSD1 komt ook voor bij pretrace maar daar is die fatal. -->
         </xsl:for-each>
         
         <!-- continue other validation -->

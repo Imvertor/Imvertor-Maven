@@ -50,6 +50,7 @@
     
     <!--TODO inlezen van losse documenten tegengaan; volg het gecompileerde suppliers document -->
     <xsl:template match="imvert:class | imvert:attribute | imvert:association">
+        <xsl:variable name="this" select="."/>
         <xsl:variable name="formal-name" select="@formal-name"/>
         <xsl:variable name="formal-trace-name" select="imf:get-construct-formal-trace-name(.)"/>
         <xsl:variable name="supplier-subpaths" select="imf:get-construct-supplier-system-subpaths(.)"/>
@@ -67,7 +68,7 @@
                             <xsl:choose>
                                 <xsl:when test="empty($supplier-doc)">
                                     <!-- this must NOT occur; this error is part of regular validation -->
-                                    <xsl:sequence select="imf:msg('FATAL',concat('No such supplier document: ',.))"/>
+                                    <xsl:sequence select="imf:msg($this,'FATAL','No such supplier document: [1]',.)"/>
                                 </xsl:when>
                                 <xsl:when test="exists($supplier-construct)">
                                     <imvert:trace origin="system" original-location="{.}">

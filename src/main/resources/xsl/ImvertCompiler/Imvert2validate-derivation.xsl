@@ -405,7 +405,7 @@
             <xsl:variable name="supplier-release" select="imvert:supplier-release"/>
             <xsl:sequence select="imf:report-warning($this, 
                 $client-release lt $supplier-release,
-                'Supplier release [1] is more recent that client release [2]',($supplier-release,$client-release))"/>
+                'Supplier release [1] is more recent than client release [2]',($supplier-release,$client-release))"/>
         </xsl:for-each>
     </xsl:function>
 
