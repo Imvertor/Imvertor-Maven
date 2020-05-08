@@ -33,6 +33,8 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-report.xsl"/>
     
+    <xsl:output method="xml" encoding="UTF-16" indent="yes"/><!-- bug fix may 1,2020 - Sparx: "I got it to work by changing the encoding in the first line to "UTF-16". I'm not entirely sure why that was necessary."-->
+    
     <xsl:variable name="profile-id-string" select="$configuration-metamodel-file/profiles/profile[@lang=$language]/id"/>
     <xsl:variable name="profile-name-string" select="$configuration-metamodel-file/profiles/profile[@lang=$language]/desc"/>
     <xsl:variable name="profile-release-string" select="$configuration-metamodel-file/profiles/profile[@lang=$language]/release"/><!-- optional -->
