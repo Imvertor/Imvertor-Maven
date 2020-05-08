@@ -857,7 +857,15 @@
             </xs:appinfo>
         </xsl:variable>
         
-        <xsl:variable name="is-gml-measure" select="$this/imvert:conceptual-schema-type = 'Measure' and $this/imvert:type-package = 'GML3'"/>
+        <xsl:if test="$this/imvert:conceptual-schema-type = ('Measure','Meetwaarde') and not($this/imvert:type-package = ('GML3','RO-BRO'))">
+            <xsl:sequence select="imf:msg('WARNING', 'Measure type [1] occurs in unexpected package [2]', ($this/imvert:conceptual-schema-type,$this/imvert:type-package))"/>
+        </xsl:if> 
+        
+        <xsl:variable name="is-gml-measure" select="
+            ($this/imvert:conceptual-schema-type = 'Measure' and $this/imvert:type-package = 'GML3')
+            or
+            ($this/imvert:conceptual-schema-type = 'Meetwaarde' and $this/imvert:type-package = 'RO-BRO')
+            "/>
 
         <xsl:variable name="has-key" select="$defining-class/imvert:attributes/imvert:attribute[imvert:stereotype/@id = 'stereotype-name-key']"/>
         
