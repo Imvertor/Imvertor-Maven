@@ -14,20 +14,7 @@
     <desc lang="nl">Tags voor MIM vereiste MIM10-ISO uitbreidingen</desc>
    
     <tagged-values>
-        <tv id="CFG-TV-UNITOFMEASURE">
-            <name lang="nl">Meeteenheid</name>
-            <name lang="en">Unit of measure</name>
-            <desc lang="nl">De meeteenheid van de opgegeven waarde.</desc>
-            <desc lang="en">The unit of measure of the value specified.</desc>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-complextype</stereo>
-                <stereo minmax="0..1">stereotype-name-data-element</stereo>
-                <stereo minmax="0..1">stereotype-name-union-element</stereo>
-                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
-            </stereotypes>
-        </tv>
+      
     </tagged-values>
     
 </tagset>

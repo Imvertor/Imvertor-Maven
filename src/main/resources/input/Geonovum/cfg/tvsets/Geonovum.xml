@@ -27,6 +27,13 @@
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
             </stereotypes>
         </tv>
+        
+        <tv norm="note" id="CFG-TV-RULES">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
     
 </tagset>

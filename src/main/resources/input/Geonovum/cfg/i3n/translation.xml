@@ -61,7 +61,7 @@
     </item>
     <item>
         <key>GERELATEERDOBJECTTYPE</key>
-        <trans lang="nl">Gerelateerd entiteittype</trans>
+        <trans lang="nl">Gerelateerd objecttype</trans>
         <trans lang="en">Related featureType</trans>
     </item>
     <item>    
@@ -304,7 +304,7 @@
     </item>
     <item>
         <key>OVERVIEW-OBJECTTYPE</key>
-        <trans lang="nl">Entiteittypen</trans>
+        <trans lang="nl">Objecttypen</trans>
         <trans lang="en">Featuretypes</trans>
     </item>
     <item>
@@ -350,7 +350,7 @@
 
     <item>
         <key>DETAILS-OBJECTTYPE</key>
-        <trans lang="nl">Entiteittype details</trans>
+        <trans lang="nl">Objecttype details</trans>
         <trans lang="en">Featuretype details</trans>
     </item>
     <item>

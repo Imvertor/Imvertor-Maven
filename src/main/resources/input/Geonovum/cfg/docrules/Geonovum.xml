@@ -310,6 +310,8 @@
         <name lang="nl">Regels</name>
         <name lang="en">Rules</name>
         <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-OBJECTTYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
