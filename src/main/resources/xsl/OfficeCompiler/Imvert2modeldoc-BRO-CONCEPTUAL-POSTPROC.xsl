@@ -289,11 +289,16 @@
         <xsl:param name="context" as="element()"/>
         <xsl:variable name="item-text" select="normalize-space($item)"/>
         
+        <xsl:variable name="minmax-specified" select="$context[part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text() | part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text()]"/>
+        
         <xsl:choose>
             <xsl:when test="$item-text = 'Meetwaarde'">
                 <part>
                     <item>&#160;&#160;Naam</item>
-                    <item>Meetwaarde <xsl:value-of select="$context/part[@type = 'CFG-DOC-PATROON']/item[2]/text()"/></item>
+                    <item>Meetwaarde 
+                        <xsl:value-of select="$context/part[@type = 'CFG-DOC-PATROON']/item[2]/text()"/> 
+                        <xsl:if test="$minmax-specified"> in machten</xsl:if>
+                    </item>
                 </part>
                 <part>
                     <item>&#160;&#160;Type</item>
@@ -309,8 +314,7 @@
                     </part>
                 </xsl:for-each>
                 <!-- alleen genereren als er een minimum en/of een maximumwaarde aanwezig is -->
-                <xsl:for-each
-                    select="$context[part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/node() | part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/node()]">
+                <xsl:if test="$minmax-specified">
                     <part>
                         <item>&#160;&#160;Waardebereik</item>
                         <item>
@@ -319,7 +323,7 @@
                             />
                         </item>
                     </part>
-                </xsl:for-each>
+                </xsl:if>
             </xsl:when>
             <xsl:when test="$item-text='Aantal'">
                 <part>
@@ -331,8 +335,7 @@
                     <item>Getal</item>
                 </part>
                 <!-- alleen genereren als er een minimum en/of een maximumwaarde aanwezig is -->
-                <xsl:for-each
-                    select="$context[part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text() | part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text()]">
+                <xsl:if test="$minmax-specified">
                     <part>
                         <item>&#160;&#160;Waardebereik</item>
                         <item>
@@ -341,7 +344,7 @@
                             />
                         </item>
                     </part>
-                </xsl:for-each>
+                </xsl:if>
             </xsl:when>
             <xsl:when test="$item-text='Nummer'">
                 <part>
@@ -396,8 +399,7 @@
                     </part>                    
                 </xsl:for-each>                
                 <!-- alleen genereren als er een minimum en/of een maximumwaarde aanwezig is -->
-                <xsl:for-each
-                    select="$context[part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text() | part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text()]">
+                <xsl:if test="$minmax-specified">
                     <part>
                         <item>&#160;&#160;Waardebereik</item>
                         <item>
@@ -406,7 +408,7 @@
                             />
                         </item>
                     </part>
-                </xsl:for-each>
+                </xsl:if>
             </xsl:when>
             <xsl:when test="$item[text()=('Coördinatenpaar', 'Gebiedsgrens')]">
                 <part>
