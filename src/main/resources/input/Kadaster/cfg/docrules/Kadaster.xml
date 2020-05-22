@@ -445,6 +445,15 @@
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-LENGTH" order="255">
+        <name lang="nl">Lengte</name>
+        <name lang="en">Length</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+        </levels>
+    </doc-rule>
     <doc-rule id="CFG-DOC-RELATIESOORT" order="260">
         <name lang="nl">Relatiesoort</name>
         <levels>
