@@ -280,7 +280,7 @@
                     ($supplier/imvert:total-digits))"/>
             </xsl:when>
             <xsl:when test="$client/imvert:type-name = ('scalar-decimal','scalar-real')">
-                <xsl:sequence select="imf:report-error($client,not($supplier-is-dec),
+                <xsl:sequence select="imf:report-error($client,not($supplier-is-dec or $supplier-is-real),
                     'Client type [1] is not a [2].', (imf:get-config-name-by-id($client/imvert:type-name),$supplier/imvert:type-name))"/>
                 <xsl:sequence select="imf:report-error($client,xs:integer($client/imvert:total-digits) gt xs:integer($supplier/imvert:total-digits),
                     'Client type size must be equal or smaller than [1]',($supplier/imvert:total-digits))"/>
