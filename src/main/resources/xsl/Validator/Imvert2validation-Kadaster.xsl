@@ -123,7 +123,7 @@
         <xsl:variable name="class" select="../.."/>
         
         <xsl:sequence select="imf:report-error(., 
-            (imvert:name=imf:get-config-parameter('fixed-identification-attribute-name') and not(imvert:is-id = 'true')), 
+            (imvert:name = imf:get-config-parameter('fixed-identification-attribute-name') and not(imvert:is-id = 'true')), 
             'Identification attribute is not marked as ID')"/>
         
         <?x

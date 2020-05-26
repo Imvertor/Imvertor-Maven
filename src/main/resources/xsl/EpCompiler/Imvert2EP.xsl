@@ -375,16 +375,16 @@
     
     <!-- fallback -->
     <xsl:template match="imvert:package">
-        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown package type, stereotype is: [1]', imf:string-group(imvert:stereotype/@id))"/>
+        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown [1] type, stereotype is: [2]', ('package',imf:string-group(imvert:stereotype/@id)))"/>
     </xsl:template>
     <xsl:template match="imvert:class">
-        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown class type, stereotype is: [1]', imf:string-group(imvert:stereotype/@id))"/>
+        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown [1] type, stereotype is: [2]', ('class',imf:string-group(imvert:stereotype/@id)))"/>
     </xsl:template>
     <xsl:template match="imvert:attribute">
-        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown att type, stereotype is: [1]',imf:string-group(imvert:stereotype/@id))"/>
+        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown [1] type, stereotype is: [2]', ('attribute',imf:string-group(imvert:stereotype/@id)))"/>
     </xsl:template>
     <xsl:template match="imvert:association">
-        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown association type, stereotype is: [1]',imf:string-group(imvert:stereotype/@id))"/>
+        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown [1] type, stereotype is: [2]', ('association',imf:string-group(imvert:stereotype/@id)))"/>
     </xsl:template>
     
     <xsl:template match="xhtml:*">

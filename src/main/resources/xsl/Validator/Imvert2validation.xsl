@@ -265,7 +265,7 @@
             'No domain subpackages found')"/>
         <xsl:sequence select="imf:report-error(., 
             not($root-release), 
-            'The root package must have a release number.')"/>
+            'The root package must have a release number')"/>
         <!-- IM-110 -->
         <xsl:sequence select="imf:report-error(., 
             not(imf:boolean($buildcollection)) and exists($collections), 
@@ -438,7 +438,7 @@
         <!-- IM-85 -->
         <xsl:sequence select="imf:report-error(., 
             (count($packs-with-same-short-name) gt 1), 
-            'Duplicate package short name: [1], check packages: [2]', (imvert:short-name, string-join($packs-with-same-short-name[not(imf:member-of(.,$this))]/imvert:name,', ')))"/>
+            'Duplicate package short name: [1], check packages: [2]', (imvert:short-name, imf:string-group($packs-with-same-short-name[not(imf:member-of(.,$this))]/imvert:name)))"/>
         <xsl:sequence select="imf:report-error(., 
             (count(../imvert:package[imvert:name=$this/imvert:name]) gt 1), 
             'Duplicate package name.')"/>
@@ -567,7 +567,7 @@
             'Association on union class is not allowed.')"/>
         <xsl:sequence select="imf:report-error(., 
             not(ancestor::imvert:package/imvert:stereotype/@id = $schema-oriented-stereotypes), 
-            'Classes found outside a domain, system or external package.', string-join(imf:get-config-stereotypes('stereotype-name-domain-package'),'|'))"/>
+            'Classes found outside a domain, system or external package: [1]', imf:string-group(imf:get-config-stereotypes('stereotype-name-domain-package')))"/>
 
         <!--Classes can only occur as part of a domain package, as only domain packages are transformed to XML schemas. If you want classes to be (temporarity) stored elsewhere, place move them to a <<recyclebin>> package.-->
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
@@ -833,7 +833,7 @@
         
         <xsl:sequence select="imf:report-error(., 
             not(imvert:stereotype = $allowed-attribute-stereos), 
-            'Attribute must be stereotyped as [1]', string-join($allowed-attribute-stereos,' or '))"/>
+            'Attribute must be stereotyped as [1]', imf:string-group($allowed-attribute-stereos,' or '))"/>
         <xsl:next-match/>
     </xsl:template>
     
@@ -1266,7 +1266,7 @@
             </xsl:for-each>
         </xsl:variable>
         <!-- IM-67 -->
-        <xsl:sequence select="imf:report-warning($this, normalize-space($result[1]), 'Stereotype unexpected or unknown: [1]',(string-join($result,', ')))"/>
+        <xsl:sequence select="imf:report-warning($this, normalize-space($result[1]), 'Stereotype unexpected or unknown: [1]',imf:string-group($result))"/>
     </xsl:function>
     
     <!-- check if tagged values assigned are expected on this construct -->
@@ -1331,7 +1331,7 @@
                             <xsl:sequence select="imf:report-error($this, true(), 'Tagged value [1] occurs too often',($name/@original))"/>
                         </xsl:when>
                         <xsl:when test="exists($value-listing) and not($valid-from-listing)">
-                            <xsl:sequence select="imf:report-error($this, true(), 'Tagged value [1] has undeclared value [2], allowed values are: [3]',($name/@original,imf:value-trim($value,80),string-join($value-listing,'&quot;, &quot;')))"/>
+                            <xsl:sequence select="imf:report-error($this, true(), 'Tagged value [1] has undeclared value [2], allowed values are: [3]',($name/@original,imf:value-trim($value,80),imf:string-group($value-listing)))"/>
                         </xsl:when>
                         <xsl:when test="not($valid-omitted)">
                             <!-- okay, allowed -->

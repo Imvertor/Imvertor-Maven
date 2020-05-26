@@ -1050,14 +1050,14 @@
         <xsl:variable name="tagged-values" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[imf:tagged-value-select-profiled(.,$profiled) and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
         
         <xsl:if test="$tagged-values[2] and not($allow-duplicate-tv)">
-            <xsl:sequence select="imf:msg('WARNING','Duplicate assignment of tagged value [1] at [2] (at mode 0)', ($tagged-value-name, imf:compile-name-path($this)))"/>
+            <xsl:sequence select="imf:msg('WARNING','Duplicate assignment of tagged value [1] at [2] (at mode [3])', ($tagged-value-name, imf:compile-name-path($this),'0'))"/>
             <xsl:sequence select="imf:msg('DEBUG','At path: [1]', imf:compile-xpath($this))"/>
         </xsl:if>
         <xsl:variable name="local-value" select="$tagged-values"/>
         <xsl:choose>
             <xsl:when test="exists($local-value)">
                  <xsl:sequence select="$local-value"/>   
-                <xsl:sequence select="imf:msg('DEBUG','Tagged value [1] is [2] (at mode 0) at path: [3] ', (imf:string-group($tagged-value-name),imf:compile-xpath($this),imf:string-group($local-value)))"/>
+                <xsl:sequence select="imf:msg('DEBUG','Tagged value [1] is [2] (at mode [3]) at path: [4] ', (imf:string-group($tagged-value-name),imf:compile-xpath($this),'0',imf:string-group($local-value)))"/>
             </xsl:when>
             <xsl:when test="not($profiled)"><!-- assume that all tagged values in different locations in the XMI are profiled -->
                 <xsl:sequence select="()"/>
@@ -1065,7 +1065,7 @@
             <xsl:otherwise>
                 <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$this/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
                 <xsl:if test="$tagged-values[2] and not($allow-duplicate-tv)"> 
-                    <xsl:sequence select="imf:msg('WARNING','Duplicate assignment of tagged value [1] at [2] (at mode 1)', ($tagged-value-name, imf:compile-name-path($this)))"/>
+                    <xsl:sequence select="imf:msg('WARNING','Duplicate assignment of tagged value [1] at [2] (at mode [3])', ($tagged-value-name, imf:compile-name-path($this),'1'))"/>
                     <xsl:sequence select="imf:msg('DEBUG','At path: [1]', imf:compile-xpath($this))"/>
                 </xsl:if>
                 <xsl:variable name="global-value" select="$tagged-values"/>
@@ -1078,7 +1078,7 @@
                         <xsl:variable name="crole" select="imf:get-classifier-role($this)"/>
                         <xsl:variable name="tagged-values" select="$crole/UML:ModelElement.taggedValue/UML:TaggedValue[imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
                         <xsl:if test="$tagged-values[2] and not($allow-duplicate-tv)"> 
-                            <xsl:sequence select="imf:msg('WARNING','Duplicate assignment of tagged value [1] within classifier role [2] (at mode 2)', ($tagged-value-name,imf:compile-name-path($crole)))"/>
+                            <xsl:sequence select="imf:msg('WARNING','Duplicate assignment of tagged value [1] within classifier role [2] (at mode [3])', ($tagged-value-name,imf:compile-name-path($crole),'2'))"/>
                             <xsl:sequence select="imf:msg('DEBUG','At path: [1]', imf:compile-xpath($this))"/>
                         </xsl:if>
                         <xsl:variable name="local-cr-value" select="$tagged-values"/>
@@ -1090,7 +1090,7 @@
                             <xsl:otherwise>
                                 <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$crole/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
                                 <xsl:if test="$tagged-values[2] and not($allow-duplicate-tv)"> 
-                                    <xsl:sequence select="imf:msg('WARNING','Duplicate assignment of tagged value [1] at classifier role [2] (at mode 3)', ($tagged-value-name,imf:compile-name-path($crole)))"/>
+                                    <xsl:sequence select="imf:msg('WARNING','Duplicate assignment of tagged value [1] at classifier role [2] (at mode [3]', ($tagged-value-name,imf:compile-name-path($crole),'3'))"/>
                                     <xsl:sequence select="imf:msg('DEBUG','At path: [1]', imf:compile-xpath($this))"/>
                                 </xsl:if>
                                 <xsl:variable name="global-cr-value" select="$tagged-values"/>
@@ -1103,7 +1103,7 @@
                                         <xsl:variable name="root-model" select="$content/UML:Model"/>
                                         <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$root-model/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
                                         <xsl:if test="$tagged-values[2] and not($allow-duplicate-tv)"> 
-                                            <xsl:sequence select="imf:msg('WARNING','Duplicate assignment of tagged value [1] at root model [2] (at mode 4)', ($tagged-value-name,imf:compile-name-path($root-model)))"/>
+                                            <xsl:sequence select="imf:msg('WARNING','Duplicate assignment of tagged value [1] at root model [2] (at mode [3])', ($tagged-value-name,imf:compile-name-path($root-model),'4'))"/>
                                             <xsl:sequence select="imf:msg('DEBUG','At path: [1]', imf:compile-xpath($this))"/>
                                         </xsl:if>
                                         <xsl:variable name="root-model-value" select="$tagged-values"/>

@@ -131,7 +131,7 @@
                 <xsl:sequence select="$v"/>
             </xsl:when>
             <xsl:when test="$must-exist">
-                <xsl:sequence select="imf:msg('FATAL','Stereotypes is/are not defined: [1]', string-join($names,', '))"/>
+                <xsl:sequence select="imf:msg('FATAL','Stereotypes is/are not defined: [1]', imf:string-group($names))"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="'#unknown'"/>
@@ -155,7 +155,7 @@
                 <xsl:sequence select="$v"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:msg('FATAL','No such stereotype(s) [1] ', string-join($names,', '))"/>
+                <xsl:sequence select="imf:msg('FATAL','No such stereotype(s): [1] ', imf:string-group($names))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -193,7 +193,7 @@
                 <xsl:sequence select="$r"/>
             </xsl:when>
             <xsl:when test="empty($stereo)">
-                <xsl:sequence select="imf:msg('ERROR','No such stereotype(s) [1] ', string-join($names,', '))"/>
+                <xsl:sequence select="imf:msg('ERROR','No such stereotype(s): [1] ', imf:string-group($names))"/>
             </xsl:when>
         </xsl:choose>
     </xsl:function>
