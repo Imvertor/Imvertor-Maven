@@ -10,7 +10,7 @@
     
     <!-- INSPIRE -->
     
-    <xsl:variable name="inspire-notes-default-section-title" select="$configuration-notesrules-file/notes-rule/@default"/>
+    <xsl:variable name="inspire-notes-default-section-title" select="($configuration-notesrules-file/notes-rule/@default)[last()]"/>
     <xsl:variable name="inspire-notes-parts" select="distinct-values($configuration-notesrules-file/notes-rule/section/label/@title)"/>
     <xsl:variable name="inspire-notes-parts-subpattern" select="string-join(for $part in $inspire-notes-parts return concat('(',$part,')'),'|')"/> <!-- (DEFINITION)|(SOURCE)|(EXAMPLE)|(URI)|(NOTE) -->
     <xsl:variable name="inspire-notes-parts-subpattern-count" select="count($inspire-notes-parts)"/>
