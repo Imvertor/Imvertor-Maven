@@ -290,6 +290,7 @@
         <xsl:variable name="item-text" select="normalize-space($item)"/>
         
         <xsl:variable name="minmax-specified" select="$context[part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text() | part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text()]"/>
+        <xsl:variable name="in-machten" select="$context[part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/* | part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/*]"/>
         
         <xsl:choose>
             <xsl:when test="$item-text = 'Meetwaarde'">
@@ -297,7 +298,7 @@
                     <item>&#160;&#160;Naam</item>
                     <item>Meetwaarde 
                         <xsl:value-of select="$context/part[@type = 'CFG-DOC-PATROON']/item[2]/text()"/> 
-                        <xsl:if test="$minmax-specified"> in machten</xsl:if>
+                        <xsl:if test="$in-machten"> in machten</xsl:if>
                     </item>
                 </part>
                 <part>
