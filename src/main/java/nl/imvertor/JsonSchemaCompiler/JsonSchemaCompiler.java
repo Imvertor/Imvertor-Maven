@@ -57,7 +57,7 @@ public class JsonSchemaCompiler extends Step {
 		if (jsonschemarules.equals("JSON-Kadaster")) {
 			generateKadaster();
 		} else
-			runner.error(logger,"Schemarules not implemented: " + jsonschemarules);
+			runner.error(logger,"Schemarules not implemented: " + jsonschemarules + "\", cannot compile JSON");
 		
 		configurator.setStepDone(STEP_NAME);
 		

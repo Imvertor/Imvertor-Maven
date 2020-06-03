@@ -55,7 +55,7 @@ public class YamlCompiler extends Step {
 		} else if (jsonschemarules.equals("JSON-KennisnetBSM")) {
 			generateKING();
 		} else
-			runner.error(logger,"Schemarules not implemented: " + jsonschemarules);
+			runner.error(logger,"Schemarules not implemented: " + jsonschemarules + "\", cannot compile YAML");
 		
 		configurator.setStepDone(STEP_NAME);
 		

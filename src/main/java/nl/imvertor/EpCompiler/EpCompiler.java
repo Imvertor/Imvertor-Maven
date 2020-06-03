@@ -52,7 +52,7 @@ public class EpCompiler extends Step {
 		if (jsonschemarules.equals("JSON-Kadaster")) {
 			generateKadaster();
 		} else
-			runner.error(logger,"Schemarules not implemented: " + jsonschemarules);
+			runner.error(logger,"Schemarules not implemented: \"" + jsonschemarules + "\", cannot compile EP");
 		
 		configurator.setStepDone(STEP_NAME);
 		
