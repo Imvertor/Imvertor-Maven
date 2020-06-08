@@ -44,7 +44,7 @@ public class SkosCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
-		runner.info(logger,"Compiling SKOS");
+		runner.info(logger,"Compiling SKOS concepts");
 		generateSKOS();
 		
 		configurator.setStepDone(STEP_NAME);
