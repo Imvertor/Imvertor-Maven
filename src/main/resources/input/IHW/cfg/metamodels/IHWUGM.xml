@@ -47,6 +47,24 @@
         </profile>
     </profiles>
     
+    <naming>
+        <package>
+            <format>AsIs</format>
+        </package>
+        <class>
+            <format>AsIs</format>
+        </class>
+        <property>
+            <format>AsIs</format>
+        </property>
+        <tv>
+            <format>Upperstart</format> <!-- first character must be upper case. -->
+        </tv>
+        <element>
+            <format>LowerCamel</format>
+        </element>
+    </naming>
+    
     <features>
         <feature name="role-based">false</feature>
         <feature name="allow-multiple-supertypes">false</feature>
