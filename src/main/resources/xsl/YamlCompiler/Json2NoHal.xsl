@@ -22,7 +22,7 @@
 		
 	<xsl:template match="/json">
 		<JSON>
-			<JSONOP_schema>http://json-schema.org/draft-05/schema#</JSONOP_schema>
+			<JSONOP_DOLLAR_schema>http://json-schema.org/draft-05/schema#</JSONOP_DOLLAR_schema>
 			<title>UNKNOWN</title>
 			<xsl:apply-templates select="*"/>
 		</JSON>
@@ -69,7 +69,7 @@
 		"_embedded": {"$ref": "#/components/schemas/Regeltypering_embedded"}
      -->
 	<xsl:template match="properties/_embedded">
-		<xsl:variable name="ref-embedded" select="tokenize(JSONOP_ref,'/')[last()]"/>
+		<xsl:variable name="ref-embedded" select="tokenize(JSONOP_DOLLAR_ref,'/')[last()]"/>
 		<xsl:variable name="replace-struct" select="/json/components/schemas/*[name() = $ref-embedded]"/>
 		<xsl:apply-templates select="$replace-struct/properties/*"/>
 	</xsl:template>

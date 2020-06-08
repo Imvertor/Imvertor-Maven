@@ -51,7 +51,7 @@ public class JsonSchemaCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
-		runner.info(logger,"Compiling JSON");
+		runner.info(logger,"Compiling JSON schema");
 		
 		String jsonschemarules = configurator.getJsonSchemarules();
 		if (jsonschemarules.equals("JSON-Kadaster")) {

@@ -43,13 +43,17 @@ public class JsonFile extends AnyFile {
 	static JsonXMLConfig config;
 		 
 	public static void main(String[] args) {
-		JsonFile file = new JsonFile("c:/temp/sample.json");
+		JsonFile jsonInputFile = new JsonFile("d:\\projects\\validprojects\\BRO\\input\\SKOS-JSON\\aquo-data.json");
+		XmlFile xmlOutputFile = new XmlFile("c:/temp/sample.xml");
+		JsonFile jsonOutputFile = new JsonFile("c:/temp/sample.json");
 		try {
-			file.jsonToXml(new XmlFile("c:/temp/sample.xml"));
+			jsonInputFile.jsonToXml(xmlOutputFile);
+			xmlOutputFile.xmlToJson(jsonOutputFile);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("done");
 	}
 	
 	public JsonFile(File file) throws IOException {
@@ -180,10 +184,16 @@ public class JsonFile extends AnyFile {
 	}
 	
 	public static String escapeJsonOperator(String xmlString) {
-		return StringUtils.replace(StringUtils.replace(xmlString, "<$", "<JSONOP_"),"</$", "</JSONOP_");
+		String resultString = xmlString;
+		resultString = StringUtils.replace(StringUtils.replace(resultString, "<$", "<JSONOP_DOLLAR_"),"</$", "</JSONOP_DOLLAR_");
+		resultString = StringUtils.replace(StringUtils.replace(resultString, "<@", "<JSONOP_AT_"),"</@", "</JSONOP_AT_");
+		return resultString;
 	}
 	public static String deescapeJsonOperator(String jsonString) {
-		return StringUtils.replace(jsonString, "JSONOP_", "$");
+		String resultString = jsonString;
+		resultString = StringUtils.replace(resultString, "JSONOP_DOLLAR_", "$");
+		resultString = StringUtils.replace(resultString, "JSONOP_AT_", "@");
+		return resultString;
 	}
 	
 	/**

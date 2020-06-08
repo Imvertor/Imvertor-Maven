@@ -17,7 +17,7 @@
     
     <xsl:template match="/ep:construct">
         <JSON> <!-- this root element will be stripped, the json is completely wrapped within { .. } -->
-            <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_schema','http://json-schema.org/draft-06/schema#')"></xsl:sequence>
+            <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_DOLLAR_schema','http://json-schema.org/draft-06/schema#')"></xsl:sequence>
             <xsl:sequence select="imf:ep-to-namevaluepair('title',imf:get-ep-parameter(.,'subpath'))"/>
             <json>
                 <definitions>
@@ -47,7 +47,7 @@
                             <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
                             <items>
                                 <xsl:variable name="target" select="//ep:construct[ep:id = current()/ep:ref]"/>
-                                <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_ref',concat('#/definitions/',$target/ep:tech-name))"/>
+                                <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_DOLLAR_ref',concat('#/definitions/',$target/ep:tech-name))"/>
                             </items>
                             <xsl:sequence select="imf:ep-to-namevaluepair('minItems',ep:min-occurs)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('maxItems',ep:max-occurs)"/>
@@ -55,14 +55,14 @@
                         <xsl:when test="ep:ref">
                             <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Ref [1]',$n)"/>
                             <xsl:variable name="target" select="//ep:construct[ep:id = current()/ep:ref]"/>
-                            <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_ref',concat('#/definitions/',$target/ep:tech-name))"/>
+                            <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_DOLLAR_ref',concat('#/definitions/',$target/ep:tech-name))"/>
                         </xsl:when>
                         <xsl:when test="ep:seq and (ep:min-occurs or ep:max-occurs)">
                             <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Seq with occurs [1]',$n)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
                             <items>
                                 <xsl:variable name="target" select="//ep:construct[ep:id = current()/ep:ref]"/>
-                                <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_ref',concat('#/definitions/',$target/ep:tech-name))"/>
+                                <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_DOLLAR_ref',concat('#/definitions/',$target/ep:tech-name))"/>
                             </items>
                             <xsl:sequence select="imf:ep-to-namevaluepair('minItems',ep:min-occurs)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('maxItems',ep:max-occurs)"/>
@@ -88,7 +88,7 @@
                                     <allOf>
                                         <xsl:variable name="target" select="//ep:construct[ep:id = $super]"/>
                                         <xsl:for-each select="$target">
-                                            <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_ref',concat('#/definitions/',ep:tech-name))"/>
+                                            <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_DOLLAR_ref',concat('#/definitions/',ep:tech-name))"/>
                                         </xsl:for-each>
                                     </allOf>
                                     <allOf>
@@ -106,7 +106,7 @@
                             <xsl:for-each select="ep:choice/ep:construct">
                                 <oneOf>
                                     <xsl:variable name="target" select="//ep:construct[ep:id = current()/ep:ref]"/>
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_ref',concat('#/definitions/',$target/ep:tech-name))"/>
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_DOLLAR_ref',concat('#/definitions/',$target/ep:tech-name))"/>
                                 </oneOf>
                             </xsl:for-each>
                         </xsl:when>
