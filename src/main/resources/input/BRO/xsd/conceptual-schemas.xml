@@ -1295,6 +1295,24 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+              <cs:Construct>
+                  <cs:name>SoilProfile</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>SoilProfile</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>SoilProfile</cs:name>
+                        <cs:asAttribute>SoilProfileType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
                <cs:Construct>
                   <cs:name>SoilHorizon</cs:name>
                   <cs:sentinel>false</cs:sentinel>
