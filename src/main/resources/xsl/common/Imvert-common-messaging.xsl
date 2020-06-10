@@ -103,7 +103,9 @@
 	-->
     <xsl:function name="imf:msg-insert-parms-val" as="xs:string?">
         <xsl:param name="this" as="item()"/>
-        <xsl:value-of select="concat('&quot;',if ($this instance of element() and $this/*) then imf:get-construct-name($this) else string($this),'&quot;')"/>
+        <xsl:param name="leftsep" as="xs:string?"/>
+        <xsl:param name="rightsep" as="xs:string?"/>
+        <xsl:value-of select="concat($leftsep,if ($this instance of element() and $this/*) then imf:get-construct-name($this) else string($this),$rightsep)"/>
     </xsl:function>
         
     <xsl:function name="imf:track" as="item()*">

@@ -771,12 +771,14 @@
     <xsl:function name="imf:insert-fragments-by-index" as="xs:string">
         <xsl:param name="string" as="xs:string"/>
         <xsl:param name="parms" as="item()*"/>
+        <xsl:param name="leftsep" as="xs:string?"/>
+        <xsl:param name="rightsep" as="xs:string?"/>
         <xsl:variable name="locs" select="tokenize($string,'\[\d+\]')"/>
         <xsl:variable name="r">
             <xsl:analyze-string select="$string" regex="\[(\d)\]">
                 <xsl:matching-substring>
                     <xsl:variable name="g" select="$parms[xs:integer(regex-group(1))]"/>
-                    <xsl:value-of select="if (exists($g)) then imf:msg-insert-parms-val($g) else '-null-'"/>
+                    <xsl:value-of select="if (exists($g)) then imf:msg-insert-parms-val($g,$leftsep,$rightsep) else '-null-'"/>
                 </xsl:matching-substring>
                 <xsl:non-matching-substring>
                     <xsl:value-of select="."/>
@@ -786,6 +788,12 @@
         <xsl:value-of select="$r"/>
     </xsl:function>
 
+    <xsl:function name="imf:insert-fragments-by-index" as="xs:string">
+        <xsl:param name="string" as="xs:string"/>
+        <xsl:param name="parms" as="item()*"/>
+        <xsl:value-of select="imf:insert-fragments-by-index($string,$parms,'&quot;','&quot;')"/>
+    </xsl:function>
+    
     <!-- return a document when it exists, otherwise return empty sequence -->
     <xsl:function name="imf:document" as="document-node()?">
         <xsl:param name="uri-or-path" as="xs:string"/>
