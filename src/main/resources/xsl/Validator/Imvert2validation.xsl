@@ -1380,7 +1380,7 @@
     
     <xsl:function name="imf:test-file-name-convention" as="xs:boolean">
         <xsl:param name="name" as="xs:string"/>
-        <xsl:value-of select="matches($name,$file-name-requirements-pattern)"/>
+        <xsl:sequence select="matches($name,$file-name-requirements-pattern)"/>
     </xsl:function>
     
     <!-- 

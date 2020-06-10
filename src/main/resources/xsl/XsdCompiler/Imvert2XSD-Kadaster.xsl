@@ -1260,7 +1260,7 @@
    
     <xsl:function name="imf:is-restriction" as="xs:boolean">
         <xsl:param name="this" as="node()"/>
-        <xsl:value-of select="exists($this/(imvert:pattern | imvert:max-length | imvert:total-digits | imvert:fraction-digits))"/>
+        <xsl:sequence select="exists($this/(imvert:pattern | imvert:max-length | imvert:total-digits | imvert:fraction-digits))"/>
     </xsl:function>
     
     <?x associates komen niet meer voor?

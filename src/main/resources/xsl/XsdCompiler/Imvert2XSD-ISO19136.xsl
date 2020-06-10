@@ -1440,11 +1440,11 @@
    
     <xsl:function name="imf:is-restriction" as="xs:boolean">
         <xsl:param name="this" as="node()"/>
-        <xsl:value-of select="exists($this/(imvert:pattern | imvert:max-length | imvert:total-digits | imvert:fraction-digits))"/>
+        <xsl:sequence select="exists($this/(imvert:pattern | imvert:max-length | imvert:total-digits | imvert:fraction-digits))"/>
     </xsl:function>
     <xsl:function name="imf:is-estimation" as="xs:boolean">
         <xsl:param name="this" as="node()"/>
-        <xsl:value-of select="$this/imvert:stereotype/@id = ('stereotype-name-estimation')"/>
+        <xsl:sequence select="$this/imvert:stereotype/@id = ('stereotype-name-estimation')"/>
     </xsl:function>
     
     <?x associates komen niet meer voor?

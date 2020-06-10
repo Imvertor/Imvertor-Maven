@@ -42,6 +42,7 @@ import net.sf.saxon.style.Compilation;
 import net.sf.saxon.trace.InstructionInfo;
 import net.sf.saxon.trans.CompilerInfo;
 import net.sf.saxon.trans.XPathException;
+import net.sf.saxon.trans.XsltController;
 import nl.imvertor.common.Configurator;
 
 
@@ -96,7 +97,7 @@ public class XmlTimingTraceListener implements TraceListener {
         t_total = System.nanoTime() - t_total;
         try {
             PreparedStylesheet sheet = this.getStyleSheet();
-            Controller controller = sheet.newController();
+            XsltController controller = sheet.newController();
 
             Properties props = new Properties();
             props.setProperty("method", "html");

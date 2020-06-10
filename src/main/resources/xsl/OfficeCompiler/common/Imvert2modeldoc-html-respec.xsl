@@ -635,17 +635,17 @@
     
     <xsl:function name="imf:get-section-level" as="xs:integer">
         <xsl:param name="section" as="element(section)"/>
-        <xsl:value-of select="count($section/ancestor::section) + (if ($has-multiple-domains) then 3 else 2)"/>
+        <xsl:sequence select="count($section/ancestor::section) + (if ($has-multiple-domains) then 3 else 2)"/>
     </xsl:function>
     
     <xsl:function name="imf:get-section-header-element-name" as="xs:string">
         <xsl:param name="level" as="xs:integer"/>
-        <xsl:value-of select="concat('h',$level)"/>
+        <xsl:sequence select="concat('h',$level)"/>
     </xsl:function>
     
-    <xsl:function name="imf:create-formatted-text">
+    <xsl:function name="imf:create-formatted-text" as="xs:string">
         <xsl:param name="text"/>
-        <xsl:sequence select="$text/node()"/>
+        <xsl:value-of select="$text/node()"/>
     </xsl:function>
     
     <xsl:function name="imf:create-section-header-name" as="element()">

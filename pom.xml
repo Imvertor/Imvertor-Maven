@@ -142,7 +142,7 @@
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>9.6.0-7</version>
+      <version>9.9.1-7</version>
       <!-- MSL -->
     </dependency>
 
@@ -305,6 +305,26 @@
       <artifactId>org.eclipse.mylyn.wikitext.twiki</artifactId>
       <version>3.0.25</version>
     </dependency>
+    
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.11.0</version>
+	</dependency>
+	
+     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+ 	 <dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-api</artifactId>
+	    <version>1.7.30</version>
+	 </dependency>
+
+	 <dependency>
+	    <groupId>com.networknt</groupId>
+	    <artifactId>json-schema-validator</artifactId>
+	    <version>1.0.40</version>
+	 </dependency>
     
   </dependencies>
 

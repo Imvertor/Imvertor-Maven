@@ -72,8 +72,8 @@ public class Messenger extends SequenceWriter {
 		
 		Runner runner = cfg.getRunner();
 
-		// deterrmine the document passed in the message
-		NodeInfo messageroot = ((NodeInfo) item).getDocumentRoot(); // in saxon 9.8: .getTreeInfo().getRootNode()
+		// determine the document passed in the message
+		NodeInfo messageroot = ((NodeInfo) item).getTreeInfo().getRootNode();
 		AxisIterator elements = messageroot.iterateAxis(AxisInfo.CHILD);
 		NodeInfo originalChild = (NodeInfo) elements.next();
 		NodeInfo child = originalChild;
