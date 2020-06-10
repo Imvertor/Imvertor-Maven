@@ -64,7 +64,7 @@
 				<xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-PROJECT-URL')"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:sequence select="imf:msg('ERROR', 'No tagged value project_url has been defined on the interface, define one.')" />
+				<xsl:sequence select="imf:msg('WARN', 'No tagged value project_url has been defined on the interface, define one.')" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
