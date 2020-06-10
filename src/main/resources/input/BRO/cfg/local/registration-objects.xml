@@ -216,8 +216,8 @@
         <name lang="en">Models and Maps</name>
         <abbrev>MM</abbrev>
         <registratieobject>
-            <name lang="nl">Bodem- en grondwatertrappenkaart</name>
-            <name lang="en">Soil and groundwater map</name>
+            <name lang="nl">Bodemkaart</name>
+            <name lang="en">Soil map</name>
             <abbrev>SGM</abbrev>
         </registratieobject>
         <registratieobject>
