@@ -34,7 +34,7 @@
    <cli-parm>
       <name>jsonconceptsname</name>
       <arg>string</arg>
-      <tip>Thee name of the json concepts file generated</tip>
+      <tip>The name of the JSON concepts file generated</tip>
       <required>false</required>
    </cli-parm> 
    
