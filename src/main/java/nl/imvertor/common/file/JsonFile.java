@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
@@ -19,6 +21,7 @@ import javax.xml.transform.stax.StAXSource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,6 +45,7 @@ public class JsonFile extends AnyFile {
 	
 	static JsonXMLConfig config;
 		 
+	/*
 	public static void main(String[] args) {
 		JsonFile jsonInputFile = new JsonFile("d:\\projects\\validprojects\\BRO\\input\\SKOS-JSON\\aquo-data.json");
 		XmlFile xmlOutputFile = new XmlFile("c:/temp/sample.xml");
@@ -54,7 +58,9 @@ public class JsonFile extends AnyFile {
 			e.printStackTrace();
 		}
 		System.out.println("done");
+	
 	}
+	*/
 	
 	public JsonFile(File file) throws IOException {
 		super(file);
@@ -229,7 +235,14 @@ public class JsonFile extends AnyFile {
 	 */
 	public static boolean validateString(Configurator configurator, String jsonString) throws IOException, ConfiguratorException {
 		try {
-			new JSONObject(jsonString); // Convert text to object
+			Matcher m = Pattern.compile("^\\s*?(\\S)").matcher(jsonString);
+			String firstChar = (m.find()) ? m.group(1) : ""; 
+			if (firstChar.equals("{"))  
+				new JSONObject(jsonString); // Convert text to object
+			else if (firstChar.equals("["))
+				new JSONArray(jsonString); // Convert text to array
+			else
+				throw new Exception("Unrecognized json type: \"" + firstChar + "\"");
 		} catch (Exception e) {
 			configurator.getRunner().error(logger, "Invalid Json: \"" + e.getMessage() + "\"", null, "", "IJ");
 			return false;

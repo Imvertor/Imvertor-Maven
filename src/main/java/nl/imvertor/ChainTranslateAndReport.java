@@ -30,6 +30,7 @@ import nl.imvertor.EapCompiler.EapCompiler;
 import nl.imvertor.EpCompiler.EpCompiler;
 import nl.imvertor.HistoryCompiler.HistoryCompiler;
 import nl.imvertor.ImvertCompiler.ImvertCompiler;
+import nl.imvertor.JsonConceptsCompiler.JsonConceptsCompiler;
 import nl.imvertor.JsonSchemaCompiler.JsonSchemaCompiler;
 import nl.imvertor.ModelHistoryAnalyzer.ModelHistoryAnalyzer;
 import nl.imvertor.OfficeCompiler.OfficeCompiler;
@@ -88,6 +89,7 @@ public class ChainTranslateAndReport {
 			configurator.getCli(SkosCompiler.STEP_NAME);
 			configurator.getCli(EpCompiler.STEP_NAME);
 			configurator.getCli(JsonSchemaCompiler.STEP_NAME);
+			configurator.getCli(JsonConceptsCompiler.STEP_NAME);
 			configurator.getCli(YamlCompiler.STEP_NAME);
 			configurator.getCli(ReleaseComparer.STEP_NAME);
 			configurator.getCli(SchemaValidator.STEP_NAME);
@@ -204,6 +206,9 @@ public class ChainTranslateAndReport {
 				    if (configurator.isTrue("cli","createshacl",false)) 
 				    	succeeds = succeeds && (new ShaclCompiler()).run();
 		
+				    if (configurator.isTrue("cli","createjsonconcepts",false))
+			 			succeeds = succeeds && (new JsonConceptsCompiler()).run();
+				
 				    if (configurator.isTrue("cli","createskos",false)) 
 				    	succeeds = succeeds && (new SkosCompiler()).run();
 		
