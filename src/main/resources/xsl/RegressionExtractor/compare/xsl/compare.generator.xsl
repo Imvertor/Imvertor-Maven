@@ -29,11 +29,13 @@
     
     version="2.0">
 
+    <xsl:import href="../../../common/Imvert-common.xsl"/>
+    
     <xsl:param name="ctrl-filepath" as="xs:string"/>
     <xsl:param name="test-filepath" as="xs:string"/>
     <xsl:param name="diff-filepath" as="xs:string"/>
     <xsl:param name="max-difference-reported" as="xs:string"/>
-    
+ 
     <!-- 
         This file processes a diff file and generates a XSLT file which may be included into another client XSLT. 
         This client XSLT must implement the handling of all differencing conditions, in mode "compare".
@@ -43,9 +45,9 @@
     
     <xsl:namespace-alias stylesheet-prefix="xslr" result-prefix="xsl"/>
 
-    <xsl:variable name="diff-url" select="concat('file:/', replace($diff-filepath,'\\','/'))"/>
-    <xsl:variable name="ctrl-url" select="concat('file:/', replace($ctrl-filepath,'\\','/'))"/>
-    <xsl:variable name="test-url" select="concat('file:/', replace($test-filepath,'\\','/'))"/>
+    <xsl:variable name="diff-url" select="imf:file-to-url($diff-filepath)"/>
+    <xsl:variable name="ctrl-url" select="imf:file-to-url($ctrl-filepath)"/>
+    <xsl:variable name="test-url" select="imf:file-to-url($test-filepath)"/>
 
     <xsl:variable name="quot">'</xsl:variable>
     <xsl:variable name="rootstring">/files[1]/</xsl:variable>
