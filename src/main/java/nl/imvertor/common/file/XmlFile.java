@@ -629,7 +629,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	/**
 	 * Create a new Json file from this W3C compliant XML file. 
 	 * 
-	 * Check W3CJsofile for more info. 
+	 * Check Jsonfile for more info. 
 	 * 
 	 * @param targetFile
 	 * @throws Exception
