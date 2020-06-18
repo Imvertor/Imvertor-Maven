@@ -185,21 +185,16 @@ public class YamlCompiler extends Step {
 		
 		// STUB: transform json to XML, remove HAL, and serialize back to json.
 		if (succeeds) {
-			halJsonFile.prettyPrint();
 			
 			XmlFile  halXmlFile = new XmlFile(configurator.getXParm("properties/WORK_JSON_HAL_FILE_PATH"));
 			XmlFile nohalXmlFile = new XmlFile(configurator.getXParm("properties/WORK_JSON_NOHAL_FILE_PATH"));
 			
-			halJsonFile.jsonToXml(halXmlFile);
+			halJsonFile.toXml(halXmlFile);
 			
 			succeeds = succeeds && transformer.transformStep("properties/WORK_JSON_HAL_FILE_PATH","properties/WORK_JSON_NOHAL_FILE_PATH", "properties/IMVERTOR_JSON_NOHAL_XSLPATH");
 		
 			JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/RESULT_JSON_NOHAL_FILE_PATH"));
-			nohalXmlFile.xmlToJson(jsonFile);
-			jsonFile.prettyPrint();
-			
-			// strip the root
-			jsonFile.stripJSONroot();
+			nohalXmlFile.toJson(jsonFile);
 			
 			// validate
 			succeeds = succeeds && jsonFile.validate(configurator);

@@ -134,14 +134,14 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 			jfile1 = new JsonFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\Tasks-Kadaster-JIRA\\app\\yaml\\20150101-2.0.json");
 			jfile2 = new JsonFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\Tasks-Kadaster-JIRA\\app\\yaml\\20150101-2.0.roundtrip.json");
 			xfile = new XmlFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\Tasks-Kadaster-JIRA\\app\\yaml\\20150101-2.0.json.xml");
-			jfile1.jsonToXml(xfile);
-			xfile.xmlToJson(jfile2);
+			jfile1.toXml(xfile);
+			xfile.toJson(jfile2);
 			
 			jfile1 = new JsonFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-testing\\trunk\\input\\eap\\Kadaster\\MIM2Json\\Omgevingswet poging 12 september(CLEAN).json");
 			jfile2 = new JsonFile("c:\\temp\\jfile2.json");
 			xfile = new XmlFile("c:\\temp\\jfile1.json.xml");
-			jfile1.jsonToXml(xfile);
-			xfile.xmlToJson(jfile2);
+			jfile1.toXml(xfile);
+			xfile.toJson(jfile2);
 		}
 	}
 	
@@ -626,8 +626,16 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		tmpFile.delete();
 	}
 	
-	public void xmlToJson(JsonFile targetFile) throws Exception {
-    	targetFile.setContent(JsonFile.deescapeJsonOperator(JsonFile.xmlToJson(getContent())));
+	/**
+	 * Create a new Json file from this W3C compliant XML file. 
+	 * 
+	 * Check W3CJsofile for more info. 
+	 * 
+	 * @param targetFile
+	 * @throws Exception
+	 */
+	public void toJson(JsonFile targetFile) throws Exception {
+    	targetFile.fromXml(this);
     }
 
 }
