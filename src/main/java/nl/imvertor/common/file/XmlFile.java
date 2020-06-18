@@ -118,7 +118,9 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	
 	public static void main(String[] args) throws Exception {
 		
-		int test = 2;
+		Configurator configurator = Configurator.getInstance();
+		
+		int test = 3;
 		
 		if (test == 1) {
 			//XmlFile file = new XmlFile("D:\\projects\\arjan\\Java development\\CommonHandlers\\sandbox\\EHcache\\config\\ehcache.xml");
@@ -127,22 +129,30 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 			file.getMessages();
 			
 		}
-		if (test ==2) {
-			JsonFile jfile1, jfile2;
-			XmlFile xfile;
+		if (test == 2) {
+			JsonFile jfile1;
+			YamlFile yfile1;
+			XmlFile xfile1;
 			
-			jfile1 = new JsonFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\Tasks-Kadaster-JIRA\\app\\yaml\\20150101-2.0.json");
-			jfile2 = new JsonFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\Tasks-Kadaster-JIRA\\app\\yaml\\20150101-2.0.roundtrip.json");
-			xfile = new XmlFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\Tasks-Kadaster-JIRA\\app\\yaml\\20150101-2.0.json.xml");
-			jfile1.toXml(xfile);
-			xfile.toJson(jfile2);
+			jfile1 = new JsonFile(configurator.getResource("tests/XmlFile/Bakstenen basismodel.json"));
+			xfile1 = new XmlFile(configurator.getResource("tests/XmlFile/Bakstenen basismodel.xml"));
+			yfile1 = new YamlFile(configurator.getResource("tests/XmlFile/Bakstenen basismodel.yaml"));
 			
-			jfile1 = new JsonFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-testing\\trunk\\input\\eap\\Kadaster\\MIM2Json\\Omgevingswet poging 12 september(CLEAN).json");
-			jfile2 = new JsonFile("c:\\temp\\jfile2.json");
-			xfile = new XmlFile("c:\\temp\\jfile1.json.xml");
-			jfile1.toXml(xfile);
-			xfile.toJson(jfile2);
+			jfile1.toXml(xfile1);
+			jfile1.toYaml(yfile1);
+			
 		}
+		if (test == 3) {
+			YamlFile yfile1;
+			XmlFile xfile1;
+			
+			xfile1 = new XmlFile(configurator.getResource("tests/XmlFile/Bakstenen basismodel.xml"));
+			yfile1 = new YamlFile(configurator.getResource("tests/XmlFile/Bakstenen basismodel.yaml"));
+			
+			yfile1.toXml(xfile1);
+			
+		}
+		System.out.println("Done " + test); 
 	}
 	
 	public XmlFile(String pathname) {
@@ -637,5 +647,18 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	public void toJson(JsonFile targetFile) throws Exception {
     	targetFile.fromXml(this);
     }
+	
+	/**
+	 * Create a new Yaml file from this W3C compliant XML file. 
+	 * 
+	 * Check Yamlfile for more info. 
+	 * 
+	 * @param targetFile
+	 * @throws Exception
+	 */
+	public void toYaml(YamlFile targetFile) throws Exception {
+    	targetFile.fromXml(this);
+    }
+	
 
 }

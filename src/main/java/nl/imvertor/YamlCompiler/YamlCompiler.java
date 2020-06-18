@@ -119,8 +119,8 @@ public class YamlCompiler extends Step {
 			
 			// validate
 			String hc = headerFile.getContent();
-			succeeds = succeeds && YamlFile.validate(configurator, hc);
-			succeeds = succeeds && bodyFile.convertToYaml(configurator, yamlFile);
+			succeeds = succeeds && YamlFile.validate(hc);
+			succeeds = succeeds && bodyFile.toYaml(yamlFile);
 			String bc = yamlFile.getContent();
 			
 			// in all cases copy results to app folder
@@ -181,7 +181,7 @@ public class YamlCompiler extends Step {
 
 		JsonFile halJsonFile = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
 		// Debug: test if json is okay
-		succeeds = succeeds && halJsonFile.validate(configurator);
+		succeeds = succeeds && halJsonFile.validate();
 		
 		// STUB: transform json to XML, remove HAL, and serialize back to json.
 		if (succeeds) {
@@ -197,7 +197,7 @@ public class YamlCompiler extends Step {
 			nohalXmlFile.toJson(jsonFile);
 			
 			// validate
-			succeeds = succeeds && jsonFile.validate(configurator);
+			succeeds = succeeds && jsonFile.validate();
 		
 			String schemaName = configurator.getXParm("appinfo/OpenAPI-schema-name");
 		

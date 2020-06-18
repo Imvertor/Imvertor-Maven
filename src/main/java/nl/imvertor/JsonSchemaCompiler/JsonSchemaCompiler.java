@@ -94,7 +94,7 @@ public class JsonSchemaCompiler extends Step {
 		jsonXmlFile.toJson(jsonFile);
 		
 		// Debug: test if json is okay
-		succeeds = succeeds && jsonFile.validate(configurator);
+		succeeds = succeeds && jsonFile.validate();
 		
 		// pretty print and store to json folder
 		if (succeeds) {

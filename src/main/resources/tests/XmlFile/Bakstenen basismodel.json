@@ -1,0 +1,387 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "title": "cdmkad/Bakstenen basismodel/20180101",
+    "json": {
+        "definitions": {
+            "Lijn": {
+                "title": "Lijn",
+                "description": "Dit is de definitie van \"Lijn\".",
+                "type": "string"
+            },
+            "OnvolledigDatum": {
+                "title": "OnvolledigDatum",
+                "type": "string"
+            },
+            "ExternContact": {
+                "title": "Extern contact",
+                "description": "Een extern contact is een instelling waarvan specifieke contactinformatie moet worden  opgenomen.",
+                "type": "object",
+                "required": ["contactinfo"],
+                "properties": {
+                    "contactinfo": {
+                        "title": "contactinfo",
+                        "type": "string"
+                    }
+                }
+            },
+            "Baksteen": {
+                "title": "Baksteen",
+                "description": "CDMKAD BASISMODEL: DEFINITIE (BAKSTEEN IN TV)",
+                "type": "object",
+                "required": [
+                    "magazijnID",
+                    "omvang",
+                    "type",
+                    "hoeken",
+                    "maxTemperatuur",
+                    "maat",
+                    "inMagazijn",
+                    "oppervlakte",
+                    "kleur",
+                    "stapelbaarOp"
+                ],
+                "properties": {
+                    "magazijnID": {
+                        "title": "magazijnID",
+                        "description": "Dit is de definitie van \"magazijn ID\".",
+                        "type": "integer"
+                    },
+                    "nettoGewicht": {
+                        "title": "nettoGewicht",
+                        "description": "Dit is de definitie van \"netto gewicht\".",
+                        "type": "array",
+                        "items": {"$ref": "#/definitions/Gewicht"},
+                        "minItems": 0
+                    },
+                    "omvang": {
+                        "title": "omvang",
+                        "description": "Dit is de definitie van \"omvang\".",
+                        "$ref": "#/definitions/SteenGrootte"
+                    },
+                    "type": {
+                        "title": "type",
+                        "description": "Dit is de definitie van \"type\". Locatie: http://www.sample.com/valuelists/bricktypes",
+                        "$ref": "#/definitions/Waardelijst"
+                    },
+                    "hoeken": {
+                        "title": "hoeken",
+                        "description": "Dit is de definitie van \"hoeken\".",
+                        "type": "integer"
+                    },
+                    "omschrijving": {
+                        "title": "omschrijving",
+                        "description": "Dit is de definitie van \"omschrijving\".",
+                        "type": "string"
+                    },
+                    "maxTemperatuur": {
+                        "title": "maxTemperatuur",
+                        "description": "Dit is de definitie van \"max temperatuur\".",
+                        "type": "number"
+                    },
+                    "maat": {
+                        "title": "maat",
+                        "description": "Dit is de definitie van \"maat\".",
+                        "$ref": "#/definitions/Goniometrisch"
+                    },
+                    "inMagazijn": {
+                        "title": "inMagazijn",
+                        "description": "Dit is de definitie van \"in magazijn\".",
+                        "type": "UNKNOWN-DATATYPE: ep:boolean"
+                    },
+                    "oppervlakte": {
+                        "title": "oppervlakte",
+                        "description": "Dit is de definitie van \"oppervlakte\".",
+                        "$ref": "#/definitions/Surface"
+                    },
+                    "kleur": {
+                        "title": "kleur",
+                        "description": "CDMKAD BASISMODEL: \nDEFINITIIE Locatie: CDMKAD BASISMODEL: DATA LOCATIE",
+                        "type": "string",
+                        "pattern": "[A-Z]+"
+                    },
+                    "geproduceerdDoor": {
+                        "title": "geproduceerdDoor",
+                        "description": "CDMKAD BASISMODEL: Dit is de definitie van \"geproduceerd door\".",
+                        "type": "array",
+                        "items": {"$ref": "#/definitions/Producent"},
+                        "minItems": 0,
+                        "maxItems": "unbounded"
+                    },
+                    "stapelbaarOp": {
+                        "title": "stapelbaarOp",
+                        "description": "Dit is de definitie van \"stapelbaar op\".",
+                        "type": "array",
+                        "items": {"$ref": "#/definitions/Baksteen"},
+                        "maxItems": "unbounded"
+                    }
+                }
+            },
+            "Goniometrisch": {
+                "title": "Goniometrisch",
+                "description": "Dit is de definitie van \"goniometrisch\".",
+                "oneOf": [
+                    {"$ref": "#/definitions/Lijn"},
+                    {"$ref": "#/definitions/Oppervlakte"}
+                ]
+            },
+            "Producent": {
+                "title": "Producent",
+                "description": "Dit is de definitie van \"producent\".",
+                "type": "object",
+                "required": [
+                    "id",
+                    "site",
+                    "contractDatum",
+                    "einddatum"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "Dit is de definitie van \"ID\".",
+                        "type": "string"
+                    },
+                    "site": {
+                        "title": "site",
+                        "description": "Dit is de definitie van \"site\".",
+                        "type": "uri",
+                        "format": "uri"
+                    },
+                    "contractDatum": {
+                        "title": "contractDatum",
+                        "description": "Dit is de definitie van \"contract datum\".",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "einddatum": {
+                        "title": "einddatum",
+                        "$ref": "#/definitions/OnvolledigDatum"
+                    }
+                }
+            },
+            "ExterneProducent": {
+                "title": "Externe producent",
+                "description": "Dit is de definitie van \"externe producent\".",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": [
+                            "#/definitions/ExternContact",
+                            "#/definitions/Producent"
+                        ]
+                    },
+                    {
+                        "required": [
+                            "contactinfo",
+                            "postcodegebied"
+                        ],
+                        "properties": {
+                            "contactinfo": {
+                                "title": "contactinfo",
+                                "type": "string"
+                            },
+                            "postcodegebied": {
+                                "title": "postcodegebied",
+                                "description": "CDMKAD BASISMODEL: DEFINITIE IN NOTES FIELD",
+                                "$ref": "#/definitions/Postcode"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Oppervlakte": {
+                "title": "Oppervlakte",
+                "description": "Dit is de definitie van \"Oppervlakte\".",
+                "type": "string"
+            },
+            "Status": {
+                "title": "Status",
+                "description": "Status  of a process.",
+                "type": "array",
+                "items": [
+                    "inOntwikkeling",
+                    "inProductie"
+                ]
+            },
+            "Verkoop": {
+                "title": "Verkoop",
+                "description": "Dit is de definitie van \"verkoop\".",
+                "type": "object",
+                "required": ["verkoopDatum"],
+                "properties": {
+                    "verkoopDatum": {
+                        "title": "verkoopDatum",
+                        "description": "CDMKAD BASISMODEL: \nDit is de definitie van \"verkoopDatum\".",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Contract": {
+                "title": "Contract",
+                "description": "Dit is de definitie van \"contract\".",
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "CDMKAD BASISMODEL: DEFINITIE IN NOTES FIELD",
+                        "type": "string"
+                    }
+                }
+            },
+            "Klant": {
+                "title": "Klant",
+                "description": "Dit is de definitie van \"Klant\".",
+                "type": "object",
+                "required": [
+                    "id",
+                    "heeftContract"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "Dit is de definitie van \"ID\".",
+                        "type": "string"
+                    },
+                    "heeftContract": {
+                        "title": "heeftContract",
+                        "description": "CDMKAD BASISMODEL: DEFINITIE (IN TV)",
+                        "type": "array",
+                        "items": {"$ref": "#/definitions/Contract"},
+                        "maxItems": "unbounded"
+                    }
+                }
+            },
+            "Oven": {
+                "title": "Oven",
+                "description": "Dit is de definitie van \"oven\".",
+                "type": "object",
+                "allOf": [
+                    {"$ref": "#/definitions/Fabrikage"},
+                    {
+                        "required": [
+                            "id",
+                            "hitteniveau",
+                            "status"
+                        ],
+                        "properties": {
+                            "id": {
+                                "title": "id",
+                                "description": "CDMKAD BASISMODEL: DEFINITIE (IN NOTES)",
+                                "type": "string"
+                            },
+                            "hitteniveau": {
+                                "title": "hitteniveau",
+                                "description": "Dit is de definitie van \"hitteniveau\".",
+                                "type": [
+                                    "string",
+                                    null
+                                ],
+                                "pattern": "\\d+\\sgraden"
+                            },
+                            "gewicht": {
+                                "title": "gewicht",
+                                "description": "Dit is de definitie van \"gewicht\".",
+                                "type": "array",
+                                "items": {"$ref": "#/definitions/Gewicht"},
+                                "minItems": 0
+                            },
+                            "status": {
+                                "title": "status",
+                                "description": "Dit is de definitie van \"status\".",
+                                "$ref": "#/definitions/Status"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Operator": {
+                "title": "Operator",
+                "description": "Dit is de definitie van \"Operator\".",
+                "type": "object",
+                "required": [
+                    "voornaam",
+                    "achternaam"
+                ],
+                "properties": {
+                    "voornaam": {
+                        "title": "voornaam",
+                        "description": "CDMKAD BASISMODEL: Voornaam van de Persoon die de machine bedient.",
+                        "type": "string"
+                    },
+                    "achternaam": {
+                        "title": "achternaam",
+                        "description": "CDMKAD BASISMODEL: Achternaam van de Persoon die de machine bedient.",
+                        "type": "string"
+                    }
+                }
+            },
+            "Fabrikage": {
+                "title": "Fabrikage",
+                "description": "Dit is de definitie van \"fabrikage\".",
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "CDMKAD BASISMODEL: DEFINITIE (IN NOTES)",
+                        "type": "string"
+                    }
+                }
+            },
+            "SteenGrootte": {
+                "title": "SteenGrootte",
+                "description": "Dit is de definitie van \"steen grootte\".",
+                "type": "array",
+                "items": [
+                    "groot",
+                    "medium",
+                    "klein"
+                ]
+            },
+            "Waardelijst": {
+                "title": "Waardelijst",
+                "description": "Dit is de definitie van \"waardelijst\".",
+                "type": "object",
+                "required": [
+                    "code",
+                    "waarde"
+                ],
+                "properties": {
+                    "code": {
+                        "title": "code",
+                        "description": "Dit is de definitie van \"code\".",
+                        "type": "string"
+                    },
+                    "waarde": {
+                        "title": "waarde",
+                        "description": "Dit is de definitie van \"waarde\".",
+                        "type": "string"
+                    }
+                }
+            },
+            "Gewicht": {
+                "title": "Gewicht",
+                "description": "Dit is de definitie van \"gewicht\".",
+                "type": "object",
+                "required": [
+                    "aantal",
+                    "eenheid"
+                ],
+                "properties": {
+                    "aantal": {"type": "number"},
+                    "eenheid": {"type": "string"}
+                }
+            },
+            "Postcode": {
+                "title": "Postcode",
+                "description": "Dit is de definitie van \"postcode\".",
+                "type": "string"
+            },
+            "Surface": {
+                "title": "GM_Surface",
+                "type": "string"
+            }
+        }
+    }
+}

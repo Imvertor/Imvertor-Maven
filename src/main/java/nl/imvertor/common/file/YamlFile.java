@@ -25,7 +25,11 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.exceptions.ConfiguratorException;
@@ -50,14 +54,60 @@ public class YamlFile extends AnyFile {
 		super(file);
 	}
 	
-	public static boolean validate(Configurator configurator, String yamlString) throws IOException, ConfiguratorException {
+	public static boolean validate(String yamlString) throws IOException, ConfiguratorException {
         try {
         	(new YAMLFactory()).createParser(yamlString);	
         	return true;
         } catch (Exception e) {
-        	configurator.getRunner().error(logger, "Invalid Yaml: \"" + e.getMessage() + "\"", null, "", "IY");
+        	Configurator.getInstance().getRunner().error(logger, "Invalid Yaml: \"" + e.getMessage() + "\"", null, "", "IY");
             return false;
         }
 	}
 	
+	/**
+     * Set the content to the Yaml serialization of the specified XML file. 
+     * 
+     * The XML file must adhere to XML schema <a href="https://www.w3.org/TR/xpath-functions-31/#json-to-xml-mapping">here</a>
+     * 
+     */
+    public void fromXml(XmlFile xmlFile) throws Exception {
+		JsonFile tempJsonFile = new JsonFile(File.createTempFile("YamlFile.fromXml.", ".json"));
+		tempJsonFile.deleteOnExit();
+    	tempJsonFile.fromXml(xmlFile);
+    	tempJsonFile.toYaml(this);
+    }
+    
+    /**
+     * Convert to XML.
+     * 
+     * The XML file adheres to XML schema <a href="https://www.w3.org/TR/xpath-functions-31/#json-to-xml-mapping">here</a>
+     * 
+     */
+    public void toXml(XmlFile xmlFile) throws Exception {
+		JsonFile tempJsonFile = new JsonFile(File.createTempFile("YamlFile.toXml.", ".json"));
+		tempJsonFile.deleteOnExit();
+    	toJson(tempJsonFile);
+    	tempJsonFile.toXml(xmlFile);
+    }
+    
+    /**
+     * Convert to Json 
+     * 
+     * @param configurator
+     * @param resultYamlFile
+     * @return
+     * @throws Exception 
+     */
+    public boolean toJson(JsonFile resultJsonFile) throws Exception {
+		try {
+			ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
+		    Object obj = yamlReader.readValue(getContent(), Object.class);
+		    ObjectMapper jsonWriter = new ObjectMapper();
+		    resultJsonFile.setContent(jsonWriter.writeValueAsString(obj));
+		} catch (Exception e) {
+			throw new Exception("Error parsing Yaml: " + e.getLocalizedMessage());
+		}
+		return true;
+	}
+
 }

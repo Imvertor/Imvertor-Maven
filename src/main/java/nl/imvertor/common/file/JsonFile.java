@@ -12,8 +12,8 @@ import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.exceptions.ConfiguratorException;
@@ -134,7 +134,7 @@ public class JsonFile extends AnyFile {
 	 * @throws ConfiguratorException 
 	 * @throws IOException 
 	 */
-	public boolean validate(Configurator configurator) throws IOException, ConfiguratorException {
+	public boolean validate() throws IOException, ConfiguratorException {
 		String jsonString = getContent();
 		try {
 			Matcher m = Pattern.compile("^\\s*?(\\S)").matcher(jsonString);
@@ -149,7 +149,7 @@ public class JsonFile extends AnyFile {
 			else
 				throw new Exception("Unrecognized JSON type: \"" + firstChar + "\"");
 		} catch (Exception e) {
-			configurator.getRunner().error(logger, "Invalid JSON: \"" + e.getMessage() + "\"", null, "", "IJ");
+			Configurator.getInstance().getRunner().error(logger, "Invalid JSON: \"" + e.getMessage() + "\"", null, "", "IJ");
 			return false;
 		}
 		return true;
@@ -161,10 +161,9 @@ public class JsonFile extends AnyFile {
      * @param configurator
      * @param resultYamlFile
      * @return
-     * @throws IOException
-     * @throws ConfiguratorException
+     * @throws Exception 
      */
-    public boolean convertToYaml(Configurator configurator, YamlFile resultYamlFile) throws IOException, ConfiguratorException {
+    public boolean toYaml(YamlFile resultYamlFile) throws Exception {
 		try {
 			 // parse JSON
 	        JsonNode jsonNodeTree = new ObjectMapper().readTree(getContent());
@@ -174,7 +173,7 @@ public class JsonFile extends AnyFile {
 	        String jsonAsYaml = m.writeValueAsString(jsonNodeTree);
 	        resultYamlFile.setContent(jsonAsYaml);
         } catch (Exception e) {
-			configurator.getRunner().error(logger,"Error parsing Json: " + e.getLocalizedMessage());
+			throw new Exception("Error parsing Json: " + e.getLocalizedMessage());
 		}
 		return true;
 	}

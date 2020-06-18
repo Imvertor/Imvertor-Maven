@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map xmlns="http://www.w3.org/2005/xpath-functions">
+   <string key="$schema">http://json-schema.org/draft-06/schema#</string>
+   <string key="title">cdmkad/Bakstenen basismodel/20180101</string>
+   <map key="json">
+      <map key="definitions">
+         <map key="Lijn">
+            <string key="title">Lijn</string>
+            <string key="description">Dit is de definitie van "Lijn".</string>
+            <string key="type">string</string>
+         </map>
+         <map key="OnvolledigDatum">
+            <string key="title">OnvolledigDatum</string>
+            <string key="type">string</string>
+         </map>
+         <map key="ExternContact">
+            <string key="title">Extern contact</string>
+            <string key="description">Een extern contact is een instelling waarvan specifieke contactinformatie moet worden  opgenomen.</string>
+            <string key="type">object</string>
+            <array key="required">
+               <string>contactinfo</string>
+            </array>
+            <map key="properties">
+               <map key="contactinfo">
+                  <string key="title">contactinfo</string>
+                  <string key="type">string</string>
+               </map>
+            </map>
+         </map>
+         <map key="Baksteen">
+            <string key="title">Baksteen</string>
+            <string key="description">CDMKAD BASISMODEL: DEFINITIE (BAKSTEEN IN TV)</string>
+            <string key="type">object</string>
+            <array key="required">
+               <string>magazijnID</string>
+               <string>omvang</string>
+               <string>type</string>
+               <string>hoeken</string>
+               <string>maxTemperatuur</string>
+               <string>maat</string>
+               <string>inMagazijn</string>
+               <string>oppervlakte</string>
+               <string>kleur</string>
+               <string>stapelbaarOp</string>
+            </array>
+            <map key="properties">
+               <map key="magazijnID">
+                  <string key="title">magazijnID</string>
+                  <string key="description">Dit is de definitie van "magazijn ID".</string>
+                  <string key="type">integer</string>
+               </map>
+               <map key="nettoGewicht">
+                  <string key="title">nettoGewicht</string>
+                  <string key="description">Dit is de definitie van "netto gewicht".</string>
+                  <string key="type">array</string>
+                  <map key="items">
+                     <string key="$ref">#/definitions/Gewicht</string>
+                  </map>
+                  <number key="minItems">0</number>
+               </map>
+               <map key="omvang">
+                  <string key="title">omvang</string>
+                  <string key="description">Dit is de definitie van "omvang".</string>
+                  <string key="$ref">#/definitions/SteenGrootte</string>
+               </map>
+               <map key="type">
+                  <string key="title">type</string>
+                  <string key="description">Dit is de definitie van "type". Locatie: http://www.sample.com/valuelists/bricktypes</string>
+                  <string key="$ref">#/definitions/Waardelijst</string>
+               </map>
+               <map key="hoeken">
+                  <string key="title">hoeken</string>
+                  <string key="description">Dit is de definitie van "hoeken".</string>
+                  <string key="type">integer</string>
+               </map>
+               <map key="omschrijving">
+                  <string key="title">omschrijving</string>
+                  <string key="description">Dit is de definitie van "omschrijving".</string>
+                  <string key="type">string</string>
+               </map>
+               <map key="maxTemperatuur">
+                  <string key="title">maxTemperatuur</string>
+                  <string key="description">Dit is de definitie van "max temperatuur".</string>
+                  <string key="type">number</string>
+               </map>
+               <map key="maat">
+                  <string key="title">maat</string>
+                  <string key="description">Dit is de definitie van "maat".</string>
+                  <string key="$ref">#/definitions/Goniometrisch</string>
+               </map>
+               <map key="inMagazijn">
+                  <string key="title">inMagazijn</string>
+                  <string key="description">Dit is de definitie van "in magazijn".</string>
+                  <string key="type">UNKNOWN-DATATYPE: ep:boolean</string>
+               </map>
+               <map key="oppervlakte">
+                  <string key="title">oppervlakte</string>
+                  <string key="description">Dit is de definitie van "oppervlakte".</string>
+                  <string key="$ref">#/definitions/Surface</string>
+               </map>
+               <map key="kleur">
+                  <string key="title">kleur</string>
+                  <string key="description">CDMKAD BASISMODEL: 
+DEFINITIIE Locatie: CDMKAD BASISMODEL: DATA LOCATIE</string>
+                  <string key="type">string</string>
+                  <string key="pattern">[A-Z]+</string>
+               </map>
+               <map key="geproduceerdDoor">
+                  <string key="title">geproduceerdDoor</string>
+                  <string key="description">CDMKAD BASISMODEL: Dit is de definitie van "geproduceerd door".</string>
+                  <string key="type">array</string>
+                  <map key="items">
+                     <string key="$ref">#/definitions/Producent</string>
+                  </map>
+                  <number key="minItems">0</number>
+                  <string key="maxItems">unbounded</string>
+               </map>
+               <map key="stapelbaarOp">
+                  <string key="title">stapelbaarOp</string>
+                  <string key="description">Dit is de definitie van "stapelbaar op".</string>
+                  <string key="type">array</string>
+                  <map key="items">
+                     <string key="$ref">#/definitions/Baksteen</string>
+                  </map>
+                  <string key="maxItems">unbounded</string>
+               </map>
+            </map>
+         </map>
+         <map key="Goniometrisch">
+            <string key="title">Goniometrisch</string>
+            <string key="description">Dit is de definitie van "goniometrisch".</string>
+            <array key="oneOf">
+               <map>
+                  <string key="$ref">#/definitions/Lijn</string>
+               </map>
+               <map>
+                  <string key="$ref">#/definitions/Oppervlakte</string>
+               </map>
+            </array>
+         </map>
+         <map key="Producent">
+            <string key="title">Producent</string>
+            <string key="description">Dit is de definitie van "producent".</string>
+            <string key="type">object</string>
+            <array key="required">
+               <string>id</string>
+               <string>site</string>
+               <string>contractDatum</string>
+               <string>einddatum</string>
+            </array>
+            <map key="properties">
+               <map key="id">
+                  <string key="title">id</string>
+                  <string key="description">Dit is de definitie van "ID".</string>
+                  <string key="type">string</string>
+               </map>
+               <map key="site">
+                  <string key="title">site</string>
+                  <string key="description">Dit is de definitie van "site".</string>
+                  <string key="type">uri</string>
+                  <string key="format">uri</string>
+               </map>
+               <map key="contractDatum">
+                  <string key="title">contractDatum</string>
+                  <string key="description">Dit is de definitie van "contract datum".</string>
+                  <string key="type">string</string>
+                  <string key="format">date-time</string>
+               </map>
+               <map key="einddatum">
+                  <string key="title">einddatum</string>
+                  <string key="$ref">#/definitions/OnvolledigDatum</string>
+               </map>
+            </map>
+         </map>
+         <map key="ExterneProducent">
+            <string key="title">Externe producent</string>
+            <string key="description">Dit is de definitie van "externe producent".</string>
+            <string key="type">object</string>
+            <array key="allOf">
+               <map>
+                  <array key="$ref">
+                     <string>#/definitions/ExternContact</string>
+                     <string>#/definitions/Producent</string>
+                  </array>
+               </map>
+               <map>
+                  <array key="required">
+                     <string>contactinfo</string>
+                     <string>postcodegebied</string>
+                  </array>
+                  <map key="properties">
+                     <map key="contactinfo">
+                        <string key="title">contactinfo</string>
+                        <string key="type">string</string>
+                     </map>
+                     <map key="postcodegebied">
+                        <string key="title">postcodegebied</string>
+                        <string key="description">CDMKAD BASISMODEL: DEFINITIE IN NOTES FIELD</string>
+                        <string key="$ref">#/definitions/Postcode</string>
+                     </map>
+                  </map>
+               </map>
+            </array>
+         </map>
+         <map key="Oppervlakte">
+            <string key="title">Oppervlakte</string>
+            <string key="description">Dit is de definitie van "Oppervlakte".</string>
+            <string key="type">string</string>
+         </map>
+         <map key="Status">
+            <string key="title">Status</string>
+            <string key="description">Status  of a process.</string>
+            <string key="type">array</string>
+            <array key="items">
+               <string>inOntwikkeling</string>
+               <string>inProductie</string>
+            </array>
+         </map>
+         <map key="Verkoop">
+            <string key="title">Verkoop</string>
+            <string key="description">Dit is de definitie van "verkoop".</string>
+            <string key="type">object</string>
+            <array key="required">
+               <string>verkoopDatum</string>
+            </array>
+            <map key="properties">
+               <map key="verkoopDatum">
+                  <string key="title">verkoopDatum</string>
+                  <string key="description">CDMKAD BASISMODEL: 
+Dit is de definitie van "verkoopDatum".</string>
+                  <string key="type">string</string>
+                  <string key="format">date-time</string>
+               </map>
+            </map>
+         </map>
+         <map key="Contract">
+            <string key="title">Contract</string>
+            <string key="description">Dit is de definitie van "contract".</string>
+            <string key="type">object</string>
+            <array key="required">
+               <string>id</string>
+            </array>
+            <map key="properties">
+               <map key="id">
+                  <string key="title">id</string>
+                  <string key="description">CDMKAD BASISMODEL: DEFINITIE IN NOTES FIELD</string>
+                  <string key="type">string</string>
+               </map>
+            </map>
+         </map>
+         <map key="Klant">
+            <string key="title">Klant</string>
+            <string key="description">Dit is de definitie van "Klant".</string>
+            <string key="type">object</string>
+            <array key="required">
+               <string>id</string>
+               <string>heeftContract</string>
+            </array>
+            <map key="properties">
+               <map key="id">
+                  <string key="title">id</string>
+                  <string key="description">Dit is de definitie van "ID".</string>
+                  <string key="type">string</string>
+               </map>
+               <map key="heeftContract">
+                  <string key="title">heeftContract</string>
+                  <string key="description">CDMKAD BASISMODEL: DEFINITIE (IN TV)</string>
+                  <string key="type">array</string>
+                  <map key="items">
+                     <string key="$ref">#/definitions/Contract</string>
+                  </map>
+                  <string key="maxItems">unbounded</string>
+               </map>
+            </map>
+         </map>
+         <map key="Oven">
+            <string key="title">Oven</string>
+            <string key="description">Dit is de definitie van "oven".</string>
+            <string key="type">object</string>
+            <array key="allOf">
+               <map>
+                  <string key="$ref">#/definitions/Fabrikage</string>
+               </map>
+               <map>
+                  <array key="required">
+                     <string>id</string>
+                     <string>hitteniveau</string>
+                     <string>status</string>
+                  </array>
+                  <map key="properties">
+                     <map key="id">
+                        <string key="title">id</string>
+                        <string key="description">CDMKAD BASISMODEL: DEFINITIE (IN NOTES)</string>
+                        <string key="type">string</string>
+                     </map>
+                     <map key="hitteniveau">
+                        <string key="title">hitteniveau</string>
+                        <string key="description">Dit is de definitie van "hitteniveau".</string>
+                        <array key="type">
+                           <string>string</string>
+                           <null/>
+                        </array>
+                        <string key="pattern">\d+\sgraden</string>
+                     </map>
+                     <map key="gewicht">
+                        <string key="title">gewicht</string>
+                        <string key="description">Dit is de definitie van "gewicht".</string>
+                        <string key="type">array</string>
+                        <map key="items">
+                           <string key="$ref">#/definitions/Gewicht</string>
+                        </map>
+                        <number key="minItems">0</number>
+                     </map>
+                     <map key="status">
+                        <string key="title">status</string>
+                        <string key="description">Dit is de definitie van "status".</string>
+                        <string key="$ref">#/definitions/Status</string>
+                     </map>
+                  </map>
+               </map>
+            </array>
+         </map>
+         <map key="Operator">
+            <string key="title">Operator</string>
+            <string key="description">Dit is de definitie van "Operator".</string>
+            <string key="type">object</string>
+            <array key="required">
+               <string>voornaam</string>
+               <string>achternaam</string>
+            </array>
+            <map key="properties">
+               <map key="voornaam">
+                  <string key="title">voornaam</string>
+                  <string key="description">CDMKAD BASISMODEL: Voornaam van de Persoon die de machine bedient.</string>
+                  <string key="type">string</string>
+               </map>
+               <map key="achternaam">
+                  <string key="title">achternaam</string>
+                  <string key="description">CDMKAD BASISMODEL: Achternaam van de Persoon die de machine bedient.</string>
+                  <string key="type">string</string>
+               </map>
+            </map>
+         </map>
+         <map key="Fabrikage">
+            <string key="title">Fabrikage</string>
+            <string key="description">Dit is de definitie van "fabrikage".</string>
+            <string key="type">object</string>
+            <array key="required">
+               <string>id</string>
+            </array>
+            <map key="properties">
+               <map key="id">
+                  <string key="title">id</string>
+                  <string key="description">CDMKAD BASISMODEL: DEFINITIE (IN NOTES)</string>
+                  <string key="type">string</string>
+               </map>
+            </map>
+         </map>
+         <map key="SteenGrootte">
+            <string key="title">SteenGrootte</string>
+            <string key="description">Dit is de definitie van "steen grootte".</string>
+            <string key="type">array</string>
+            <array key="items">
+               <string>groot</string>
+               <string>medium</string>
+               <string>klein</string>
+            </array>
+         </map>
+         <map key="Waardelijst">
+            <string key="title">Waardelijst</string>
+            <string key="description">Dit is de definitie van "waardelijst".</string>
+            <string key="type">object</string>
+            <array key="required">
+               <string>code</string>
+               <string>waarde</string>
+            </array>
+            <map key="properties">
+               <map key="code">
+                  <string key="title">code</string>
+                  <string key="description">Dit is de definitie van "code".</string>
+                  <string key="type">string</string>
+               </map>
+               <map key="waarde">
+                  <string key="title">waarde</string>
+                  <string key="description">Dit is de definitie van "waarde".</string>
+                  <string key="type">string</string>
+               </map>
+            </map>
+         </map>
+         <map key="Gewicht">
+            <string key="title">Gewicht</string>
+            <string key="description">Dit is de definitie van "gewicht".</string>
+            <string key="type">object</string>
+            <array key="required">
+               <string>aantal</string>
+               <string>eenheid</string>
+            </array>
+            <map key="properties">
+               <map key="aantal">
+                  <string key="type">number</string>
+               </map>
+               <map key="eenheid">
+                  <string key="type">string</string>
+               </map>
+            </map>
+         </map>
+         <map key="Postcode">
+            <string key="title">Postcode</string>
+            <string key="description">Dit is de definitie van "postcode".</string>
+            <string key="type">string</string>
+         </map>
+         <map key="Surface">
+            <string key="title">GM_Surface</string>
+            <string key="type">string</string>
+         </map>
+      </map>
+   </map>
+</map>
