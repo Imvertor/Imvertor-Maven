@@ -77,8 +77,9 @@ public class Messenger extends SequenceWriter {
 		AxisIterator elements = messageroot.iterateAxis(AxisInfo.CHILD);
 		NodeInfo originalChild = (NodeInfo) elements.next();
 		NodeInfo child = originalChild;
-		NodeInfo sibling = (NodeInfo) elements.next();
-		
+		NodeInfo originalSibling = (NodeInfo) elements.next();
+		NodeInfo sibling = originalSibling;
+			
 		// determine the source, text and type of the message, assuming it is a structured message.
 		String src = null, name = null, text = null, type = null, id = null, wiki = null;
 		String mode = "CHAIN"; // default, may be overridden.
@@ -93,7 +94,7 @@ public class Messenger extends SequenceWriter {
 				if (elementName.equals("imvert-message:id")) id = elementValue;
 				if (elementName.equals("imvert-message:wiki")) wiki = elementValue;
 				if (elementName.equals("imvert-message:mode")) mode = elementValue;
-					}
+			}
 			child = sibling;
 			sibling = (NodeInfo) elements.next();
 		}
@@ -127,12 +128,8 @@ public class Messenger extends SequenceWriter {
 					runner.fatal(logger,src + " - " + text,null,id);
 			} else { 
 				// otherwise return the string representation immediately, this is the regular XSLT message.
-				child = originalChild;
-				while (child != null) {
-					System.out.println(child.getStringValue());
-					child = sibling;
-					sibling = (NodeInfo) elements.next();
-				}
+				if (originalSibling != null) 
+					System.out.println(originalSibling.getStringValue());
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
