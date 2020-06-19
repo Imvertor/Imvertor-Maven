@@ -84,6 +84,7 @@
         'stereotype-name-external-package',
         'stereotype-name-internal-package',
         'stereotype-name-domain-package',
+        'stereotype-name-message-package',
         'stereotype-name-view-package',
         'stereotype-name-components-package')"/>
 
@@ -119,7 +120,7 @@
     -->
     <xsl:variable name="components-package" select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype/@id = ('stereotype-name-components-package')]"/>
     
-    <xsl:variable name="domain-package" select="$application-package//imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')]"/>
+    <xsl:variable name="domain-package" select="$application-package//imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package')]"/>
     <xsl:variable name="subdomain-package" select="$domain-package//imvert:package"/>
     
     <xsl:variable name="document-packages" select="($application-package,$domain-package,$subdomain-package,$external-package,$internal-package,$components-package)"/>
@@ -199,7 +200,7 @@
     <xsl:template match="imvert:package[imf:member-of(..,$application-package)]" priority="102">
         <!-- redmine #487837 Packages in <<application>> moeten bekend stereotype hebben -->
         <xsl:sequence select="imf:report-error(., 
-            not(imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-internal-package','stereotype-name-recyclebin','stereotype-name-folder-package','stereotype-name-view-package')), 
+            not(imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-internal-package','stereotype-name-recyclebin','stereotype-name-folder-package','stereotype-name-view-package')), 
             'Package with unexpected stereotype(s): [1]', imvert:stereotype)"/>
       
         <xsl:next-match/>
@@ -252,7 +253,7 @@
         <xsl:variable name="this-package" select="."/>
         <xsl:variable name="root-release" select="imvert:release" as="xs:string?"/>
        
-        <xsl:variable name="domain-packages" select=".//imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package')]"/>
+        <xsl:variable name="domain-packages" select=".//imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package')]"/>
         <xsl:variable name="subpackage-releases" select="$domain-packages/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
         <xsl:variable name="collections" select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-collection')]"/>
         <!--validation-->
@@ -355,7 +356,7 @@
     -->
     <xsl:template match="imvert:package[imf:member-of(.,$domain-package)]" priority="50">
         <!--setup-->
-        <xsl:variable name="is-schema-package" select="if (imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')) then true() else false()"/>
+        <xsl:variable name="is-schema-package" select="if (imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package')) then true() else false()"/>
         <xsl:variable name="xref-objects" select="imvert:class[imvert:stereotype/@id = $xref-element-stereotypes]"/>
         <xsl:variable name="application" select="ancestor::imvert:package[imvert:stereotype/@id = $top-package-stereotypes][1]"/>
           <!--validation -->
@@ -567,7 +568,7 @@
             'Association on union class is not allowed.')"/>
         <xsl:sequence select="imf:report-error(., 
             not(ancestor::imvert:package/imvert:stereotype/@id = $schema-oriented-stereotypes), 
-            'Classes found outside a domain, system or external package: [1]', imf:string-group(imf:get-config-stereotypes('stereotype-name-domain-package')))"/>
+            'Classes found outside a domain, system or external package: [1]', imf:string-group(imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-message-package'))))"/>
 
         <!--Classes can only occur as part of a domain package, as only domain packages are transformed to XML schemas. If you want classes to be (temporarity) stored elsewhere, place move them to a <<recyclebin>> package.-->
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
@@ -1389,9 +1390,9 @@
     -->
     <xsl:function name="imf:is-release-age-compatible" as="xs:boolean">
         <xsl:param name="property" as="element()"/>
-        <xsl:variable name="this-release" select="$property/ancestor::imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package')][1]/imvert:release"/>
+        <xsl:variable name="this-release" select="$property/ancestor::imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package')][1]/imvert:release"/>
         <xsl:variable name="refed-type-id" select="$property/imvert:type-id"/>
-        <xsl:variable name="refed-release" select="if ($refed-type-id) then imf:get-construct-by-id($refed-type-id)/ancestor::imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') or imf:member-of(.,$external-package)][1]/imvert:release else '00000000'"/>
+        <xsl:variable name="refed-release" select="if ($refed-type-id) then imf:get-construct-by-id($refed-type-id)/ancestor::imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package') or imf:member-of(.,$external-package)][1]/imvert:release else '00000000'"/>
         <xsl:value-of select="if (($this-release ge $refed-release) or not($refed-release))  then true() else false()"/>
     </xsl:function>
     

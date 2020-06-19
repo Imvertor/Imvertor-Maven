@@ -35,6 +35,7 @@
             <!-- preprare the reportrules info -->
             <xsl:variable name="domain-packages" select="root()//imvert:package[imvert:stereotype/@id = (
                 'stereotype-name-domain-package',
+                'stereotype-name-message-package',
                 'stereotype-name-view-package')]"/>
             
             <xsl:sequence select="imf:set-config-string('appinfo','count-domain-packages', count($domain-packages))"/>

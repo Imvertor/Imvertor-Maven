@@ -37,7 +37,7 @@
 			<ep:imvertor-generator-version><xsl:value-of select="$packages/imvert:generator"/></ep:imvertor-generator-version>
 			<!-- The 'Berichtstructuren' package doesn't hold the actual message classes for the interface so it's neglected in this stage. -->
 			<xsl:apply-templates
-				select="$packages/imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]"
+				select="$packages/imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package') and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]"
 				mode="create-rough-message-structure" />
 		</ep:rough-messages>
 	</xsl:variable>

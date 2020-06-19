@@ -48,6 +48,7 @@
     
     <xsl:variable name="known-package" select="(
         'stereotype-name-domain-package',
+        'stereotype-name-message-package',
         'stereotype-name-view-package',
         'stereotype-name-base-package', 
         'stereotype-name-application-package', 
@@ -58,7 +59,7 @@
     
     <xsl:variable name="domain-mapping" as="node()*">
         <xsl:for-each select="$base-package/descendant-or-self::imvert:package">
-            <xsl:variable name="domain" select="ancestor-or-self::imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')][1]"/>
+            <xsl:variable name="domain" select="ancestor-or-self::imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package')][1]"/>
             <map sd-name="{imvert:name}" sd-id="{imvert:id}" d-name="{if ($domain) then $domain/imvert:name else imvert:name}"/>
         </xsl:for-each>
     </xsl:variable>
@@ -92,7 +93,7 @@
     <!-- een package dat geen domain is en valt binnen een root package wordt verwijderd. -->
     <xsl:template match="imvert:package[not(imvert:stereotype/@id = $known-package)]">
         <!-- een package dat ergens binnen een domein package is opgenomen wordt verwijderd -->
-        <xsl:if test="ancestor::imvert:package/imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')">
+        <xsl:if test="ancestor::imvert:package/imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package')">
             <xsl:apply-templates select="imvert:class"/>
         </xsl:if>
         <xsl:apply-templates select="imvert:package"/>
@@ -100,7 +101,7 @@
     
     <xsl:template match="imvert:type-package">
         <xsl:variable name="type-id" select="../imvert:type-id"/>
-        <xsl:variable name="type-package" select="$base-package/descendant-or-self::imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package') and .//imvert:id = $type-id]"/>
+        <xsl:variable name="type-package" select="$base-package/descendant-or-self::imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package') and .//imvert:id = $type-id]"/>
         <xsl:choose>
             <xsl:when test="../imvert:baretype">
                <!-- remove -->

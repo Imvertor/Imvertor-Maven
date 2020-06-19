@@ -56,7 +56,7 @@
 		<xsl:sequence select="imf:track('Constructing the rough message-structure')"/>
 		
 		<ep:rough-messages>
-			<xsl:apply-templates select="$packages/imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
+			<xsl:apply-templates select="$packages/imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package') and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
 		</ep:rough-messages>
 		
 	</xsl:variable>

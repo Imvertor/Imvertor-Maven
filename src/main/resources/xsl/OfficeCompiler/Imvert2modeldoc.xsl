@@ -81,13 +81,13 @@
                         </section>
                     </section>
                     <!-- exclude package replacements (resolved stereotype internal) -->
-                    <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
+                    <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
                 </xsl:variable>
                 <xsl:apply-templates select="$sections" mode="section-cleanup"/>    
             </chapter>
             
             <xsl:if test="$lists-to-listing">
-                <xsl:variable name="domain-packages" select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
+                <xsl:variable name="domain-packages" select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
 
                 <chapter title="CHAPTER-LISTS" type="lis">
                     <section type="CONTENTS-REFERENCELIST">
