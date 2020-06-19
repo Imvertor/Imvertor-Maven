@@ -43,90 +43,41 @@
  
     <xsl:variable name="document" select="/"/>
 
-    <xsl:variable name="all-packages" select="//UML:Package"/>
+    <xsl:variable name="model-package" select="(//UML:Package)[1]"/>
     
-    <!-- 
-        collect all packages that are <<project>>. Asume no  package is project when the model is exported. 
-        This is the new approach (previously we exported projects in stead of models).
-    -->
-    <xsl:variable name="project-packages" select="$all-packages[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-project-package')]"/>
-    <!-- 
-        the root of the application model tree is either the project package, or the application model itself 
-    --> 
-    <xsl:variable name="project-package" select="($project-packages[imf:is-applicable-project-package(.)],$all-packages)[1]"/>
+    <xsl:variable name="known-classes" select="$model-package//UML:Class"/>
     
-    <xsl:variable name="application-packages" select="$project-package/descendant-or-self::UML:Package[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-application-package')]"/>
-    <xsl:variable name="model-packages" select="$project-package/descendant-or-self::UML:Package[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-base-package')]"/>
-    
-    <!-- 
-        external package should not occur in the model-mode
-    -->    
-    <xsl:variable name="external-packages" select="$all-packages[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-external-package')]"/>
-   
-    <xsl:variable name="processable-packs" select="($model-packages,$application-packages)"/>
-    <xsl:variable name="app-package" select="$processable-packs[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name($application-package-name,'package-name')]"/>
-    <xsl:variable name="containing-packages" select="$app-package/ancestor::UML:Package"/>
-    
-    <xsl:variable name="known-classes" select="($app-package,$external-packages)//UML:Class"/>
+    <xsl:variable name="ms" select="imf:get-xmi-stereotype($model-package)"/>
+    <xsl:variable name="es" select="imf:get-config-stereotypes(('stereotype-name-base-package','stereotype-name-application-package'))"/>
     
     <xsl:template match="/XMI">
-        
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:sequence select="imf:track('Compacting')"/>
-            
-            <xsl:choose>
-                <xsl:when test="empty($project-packages)">
-                    <!-- NIEUWE CASUS -->
-                    <xsl:choose>
-                        <xsl:when test="empty($app-package)">
-                            <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($processable-packs/@name,';')))"/>
-                        </xsl:when>
-                        <xsl:when test="count($app-package) ne 1">
-                            <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:apply-templates/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <XMI.extensions xmi.extender="IMVERTOR">
-                        <xsl:apply-templates select=".//UML:Class" mode="stub"/>
-                        <xsl:for-each select="tokenize(imf:get-config-string('cli','sentinel',''),';')">
-                            <EAStub type="sentinel" name="{.}"/>
-                        </xsl:for-each> 
-                    </XMI.extensions>
-                </xsl:when>
-                <xsl:otherwise>
-                    <!-- OUDE CASUS -->
-                    <xsl:choose>
-                        <xsl:when test="empty($project-packages)">
-                            <xsl:sequence select="imf:msg('ERROR','No projects found')"/>
-                        </xsl:when>
-                        <xsl:when test="not(normalize-space($project-name))">
-                            <xsl:sequence select="imf:msg('ERROR','No project name specified')"/>
-                        </xsl:when>
-                        <xsl:when test="empty($project-package)">
-                            <xsl:sequence select="imf:msg('ERROR','No project found for: [1], searched for [2]', ($application-package-name,$project-name))"/>
-                        </xsl:when>
-                        <xsl:when test="empty($app-package)">
-                            <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($processable-packs/@name,';')))"/>
-                        </xsl:when>
-                        <xsl:when test="count($app-package) ne 1">
-                            <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:apply-templates/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <XMI.extensions xmi.extender="IMVERTOR">
-                        <xsl:apply-templates select=".//UML:Class" mode="stub"/>
-                        <xsl:for-each select="tokenize(imf:get-config-string('cli','sentinel',''),';')">
-                            <EAStub type="sentinel" name="{.}"/>
-                        </xsl:for-each> 
-                    </XMI.extensions>
-                </xsl:otherwise>
-            </xsl:choose>
-         </xsl:copy>
+                <xsl:choose>
+                    <xsl:when test="empty($model-package)">
+                        <xsl:sequence select="imf:msg('ERROR','No application found: [1]', ($application-package-name))"/>
+                    </xsl:when>
+                    <xsl:when test="$model-package/@name ne $application-package-name">
+                        <xsl:sequence select="imf:msg('ERROR','Unexpected application package found: [1], expected [2]', ($model-package/@name, $application-package-name))"/>
+                    </xsl:when>
+                    <xsl:when test="not($ms = $es)">
+                        <xsl:sequence select="imf:msg('ERROR','Application package [1] has unexpected stereotype [2], expected: [3]', ($model-package/@name, $ms, imf:string-group($es)))"/>
+                    </xsl:when>
+                    <xsl:when test="count($model-package) ne 1">
+                        <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:apply-templates/>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <XMI.extensions xmi.extender="IMVERTOR">
+                    <xsl:apply-templates select=".//UML:Class" mode="stub"/>
+                    <xsl:for-each select="tokenize(imf:get-config-string('cli','sentinel',''),';')">
+                        <EAStub type="sentinel" name="{.}"/>
+                    </xsl:for-each> 
+                </XMI.extensions>
+          </xsl:copy>
      </xsl:template>
     
     <!-- 
@@ -136,27 +87,11 @@
     <!-- copy all packages except those what are not witin application, or not external) -->
     <xsl:template match="UML:Package">
         
-        <!-- package contains the app? -->
-        <xsl:variable name="holds-app" select="exists(. intersect $containing-packages)"/>
         <!-- package is (part of) the app? -->
-        <xsl:variable name="is-in-app" select="exists(ancestor-or-self::UML:Package intersect $app-package)"/>
-        <!-- package is external? -->
-        <xsl:variable name="is-in-ext" select="exists(ancestor-or-self::UML:Package intersect $external-packages)"/>
+        <xsl:variable name="is-in-app" select="exists(ancestor-or-self::UML:Package intersect $model-package)"/>
        
         <!--<xsl:sequence select="imf:msg(.,'DEBUG','Compact: package [1] holds app [2], is in app [3], is in external [4]', (@name,$holds-app,$is-in-app,$is-in-ext))"/>-->
         <xsl:choose>
-            <xsl:when test="$holds-app">
-                <xsl:if test="$debugging">
-                    <xsl:comment select="concat(@name, ' added because: holds-app')"/>
-                </xsl:if>
-                <xsl:next-match/>            
-            </xsl:when>
-            <xsl:when test="$is-in-ext">
-                <xsl:if test="$debugging">
-                    <xsl:comment select="concat(@name, ' added because: is-in-ext')"/>
-                </xsl:if>
-                <xsl:next-match/>            
-            </xsl:when>
             <xsl:when test="$is-in-app">
                 <xsl:if test="$debugging">
                     <xsl:comment select="concat(@name, ' added because: is-in-app')"/>
