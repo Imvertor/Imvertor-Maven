@@ -30,6 +30,9 @@ import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.xsl.extensions.ImvertorExcelSerializer;
 import nl.imvertor.common.xsl.extensions.ImvertorFolderSerializer;
+import nl.imvertor.common.xsl.extensions.ImvertorParseHTML;
+import nl.imvertor.common.xsl.extensions.ImvertorParseWiki;
+import nl.imvertor.common.xsl.extensions.ImvertorParseYaml;
 import nl.imvertor.common.xsl.extensions.ImvertorZipDeserializer;
 import nl.imvertor.common.xsl.extensions.ImvertorZipSerializer;
 
@@ -65,6 +68,9 @@ public class GenericTransformer extends Step {
 		transformer.setExtensionFunction(new ImvertorZipDeserializer());
 		transformer.setExtensionFunction(new ImvertorExcelSerializer());
 		transformer.setExtensionFunction(new ImvertorFolderSerializer());
+		transformer.setExtensionFunction(new ImvertorParseHTML());
+		transformer.setExtensionFunction(new ImvertorParseWiki());
+		transformer.setExtensionFunction(new ImvertorParseYaml());
 			
 	    // check the input 
 		AnyFile infile = new AnyFile(configurator.getXParm("cli/infile"));
