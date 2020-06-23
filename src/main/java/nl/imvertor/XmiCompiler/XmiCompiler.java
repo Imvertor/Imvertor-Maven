@@ -201,8 +201,9 @@ public class XmiCompiler extends Step {
 				}
 				
 				// then process it.
-				if (configurator.isTrue("cli","migrate",false)) 
-					migrateXMI(activeFile);
+				String mode = configurator.getXParm("cli/migrate",false);
+				if (mode != null) 
+					migrateXMI(activeFile,mode);
 				
 				configurator.setXParm("system/xmi-export-file-path",activeFile.getCanonicalPath());
 				configurator.setXParm("system/xmi-file-path",compactXmiFilePath);
@@ -256,7 +257,7 @@ public class XmiCompiler extends Step {
 			xmiFile.setContent(StringUtils.replacePattern(c, "&#5[0-9]{4};", "?"));
 	}
 	
-	private void migrateXMI(XmlFile xmiFile) throws Exception {
+	private void migrateXMI(XmlFile xmiFile, String mode) throws Exception {
 		runner.warn(logger,"This model is subject to migration rules, please consider aligning the model with the metamodel",null,"TMISTMR");
 		AnyFile outFile = new AnyFile(File.createTempFile("migrateXMI.", ".xmi"));
 		outFile.deleteOnExit();
@@ -264,6 +265,7 @@ public class XmiCompiler extends Step {
 		XslFile xslFile = new XslFile(xslFilePath);
 		runner.debug(logger,"CHAIN", "Migrating XMI: " + activeFile.getCanonicalPath());
 		Transformer transformer = new Transformer();
+		transformer.setXslParm("migration-mode",mode);
 		transformer.transform(xmiFile, outFile, xslFile,null);
 		outFile.copyFile(xmiFile);
 	}

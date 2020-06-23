@@ -37,8 +37,8 @@
       </cli-parm> 
       <cli-parm>
          <name>migrate</name>
-         <arg>yes|no</arg>
-         <tip>Yes if the source XMI file must be migrated to the new metamodel.</tip>
+         <arg>name</arg>
+         <tip>Specify a name if the source XMI file must be migrated to a (new) metamodel.</tip>
          <required>false</required>
       </cli-parm> 
       <cli-parm>
