@@ -48,6 +48,9 @@
         <tv>
             <format>lowercase</format>
         </tv>
+        <element>
+            <format>AsIs</format>
+        </element>
     </naming>
     
     <features>
