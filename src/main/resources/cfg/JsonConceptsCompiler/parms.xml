@@ -30,13 +30,13 @@
          <tip>Yes if JSON concepts must be generated</tip>
          <required>false</required>
       </cli-parm> 
+      <cli-parm>
+         <name>jsonconceptsname</name>
+         <arg>string</arg>
+         <tip>The name of the JSON concepts file generated</tip>
+         <required>false</required>
+      </cli-parm> 
    </cli-parms>
-   <cli-parm>
-      <name>jsonconceptsname</name>
-      <arg>string</arg>
-      <tip>The name of the JSON concepts file generated</tip>
-      <required>false</required>
-   </cli-parm> 
    
    <properties>
    
