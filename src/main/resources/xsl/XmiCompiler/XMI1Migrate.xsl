@@ -222,6 +222,80 @@
         <xsl:attribute name="value" select="'1'"/>
     </xsl:template>
     
+    <xsl:template match="UML:TaggedValue[@tag = '$ea_xref_property']/@value" mode="mode-Geonovum">
+        <xsl:variable name="v1" select="replace(.,';Name=featureType;',';Name=ObjectType;')"/>
+        <xsl:variable name="v2" select="replace($v1,';Name=dataType;',';Name=Gestructureerd datatype;')"/>
+        <xsl:variable name="v3" select="replace($v2,';Name=codeList;',';Name=Enumeratie;')"/>
+        <xsl:attribute name="value" select="$v3"/>
+    </xsl:template>
+        
+    <!-- IMKL additions -->
+    <xsl:template match="UML:Class/UML:ModelElement.stereotype/UML:Stereotype/@name[. = ('dataType')]" mode="mode-Geonovum">
+        <xsl:attribute name="name" select="'Gestructureerd datatype'"/>
+    </xsl:template>
+    <xsl:template match="UML:Class/UML:ModelElement.taggedValue/UML:TaggedValue[@tag = 'stereotype']/@value[. = ('dataType')]" mode="mode-Geonovum">
+        <xsl:attribute name="name" select="'Gestructureerd datatype'"/>
+    </xsl:template>
+
+    <xsl:template match="UML:Attribute[empty(UML:ModelElement.stereotype)]" mode="mode-Geonovum">
+        <xsl:copy>
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <UML:ModelElement.stereotype>
+                <UML:Stereotype name="Attribuutsoort"/>
+            </UML:ModelElement.stereotype>
+            <xsl:apply-templates mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="UML:Attribute[ancestor::UML:Class/UML:ModelElement.stereotype/UML:Stereotype/@name = ('featureType')]/UML:ModelElement.taggedValue" mode="mode-Geonovum">
+        <xsl:copy>
+            <UML:TaggedValue tag="stereotype" value="Attribuutsoort"/>
+            <xsl:apply-templates select="*[not(@tag = 'stereotype')]" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="UML:Attribute[ancestor::UML:Class/UML:ModelElement.stereotype/UML:Stereotype/@name = ('dataType')]/UML:ModelElement.taggedValue" mode="mode-Geonovum">
+        <xsl:copy>
+            <UML:TaggedValue tag="stereotype" value="Data element"/>
+            <xsl:apply-templates select="*[not(@tag = 'stereotype')]" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="UML:Attribute[ancestor::UML:Class/UML:ModelElement.stereotype/UML:Stereotype/@name = ('union')]/UML:ModelElement.taggedValue" mode="mode-Geonovum">
+        <xsl:copy>
+            <UML:TaggedValue tag="stereotype" value="Union element"/>
+            <xsl:apply-templates select="*[not(@tag = 'stereotype')]" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="UML:Attribute[ancestor::UML:Class/UML:ModelElement.stereotype/UML:Stereotype/@name = ('codeList')]/UML:ModelElement.taggedValue" mode="mode-Geonovum">
+        <xsl:copy>
+            <UML:TaggedValue tag="stereotype" value="Enumeratiewaarde"/>
+            <xsl:apply-templates select="*[not(@tag = 'stereotype')]" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    
+    
+    <xsl:template match="UML:TaggedValue[@tag = ('documentation','description')]/@value" mode="mode-Geonovum">
+        <xsl:variable name="v">
+            <xsl:analyze-string select="." regex="(\-\-\s+)((Definition)|(Description)|(Source))(\s+\-\-)">
+                <xsl:matching-substring>
+                    <xsl:value-of select="regex-group(1)"/>
+                    <xsl:choose>
+                        <xsl:when test="regex-group(2) = 'Definition'">Definitie</xsl:when>
+                        <xsl:when test="regex-group(2) = 'Description'">Toelichting</xsl:when>
+                        <xsl:when test="regex-group(2) = 'Source'">Bron</xsl:when>
+                    </xsl:choose>
+                    <xsl:value-of select="regex-group(6)"/>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:value-of select="."/>
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        <xsl:attribute name="value" select="$v"/>
+    </xsl:template>
     
     <!-- defaults -->
     

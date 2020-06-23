@@ -13,6 +13,7 @@
             <cs-ref:MapRef xlink:href="#GML321"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
             <cs-ref:MapRef xlink:href="#CITYGML"/>
+            <cs-ref:MapRef xlink:href="#STUB"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
@@ -35,6 +36,12 @@
             <cs:shortName>CityGML</cs:shortName>
             <cs:desc>CityGML (1.0)</cs:desc>
             <cs:url>https://www.geonovum.nl/geo-standaarden/3d-omgevingsinformatie/citygml</cs:url>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>STUB</cs:id>
+            <cs:shortName>STUB</cs:shortName>
+            <cs:desc>STUB (1.0)</cs:desc>
+            <cs:url>https://www.geonovum.nl/geo-standaarden/3d-omgevingsinformatie/STUB</cs:url>
          </cs:ConceptualSchema>
          <cs:ConceptualSchema>
             <cs:id>GMLSF</cs:id>
@@ -812,6 +819,140 @@
                </cs:Construct>
             </cs:constructs>
          </cs:Map>
+         
+         <cs:Map>
+            <cs:id>STUB</cs:id>
+            <cs:namespace>http://schemas.opengis.net/STUB/</cs:namespace>
+            <cs:desc>TODO</cs:desc>
+            <cs:location>todo.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>2012</cs:version>
+            <cs:release>20120201</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#STUB"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>ThermalPipe</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>ThermalAppurtenanceTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Cabinet</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>UtilityNetwork</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>SewerPipe</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>WaterTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>SewerAppurtenanceTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Duct</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Pipe</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>TelecommunicationsAppurtenanceTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>OilGasChemicalsAppurtenanceTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>ThermalProductTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Manhole</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>UtilityNetworkTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>PipeMaterialTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Tower</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>ElectricityAppurtenanceTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>WaterPipe</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>ConditionOfFacilityValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Pole</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>OilGasChemicalsProductTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>TelecommunicationsCableMaterialTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>OilGasChemicalsPipe</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Appurtenance</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>TelecommunicationsCable</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>UtilityLinkSet</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>WaterAppurtenanceTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               
+               <cs:Construct>
+                  <cs:name>ElectricityCable</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Length</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               
+            </cs:constructs>
+         </cs:Map>
+               
          <cs:Map>
             <cs:id>GMLSF</cs:id>
             <cs:namespace>http://www.opengis.net/gmlsf/2.0</cs:namespace>

@@ -17,11 +17,11 @@
     
     <xsl:output method="text" encoding="UTF-8"/>
     
-    <xsl:variable name="uri-domein-id-template" select="'http://register.geostandaarden.nl/[1]'"/>
-    <xsl:variable name="uri-concept-id-template" select="'http://register.geostandaarden.nl/[1]/id/concept/[2]'"/>
-    <xsl:variable name="uri-waardelijst-id-template" select="'http://register.geostandaarden.nl/[1]/id/waardelijst/[2]_[3]'"/>
-    <xsl:variable name="uri-concept-doc-template" select="'http://register.geostandaarden.nl/[1]/doc/concept/[2]/[3]'"/>
-    <xsl:variable name="uri-waardelijst-doc-template" select="'http://register.geostandaarden.nl/[2]/doc/waardelijst/[2]/[3]_[4]'"/>
+    <xsl:variable name="uri-domein-id-template" select="'https://definities.geostandaarden.nl/[1]'"/>
+    <xsl:variable name="uri-concept-id-template" select="'https://definities.geostandaarden.nl/[1]/id/concept/[2]'"/>
+    <xsl:variable name="uri-waardelijst-id-template" select="'https://definities.geostandaarden.nl/[1]/id/waardelijst/[2]_[3]'"/>
+    <xsl:variable name="uri-concept-doc-template" select="'https://definities.geostandaarden.nl/[1]/doc/concept/[2]/[3]'"/>
+    <xsl:variable name="uri-waardelijst-doc-template" select="'https://definities.geostandaarden.nl/[2]/doc/waardelijst/[2]/[3]_[4]'"/>
     
     <xsl:variable name="domain-packages" select="$document-packages[empty(imvert:conceptual-schema-name)]"/><!-- skip packages that are external -->
     <xsl:variable name="model-abbrev" select="imf:get-tagged-value(/imvert:packages,'##CFG-TV-ABBREV')"/>
