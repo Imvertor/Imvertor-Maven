@@ -12,6 +12,7 @@
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <cs-ref:MapRef xlink:href="#GML321"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
+            <cs-ref:MapRef xlink:href="#CITYGML"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
@@ -28,6 +29,12 @@
             <cs:shortName>nen3610</cs:shortName>
             <cs:desc>NEN3610 (2011)</cs:desc>
             <cs:url>http://www.geonovum.nl/conceptual-schemas/NEN3610</cs:url>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>CITYGML</cs:id>
+            <cs:shortName>CityGML</cs:shortName>
+            <cs:desc>CityGML (1.0)</cs:desc>
+            <cs:url>https://www.geonovum.nl/geo-standaarden/3d-omgevingsinformatie/citygml</cs:url>
          </cs:ConceptualSchema>
          <cs:ConceptualSchema>
             <cs:id>GMLSF</cs:id>
@@ -633,6 +640,16 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GenericName</cs:name><!-- nodig voor IMGEO omzetting -->
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>gml:GenericName</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
             </cs:constructs>
          </cs:Map>
          <cs:Map>
@@ -718,6 +735,80 @@
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>CITYGML</cs:id>
+            <cs:namespace>http://schemas.opengis.net/citygml/</cs:namespace>
+            <cs:desc>TODO</cs:desc>
+            <cs:location>todo.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>2012</cs:version>
+            <cs:release>20120201</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#CITYGML"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>Railway</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>CityFurniture</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>BridgeConstructionElement</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>TrafficArea</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>LandUse</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>_CityObject</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>WaterBody</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>AuxiliaryTrafficArea</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>BuildingInstallation</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>BuildingPart</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>_Site</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>SolitaryVegetationObject</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>TunnelPart</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>PlantCover</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>ImplicitGeometry</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
             </cs:constructs>
          </cs:Map>
