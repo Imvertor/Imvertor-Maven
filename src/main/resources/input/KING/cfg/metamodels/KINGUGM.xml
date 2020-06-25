@@ -48,22 +48,6 @@
         </profile>
     </profiles>
     
-    <!--
-    <naming>
-        <package>
-            <format>UpperCamel</format>
-        </package>
-        <class>
-            <format>UpperCamel</format>
-        </class>
-        <property>
-            <format>LowerCamel</format>
-        </property>
-        <tv>
-            <format>UpperCamel</format>
-        </tv>
-    </naming>
-    -->
     <naming>
         <package>
             <format>AsIs</format>

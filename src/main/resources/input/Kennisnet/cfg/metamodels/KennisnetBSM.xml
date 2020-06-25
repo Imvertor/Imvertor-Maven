@@ -19,7 +19,6 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-   <!-- TODO ga uit van UGM maar alleen de pacakge struktuur wijkt enigzins af. Dit anders oplossen?-->
    <xi:include href="KennisnetUGM.xml"/>
    
    <name>Kennisnet BSM</name>
@@ -42,9 +41,27 @@
       </profile>
    </profiles>
    
+   <naming>
+      <package>
+         <format>AsIs</format>
+      </package>
+      <class>
+         <format>AsIs</format>
+      </class>
+      <property>
+         <format>AsIs</format>
+      </property>
+      <tv>
+         <format>Upperstart</format> <!-- first character must be upper case. -->
+      </tv>
+      <element>
+         <format>LowerCamel</format>
+      </element>
+   </naming>
+   
    <features>
       <feature name="unique-normalized-class-names"/>
-   </features>
+   </features>  
    
    <stereotypes xml:id="stereotypes">
 
@@ -213,6 +230,6 @@
             <relation lang="nl">pad</relation>
          </entity-relation-constraint>
       </stereo>
-      
+
    </stereotypes>
 </metamodel>
