@@ -55,7 +55,7 @@
          <desc lang="nl">TODO</desc>
          <construct>package</construct>
       </stereo>
-      <stereo id="stereotype-name-domain-package">
+      <stereo id="stereotype-name-message-package">
          <name lang="en">Message</name>
          <name lang="nl">Bericht</name>
          <desc lang="nl">TODO</desc>
