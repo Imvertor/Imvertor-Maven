@@ -42,6 +42,10 @@
       </profile>
    </profiles>
    
+   <features>
+      <feature name="unique-normalized-class-names"/>
+   </features>
+   
    <stereotypes xml:id="stereotypes">
 
       <!-- packages override standard grouping -->
