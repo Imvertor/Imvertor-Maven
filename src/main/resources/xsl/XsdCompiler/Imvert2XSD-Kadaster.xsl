@@ -435,6 +435,8 @@
                         <xsl:for-each select="imvert:attributes/imvert:attribute">
                             <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
                             <xsl:variable name="defining-class" select="imf:get-defining-class(.)"/>   
+                            <xsl:variable name="defining-class-subclasses" select="imf:get-subclasses($defining-class)"/>   
+                            
                             <xsl:variable name="defining-class-is-datatype" select="$defining-class/imvert:stereotype/@id = (
                                 ('stereotype-name-simpletype','stereotype-name-enumeration','stereotype-name-codelist','stereotype-name-complextype','stereotype-name-union'))"/>   
                             <xsl:choose>
@@ -448,6 +450,13 @@
                                 </xsl:when>
                                 <xsl:when test="empty($defining-class)">
                                     <xsl:sequence select="imf:msg(.,'ERROR', 'Unable to create a union of scalar types',())"/> <!-- IM-291 -->
+                                </xsl:when>
+                                <xsl:when test="imf:is-linkable($defining-class) and imf:boolean($buildcollection) and exists($defining-class-subclasses)"> 
+                                    <!-- insert the subtypes rather than the abstract supertype -->
+                                    <xsl:sequence select="imf:debug(.,'A choice member, linkable, abstract')"/>
+                                    <xsl:for-each select="($defining-class,$defining-class-subclasses)">
+                                        <xs:element ref="{imf:get-reference-class-name(.)}"/>
+                                    </xsl:for-each>
                                 </xsl:when>
                                 <xsl:when test="imf:is-linkable($defining-class) and imf:boolean($buildcollection)"> 
                                     <!-- when the class is linkable, and using collections, use the reference element name -->
