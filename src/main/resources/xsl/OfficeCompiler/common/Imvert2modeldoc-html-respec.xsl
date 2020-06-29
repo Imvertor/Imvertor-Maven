@@ -643,9 +643,9 @@
         <xsl:sequence select="concat('h',$level)"/>
     </xsl:function>
     
-    <xsl:function name="imf:create-formatted-text" as="xs:string">
+    <xsl:function name="imf:create-formatted-text" as="item()*">
         <xsl:param name="text"/>
-        <xsl:value-of select="$text/node()"/>
+        <xsl:sequence select="$text/node()"/>
     </xsl:function>
     
     <xsl:function name="imf:create-section-header-name" as="element()">
