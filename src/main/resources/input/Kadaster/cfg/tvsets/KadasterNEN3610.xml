@@ -13,6 +13,18 @@
   
     <tagged-values>  
 
+        <tv norm="space" id="CFG-TV-DOMAIN">
+            <name lang="nl">Domein</name>
+            <name lang="en">Domain</name>
+            <desc lang="nl">Het domein van een attribuut, dwz. de beperking van de opgegeven waarde tot een bepaalde "naamruimte". 
+                Voorbeeld is "NL.IMKAD.KadastraalObject" als naamruimte voor ID's van percelen en appartementsrechten in de kadastrale registratie.</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+        
         <!-- 
          Exlanation / Klare taal
         -->

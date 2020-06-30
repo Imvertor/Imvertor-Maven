@@ -83,9 +83,6 @@
       <IMVERTOR_INTERN_XSLPATH>Imvert2intern.xsl</IMVERTOR_INTERN_XSLPATH>
       <WORK_INTERN_FILE>${system/work-imvert-folder-path}/imvertor.061.intern.xml</WORK_INTERN_FILE>
       
-      <IMVERTOR_REF_XSLPATH>Imvert2ref.xsl</IMVERTOR_REF_XSLPATH>
-      <WORK_REF_FILE>${system/work-imvert-folder-path}/imvertor.07.ref.xml</WORK_REF_FILE>
-      
       <IMVERTOR_CONCRETESCHEMA_XSLPATH>Imvert2concreteSchema.xsl</IMVERTOR_CONCRETESCHEMA_XSLPATH>
       <WORK_CONCRETESCHEMA_FILE>${system/work-imvert-folder-path}/imvertor.08.concrete.xml</WORK_CONCRETESCHEMA_FILE>
       

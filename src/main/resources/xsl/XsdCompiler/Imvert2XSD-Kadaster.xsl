@@ -399,6 +399,12 @@
         
         <xsl:variable name="is-keyed" select="imvert:attributes/imvert:attribute/imvert:stereotype/@id = 'stereotype-name-key'"/><!-- keyed classes are never represented on their own -->
         
+        <xsl:variable name="ref-master" select="if (imvert:ref-master) then imf:get-construct-by-id(imvert:ref-master-id) else ()"/>
+        <xsl:variable name="ref-masters" select="if ($ref-master) then ($ref-master,imf:get-superclasses($ref-master)) else ()"/>
+        <xsl:variable name="ref-master-idatts" select="for $m in $ref-masters return $m/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
+        <xsl:variable name="domain-values" select="for $i in $ref-master-idatts return imf:get-tagged-value($i,'##CFG-TV-DOMAIN')"/>
+        <xsl:variable name="domain-value" select="$domain-values[1]"/>
+        
         <xsl:sequence select="imf:debug(.,'Base class processing')"/>
         <xsl:if test="(not(imvert:stereotype/@id = ('stereotype-name-simpletype')) or $is-choice-member) and not($is-keyed)">
             <xsl:sequence select="imf:debug(.,'A union element, or not a datatype and not keyed')"/>
@@ -423,6 +429,16 @@
         
         <xsl:variable name="content" as="element()?">
             <xsl:choose>
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and not($supertype-name) and $domain-value">
+                    <complex>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute ref="xlink:href" use="optional"/>
+                                <xs:attribute name="domein" use="optional" fixed="{$domain-value}"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </complex>
+                </xsl:when>
                 <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and not($supertype-name)">
                     <complex>
                         <xs:attribute name="type" type="xs:string" fixed="simple"/>
@@ -781,6 +797,8 @@
         
         <xsl:variable name="is-includable" select="imf:boolean(imf:get-tagged-value($this,'##CFG-TV-INCLUDABLE'))"/>
         
+        <xsl:variable name="domain-value" select="imf:get-tagged-value($this,'##CFG-TV-DOMAIN')"/>
+        
         <mark nillable="{$is-nillable}" nilreason="{$has-nilreason}">
             <xsl:choose>
             <!-- any type, i.e. #any -->
@@ -951,17 +969,33 @@
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-datatype">
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="type" select="$type"/>
-                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:debug($this,'A datatype')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                </xs:element>
-            </xsl:when>
-            <xsl:when test="not($name) and $is-external">
+                <xsl:when test="$is-datatype and $domain-value">
+                    <xs:element>
+                        <xsl:attribute name="name" select="$name"/>
+                        <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                        <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                        <xsl:sequence select="imf:debug($this,'A datatype with domain')"/>
+                        <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                        <xs:complexType>
+                            <xs:simpleContent>
+                                <xs:extension base="{$type}">
+                                    <xs:attribute name="domein" type="xs:string" fixed="{$domain-value}"/>
+                                </xs:extension>
+                            </xs:simpleContent>
+                        </xs:complexType>
+                    </xs:element>
+                </xsl:when>
+                <xsl:when test="$is-datatype">
+                    <xs:element>
+                        <xsl:attribute name="name" select="$name"/>
+                        <xsl:attribute name="type" select="$type"/>
+                        <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                        <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                        <xsl:sequence select="imf:debug($this,'A datatype')"/>
+                        <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    </xs:element>
+                </xsl:when>
+                <xsl:when test="not($name) and $is-external">
                 <!-- a reference to an external construct -->
                 <xs:element>
                     <xsl:attribute name="ref" select="$type"/>

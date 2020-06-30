@@ -169,6 +169,7 @@
                 <xsl:sequence select="imf:create-output-element('imvert:version',(imvert:ref-version,imvert:version)[1])"/>
                 <xsl:sequence select="imf:create-output-element('imvert:release',(imvert:ref-release,imvert:release)[1])"/> 
                 <xsl:sequence select="imf:create-output-element('imvert:ref-master',imvert:name)"/>
+                <xsl:sequence select="imf:create-output-element('imvert:ref-master-id',imvert:id)"/>
                 <xsl:apply-templates select="$identifiable-classes" mode="identifiable"/>
             </imvert:package>
         </xsl:if>
@@ -186,6 +187,7 @@
             <xsl:sequence select="imf:create-output-element('imvert:documentation',$gc,(),false())"/>
             <xsl:sequence select="imf:create-output-element('imvert:author','(System)')"/>
             <xsl:sequence select="imf:create-output-element('imvert:ref-master',imvert:name)"/>
+            <xsl:sequence select="imf:create-output-element('imvert:ref-master-id',imvert:id)"/>
             <imvert:stereotype id="stereotype-name-system-reference-class">
                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-system-reference-class')"/>
             </imvert:stereotype>
