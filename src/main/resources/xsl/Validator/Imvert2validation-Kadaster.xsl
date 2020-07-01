@@ -52,6 +52,9 @@
     <xsl:variable name="datatype-stereos" 
         select="('stereotype-name-simpletype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
   
+    <xsl:variable name="use-identifier-domains" select="imf:boolean(imf:get-xparm('cli/identifierdomains','no'))"/>
+    <xsl:variable name="id-domain-values" select="for $a in //imvert:attribute return imf:get-tagged-value($a,'##CFG-TV-DOMAIN')"/>
+    
     <!-- follow guidelines for Kadaster and KING (KK) -->
     
     <xsl:include href="Imvert2validation-KK.xsl"/>
@@ -71,6 +74,11 @@
             <xsl:attribute name="phase" select="if ($application-package-phase) then $application-package-phase else '0'"/>
             
             <xsl:sequence select="imf:report-error(., not($application-package), 'No such application package found: [1]', ($application-package-name))"/>
+         
+            <xsl:sequence select="imf:report-error(., 
+                ($document-classes/imvert:stereotype/@id = ('stereotype-name-objecttype') and not($document-packages/imvert:name=('xlinks','Xlinks'))), 
+                'The model uses shared classes but the xlink package is not included (properly).')"/>
+            
             <!-- process the application package -->
             <xsl:apply-templates select="imvert:package"/>
         </imvert:report>
@@ -132,6 +140,13 @@
         <xsl:sequence select="imf:report-warning(., 
             (imvert:is-id = 'true' and not(imvert:stereotype/@id = ('stereotype-name-identification'))), 
             'Attribute is marked as ID but is not stereotyped as [1]', imf:get-config-stereotypes('stereotype-name-identification'))"/>
+        x?>
+        
+        <?x
+        <!-- als érgens in dit model een domein is gezet op een is-id attribute, dan moet dat overal gebeuren waar een is-id voorkomt -->
+        <xsl:sequence select="imf:report-warning(., 
+            (exists($id-domain-values) and imf:boolean(imvert:is-id) and empty(imf:get-tagged-value(.,'##CFG-TV-DOMAIN'))), 
+            'Attribute is marked as ID but has no tagged value [1]', imf:get-config-name-by-id('CFG-TV-DOMAIN'))"/>
         x?>
         
         <xsl:next-match/>
@@ -242,6 +257,24 @@
         <xsl:next-match/>
     </xsl:template>
    
+   
+    <xsl:template match="imvert:attribute[$use-identifier-domains and imf:get-tagged-value(.,'##CFG-TV-DOMAIN')]">
+        
+        <xsl:variable name="domain-value" select="imf:get-tagged-value(.,'##CFG-TV-DOMAIN')"/>
+        
+        <!-- Metadata Domein zit altijd en alleen bij een objecttype die een {id} heeft (in EA is dit isID=true) -->
+        <xsl:sequence select="imf:report-error(., 
+            not(imf:boolean(imvert:is-id)),
+            'Tagged value [1] only allowed on ID attributes',(imf:get-config-name-by-id('CFG-TV-DOMAIN')))"/>
+        
+        <!-- Het is niet toegestaan dat een waarde die is opgenomen in ‘domein’ meer dan 1x voorkomt in het model. -->
+        <xsl:sequence select="imf:report-error(., 
+            count(index-of($id-domain-values,$domain-value)) gt 1,
+            'Duplicate [1] tagged value: [2]',(imf:get-config-name-by-id('CFG-TV-DOMAIN'),$domain-value))"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
     <!-- 
         other validation 
     -->

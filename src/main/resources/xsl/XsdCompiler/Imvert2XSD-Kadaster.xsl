@@ -402,6 +402,8 @@
         <xsl:variable name="ref-master" select="if (imvert:ref-master) then imf:get-construct-by-id(imvert:ref-master-id) else ()"/>
         <xsl:variable name="ref-masters" select="if ($ref-master) then ($ref-master,imf:get-superclasses($ref-master)) else ()"/>
         <xsl:variable name="ref-master-idatts" select="for $m in $ref-masters return $m/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
+        
+        <xsl:variable name="use-identifier-domains" select="imf:boolean(imf:get-xparm('cli/identifierdomains','no'))"/>
         <xsl:variable name="domain-values" select="for $i in $ref-master-idatts return imf:get-tagged-value($i,'##CFG-TV-DOMAIN')"/>
         <xsl:variable name="domain-value" select="$domain-values[1]"/>
         
@@ -429,7 +431,7 @@
         
         <xsl:variable name="content" as="element()?">
             <xsl:choose>
-                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and not($supertype-name) and $domain-value">
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and not($supertype-name) and $use-identifier-domains and $domain-value">
                     <complex>
                         <xs:simpleContent>
                             <xs:extension base="xs:string">
@@ -797,6 +799,7 @@
         
         <xsl:variable name="is-includable" select="imf:boolean(imf:get-tagged-value($this,'##CFG-TV-INCLUDABLE'))"/>
         
+        <xsl:variable name="use-identifier-domains" select="imf:boolean(imf:get-xparm('cli/identifierdomains','no'))"/>
         <xsl:variable name="domain-value" select="imf:get-tagged-value($this,'##CFG-TV-DOMAIN')"/>
         
         <mark nillable="{$is-nillable}" nilreason="{$has-nilreason}">
@@ -969,7 +972,7 @@
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>
-                <xsl:when test="$is-datatype and $domain-value">
+                <xsl:when test="$is-datatype and $use-identifier-domains and $domain-value">
                     <xs:element>
                         <xsl:attribute name="name" select="$name"/>
                         <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
