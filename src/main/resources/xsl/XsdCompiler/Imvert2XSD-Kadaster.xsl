@@ -402,12 +402,12 @@
         <xsl:variable name="ref-master" select="if (imvert:ref-master) then imf:get-construct-by-id(imvert:ref-master-id) else ()"/>
         <xsl:variable name="ref-masters" select="if ($ref-master) then ($ref-master,imf:get-superclasses($ref-master)) else ()"/>
         <xsl:variable name="ref-master-idatts" select="for $m in $ref-masters return $m/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
-        <xsl:variable name="ref-master-identifiable-subtypes" select="for $s in imf:get-subclasses($ref-master) return if (imf:has-id-attribute($s)) then $s else ()"/>
+        <xsl:variable name="ref-master-identifiable-subtype-idatts" select="for $s in imf:get-subclasses($ref-master) return imf:get-id-attribute($s)"/>
+        <xsl:variable name="ref-master-identifiable-subtypes-with-domain" select="for $a in $ref-master-identifiable-subtype-idatts return if (imf:get-tagged-value($a,'##CFG-TV-DOMAIN')) then $a/ancestor::imvert:class else ()"/>
         
         <xsl:variable name="use-identifier-domains" select="imf:boolean(imf:get-xparm('cli/identifierdomains','no'))"/>
         <xsl:variable name="domain-values" select="for $i in $ref-master-idatts return imf:get-tagged-value($i,'##CFG-TV-DOMAIN')"/>
         <xsl:variable name="domain-value" select="$domain-values[1]"/>
-        
         
         <xsl:sequence select="imf:debug(.,'Base class processing')"/>
         <xsl:if test="(not(imvert:stereotype/@id = ('stereotype-name-simpletype')) or $is-choice-member) and not($is-keyed)">
@@ -444,9 +444,9 @@
                         </xs:simpleContent>
                     </complex>
                 </xsl:when>
-                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and $use-identifier-domains and exists($ref-master-identifiable-subtypes)">
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and $use-identifier-domains and exists($ref-master-identifiable-subtypes-with-domain)">
                     <complex>
-                        <xsl:sequence select="imf:debug(.,'Reference master has identifiable subtypes')"/>
+                        <xsl:sequence select="imf:debug(.,'Reference master has (some) identifiable subtypes that have a domain')"/>
                         <xs:simpleContent>
                             <xs:extension base="xs:string">
                                 <xs:attribute ref="xlink:href" use="optional"/>
@@ -600,13 +600,13 @@
                             <xs:complexContent>
                                 <xs:extension base="{imf:get-type($supertype-name,$supertype-package-name)}">
                                     <xsl:if test="exists($content/*)">
-                                        <xsl:sequence select="$content/*"/>
+                                        <xsl:sequence select="$content/node()"/>
                                     </xsl:if>
                                 </xs:extension>
                             </xs:complexContent>
                         </xsl:when>
-                        <xsl:when test="exists($content)">
-                            <xsl:sequence select="$content/*"/>
+                        <xsl:when test="exists($content/*)">
+                            <xsl:sequence select="$content/node()"/>
                         </xsl:when>
                     </xsl:choose>      
                 </xs:complexType>
@@ -619,13 +619,13 @@
                             <xs:simpleContent>
                                 <xs:extension base="{imf:get-type($supertype-name,$supertype-package-name)}">
                                     <xsl:if test="exists($content/*)">
-                                        <xsl:sequence select="$content/*"/>
+                                        <xsl:sequence select="$content/node()"/>
                                     </xsl:if>
                                 </xs:extension>
                             </xs:simpleContent>
                         </xsl:when>
-                        <xsl:when test="exists($content)">
-                            <xsl:sequence select="$content/*"/>
+                        <xsl:when test="exists($content/*)">
+                            <xsl:sequence select="$content/node()"/>
                         </xsl:when>
                     </xsl:choose>      
                 </xs:simpleType>
@@ -1664,9 +1664,9 @@
         </xsl:if>
     </xsl:function>
     
-    <xsl:function name="imf:has-id-attribute" as="xs:boolean">
+    <xsl:function name="imf:get-id-attribute" as="element(imvert:attribute)?">
         <xsl:param name="class" as="element(imvert:class)"/>
-        <xsl:sequence select="exists($class/imvert:attributes/imvert:attribute/imvert:is-id[imf:boolean(.)])"/>
+        <xsl:sequence select="$class/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
     </xsl:function>
     
 </xsl:stylesheet>
