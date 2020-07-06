@@ -457,9 +457,12 @@
                 </xsl:when>
                 <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and not($supertype-name)">
                     <complex>
-                        <xs:attribute name="type" type="xs:string" fixed="simple"/>
-                        <xs:attribute ref="xlink:href" use="required"/>
                         <xsl:sequence select="imf:debug(.,'No supertypes, no domain processing')"/>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute ref="xlink:href" use="optional"/><!-- sinds 1.61 -->
+                            </xs:extension>
+                        </xs:simpleContent>
                     </complex>
                 </xsl:when>
                 <xsl:when test="imvert:stereotype/@id = ('stereotype-name-union')">
