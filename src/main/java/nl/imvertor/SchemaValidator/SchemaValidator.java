@@ -21,11 +21,14 @@
 package nl.imvertor.SchemaValidator;
 
 import java.io.File;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.SchemaValidator.xerces.ErrorHandlerMessage;
@@ -94,15 +97,16 @@ public class SchemaValidator extends Step {
 		Iterator<ErrorHandlerMessage> it = vl.iterator();
 		while (it.hasNext()) {
 			ErrorHandlerMessage m = it.next();
+			String msg = "XML schema: " +  StringUtils.substringAfter(m.message, m.code + ": ")  + " [" + URLDecoder.decode(StringUtils.substringAfter(m.file,"/xsd/"), StandardCharsets.UTF_8.name()) + ":" + m.line + "]";
 			switch (m.type.toLowerCase()) {
 				case "error":
-					runner.error(logger, "XML schema: " + m.file + " at line " + m.line + " (" + m.code + ") " + m.message);
+					runner.error(logger, msg,"","XERCES-" + m.code);
 					break;
 				case "warning":
-					runner.warn(logger, "XML schema: " + m.file + " at line " + m.line + " (" + m.code + ") " + m.message);
+					runner.warn(logger, msg,"","XERCES-" + m.code);
 					break;
 				default: 
-					runner.debug(logger,"CHAIN", "XML-schema: " + m.file + " at line " + m.line + " (" + m.code + ") " + m.message);
+					runner.debug(logger,"CHAIN", msg);
 					break;
 			}
 		}
