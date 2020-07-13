@@ -193,6 +193,11 @@
             <name lang="en">Hydrocarbon reserves dossier</name>
             <abbrev>HRD</abbrev>
         </registratieobject>
+         <registratieobject>
+            <name lang="nl">Mijnbouwconstructies </name>
+            <name lang="en">Exploration and Production Constructions</name>
+            <abbrev>EPC</abbrev>
+        </registratieobject>
     </domein>
     
     <domein>
@@ -246,9 +251,9 @@
             <abbrev>DGM</abbrev>
         </registratieobject>
         <registratieobject>
-            <name lang="nl">Grondwater Dynamiek Model</name>
-            <name lang="en">Groundwater Dynamics Model</name>
-            <abbrev>GDM</abbrev>
+            <name lang="nl">Model grondwaterspiegeldiepte</name>
+            <name lang="en">Water Depth Model</name>
+            <abbrev>WDM</abbrev>
         </registratieobject>
     </domein>
 </domeinen>
