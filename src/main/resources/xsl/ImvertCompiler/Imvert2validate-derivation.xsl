@@ -348,8 +348,11 @@
     
     <xsl:function name="imf:check-tagged-value-occurs" as="element()*">
         <xsl:param name="this" as="element()"/> <!-- any element that may have tagged values-->
+        <xsl:variable name="tvs" select="imf:get-all-compiled-tagged-values($this,false())"/>
+
+        <xsl:variable name="stereotype-id" select="$this/imvert:stereotype/@id"/>
+        
         <xsl:if test="$validate-tv-occurs">
-            <xsl:variable name="stereotype-id" select="$this/imvert:stereotype/@id"/>
             <xsl:for-each select="$config-tagged-values[stereotypes/stereo/@id = $stereotype-id]"> <!-- i.e. <tv> elements -->
                 <xsl:variable name="tv-name" select="name"/>
                 <xsl:variable name="tv-id" select="@id"/>
@@ -386,8 +389,23 @@
                 <xsl:sequence select="imf:report-warning($this, 
                     count($applicable-values) gt $max,
                     'Tagged value [1] specified too many times for [2]',($tv-name,imf:string-group($selected-stereotype)))"/>
+         
             </xsl:for-each>
-        </xsl:if> 
+        </xsl:if>
+        
+        <xsl:for-each select="$config-tagged-values[stereotypes/stereo/@id = $stereotype-id]"> <!-- i.e. <tv> elements -->
+            <xsl:variable name="tv-name" select="name"/>
+            <xsl:variable name="tv-id-use" select="@id"/>
+            <xsl:variable name="tv" select="$tvs[@id = $tv-id-use]"/>
+            <xsl:variable name="tv-is-not-overridable" select="override = 'no'"/>
+            
+            <xsl:sequence select="imf:report-warning($this, 
+                $tv-is-not-overridable and normalize-space($tv[1]) and normalize-space($tv[2]) and not($tv[1] = $tv[2]),
+                'Tagged value [1] supplier value [2] may not be overridden by client value [3]',($tv-name, $tv[1], $tv[2]))"/>
+            
+        </xsl:for-each>
+
+        
     </xsl:function>
   
     <xsl:function name="imf:mm">

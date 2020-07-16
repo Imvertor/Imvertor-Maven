@@ -341,6 +341,7 @@
                             <xsl:sequence select="imf:fetch-applicable-name($tv-group/name)"/>
                             <xsl:apply-templates select="($tv-group/desc[@lang=($language,'#all')])[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/derive)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($tv-group/override)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/inherit)[last()]" mode="#current"/>
                             <stereotypes>
                                 <xsl:for-each-group select="$tv-group/stereotypes/stereo" group-by=".">
