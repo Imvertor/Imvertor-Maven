@@ -30,5 +30,51 @@
             </declared-values>
         </tv>
     
+        <tv norm="space" id="CFG-TV-CONCEPT">
+            <name lang="nl">Begrip</name>
+            <name lang="en">Concept</name>
+            <derive>yes</derive>
+            <desc lang="nl">Een referentie naar een begrip in een begrippenlijst/kennismodel middels een URI, of de naam van een begrip, welke kan worden afgebeeld op een URI.</desc>
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..*">stereotype-name-attribute</stereo>
+                <stereo minmax="0..*">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..*">stereotype-name-composite</stereo>
+                <stereo minmax="0..*">stereotype-name-association-to-composite</stereo>
+                <stereo minmax="0..*">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..*">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..*">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..*">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..*">stereotype-name-codelist</stereo>
+                <stereo minmax="0..*">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..*">stereotype-name-complextype</stereo>
+                <stereo minmax="0..*">stereotype-name-union</stereo>
+                <stereo minmax="0..*">stereotype-name-data-element</stereo>
+                <stereo minmax="0..*">stereotype-name-union-element</stereo>
+                <stereo minmax="0..*">stereotype-name-enum</stereo>
+                
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-INDICATIONDERIVABLE">
+            <name lang="nl">Indicatie afleidbaar</name>
+            <name lang="en">TODO</name>
+            <derive>yes</derive>
+            <desc lang="nl">Aanduiding dat gegeven afleidbaar is uit andere attribuut- en/of relatiesoorten.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-association-to-composite</stereo>
+            </stereotypes>
+        </tv>
+            <tv norm="space" id="CFG-TV-INDICATIONCLASSIFICATION">
+            <name lang="nl">Indicatie classificerend</name>
+            <name lang="en">TODO</name>
+            <derive>yes</derive>
+            <desc lang="nl">Indicatie dat een attribuutsoort het objecttype waar het bijhoort classificeert in (sub)typen.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+                
     </tagged-values>
 </tagset>

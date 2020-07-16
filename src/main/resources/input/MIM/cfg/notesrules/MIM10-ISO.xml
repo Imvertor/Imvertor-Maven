@@ -47,6 +47,9 @@
             <label title="DEFINITIE"/>
             <label title="URI"/>
         </section>
+        <section title="Begrip" tagged-value="CFG-TV-CONCEPT" process="lines">
+            <!-- content is URI; may be several lines where each line holds a TV value  -->
+        </section>
     </notes-rule>
-
+    
 </notes-rules>

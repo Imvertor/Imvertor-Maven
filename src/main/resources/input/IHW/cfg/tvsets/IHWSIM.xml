@@ -18,15 +18,17 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <!-- IHW follows BP requirements -->
-    <xi:include href="../../../BP/cfg/tvsets/BP.xml"/>
     
     <!-- IHW refines grouping -->
     <xi:include href="Grouping.xml"/>
     
+    <!-- IHW follows MIM1.1 requirements -->
+    <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
+    
     <name>IHW SIM</name>
     <tagged-values>
       
+        <?x
         <tv norm="space" id="CFG-TV-AANDUIDINGSTRIJDIGHEIDNIETIGHEID">
             <name lang="nl">Aanduiding strijdigheid/nietigheid</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
@@ -199,6 +201,7 @@
         
         <!-- REDMINE #487612 -->
         <!-- Internal packages are propagated to Grouping --> 
-       
+       x?>
+        
     </tagged-values>
 </tagset>

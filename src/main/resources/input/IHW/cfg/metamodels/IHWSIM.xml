@@ -60,6 +60,7 @@
       </tv>
    </naming>
    
+   <?x
    <scalars>
       <scalar id="scalar-day">
          <name lang="nl">DAG</name>
@@ -72,6 +73,7 @@
          <type-map formal-lang="xs">gMonth</type-map>
       </scalar>
    </scalars>
+   x?>
    
    <stereotypes>
 
