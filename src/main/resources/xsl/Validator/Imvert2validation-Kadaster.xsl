@@ -268,7 +268,7 @@
             'Tagged value [1] only allowed on ID attributes',(imf:get-config-name-by-id('CFG-TV-DOMAIN')))"/>
         
         <!-- Het is niet toegestaan dat een waarde die is opgenomen in ‘domein’ meer dan 1x voorkomt in het model. -->
-        <xsl:sequence select="imf:report-error(., 
+        <xsl:sequence select="imf:report-warning(., 
             count(index-of($id-domain-values,$domain-value)) gt 1,
             'Duplicate [1] tagged value: [2]',(imf:get-config-name-by-id('CFG-TV-DOMAIN'),$domain-value))"/>
         
