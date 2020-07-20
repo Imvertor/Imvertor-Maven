@@ -130,8 +130,8 @@
       
       <WORK_DERIVATION_FILE>${system/work-imvert-folder-path}/imvertor.15.derive.xml</WORK_DERIVATION_FILE>
       <IMVERTOR_DERIVATION_XSLPATH>Imvert2validate-derivation.xsl</IMVERTOR_DERIVATION_XSLPATH>
-
-
+      <IMVERTOR_DERIVATION_Kadaster_XSLPATH>Imvert2validate-derivation-Kadaster.xsl</IMVERTOR_DERIVATION_Kadaster_XSLPATH>
+      
    <!-- TODO ? -->
       
       <IMVERTOR_MERGER_XSLPATH>Imvert2merger.xsl</IMVERTOR_MERGER_XSLPATH>

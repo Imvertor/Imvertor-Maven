@@ -77,8 +77,11 @@ public class ImvertCompiler extends Step {
 		
 		if (succeeds) {
 			// If derivation must be checked, create the derivation file.
-			if (configurator.isTrue("cli","validatederivation")) 
+			if (configurator.isTrue("cli","validatederivation")) {
 				succeeds = succeeds ? transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_DERIVATION_FILE", "properties/IMVERTOR_DERIVATION_XSLPATH") : false ;
+				if (configurator.getXParm("cli/owner").equals("Kadaster")) 
+					succeeds = succeeds ? transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_DERIVATION_FILE", "properties/IMVERTOR_DERIVATION_Kadaster_XSLPATH") : false ;
+			}
 			
 			AnyFolder etcFolder = new AnyFolder(configurator.getXParm("system/work-etc-folder-path"));
 			AnyFolder catFolder = new AnyFolder(configurator.getXParm("system/work-cat-folder-path"));
