@@ -528,6 +528,7 @@
                 </xsl:when>
                 <xsl:when test="imvert:stereotype/@id = ('stereotype-name-complextype') and exists(imvert:pattern)"><!-- IM-325 -->
                     <simple>
+                        <xsl:sequence select="imf:create-xml-debug-comment(.,'A pattern simple type')"/>
                         <xs:annotation>
                             <xs:documentation>This complex datatype is transformed to a simple type because a content pattern is defined.</xs:documentation>
                         </xs:annotation>
@@ -538,6 +539,7 @@
                 </xsl:when>
                 <xsl:when test="imvert:stereotype/@id = ('stereotype-name-simpletype') and exists(imvert:pattern)">
                     <simple>
+                        <xsl:sequence select="imf:create-xml-debug-comment(.,'A simple type with a pattern')"/>
                         <xs:restriction base="xs:string">
                             <xs:pattern value="{imvert:pattern}"/>
                         </xs:restriction>
@@ -578,6 +580,7 @@
             </xsl:when>
          
             <xsl:when test="$content/self::complex">
+             
                 <xs:complexType>
                     <xsl:attribute name="name" select="concat($type-name,$Type-suffix)"/>
                     <xsl:attribute name="abstract" select="$abstract"/>
@@ -585,6 +588,7 @@
                     <xsl:variable name="extension-base" as="xs:string?">
                         <xsl:choose>
                             <xsl:when test="$supertype-name">
+                                <!--<xsl:message select="concat('complex/ ',$supertype-name,'/',$supertype-package-name,'/',imf:get-type($supertype-name,$supertype-package-name))"></xsl:message>-->
                                 <xsl:value-of  select="concat(imf:get-type($supertype-name,$supertype-package-name),$Type-suffix)"/> 
                             </xsl:when>
                             <xsl:when test="$is-objecttype">
@@ -600,14 +604,14 @@
                             <xs:complexContent>
                                 <xs:extension base="{$extension-base}">
                                     <xsl:if test="exists($content/*)">
-                                        <xsl:sequence select="$content/*"/>
+                                        <xsl:sequence select="$content/node()"/>
                                     </xsl:if>
                                 </xs:extension>
                             </xs:complexContent>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:if test="exists($content/*)">
-                                <xsl:sequence select="$content/*"/>
+                                <xsl:sequence select="$content/node()"/>
                             </xsl:if>
                         </xsl:otherwise>
                     </xsl:choose>
@@ -640,19 +644,21 @@
             </xsl:when>
             <xsl:otherwise>
                 <xs:simpleType>
+                    
                     <xsl:attribute name="name" select="concat($type-name,$Type-suffix)"/>
                     <xsl:choose>
                         <xsl:when test="$supertype-name">
+                            <!--<xsl:message select="concat('simple/ ',$supertype-name,'/',$supertype-package-name,'/',imf:get-type($supertype-name,$supertype-package-name))"></xsl:message>-->
                             <xs:simpleContent>
                                 <xs:extension base="{imf:get-type($supertype-name,$supertype-package-name)}">
                                     <xsl:if test="exists($content/*)">
-                                        <xsl:sequence select="$content/*"/>
+                                        <xsl:sequence select="$content/node()"/>
                                     </xsl:if>
                                 </xs:extension>
                             </xs:simpleContent>
                         </xsl:when>
                         <xsl:when test="exists($content)">
-                            <xsl:sequence select="$content/*"/>
+                            <xsl:sequence select="$content/node()"/>
                         </xsl:when>
                     </xsl:choose>      
                 </xs:simpleType>

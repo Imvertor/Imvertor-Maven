@@ -1,0 +1,55 @@
+Point, Curve (LineString), Surface (Polygon), Geometry, MultiPoint, MultiCurve, MultiSurface, MultiGeometry
+
+Point:
+
+AbstractGeometricPrimitiveType
+AbstractGeometryType
+AbstractGMLType
+SRSReferenceGroup
+
+e Point
+e pos
+DirectPositionType
+
+in subst group
+AbstractGeometricPrimitive
+
+Curve:
+
++ AbstractCurveType
++ CurveType
++ e Curve
++ e segments
+
++ CurveSegmentArrayPropertyType
++ AbstractCurveSegmentType
+
+
+LineString:
++ LineStringType
++ e pos
++ e pointProperty
++ e pointRep
++ e posList
++ e coordinates
+	==> nagevraagd bij lennart
+
+
+
+
+
+
+Surface:
+
++ abstractSurfaceType
++ SurfaceType
++ e Surface
+
+Line:
+
+
+Curve:
+
+
+MultiSurface:
+

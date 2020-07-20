@@ -8,7 +8,7 @@
 <local-schemas>
     <svn-id>$Id: local-schemas.xml 7209 2015-08-25 12:28:42Z arjan $</svn-id>
     
-    <local-schema schemafolder="www.opengis.net/GML321-20070906">
+    <local-schema schemafolder="www.opengis.net/GML322-20160101">
         <!-- 
             This schema depends on the local schema folders specified below.
         -->
@@ -29,15 +29,26 @@
         <local-map 
             source-uri-prefix="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"
             target-uri-prefix="../../xlink/1.0.0/xlinks.xsd"/>
+        <local-map 
+            source-uri-prefix="http://www.w3.org/1999/xlink.xsd"
+            target-uri-prefix="../../xlink/1.0.0/xlinks.xsd"/>
+        
+    </local-schema>
+    
+    <local-schema schemafolder="www.opengis.net/GML322-20160101-KADPROFILE">
+        <depends-on schemafolder="www.w3.org/XLINKS-KADPROFILE"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"
+            target-uri-prefix="../../xlink/1.0.0/xlinks.xsd"/>
         
     </local-schema>
     
     <local-schema schemafolder="www.isotc211.org/GEOMATICS-20050101">
-        <depends-on schemafolder="www.opengis.net/GML321-20070906"/>
+        <depends-on schemafolder="www.opengis.net/GML322-20160101"/>
         <depends-on schemafolder="www.w3.org/XLINKS-KADPROFILE"/>
         <local-map 
             source-uri-prefix="../gml/gml.xsd"
-            target-uri-prefix="../gml/3.2.1/gml.xsd"/>
+            target-uri-prefix="../gml/3.2.2/gml.xsd"/>
         <local-map 
             source-uri-prefix="../xlink/xlinks.xsd"
             target-uri-prefix="../xlink/1.0.0/xlinks.xsd"/>
@@ -51,10 +62,10 @@
     </local-schema>
     
     <local-schema schemafolder="www.geonovum.nl/NEN3610-20110301">
-        <depends-on schemafolder="www.opengis.net/GML321-20070906"/>
+        <depends-on schemafolder="www.opengis.net/GML322-20160101"/>
         <local-map 
             source-uri-prefix="http://schemas.opengis.net/gml/3.2.1/gml.xsd"
-            target-uri-prefix="../../gml/3.2.1/gml.xsd"/>
+            target-uri-prefix="../../gml/3.2.2/gml.xsd"/>
     </local-schema>
     
     <local-schema schemafolder="www.kadaster.nl/ENVPROC-20110922"/>
