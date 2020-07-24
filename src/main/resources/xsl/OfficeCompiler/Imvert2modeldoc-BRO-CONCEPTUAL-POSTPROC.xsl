@@ -301,10 +301,6 @@
                         <xsl:if test="$in-machten"> in machten</xsl:if>
                     </item>
                 </part>
-                <part>
-                    <item>&#160;&#160;Type</item>
-                    <item>Getal</item>
-                </part>
                 <!--alleen genereren als er een eenheid aanwezig is-->
                 <xsl:for-each select="$context/part[@type = 'CFG-DOC-UNITOFMEASURE']/item[2]">
                     <part>
@@ -330,10 +326,6 @@
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item>Aantal <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTH']/item[2]/text()"/></item>
-                </part>
-                <part>
-                    <item>&#160;&#160;Type</item>
-                    <item>Getal</item>
                 </part>
                 <!-- alleen genereren als er een minimum en/of een maximumwaarde aanwezig is -->
                 <xsl:if test="$minmax-specified">
@@ -421,10 +413,6 @@
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item>Organisatie</item>
-                </part>
-                <part>
-                    <item>&#160;&#160;Type</item>
-                    <item>Keuze</item>
                 </part>
             </xsl:when>
             <xsl:when test="$item-text = ('IndicatieJaNee', 'Kwaliteitsregime')">   
