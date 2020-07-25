@@ -87,9 +87,12 @@
             <xsl:apply-templates select="$config-raw" mode="tree-includes"/>
         </xsl:variable>
         
-        <xsl:result-document href="file:/c:/temp/xml.xml">
-            <xsl:sequence select="$config-raw"/>
-        </xsl:result-document>
+        <?x
+            <xsl:result-document href="file:/c:/temp/xml.xml">
+                <xsl:sequence select="$config-raw"/>
+            </xsl:result-document>
+        x?>
+        
         <xsl:result-document href="{imf:file-to-url(imf:get-xparm('properties/WORK_CONFIG_TREE_FILE'))}">
             <xsl:sequence select="$tree-includes"/>
         </xsl:result-document>
@@ -108,13 +111,13 @@
         <xsl:variable name="keys" select="imf:merge-parms(imf:get-config-string('cli','messagecollapsekeys'))"/>
         <xsl:sequence select="imf:set-config-string('appinfo','message-collapse-keys',$keys)"/>
         
-        <!--x
-       <xsl:result-document href="file:/c:/temp/config.xml">
+        <?x
+        <xsl:result-document href="file:/c:/temp/config.xml">
             <debug>
                 <xsl:sequence select="imf:document($configuration-metamodel-name,true())"></xsl:sequence>
             </debug>
         </xsl:result-document>
-        x-->
+        x?>
         
         <!-- signal if not using the latest release of imvertor -->
         <xsl:variable name="crx" select="imf:get-config-string('run','version')"/>
@@ -421,11 +424,12 @@
     
     <xsl:template match="*" mode="finish-config">
         <xsl:if test="empty(@lang) or @lang = ($language,'#all')">
-            <xsl:variable name="preceding-names" select="ancestor::*[@type = 'config']/name"/>
+            <xsl:variable name="embedding" select="reverse(ancestor::*[@type = 'config'])"/>
             <xsl:copy>
                 <xsl:apply-templates select="@*" mode="#current"/>
                 <!-- add the origins of the configurated value, i.e. the call stack -->
-                <xsl:attribute name="src" select="string-join($preceding-names,' &lt; ')"/>
+                <xsl:attribute name="srcbase" select="($embedding[1])/@xml:base"/>
+                <xsl:attribute name="src" select="string-join(for $c in $embedding return $c/name,'&lt;')"/>
                 <xsl:apply-templates select="node()" mode="#current"/>
             </xsl:copy>
         </xsl:if>

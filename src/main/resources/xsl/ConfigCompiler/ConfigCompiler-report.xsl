@@ -108,7 +108,7 @@
                         <xsl:value-of select="."/>
                     </td>
                     <td>
-                        <xsl:value-of select="@src"/>
+                        <xsl:sequence select="imf:get-src(.)"/>
                     </td>
                 </tr>
             </xsl:for-each>
@@ -128,7 +128,7 @@
                         <xsl:value-of select="."/>
                     </td>
                     <td>
-                        <xsl:value-of select="@src"/>
+                        <xsl:sequence select="imf:get-src(.)"/>
                     </td>
                 </tr>
             </xsl:for-each>
@@ -154,7 +154,7 @@
                         <xsl:value-of select="if (type-modifier) then 'A type modifier applies. ' else ()"/>
                     </td>
                     <td>
-                        <xsl:value-of select="name[1]/@src"/>
+                        <xsl:sequence select="imf:get-src(name[1])"/>
                     </td>
                 </tr>
             </xsl:for-each>
@@ -188,7 +188,7 @@
                             <xsl:value-of select="string-join(construct,', ')"/>
                         </td>
                         <td>
-                            <xsl:value-of select="name[1]/@src"/>
+                            <xsl:sequence select="imf:get-src(name[1])"/>
                         </td>
                     </tr>
                 </xsl:for-each>
@@ -314,7 +314,7 @@
                             <xsl:sequence select="imf:create-result-table-by-tr($subrows,'name:40,original name:40,minmax:20',concat('table-tvs-',generate-id(.)))"/>
                         </td>
                         <td>
-                            <xsl:value-of select="name[1]/@src"/>
+                            <xsl:sequence select="imf:get-src(name[1])"/>
                         </td>
                     </tr>
                 </xsl:for-each>
@@ -366,4 +366,24 @@
         </xsl:choose>
             
     </xsl:function>
+    
+    <xsl:function name="imf:get-src" as="item()*">
+        <xsl:param name="this"/>
+        <xsl:variable name="src" select="tokenize($this/@src,'&lt;')"/>
+        <b>
+            <xsl:value-of select="$src[1]"/>
+        </b>
+        <xsl:if test="exists(subsequence($src,2))">
+            <xsl:value-of select="' &#8592; '"/>
+            <xsl:value-of select="string-join(subsequence($src,2),' &#8592; ')"/>
+            <xsl:if test="normalize-space($this/@srcbase)">
+                <br/>
+                <br/>
+                <pre>
+                    <xsl:value-of select="concat('/', tokenize($this/@srcbase,'\.\./')[last()])"/>
+                </pre>
+            </xsl:if>
+        </xsl:if>
+    </xsl:function>
+    
 </xsl:stylesheet>
