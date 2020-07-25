@@ -20,9 +20,7 @@
                 <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
             </stereotypes>
         </tv>
-    </tagged-values>
-    
-    <tagged-values>
+        
         <tv norm="space" id="CFG-TV-XSDLOCATION">
             <name lang="nl">XML Schema locatie</name>
             <name lang="en">XML Schema location</name>
