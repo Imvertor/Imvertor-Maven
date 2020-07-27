@@ -79,11 +79,11 @@
          <cs:Map>
             <cs:id>GML322</cs:id>
             <cs:namespace>http://www.opengis.net/gml/3.2</cs:namespace>
-            <cs:desc>TODO</cs:desc>
-            <cs:location>http://schemas.opengis.net/gml/3.2.2/gml.xsd</cs:location>
+            <cs:desc>Kadaster profiel van GML 3.2.2. Let op, profielen kunnen ook dynamisch worden gegenereerd voor specifieke toepassingen.</cs:desc>
+            <cs:location>http://schemas.opengis.net/gml/3.2/GmlProfile.xsd</cs:location>
             <cs:phase>3</cs:phase>
             <cs:version>3.2.2</cs:version>
-            <cs:release>20160101</cs:release>
+            <cs:release>KADPROFILE</cs:release>
             <cs:forSchema>
                <cs-ref:ConceptualSchemaRef xlink:href="#GML"/>
             </cs:forSchema>
