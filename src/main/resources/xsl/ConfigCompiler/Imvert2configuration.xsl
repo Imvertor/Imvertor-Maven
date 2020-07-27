@@ -254,6 +254,7 @@
                         <scalar id="{current-grouping-key()}">
                             <xsl:variable name="scalar-group" select="current-group()"/>
                             <xsl:sequence select="imf:fetch-applicable-name($scalar-group/name)"/>
+                            <xsl:apply-templates select="($scalar-group/desc[@lang=($language,'#all')])[last()]" mode="#current"/>
                             <xsl:apply-templates select="($scalar-group/type)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($scalar-group/fraction-digits)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($scalar-group/max-length)[last()]" mode="#current"/>
