@@ -668,7 +668,7 @@
             <cs:location>http://schemas.opengis.net/gml/3.2/GmlProfile.xsd</cs:location>
             <cs:phase>3</cs:phase>
             <cs:version>3.2.2</cs:version>
-            <cs:release>KADPROFILE</cs:release>
+            <cs:release>20200728</cs:release>
             <cs:forSchema>
                <cs-ref:ConceptualSchemaRef xlink:href="#GML"/>
             </cs:forSchema>

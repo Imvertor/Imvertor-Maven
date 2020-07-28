@@ -38,7 +38,7 @@
 
     <xsl:variable name="conceptual-schema-mapping-name" select="imf:get-config-string('cli','mapping')"/>
     <xsl:variable name="conceptual-schema-mapping-file" select="imf:get-config-string('properties','CONCEPTUAL_SCHEMA_MAPPING_FILE')"/>
-    <xsl:variable name="conceptual-schema-mapping" select="imf:document($conceptual-schema-mapping-file,true())/cs:ConceptualSchemas"/>
+    <xsl:variable name="conceptual-schema-mapping" select="imf:prepare-mapping(imf:document($conceptual-schema-mapping-file,true()))"/>
     
     <xsl:function name="imf:create-catalog-url" as="xs:string?">
         <xsl:param name="construct" as="element(cs:Construct)?"/> <!-- the construct that is part of a conceptual map -->
@@ -91,7 +91,7 @@
         <xsl:param name="url" as="xs:string"/>
         <xsl:param name="use-mapping" as="xs:string"/>
         
-        <xsl:variable name="conceptual-schema-ids" select="$conceptual-schema-mapping//cs:ConceptualSchema[cs:url = $url]/cs:id"/>
+        <xsl:variable name="conceptual-schema-ids" select="$conceptual-schema-mapping/cs:components/cs:ConceptualSchemasComponents/cs:ConceptualSchema[cs:url = $url]/cs:id"/>
         <xsl:variable name="maps" select="$conceptual-schema-mapping/cs:components/cs:ConceptualSchemasComponents/cs:Map[imf:resolve-cs-ref(cs:forSchema/cs-ref:ConceptualSchemaRef,'ConceptualSchema')/cs:id = $conceptual-schema-ids]"/>
         
         <!-- select maps that are in the mapping -->
@@ -111,7 +111,7 @@
         <xsl:param name="element" as="element()"/> <!-- a cs-ref:* element -->
         <xsl:param name="element-type" as="xs:string+"/> <!-- local name(s) of the element(s) for which this ID is valid -->
         <xsl:variable name="id" select="substring($element/@xlink:href,2)"/>
-        <xsl:variable name="target" select="root($element)/cs:ConceptualSchemas/cs:components/cs:ConceptualSchemasComponents/cs:*[cs:id = $id and local-name(.) = $element-type]"/>
+        <xsl:variable name="target" select="root($element)//cs:ConceptualSchemasComponents/cs:*[cs:id = $id and local-name(.) = $element-type]"/>
         <xsl:choose>
             <xsl:when test="count($target) = 1">
                 <xsl:sequence select="$target"/>
@@ -126,5 +126,33 @@
         <xsl:param name="construct" as="element(cs:Construct)"/>
         <xsl:sequence select="imf:resolve-cs-ref($construct/../../cs:forSchema/cs-ref:ConceptualSchemaRef,'ConceptualSchema')"/>
     </xsl:function>
+    
+    <!-- 
+        zet het conceptual schema om naar de vorm waarin alleen de relevante maps zijn opgenomen.
+    -->
+    <xsl:function name="imf:prepare-mapping" as="element(cs:ConceptualSchemas)">
+        <xsl:param name="conceptual-schema-mapping-doc" as="document-node()"/>
+        <xsl:apply-templates select="$conceptual-schema-mapping-doc/*" mode="imf:prepare-mapping"/>
+    </xsl:function>
+    
+    <xsl:template match="cs:Mapping" mode="imf:prepare-mapping">
+        <xsl:if test="cs:name = $conceptual-schema-mapping-name">
+           <xsl:next-match/>
+        </xsl:if>
+        <!-- else remove -->
+    </xsl:template>
+    
+    <xsl:template match="cs:Map" mode="imf:prepare-mapping">
+        <xsl:if test="root(.)/cs:ConceptualSchemas/cs:mappings/cs:Mapping[cs:name = $conceptual-schema-mapping-name]/cs:use/cs-ref:MapRef/@xlink:href = concat('#', current()/cs:id)">
+            <xsl:next-match/>
+        </xsl:if>
+        <!-- else remove -->
+    </xsl:template>
+    
+    <xsl:template match="node()|@*" mode="imf:prepare-mapping">
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
     
  </xsl:stylesheet>

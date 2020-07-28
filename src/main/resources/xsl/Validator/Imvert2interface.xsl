@@ -38,13 +38,15 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-conceptual-map.xsl"/>
-        
+       
+  
     <!-- 
         outside mapped classes  are classes that are referenced but not defined. 
         They are considered to be configured using the conceptual schemas configuration.
         Typical example are GML constructs.
     -->
     <xsl:variable name="outside-mapped-classes" as="element(imvert:class)*">
+        
         <xsl:for-each select="//imvert:package[imvert:id = 'OUTSIDE']/imvert:class"> <!-- all stubs -->
             <xsl:variable name="constructs" select="$conceptual-schema-mapping//cs:Construct[cs:name = current()/imvert:name]" as="element(cs:Construct)*"/>
             <xsl:variable name="construct" as="element(cs:Construct)?">
@@ -99,7 +101,11 @@
     </xsl:variable>    
     
     <xsl:template match="/imvert:packages">
-
+     
+        <xsl:result-document href="file:/c:/temp/s.xml">
+          <xsl:sequence select="$conceptual-schema-mapping"></xsl:sequence>
+        </xsl:result-document>
+        
         <!-- set info on this model here (as early as possible!) -->
         <xsl:variable name="application-package" select=".//imvert:package[imf:boolean(imvert:is-root-package)]"/>
         
@@ -184,10 +190,10 @@
         </imvert:supplier-package>
     </xsl:template>
     
-    <xsl:template match="node()" mode="#all">
+    <xsl:template match="node()">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <xsl:apply-templates mode="#current"/>
+            <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
     

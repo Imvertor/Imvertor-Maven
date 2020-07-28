@@ -144,7 +144,13 @@
          <arg>yes|no</arg>
          <tip>Generate schemas with IDs with domains. This parameter applies to Kadaster schemas.</tip>
          <required>false</required>
-      </cli-parm>      
+      </cli-parm>  
+      <cli-parm>
+         <name>generategmlprofile</name>
+         <arg>yes|no</arg>
+         <tip>Generate a GML profile from XSD files configured.</tip>
+         <required>false</required>
+      </cli-parm>  
    </cli-parms>
   
    <properties>
@@ -152,6 +158,9 @@
       <LOCALIZE_XSD_XSLPATH>localize-xsd.xsl</LOCALIZE_XSD_XSLPATH>
       <LOCAL_SCHEMA_MAPPING_FILE>${system/inp-folder-path}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>
     
+      <PROFILE_XSD_XSLPATH>profile-xsd.xsl</PROFILE_XSD_XSLPATH>
+      <WORK_PROFILE_XSD_FILE>${system/work-imvert-folder-path}/imvertor.31.profile.xsd</WORK_PROFILE_XSD_FILE>
+      
       <!-- intermediate locations -->
       
       <RESULT_XSD_PREFORM_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.28.1.xsd-preformed.xml</RESULT_XSD_PREFORM_XML_FILE_PATH>   

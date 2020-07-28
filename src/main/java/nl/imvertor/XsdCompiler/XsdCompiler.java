@@ -20,6 +20,8 @@
 
 package nl.imvertor.XsdCompiler;
 
+import java.util.Vector;
+
 import javax.xml.xpath.XPathConstants;
 
 import org.apache.commons.lang3.StringUtils;
@@ -431,7 +433,19 @@ public class XsdCompiler extends Step {
 			AnyFolder targetXsdFolder = new AnyFolder(configurator.getXParm("system/work-xsd-folder-path"));
 			if (xsdFolder.isDirectory()) {
 				runner.debug(logger,"CHAIN","Appending external schema from: " + xsdFolder);
-				transformSchemas(xsdFolder, targetXsdFolder);
+				if (configurator.isTrue("cli", "creategmlprofile", false) && StringUtils.startsWith(filepath,"www.opengis.net/GML322")) {
+					runner.debug(logger,"CHAIN","Profiling external schema from: " + xsdFolder);
+					createProfile(
+							"GmlProfile", 
+							"1.0.0-3.2.2", 
+							"../../xlink/1.0.0/xlinks.xsd", 
+							xsdFolder, //"D:\Projects\gitprojects\Imvertor-Maven\src\main\resources\input\Kadaster\xsd\www.opengis.net\GML322PROFILE-20200728"
+							new AnyFile(targetXsdFolder,"gml/3.2/GmlProfile.xsd") 
+							);
+				} else {
+					runner.debug(logger,"CHAIN","Appending external schema from: " + xsdFolder);
+					transformSchemas(xsdFolder, targetXsdFolder);
+				}
 			} else 
 				throw new EnvironmentException("Cannot find external XSD folder for schema to append: " + xsdFolder);
 		}
@@ -463,5 +477,24 @@ public class XsdCompiler extends Step {
 		transformer.transformFolder(xsdFolder, targetXsdFolder, ".*\\.xsd", prettyPrinter);
 	}
 	
-	
+	private void createProfile(String name, String version, String xlinkUrl, AnyFolder folder, AnyFile targetFile) throws Exception {
+		
+		String filelist = "";
+		String[] files = (folder.listFilesToVector(true)).toArray(new String[0]);
+		for (int i = 0; i < files.length; i++) {
+			AnyFile source = new AnyFile(files[i]);
+			if (source.getExtension().equals("xsd")) filelist += source.toURI().toURL().toString() + ";";
+		}
+		
+		Transformer transformer = new Transformer();
+		transformer.setXslParm("config-name",name);
+		transformer.setXslParm("config-version", version);
+		transformer.setXslParm("config-xlink-url", xlinkUrl);
+		transformer.setXslParm("config-schemas", filelist);
+		
+		transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_PROFILE_XSD_FILE","properties/PROFILE_XSD_XSLPATH");
+		
+		// en kopieer naar target folder
+		(new AnyFile(transformer.getResultFile())).copyFile(targetFile);
+	}
 }
