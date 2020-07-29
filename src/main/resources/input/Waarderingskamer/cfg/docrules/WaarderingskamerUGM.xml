@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="Waarderingskamer.xml"/>
+    
+    <xi:include href="WaarderingskamerSIM.xml"/>
+    
+    <name>Waarderingskamer UGM</name>
+    
+    <desc>Waarderingskamer UGM specific requirements on documentation.</desc>
+    
+</doc-rules>

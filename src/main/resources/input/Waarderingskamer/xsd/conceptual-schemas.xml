@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchemas xmlns:xlink="http://www.w3.org/1999/xlink"
+                      xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+                      xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210
+                      ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+   <cs:mappings>
+      <cs:Mapping>
+         <cs:name>Waarderingskamer_GEOSTANDAARDEN</cs:name>
+         <cs:use>
+            <cs-ref:MapRef xlink:href="#GML321"/>
+         </cs:use>
+      </cs:Mapping>
+   </cs:mappings>
+   <cs:components>
+      <cs:ConceptualSchemasComponents>
+         <cs:ConceptualSchema>
+            <cs:id>GML3</cs:id>
+            <cs:shortName>gml</cs:shortName>
+            <cs:desc>ISO19107 Geographic information – Spatial schema (Geography Markup Language 3)</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/ISO19107</cs:url>
+            <cs:catalogUrl>http://www.opengeospatial.org/standards/gml[entry]</cs:catalogUrl>
+         </cs:ConceptualSchema>
+         <cs:Map>
+            <cs:id>GML321</cs:id>
+            <cs:namespace>http://www.opengis.net/gml/3.2</cs:namespace>
+            <cs:location>https://schema.waarderingskamer.nl/profile/gml/1.0/gml-profile.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>0.0.2-3.2.1</cs:version>
+            <cs:release>WKPROFILE</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#GML3"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>GM_Surface</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#Surface</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+      </cs:ConceptualSchemasComponents>
+   </cs:components>
+</cs:ConceptualSchemas>

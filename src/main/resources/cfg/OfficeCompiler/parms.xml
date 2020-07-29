@@ -152,6 +152,12 @@
       <IMVERTOR_METAMODEL_IHWBSM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-IHW-SIM.xsl</IMVERTOR_METAMODEL_IHWBSM_MODELDOC_XSLPATH>
       <IMVERTOR_METAMODEL_IHWBSM_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-IHW-SIM-html-respec.xsl</IMVERTOR_METAMODEL_IHWBSM_MODELDOC_RESPEC_XSLPATH>
       
+      <!-- Waarderingskamer -->
+      <IMVERTOR_METAMODEL_WaarderingskamerSIM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Waarderingskamer-SIM.xsl</IMVERTOR_METAMODEL_WaarderingskamerSIM_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_WaarderingskamerSIM_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-Waarderingskamer-SIM-html-respec.xsl</IMVERTOR_METAMODEL_WaarderingskamerSIM_MODELDOC_RESPEC_XSLPATH>
+      <IMVERTOR_METAMODEL_WaarderingskamerBSM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Waarderingskamer-SIM.xsl</IMVERTOR_METAMODEL_WaarderingskamerBSM_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_WaarderingskamerBSM_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-Waarderingskamer-SIM-html-respec.xsl</IMVERTOR_METAMODEL_WaarderingskamerBSM_MODELDOC_RESPEC_XSLPATH>
+      
       <!-- KENNISNET -->
       <IMVERTOR_METAMODEL_KennisnetSIM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Kennisnet-SIM.xsl</IMVERTOR_METAMODEL_KennisnetSIM_MODELDOC_XSLPATH>
       <IMVERTOR_METAMODEL_KennisnetSIM_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-Kennisnet-SIM-html-respec.xsl</IMVERTOR_METAMODEL_KennisnetSIM_MODELDOC_RESPEC_XSLPATH>

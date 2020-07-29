@@ -160,6 +160,19 @@
       <!--validate-->
       <IMVERTOR_METAMODEL_IHWSIM_VALIDATE_XSLPATH>Imvert2validation-KINGSIM.xsl</IMVERTOR_METAMODEL_IHWSIM_VALIDATE_XSLPATH>
       
+      <!--canonize-->
+      <IMVERTOR_METAMODEL_WaarderingskamerBSM_CANONICAL_XSLPATH>Imvert2canonical.xsl</IMVERTOR_METAMODEL_WaarderingskamerBSM_CANONICAL_XSLPATH>
+      <IMVERTOR_METAMODEL_WaarderingskamerBSM_CANONICAL_XSLPATH_2>Imvert2canonical-KING.xsl</IMVERTOR_METAMODEL_WaarderingskamerBSM_CANONICAL_XSLPATH_2>
+      <IMVERTOR_METAMODEL_WaarderingskamerBSM_CANONICAL_XSLPATH_3>Imvert2canonical-KINGBSM.xsl</IMVERTOR_METAMODEL_WaarderingskamerBSM_CANONICAL_XSLPATH_3>
+      <!--validate-->
+      <IMVERTOR_METAMODEL_WaarderingskamerGBSM_VALIDATE_XSLPATH>Imvert2validation-KINGBSM.xsl</IMVERTOR_METAMODEL_WaarderingskamerGBSM_VALIDATE_XSLPATH>
+      
+      <!--canonize-->
+      <IMVERTOR_METAMODEL_WaarderingskamerSIM_CANONICAL_XSLPATH>Imvert2canonical.xsl</IMVERTOR_METAMODEL_WaarderingskamerSIM_CANONICAL_XSLPATH>
+      <IMVERTOR_METAMODEL_WaarderingskamerSIM_CANONICAL_XSLPATH_2>Imvert2canonical-KING.xsl</IMVERTOR_METAMODEL_WaarderingskamerSIM_CANONICAL_XSLPATH_2>
+      <IMVERTOR_METAMODEL_WaarderingskamerSIM_CANONICAL_XSLPATH_3>Imvert2canonical-KINGSIM.xsl</IMVERTOR_METAMODEL_WaarderingskamerSIM_CANONICAL_XSLPATH_3>
+      <!--validate-->
+      <IMVERTOR_METAMODEL_WaarderingskamerSIM_VALIDATE_XSLPATH>Imvert2validation-KINGSIM.xsl</IMVERTOR_METAMODEL_WaarderingskamerSIM_VALIDATE_XSLPATH>
       
       <!--canonize-->
       <IMVERTOR_METAMODEL_KennisnetBSM_CANONICAL_XSLPATH>Imvert2canonical.xsl</IMVERTOR_METAMODEL_KennisnetBSM_CANONICAL_XSLPATH>

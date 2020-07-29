@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <!-- 
+        this metamodel is subject to standard Grouping conventions 
+    -->
+    
+    <!-- Waarderingskamer follows MIM requirements -->
+    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+
+    <name>Waarderingskamer UGM</name>
+    
+    <desc lang="en">Metamodel for Waarderingskamer exchange models: uitwisseling gegevensmodel</desc>
+  
+    <composition-direction-source>part</composition-direction-source>
+    
+    <model-designation>LOGICAL</model-designation>
+    
+    <profiles>
+        <profile lang="nl"> 
+            <id>WKUGMNL</id>
+            <release>1.1</release>
+            <desc>WKUGM Grouping NL</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>WKUGMEN</id>
+            <release>1.1</release>
+            <desc>WKUGM Grouping EN</desc>
+        </profile>
+    </profiles>
+    
+    <naming>
+        <package>
+            <format>AsIs</format>
+        </package>
+        <class>
+            <format>AsIs</format>
+        </class>
+        <property>
+            <format>AsIs</format>
+        </property>
+        <tv>
+            <format>Upperstart</format> <!-- first character must be upper case. -->
+        </tv>
+        <element>
+            <format>LowerCamel</format>
+        </element>
+    </naming>
+    
+    <features>
+        <feature name="role-based">false</feature>
+        <feature name="allow-multiple-supertypes">false</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+    </features>
+    
+    <stereotypes xml:id="stereotypes">
+        <stereo id="stereotype-name-association-to-composite">
+            <name lang="en">Group composition</name>
+            <name lang="nl">Groep compositie</name>
+            <desc lang="nl">
+            </desc>
+            <construct>association</construct>
+        </stereo>
+    </stereotypes>
+    
+</metamodel>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<shacl-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <name>Waarderingskamer MIM 1.0</name>
+    <!-- 
+        Waarderingskamer MIM specific SHACL rules 
+    -->
+    <vocabularies>
+        
+        <base>http://localhost:8080/catalogus/dso/</base>
+        
+        <vocabulary>
+            <prefix>rdf</prefix>
+            <URI>http://www.w3.org/1999/02/22-rdf-syntax-ns#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>rdfs</prefix>
+            <URI>http://www.w3.org/2000/01/rdf-schema#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>xsd</prefix>
+            <URI>http://www.w3.org/2001/XMLSchema#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>owl</prefix>
+            <URI>http://www.w3.org/2002/07/owl#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>sh</prefix>
+            <URI>http://www.w3.org/ns/shacl#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>uml</prefix>
+            <URI>http://www.omg.org/spec/UML/20131001/</URI>
+        </vocabulary>
+        
+        <vocabulary>
+            <prefix>kkgshape</prefix>
+            <URI>http://localhost:8080/dso/shacl/def/model/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>kkgbegrip</prefix>
+            <URI>http://bp4mc2.org/kkg/id/begrip/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>kkg</prefix>
+            <URI>http://bp4mc2.org/def/kkg#</URI>
+        </vocabulary>
+        
+        <vocabulary>
+            <prefix>skos</prefix>
+            <URI>http://www.w3.org/2004/02/skos/core#</URI>
+        </vocabulary>
+        
+        <vocabulary>
+            <prefix>ldqd</prefix>
+            <URI>http://www.w3.org/2016/05/ldqd#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>prov</prefix>
+            <URI>http://www.w3.org/ns/prov#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>xsi</prefix>
+            <URI>http://www.w3.org/2001/XMLSchema-instance/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>dct</prefix>
+            <URI>http://purl.org/dc/terms/</URI>
+        </vocabulary>        
+    
+        <!--x
+        <vocabulary>
+            <prefix>dcat</prefix>
+            <URI>http://www.w3.org/ns/dcat#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>dct</prefix>
+            <URI>http://purl.org/dc/terms/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>dctype</prefix>
+            <URI>http://purl.org/dc/dcmitype/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>foaf</prefix>
+            <URI>http://xmlns.com/foaf/0.1/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>skoslex</prefix>
+            <URI>http://bp4mc2.org/def/skos-lex/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>dqv</prefix>
+            <URI>http://www.w3.org/ns/dqv#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>adms</prefix>
+            <URI>http://www.w3.org/ns/adms#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>wdrs</prefix>
+            <URI>http://www.w3.org/2007/05/powder-s#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>xsi</prefix>
+            <URI>http://www.w3.org/2001/XMLSchema-instance</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>ldqd</prefix>
+            <URI>http://www.w3.org/2016/05/ldqd#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>data</prefix>
+            <URI>http://data.ontwikkeling.pdok.nl/catalogus/dso/id/model#</URI>
+        </vocabulary>
+        x-->
+
+    </vocabularies>
+    
+    <node-mapping>
+        <!-- 
+            Alleen de tagged values die hier zijn opgenomen worden omgezet naar een regel in TTL Shacl 
+            Dit worden constructies zoals model:definition '''Identifier or geographic name.....''';
+            
+            zie https://github.com/bp4mc2/bp4mc2/blob/master/model/kkg/KKG%20stereotypes%20and%20tagged%20values.md
+	    -->
+        <map id="CFG-TV-INDICATIONAUTHENTIC" type="2q" lang="#all">ldqd:trustworthiness</map>
+        <map id="CFG-TV-CODE" type="2q" lang="#all">kkg:code</map>
+        <map id="CFG-TV-DATERECORDED" type="2q" lang="#all">prov:generatedAtTime</map>
+        <map id="CFG-TV-DEFINITION" type="3q" lang="#all">skos:definition</map>
+        <map id="CFG-TV-FORMALPATTERN" type="2q" lang="#all">kkg:domeinFormeelPatroon</map>
+        <map id="CFG-TV-LENGTH" type="2q" lang="#all">kkg:domeinLengte</map>
+        <map id="CFG-TV-PATTERN" type="2q" lang="#all">kkg:domeinPatroon</map>
+        <map id="CFG-TV-SOURCE" type="2q" lang="#all">skos:editorialNote</map>
+        <map id="CFG-TV-SOURCEOFDEFINITION" type="2q" lang="#all">dct:source</map>
+        <map id="CFG-TV-INDICATIONFORMALHISTORY" type="2q" lang="#all">kkg:indicatieFormeleHistorie</map>
+        <map id="CFG-TV-INDICATIONMATERIALHISTORY" type="2q" lang="#all">kkg:indicatieMaterieleHistorie</map>
+        <map id="CFG-TV-QUALITY" type="2q" lang="#all">ldqd:semanticAccuracy</map>
+        <map id="CFG-TV-DATALOCATION" type="2q" lang="#all">kkg:locatie</map>
+        <map id="CFG-TV-VOIDABLE" type="2q" lang="#all">xsi:nil</map>
+        <map id="CFG-TV-POPULATION" type="2q" lang="#all">ldqd:completeness</map>
+        <map id="CFG-TV-DESCRIPTION" type="2q" lang="#all">skos:scopeNote</map>
+        
+        <!--x
+        <map id="CFG-TV-ADMINISTRATOR" type="2q" lang="#all">?</map>
+        <map id="CFG-TV-OWNER" type="2q" lang="#all">?</map>
+        <map id="CFG-TV-RULES" type="2q" lang="#all">?</map>
+        x-->
+    </node-mapping>
+</shacl-rules>

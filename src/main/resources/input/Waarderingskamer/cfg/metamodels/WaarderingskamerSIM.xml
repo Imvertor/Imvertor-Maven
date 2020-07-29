@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+   <!-- Waarderingskamer follows MIM requirements -->
+   <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+
+   <name>Waarderingskamer SIM</name>
+   
+   <desc lang="en">Metamodel for Waarderingskamer information models: semantisch informatiemodel</desc>
+   
+   <profiles>
+      <profile lang="nl"> 
+         <id>WKSIMNL</id>
+         <release>1.1</release>
+         <desc>WKSIM Grouping NL</desc> 
+      </profile>
+      <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+         <id>WKSIMEN</id>
+         <release>1.1</release>
+         <desc>WKSIM Grouping EN</desc>
+      </profile>
+   </profiles>
+   
+   <!-- 
+      The normal direction of the composition is from Whole to Part (source to target). 
+      If this is reversed (as is discussied in Task #487339), set this parameter to "part", otherwise set to "whole" (default).
+   -->  
+   <composition-direction-source>part</composition-direction-source>
+   
+   <naming>
+      <package>
+         <format>AsIs</format>
+      </package>
+      <class>
+         <format>AsIs</format>
+      </class>
+      <property>
+         <format>AsIs</format>
+      </property>
+      <tv>
+         <format>Upperstart</format> <!-- first character must be upper case. -->
+      </tv>
+   </naming>
+   
+   <stereotypes xml:id="stereotypes">
+      <stereo id="stereotype-name-association-to-composite">
+         <name lang="en">Group composition</name>
+         <name lang="nl">Groep compositie</name>
+         <desc lang="nl">
+         </desc>
+         <construct>association</construct>
+      </stereo>
+   </stereotypes>
+
+   
+</metamodel>
