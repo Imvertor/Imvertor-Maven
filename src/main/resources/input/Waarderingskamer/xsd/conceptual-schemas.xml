@@ -19,7 +19,7 @@
             <cs:id>GML3</cs:id>
             <cs:shortName>gml</cs:shortName>
             <cs:desc>ISO19107 Geographic information – Spatial schema (Geography Markup Language 3)</cs:desc>
-            <cs:url>http://www.bro.nl/conceptual-schemas/ISO19107</cs:url>
+            <cs:url>http://www.waarderingskamer.nl/conceptual-schemas/ISO19107</cs:url>
             <cs:catalogUrl>http://www.opengeospatial.org/standards/gml[entry]</cs:catalogUrl>
          </cs:ConceptualSchema>
          <cs:Map>
@@ -41,6 +41,15 @@
                         <cs:name>#Surface</cs:name>
                      </cs:CatalogEntry>
                   </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Surface</cs:name>
+                        <cs:asAttribute>SurfacePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
                </cs:Construct>
             </cs:constructs>
          </cs:Map>
