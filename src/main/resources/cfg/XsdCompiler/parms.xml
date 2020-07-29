@@ -146,9 +146,9 @@
          <required>false</required>
       </cli-parm>  
       <cli-parm>
-         <name>generategmlprofile</name>
+         <name>creategmlprofile</name>
          <arg>yes|no</arg>
-         <tip>Generate a GML profile from XSD files configured.</tip>
+         <tip>Generate a GML profile for the model from XSD files configured. Only avaiable for GML 3.2.2.</tip>
          <required>false</required>
       </cli-parm>  
    </cli-parms>
