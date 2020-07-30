@@ -151,6 +151,18 @@
          <tip>Generate a GML profile for the model from XSD files configured. Only avaiable for GML 3.2.2.</tip>
          <required>false</required>
       </cli-parm>  
+      <cli-parm>
+         <name>gmlprofilename</name>
+         <arg>template</arg>
+         <tip>Name of the GML profile XSD file. You may use [...] parameters. Defaults to "GmlProfile".</tip>
+         <required>false</required>
+      </cli-parm>  
+      <cli-parm>
+         <name>gmlprofileversion</name>
+         <arg>template</arg>
+         <tip>Version of the GML profile XSD file. You may use [...] parameters. Defaults to "1.0.0-3.2.2".</tip>
+         <required>false</required>
+      </cli-parm>  
    </cli-parms>
   
    <properties>
