@@ -60,15 +60,10 @@
       </tv>
    </naming>
    
-   <stereotypes xml:id="stereotypes">
-      <stereo id="stereotype-name-association-to-composite">
-         <name lang="en">Group composition</name>
-         <name lang="nl">Groep compositie</name>
-         <desc lang="nl">
-         </desc>
-         <construct>association</construct>
-      </stereo>
-   </stereotypes>
-
+   <features>
+      <feature name="role-based">true</feature>
+      <feature name="allow-multiple-supertypes">false</feature>
+      <feature name="allow-scalar-in-union">true</feature>
+   </features>
    
 </metamodel>
