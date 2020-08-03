@@ -15,19 +15,6 @@
    
     <tagged-values>
         
-       <tv norm="space" id="CFG-TV-ISDERIVED">
-            <derive>no</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-association-to-composite</stereo>
-            </stereotypes>            
-        </tv>
-        <tv norm="space"  id="CFG-TV-POSITION">
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-association-to-composite</stereo>
-            </stereotypes>
-        </tv>
-        
         <tv norm="space" id="CFG-TV-DATALOCATION">
             <!-- bepaal de naam van deze tagged value hier, en ken toe aan nieuwe stereo's -->
             <name lang="nl">Data locatie</name>
