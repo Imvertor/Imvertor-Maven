@@ -25,6 +25,19 @@
         </profile>
     </profiles>
     
+    <naming>
+        <package>
+            <format>AsIs</format>
+        </package>
+        <class>
+            <format>AsIs</format>
+        </class>
+        <property>
+            <format>AsIs</format>
+        </property>
+        <!-- tv conventions as defined elsewhere -->
+    </naming>
+    
     <features>
         <feature name="allow-multiple-supertypes">false</feature>
         <feature name="allow-scalar-in-union">true</feature>
