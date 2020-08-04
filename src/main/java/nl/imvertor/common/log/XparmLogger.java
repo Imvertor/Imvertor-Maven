@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
 
+import nl.imvertor.common.file.XmlFile;
+
 public class XparmLogger {
 
 	public static Vector<XparmLog> logs;
@@ -38,7 +40,7 @@ public class XparmLogger {
 		XparmLog log = new XparmLog();
 		log.origin = origin.peek();
 		log.name = name;
-		log.value = value;
+		log.value = XmlFile.xmlescape(value);
 		log.replace = replace;
 		logs.addElement(log);
 	}
