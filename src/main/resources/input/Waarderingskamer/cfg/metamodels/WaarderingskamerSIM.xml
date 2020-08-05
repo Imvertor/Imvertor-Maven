@@ -61,7 +61,7 @@
    </naming>
    
    <features>
-      <feature name="role-based">true</feature>
+      <feature name="role-based">false</feature>
       <feature name="allow-multiple-supertypes">false</feature>
       <feature name="allow-scalar-in-union">true</feature>
    </features>
