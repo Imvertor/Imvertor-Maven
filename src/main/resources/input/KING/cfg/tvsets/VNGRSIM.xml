@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- VNGR follows MIM1.1 requirements -->
+    <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
+    
+    <!-- VNGR refines grouping -->
+    <xi:include href="Grouping.xml"/>
+    
+    <xi:include href="VNGRBSM-cross-SIM-and-UGM.xml"/>
+
+    <name>VNGRSIM</name>
+    <tagged-values>
+      
+        <tv norm="space" id="CFG-TV-AANDUIDINGSTRIJDIGHEIDNIETIGHEID">
+            <name lang="nl">Aanduiding strijdigheid/nietigheid</name>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                De aanduiding of te bevragen is dat de attribuutwaarde strijdig met de openbare orde dan wel nietig is.
+            </desc>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-INDICATIEINONDERZOEK">
+            <name lang="nl">Indicatie in onderzoek</name>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                De indicatie of te bevragen is dat er twijfel is of is geweest aan de juistheid van de attribuutwaarde en dat een onderzoek wordt 
+                of is uitgevoerd naar de juistheid van de attribuutwaarde. 
+            </desc>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+                <value>Zie groep</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
+            <name lang="nl">Herkomst definitie</name>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                De basisregistratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die 
+                aangeeft uit welke bronnen de defintie is samengesteld.
+            </desc>
+            <stereotypes>
+                <!-- in addition to BP -->
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo> 
+                <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="1..1">stereotype-name-union</stereo>
+                <stereo minmax="1..1">stereotype-name-union-element</stereo>
+                <stereo minmax="1..1">stereotype-name-complextype</stereo>
+                <stereo minmax="1..1">stereotype-name-data-element</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo><!-- verplicht voor SIM -->
+            </stereotypes>
+        </tv>
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
+            <name lang="nl">Indicatie materiële historie</name>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                Indicatie of de materiële historie van de attribuutsoort te bevragen is.
+                Materiële historie geeft aan wanneer een verandering is opgetreden in de
+                werkelijkheid die heeft geleid tot veranderjng van de attribuutwaarde.
+            </desc>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+                <value>Zie groep</value>
+                <value>Ja, zie regels</value>
+                <value>N.v.t.</value>
+            </declared-values>
+        </tv>
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
+            <name lang="nl">Indicatie formele historie</name>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                Indicatie of de formele historie van de attribuutsoort te bevragen is.
+                Formele historie geeft aan wanneer in de administratie een verandering is
+                verwerkt van de attribuutwaarde (wanneer was de verandering bekend en
+                is deze verwerkt).
+            </desc>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+                <value>Zie groep</value>
+                <value>N.v.t.</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC">
+            <name lang="nl">Indicatie authentiek</name>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                Aanduiding of het een authentiek gegeven (attribuutsoort) betreft.
+            </desc>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="compact" rules="NOC" id="CFG-TV-VOIDABLE">
+            <name lang="nl">Mogelijk geen waarde</name>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+            <desc lang="nl">
+                Indicatie waarmee wordt aangegeven dat het gegeven ook geen waarde kan hebben.
+            </desc>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-GROEPNAAM">
+            <name lang="nl">Groepnaam</name>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-tekentechnisch</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SOURCE">
+            <name lang="nl">Herkomst</name>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                De basisregistratie in wiens catalogus het objecttype is gespecificeerd (oftewel de basisregistratie waar het 
+                objecttype deel van uitmaakt). Deze specificatie is toegevoegd omdat het wel duidelijk moet zijn in 
+                welke (basis)registratie of informatiemodel het objecttype voorkomt (indien van toepassing).
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo><!-- verplicht voor SIM -->
+            </stereotypes>
+        </tv>
+
+        <tv norm="note" id="CFG-TV-POPULATION">   <!-- in aanvulling op SBR -->
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="note" id="CFG-TV-QUALITY">   <!-- in aanvulling op SBR -->
+            <name lang="nl">Kwaliteitsbegrip</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="note" id="CFG-TV-DEFINITION">  
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-composite</stereo> <!-- verplicht voor SIM -->
+            </stereotypes>
+        </tv>
+        <tv norm="note" id="CFG-TV-DESCRIPTION">   <!-- in aanvulling op SBR -->
+            <name lang="nl">Toelichting</name>
+            <derive>yes</derive>
+            <desc lang="nl">Aanvullende beschrijving van het construct met de bedoeling dat te verduidelijken.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="note" id="CFG-TV-RULES">   <!-- in aanvulling op SBR -->
+            <derive>yes</derive>
+            <desc lang="nl">
+                Optionaliteitsregels of waardebeperkende regels.
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-PATTERN">
+            <name lang="nl">Patroon</name>
+            <name lang="en">Pattern</name>
+            <derive>yes</derive>
+            <desc lang="nl">
+                Beschrijving van het gegevenspatroon van dit element. Dit kan de basis zijn voor een reguliere expressie.
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+            </stereotypes>
+        </tv>
+        
+        <!-- REDMINE #487612 -->
+        <!-- Internal packages are propagated to Grouping --> 
+        
+       
+    </tagged-values>
+</tagset>
