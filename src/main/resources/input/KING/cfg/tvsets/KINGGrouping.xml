@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <!-- 
+        this metamodel is subject to standard Grouping conventions 
+    -->
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping.xml"/>
+    
+    <name>Grouping for KING</name>
+  
+    <desc lang="en">Deviations and additions to generic grouping for KING metamodels.</desc>  
+   
+    <tagged-values>
+        
+       <tv norm="space" id="CFG-TV-ISDERIVED">
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-association-to-composite</stereo>
+            </stereotypes>            
+        </tv>
+        <tv norm="space"  id="CFG-TV-POSITION">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-association-to-composite</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-DATALOCATION">
+            <!-- bepaal de naam van deze tagged value hier, en ken toe aan nieuwe stereo's -->
+            <name lang="nl">Data locatie</name>
+            <name lang="en">Data location</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo><!-- SIM Referentielijst -->
+                <stereo minmax="0..1">stereotype-name-attribute</stereo><!-- SIM Referentie element -->
+            </stereotypes>
+        </tv>
+        
+    </tagged-values>
+    
+</tagset>

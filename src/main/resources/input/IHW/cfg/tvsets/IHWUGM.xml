@@ -20,14 +20,14 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
    
     <!-- IHW refines grouping -->
-    <xi:include href="Grouping.xml"/>
+    <xi:include href="IHWGrouping.xml"/>
 
     <!-- 
         applications using this metamodel may reference cross-meta Tagged values taken from SIM
     -->
     <xi:include href="IHWUGM-cross-SIM.xml"/>
 
-    <name>IHW UGM</name>
+    <name>IHW UGM tvsets</name>
     
     <tagged-values>
         

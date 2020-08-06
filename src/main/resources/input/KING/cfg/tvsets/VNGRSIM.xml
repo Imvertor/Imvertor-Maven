@@ -21,9 +21,6 @@
     <!-- VNGR follows MIM1.1 requirements -->
     <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
     
-    <!-- VNGR refines grouping -->
-    <xi:include href="Grouping.xml"/>
-    
     <xi:include href="VNGRBSM-cross-SIM-and-UGM.xml"/>
 
     <name>VNGRSIM</name>

@@ -22,7 +22,7 @@
     <xi:include href="../../../BP/cfg/tvsets/BP.xml"/>
     
     <!-- KING refines grouping -->
-    <xi:include href="Grouping.xml"/>
+    <xi:include href="KINGGrouping.xml"/>
     
     <xi:include href="KINGBSM-cross-SIM-and-UGM.xml"/>
 
