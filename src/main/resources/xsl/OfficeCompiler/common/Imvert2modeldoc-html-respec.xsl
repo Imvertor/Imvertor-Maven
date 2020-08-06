@@ -27,6 +27,8 @@
     
     <xsl:variable name="document-ids" select="for $id in //@id return string($id)"/>
 
+    <xsl:variable name="meta-is-role-based" select="imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/><!-- TODO duplicate declaration -->
+    
     <xsl:template match="/book/chapter">
         <section id='{@type}' class="normative"> 
             <h2>
@@ -190,23 +192,21 @@
        
     </xsl:template>
  
-    <xsl:template match="content[@approach='association']" mode="detail">
-        <!-- skip -->
-    </xsl:template>
-    
     <xsl:template match="content" mode="detail">
-        <table width="100%">
-            <xsl:apply-templates select="part[1]" mode="detail-tabletype"/>
-            <xsl:apply-templates select="part[1]" mode="detail-colgroup"/>
-            <tbody>
-                <xsl:if test="exists(itemtype)">
-                    <tr>
-                        <xsl:apply-templates select="itemtype[@type]" mode="#current"/>
-                    </tr>
-                </xsl:if>
-                <xsl:apply-templates select="part" mode="#current"/>
-            </tbody>
-        </table>
+        <xsl:if test="empty(@approach) or (@approach = 'target' and $meta-is-role-based) or @approach = 'association' and not($meta-is-role-based)">
+           <table width="100%">
+                <xsl:apply-templates select="part[1]" mode="detail-tabletype"/>
+                <xsl:apply-templates select="part[1]" mode="detail-colgroup"/>
+                <tbody>
+                    <xsl:if test="exists(itemtype)">
+                        <tr>
+                            <xsl:apply-templates select="itemtype[@type]" mode="#current"/>
+                        </tr>
+                    </xsl:if>
+                    <xsl:apply-templates select="part" mode="#current"/>
+                </tbody>
+            </table>
+        </xsl:if>
     </xsl:template>
     
     <xsl:template match="itemtype" mode="detail">

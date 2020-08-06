@@ -353,7 +353,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-FORMEELPATROON" order="160">
+    <doc-rule id="CFG-DOC-FORMEELPATROON" order="235">
         <name lang="nl">Formeel patroon</name>
         <name lang="en">Formal pattern</name>
         <levels>
@@ -363,6 +363,15 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
             
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-LENGTH" order="238">
+        <name lang="nl">Lengte</name>
+        <name lang="en">Length</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
         </levels>

@@ -111,7 +111,7 @@
             <name lang="en">Pattern</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
+                <stereo minmax="0..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort, Referentie element, Keuze element, Data element-->
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
                 <stereo minmax="0..1">stereotype-name-union-element</stereo>
