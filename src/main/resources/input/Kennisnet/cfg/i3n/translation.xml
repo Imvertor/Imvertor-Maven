@@ -180,11 +180,11 @@
     </item>
     <item>
         <key>UNION</key>
-        <trans lang="nl">Union</trans>
+        <trans lang="nl">Keuze</trans>
     </item>
     <item>
-        <key>UNION ELMENT</key>
-        <trans lang="nl">Union element</trans>
+        <key>UNION ELEMENT</key>
+        <trans lang="nl">Keuze element</trans>
     </item>
     <item>
         <key>STRUCTUREDDATATYPE</key>
@@ -260,7 +260,7 @@
     </item>
     <item>
         <key>OVERVIEW-UNION</key>
-        <trans lang="nl">Union overzicht</trans>
+        <trans lang="nl">Keuze overzicht</trans>
     </item>
     <item>
         <key>OVERVIEW-DATATYPE</key>
@@ -298,7 +298,7 @@
     </item>
     <item>
         <key>DETAILS-UNION</key>
-        <trans lang="nl">Unions</trans>
+        <trans lang="nl">Keuzes</trans>
     </item>
     <item>
         <key>DETAILS-DATATYPE</key>
@@ -323,7 +323,7 @@
     </item>
     <item>
         <key>DETAIL-UNIONELEMENT</key>
-        <trans lang="nl">Union element</trans>
+        <trans lang="nl">Keuze element</trans>
     </item>
     <item>
         <key>DETAIL-DATAELEMENT</key>
@@ -364,7 +364,7 @@
     </item>
     <item>
         <key>SHORT-UNIONELEMENTS</key>
-        <trans lang="nl">Overzicht union elementen</trans>
+        <trans lang="nl">Overzicht Keuze elementen</trans>
     </item>
     <item>
         <key>SHORT-REFERENCEELEMENTS</key>
@@ -450,7 +450,7 @@
 
     <item>
         <key>UNIONELEMENT-NAME</key>
-        <trans lang="nl">Union element</trans>
+        <trans lang="nl">Keuze element</trans>
     </item>
     <item>
         <key>UNIONELEMENT-DEFINITION</key>

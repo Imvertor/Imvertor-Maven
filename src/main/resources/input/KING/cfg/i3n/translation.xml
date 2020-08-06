@@ -180,11 +180,11 @@
     </item>
     <item>
         <key>UNION</key>
-        <trans lang="nl">Union</trans>
+        <trans lang="nl">Keuze</trans>
     </item>
     <item>
-        <key>UNION ELMENT</key>
-        <trans lang="nl">Union element</trans>
+        <key>UNION ELEMENT</key>
+        <trans lang="nl">Keuze element</trans>
     </item>
     <item>
         <key>STRUCTUREDDATATYPE</key>

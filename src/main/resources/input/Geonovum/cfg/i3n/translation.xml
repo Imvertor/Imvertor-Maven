@@ -217,7 +217,7 @@
     </item>
     <item>
         <key>UNION</key>
-        <trans lang="nl">Union</trans>
+        <trans lang="nl">Keuze</trans>
         <trans lang="en">Union</trans>
     </item>
     <item>
@@ -227,7 +227,7 @@
     </item>
     <item>
         <key>UNION ELEMENT</key>
-        <trans lang="nl">Union element</trans>
+        <trans lang="nl">Keuze element</trans>
         <trans lang="en">Union element</trans>
     </item>
     <item>
@@ -329,7 +329,7 @@
     </item>
     <item>
         <key>OVERVIEW-UNION</key>
-        <trans lang="nl">Unions</trans>
+        <trans lang="nl">Keuzes</trans>
         <trans lang="en">Unions</trans>
     </item>
     <item>
@@ -375,7 +375,7 @@
     </item>
     <item>
         <key>DETAILS-UNION</key>
-        <trans lang="nl">Union details</trans>
+        <trans lang="nl">Keuze details</trans>
         <trans lang="en">Union details</trans>
     </item>
     <item>
@@ -405,7 +405,7 @@
     </item>
     <item>
         <key>DETAIL-UNIONELEMENT</key>
-        <trans lang="nl">Union element details</trans>
+        <trans lang="nl">Keuze element details</trans>
         <trans lang="en">Union element details</trans>
     </item>
     <item>

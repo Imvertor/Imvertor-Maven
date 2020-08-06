@@ -209,11 +209,11 @@
     
     <item>
         <key>UNION</key>
-        <trans lang="nl">Union</trans>
+        <trans lang="nl">Keuze</trans>
     </item>
     <item>
-        <key>UNION ELMENT</key>
-        <trans lang="nl">Union element</trans>
+        <key>UNION ELEMENT</key>
+        <trans lang="nl">Keuze element</trans>
     </item>
   
     <item>
@@ -292,7 +292,7 @@
     </item>
     <item>
         <key>OVERVIEW-UNION</key>
-        <trans lang="nl">Union overzicht</trans>
+        <trans lang="nl">Keuze overzicht</trans>
     </item>
     <item>
         <key>OVERVIEW-STRUCTUREDDATATYPE</key>
