@@ -1,0 +1,97 @@
+<respecConfig>
+    
+    <subtitle>geen subtitel?</subtitle>
+    
+    <format>html</format>
+    
+    <github>https://github.com/JvGldr/botters</github>
+    <issueBase>https://github.com/JvGldr/Rapport/issues</issueBase>
+    <edDraftURI>https://github.com/JvGldr/botters</edDraftURI>
+    
+    <licence>cc-by-nd</licence> <!-- Creative Commmons licences zie https://creativecommons.org/about/downloads/ -->
+    
+    <addSectionLinks>true</addSectionLinks>    <!-- voeg paragraaftekens toe-->
+    
+    <maxTocLevel>3</maxTocLevel>     <!-- (Optioneel) Aantal niveau's ToC, default 0-->
+
+    <!-- specStatus is verplicht! (zie voor geldige statussen orgConfg.validSpecStats) -->
+
+    <specStatus>WV</specStatus>    <!-- (verplicht) Werk Versie-->
+    <previousMaturity>WV</previousMaturity>    <!-- (verplicht) De vorige specStatus-->
+
+    <!-- Publicatie datums -->
+
+    <publishDate>2020-01-30</publishDate>    <!-- Format is "YYYY-MM-DD" (default = vandaag)-->
+    <previousPublishDate>1900-01-01</previousPublishDate>    <!-- Format is "YYYY-MM-DD" ("1900-01-01" als die er niet was)-->
+
+    <!-- specType (zie voor geldige types orgConfg.validSpecTypes) -->
+
+    <specTyp>CT</specTyp>    <!-- (verplicht) specType: catalogus-->
+
+    <!-- shortName en pubDomain zijn vooralsnog vrij te kiezen -->
+
+    <shortName>vlt</shortName>    <!-- Wordt gebruikt in de document URL-->
+
+    <pubDomain>opl</pubDomain>    <!-- Metamodel Informatie Modellering-->
+
+    <!-- Optionele parameters:-->
+
+    <emailComments>info@kadaster.nl</emailComments>    <!-- reactie mailadres, alleen bij CV!-->
+
+    <!-- De editor(s) -->
+
+    <editors>
+        <person>
+            <name>Arjan Loeffen</name>
+            <company>Armatiek BV</company>
+            <companyUrl>https://www.armatiek.nl/</companyUrl>
+        </person>
+    </editors>
+
+    <!-- De auteur(s) -->
+
+    <authors>
+        <person>
+            <name>Arjan Loeffen</name>
+            <company>Armatiek BV</company>
+            <companyUrl>https://www.armatiek.nl/</companyUrl>
+        </person>
+        <person>
+            <name>Maarten Kroon</name>
+            <company>Armatiek Solutions BV</company>
+            <companyUrl>https://www.armatiek.nl/</companyUrl>
+        </person>
+    </authors>
+    
+    <!-- De Local biblio voor nette verwijzigen naar bronnen -->
+
+    <localBiblio>
+        <biblio>
+            <abbrev>RVEN</abbrev>
+            <title>Website Register Varend Erfgoed Nederland</title>
+            <href>https://https://rven.info/</href>
+            <status/>
+            <publisher/>
+            <company>Register Varend Erfgoed Nederland</company>
+        </biblio>
+        <biblio>
+            <abbrev>VBN</abbrev>
+            <title>Website Vereniging Botterbehoud Nederland</title>
+            <href>https://www.botterbehoud.nl/</href>
+            <status>TODOSTATUS</status>
+            <publisher>TODOPUBLISHER</publisher>
+            <company>Vereniging Botterbehoud Nederland</company>
+        </biblio>
+    </localBiblio>
+
+    <!-- Hier het aangepaste logo van je eigen organisatie -->
+
+    <logos>
+        <logo>
+            <src>https://www.botterselburg.nl/images/botterstichting_logo.jpg</src>
+            <alt>Botterstichting Elburg</alt>
+            <id>TopLogo</id>
+            <url>https://www.botterselburg.nl/</url>
+        </logo>
+    </logos>
+</respecConfig>
