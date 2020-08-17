@@ -149,11 +149,12 @@ public class AnyFolder extends AnyFile {
 	 * 
 	 * @param filterXslFile Pass XSL file to filter search file found, operating on the cw:file root element.
 	 * @param roleInfo Pass roleInfo when the result should be typed for further processing. This role info will appear on the @role attribute of the cw:files root element. 
+	 * @param includeContents Include the contents of the XML (possibly after transform)?
 	 * @throws Exception
 	 * @returns Number of files selected
 	 */
 	
-	public int serializeToXml(XslFile filterXslFile, String roleInfo) throws Exception {
+	public int serializeToXml(XslFile filterXslFile, String roleInfo, boolean includeContents) throws Exception {
 		// create a content file. If local name, the relative, else assume absolute.
 		XmlFile content = (serializedFilePath == SERIALIZED_CONTENT_XML_FILENAME) ? new XmlFile(this,serializedFilePath) : new XmlFile(serializedFilePath);
     	// If from a previous run, remove
@@ -180,11 +181,14 @@ public class AnyFolder extends AnyFile {
     			
     			if (f.isXml()) {
     				type = "xml";
-    				XmlFile fx = new XmlFile(f);
-        			if (fx.isWellFormed()) 
-         	    		contentString = cleanXmlPI(fx.getContent());
-        			else
-        				contentString = "<!--not wellformed-->";
+    				if (includeContents) {
+	    				XmlFile fx = new XmlFile(f);
+	        			if (fx.isWellFormed()) 
+	         	    		contentString = cleanXmlPI(fx.getContent());
+	        			else
+	        				contentString = "<!--not wellformed-->";
+    				} else
+    					contentString = "<!--see xml-->";
 	      		} else {
 					type = "bin";
 					contentString = "<!--see binary-->";
@@ -199,18 +203,19 @@ public class AnyFolder extends AnyFile {
      				
     			wrapperInputFile.setContent(startWrapperString + contentString + endWrapperString);
     				
-				if (filterXslFile != null)
- 					if (filterXslFile.isFile()) {
- 						XmlFile wrapperOutputFile = new XmlFile(File.createTempFile("serializeToXml_", "_output.xml"));
- 						wrapperOutputFile.deleteOnExit();
- 	    				// do a filter transformation
- 	    				filterXslFile.transform(wrapperInputFile,wrapperOutputFile);
-     					// place that result in the content XML.
-     					wrapperInputFile = wrapperOutputFile;
-     					selected += 1;
-     				}
- 					else
- 						throw new IOException("No such XSL file: " + filterXslFile.getCanonicalPath());
+				if (type.equals("xml"))
+	    			if (filterXslFile != null)
+	 					if (filterXslFile.isFile()) {
+	 						XmlFile wrapperOutputFile = new XmlFile(File.createTempFile("serializeToXml_", "_output.xml"));
+	 						wrapperOutputFile.deleteOnExit();
+	 	    				// do a filter transformation
+	 	    				filterXslFile.transform(wrapperInputFile,wrapperOutputFile);
+	     					// place that result in the content XML.
+	     					wrapperInputFile = wrapperOutputFile;
+	     					selected += 1;
+	     				}
+	 					else
+	 						throw new IOException("No such XSL file: " + filterXslFile.getCanonicalPath());
  			
  				contentWriter.append(wrapperInputFile.getContent());
 			}
@@ -221,8 +226,12 @@ public class AnyFolder extends AnyFile {
     	return selected;
 	}
 	
+	public int serializeToXml(XslFile filterXslFile, String roleInfo) throws Exception {
+		return serializeToXml(filterXslFile,roleInfo,true);
+	}
+
 	public int serializeToXml(XslFile filterXslFile) throws Exception {
-		return serializeToXml(filterXslFile,"");
+		return serializeToXml(filterXslFile,"",true);
 	}
 	
 	public int serializeToXml() throws Exception {
