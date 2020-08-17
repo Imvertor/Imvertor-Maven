@@ -54,7 +54,7 @@
             <xsl:when test="$migration-mode = 'VNG'">
                 <xsl:apply-templates select="$resolved" mode="mode-VNG"/>
             </xsl:when>
-            <xsl:when test="$migration-mode = ('IMGEO','IMKL','NEN3610')">
+            <xsl:when test="$migration-mode = ('IMGEO','IMKL','IMRO','NEN3610')">
                 <xsl:apply-templates select="$resolved" mode="mode-Geonovum"/>
             </xsl:when>
             <xsl:otherwise>
