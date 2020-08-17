@@ -136,7 +136,7 @@ public class ImvertorExpathWrite extends ExtensionFunctionDefinition {
 	    } catch (XPathException fe) {
 	      throw fe;
 	    } catch (Exception e) {
-	      throw new XPathException("Other file error", e);
+	      throw new XPathException("Cannot write file", e);
 	    }
 	  }
 	  

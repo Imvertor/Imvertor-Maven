@@ -20,6 +20,8 @@
 
 package nl.imvertor.common.xsl.extensions;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
@@ -84,16 +86,19 @@ public class ImvertorFolderSerializer extends ExtensionFunctionDefinition {
 			try {
 				String folderpath = Transformer.getStringvalue(arguments[0]);
 				String filepath = Transformer.getStringvalue(arguments[1]);
-				// TODO add this for speed: constraint to specific file info
-				//String constraints = Transformer.getStringvalue(arguments[2]);
+				String flags = Transformer.getStringvalue(arguments[2]);
+				
+				// flags 
+				// - f: only file info, no xml contents (includeContents = false) 
 				
 				if (filepath.startsWith("file:/")) filepath = filepath.substring(6);
 				if (folderpath.startsWith("file:/")) folderpath = folderpath.substring(6);
-				
+				boolean includeContents = StringUtils.indexOf(flags, "f") < 0;
+						
 				AnyFolder serializeFolder = new AnyFolder(folderpath);
 				XmlFile xmlFile = new XmlFile(filepath);
 				serializeFolder.setSerializedFilePath(xmlFile.getCanonicalPath());
-			    serializeFolder.serializeToXml();
+			    serializeFolder.serializeToXml(null,"",includeContents);
 			    
 				return StringValue.makeStringValue(xmlFile.getCanonicalPath());
 			} catch (Exception e) {

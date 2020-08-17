@@ -35,6 +35,8 @@ import nl.imvertor.common.xsl.extensions.ImvertorParseWiki;
 import nl.imvertor.common.xsl.extensions.ImvertorParseYaml;
 import nl.imvertor.common.xsl.extensions.ImvertorZipDeserializer;
 import nl.imvertor.common.xsl.extensions.ImvertorZipSerializer;
+import nl.imvertor.common.xsl.extensions.expath.ImvertorExpathCopy;
+import nl.imvertor.common.xsl.extensions.expath.ImvertorExpathReadText;
 
 
 /**
@@ -71,6 +73,8 @@ public class GenericTransformer extends Step {
 		transformer.setExtensionFunction(new ImvertorParseHTML());
 		transformer.setExtensionFunction(new ImvertorParseWiki());
 		transformer.setExtensionFunction(new ImvertorParseYaml());
+		transformer.setExtensionFunction(new ImvertorExpathReadText());
+		transformer.setExtensionFunction(new ImvertorExpathCopy());
 			
 	    // check the input 
 		AnyFile infile = new AnyFile(configurator.getXParm("cli/infile"));
