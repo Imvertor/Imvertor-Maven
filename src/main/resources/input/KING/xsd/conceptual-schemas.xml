@@ -10,17 +10,62 @@
          <cs:name>NEN3610_GML321</cs:name>
          <cs:use>
             <cs-ref:MapRef xlink:href="#GML321"/>
+            <cs-ref:MapRef xlink:href="#VNGR-MAP"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
    <cs:components>
       <cs:ConceptualSchemasComponents>
+         
          <cs:ConceptualSchema>
             <cs:id>GML</cs:id>
             <cs:shortName>gml</cs:shortName>
             <cs:desc>ISO19107 Geographic information – Spatial schema</cs:desc>
             <cs:url>http://www.kadaster.nl/conceptual-schemas/ISO19107</cs:url>
          </cs:ConceptualSchema>
+         
+         <cs:ConceptualSchema>
+            <cs:id>VNGR</cs:id>
+            <cs:shortName>vngr</cs:shortName>
+            <cs:desc>VNGR schema</cs:desc>
+            <cs:url>http://www.vng.nl/</cs:url>
+         </cs:ConceptualSchema>
+         
+         <cs:Map>
+            <cs:id>VNGR-MAP</cs:id>
+            <cs:namespace>http://www.vngr.nl/</cs:namespace>
+            <cs:location>http://schemas.vngr.nl/vngr.xsd</cs:location><!-- bogus not used for schema generator -->
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0.0</cs:version>
+            <cs:release>20200820</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#VNGR"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>AN</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>DMO</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>DTMO</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>NietNegatiefInteger</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>POSTCODE</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               
+            </cs:constructs>
+         </cs:Map>
+
          <cs:Map>
             <cs:id>GML321</cs:id>
             <cs:namespace>http://www.opengis.net/gml/3.2</cs:namespace>
