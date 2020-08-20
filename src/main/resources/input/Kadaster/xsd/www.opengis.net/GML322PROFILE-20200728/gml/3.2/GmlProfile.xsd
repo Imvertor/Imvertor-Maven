@@ -319,6 +319,30 @@ if no srsName attribute is given, the CRS shall be specified as part of the larg
          </extension>
       </simpleContent>
    </complexType>
+   <element name="LineString"
+            type="gml:LineStringType"
+            substitutionGroup="gml:AbstractCurve">
+      <annotation>
+         <documentation>A LineString is a special curve that consists of a single segment with linear interpolation. It is defined by two or more coordinate tuples, with linear interpolation between them. The number of direct positions in the list shall be at least two.</documentation>
+      </annotation>
+   </element>
+   <complexType name="LineStringType">
+      <complexContent>
+         <extension base="gml:AbstractCurveType">
+            <sequence>
+               <choice>
+                  <choice minOccurs="2" maxOccurs="unbounded">
+                     <element ref="gml:pos"/>
+                     <element ref="gml:pointProperty"/>
+                     <element ref="gml:pointRep"/>
+                  </choice>
+                  <element ref="gml:posList"/>
+                  <element ref="gml:coordinates"/>
+               </choice>
+            </sequence>
+         </extension>
+      </complexContent>
+   </complexType>
    <element name="LinearRing"
             type="gml:LinearRingType"
             substitutionGroup="gml:AbstractRing">
@@ -529,6 +553,27 @@ When the value of the owns attribute is "true", the existence of inline or refer
 The elements exterior and interior describe the surface boundary of the polygon.</documentation>
       </annotation>
    </element>
+   <element name="PolygonPatch"
+            type="gml:PolygonPatchType"
+            substitutionGroup="gml:AbstractSurfacePatch">
+      <annotation>
+         <documentation>A gml:PolygonPatch is a surface patch that is defined by a set of boundary curves and an underlying surface to which these curves adhere. The curves shall be coplanar and the polygon uses planar interpolation in its interior. 
+interpolation is fixed to "planar", i.e. an interpolation shall return points on a single plane. The boundary of the patch shall be contained within that plane.</documentation>
+      </annotation>
+   </element>
+   <complexType name="PolygonPatchType">
+      <complexContent>
+         <extension base="gml:AbstractSurfacePatchType">
+            <sequence>
+               <element ref="gml:exterior" minOccurs="0"/>
+               <element ref="gml:interior" minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+            <attribute name="interpolation"
+                       type="gml:SurfaceInterpolationType"
+                       fixed="planar"/>
+         </extension>
+      </complexContent>
+   </complexType>
    <complexType name="PolygonType">
       <complexContent>
          <extension base="gml:AbstractSurfaceType">
@@ -602,6 +647,23 @@ patches encapsulates the patches of the surface.</documentation>
       </sequence>
       <attributeGroup ref="gml:OwnershipAttributeGroup"/>
    </complexType>
+   <simpleType name="SurfaceInterpolationType">
+      <annotation>
+         <documentation>gml:SurfaceInterpolationType is a list of codes that may be used to identify the interpolation mechanisms specified by an application schema.</documentation>
+      </annotation>
+      <restriction base="string">
+         <enumeration value="none"/>
+         <enumeration value="planar"/>
+         <enumeration value="spherical"/>
+         <enumeration value="elliptical"/>
+         <enumeration value="conic"/>
+         <enumeration value="tin"/>
+         <enumeration value="parametricCurve"/>
+         <enumeration value="polynomialSpline"/>
+         <enumeration value="rationalSpline"/>
+         <enumeration value="triangulatedSpline"/>
+      </restriction>
+   </simpleType>
    <complexType name="SurfacePatchArrayPropertyType">
       <annotation>
          <documentation>gml:SurfacePatchArrayPropertyType is a container for a sequence of surface patches.</documentation>
