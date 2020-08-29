@@ -393,6 +393,16 @@ if no srsName attribute is given, the CRS shall be specified as part of the larg
 The members of the geometric aggregate may be specified either using the "standard" property (gml:curveMember) or the array property (gml:curveMembers). It is also valid to use both the "standard" and the array properties in the same collection.</documentation>
       </annotation>
    </element>
+   <complexType name="MultiCurvePropertyType">
+      <annotation>
+         <documentation>A property that has a collection of curves as its value domain may either be an appropriate geometry element encapsulated in an element of this type or an XLink reference to a remote geometry element (where remote includes geometry elements located elsewhere in the same document). Either the reference or the contained element shall be given, but neither both nor none.</documentation>
+      </annotation>
+      <sequence minOccurs="0">
+         <element ref="gml:MultiCurve"/>
+      </sequence>
+      <attributeGroup ref="gml:AssociationAttributeGroup"/>
+      <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+   </complexType>
    <complexType name="MultiCurveType">
       <complexContent>
          <extension base="gml:AbstractGeometricAggregateType">
