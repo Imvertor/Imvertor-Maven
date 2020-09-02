@@ -59,7 +59,13 @@
          <tip>Enter "ftp" when the documentation file should be passed on directly to FTP, "git" when updating Github.</tip>
          <required>false</required>
       </cli-parm>
-     
+      <cli-parm>
+         <name>docrules</name>
+         <arg>yes|no</arg>
+         <tip>The name of the file holding the documentation rules.</tip>
+         <required>false</required>
+      </cli-parm> 
+      
       <cli-parm>
          <name>passuser</name>
          <arg>username</arg>
