@@ -170,8 +170,8 @@
       </cli-parm>
       <cli-parm>
          <name>messagecollapsekeys</name>
-         <arg>yes|no</arg>
-         <tip>Yes if similar messages should be collapsed. No if each message is to be represented in the report.</tip>
+         <arg>name(s)</arg>
+         <tip>If similar messages should be collapsed, provide a space-separated list of keys for these types of messages.</tip>
          <required>false</required>
       </cli-parm>
    </cli-parms>
