@@ -47,6 +47,12 @@
       <tip>Specify a name of a known compare method or "default". Currently known methods are: "xmldiff" and "xmlunit".</tip>
       <required>false</required>
     </cli-parm>
+    <cli-parm>
+      <name>comparerules</name>
+      <arg>name</arg>
+      <tip>The name of the file recording the rules for comparison.</tip>
+      <required>false</required>
+    </cli-parm>
   </cli-parms>
 
   <properties>
