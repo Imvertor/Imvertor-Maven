@@ -84,6 +84,11 @@
             <name lang="en">MONTH</name>
             <type-map formal-lang="xs">gMonth</type-map>
         </scalar>
+        <scalar id="scalar-string">
+            <name lang="nl">CHARACTERSTRING</name>
+            <name lang="en">CHARACTERSTRING</name>
+            <type-map formal-lang="xs">string</type-map>
+        </scalar>
     </scalars>
     
     <stereotypes xml:id="stereotypes">
@@ -199,6 +204,7 @@
             <construct>association</construct>
         </stereo>
         
+        <!-- Groep compositie is deprecated en komt na het afronden van de invoering MIM te vervallen. -->
         <stereo id="stereotype-name-association-to-composite" primary="yes">
             <name lang="en">Group composition</name>
             <name lang="nl">Groep compositie</name>
@@ -213,6 +219,17 @@
             <construct>association</construct>
             <!-- this assiociation is removed explicitly from the model by VNG/KING canonization -->
         </stereo>
+
+        <stereo id="stereotype-name-attributegroup" primary="yes">
+            <name lang="nl">Gegevensgroep</name>
+            <name lang="en">AttributeGroup</name>
+            <desc lang="nl">
+                Een typering van een groep van gelijksoortige gegevens die voor een objecttype van toepassing is 
+                en waarbij het type een Groep is.
+            </desc>
+            <construct>attribute</construct>
+        </stereo>
+        
     </stereotypes>
     
 </metamodel>

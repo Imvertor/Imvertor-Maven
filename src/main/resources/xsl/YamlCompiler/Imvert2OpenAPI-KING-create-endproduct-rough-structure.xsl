@@ -32,7 +32,6 @@
 		<ep:rough-messages>
 			<ep:name>
 				<xsl:value-of select="$packages/imvert:tagged-values/imvert:tagged-value[@id='CFG-TV-INTERFACE-NAME']/imvert:value"/>
-				<!--xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($packages/imvert:packages, '##CFG-TV-INTERFACE-NAME')"/-->
 			</ep:name>
 			<ep:imvertor-generator-version><xsl:value-of select="$packages/imvert:generator"/></ep:imvertor-generator-version>
 			<!-- The 'Berichtstructuren' package doesn't hold the actual message classes for the interface so it's neglected in this stage. -->
@@ -864,12 +863,13 @@
 		</xsl:if>
 
 		<xsl:if
-			test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype[@id = 'stereotype-name-complextype' or @id = 'stereotype-name-referentielijst']">
+			test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype[@id = 'stereotype-name-complextype' or @id = 'stereotype-name-referentielijst' or @id = 'stereotype-name-composite']">
 			<!-- Only if the imvert:attribute is a complextype or referentielijst type (it has a deeper structure) it is processed further. -->
 			<xsl:sequence select="imf:create-debug-comment-with-xpath('A19500]',$debugging,.)" />
 			<xsl:variable name="type">
 				<xsl:choose>
 					<xsl:when test="//imvert:class[imvert:id = $type-id]/imvert:stereotype/@id = 'stereotype-name-complextype'">complex-datatype</xsl:when>
+					<xsl:when test="//imvert:class[imvert:id = $type-id]/imvert:stereotype/@id = 'stereotype-name-composite'">groep</xsl:when>
 					<xsl:when test="//imvert:class[imvert:id = $type-id]/imvert:stereotype/@id = 'stereotype-name-referentielijst'">table-datatype</xsl:when>
 				</xsl:choose>
 			</xsl:variable>

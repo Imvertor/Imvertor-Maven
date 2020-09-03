@@ -18,13 +18,13 @@
        <tv norm="space" id="CFG-TV-ISDERIVED">
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-association-to-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-association-to-composite</stereo><!-- deprecated -->
             </stereotypes>            
         </tv>
         <tv norm="space"  id="CFG-TV-POSITION">
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-association-to-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-association-to-composite</stereo><!-- deprecated -->
             </stereotypes>
         </tv>
         

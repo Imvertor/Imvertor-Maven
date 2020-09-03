@@ -90,6 +90,13 @@
          <desc lang="en">A proxy is TODO</desc>
          <construct>class</construct>
       </stereo>
+      <!-- N.a.v. introductie MIM 1.1 -->
+      <stereo id="stereotype-name-attgrp-proxy" primary="yes">
+         <name lang="nl">Gegevensgroep_proxy</name>
+         <desc lang="en">A proxy is TODO</desc>
+         <construct>attribute</construct>
+      </stereo>
+      
       
    </stereotypes>
    

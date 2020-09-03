@@ -34,7 +34,7 @@
             </desc>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
@@ -47,7 +47,7 @@
             </desc>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
@@ -65,21 +65,22 @@
             </desc>
             <stereotypes>
                 <!-- in addition to BP -->
-                <stereo minmax="1..1">stereotype-name-referentielijst</stereo> 
-                <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
-                <stereo minmax="1..1">stereotype-name-union</stereo>
-                <stereo minmax="1..1">stereotype-name-union-element</stereo>
-                <stereo minmax="1..1">stereotype-name-complextype</stereo>
-                <stereo minmax="1..1">stereotype-name-data-element</stereo>
-                <stereo minmax="1..1">stereotype-name-composite</stereo><!-- verplicht voor SIM -->
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>    <!-- TODO remove? --> 
+                <stereo minmax="1..1">stereotype-name-referentie-element</stereo> <!-- TODO remove? -->
+                <stereo minmax="1..1">stereotype-name-union</stereo>              <!-- TODO remove? -->
+                <stereo minmax="1..1">stereotype-name-union-element</stereo>      <!-- TODO remove? -->
+                <stereo minmax="1..1">stereotype-name-complextype</stereo>        <!-- TODO remove? -->
+                <stereo minmax="1..1">stereotype-name-data-element</stereo>       <!-- TODO remove? -->
+                <stereo minmax="1..1">stereotype-name-composite</stereo>          <!-- verplicht voor SIM -->
             </stereotypes>
         </tv>
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <name lang="nl">Indicatie materiële historie</name>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>         <!-- TODO determine if presence is valid -->
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>    <!-- TODO determine cardinality -->
             </stereotypes>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <desc lang="nl">
@@ -99,8 +100,9 @@
             <name lang="nl">Indicatie formele historie</name>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>         <!-- TODO determine if presence is valid -->
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>    <!-- TODO determine cardinality -->
             </stereotypes>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <desc lang="nl">
@@ -117,23 +119,24 @@
             </declared-values>
         </tv>
         <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC">
-            <name lang="nl">Indicatie authentiek</name>
+            <name lang="nl">Authentiek</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <desc lang="nl">
                 Aanduiding of het een authentiek gegeven (attribuutsoort) betreft.
             </desc>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>         <!-- TODO determine if presence is valid -->
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>    <!-- TODO determine cardinality -->
             </stereotypes>
         </tv>
         <tv norm="compact" rules="NOC" id="CFG-TV-VOIDABLE">
             <name lang="nl">Mogelijk geen waarde</name>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                <stereo minmax="1..1">stereotype-name-composite</stereo>
-                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>         <!-- TODO determine if presence is valid -->
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>      <!-- TODO determine if presence is valid -->
             </stereotypes>
             <desc lang="nl">
                 Indicatie waarmee wordt aangegeven dat het gegeven ook geen waarde kan hebben.
@@ -172,7 +175,13 @@
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
             </stereotypes>
         </tv>
-        <tv norm="note" id="CFG-TV-QUALITY">   <!-- in aanvulling op SBR -->
+        <tv norm="space" id="CFG-TV-CONCEPT">   <!-- in aanvulling op MIM11 -->
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-attributegroup</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="note" id="CFG-TV-QUALITY">   <!-- in aanvulling op SBR --><!-- Wat voegt dit  dan toe tov SBR? Volgens mij niets en kan het weg. -->
             <name lang="nl">Kwaliteitsbegrip</name>
             <derive>yes</derive>
             <stereotypes>
@@ -193,8 +202,10 @@
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
+        <?x TODO remove: KOMT IN HET MIM NIET MEER VOOR. ?>
         <tv norm="note" id="CFG-TV-RULES">   <!-- in aanvulling op SBR -->
             <derive>yes</derive>
             <desc lang="nl">
@@ -203,6 +214,17 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-CODE">
+            <name lang="nl">Code</name>
+            <name lang="en">Code</name>
+            <derive>yes</derive>
+            <desc lang="nl">
+                De in een registratie of informatiemodel aan de enumeratiewaarde toegekend unieke code.
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
             </stereotypes>
         </tv>
         
