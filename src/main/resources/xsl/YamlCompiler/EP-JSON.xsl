@@ -1900,7 +1900,7 @@
 								<xsl:when test="$serialisation='json'">
 									<xsl:for-each select="ep:seq/ep:construct[not(ep:seq) and not(empty(ep:min-occurs)) and ep:min-occurs > 0]">
 										<xsl:sort select="ep:tech-name" order="ascending"/>
-										<!-- Loops over requred constructs, which are required, are no associations and have no ep:seq. -->
+										<!-- Loops over constructs, which are required, are no associations and have no ep:seq. -->
 										<xsl:value-of select="'&quot;'"/>
 										<xsl:choose>
 											<xsl:when test="ep:parameters/ep:parameter[ep:name='meervoudigeNaam']">
@@ -2330,7 +2330,7 @@
 	<xsl:template name="deriveFormat">
 		<xsl:param name="incomingType"/>
 		<xsl:choose>
-			<!-- Some scalar typse resolve to a format and/or pattern. -->
+			<!-- Some scalar types resolve to a format and/or pattern. -->
 			<xsl:when test="$incomingType = 'date'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;date&quot;'"/>
 			</xsl:when>
@@ -2359,7 +2359,7 @@
 	<xsl:template name="deriveFacets">
 		<xsl:param name="incomingType"/>
 		<xsl:choose>
-			<!-- Some scalar typse can have one or more facets which restrict the allowed value. -->
+			<!-- Some scalar types can have one or more facets which restrict the allowed value. -->
 			<xsl:when test="$incomingType = 'string'">
 				<xsl:if test="ep:pattern and $json-version != '2.0'">
 					<xsl:value-of select="concat(',&quot;pattern&quot;: &quot;^',ep:pattern,'$&quot;')"/>
@@ -2409,7 +2409,7 @@
 	<xsl:template name="deriveExample">
 		<xsl:param name="datatype" select="'string'"/>
 		<xsl:choose>
-			<!-- Some scalar typse can have one or more facets which restrict the allowed value. -->
+			<!-- Some scalar types can have one or more facets which restrict the allowed value. -->
 			<xsl:when test="ep:example != '' and $datatype = 'integer'">
 				<xsl:value-of select="concat(',&quot;example&quot;: ',ep:example)"/>
 			</xsl:when>
