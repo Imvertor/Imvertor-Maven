@@ -12,6 +12,18 @@
         <section title="Regels" tagged-value="CFG-TV-RULES">
             <!-- geen labels -->
         </section>
+        <section title="Bron" tagged-value="CFG-TV-SOURCE">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
+    
+    <notes-rule lang="en">
+        <section title="Rules" tagged-value="CFG-TV-RULES">
+            <!-- geen labels -->
+        </section>
+        <section title="Source" tagged-value="CFG-TV-SOURCE">
+            <!-- geen labels -->
+        </section>
     </notes-rule>
     
 </notes-rules>
