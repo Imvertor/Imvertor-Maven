@@ -346,7 +346,7 @@
         <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
             <name lang="nl">Positie</name>
             <name lang="en">Position</name>
-            <desc lang="nl">De positie van de construct binnen producten waarin deze opeenvolging een rol speelt. Heeft alleen een functie bij het genereren van StUF schema's.</desc>
+            <desc lang="nl">De positie van de construct binnen producten waarin deze opeenvolging een rol speelt. </desc>
             <desc lang="en">The position of the construct in products in which sequences play a role.</desc>
             <derive>yes</derive>
             <stereotypes>
