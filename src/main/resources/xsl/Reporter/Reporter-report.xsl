@@ -55,6 +55,7 @@
     </xsl:variable>
     
     <xsl:variable name="status" select="if (imf:get-config-string('appinfo','error-count') = '0' and imf:get-config-string('appinfo','warning-count') = '0') then 'okay' else 'not-okay'"/>
+    <xsl:variable name="processing-mode" select="imf:get-config-string('cli','processingmode')"/>
     
     <xsl:template match="/config">
         
@@ -132,6 +133,7 @@
                         <xsl:sequence select="imf:create-report-home-header('IMVERTOR Processing report')"/>
                         <p>Created by Imvertor
                             <xsl:value-of select="imf:get-config-string('run','version')"/>
+                            <xsl:if test="$processing-mode"> in mode <xsl:value-of select="$processing-mode"/></xsl:if>
                         </p>
                         <xsl:if test="$job-id">
                             <p>Job: 
