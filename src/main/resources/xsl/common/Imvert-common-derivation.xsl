@@ -362,4 +362,13 @@
 		x?>
 	</xsl:function>
 	
+	<!-- return the position on the construct based in the type and position tagged value, and supplier info on position -->
+	<xsl:function name="imf:calculate-position" as="xs:integer">
+		<xsl:param name="construct"/>
+		<xsl:variable name="my-position" select="$construct/imvert:position"/>
+		<xsl:variable name="derived-position" select="imf:get-most-relevant-compiled-taggedvalue($construct,'##CFG-TV-POSITION')"/>
+		<xsl:variable name="position" select="($derived-position, $my-position)[1]"/>
+		<xsl:sequence select="xs:integer(if (matches($position,'^\d+$')) then $position else '9999')"/>
+	</xsl:function>
+
 </xsl:stylesheet>

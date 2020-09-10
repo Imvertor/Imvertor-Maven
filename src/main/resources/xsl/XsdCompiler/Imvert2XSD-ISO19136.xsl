@@ -392,7 +392,7 @@
             <xsl:sequence select="imf:get-annotation(.)"/>
             <xs:restriction base="xs:string">
                 <xsl:for-each select="imvert:attributes/imvert:attribute">
-                    <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
+                    <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
                     <xs:enumeration value="{imvert:name/@original}">
                         <xsl:sequence select="imf:get-annotation(.)"/>
                     </xs:enumeration>
@@ -492,7 +492,7 @@
                     <!-- attributes of a NEN3610 union, i.e. a choice between classes. The choice is a specialization of a datatype -->
                     <xsl:variable name="atts">
                         <xsl:for-each select="imvert:attributes/imvert:attribute">
-                            <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
+                            <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
                             <xsl:variable name="defining-class" select="imf:get-defining-class(.)"/>   
                             <xsl:variable name="defining-class-is-datatype" select="$defining-class/imvert:stereotype/@id = (
                                 ('stereotype-name-simpletype','stereotype-name-enumeration','stereotype-name-codelist','stereotype-name-complextype','stereotype-name-union'))"/>   
@@ -551,7 +551,7 @@
                         <!-- XML elements are declared first -->
                         <xsl:variable name="atts" as="item()*">
                             <xsl:for-each select="imvert:attributes/imvert:attribute[not(imvert:type-name=$xml-attribute-type)] | imvert:associations/imvert:association">
-                                <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
+                                <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
                                 <xsl:sequence select="imf:create-xml-debug-comment(.,'An attribute or association')"/>
                                 <xsl:sequence select="imf:create-element-property(.)"/>
                             </xsl:for-each>
@@ -566,7 +566,7 @@
                         <xsl:variable name="super-incoming-refs" select="for $c in imf:get-superclasses(.) return imf:get-references($c)"/>
                         
                         <xsl:for-each select="imvert:attributes/imvert:attribute[imvert:type-name=$xml-attribute-type]">
-                            <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
+                            <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
                             <xsl:sequence select="imf:create-attribute-property(.)"/>
                         </xsl:for-each>
                     </complex>

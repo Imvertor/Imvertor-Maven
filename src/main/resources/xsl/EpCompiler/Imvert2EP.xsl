@@ -101,7 +101,7 @@
             <xsl:sequence select="imf:get-documentation(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="(imvert:attributes/imvert:attribute, imvert:associations/imvert:association)">
-                    <xsl:sort select="imvert:position" data-type="number"/>
+                    <xsl:sort select="imf:calculate-position(.)" data-type="number"/>
                 </xsl:apply-templates>
             </ep:seq>
         </ep:construct>
@@ -118,7 +118,7 @@
             <xsl:sequence select="imf:get-documentation(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="(imvert:attributes/imvert:attribute, imvert:associations/imvert:association)">
-                    <xsl:sort select="imvert:position" data-type="number"/>
+                    <xsl:sort select="imf:calculate-position(.)" data-type="number"/>
                 </xsl:apply-templates>
             </ep:seq>
         </ep:construct>
@@ -135,7 +135,7 @@
             <xsl:sequence select="imf:get-documentation(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="(imvert:attributes/imvert:attribute, imvert:associations/imvert:association)">
-                    <xsl:sort select="imvert:position" data-type="number"/>
+                    <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
                 </xsl:apply-templates>
             </ep:seq>
         </ep:construct>
@@ -152,7 +152,7 @@
             <xsl:sequence select="imf:get-documentation(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="(imvert:attributes/imvert:attribute, imvert:associations/imvert:association)">
-                    <xsl:sort select="imvert:position" data-type="number"/>
+                    <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
                 </xsl:apply-templates>
             </ep:seq>
         </ep:construct>
@@ -169,7 +169,7 @@
             <xsl:sequence select="imf:get-documentation(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="(imvert:attributes/imvert:attribute, imvert:associations/imvert:association)">
-                    <xsl:sort select="imvert:position" data-type="number"/>
+                    <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
                 </xsl:apply-templates>
             </ep:seq>
         </ep:construct>
@@ -238,7 +238,7 @@
             <xsl:sequence select="imf:get-documentation(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="imvert:attributes/imvert:attribute">
-                    <xsl:sort select="imvert:position" data-type="number"/>
+                    <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
                 </xsl:apply-templates>
             </ep:seq>
         </ep:construct>
@@ -255,7 +255,7 @@
             <xsl:sequence select="imf:get-data-location(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="imvert:attributes/imvert:attribute">
-                    <xsl:sort select="imvert:position" data-type="number"/>
+                    <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
                 </xsl:apply-templates>
             </ep:seq>
         </ep:construct>
