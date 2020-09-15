@@ -163,7 +163,14 @@
         '$ea_attsclassified')]">
         <xsl:copy>
             <xsl:apply-templates select="@*[not(name() = 'value')]"/>
-            <xsl:attribute name="value" select="if ($normalize-ids) then imf:normalize-xmi-id(@value) else @value"/>
+            <xsl:attribute name="value" select="
+                if ($normalize-ids) 
+                then imf:normalize-xmi-id(@value) 
+                else 
+                   if (@tag = 'SourceAssociation') 
+                   then imf:normalize-xmi-id-assoc(@value)
+                   else @value
+             "/>
         </xsl:copy>
     </xsl:template>
     
@@ -182,8 +189,6 @@
         <xsl:sequence select="$package-owner-name = $owner-name and $package-project-name = $project-name"/>
     </xsl:function>
     
-  
-    
     <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
@@ -191,4 +196,16 @@
         </xsl:copy>
     </xsl:template>
     
+    <xsl:function name="imf:normalize-xmi-id-assoc" as="xs:string">
+        <xsl:param name="id" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="starts-with($id,'{')"> <!-- https://github.com/Imvertor/Imvertor-Maven/issues/129 -->
+                <xsl:value-of select="concat('EAID_', replace(substring($id,2,string-length($id) - 2),'\-','_'))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- must not occur, sourceassociation has form {abc} -->
+                <xsl:value-of select="$id"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 </xsl:stylesheet>
