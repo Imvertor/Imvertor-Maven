@@ -20,7 +20,7 @@
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
    <!-- Kennisnet follows MIM requirements -->
-   <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+   <xi:include href="../../../KING/cfg/metamodels/VNGRSIM.xml"/>
 
    <name>Kennisnet SIM</name>
    
@@ -38,62 +38,5 @@
          <desc>KennisnetSIM Grouping EN</desc>
       </profile>
    </profiles>
-   
-   <!-- 
-      The normal direction of the composition is from Whole to Part (source to target). 
-      If this is reversed (as is discussied in Task #487339), set this parameter to "part", otherwise set to "whole" (default).
-   -->  
-   <composition-direction-source>part</composition-direction-source>
-   
-   <naming>
-      <package>
-         <format>AsIs</format>
-      </package>
-      <class>
-         <format>AsIs</format>
-      </class>
-      <property>
-         <format>AsIs</format>
-      </property>
-      <tv>
-         <format>Upperstart</format> <!-- first character must be upper case. -->
-      </tv>
-   </naming>
-   
-   <stereotypes>
-
-      <stereo id="stereotype-name-att-proxy">
-         <name lang="nl">Attribuutsoort_proxy</name>
-         <desc lang="en">A proxy is TODO</desc>
-         <construct>attribute</construct>
-      </stereo>
-      <stereo id="stereotype-name-obj-proxy">
-         <name lang="nl">Objecttype_proxy</name>
-         <desc lang="en">A proxy is TODO</desc>
-         <construct>class</construct>
-      </stereo>
-      <stereo id="stereotype-name-grp-proxy">
-         <name lang="nl">Gegevensgroeptype_proxy</name>
-         <desc lang="en">A proxy is TODO</desc>
-         <construct>class</construct>
-      </stereo>
-      
-      <stereotypes xml:id="stereotypes">
-         <stereo id="stereotype-name-tekentechnisch">
-            <name lang="nl">Tekentechnisch</name>
-            <name lang="en">Draw</name>
-            <construct>association</construct>
-            <!-- this assiociation is removed explicitly from the model by VNG/KING canonization -->
-         </stereo>
-         
-         <stereo id="stereotype-name-association-to-composite">
-            <name lang="en">Group composition</name>
-            <name lang="nl">Groep compositie</name>
-            <desc lang="nl">
-            </desc>
-            <construct>association</construct>
-         </stereo>
-      </stereotypes>
-   </stereotypes>
-   
+    
 </metamodel>
