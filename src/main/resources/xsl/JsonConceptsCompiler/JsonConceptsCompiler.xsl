@@ -15,16 +15,18 @@
     <xsl:variable name="stylesheet-code">JSONCONCEPTS</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/> 
     
+    <xsl:variable name="test-uris" select="false()"/>
+    
     <xsl:output method="text" encoding="UTF-8"/>
     
     <xsl:variable name="uri-domein-id-template" select="'https://definities.geostandaarden.nl/[1]'"/>
-    <xsl:variable name="uri-concept-id-template" select="'https://definities.geostandaarden.nl/[1]/id/concept/[2]'"/>
+    <xsl:variable name="uri-concept-id-template" select="'https://definities.geostandaarden.nl/[1]/id/begrip/[2]'"/>
     <xsl:variable name="uri-waardelijst-id-template" select="'https://definities.geostandaarden.nl/[1]/id/waardelijst/[2]_[3]'"/>
-    <xsl:variable name="uri-concept-doc-template" select="'https://definities.geostandaarden.nl/[1]/doc/concept/[2]/[3]'"/>
+    <xsl:variable name="uri-concept-doc-template" select="'https://definities.geostandaarden.nl/[1]/doc/begrip/[2]/[3]'"/>
     <xsl:variable name="uri-waardelijst-doc-template" select="'https://definities.geostandaarden.nl/[2]/doc/waardelijst/[2]/[3]_[4]'"/>
     
     <xsl:variable name="domain-packages" select="$document-packages[empty(imvert:conceptual-schema-name)]"/><!-- skip packages that are external -->
-    <xsl:variable name="model-abbrev" select="imf:get-tagged-value(/imvert:packages,'##CFG-TV-ABBREV')"/>
+    <xsl:variable name="model-abbrev" select="lower-case(imf:get-tagged-value(/imvert:packages,'##CFG-TV-ABBREV'))"/>
     <xsl:variable name="model-version" select="/imvert:packages/imvert:version"/>
     
     <xsl:variable name="json-map" as="map(xs:string, xs:boolean)">
@@ -43,6 +45,23 @@
             </j:array>
         </xsl:variable>
         <xsl:sequence select="xml-to-json($json-xml,$json-map)"/>
+        <!-- test the URIs -->
+        <xsl:if test="$test-uris">
+            <xsl:for-each-group select="$json-xml//j:string[@key='uri']" group-by=".">
+                <xsl:variable name="uri" select="current-group()[1]"/>
+                <xsl:choose>
+                    <xsl:when test="contains($uri,'/id/begrip') and unparsed-text-available($uri)">
+                        <xsl:sequence select="imf:msg(.,'INFO','ID BEGRIP [1]',(.))"/>
+                    </xsl:when>
+                    <xsl:when test="contains($uri,'/id/begrip')">
+                        <xsl:sequence select="imf:msg(.,'ERROR','ID BEGRIP [1]',(.))"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                       <!-- <xsl:sequence select="imf:msg(.,'WARNING','ANDER [1]',(.))"/> -->
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each-group>            
+        </xsl:if>
     </xsl:template>
    
     <xsl:template match="imvert:package">
@@ -152,7 +171,7 @@
         <j:string key='uri'>
             <xsl:value-of select="imf:insert-fragments-by-index($uri-concept-id-template,(
                 $model-abbrev,
-                imf:create-name(.)
+                imf:create-uri-name(.)
                 ),'','')"/>
         </j:string>
     </xsl:template>
@@ -161,7 +180,7 @@
         <j:string key='uri'>
             <xsl:value-of select="imf:insert-fragments-by-index($uri-waardelijst-id-template,(
                 $model-abbrev,
-                imf:create-name(.),
+                imf:create-uri-name(.),
                 $model-version
             ),'','')"/>
         </j:string>
@@ -212,7 +231,7 @@
                     <j:string>
                         <xsl:value-of select="imf:insert-fragments-by-index($uri-concept-id-template,(
                             $model-abbrev,
-                            imf:create-name(.)
+                            imf:create-uri-name(.)
                         ),'','')"/>
                     </j:string>
                 </xsl:for-each>
@@ -227,7 +246,7 @@
                     <j:string>
                         <xsl:value-of select="imf:insert-fragments-by-index($uri-concept-id-template,(
                             $model-abbrev,
-                            imf:create-name(.)
+                            imf:create-uri-name(.)
                         ),'','')"/>
                     </j:string>
                 </xsl:for-each>
@@ -239,7 +258,7 @@
             <xsl:value-of select="imf:insert-fragments-by-index($uri-concept-doc-template,(
                 $model-abbrev,
                 imf:create-datumtijd((ancestor::*/imvert:release)[1]),
-                imf:create-name(.),
+                imf:create-uri-name(.),
                 $model-version
             ),'','')"/>
         </j:string>
@@ -249,7 +268,7 @@
             <xsl:value-of select="imf:insert-fragments-by-index($uri-waardelijst-doc-template,(
                 $model-abbrev,
                 imf:create-datumtijd((ancestor::*/imvert:release)[1]),
-                imf:create-name(.),
+                imf:create-uri-name(.),
                 $model-version
                 ),'','')"/>
         </j:string>
@@ -307,12 +326,42 @@
         <xsl:param name="construct"/>
         <xsl:value-of select="($construct/imvert:element[1],$construct/imvert:name/@original)[1]"/>
     </xsl:function>
+    <xsl:function name="imf:create-uri-name">
+        <xsl:param name="construct"/><!-- zie uitleg mail vr 18 sep. 2020 15:53 -->
+        <xsl:variable name="original-name" select="$construct/imvert:name/@original"/>
+        <xsl:value-of select="imf:upper-camelcase($original-name)"/>
+    </xsl:function>
     <xsl:function name="imf:create-definitie">
         <xsl:param name="construct"/>
         <xsl:variable name="val1" select="string-join($construct/imvert:element[position() ne 1],'; ')"/><!-- for reference lists -->
         <xsl:variable name="val2" select="imf:get-most-relevant-compiled-taggedvalue($construct,'##CFG-TV-DEFINITION')//text()"/> <!-- default -->
         <xsl:variable name="val3" select="imf:get-tagged-value($construct,'##CFG-TV-DEFINITION')"/> <!-- for codelists -->
         <xsl:value-of select="normalize-space(string-join(if ($construct/imvert:element) then $val1 else if ($val2) then $val2 else $val3,''))"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:upper-camelcase" as="xs:string">
+        <xsl:param name="name" as="xs:string"/>
+        <xsl:variable name="r1">
+            <xsl:analyze-string select="$name" regex="\((.*?)\)">
+                <xsl:matching-substring>
+                    <xsl:value-of select="concat('_',regex-group(1))"/>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:value-of select="."/>       
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        <xsl:variable name="r2">
+            <xsl:analyze-string select="$r1" regex="([A-Za-z_])([A-Za-z0-9\-]*)"> <!-- zi o.a. K2-Leiding in https://definities.geostandaarden.nl/imkl/doc/begrip/K2-leiding -->
+                <xsl:matching-substring>
+                    <xsl:value-of select="concat(upper-case(regex-group(1)), regex-group(2))"/>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:value-of select="''"/><!-- remove all other chars -->
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        <xsl:value-of select="$r2"/>
     </xsl:function>
     
 </xsl:stylesheet>
