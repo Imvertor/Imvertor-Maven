@@ -385,8 +385,8 @@
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-FORMAAT" order="170">
-        <name lang="nl">Type</name>
-        <name lang="en">Type</name>
+        <name lang="nl">Formaat</name>
+        <name lang="en">Format</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>

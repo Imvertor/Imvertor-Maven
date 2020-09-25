@@ -22,7 +22,7 @@
     <item>
         <key>FORMAAT</key>
         <trans lang="nl">Formaat</trans>
-        <trans lang="en">Format/Type</trans>
+        <trans lang="en">Format</trans>
     </item>
     <item>
         <key>PATROON</key>
@@ -547,11 +547,11 @@
     <item>
         <key>ATTRIBUTE-FORMAT</key>
         <trans lang="nl">Formaat</trans>
-        <trans lang="en">Format/type</trans>
+        <trans lang="en">Format</trans>
     </item>
     <item>
         <key>ATTRIBUTE-CARD</key>
-        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="nl">Card</trans>
         <trans lang="en">Mult</trans>
     </item>
     
@@ -603,7 +603,7 @@
     </item>
     <item>
         <key>DATAELEMENT-CARD</key>
-        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="nl">Card</trans>
         <trans lang="en">Card</trans>
     </item>
     
@@ -624,7 +624,7 @@
     </item>
     <item>
         <key>UNIONELEMENT-CARD</key>
-        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="nl">Card</trans>
         <trans lang="en">Card</trans>
     </item>
     
@@ -643,11 +643,11 @@
     <item>
         <key>REFERENCEELEMENT-FORMAT</key>
         <trans lang="nl">Formaat</trans>
-        <trans lang="en">Foermat</trans>
+        <trans lang="en">Format</trans>
     </item>
     <item>
         <key>REFERENCEELEMENT-CARD</key>
-        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="nl">Card</trans>
         <trans lang="en">Card</trans>
     </item>
     
