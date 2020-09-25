@@ -329,7 +329,14 @@
     <xsl:function name="imf:create-uri-name">
         <xsl:param name="construct"/><!-- zie uitleg mail vr 18 sep. 2020 15:53 -->
         <xsl:variable name="original-name" select="$construct/imvert:name/@original"/>
-        <xsl:value-of select="imf:upper-camelcase($original-name)"/>
+        <xsl:choose>
+            <xsl:when test="$original-name">
+                <xsl:value-of select="imf:upper-camelcase($original-name)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg($construct,'WARNING','No name found',())"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     <xsl:function name="imf:create-definitie">
         <xsl:param name="construct"/>
@@ -340,7 +347,7 @@
     </xsl:function>
     
     <xsl:function name="imf:upper-camelcase" as="xs:string">
-        <xsl:param name="name" as="xs:string"/>
+        <xsl:param name="name" as="xs:string?"/>
         <xsl:variable name="r1">
             <xsl:analyze-string select="$name" regex="\((.*?)\)">
                 <xsl:matching-substring>
