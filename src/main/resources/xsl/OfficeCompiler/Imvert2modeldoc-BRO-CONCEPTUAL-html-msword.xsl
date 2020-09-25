@@ -85,12 +85,9 @@
     
     <xsl:function name="imf:insert-chapter-intro" as="item()*">
         <xsl:param name="chapter" as="element(chapter)"/>
-        <p>
-            <b>Deze tekst is normatief.</b>
-            <xsl:comment>
-                <xsl:value-of select="imf:get-config-string('appinfo','release-name')"/> imvertor <xsl:value-of select="$chapter/../@generator-version"/>
-            </xsl:comment>
-        </p>
+        <xsl:comment>
+            <xsl:value-of select="imf:get-config-string('appinfo','release-name')"/> imvertor <xsl:value-of select="$chapter/../@generator-version"/>
+        </xsl:comment>
     </xsl:function>
     
     <xsl:function name="imf:insert-diagram-path">
