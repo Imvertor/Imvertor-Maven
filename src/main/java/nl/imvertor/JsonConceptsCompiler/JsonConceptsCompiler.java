@@ -20,12 +20,16 @@
 
 package nl.imvertor.JsonConceptsCompiler;
 
+import java.net.URI;
+import java.util.HashMap;
+
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
+import nl.imvertor.common.file.HttpFile;
 import nl.imvertor.common.file.JsonFile;
 
 /**
@@ -52,7 +56,10 @@ public class JsonConceptsCompiler extends Step {
 		
 		runner.info(logger,"Compiling JSON Concepts");
 		
-		generateDefault();
+		boolean succeeds = true;
+		
+		succeeds = succeeds && generateDefault();
+		succeeds = succeeds && validateDefault();
 		
 		configurator.setStepDone(STEP_NAME);
 		
@@ -108,4 +115,34 @@ public class JsonConceptsCompiler extends Step {
 		return succeeds;
 		
 	}
+	/**
+	 * Validate the URIs extracted for concepts. 
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean validateDefault() throws Exception {
+		
+		boolean succeeds = true;
+		
+		runner.debug(logger,"CHAIN","Validating Json concepts");
+		runner.track("Validating Json concepts");
+		
+		HttpFile file = new HttpFile(HttpFile.createTempFile("HttpFile.", ".dummy"));
+		
+		String[] uris = configurator.getXParms("json-concepts/uri");
+		HashMap<String, String> headerMap = new HashMap<String, String>();
+		headerMap.put("Accept","application/json");
+		//TODO ook redirect niet accepteren.
+		HashMap<String, String> parmsMap = new HashMap<String, String>();
+		for (int i = 0; i < uris.length; i++) {
+			URI uri = new URI(uris[i]);
+			//String content = file.get(uri, headerMap, parmsMap); //TODO certificaat fouten: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+			succeeds = succeeds && true;
+		}
+		configurator.setXParm("system/json-concepts-validated",succeeds);	
+		return succeeds;
+			
+	}
+	
 }

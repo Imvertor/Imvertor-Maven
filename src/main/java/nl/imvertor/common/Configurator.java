@@ -781,6 +781,19 @@ public class Configurator {
 	}
 
 	/**
+	 * Get the xparms values if multiple values exist
+	 * 
+	 * @param name
+	 * @return Array of strings, i.e. the xparm values.
+	 * @throws IOException
+	 * @throws ConfiguratorException
+	 */
+	public String[] getXParms(String name) throws IOException, ConfiguratorException {
+		String[] values = workConfiguration.getStringArray(name);
+		return values;
+	}
+	
+	/**
 	 * See getParm(). 
 	 *
 	 * Specifies if the parameter must exist.

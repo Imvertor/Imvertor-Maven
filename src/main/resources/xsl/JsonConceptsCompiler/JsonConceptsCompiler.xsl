@@ -48,18 +48,10 @@
         <!-- test the URIs -->
         <xsl:if test="$test-uris">
             <xsl:for-each-group select="$json-xml//j:string[@key='uri']" group-by=".">
-                <xsl:variable name="uri" select="current-group()[1]"/>
-                <xsl:choose>
-                    <xsl:when test="contains($uri,'/id/begrip') and unparsed-text-available($uri)">
-                        <xsl:sequence select="imf:msg(.,'INFO','ID BEGRIP [1]',(.))"/>
-                    </xsl:when>
-                    <xsl:when test="contains($uri,'/id/begrip')">
-                        <xsl:sequence select="imf:msg(.,'ERROR','ID BEGRIP [1]',(.))"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                       <!-- <xsl:sequence select="imf:msg(.,'WARNING','ANDER [1]',(.))"/> -->
-                    </xsl:otherwise>
-                </xsl:choose>
+                <xsl:variable name="uri" select="current-group()[1]"/><!-- http://definities.geostandaarden.nl/imro/id/begrip/Structuurvisieverklaring_p?format=xml -->
+                <xsl:if test="contains($uri,'/id/begrip')">
+                    <xsl:comment select="imf:get-concept-info($uri)"/>
+                </xsl:if>
             </xsl:for-each-group>            
         </xsl:if>
     </xsl:template>
@@ -334,7 +326,7 @@
                 <xsl:value-of select="imf:upper-camelcase($original-name)"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:msg($construct,'WARNING','No name found',())"/>
+                <!--<xsl:sequence select="imf:msg($construct,'WARNING','No name found',())"/>-->
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -369,6 +361,11 @@
             </xsl:analyze-string>
         </xsl:variable>
         <xsl:value-of select="$r2"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-concept-info">
+        <xsl:param name="uri"/>
+        <xsl:sequence select="imf:set-xparm('json-concepts/uri',$uri,false())"/>
     </xsl:function>
     
 </xsl:stylesheet>
