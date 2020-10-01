@@ -72,44 +72,13 @@
         <xsl:choose>
             <!-- verwerken van diagrammen -->
             <xsl:when test="@type = 'IMAGEMAPS'">
-                <xsl:for-each select="section[@type = 'IMAGEMAP']">
-                    <xsl:variable name="diagram-id" select="@id"/>
-                    <xsl:variable name="diagram" select="$imagemap/imvert-imap:diagram[imvert-imap:id = $diagram-id]"/>
-                    <xsl:variable name="diagram-path" select="imf:insert-diagram-path($diagram-id)"/>
-                    <xsl:variable name="diagram-css-class" select="if ($diagram/imvert-imap:purpose = 'CFG-IMG-OVERVIEW') then 'overview' else ''"/>
-                    <xsl:variable name="caption-desc" select="content/part[@type='CFG-DOC-DESCRIPTION']/item[2]"/>
-                    
-                    <div class="imageinfo {$diagram-css-class}">
-                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
-                        <map name="imagemap-{$diagram-id}">
-                            <xsl:for-each select="$diagram/imvert-imap:map">
-                                <xsl:variable name="section-id" select="imvert-imap:for-id"/>
-                                <xsl:variable name="section" select="$document//*[@uuid = $section-id]"/><!-- expected are: section or item; but can be anything referenced from within graph by imagemap -->
-                                <xsl:if test="$section">
-                                    <xsl:variable name="section-name" select="$section/@name"/>
-                                    <area 
-                                        shape="rect" 
-                                        alt="{$section-name}"
-                                        coords="{imvert-imap:loc[@type = 'imgL']},{imvert-imap:loc[@type = 'imgT']},{imvert-imap:loc[@type = 'imgR']},{imvert-imap:loc[@type = 'imgB']}" 
-                                        href="#graph_{$section-id}"/>
-                                </xsl:if>
-                            </xsl:for-each>
-                        </map>
-                        <!-- create the caption -->
-                        <p>
-                            <b>
-                                <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
-                            </b>
-                            <xsl:value-of select="if (normalize-space($caption-desc)) then concat(' &#8212; ',$caption-desc) else ()"/>
-                        </p>    
-                    </div>
-                    <!-- was:
-                    <figure id="image-{$diagram-id}" class="scalable">
-                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}"/>
-                        <figcaption>TODO Onderschrift</figcaption>
-                    </figure>
-                    -->
-                </xsl:for-each>
+               <xsl:call-template name="process-imagemaps"/>     
+            </xsl:when>
+            <xsl:when test="section[@type = 'IMAGEMAP']"><!-- the type is not IMAGEMAPS -->
+                <section id="{$id}" level="{$level}">
+                    <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,string(@name))"/>
+                    <xsl:call-template name="process-imagemaps"/>
+                </section>
             </xsl:when>
             <!-- de kop van de details sectie. -->
             <xsl:when test="starts-with(@type,'DETAILS')"> <!-- bijv. DETAILS of DETAILS-OBJECTYPE -->
@@ -621,6 +590,42 @@
     </xsl:template>
     <xsl:template match="a/@name" mode="windup">
         <xsl:attribute name="id" select="."/>
+    </xsl:template>
+    
+    <xsl:template name="process-imagemaps">
+        <!-- context is a section holding imagemap elements -->
+        <xsl:for-each select="section[@type = 'IMAGEMAP']">
+            <xsl:variable name="diagram-id" select="@id"/>
+            <xsl:variable name="diagram" select="$imagemap/imvert-imap:diagram[imvert-imap:id = $diagram-id]"/>
+            <xsl:variable name="diagram-path" select="imf:insert-diagram-path($diagram-id)"/>
+            <xsl:variable name="diagram-css-class" select="if ($diagram/imvert-imap:purpose = 'CFG-IMG-OVERVIEW') then 'overview' else ''"/>
+            <xsl:variable name="caption-desc" select="content/part[@type='CFG-DOC-DESCRIPTION']/item[2]"/>
+            
+            <div class="imageinfo {$diagram-css-class}">
+                <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+                <map name="imagemap-{$diagram-id}">
+                    <xsl:for-each select="$diagram/imvert-imap:map">
+                        <xsl:variable name="section-id" select="imvert-imap:for-id"/>
+                        <xsl:variable name="section" select="$document//*[@uuid = $section-id]"/><!-- expected are: section or item; but can be anything referenced from within graph by imagemap -->
+                        <xsl:if test="$section">
+                            <xsl:variable name="section-name" select="$section/@name"/>
+                            <area 
+                                shape="rect" 
+                                alt="{$section-name}"
+                                coords="{imvert-imap:loc[@type = 'imgL']},{imvert-imap:loc[@type = 'imgT']},{imvert-imap:loc[@type = 'imgR']},{imvert-imap:loc[@type = 'imgB']}" 
+                                href="#graph_{$section-id}"/>
+                        </xsl:if>
+                    </xsl:for-each>
+                </map>
+                <!-- create the caption -->
+                <p>
+                    <b>
+                        <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
+                    </b>
+                    <xsl:value-of select="if (normalize-space($caption-desc)) then concat(' &#8212; ',$caption-desc) else ()"/>
+                </p>    
+            </div>
+        </xsl:for-each>
     </xsl:template>
     
     <xsl:function name="imf:create-anchors" as="element()*">

@@ -21,8 +21,8 @@
     </item>
     <item>
         <key>FORMAAT</key>
-        <trans lang="nl">Formaat</trans>
-        <trans lang="en">Format/Type</trans>
+        <trans lang="nl">Type</trans><!--Verbeteringen catalogusformaat #133-->
+        <trans lang="en">Type</trans>
     </item>
     <item>
         <key>PATROON</key>
@@ -303,6 +303,11 @@
         <trans lang="en">Diagram</trans>
     </item>
     <item>
+        <key>IMAGE</key>
+        <trans lang="nl">Diagram</trans>
+        <trans lang="en">Diagram</trans>
+    </item>
+    <item>
         <key>OVERVIEW-OBJECTTYPE</key>
         <trans lang="nl">Objecttypen</trans>
         <trans lang="en">Featuretypes</trans>
@@ -546,13 +551,13 @@
     </item>
     <item>
         <key>ATTRIBUTE-FORMAT</key>
-        <trans lang="nl">Formaat</trans>
-        <trans lang="en">Format/type</trans>
+        <trans lang="nl">Type</trans>
+        <trans lang="en">Type</trans>
     </item>
     <item>
         <key>ATTRIBUTE-CARD</key>
-        <trans lang="nl">Card</trans>
-        <trans lang="en">Mult</trans>
+        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="en">Multiplicity</trans>
     </item>
     
     <item>
@@ -598,8 +603,8 @@
     </item>
     <item>
         <key>DATAELEMENT-FORMAT</key>
-        <trans lang="nl">Formaat</trans>
-        <trans lang="en">Format</trans>
+        <trans lang="nl">Type</trans>
+        <trans lang="en">Type</trans>
     </item>
     <item>
         <key>DATAELEMENT-CARD</key>

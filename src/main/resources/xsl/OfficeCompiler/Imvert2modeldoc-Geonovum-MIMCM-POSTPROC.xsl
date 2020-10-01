@@ -7,6 +7,17 @@
     
     <!-- no special postproc yet -->
     
+    <xsl:template match="section[@type = 'IMAGEMAPS']">
+        <xsl:for-each select="section[@type = 'IMAGEMAP']">
+            <section type="IMAGE" name="{@name}" id="{@id}">
+                <h3>
+                    <xsl:value-of select="@name"/>
+                </h3>
+                <xsl:apply-templates select="."/>
+            </section>
+        </xsl:for-each>
+    </xsl:template>
+    
     <!-- defaults -->
     
     <xsl:template match="node()|@*">
