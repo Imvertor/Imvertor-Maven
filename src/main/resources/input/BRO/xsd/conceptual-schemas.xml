@@ -988,10 +988,13 @@
                <cs:Construct>
                   <cs:name>Meetwaarde</cs:name>
                   <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
+                 <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>gml:MeasureType</cs:name>
-                        <cs:primitive>true</cs:primitive>
+                        <cs:name>Measure</cs:name>
+                        <cs:asAttribute>MeasureType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>        
