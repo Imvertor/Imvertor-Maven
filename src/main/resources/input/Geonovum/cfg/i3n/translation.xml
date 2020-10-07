@@ -608,8 +608,8 @@
     </item>
     <item>
         <key>DATAELEMENT-CARD</key>
-        <trans lang="nl">Card</trans>
-        <trans lang="en">Card</trans>
+        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="en">Multiplicity</trans>
     </item>
     
     <item>
@@ -629,8 +629,8 @@
     </item>
     <item>
         <key>UNIONELEMENT-CARD</key>
-        <trans lang="nl">Card</trans>
-        <trans lang="en">Card</trans>
+        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="en">Multiplicity</trans>
     </item>
     
     <item>
@@ -652,8 +652,8 @@
     </item>
     <item>
         <key>REFERENCEELEMENT-CARD</key>
-        <trans lang="nl">Card</trans>
-        <trans lang="en">Card</trans>
+        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="en">Multiplicity</trans>
     </item>
     
     <!-- intermediate text -->
