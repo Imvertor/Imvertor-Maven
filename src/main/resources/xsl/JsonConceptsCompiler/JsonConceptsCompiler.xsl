@@ -29,6 +29,8 @@
     <xsl:variable name="model-abbrev" select="lower-case(imf:get-tagged-value(/imvert:packages,'##CFG-TV-ABBREV'))"/>
     <xsl:variable name="model-version" select="/imvert:packages/imvert:version"/>
     
+    <xsl:variable name="waarden" select="//imvert:class/imvert:attributes/imvert:attribute" as="element(imvert:attribute)*"/>
+    
     <xsl:variable name="json-map" as="map(xs:string, xs:boolean)">
         <xsl:map>
             <xsl:map-entry key="'indent'" select="true()"/>
@@ -86,6 +88,7 @@
                 <xsl:call-template name="create-metadata-startdatumgeldigheid"/>     
             </j:map>
         </j:map>
+        <xsl:apply-templates select="imvert:attributes/imvert:attribute"/>
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-referentielijst','stereotype-name-codelist')]">
@@ -117,7 +120,7 @@
     
     <xsl:template match="imvert:attribute">
         <j:map>
-            <xsl:call-template name="create-concept-uri"/>
+            <xsl:call-template name="create-waarde-uri"/>
             <xsl:call-template name="create-domein"/>
             <xsl:call-template name="create-term"/>
             <xsl:call-template name="create-definitie"/>
@@ -164,6 +167,16 @@
             <xsl:value-of select="imf:insert-fragments-by-index($uri-concept-id-template,(
                 $model-abbrev,
                 imf:create-uri-name(.)
+                ),'','')"/>
+        </j:string>
+    </xsl:template>
+    <xsl:template name="create-waarde-uri">
+        <xsl:param name="type"/>
+        <xsl:variable name="dups" select="count($waarden[imvert:name = current()/imvert:name])"/>
+        <j:string key='uri'>
+            <xsl:value-of select="imf:insert-fragments-by-index($uri-concept-id-template,(
+                $model-abbrev,
+                imf:create-uri-name(.,$dups gt 1)
                 ),'','')"/>
         </j:string>
     </xsl:template>
@@ -319,9 +332,25 @@
         <xsl:value-of select="($construct/imvert:element[1],$construct/imvert:name/@original)[1]"/>
     </xsl:function>
     <xsl:function name="imf:create-uri-name">
+        <xsl:param name="construct"/>
+        <xsl:value-of select="imf:create-uri-name($construct,false())"/>
+    </xsl:function>
+    <xsl:function name="imf:create-uri-name">
         <xsl:param name="construct"/><!-- zie uitleg mail vr 18 sep. 2020 15:53 -->
-        <xsl:variable name="original-name" select="$construct/imvert:name/@original"/>
+        <xsl:param name="has-duplicates" as="xs:boolean"/>
+        <xsl:variable name="original-name" select="replace($construct/imvert:name/@original,'/','')"/>
+        <xsl:variable name="alias-name" select="replace($construct/imvert:alias,'/','')"/>
+        <xsl:variable name="codelist-name" select="imf:lower-camelcase($construct/ancestor::imvert:class[1]/imvert:name/@original)"/>
         <xsl:choose>
+            <xsl:when test="$has-duplicates and $alias-name">
+                <xsl:value-of select="imf:upper-camelcase($alias-name) || '_' || $codelist-name"/>
+            </xsl:when>
+            <xsl:when test="$has-duplicates and $original-name">
+                <xsl:value-of select="imf:upper-camelcase($original-name)  || '_' || $codelist-name"/>
+            </xsl:when>
+            <xsl:when test="$alias-name">
+                <xsl:value-of select="imf:upper-camelcase($alias-name)"/>
+            </xsl:when>
             <xsl:when test="$original-name">
                 <xsl:value-of select="imf:upper-camelcase($original-name)"/>
             </xsl:when>
@@ -340,20 +369,27 @@
     
     <xsl:function name="imf:upper-camelcase" as="xs:string">
         <xsl:param name="name" as="xs:string?"/>
-        <xsl:variable name="r1">
-            <xsl:analyze-string select="$name" regex="\((.*?)\)">
+        <xsl:variable name="r1"><!-- verwijder de haakjes -->
+            <xsl:analyze-string select="$name" regex="(^.*?)\((.*?)\)"> <!-- e.g. "(haven)kraan" of "pomp (voor brug)" -->
                 <xsl:matching-substring>
-                    <xsl:value-of select="concat('_',regex-group(1))"/>
+                    <xsl:choose>
+                        <xsl:when test="regex-group(1) = ''">
+                            <xsl:value-of select="regex-group(2)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="concat(regex-group(1),'_ ',regex-group(2))"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:matching-substring>
                 <xsl:non-matching-substring>
                     <xsl:value-of select="."/>       
                 </xsl:non-matching-substring>
             </xsl:analyze-string>
         </xsl:variable>
-        <xsl:variable name="r2">
-            <xsl:analyze-string select="$r1" regex="([A-Za-z_])([A-Za-z0-9\-]*)"> <!-- zi o.a. K2-Leiding in https://definities.geostandaarden.nl/imkl/doc/begrip/K2-leiding -->
+        <xsl:variable name="r2"><!-- plaats in camelcase -->
+            <xsl:analyze-string select="$r1" regex="([A-Za-z_])([A-Za-z0-9\-]*)"> <!-- zie o.a. K2-Leiding in https://definities.geostandaarden.nl/imkl/doc/begrip/K2-leiding -->
                 <xsl:matching-substring>
-                    <xsl:value-of select="concat(upper-case(regex-group(1)), regex-group(2))"/>
+                    <xsl:value-of select="concat(upper-case(regex-group(1)), lower-case(regex-group(2)))"/>
                 </xsl:matching-substring>
                 <xsl:non-matching-substring>
                     <xsl:value-of select="''"/><!-- remove all other chars -->
@@ -361,6 +397,21 @@
             </xsl:analyze-string>
         </xsl:variable>
         <xsl:value-of select="$r2"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:lower-camelcase" as="xs:string">
+        <xsl:param name="name" as="xs:string?"/>
+        <xsl:variable name="r1"><!-- plaats in camelcase -->
+            <xsl:analyze-string select="$name" regex="([A-Za-z_])([A-Za-z0-9\-]*)">
+                <xsl:matching-substring>
+                    <xsl:value-of select="concat(lower-case(regex-group(1)), regex-group(2))"/>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:value-of select="''"/><!-- remove all other chars -->
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        <xsl:value-of select="$r1"/>
     </xsl:function>
     
     <xsl:function name="imf:get-concept-info">
