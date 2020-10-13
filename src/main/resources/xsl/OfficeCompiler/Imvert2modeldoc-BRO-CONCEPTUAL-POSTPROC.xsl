@@ -530,6 +530,7 @@
             <xsl:when test="$unit-ucum = 'g/kg'">g/kg (gram per kilogram)</xsl:when>
             
             <xsl:when test="$unit-ucum = 'cm3/cm3'">cm<sup>3</sup>/cm<sup>3</sup> (kubieke centimeter/kubieke centimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'm3'">m<sup>3</sup> (kubieke meter)</xsl:when>
             
             <xsl:otherwise>
                 <xsl:value-of select="$unit-ucum"/>
