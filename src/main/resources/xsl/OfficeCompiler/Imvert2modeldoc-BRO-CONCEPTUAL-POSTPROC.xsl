@@ -513,7 +513,7 @@
             <xsl:when test="$unit-ucum = 'S/m'">S/m (Siemens/meter)</xsl:when>
             
             <xsl:when test="$unit-ucum = 'mS/m'">mS/m (milliSiemens/meter)</xsl:when>
-            <xsl:when test="$unit-ucum = 'Ohm.m'">Ohm.m (ohm meter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'Ohmm'">Ohm.m (ohm meter)</xsl:when>
 
             <xsl:when test="$unit-ucum = 'um'">µm (micrometer)</xsl:when>
             <xsl:when test="$unit-ucum = 'mm/h'">mm/h (millimeter per uur)</xsl:when>
