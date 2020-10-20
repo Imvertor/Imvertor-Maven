@@ -406,6 +406,24 @@
                   </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
+                  <cs:name>GM_Curve</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#Curve</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Curve</cs:name>
+                        <cs:asAttribute>CurveType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
                   <cs:name>GM_MultiCurve</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
