@@ -64,7 +64,7 @@
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
-            <tv norm="space" id="CFG-TV-INDICATIONCLASSIFICATION">
+        <tv norm="space" id="CFG-TV-INDICATIONCLASSIFICATION">
             <name lang="nl">Indicatie classificerend</name>
             <name lang="en">TODO</name>
             <derive>yes</derive>
@@ -72,6 +72,45 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-BASETYPE"><!-- https://github.com/Imvertor/Imvertor-Maven/issues/139 -->
+            <name lang="nl">Basistype</name>
+            <name lang="en">Basetype</name>
+            <derive>yes</derive>
+            <desc lang="nl">Het type waar dit primitief type een nadere beperking op aanbrengt. 
+                Zo is een "Postcode" een nadere beperking op CharacterString, en "PositiveInteger" een nadere beperking op "Integer". 
+                De beperkende eigenschappen worden vastgelegd in tagged values, constraints, of alleen in de documentatie.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">CharacterString</value>
+                <value>CharacterString</value>
+                <value>Integer</value>
+                <value>Real</value>
+                <value>Decimal</value>
+                <value>Boolean</value>
+                <value>Date</value>
+                <value>DateTime</value>
+                <value>Year</value>
+                <value>Day</value>
+                <value>Month</value>
+                <value>URI</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value default="yes">CharacterString</value>
+                <value>CharacterString</value>
+                <value>Integer</value>
+                <value>Real</value>
+                <value>Decimal</value>
+                <value>Boolean</value>
+                <value>Date</value>
+                <value>DateTime</value>
+                <value>Year</value>
+                <value>Day</value>
+                <value>Month</value>
+                <value>URI</value>
+            </declared-values>
         </tv>
                 
     </tagged-values>
