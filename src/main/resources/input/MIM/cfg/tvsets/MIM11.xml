@@ -73,6 +73,7 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
+        <?x
         <tv norm="space" id="CFG-TV-BASETYPE"><!-- https://github.com/Imvertor/Imvertor-Maven/issues/139 -->
             <name lang="nl">Basistype</name>
             <name lang="en">Basetype</name>
@@ -112,6 +113,7 @@
                 <value>URI</value>
             </declared-values>
         </tv>
-                
+        x?>
+        
     </tagged-values>
 </tagset>
