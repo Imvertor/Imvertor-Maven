@@ -120,6 +120,8 @@
     
     <xsl:template match="imvert:attribute">
         <j:map>
+            <xsl:call-template name="create-type"/>
+            <xsl:call-template name="create-naam"/>
             <xsl:call-template name="create-waarde-uri"/>
             <xsl:call-template name="create-domein"/>
             <xsl:call-template name="create-term"/>
@@ -128,7 +130,7 @@
             <xsl:call-template name="create-gerelateerd"/>
             <xsl:call-template name="create-isWaardeSpecialisatieVan"/>
             <j:map key="metadata">
-                <xsl:call-template name="create-metadata-concept-uri"/>
+                <xsl:call-template name="create-metadata-waarde-uri"/>
                 <xsl:call-template name="create-metadata-startdatumgeldigheid"/>     
             </j:map>
         </j:map>
@@ -189,6 +191,9 @@
                 $model-version
             ),'','')"/>
         </j:string>
+    </xsl:template>
+    <xsl:template name="create-type">
+        <j:string key='@type'>skos:Concept</j:string>
     </xsl:template>
     <xsl:template name="create-naam">
         <j:string key='naam'>
@@ -266,6 +271,17 @@
                 imf:create-uri-name(.),
                 $model-version
             ),'','')"/>
+        </j:string>
+    </xsl:template>
+    <xsl:template name="create-metadata-waarde-uri">
+        <xsl:param name="type"/>
+        <xsl:variable name="dups" select="count($waarden[imvert:name = current()/imvert:name])"/>
+        <j:string key='uri'>
+            <xsl:value-of select="imf:insert-fragments-by-index($uri-concept-doc-template,(
+                $model-abbrev,
+                imf:create-datumtijd((ancestor::*/imvert:release)[1]),
+                imf:create-uri-name(.,$dups gt 1)
+                ),'','')"/>
         </j:string>
     </xsl:template>
     <xsl:template name="create-metadata-waardelijst-uri">
