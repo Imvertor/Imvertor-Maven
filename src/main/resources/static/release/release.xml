@@ -1,8 +1,8 @@
 <release-info>
     <release>
         <artifact>Imvertor</artifact>
-        <major-minor>1.61</major-minor>
-        <bugfix>3</bugfix>
+        <major-minor>1.62</major-minor>
+        <bugfix>0</bugfix>
         
         <notice>Copyright (C) 2016-2019 Dienst voor het Kadaster en de openbare registers.
             This program comes with ABSOLUTELY NO WARRANTY; for details pass -help program.
