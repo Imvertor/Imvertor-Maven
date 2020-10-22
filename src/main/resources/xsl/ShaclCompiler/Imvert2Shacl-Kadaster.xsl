@@ -407,7 +407,7 @@
         
     </xsl:template>
     
-    <xsl:template match="node()" mode="#all">
+    <xsl:template match="node()" mode="mode-data-subject mode-shacl-subject preamble">
         <!-- skip -->        
     </xsl:template>
     

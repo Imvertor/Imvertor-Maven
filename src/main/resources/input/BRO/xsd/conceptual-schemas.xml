@@ -2,6 +2,7 @@
 <cs:ConceptualSchemas xmlns:xlink="http://www.w3.org/1999/xlink"
                       xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
                       xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+                      xmlns:xi="http://www.w3.org/2001/XInclude"
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                       xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210
                       ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
@@ -24,6 +25,7 @@
             <cs-ref:MapRef xlink:href="#INSPIRE"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-GEO"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-SOIL"/>
+            <cs-ref:MapRef xlink:href="#MIM11"/>
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <?x
             <cs-ref:MapRef xlink:href="#BRO"/>
@@ -36,6 +38,9 @@
    </cs:mappings>
    <cs:components>
       <cs:ConceptualSchemasComponents>
+         
+         <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
+         
          <cs:ConceptualSchema>
             <cs:id>Sample1</cs:id>
             <cs:shortName>sample</cs:shortName>
@@ -102,6 +107,9 @@
             <cs:desc>NEN3610 (2011)</cs:desc>
             <cs:url>http://www.bro.nl/conceptual-schemas/nen3610/1.0/</cs:url>
          </cs:ConceptualSchema>
+         
+         <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
+         
          <cs:Map>
             <cs:id>SampleExternalModelA</cs:id>
             <cs:namespace>http://www.broservices.nl/SampleExternalModelA</cs:namespace>

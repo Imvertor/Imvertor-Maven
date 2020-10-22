@@ -3,6 +3,7 @@
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:imvert="http://www.imvertor.org/schema/system"
            xmlns:Model-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+           xmlns:xml="http://www.w3.org/XML/1998/namespace"
            targetNamespace="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
            elementFormDefault="qualified"
            attributeFormDefault="unqualified"
@@ -11,17 +12,23 @@
       <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.imvertor.org/metamodels/conceptualschemas/model</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/version">1.0</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/phase">1</xs:appinfo>
-      <xs:appinfo source="http://www.imvertor.org/schema-info/release">20181210</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/release">20181210-A</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/generated">2018-12-12T11:54:48Z</xs:appinfo>
-      <xs:appinfo source="http://www.imvertor.org/schema-info/generator">1.48.3</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/generator">1.48.3 adaptations</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/owner">Kadaster</xs:appinfo>
       <xs:documentation source="http://www.imvertor.org/schema-info/file-location">root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd</xs:documentation>
       <xs:documentation source="http://www.imvertor.org/schema-info/conversion">
         This schema is based on an UML specification, which is transformed by the Imvertor software. Imvertor modules are in the public domain, see http://www.imvertor.org.
+        
+        Adaptations of the generated version:
+        - 2020-10-22 Added references to teh xml:base attribute. Needed to allow xi:inclusions to appear on instances (producing xml:base attributes).
+        
     </xs:documentation>
    </xs:annotation>
+   <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+      schemaLocation="../../../1998/namespace/xml.xsd"/><!-- added 2020-10-22 -->
    <xs:import namespace="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
-              schemaLocation="../../../root/model-ref/v20181210/ConceptualSchemas_ModelRef_v1_0.xsd"/>
+      schemaLocation="../../../root/model-ref/v20181210/ConceptualSchemas_ModelRef_v1_0.xsd"/>
    <xs:element name="XsdType" type="Model:XsdType" abstract="false">
       <xs:annotation>
          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Information in the XSD construct, to be used when XML schemas are created and external schemas are to be imported.</xs:documentation>
@@ -160,6 +167,7 @@
          </xs:element>
       </xs:sequence>
       <xs:attribute name="id" type="xs:ID" use="optional"/>
+      <xs:attribute ref="xml:base" use="optional"/><!-- added 2020-10-22 -->
    </xs:complexType>
    <xs:element name="Construct" type="Model:Construct" abstract="false">
       <xs:annotation>
@@ -302,6 +310,8 @@
          </xs:element>
       </xs:sequence>
       <xs:attribute name="id" type="xs:ID" use="optional"/>
+      <xs:attribute ref="xml:base" use="optional"/><!-- added 2020-10-22 -->
+      
    </xs:complexType>
    <xs:element name="ConceptualSchemas"
                type="Model:ConceptualSchemas"

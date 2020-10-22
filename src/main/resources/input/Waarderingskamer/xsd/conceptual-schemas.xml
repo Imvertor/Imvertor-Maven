@@ -2,6 +2,7 @@
 <cs:ConceptualSchemas xmlns:xlink="http://www.w3.org/1999/xlink"
                       xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
                       xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+                      xmlns:xi="http://www.w3.org/2001/XInclude"
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                       xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210
                       ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
@@ -9,18 +10,25 @@
       <cs:Mapping>
          <cs:name>Waarderingskamer_GEOSTANDAARDEN</cs:name>
          <cs:use>
+            <cs-ref:MapRef xlink:href="#MIM11"/>
             <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
    <cs:components>
       <cs:ConceptualSchemasComponents>
+         
+         <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
+         
          <cs:ConceptualSchema>
             <cs:id>GML</cs:id>
             <cs:shortName>gml</cs:shortName>
             <cs:desc>ISO19107 Geographic information – Spatial schema</cs:desc>
             <cs:url>http://www.kadaster.nl/conceptual-schemas/ISO19107</cs:url>
          </cs:ConceptualSchema>
+         
+         <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
+         
          <cs:Map>
             <cs:id>GML322PROFILE</cs:id>
             <cs:namespace>http://www.opengis.net/gml/3.2</cs:namespace>
