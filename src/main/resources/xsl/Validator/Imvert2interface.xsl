@@ -47,13 +47,16 @@
     -->
     <xsl:variable name="outside-mapped-classes" as="element(imvert:class)*">
         
-        <xsl:for-each select="//imvert:package[imvert:id = 'OUTSIDE']/imvert:class"> <!-- all stubs -->
-            <xsl:variable name="constructs" select="$conceptual-schema-mapping//cs:Construct[cs:name = current()/imvert:name]" as="element(cs:Construct)*"/>
+        <xsl:for-each select="$document-packages[imvert:id = 'OUTSIDE']/imvert:class"> <!-- all stubs -->
+            <xsl:variable name="id" select="imvert:id"/>
+            <xsl:variable name="name" select="imvert:name"/>
+            <xsl:variable name="constructs" select="$conceptual-schema-mapping//cs:Construct[cs:name = $name]" as="element(cs:Construct)*"/>
+            <xsl:variable name="identified-construct" select="$constructs[cs:managedID = $id][1]"/><!-- een construct in de conceptual schemas -->
+            <xsl:variable name="referencing-constructs" select="$document-classes/descendant-or-self::*[imvert:type-id = $id]/ancestor::*[imvert:id][1]"/><!-- construct in dit document van dat type -->
             <xsl:variable name="construct" as="element(cs:Construct)?">
-                <xsl:variable name="identified-construct" select="$constructs[cs:managedID = current()/imvert:id][1]"/>
                 <xsl:choose>
                     <xsl:when test="$constructs[2] and empty($identified-construct)">
-                        <xsl:sequence select="imf:msg($constructs[2],'ERROR','Reference to [1] in outside model is not identified, but should be, as duplicates occur using mapping [2]',(imf:string-group(imvert:name),$conceptual-schema-mapping-name))"/>
+                        <xsl:sequence select="imf:msg($referencing-constructs[1],'ERROR','Reference to [1] in outside model is not identified, but should be, as duplicates occur using mapping [2]',(imf:string-group($name),$conceptual-schema-mapping-name))"/>
                     </xsl:when>
                     <xsl:when test="$constructs[2]">
                         <xsl:sequence select="$identified-construct"/>
@@ -62,8 +65,7 @@
                         <xsl:sequence select="$constructs"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:variable name="referencing-construct" select="(//*[imvert:type-id = current()/imvert:id])[1]"/>
-                        <xsl:sequence select="imf:msg($referencing-construct,'ERROR','Reference to [1] in outside model could not be resolved when using mapping [2]',(imf:string-group(imvert:name),$conceptual-schema-mapping-name))"/>
+                        <xsl:sequence select="imf:msg($referencing-constructs[1],'ERROR','Reference to [1] in outside model could not be resolved when using mapping [2]',(imf:string-group($name),$conceptual-schema-mapping-name))"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
@@ -84,10 +86,10 @@
                 <xsl:variable name="ph" select="($map/cs:phase)[1]"/>
                 
                 <imvert:class origin="system" cs="{$cs}" cn="{$cn}" sn="{$sn}" ve="{$ve}" ph="{$ph}">
-                    <imvert:name original="{imvert:name}">
-                        <xsl:value-of select="imvert:name"/>
+                    <imvert:name original="{$name}">
+                        <xsl:value-of select="$name"/>
                     </imvert:name>
-                    <xsl:sequence select="imvert:id"/>
+                    <xsl:sequence select="$id"/>
                     <xsl:if test="exists($construct/cs:catalogEntries/cs:CatalogEntry) ">
                         <imvert:catalog>
                             <xsl:sequence select="imf:create-catalog-url($construct)"/>     

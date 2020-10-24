@@ -123,6 +123,7 @@
     <xsl:variable name="allow-duplicate-tv" select="imf:boolean(imf:get-config-string('cli','allowduplicatetv','no'))"/>
     <xsl:variable name="imvertor-task" select="imf:get-config-string('cli','task','compile')"/>
     
+    <xsl:variable name="allow-native-scalars" select="imf:boolean(imf:get-config-string('cli','nativescalars','yes'))"/>
     <xsl:variable name="supports-baretype-transformation" select="imf:boolean($configuration-metamodel-file//features/feature[@name='supports-baretype-transformation'])"/>
     
     <xsl:template match="/">
@@ -797,7 +798,7 @@
                 <!-- this is an enumeration (value), skip -->
             </xsl:when>
             <!-- process the baretypes -->
-            <xsl:when test="$type-id and $supports-baretype-transformation and imf:is-baretype($type-name)">
+            <xsl:when test="$allow-native-scalars and $type-id and $supports-baretype-transformation and imf:is-baretype($type-name)">
                 <!-- a type such as AN, N10, AN10, N8.2 or N8,2. Baretypes are translated to local type declarations -->
                 <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-name)"/>
                 <xsl:sequence select="imf:create-output-element('imvert:type-package','Info_Types_Package')"/>
@@ -829,7 +830,7 @@
             </xsl:when>
             
             <!-- process the other scalars: -->
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi')">
+            <xsl:when test="$allow-native-scalars and substring($type-id,1,5) = ('eaxmi')">
                 <xsl:variable name="type-normname" select="imf:get-normalized-name($type-name,'baretype-name')"/>
                 <xsl:variable name="scalar" select="$all-scalars[name[@lang=$language] = $type-normname][last()]"/>
 

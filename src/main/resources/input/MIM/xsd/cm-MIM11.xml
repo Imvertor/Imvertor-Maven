@@ -64,8 +64,8 @@
             </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
-                    <cs:name>xs:real</cs:name>
-                    <cs:asAttribute>xs:real</cs:asAttribute>
+                    <cs:name>xs:float</cs:name>
+                    <cs:asAttribute>xs:float</cs:asAttribute>
                     <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
                     <cs:primitive>true</cs:primitive>
                 </cs:XsdType>

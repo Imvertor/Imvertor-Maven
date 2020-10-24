@@ -136,6 +136,7 @@
     <xsl:variable name="is-proper-class-tree" select="imf:boolean-and(for $class in $application-package//imvert:class[imvert:supertype] return imf:check-proper-class-tree($class,string($class/imvert:id)))"/>
     
     <xsl:variable name="allow-multiple-tv" select="imf:boolean(imf:get-config-string('cli','allowduplicatetv','no'))"/>
+    <xsl:variable name="allow-native-scalars" select="imf:boolean(imf:get-config-string('cli','nativescalars','yes'))"/>
     
     <xsl:variable name="model-is-general" select="$application-package/imvert:model-level = 'general'"/>
     
@@ -645,8 +646,8 @@
             not($allow-scalar-in-union) and $types-are-scalars, 
             'Union elements must not be a scalar')"/>
         <xsl:sequence select="imf:report-error(.,
-            not($types-are-scalars) and count($types) ne count(distinct-values($types)), 
-            'Union elements must all be of a different datatype')"/>
+            $allow-native-scalars and not($types-are-scalars) and count($types) ne count(distinct-values($types)), 
+            'Union elements must all be of a different datatype')"/> <!-- TODO allow-native-scalars is een fix, feitelijk speelt dit voor primitives en scalars, zie #139, uitwerken en herimplementeren -->
         <xsl:next-match/>
     </xsl:template>
     

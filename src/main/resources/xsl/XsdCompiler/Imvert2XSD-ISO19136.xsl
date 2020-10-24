@@ -449,6 +449,8 @@
         
         <xsl:variable name="is-keyed" select="imvert:attributes/imvert:attribute/imvert:stereotype/@id = 'stereotype-name-key'"/><!-- keyed classes are never represented on their own -->
         
+        <xsl:variable name="formal-pattern" select="imf:get-facet-pattern(.)"/>
+        
         <!-- only generate elements for constructs thet may be referenced as an element. This is: all constructs but
             AttributeGroupType
             
@@ -496,8 +498,9 @@
                             <xsl:variable name="defining-class" select="imf:get-defining-class(.)"/>   
                             <xsl:variable name="defining-class-is-datatype" select="$defining-class/imvert:stereotype/@id = (
                                 ('stereotype-name-simpletype','stereotype-name-enumeration','stereotype-name-codelist','stereotype-name-complextype','stereotype-name-union'))"/>   
+                            <xsl:variable name="defining-class-is-primitive" select="exists(imvert:primitive)"/>   
                             <xsl:choose>
-                                <xsl:when test="$defining-class-is-datatype">
+                                <xsl:when test="$defining-class-is-datatype or $defining-class-is-primitive">
                                     <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice member, which is a datatype')"/>
                                     <xsl:sequence select="imf:create-element-property(.)"/>
                                 </xsl:when>
@@ -526,22 +529,22 @@
                         </complex>
                     </xsl:if>
                 </xsl:when>
-                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-complextype') and exists(imvert:pattern)"><!-- IM-325 -->
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-complextype') and exists($formal-pattern)"><!-- IM-325 -->
                     <simple>
                         <xsl:sequence select="imf:create-xml-debug-comment(.,'A pattern simple type')"/>
                         <xs:annotation>
                             <xs:documentation>This complex datatype is transformed to a simple type because a content pattern is defined.</xs:documentation>
                         </xs:annotation>
                         <xs:restriction base="xs:string">
-                            <xs:pattern value="{imvert:pattern}"/>
+                            <xs:pattern value="{$formal-pattern}"/>
                         </xs:restriction>
                     </simple>
                 </xsl:when>
-                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-simpletype') and exists(imvert:pattern)">
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-simpletype') and exists($formal-pattern)">
                     <simple>
                         <xsl:sequence select="imf:create-xml-debug-comment(.,'A simple type with a pattern')"/>
                         <xs:restriction base="xs:string">
-                            <xs:pattern value="{imvert:pattern}"/>
+                            <xs:pattern value="{$formal-pattern}"/>
                         </xs:restriction>
                     </simple>
                 </xsl:when>
@@ -1408,26 +1411,26 @@
 
     <xsl:function name="imf:create-datatype-property" as="node()*">
         <xsl:param name="this" as="node()"/>
-        <xsl:apply-templates select="$this/imvert:pattern"/>
-        <xsl:apply-templates select="$this/imvert:max-length"/>
-        <xsl:apply-templates select="$this/imvert:total-digits"/> 
-        <xsl:apply-templates select="$this/imvert:fraction-digits"/>
-        <xsl:if test="empty($this/(imvert:pattern|imvert:total-digits)) and not($this/imvert:baretype='TXT')">
+        <xsl:variable name="p" select="imf:get-facet-pattern($this)"/>
+        <xsl:variable name="l" select="imf:get-facet-max-length($this)"/>
+        <xsl:variable name="t" select="imf:get-facet-total-digits($this)"/>
+        <xsl:variable name="f" select="imf:get-facet-fraction-digits($this)"/>
+        <xsl:if test="$p">
+            <xs:pattern value="{$p}"/>
+        </xsl:if>
+        <xsl:if test="$l">
+            <xs:maxLength value="{$l}"/>
+        </xsl:if>
+        <xsl:if test="$t">
+            <xs:totalDigits value="{$t}"/>
+        </xsl:if>
+        <xsl:if test="$f">
+            <xs:fractionDigits value="{$f}"/>
+        </xsl:if>
+        <xsl:if test="empty(($p,$t)) and not($this/imvert:baretype='TXT')">
             <xsl:sequence select="imf:create-nonempty-constraint($this/imvert:type-name)"/>
         </xsl:if>
     </xsl:function>
-    <xsl:template match="imvert:pattern">
-        <xs:pattern value="{.}"/>
-    </xsl:template>
-    <xsl:template match="imvert:max-length">
-        <xs:maxLength value="{.}"/>
-    </xsl:template>
-    <xsl:template match="imvert:total-digits">
-        <xs:totalDigits value="{.}"/>
-    </xsl:template>
-    <xsl:template match="imvert:fraction-digits">
-        <xs:fractionDigits value="{.}"/>
-    </xsl:template>
   
     <xsl:template match="imvert:union">
         <xsl:variable name="membertypes" as="item()*">
@@ -1446,7 +1449,7 @@
    
     <xsl:function name="imf:is-restriction" as="xs:boolean">
         <xsl:param name="this" as="node()"/>
-        <xsl:sequence select="exists($this/(imvert:pattern | imvert:max-length | imvert:total-digits | imvert:fraction-digits))"/>
+        <xsl:sequence select="exists((imf:get-facet-pattern($this), imf:get-facet-max-length($this), imf:get-facet-total-digits($this), imf:get-facet-fraction-digits($this)))"/>
     </xsl:function>
     <xsl:function name="imf:is-estimation" as="xs:boolean">
         <xsl:param name="this" as="node()"/>

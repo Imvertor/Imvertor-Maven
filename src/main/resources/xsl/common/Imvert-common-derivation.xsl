@@ -371,4 +371,20 @@
 		<xsl:sequence select="xs:integer(if (matches($position,'^\d+$')) then $position else '9999')"/>
 	</xsl:function>
 
+	<xsl:function name="imf:get-facet-pattern" as="xs:string?">
+		<xsl:param name="this" as="element()"/>
+		<xsl:value-of select="($this/imvert:pattern,imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-FORMALPATTERN'))[1]"/>
+	</xsl:function>
+	<xsl:function name="imf:get-facet-max-length" as="xs:string?">
+		<xsl:param name="this" as="element()"/>
+		<xsl:value-of select="($this/imvert:max-length,imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-LENGTH'))[1]"/>
+	</xsl:function>
+	<xsl:function name="imf:get-facet-total-digits" as="xs:string?">
+		<xsl:param name="this" as="element()"/>
+		<xsl:value-of select="($this/imvert:total-digits,imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-TOTALDIGITS'))[1]"/>
+	</xsl:function>
+	<xsl:function name="imf:get-facet-fraction-digits" as="xs:string?">
+		<xsl:param name="this" as="element()"/>
+		<xsl:value-of select="($this/imvert:fraction-digits,imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-FRACTIONDIGITS'))[1]"/>
+	</xsl:function>
 </xsl:stylesheet>
