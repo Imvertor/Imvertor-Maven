@@ -178,7 +178,7 @@
          <name>nativescalars</name>
          <arg>yes|no</arg>
          <tip>Yes if scalar types may be entered without reference to a UML datatype</tip>
-         <required>true</required>
+         <required>false</required>
       </cli-parm>
    </cli-parms>
    
