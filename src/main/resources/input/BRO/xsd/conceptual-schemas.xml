@@ -508,12 +508,24 @@
                   <cs:name>CV_Coverage</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
+			   <cs:Construct>                  
+                  <cs:name>CV_GridCell</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+			   <cs:Construct>                  
+                  <cs:name>CV_RangeSet</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+			   <cs:Construct>                  
+                  <cs:name>CV_DomainSet</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
               <cs:Construct>
                   <!--herkomst: ISO19123:2018 Coverages -->
                   <cs:name>Coverage</cs:name>
                   <cs:sentinel>false</cs:sentinel>
-               </cs:Construct>
-               <cs:Construct>
+               </cs:Construct>	
+			   <cs:Construct>
                   <cs:name>Identifier</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:catalogEntries>
