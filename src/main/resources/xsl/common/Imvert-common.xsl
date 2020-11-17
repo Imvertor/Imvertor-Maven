@@ -36,7 +36,7 @@
     xmlns:functx="http://www.functx.com"
     
     exclude-result-prefixes="#all"
-    version="2.0">
+    version="3.0">
       
     <xsl:include href="Imvert-common-parms.xsl"/>
     <xsl:include href="Imvert-common-extension.xsl"/>
@@ -1290,4 +1290,78 @@
         <xsl:value-of select="string-join($xpath-string,'')"/>
     </xsl:function>
     
+    <xsl:function name="imf:convert-to-atomic" as="item()?">
+        <xsl:param name="value" as="item()"/>
+        <xsl:param name="datatype" as="xs:string"/>
+        <xsl:param name="silent" as="xs:boolean"/>
+        <xsl:try>
+            <xsl:variable name="value" select="
+                if ($datatype = 'xs:integer') then xs:integer($value) else
+                if ($datatype = 'xs:string') then xs:string($value) else
+                if ($datatype = 'xs:boolean') then xs:boolean($value) else
+                if ($datatype = 'xs:untypedAtomic') then xs:untypedAtomic($value) else
+                if ($datatype = 'xs:dateTime') then xs:dateTime($value) else
+                if ($datatype = 'xs:dateTimeStamp') then xs:dateTimeStamp($value) else
+                if ($datatype = 'xs:date') then xs:date($value) else
+                if ($datatype = 'xs:time') then xs:time($value) else
+                if ($datatype = 'xs:duration') then xs:duration($value) else
+                if ($datatype = 'xs:yearMonthDuration') then xs:yearMonthDuration($value) else
+                if ($datatype = 'xs:dayTimeDuration') then xs:dayTimeDuration($value) else
+                if ($datatype = 'xs:float') then xs:float($value) else
+                if ($datatype = 'xs:double') then xs:double($value) else
+                if ($datatype = 'xs:decimal') then xs:decimal($value) else
+                if ($datatype = 'xs:nonPositiveInteger') then xs:nonPositiveInteger($value) else
+                if ($datatype = 'xs:negativeInteger') then xs:negativeInteger($value) else
+                if ($datatype = 'xs:long') then xs:long($value) else
+                if ($datatype = 'xs:int') then xs:int($value) else
+                if ($datatype = 'xs:short') then xs:short($value) else
+                if ($datatype = 'xs:byte') then xs:byte($value) else
+                if ($datatype = 'xs:nonNegativeInteger') then xs:nonNegativeInteger($value) else
+                if ($datatype = 'xs:unsignedLong') then xs:unsignedLong($value) else
+                if ($datatype = 'xs:unsignedInt') then xs:unsignedInt($value) else
+                if ($datatype = 'xs:unsignedShort') then xs:unsignedShort($value) else
+                if ($datatype = 'xs:unsignedByte') then xs:unsignedByte($value) else
+                if ($datatype = 'xs:positiveInteger') then xs:positiveInteger($value) else
+                if ($datatype = 'xs:gYearMonth') then xs:gYearMonth($value) else
+                if ($datatype = 'xs:gYear') then xs:gYear($value) else
+                if ($datatype = 'xs:gMonthDay') then xs:gMonthDay($value) else
+                if ($datatype = 'xs:gDay') then xs:gDay($value) else
+                if ($datatype = 'xs:gMonth') then xs:gMonth($value) else
+                if ($datatype = 'xs:normalizedString') then xs:normalizedString($value) else
+                if ($datatype = 'xs:token') then xs:token($value) else
+                if ($datatype = 'xs:language') then xs:language($value) else
+                if ($datatype = 'xs:NMTOKEN') then xs:NMTOKEN($value) else
+                if ($datatype = 'xs:Name') then xs:Name($value) else
+                if ($datatype = 'xs:NCName') then xs:NCName($value) else
+                if ($datatype = 'xs:ID') then xs:ID($value) else
+                if ($datatype = 'xs:IDREF') then xs:IDREF($value) else
+                if ($datatype = 'xs:ENTITY') then xs:ENTITY($value) else
+                if ($datatype = 'xs:base64Binary') then xs:base64Binary($value) else
+                if ($datatype = 'xs:hexBinary') then xs:hexBinary($value) else
+                if ($datatype = 'xs:anyURI') then xs:anyURI($value) else
+                if ($datatype = 'xs:QName') then xs:QName($value) else
+                ()
+            "/>
+            <xsl:choose>
+                <xsl:when test="empty($value)">
+                    <xsl:sequence select="imf:msg('FATAL','Invalid atomic value type [1]',$datatype)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:sequence select="$value"/>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:catch>
+                <xsl:if test="not($silent)">
+                    <xsl:sequence select="imf:msg('WARNING','Cannot convert [1] to [2]',(imf:string-group($value), $datatype))"/>
+                </xsl:if>
+                <!-- return empty sequence -->
+            </xsl:catch>
+        </xsl:try>
+    </xsl:function>
+   
+    <xsl:function name="imf:convert-to-atomic" as="item()?">
+        <xsl:param name="value" as="item()"/>
+        <xsl:param name="datatype" as="xs:string"/>
+        <xsl:sequence select="imf:convert-to-atomic($value,$datatype,false())"/>
+    </xsl:function>
 </xsl:stylesheet>

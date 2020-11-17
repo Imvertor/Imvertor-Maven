@@ -1411,27 +1411,47 @@
 
     <xsl:function name="imf:create-datatype-property" as="node()*">
         <xsl:param name="this" as="node()"/>
+        
         <xsl:variable name="p" select="imf:get-facet-pattern($this)"/>
-        <xsl:variable name="l" select="imf:get-facet-max-length($this)"/>
-        <xsl:variable name="t" select="imf:get-facet-total-digits($this)"/>
-        <xsl:variable name="f" select="imf:get-facet-fraction-digits($this)"/>
         <xsl:if test="$p">
             <xs:pattern value="{$p}"/>
         </xsl:if>
-        <xsl:if test="$l">
-            <xs:maxLength value="{$l}"/>
+        
+        <xsl:variable name="l" select="imf:get-facet-max-length($this)"/>
+        <xsl:variable name="min-l" select="imf:convert-to-atomic(substring-before($l,'..'),'xs:integer',true())"/>
+        <xsl:variable name="max-l" select="imf:convert-to-atomic(substring-after($l,'..'),'xs:integer',true())"/>
+        <xsl:variable name="pre-l" select="imf:convert-to-atomic(substring-before($l,','),'xs:integer',true())"/>
+        <xsl:variable name="post-l" select="imf:convert-to-atomic(substring-after($l,','),'xs:integer',true())"/>
+        <xsl:variable name="t" select="imf:convert-to-atomic(imf:get-facet-total-digits($this),'xs:integer',true())"/>
+        <xsl:variable name="f" select="imf:convert-to-atomic(imf:get-facet-fraction-digits($this),'xs:integer',true())"/>
+        
+        <xsl:if test="$min-l">
+            <xs:minLength value="{$min-l}"/>
         </xsl:if>
-        <xsl:if test="$t">
-            <xs:totalDigits value="{$t}"/>
+        <xsl:if test="$max-l">
+            <xs:maxLength value="{$max-l}"/>
         </xsl:if>
-        <xsl:if test="$f">
+        <xsl:if test="$l and not($min-l) and not($pre-l)">
+            <xs:length value="{$l}"/>
+        </xsl:if>
+        <xsl:if test="$post-l">
+            <xs:fractionDigits value="{$post-l}"/>
+        </xsl:if>
+        <xsl:if test="$pre-l">
+            <xs:totalDigits value="{$pre-l + $post-l}"/>
+        </xsl:if>
+        <xsl:if test="$f and not($min-l) and not($pre-l)">
             <xs:fractionDigits value="{$f}"/>
         </xsl:if>
+        <xsl:if test="$t and not($min-l) and not($pre-l)">
+            <xs:totalDigits value="{$t}"/>
+        </xsl:if>
+        
         <xsl:if test="empty(($p,$t)) and not($this/imvert:baretype='TXT')">
             <xsl:sequence select="imf:create-nonempty-constraint($this/imvert:type-name)"/>
         </xsl:if>
     </xsl:function>
-  
+    
     <xsl:template match="imvert:union">
         <xsl:variable name="membertypes" as="item()*">
             <!-- for each referenced datatype, determine the actual XSD equivalent. Produce a xs:union construct. -->

@@ -8,6 +8,15 @@
                       ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
    <cs:mappings>
       <cs:Mapping>
+         <cs:name>GML321</cs:name>
+         <cs:use>
+            <cs-ref:MapRef xlink:href="#GML321"/>
+            <cs-ref:MapRef xlink:href="#GMLSF"/>
+            <cs-ref:MapRef xlink:href="#CITYGML"/>
+            <cs-ref:MapRef xlink:href="#STUB"/>
+         </cs:use>
+      </cs:Mapping>
+      <cs:Mapping>
          <cs:name>NEN3610_GML321</cs:name>
          <cs:use>
             <cs-ref:MapRef xlink:href="#MIM11"/>
