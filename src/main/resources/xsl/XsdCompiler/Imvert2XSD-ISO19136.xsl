@@ -382,11 +382,6 @@
         
     </xsl:template>    
 
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]">
-        <xsl:sequence select="imf:create-xml-debug-comment(.,'A simple datatype')"/>
-        <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
-    </xsl:template>
-    
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]">
         <xs:simpleType name="{imvert:name}{$Type-suffix}">
             <xsl:sequence select="imf:get-annotation(.)"/>
@@ -409,15 +404,35 @@
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
         <xsl:sequence select="imf:create-xml-debug-comment(.,'Datatype is a union')"/>
         <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
-        <!--x
-        <xs:simpleType name="{imvert:name}{$Type-suffix}">
-            <xsl:sequence select="imf:get-annotation(.)"/>
-            <xsl:apply-templates select="imvert:union"/>
-        </xs:simpleType>
-        x-->
     </xsl:template>
     
-   <!--
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]">
+        <xsl:choose>
+            <xsl:when test="imvert:attributes/* or imvert:associations/*">
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'Datatype with data elements or associations')"/>
+                <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
+            </xsl:when>
+            <xsl:when test="imvert:union">
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'Datatype is a union')"/>
+                <xs:simpleType name="{imvert:name}">
+                    <xsl:sequence select="imf:get-annotation(.)"/>
+                    <xsl:apply-templates select="imvert:union"/>
+                </xs:simpleType>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- A type like zipcode -->
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'A simple datatype')"/>
+                <xs:simpleType name="{imvert:name}{$Type-suffix}">
+                    <xsl:sequence select="imf:get-annotation(.)"/>
+                    <xs:restriction base="xs:string">
+                        <xsl:sequence select="imf:create-datatype-property(.)"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <!--
        feature types, association classes and complex dataypes X occurring in UML class diagram are created as 3 global constructs: 
            
            element X, occurring as a top element, possibly referenced from within any complex type definition. 
@@ -531,7 +546,7 @@
                 </xsl:when>
                 <xsl:when test="imvert:stereotype/@id = ('stereotype-name-complextype') and exists($formal-pattern)"><!-- IM-325 -->
                     <simple>
-                        <xsl:sequence select="imf:create-xml-debug-comment(.,'A pattern simple type')"/>
+                        <xsl:sequence select="imf:create-xml-debug-comment(.,'A complex type with pattern')"/>
                         <xs:annotation>
                             <xs:documentation>This complex datatype is transformed to a simple type because a content pattern is defined.</xs:documentation>
                         </xs:annotation>
@@ -1081,6 +1096,21 @@
                     <xsl:sequence select="imf:get-annotation($this)"/>
                 </xs:element>
             </xsl:when>
+            <xsl:when test="$is-primitive and $is-restriction"> 
+                <!-- any xsd primitve type such as integer -->
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A restriction on a primitive type, after mapping')"/>
+                    <xsl:sequence select="imf:get-annotation($this)"/>
+                    <xs:simpleType>
+                        <xs:restriction base="{$this/imvert:type-name}">
+                            <xsl:sequence select="imf:create-datatype-property($this)"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+            </xsl:when>
             <xsl:when test="$is-primitive"> 
                 <!-- any xsd primitve type such as integer -->
                 <xs:element>
@@ -1230,7 +1260,7 @@
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xs:simpleContent>
-                            <xs:extension base="{$type}">
+                            <xs:extension base="{$type}{$Type-suffix}">
                                 <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                             </xs:extension>
                         </xs:simpleContent>
@@ -1437,7 +1467,7 @@
         <xsl:if test="$post-l">
             <xs:fractionDigits value="{$post-l}"/>
         </xsl:if>
-        <xsl:if test="$pre-l">
+        <xsl:if test="$pre-l and $post-l">
             <xs:totalDigits value="{$pre-l + $post-l}"/>
         </xsl:if>
         <xsl:if test="$f and not($min-l) and not($pre-l)">

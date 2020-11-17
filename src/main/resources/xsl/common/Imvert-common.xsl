@@ -1291,11 +1291,11 @@
     </xsl:function>
     
     <xsl:function name="imf:convert-to-atomic" as="item()?">
-        <xsl:param name="value" as="item()"/>
+        <xsl:param name="value" as="item()?"/>
         <xsl:param name="datatype" as="xs:string"/>
         <xsl:param name="silent" as="xs:boolean"/>
         <xsl:try>
-            <xsl:variable name="value" select="
+            <xsl:variable name="atomic-value" select="
                 if ($datatype = 'xs:integer') then xs:integer($value) else
                 if ($datatype = 'xs:string') then xs:string($value) else
                 if ($datatype = 'xs:boolean') then xs:boolean($value) else
@@ -1343,11 +1343,17 @@
                 ()
             "/>
             <xsl:choose>
-                <xsl:when test="empty($value)">
+                <xsl:when test="$value = '' and $datatype = 'xs:string'">
+                    <xsl:sequence select="$value"/>
+                </xsl:when>
+                <xsl:when test="$value = '' or empty($value)">
+                    <!-- empty or empty-string item returns empty atomic -->
+                </xsl:when>
+                <xsl:when test="empty($atomic-value)">
                     <xsl:sequence select="imf:msg('FATAL','Invalid atomic value type [1]',$datatype)"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:sequence select="$value"/>
+                    <xsl:sequence select="$atomic-value"/>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:catch>
@@ -1360,7 +1366,7 @@
     </xsl:function>
    
     <xsl:function name="imf:convert-to-atomic" as="item()?">
-        <xsl:param name="value" as="item()"/>
+        <xsl:param name="value" as="item()?"/>
         <xsl:param name="datatype" as="xs:string"/>
         <xsl:sequence select="imf:convert-to-atomic($value,$datatype,false())"/>
     </xsl:function>
