@@ -39,6 +39,7 @@
                 <stereo minmax="0..*">stereotype-name-objecttype</stereo>
                 <stereo minmax="0..*">stereotype-name-attribute</stereo>
                 <stereo minmax="0..*">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..*">stereotype-name-attributegroup</stereo>
                 <stereo minmax="0..*">stereotype-name-composite</stereo>
                 <stereo minmax="0..*">stereotype-name-relatieklasse</stereo>
                 <stereo minmax="0..*">stereotype-name-referentielijst</stereo>
@@ -71,6 +72,11 @@
             <desc lang="nl">Indicatie dat een attribuutsoort het objecttype waar het bijhoort classificeert in (sub)typen.</desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-SOURCE">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo><!-- TODO moet eigenlijk verwijderd worden, ook in 1.0 en misschien zelfs in SBR? -->
             </stereotypes>
         </tv>
         <?x

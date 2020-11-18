@@ -35,7 +35,7 @@
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-objecttype</stereo>
                 <stereo minmax="1..1">stereotype-name-complextype</stereo>
-                <stereo minmax="1..1">stereotype-name-data-element</stereo>
+                <!-- <stereo minmax="1..1">stereotype-name-data-element</stereo> zie https://github.com/Imvertor/Imvertor-Maven/issues/141 -->
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
                 <stereo minmax="0..1">stereotype-name-composite</stereo><!-- TODO remove? -->

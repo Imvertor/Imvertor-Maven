@@ -90,6 +90,8 @@
                             <TaggedValues>
                                 <xsl:for-each select="$tagged-values/tv[stereotypes/stereo = $name and not(@origin='system')]">
                                     <xsl:sort select="."/>
+                                    
+                                    <xsl:variable name="tv-id" select="@id"/>
                                     <xsl:variable name="tv-name" select="name/@original"/>
                                     <xsl:variable name="tv-values" select="string-join(declared-values/value/@original,',')"/>
                                     <xsl:variable name="tv-type" select="if (exists(declared-values/value)) then 'enumeration' else ()"/>
@@ -100,8 +102,20 @@
                                     <xsl:variable name="tv-default-set" select="stereotypes/stereo/@default"/>
                                     <xsl:variable name="tv-default" select="($tv-default-set,$tv-default-enum)[1]"/>
                                     
-                                    <Tag name="{$tv-name}" type="{$tv-type}" description="{$tv-note}" unit="{$tv-unit}" values="{$tv-values}" default="{$tv-default}"/>
-
+                                    <!-- https://github.com/Imvertor/Imvertor-Maven/issues/141 
+                                         Neem de tagged value sop als die NIET in de notes field is opgenomen.
+                                         Ofwel, alleen als de notes field het niet overneemt van de EA tagged values editor.
+                                    -->
+                                    <xsl:variable name="tv-notes-exists" select="$configuration-notesrules-file/notes-rule/section/@tagged-value = $tv-id"/>
+                                    
+                                    <xsl:choose>
+                                        <xsl:when test="not($tv-notes-exists)">
+                                            <Tag name="{$tv-name}" type="{$tv-type}" description="{$tv-note}" unit="{$tv-unit}" values="{$tv-values}" default="{$tv-default}"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:comment>Tagged value already occurs in Notes field: <xsl:value-of select="$tv-name"/></xsl:comment>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </xsl:for-each>
                             </TaggedValues>
                         </Stereotype>

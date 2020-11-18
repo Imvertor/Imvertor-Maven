@@ -153,14 +153,13 @@
         <tv norm="space" id="CFG-TV-VOIDABLE">
             <name lang="nl">Mogelijk geen waarde</name>
             <name lang="en">Voidable</name>
-            <desc lang="nl">TODO</desc>
+            <desc lang="nl">Het model element heeft mogelijk géén waarde, bijvoorbeeld omdat de waarde nog niet beschikbaar is of niet mag worden vrijgegeven.</desc>
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
-                <stereo minmax="0..1">stereotype-name-data-element</stereo>
                 <stereo minmax="0..1">stereotype-name-voidable</stereo>
             </stereotypes>
             <declared-values lang="nl">
