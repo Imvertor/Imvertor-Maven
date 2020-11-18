@@ -52,11 +52,13 @@
             <xsl:variable name="name" select="imvert:name"/>
             <xsl:variable name="constructs" select="$conceptual-schema-mapping//cs:Construct[cs:name = $name]" as="element(cs:Construct)*"/>
             <xsl:variable name="identified-construct" select="$constructs[cs:managedID = $id][1]"/><!-- een construct in de conceptual schemas -->
-            <xsl:variable name="referencing-constructs" select="$document-classes/descendant-or-self::*[imvert:type-id = $id]/ancestor::*[imvert:id][1]"/><!-- construct in dit document van dat type -->
+            <xsl:variable name="referencing-constructs" select="$document-classes/descendant-or-self::*[imvert:type-id = $id]/ancestor-or-self::*[imvert:id][1]"/><!-- construct in dit document van dat type -->
             <xsl:variable name="construct" as="element(cs:Construct)?">
                 <xsl:choose>
                     <xsl:when test="$constructs[2] and empty($identified-construct)">
-                        <xsl:sequence select="imf:msg($referencing-constructs[1],'ERROR','Reference to [1] in outside model is not identified, but should be, as duplicates occur using mapping [2]',(imf:string-group($name),$conceptual-schema-mapping-name))"/>
+                        <xsl:for-each select="$referencing-constructs">
+                            <xsl:sequence select="imf:msg(.,'ERROR','Reference to [1] in outside model is not identified, but should be, as duplicates occur using mapping [2]',(imf:string-group($name),$conceptual-schema-mapping-name))"/>
+                        </xsl:for-each>
                     </xsl:when>
                     <xsl:when test="$constructs[2]">
                         <xsl:sequence select="$identified-construct"/>
@@ -65,7 +67,9 @@
                         <xsl:sequence select="$constructs"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:msg($referencing-constructs[1],'ERROR','Reference to [1] in outside model could not be resolved when using mapping [2]',(imf:string-group($name),$conceptual-schema-mapping-name))"/>
+                        <xsl:for-each select="$referencing-constructs">
+                            <xsl:sequence select="imf:msg(.,'ERROR','Reference to [1] in outside model could not be resolved when using mapping [2]',(imf:string-group($name),$conceptual-schema-mapping-name))"/>
+                        </xsl:for-each>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
