@@ -676,7 +676,8 @@
             <cs:id>GML322PROFILE</cs:id>
             <cs:namespace>http://www.opengis.net/gml/3.2</cs:namespace>
             <cs:desc>Kadaster profiel van GML 3.2.2. Let op, profielen kunnen ook dynamisch worden gegenereerd voor specifieke toepassingen.</cs:desc>
-            <cs:location>http://schemas.opengis.net/gml/3.2/GmlProfile.xsd</cs:location>
+            <cs:location>http://schemas.opengis.net/gml/3.2/[appinfo/gml-profile-name-encoded].xsd</cs:location>
+            <!-- de locatie is een standaard naam kadaster-gml of een model specifieke naam zoals bakstenen-gml, afhanklijk van de parameter cli/creategmlprofile yes/no -->
             <cs:phase>3</cs:phase>
             <cs:version>3.2.2</cs:version>
             <cs:release>20200728</cs:release>

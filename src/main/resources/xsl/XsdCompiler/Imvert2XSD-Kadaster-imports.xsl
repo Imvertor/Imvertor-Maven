@@ -39,8 +39,8 @@
     <xsl:variable name="schema-defs" select="/imvert:schemas/imvert:schema"/>
   
     <xsl:template match="/imvert:schemas">
-        
-       <!-- 
+       
+        <!-- 
         each schema has entry in the form: 
         <imvert:schema>
             <imvert:name original="Adres">Adres</imvert:name>
@@ -50,7 +50,11 @@
             <imvert:xsd-path>file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/default/app/xsd/PersoonZoekenEnOpvoeren/</imvert:xsd-path>
             <imvert:result-file-fullpath>file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/default/app/xsd/PersoonZoekenEnOpvoeren/CDMKAD-adres/v20150201/PersoonZoekenEnOpvoeren_Adres_v1_8_0.xsd</imvert:result-file-fullpath>
         </imvert:schema>
-      -->
+        -->
+        
+        <!-- eerst profile naam instellen -->
+        <xsl:sequence select="imf:set-xparm('appinfo/gml-profile-name-encoded',encode-for-uri(imf:get-xparm('appinfo/gml-profile-name')))"/>
+        
         <imvert:schemas>
             <xsl:apply-templates select="imvert:schema"/>
         </imvert:schemas>  
@@ -147,7 +151,7 @@
                     </xsl:when>
                     <xsl:when test="exists($schema-subpath)">
                         <!-- schema found. This is a generated schema. -->
-                        <xs:import namespace="{$schema-namespace}" schemaLocation="{$steps-back}{$schema-subpath}"/>
+                        <xs:import namespace="{$schema-namespace}" schemaLocation="{$steps-back}{imf:merge-parms($schema-subpath)}"/>
                         <namespace prefix="{$prefix}" uri="{$schema-namespace}"/> 
                     </xsl:when>
                     <xsl:otherwise>
