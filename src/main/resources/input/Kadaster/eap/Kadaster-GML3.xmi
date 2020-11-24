@@ -1,0 +1,969 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2020-11-24 16:02:55">
+	<XMI.header>
+		<XMI.documentation>
+			<XMI.exporter>Enterprise Architect</XMI.exporter>
+			<XMI.exporterVersion>2.5</XMI.exporterVersion>
+		</XMI.documentation>
+	</XMI.header>
+	<XMI.content>
+		<UML:Model name="EA Model" xmi.id="MX_EAID_47DC08F9_91C9_4311_B5B9_2E07242A9E81">
+			<UML:Namespace.ownedElement>
+				<UML:Class name="EARootClass" xmi.id="EAID_11111111_5487_4080_A7F4_41526CB0AA00" isRoot="true" isLeaf="false" isAbstract="false"/>
+				<UML:Package name="GML3" xmi.id="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+					<UML:ModelElement.stereotype>
+						<UML:Stereotype xmi.idref="EAID_F8D6A9E5_78C7_4d96_833B_C6CB3C402FA0"/>
+					</UML:ModelElement.stereotype>
+					<UML:ModelElement.taggedValue>
+						<UML:TaggedValue tag="documentation" value="Dit package bevat een aantal elementen uit het ISO19107 Spatial Schema."/>
+						<UML:TaggedValue tag="parent" value="EAPK_64057530_E6DF_4fa4_818F_D56C8BBF6C26"/>
+						<UML:TaggedValue tag="created" value="2010-01-18 00:00:00"/>
+						<UML:TaggedValue tag="modified" value="2018-06-05 12:06:55"/>
+						<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+						<UML:TaggedValue tag="lastloaddate" value="2016-03-22 08:10:03"/>
+						<UML:TaggedValue tag="lastsavedate" value="2012-04-29 21:32:09"/>
+						<UML:TaggedValue tag="version" value="1.0.0"/>
+						<UML:TaggedValue tag="isprotected" value="FALSE"/>
+						<UML:TaggedValue tag="usedtd" value="FALSE"/>
+						<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
+						<UML:TaggedValue tag="logxml" value="FALSE"/>
+						<UML:TaggedValue tag="tpos" value="3"/>
+						<UML:TaggedValue tag="packageFlags" value="Recurse=1;CRC=0;"/>
+						<UML:TaggedValue tag="batchsave" value="0"/>
+						<UML:TaggedValue tag="batchload" value="0"/>
+						<UML:TaggedValue tag="phase" value="3"/>
+						<UML:TaggedValue tag="author" value="Wilko Quak"/>
+						<UML:TaggedValue tag="alias" value="http://www.kadaster.nl/conceptual-schemas/ISO19107"/>
+						<UML:TaggedValue tag="complexity" value="1"/>
+						<UML:TaggedValue tag="stereotype" value="Extern"/>
+						<UML:TaggedValue tag="ea_stype" value="Public"/>
+						<UML:TaggedValue tag="tpos" value="3"/>
+						<UML:TaggedValue tag="gentype" value="Java"/>
+						<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={DE497075-054D-41a7-9549-5843E1DB0AB5}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=Extern;GUID={F8D6A9E5-78C7-4d96-833B-C6CB3C402FA0};FQName=NEN3610 Grouping (NL)::Extern;@ENDSTEREO;$DES;$CLT={47DC08F9-91C9-4311-B5B9-2E07242A9E81}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+					</UML:ModelElement.taggedValue>
+					<UML:Namespace.ownedElement>
+						<UML:Class name="GM_AbstractFeatureCollection" xmi.id="EAID_019183C0_051A_4f1a_B9F9_95274D6FFDC2" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="true" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="documentation" value="Representatie van &lt;font color=&quot;#993300&quot;&gt;AbstractFeatureCollection&lt;/font&gt;."/>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2012-05-21 15:38:14"/>
+								<UML:TaggedValue tag="date_modified" value="2013-09-17 15:00:32"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Arjan"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="status" value="Proposed"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="2"/>
+								<UML:TaggedValue tag="ea_localid" value="2769"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={75DDF330-1CF0-48cb-A1D0-72398CFFD73A}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={37EA0A44-9BB8-47e6-955B-E812216C492D};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={019183C0-051A-4f1a-B9F9-95274D6FFDC2}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_Point" xmi.id="EAID_079B935A_189C_456e_B4E0_4C144BFBB6D3" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 14:52:00"/>
+								<UML:TaggedValue tag="date_modified" value="2011-03-15 16:51:27"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="alias" value="Punt"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="17"/>
+								<UML:TaggedValue tag="ea_localid" value="2770"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="$ea_attsclassified" value="{EA95D2F3-72B2-429a-ACDC-4505AF41FC27},{753A0773-0B05-4945-9A2A-C661685DB42A},{05A8F619-80EE-4a9e-AF04-8C90B2C2F995},{E6F9E69D-786B-4a29-9393-B7D50EF4D9C7},{27408E58-0667-4220-B314-77A758CDAE30},{6D688290-A5B4-4535-B0BA-89EB6C765BF2}"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={DAB41243-3819-4c44-8375-2A9BEA44DD4D}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={079B935A-189C-456e-B4E0-4C144BFBB6D3}$CLT;$ENDXREF;$XREFPROP=$XID={EB0EBA04-1BA8-46c9-8C96-0735EBB3BC80}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={079B935A-189C-456e-B4E0-4C144BFBB6D3}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_Polygon" xmi.id="EAID_0A24E3A4_A056_41f5_90FD_C21F8E1C4E43" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 14:50:07"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 14:02:32"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="18"/>
+								<UML:TaggedValue tag="ea_localid" value="2771"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={6C567A28-7D2E-4a9c-8BC3-309E2CF80CB4}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={0A24E3A4-A056-41f5-90FD-C21F8E1C4E43}$CLT;$ENDXREF;$XREFPROP=$XID={AC05BA85-6902-4354-AC2D-0E225B75EA30}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={0A24E3A4-A056-41f5-90FD-C21F8E1C4E43}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_AbstractFeature" xmi.id="EAID_12A2F94C_66D6_4ff2_84A4_042A18ADB694" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="true" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="documentation" value="Representatie van AbstractFeature."/>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2012-05-21 15:38:14"/>
+								<UML:TaggedValue tag="date_modified" value="2013-09-17 15:00:32"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Arjan"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="status" value="Proposed"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="1"/>
+								<UML:TaggedValue tag="ea_localid" value="2772"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={1415A2FA-C8C9-441d-8A5B-9B324667C7A5}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={37EA0A44-9BB8-47e6-955B-E812216C492D};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={12A2F94C-66D6-4ff2-84A4-042A18ADB694}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="CharacterString" xmi.id="EAID_1B9E5020_B850_43ec_8FCA_ED4846D48D17" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 15:14:59"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 16:16:29"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="22"/>
+								<UML:TaggedValue tag="ea_localid" value="2773"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={951D3100-D035-425f-8D5D-4869D8A1AC5E}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;@STEREO;Name=dataType;GUID={D01027BA-FBF9-4f46-9120-6697938088AB};FQName=NEN3610::dataType;@ENDSTEREO;$DES;$CLT={1B9E5020-B850-43ec-8FCA-ED4846D48D17}$CLT;$ENDXREF;$XREFPROP=$XID={D0D77CB6-3A0B-41e1-B5E4-9B28056D0603}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={1B9E5020-B850-43ec-8FCA-ED4846D48D17}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="Time" xmi.id="EAID_1C9DA90C_27BE_4ad6_A70F_3262B18CA5E5" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 15:20:13"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 16:15:20"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="28"/>
+								<UML:TaggedValue tag="ea_localid" value="2774"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={87B85F09-8382-4e77-8B0E-0C3FA0611FBF}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;@STEREO;Name=dataType;GUID={D01027BA-FBF9-4f46-9120-6697938088AB};FQName=NEN3610::dataType;@ENDSTEREO;$DES;$CLT={1C9DA90C-27BE-4ad6-A70F-3262B18CA5E5}$CLT;$ENDXREF;$XREFPROP=$XID={B82785BF-A692-4fd5-A8F0-7971DD43873E}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={1C9DA90C-27BE-4ad6-A70F-3262B18CA5E5}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="URI" xmi.id="EAID_2BBCE7C1_A285_4aaa_90D7_C595BE61CCE9" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 15:16:41"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 16:15:30"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="29"/>
+								<UML:TaggedValue tag="ea_localid" value="2775"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={F02781F8-E32A-4ac1-A0ED-58048C6B06CF}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;@STEREO;Name=dataType;GUID={D01027BA-FBF9-4f46-9120-6697938088AB};FQName=NEN3610::dataType;@ENDSTEREO;$DES;$CLT={2BBCE7C1-A285-4aaa-90D7-C595BE61CCE9}$CLT;$ENDXREF;$XREFPROP=$XID={EA9DE251-39C8-4416-A8EA-681EB14277B9}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={2BBCE7C1-A285-4aaa-90D7-C595BE61CCE9}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_AbstractGMLType" xmi.id="EAID_3A6D7B77_F012_43f4_907C_BFEFEA1258A4" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="true" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="documentation" value="Representatie van &lt;font color=&quot;#993300&quot;&gt;AbstractGMLType&lt;/font&gt;."/>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2012-05-21 15:38:14"/>
+								<UML:TaggedValue tag="date_modified" value="2013-09-17 15:00:32"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Arjan"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="status" value="Proposed"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="8"/>
+								<UML:TaggedValue tag="ea_localid" value="2776"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={85C7935C-38C0-4a7b-8395-942D54DD1887}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={37EA0A44-9BB8-47e6-955B-E812216C492D};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={3A6D7B77-F012-43f4-907C-BFEFEA1258A4}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="Boolean" xmi.id="EAID_58A2E423_E698_4ff8_8547_6094251B98E9" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 15:16:32"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 16:16:29"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="20"/>
+								<UML:TaggedValue tag="ea_localid" value="2777"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={DA14593B-C936-40ad-ACBA-493D6EB45B7A}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;@STEREO;Name=dataType;GUID={D01027BA-FBF9-4f46-9120-6697938088AB};FQName=NEN3610::dataType;@ENDSTEREO;$DES;$CLT={58A2E423-E698-4ff8-8547-6094251B98E9}$CLT;$ENDXREF;$XREFPROP=$XID={16056ECA-2A8D-49cd-8364-19BF31AE64E8}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={58A2E423-E698-4ff8-8547-6094251B98E9}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="Real" xmi.id="EAID_5A1BE0DC_06ED_4e6d_BA14_77C538FC87D3" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 15:16:16"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 16:15:09"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="27"/>
+								<UML:TaggedValue tag="ea_localid" value="2778"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={E18A44F2-B4C7-4792-953E-9D212A4A31A9}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;@STEREO;Name=dataType;GUID={D01027BA-FBF9-4f46-9120-6697938088AB};FQName=NEN3610::dataType;@ENDSTEREO;$DES;$CLT={5A1BE0DC-06ED-4e6d-BA14-77C538FC87D3}$CLT;$ENDXREF;$XREFPROP=$XID={F47D9C86-C69E-464f-BE63-2DCC39A98D1A}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={5A1BE0DC-06ED-4e6d-BA14-77C538FC87D3}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_MultiCurve" xmi.id="EAID_7A20EDB5_0429_41f5_954B_4CF6563B5F7E" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 14:53:15"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 14:02:32"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="alias" value="Multilijn"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="13"/>
+								<UML:TaggedValue tag="ea_localid" value="2779"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="$ea_attsclassified" value="{2A6BEEE0-F32D-4731-9847-A23395765602}"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={41FCB794-C98A-40a9-A6EE-B91A3499FC28}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={7A20EDB5-0429-41f5-954B-4CF6563B5F7E}$CLT;$ENDXREF;$XREFPROP=$XID={598B99B4-06A0-4abf-BA44-D30189199846}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={7A20EDB5-0429-41f5-954B-4CF6563B5F7E}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_MultiSurface" xmi.id="EAID_88104FC1_EFC6_4317_84B1_F9D7C6B9B47B" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 14:53:27"/>
+								<UML:TaggedValue tag="date_modified" value="2011-03-15 16:51:19"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="alias" value="Multivlak"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="16"/>
+								<UML:TaggedValue tag="ea_localid" value="2780"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="$ea_attsclassified" value="{6AF6DFBE-3A49-4ab8-80D7-956C222059FC}"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={3D2634C4-5AF0-460e-8C69-E2B77A0BBE8D}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={88104FC1-EFC6-4317-84B1-F9D7C6B9B47B}$CLT;$ENDXREF;$XREFPROP=$XID={171B45BD-43D9-48fe-BCB8-DE84CDBB30EC}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={88104FC1-EFC6-4317-84B1-F9D7C6B9B47B}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_MultiGeometry" xmi.id="EAID_8A1056A0_0F3E_4608_A131_6E6B2CE53459" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 14:53:37"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 14:05:13"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="14"/>
+								<UML:TaggedValue tag="ea_localid" value="2781"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={4744EC08-5FA5-4806-B264-A404F7918029}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={8A1056A0-0F3E-4608-A131-6E6B2CE53459}$CLT;$ENDXREF;$XREFPROP=$XID={9FFFDEAF-4B46-49b4-B026-BCF7C1810A1B}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={8A1056A0-0F3E-4608-A131-6E6B2CE53459}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="DateTime" xmi.id="EAID_9D6D477E_BAEF_43c2_93F6_9665E28A2781" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 15:20:21"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 16:16:28"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="24"/>
+								<UML:TaggedValue tag="ea_localid" value="2782"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={479F633E-B9F7-4b16-8E87-311803F5D9C3}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;@STEREO;Name=dataType;GUID={D01027BA-FBF9-4f46-9120-6697938088AB};FQName=NEN3610::dataType;@ENDSTEREO;$DES;$CLT={9D6D477E-BAEF-43c2-93F6-9665E28A2781}$CLT;$ENDXREF;$XREFPROP=$XID={F88433AE-7435-44b9-8AEF-EDDE57C0AF59}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={9D6D477E-BAEF-43c2-93F6-9665E28A2781}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="Binary" xmi.id="EAID_A0FED256_BFE9_407f_B690_2097B7ED33C2" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 15:16:22"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 16:16:29"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="21"/>
+								<UML:TaggedValue tag="ea_localid" value="2783"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={EE922DEC-6F12-4ff1-9757-B25893BF4F2B}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;@STEREO;Name=dataType;GUID={D01027BA-FBF9-4f46-9120-6697938088AB};FQName=NEN3610::dataType;@ENDSTEREO;$DES;$CLT={A0FED256-BFE9-407f-B690-2097B7ED33C2}$CLT;$ENDXREF;$XREFPROP=$XID={A8703B92-EF28-4943-80A9-821DBF82AF7B}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={A0FED256-BFE9-407f-B690-2097B7ED33C2}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_LineString" xmi.id="EAID_AE6EB1BF_E3B0_4b8e_AD19_3F4CE5142242" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 15:03:53"/>
+								<UML:TaggedValue tag="date_modified" value="2010-01-20 15:04:09"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="12"/>
+								<UML:TaggedValue tag="ea_localid" value="2784"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={7CB83FC8-4920-4e2a-AC40-5E48440D99E0}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={AE6EB1BF-E3B0-4b8e-AD19-3F4CE5142242}$CLT;$ENDXREF;$XREFPROP=$XID={3266A6D3-F963-4c0b-A261-EFC0E8F56A22}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={AE6EB1BF-E3B0-4b8e-AD19-3F4CE5142242}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_MultiPoint" xmi.id="EAID_B2682035_9BBD_4840_8730_162283535E51" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 14:53:04"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 14:02:32"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="alias" value="Multipunt"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="15"/>
+								<UML:TaggedValue tag="ea_localid" value="2785"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={46C6199A-8AA4-44c1-81A1-042A916DD45E}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={B2682035-9BBD-4840-8730-162283535E51}$CLT;$ENDXREF;$XREFPROP=$XID={626C0173-93C5-41fb-A214-C0DC958F803A}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={B2682035-9BBD-4840-8730-162283535E51}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_Curve" xmi.id="EAID_B66F6A35_46FC_49f1_B064_059E929060EB" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 14:52:21"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 14:36:27"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="alias" value="Lijn"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="10"/>
+								<UML:TaggedValue tag="ea_localid" value="2786"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="$ea_attsclassified" value="{A463C5DA-A561-44bd-BCF7-0FB1943BBE03},{EE95EC7A-10E5-4c95-B514-E9AA76B82846},{7B0DAA6E-61F9-48d6-8431-447799051A04},{324FA9E6-B71B-436f-BD1F-8241A3C80911}"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={B290C9A9-CC19-41e4-95AB-C08BECF7A270}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={B66F6A35-46FC-49f1-B064-059E929060EB}$CLT;$ENDXREF;$XREFPROP=$XID={2C7E7153-1A3B-49ea-B096-866411B6A64E}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={B66F6A35-46FC-49f1-B064-059E929060EB}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_AbstractFeatureType" xmi.id="EAID_C0E778D3_830A_4221_BCC9_DF9E4AF21368" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="true" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="documentation" value="Representatie van AbstractFeatureType, de gemeenschappelijke superklasse van alle Geo-objecten."/>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2012-05-21 15:38:14"/>
+								<UML:TaggedValue tag="date_modified" value="2012-05-21 15:39:06"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Arjan"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="status" value="Proposed"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="6"/>
+								<UML:TaggedValue tag="ea_localid" value="2787"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={D0EC1166-C7FA-48fd-8113-626F87AF43AE}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={37EA0A44-9BB8-47e6-955B-E812216C492D};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={C0E778D3-830A-4221-BCC9-DF9E4AF21368}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_Geometry" xmi.id="EAID_C6B192FD_631B_48b1_AAA7_6B12160B4B7D" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 14:52:55"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 14:02:32"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="11"/>
+								<UML:TaggedValue tag="ea_localid" value="2788"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={F068B571-204A-4046-BAD1-6DCABE8AE2ED}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={C6B192FD-631B-48b1-AAA7-6B12160B4B7D}$CLT;$ENDXREF;$XREFPROP=$XID={A56E219B-6564-499b-9A00-7AA3ADE417D0}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={C6B192FD-631B-48b1-AAA7-6B12160B4B7D}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_Surface" xmi.id="EAID_D22BBC0B_89D3_44c3_8377_A006F4CCFC9A" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 14:52:41"/>
+								<UML:TaggedValue tag="date_modified" value="2011-03-15 16:51:44"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="alias" value="Vlak"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="19"/>
+								<UML:TaggedValue tag="ea_localid" value="2789"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="$ea_attsclassified" value="{D83C15F1-5F0C-456a-B94F-BF0557DAB8A6},{9459F513-6A13-492b-A95F-A9C42747DEE1},{1E1D7127-6BFF-440b-8DCE-B5E551B0433F},{E00E3AC1-25D0-4ccb-9648-23C21FD0D6CD},{1FBC26A8-DED5-4480-93B4-A618B900A03D},{B136A54A-2710-4a30-85F9-C5B1980C7E05},{618CC9AF-E1E2-4de0-B2BA-D7ECBD2DE652},{A09B0F98-2911-4deb-8FEC-F8AEED98FDC2},{2368B82D-6086-4d02-A492-F1DA19A00FB2},{DE113E6A-DA08-4e8e-BF02-C2F758638CF1},{509B481A-29A5-4a86-AC1C-676000880DFE},{E072C658-3CFD-4994-9ADF-6D0E6ACEA50E},{A0C0BC3B-249A-4b37-B856-669FEC3AE7AB}"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={310EA9EF-3D1A-4eb4-88FD-D5E48FA96E8B}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={D22BBC0B-89D3-44c3-8377-A006F4CCFC9A}$CLT;$ENDXREF;$XREFPROP=$XID={966A129C-1D42-4934-B5DF-0CBAF5B94527}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={D22BBC0B-89D3-44c3-8377-A006F4CCFC9A}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="Measure" xmi.id="EAID_D751E946_6024_480e_82F6_ACF8D39FA108" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 15:29:46"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 16:14:37"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="26"/>
+								<UML:TaggedValue tag="ea_localid" value="2790"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={735406E9-AF9E-4174-8241-5788EEB511B6}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;@STEREO;Name=dataType;GUID={D01027BA-FBF9-4f46-9120-6697938088AB};FQName=NEN3610::dataType;@ENDSTEREO;$DES;$CLT={D751E946-6024-480e-82F6-ACF8D39FA108}$CLT;$ENDXREF;$XREFPROP=$XID={5C24C0DE-6A0B-41e3-8F00-22DA8D139E8C}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={D751E946-6024-480e-82F6-ACF8D39FA108}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_ArcString" xmi.id="EAID_D86339CE_C7AC_4684_B50E_36A650984BF3" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 14:52:00"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 16:12:11"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="alias" value="Boog"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="9"/>
+								<UML:TaggedValue tag="ea_localid" value="2791"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={570CB656-A9A1-495f-95F4-561482CC37A2}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={D86339CE-C7AC-4684-B50E-36A650984BF3}$CLT;$ENDXREF;$XREFPROP=$XID={BA3899D1-6D55-4d1e-9EC1-8722429692E3}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={D86339CE-C7AC-4684-B50E-36A650984BF3}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_AbstractFeatureMemberType" xmi.id="EAID_DDDD54F4_18D9_42b8_AF44_A73DCC924E10" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="true" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="documentation" value="Representatie van &lt;font color=&quot;#993300&quot;&gt;AbstractFeatureMemberType&lt;/font&gt;."/>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2012-05-21 15:38:14"/>
+								<UML:TaggedValue tag="date_modified" value="2013-09-17 15:00:32"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Arjan"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="status" value="Proposed"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="5"/>
+								<UML:TaggedValue tag="ea_localid" value="2792"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={C722AC7A-6333-459a-82AD-8A3ABA44F42B}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={37EA0A44-9BB8-47e6-955B-E812216C492D};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={DDDD54F4-18D9-42b8-AF44-A73DCC924E10}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_AbstractFeatureMember" xmi.id="EAID_E7F2AC55_6C60_44cd_A739_7D1D0AED81E4" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="true" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="documentation" value="Representatie van &lt;font color=&quot;#993300&quot;&gt;AbstractFeatureMember&lt;/font&gt;."/>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2012-05-21 15:38:14"/>
+								<UML:TaggedValue tag="date_modified" value="2013-09-17 15:00:32"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Arjan"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="status" value="Proposed"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="4"/>
+								<UML:TaggedValue tag="ea_localid" value="2793"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={197721F7-1BF2-427a-9552-DB138B89AC26}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={37EA0A44-9BB8-47e6-955B-E812216C492D};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={E7F2AC55-6C60-44cd-A739-7D1D0AED81E4}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_AbstractGML" xmi.id="EAID_E929B2F9_3712_44ef_99ED_B33D0DD0F2D6" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="true" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="documentation" value="Representatie van &lt;font color=&quot;#993300&quot;&gt;AbstractGML&lt;/font&gt;."/>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2012-05-21 15:38:14"/>
+								<UML:TaggedValue tag="date_modified" value="2013-09-17 14:56:46"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Arjan"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="status" value="Proposed"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="7"/>
+								<UML:TaggedValue tag="ea_localid" value="2794"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={3072B563-5D88-4350-AA39-F14FD3516A8A}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={37EA0A44-9BB8-47e6-955B-E812216C492D};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={E929B2F9-3712-44ef-99ED-B33D0DD0F2D6}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="GM_AbstractFeatureCollectionType" xmi.id="EAID_EB13DB41_59C5_4ecc_8C58_1B481129B911" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="true" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="documentation" value="Representatie van &lt;font color=&quot;#993300&quot;&gt;AbstractFeatureCollectionType&lt;/font&gt;."/>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2012-05-21 15:38:14"/>
+								<UML:TaggedValue tag="date_modified" value="2013-09-17 15:00:32"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Arjan"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="status" value="Proposed"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="3"/>
+								<UML:TaggedValue tag="ea_localid" value="2795"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={9D72F47D-0719-4cba-8998-EF8EEB8E5092}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={37EA0A44-9BB8-47e6-955B-E812216C492D};FQName=NEN3610::interface;@ENDSTEREO;$DES;$CLT={EB13DB41-59C5-4ecc-8C58-1B481129B911}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="Integer" xmi.id="EAID_FF5D7EEE_C221_4ae9_8109_6FEA94C22417" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 15:15:32"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 16:14:58"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="25"/>
+								<UML:TaggedValue tag="ea_localid" value="2796"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={1B07859D-4566-42c8-B09F-07B392DAE35E}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;@STEREO;Name=dataType;GUID={D01027BA-FBF9-4f46-9120-6697938088AB};FQName=NEN3610::dataType;@ENDSTEREO;$DES;$CLT={FF5D7EEE-C221-4ae9-8109-6FEA94C22417}$CLT;$ENDXREF;$XREFPROP=$XID={BEE69ABD-8146-425a-B2A7-4733690C75DC}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={FF5D7EEE-C221-4ae9-8109-6FEA94C22417}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Class name="Date" xmi.id="EAID_FFCDDF3D_A948_4360_860F_28F40114D932" visibility="public" namespace="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="interface"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="isSpecification" value="false"/>
+								<UML:TaggedValue tag="ea_stype" value="Class"/>
+								<UML:TaggedValue tag="ea_ntype" value="0"/>
+								<UML:TaggedValue tag="version" value="1.0"/>
+								<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+								<UML:TaggedValue tag="date_created" value="2010-01-20 15:15:56"/>
+								<UML:TaggedValue tag="date_modified" value="2013-06-13 16:16:28"/>
+								<UML:TaggedValue tag="gentype" value="Java"/>
+								<UML:TaggedValue tag="tagged" value="0"/>
+								<UML:TaggedValue tag="package_name" value="GML3"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="author" value="Wilko Quak"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="stereotype" value="interface"/>
+								<UML:TaggedValue tag="tpos" value="23"/>
+								<UML:TaggedValue tag="ea_localid" value="2797"/>
+								<UML:TaggedValue tag="ea_eleType" value="element"/>
+								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={9C649187-8AA4-4523-8A72-7561CBA9ED9A}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=interface;GUID={D521F589-6398-4074-BA0E-92BD51BC241C};FQName=NEN3610::interface;@ENDSTEREO;@STEREO;Name=dataType;GUID={D01027BA-FBF9-4f46-9120-6697938088AB};FQName=NEN3610::dataType;@ENDSTEREO;$DES;$CLT={FFCDDF3D-A948-4360-860F-28F40114D932}$CLT;$ENDXREF;$XREFPROP=$XID={CE191CA9-219F-4fd3-B6E0-6DB81853BE4A}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={FFCDDF3D-A948-4360-860F-28F40114D932}$CLT;$ENDXREF;"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Class>
+						<UML:Dependency client="EAPK_054EB100_84A5_4201_A833_CA41015FB50E" supplier="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" xmi.id="EAID_29DB911A_3246_411e_8FBC_1DE6CA5C8DE7" visibility="public">
+							<UML:ModelElement.stereotype>
+								<UML:Stereotype name="import"/>
+							</UML:ModelElement.stereotype>
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="style" value="2"/>
+								<UML:TaggedValue tag="ea_type" value="Package"/>
+								<UML:TaggedValue tag="direction" value="Source -&gt; Destination"/>
+								<UML:TaggedValue tag="linemode" value="2"/>
+								<UML:TaggedValue tag="linecolor" value="-1"/>
+								<UML:TaggedValue tag="linewidth" value="0"/>
+								<UML:TaggedValue tag="seqno" value="0"/>
+								<UML:TaggedValue tag="stereotype" value="import"/>
+								<UML:TaggedValue tag="headStyle" value="0"/>
+								<UML:TaggedValue tag="lineStyle" value="0"/>
+								<UML:TaggedValue tag="conditional" value=" &#xA;«import»"/>
+								<UML:TaggedValue tag="ea_localid" value="2953"/>
+								<UML:TaggedValue tag="ea_sourceName" value="CDMKAD"/>
+								<UML:TaggedValue tag="ea_targetName" value="GML3"/>
+								<UML:TaggedValue tag="ea_sourceType" value="Package"/>
+								<UML:TaggedValue tag="ea_targetType" value="Package"/>
+								<UML:TaggedValue tag="ea_sourceID" value="3445"/>
+								<UML:TaggedValue tag="ea_targetID" value="2768"/>
+								<UML:TaggedValue tag="src_visibility" value="Public"/>
+								<UML:TaggedValue tag="src_aggregation" value="0"/>
+								<UML:TaggedValue tag="src_isOrdered" value="false"/>
+								<UML:TaggedValue tag="src_targetScope" value="instance"/>
+								<UML:TaggedValue tag="src_changeable" value="none"/>
+								<UML:TaggedValue tag="src_isNavigable" value="false"/>
+								<UML:TaggedValue tag="src_containment" value="Unspecified"/>
+								<UML:TaggedValue tag="src_style" value="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Non-Navigable;"/>
+								<UML:TaggedValue tag="dst_visibility" value="Public"/>
+								<UML:TaggedValue tag="dst_aggregation" value="0"/>
+								<UML:TaggedValue tag="dst_isOrdered" value="false"/>
+								<UML:TaggedValue tag="dst_targetScope" value="instance"/>
+								<UML:TaggedValue tag="dst_changeable" value="none"/>
+								<UML:TaggedValue tag="dst_isNavigable" value="true"/>
+								<UML:TaggedValue tag="dst_containment" value="Unspecified"/>
+								<UML:TaggedValue tag="dst_style" value="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Navigable;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={55BEDBF6-3177-44ff-A6D0-5E68E510025D}$XID;$NAM=Stereotypes$NAM;$TYP=connector property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=import;GUID={72C6547B-B66C-4be4-921A-6B6B28619F6C};@ENDSTEREO;$DES;$CLT={29DB911A-3246-411e-8FBC-1DE6CA5C8DE7}$CLT;$ENDXREF;"/>
+								<UML:TaggedValue tag="privatedata5" value="SX=0;SY=0;EX=0;EY=0;EDGE=2;"/>
+								<UML:TaggedValue tag="virtualInheritance" value="0"/>
+								<UML:TaggedValue tag="mb" value=" &#xA;«import»"/>
+							</UML:ModelElement.taggedValue>
+						</UML:Dependency>
+					</UML:Namespace.ownedElement>
+				</UML:Package>
+				<UML:Stereotype xmi.id="EAID_F8D6A9E5_78C7_4d96_833B_C6CB3C402FA0" name="extern" isRoot="false" isLeaf="false" isAbstract="false">
+					<UML:Stereotype.baseClass>Package</UML:Stereotype.baseClass>
+				</UML:Stereotype>
+			</UML:Namespace.ownedElement>
+		</UML:Model>
+		<UML:TaggedValue tag="svnid" xmi.id="EAID_95F888BD_46A7_462e_A652_62D5ABC7C673" value="$Id: GML3.xml 979 2016-03-01 14:57:09Z loeffa $" modelElement="MX_EAID_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+		<UML:TaggedValue tag="web-location" xmi.id="EAID_C3327305_2B72_4328_9EF5_154686F00714" value="http://nl.wikipedia.org/wiki/Geography_Markup_Language" modelElement="MX_EAID_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+		<UML:TaggedValue tag="primitive" xmi.id="EAID_AE953EDD_C582_4cca_9D15_7600B5175F0A" value="STRING" modelElement="EAID_1B9E5020_B850_43ec_8FCA_ED4846D48D17"/>
+		<UML:TaggedValue tag="primitive" xmi.id="EAID_A8AF7AC4_DB94_4975_A2FB_9BC6E138DA01" value="TIME" modelElement="EAID_1C9DA90C_27BE_4ad6_A70F_3262B18CA5E5"/>
+		<UML:TaggedValue tag="primitive" xmi.id="EAID_814833D2_1547_437d_9F8A_A25219B70FF6" value="ANYURI" modelElement="EAID_2BBCE7C1_A285_4aaa_90D7_C595BE61CCE9"/>
+		<UML:TaggedValue tag="primitive" xmi.id="EAID_8B81FD86_CCA0_4bcb_9D6E_A63F509C1650" value="BOOLEAN" modelElement="EAID_58A2E423_E698_4ff8_8547_6094251B98E9"/>
+		<UML:TaggedValue tag="primitive" xmi.id="EAID_416EAFD8_766C_4eec_9E80_0856B70D8B2B" value="DOUBLE" modelElement="EAID_5A1BE0DC_06ED_4e6d_BA14_77C538FC87D3"/>
+		<UML:TaggedValue tag="primitive" xmi.id="EAID_2A0A6589_B17F_4101_8172_A809BFB122E3" value="DATETIME" modelElement="EAID_9D6D477E_BAEF_43c2_93F6_9665E28A2781"/>
+		<UML:TaggedValue tag="primitive" xmi.id="EAID_EA422700_7DF4_4cc4_83DA_5ED481F0467A" value="STRING" modelElement="EAID_A0FED256_BFE9_407f_B690_2097B7ED33C2"/>
+		<UML:TaggedValue tag="primitive" xmi.id="EAID_1087CAA1_EA3A_457d_9939_6CF9A36543C7" value="INTEGER" modelElement="EAID_FF5D7EEE_C221_4ae9_8109_6FEA94C22417"/>
+		<UML:TaggedValue tag="primitive" xmi.id="EAID_6734AA31_1D4C_4551_9C41_341D62FE780B" value="DATE" modelElement="EAID_FFCDDF3D_A948_4360_860F_28F40114D932"/>
+		<UML:Diagram name="Spatial" xmi.id="EAID_EBF76413_8363_4d13_89EF_85CF2BB653EB" diagramType="ClassDiagram" owner="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" toolName="Enterprise Architect 2.5">
+			<UML:ModelElement.taggedValue>
+				<UML:TaggedValue tag="version" value="1.0"/>
+				<UML:TaggedValue tag="author" value="Wilko Quak"/>
+				<UML:TaggedValue tag="created_date" value="2010-01-20 14:49:56"/>
+				<UML:TaggedValue tag="modified_date" value="2013-09-17 15:00:32"/>
+				<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+				<UML:TaggedValue tag="type" value="Logical"/>
+				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;tcol=-1;ofCol=-1;ufCol=-1;hl=0;ufh=0;hh=0;cls=0;bw=0;hli=0;SwimlaneFont=lfh:-10,lfw:0,lfi:0,lfu:0,lfs:0,lfface:Calibri,lfe:0,lfo:0,lfchar:1,lfop:0,lfcp:0,lfq:0,lfpf=0,lfWidth=0;"/>
+				<UML:TaggedValue tag="matrixitems" value="locked=false;matrixactive=false;swimlanesactive=true;kanbanactive=false;width=1;clrLine=0;"/>
+				<UML:TaggedValue tag="ea_localid" value="482"/>
+				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=1;PPgs.cy=1;DocSize.cx=1130;DocSize.cy=795;ShowDetails=0;Orientation=L;Zoom=100;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.1;ExplicitNavigability=0;ShowShape=1;AllDockable=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;ShowNotes=0;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
+				<UML:TaggedValue tag="styleex" value="SaveTag=F5E1CE6A;ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;Theme=:119;"/>
+			</UML:ModelElement.taggedValue>
+			<UML:Diagram.element>
+				<UML:DiagramElement geometry="Left=25;Top=255;Right=144;Bottom=325;" subject="EAID_3A6D7B77_F012_43f4_907C_BFEFEA1258A4" seqno="1" style="DUID=6DC43B8F;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=486;Top=260;Right=576;Bottom=330;" subject="EAID_E929B2F9_3712_44ef_99ED_B33D0DD0F2D6" seqno="2" style="DUID=597B39F2;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=30;Top=347;Right=203;Bottom=417;" subject="EAID_DDDD54F4_18D9_42b8_AF44_A73DCC924E10" seqno="3" style="DUID=5071763D;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=263;Top=352;Right=412;Bottom=422;" subject="EAID_E7F2AC55_6C60_44cd_A739_7D1D0AED81E4" seqno="4" style="DUID=F41A9025;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=263;Top=266;Right=445;Bottom=336;" subject="EAID_EB13DB41_59C5_4ecc_8C58_1B481129B911" seqno="5" style="DUID=C2A2337D;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=496;Top=350;Right=654;Bottom=420;" subject="EAID_019183C0_051A_4f1a_B9F9_95274D6FFDC2" seqno="6" style="DUID=20A037EC;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=684;Top=256;Right=793;Bottom=326;" subject="EAID_12A2F94C_66D6_4ff2_84A4_042A18ADB694" seqno="7" style="DUID=B2C26813;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=473;Top=127;Right=563;Bottom=197;" subject="EAID_0A24E3A4_A056_41f5_90FD_C21F8E1C4E43" seqno="8" style="DUID=F7EBE523;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=363;Top=127;Right=453;Bottom=197;" subject="EAID_B2682035_9BBD_4840_8730_162283535E51" seqno="9" style="DUID=290091C3;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=241;Top=127;Right=343;Bottom=197;" subject="EAID_8A1056A0_0F3E_4608_A131_6E6B2CE53459" seqno="10" style="DUID=3E264C72;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=131;Top=127;Right=221;Bottom=197;" subject="EAID_7A20EDB5_0429_41f5_954B_4CF6563B5F7E" seqno="11" style="DUID=B0551B3C;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=21;Top=127;Right=111;Bottom=197;" subject="EAID_C6B192FD_631B_48b1_AAA7_6B12160B4B7D" seqno="12" style="DUID=C1A0CF04;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=724;Top=37;Right=814;Bottom=107;" subject="EAID_D86339CE_C7AC_4684_B50E_36A650984BF3" seqno="13" style="DUID=B1E9A8D9;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=571;Top=37;Right=704;Bottom=107;" subject="EAID_C0E778D3_830A_4221_BCC9_DF9E4AF21368" seqno="14" style="DUID=A74BCFC1;"/>
+				<UML:DiagramElement geometry="Left=461;Top=37;Right=551;Bottom=107;" subject="EAID_AE6EB1BF_E3B0_4b8e_AD19_3F4CE5142242" seqno="15" style="DUID=8523045B;"/>
+				<UML:DiagramElement geometry="Left=351;Top=37;Right=441;Bottom=107;" subject="EAID_88104FC1_EFC6_4317_84B1_F9D7C6B9B47B" seqno="16" style="DUID=244C4989;"/>
+				<UML:DiagramElement geometry="Left=241;Top=37;Right=331;Bottom=107;" subject="EAID_D22BBC0B_89D3_44c3_8377_A006F4CCFC9A" seqno="17" style="DUID=53D12621;"/>
+				<UML:DiagramElement geometry="Left=131;Top=37;Right=221;Bottom=107;" subject="EAID_B66F6A35_46FC_49f1_B064_059E929060EB" seqno="18" style="DUID=333572AC;"/>
+				<UML:DiagramElement geometry="Left=21;Top=37;Right=111;Bottom=107;" subject="EAID_079B935A_189C_456e_B4E0_4C144BFBB6D3" seqno="19" style="DUID=D625C47B;"/>
+			</UML:Diagram.element>
+		</UML:Diagram>
+		<UML:Diagram name="primitives" xmi.id="EAID_CB1334C0_0E60_41e7_BD17_3676B033789C" diagramType="ClassDiagram" owner="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81" toolName="Enterprise Architect 2.5">
+			<UML:ModelElement.taggedValue>
+				<UML:TaggedValue tag="version" value="1.0"/>
+				<UML:TaggedValue tag="author" value="loeffa"/>
+				<UML:TaggedValue tag="created_date" value="2013-06-13 16:13:48"/>
+				<UML:TaggedValue tag="modified_date" value="2013-06-13 16:16:28"/>
+				<UML:TaggedValue tag="package" value="EAPK_47DC08F9_91C9_4311_B5B9_2E07242A9E81"/>
+				<UML:TaggedValue tag="type" value="Logical"/>
+				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;tcol=-1;ofCol=-1;ufCol=-1;hl=0;ufh=0;hh=0;cls=0;bw=0;hli=0;SwimlaneFont=lfh:-10,lfw:0,lfi:0,lfu:0,lfs:0,lfface:Calibri,lfe:0,lfo:0,lfchar:1,lfop:0,lfcp:0,lfq:0,lfpf=0,lfWidth=0;"/>
+				<UML:TaggedValue tag="matrixitems" value="locked=false;matrixactive=false;swimlanesactive=true;kanbanactive=false;width=1;clrLine=0;"/>
+				<UML:TaggedValue tag="ea_localid" value="483"/>
+				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=1;PPgs.cy=1;DocSize.cx=827;DocSize.cy=1169;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.1;ExplicitNavigability=0;ShowShape=1;AllDockable=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;ShowNotes=0;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
+				<UML:TaggedValue tag="styleex" value="SaveTag=5330504B;ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;Theme=:119;"/>
+			</UML:ModelElement.taggedValue>
+			<UML:Diagram.element>
+				<UML:DiagramElement geometry="Left=151;Top=380;Right=241;Bottom=450;" subject="EAID_2BBCE7C1_A285_4aaa_90D7_C595BE61CCE9" seqno="1" style="DUID=E4961983;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=41;Top=380;Right=131;Bottom=450;" subject="EAID_1C9DA90C_27BE_4ad6_A70F_3262B18CA5E5" seqno="2" style="DUID=F871B435;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=151;Top=290;Right=241;Bottom=360;" subject="EAID_5A1BE0DC_06ED_4e6d_BA14_77C538FC87D3" seqno="3" style="DUID=C5C45B0B;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=41;Top=290;Right=131;Bottom=360;" subject="EAID_FF5D7EEE_C221_4ae9_8109_6FEA94C22417" seqno="4" style="DUID=5FB8337B;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=151;Top=200;Right=241;Bottom=270;" subject="EAID_9D6D477E_BAEF_43c2_93F6_9665E28A2781" seqno="5" style="DUID=81D3FB6B;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=41;Top=200;Right=131;Bottom=270;" subject="EAID_FFCDDF3D_A948_4360_860F_28F40114D932" seqno="6" style="DUID=5FBE3FDF;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=151;Top=110;Right=241;Bottom=180;" subject="EAID_1B9E5020_B850_43ec_8FCA_ED4846D48D17" seqno="7" style="DUID=C7729910;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=41;Top=110;Right=131;Bottom=180;" subject="EAID_58A2E423_E698_4ff8_8547_6094251B98E9" seqno="8" style="DUID=5EB17961;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=151;Top=20;Right=241;Bottom=90;" subject="EAID_A0FED256_BFE9_407f_B690_2097B7ED33C2" seqno="9" style="DUID=2C67D7B7;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+				<UML:DiagramElement geometry="Left=41;Top=20;Right=131;Bottom=90;" subject="EAID_D751E946_6024_480e_82F6_ACF8D39FA108" seqno="10" style="DUID=55DCB26C;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;black=0;italic=0;ul=0;charset=0;pitch=0;"/>
+			</UML:Diagram.element>
+		</UML:Diagram>
+		<UML:DiagramElement geometry="Left=456;Top=169;Right=593;Bottom=229;" subject="EAID_47DC08F9_91C9_4311_B5B9_2E07242A9E81" seqno="2" style="DUID=47E9BBF3;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;italic=0;ul=0;charset=0;pitch=0;AttPub=0;AttCustom=0;OpCustom=0;RzO=1;">
+			<UML:ModelElement.taggedValue>
+				<UML:TaggedValue tag="diagram_guid" value="EAID_02747448_17DF_46d9_8481_20519B038E22"/>
+			</UML:ModelElement.taggedValue>
+		</UML:DiagramElement>
+		<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=CX=42:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRT=;LRB=;IRHS=;ILHS=;" subject="EAID_29DB911A_3246_411e_8FBC_1DE6CA5C8DE7" style="Mode=2;EOID=47E9BBF3;SOID=5F907545;Color=-1;LWidth=0;">
+			<UML:ModelElement.taggedValue>
+				<UML:TaggedValue tag="diagram_guid" value="EAID_02747448_17DF_46d9_8481_20519B038E22"/>
+				<UML:TaggedValue tag="hidden" value="0"/>
+			</UML:ModelElement.taggedValue>
+		</UML:DiagramElement>
+	</XMI.content>
+	<XMI.difference/>
+	<XMI.extensions xmi.extender="Enterprise Architect 2.5">
+		<EAStub xmi.id="EAPK_054EB100_84A5_4201_A833_CA41015FB50E" name="CDMKAD" UMLType="Package"/>
+	</XMI.extensions>
+</XMI>
