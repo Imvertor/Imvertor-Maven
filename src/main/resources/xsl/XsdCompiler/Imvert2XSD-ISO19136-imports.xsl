@@ -53,6 +53,9 @@
             <imvert:result-file-fullpath>file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/default/app/xsd/PersoonZoekenEnOpvoeren/CDMKAD-adres/v20150201/PersoonZoekenEnOpvoeren_Adres_v1_8_0.xsd</imvert:result-file-fullpath>
         </imvert:schema>
       -->
+       
+        <!-- eerst profile naam instellen -->
+        <xsl:sequence select="imf:set-xparm('appinfo/gml-profile-name-encoded',encode-for-uri(imf:get-xparm('appinfo/gml-profile-name')))"/>
         
         <imvert:schemas>
             <xsl:apply-templates select="imvert:schema"/>
@@ -153,7 +156,7 @@
                         <!-- schema found. This is a generated schema. -->
                         
                         <!-- see https://github.com/Imvertor/Imvertor-Maven/issues/51 -->
-                        <xsl:variable name="relative-url" select="concat($steps-back,$schema-subpath)"/>
+                        <xsl:variable name="relative-url" select="concat($steps-back,imf:merge-parms($schema-subpath))"/>
                         <xsl:variable name="absolute-url" select="$schema-def[1]/imvert:result-url"/>
                         
                         <xs:import namespace="{$schema-namespace}" schemaLocation="{if ($xml-schemalocation-approach = 'absolute') then $absolute-url else $relative-url}"/>

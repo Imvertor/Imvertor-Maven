@@ -35,6 +35,7 @@
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
+    xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     
     xmlns:ekf="http://EliotKimber/functions"
 
@@ -270,12 +271,15 @@
             <xsl:variable name="data-location" select="imf:get-appinfo-location(.)"/>
             <xsl:sequence select="imf:get-annotation(.,(),$data-location)"/>
             <xs:restriction base="xs:string">
-                <xsl:sequence select="imf:create-datatype-property(.)"/>
+                <xsl:sequence select="imf:create-datatype-property(.,'xs:string')"/>
             </xs:restriction>
         </xs:simpleType>
     </xsl:template>    
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]">
+        <xsl:variable name="supertypes" select="(.,imf:get-superclasses(.))"/>
+        <xsl:variable name="supertype-primitive" select="$supertypes/imvert:supertype/imvert:primitive"/><!-- er is max één supertype dat verwijst naar een primitive, dus uit de conceptual schemas -->
+        
         <xsl:choose>
             <xsl:when test="imvert:attributes/* or imvert:associations/*">
                 <xsl:sequence select="imf:create-xml-debug-comment(.,'Datatype with data elements or associations')"/>
@@ -288,13 +292,23 @@
                     <xsl:apply-templates select="imvert:union"/>
                 </xs:simpleType>
             </xsl:when>
+            <xsl:when test="$supertype-primitive">
+                <xsl:sequence select="imf:create-xml-debug-comment(.,'A simple datatype, subtype of a primitive')"/>
+                <xs:simpleType name="{imvert:name}">
+                    <xsl:sequence select="imf:get-annotation(.)"/>
+                    <xs:restriction base="{$supertype-primitive}">
+                        <xsl:sequence select="imf:create-datatype-property(.,$supertype-primitive)"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xsl:when>
             <xsl:otherwise>
                 <!-- A type like zipcode -->
                 <xsl:sequence select="imf:create-xml-debug-comment(.,'A simple datatype')"/>
                 <xs:simpleType name="{imvert:name}">
                     <xsl:sequence select="imf:get-annotation(.)"/>
-                    <xs:restriction base="xs:string">
-                        <xsl:sequence select="imf:create-datatype-property(.)"/>
+                    <xsl:variable name="supertype">xs:string</xsl:variable>
+                    <xs:restriction base="{$supertype}">
+                        <xsl:sequence select="imf:create-datatype-property(.,'xs:string')"/>
                     </xs:restriction>
                 </xs:simpleType>
             </xsl:otherwise>
@@ -913,7 +927,7 @@
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                     <xs:simpleType>
                         <xs:restriction base="{$type}">
-                            <xsl:sequence select="imf:create-datatype-property($this)"/>
+                            <xsl:sequence select="imf:create-datatype-property($this,$type)"/>
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
@@ -970,7 +984,7 @@
                     <xsl:sequence select="imf:get-annotation($this)"/>
                     <xs:simpleType>
                         <xs:restriction base="{$this/imvert:type-name}">
-                            <xsl:sequence select="imf:create-datatype-property($this)"/>
+                            <xsl:sequence select="imf:create-datatype-property($this,$this/imvert:primitive)"/> 
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
@@ -1304,10 +1318,11 @@
 
     <xsl:function name="imf:create-datatype-property" as="node()*">
         <xsl:param name="this" as="node()"/>
+        <xsl:param name="primitive-type" as="xs:string"/><!-- een xs:* qname -->
         
         <xsl:variable name="p" select="imf:get-facet-pattern($this)"/>
         <xsl:if test="$p">
-            <xs:pattern value="{$p}"/>
+            <xs:pattern value="{$p}"/><!-- toegestaan op alle constructs -->
         </xsl:if>
   
         <xsl:variable name="l" select="imf:get-facet-max-length($this)"/>
@@ -1317,13 +1332,30 @@
         <xsl:variable name="post-l" select="imf:convert-to-atomic(substring-after($l,','),'xs:integer',true())"/>
         <xsl:variable name="t" select="imf:convert-to-atomic(imf:get-facet-total-digits($this),'xs:integer',true())"/>
         <xsl:variable name="f" select="imf:convert-to-atomic(imf:get-facet-fraction-digits($this),'xs:integer',true())"/>
-       
-        <xsl:if test="$min-l">
-            <xs:minLength value="{$min-l}"/>
-        </xsl:if>
-        <xsl:if test="$max-l">
-            <xs:maxLength value="{$max-l}"/>
-        </xsl:if>
+
+        <xsl:variable name="is-integer" select="$primitive-type = ('xs:integer')"/>
+        <xsl:variable name="is-decimal" select="$primitive-type = ('xs:decimal', 'xs:real')"/>
+        
+        <xsl:choose>
+           <xsl:when test="$min-l and $is-integer">
+               <xs:minInclusive value="{math:pow(10,$min-l - 1)}"/>
+               <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on integer, minimum, for [1]',$primitive-type)"/>
+           </xsl:when>
+           <xsl:when test="$min-l">
+               <xs:minLength value="{$min-l}"/>
+               <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on non-integer, minimum, for [1]',$primitive-type)"/>
+           </xsl:when>
+        </xsl:choose> 
+        <xsl:choose>
+            <xsl:when test="$max-l and $is-integer">
+                <xs:maxInclusive value="{math:pow(10,$max-l) - 1}"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on integer, maximum, for [1]',$primitive-type)"/>
+            </xsl:when>
+            <xsl:when test="$max-l">
+                <xs:maxLength value="{$max-l}"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on non-integer, maximum, for [1]',$primitive-type)"/>
+            </xsl:when>
+        </xsl:choose>
         <xsl:if test="$l and not($min-l) and not($pre-l)">
             <xs:length value="{$l}"/>
         </xsl:if>

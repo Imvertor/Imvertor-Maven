@@ -154,7 +154,7 @@
       <cli-parm>
          <name>gmlprofilename</name>
          <arg>template</arg>
-         <tip>Name of the GML profile XSD file. You may use [...] parameters. Defaults to "GmlProfile".</tip>
+         <tip>Name of the GML profile XSD file. You may use [...] parameters. Defaults to "[owner]-gml".</tip>
          <required>false</required>
       </cli-parm>  
       <cli-parm>
