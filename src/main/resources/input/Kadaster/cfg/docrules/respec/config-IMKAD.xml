@@ -1,0 +1,81 @@
+<respec-rules  type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="config.xml"/>
+    
+    <!-- dit zijn de settings voor het samnstellen van de IMKAD documentatie, onafhankelijk van release -->
+    
+    <title>IMKAD</title> 
+    <subtitle>Informatiemodel Kadaster</subtitle> 
+   
+    <edDraftURI>https://github.com/Kadaster/IMKAD</edDraftURI>
+    
+    <!-- specStatus is verplicht! (zie voor geldige statussen orgConfg.validSpecStats) -->
+    
+    <specStatus>WV</specStatus>    <!-- (verplicht) Werk Versie-->
+    <previousMaturity>WV</previousMaturity>    <!-- (verplicht) De vorige specStatus-->
+    
+    <!-- Publicatie datums -->
+    
+    <publishDate>2020-08-15</publishDate>    <!-- Format is "YYYY-MM-DD" (default = vandaag)-->
+    <previousPublishDate>1900-01-01</previousPublishDate>    <!-- Format is "YYYY-MM-DD" ("1900-01-01" als die er niet was)-->
+    
+    <!-- specType (zie voor geldige types orgConfg.validSpecTypes) -->
+    
+    <specTyp>CT</specTyp>    <!-- (verplicht) specType: catalogus-->
+    
+    <!-- shortName en pubDomain zijn vooralsnog vrij te kiezen -->
+    
+    <shortName>imkad</shortName>    <!-- Wordt gebruikt in de document URL-->
+    
+    <pubDomain>mim</pubDomain>    <!-- Metamodel Informatie Modellering-->
+    
+    <!-- De editor(s) -->
+    
+    <editors>
+        <person>
+            <name>Thies Mesdag</name>
+            <company>Kadaster</company>
+            <companyUrl>https://www.kadaster.nl/</companyUrl>
+        </person>
+    </editors>
+    
+    <!-- De auteur(s) -->
+    
+    <authors>
+        <person>
+            <name>Arjan Loeffen</name>
+            <company>Armatiek BV</company>
+            <companyUrl>https://www.armatiek.nl/</companyUrl>
+        </person>
+        <person>
+            <name>Thies Mesdag</name>
+            <company>Kadaster</company>
+            <companyUrl>https://www.kadaster.nl/</companyUrl>
+        </person>
+    </authors>
+    
+    <!-- 
+        secties zijn opgebouwd conform een bepaalde logica. Deze is hier vastgesteld 
+    --> 
+    <sections>
+        <section role="abstract">
+            <url></url>
+            <type>markdown</type>
+        </section>
+        <section role="sotd">
+            <url></url>
+            <type>markdown</type>
+        </section>
+        <section role="introductie">
+            <url></url>
+            <type>markdown</type>
+        </section>
+        <section role="uitwijding">
+            <url></url>
+            <type>markdown</type>
+        </section>
+        <section role="catalog"/>
+        <section role="waardelijsten"/>
+        <!-- andere secties standaard, geen content -->       
+    </sections>
+</respec-rules>

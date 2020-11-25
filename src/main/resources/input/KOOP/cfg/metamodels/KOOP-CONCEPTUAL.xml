@@ -4,11 +4,11 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- 
-        KOOP follows MIM10 ISO (alt 2)
+        KOOP follows MIM ISO (alt 2)
         
         Including scalars.
     --> 
-    <xi:include href="../../../MIM/cfg/metamodels/MIM10-ISO.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
     
     <name>KOOP</name>
     

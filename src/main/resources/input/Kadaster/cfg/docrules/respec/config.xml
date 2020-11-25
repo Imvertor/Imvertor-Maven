@@ -1,45 +1,73 @@
-<respecConfig>
+<respec-rules  type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <subtitle>geen subtitel?</subtitle>
+    <!-- 
+        ===================================================
+        generieke info, we verwachten niet dat je dit aanpast voor je model: 
+        ===================================================
+    -->
+    
+    
+    <github>https://github.com/Kadaster</github>
+    <issueBase>https://github.com/Kadaster/issues</issueBase>
     
     <format>html</format>
-    
-    <github>https://github.com/JvGldr/botters</github>
-    <issueBase>https://github.com/JvGldr/Rapport/issues</issueBase>
-    <edDraftURI>https://github.com/JvGldr/botters</edDraftURI>
     
     <licence>cc-by-nd</licence> <!-- Creative Commmons licences zie https://creativecommons.org/about/downloads/ -->
     
     <addSectionLinks>true</addSectionLinks>    <!-- voeg paragraaftekens toe-->
     
     <maxTocLevel>3</maxTocLevel>     <!-- (Optioneel) Aantal niveau's ToC, default 0-->
-
-    <!-- specStatus is verplicht! (zie voor geldige statussen orgConfg.validSpecStats) -->
-
-    <specStatus>WV</specStatus>    <!-- (verplicht) Werk Versie-->
-    <previousMaturity>WV</previousMaturity>    <!-- (verplicht) De vorige specStatus-->
-
-    <!-- Publicatie datums -->
-
-    <publishDate>2020-01-30</publishDate>    <!-- Format is "YYYY-MM-DD" (default = vandaag)-->
-    <previousPublishDate>1900-01-01</previousPublishDate>    <!-- Format is "YYYY-MM-DD" ("1900-01-01" als die er niet was)-->
-
-    <!-- specType (zie voor geldige types orgConfg.validSpecTypes) -->
-
-    <specTyp>CT</specTyp>    <!-- (verplicht) specType: catalogus-->
-
-    <!-- shortName en pubDomain zijn vooralsnog vrij te kiezen -->
-
-    <shortName>vlt</shortName>    <!-- Wordt gebruikt in de document URL-->
-
-    <pubDomain>opl</pubDomain>    <!-- Metamodel Informatie Modellering-->
-
+    
     <!-- Optionele parameters:-->
-
+    
     <emailComments>info@kadaster.nl</emailComments>    <!-- reactie mailadres, alleen bij CV!-->
 
+    <?x deze eigenlijk niet opnemen; dit is onderdeel van het profiel .
+    
+    <!-- Hier het aangepaste logo van je eigen organisatie -->
+    <logos>
+        <logo>
+            <src>https://www.botterselburg.nl/images/botterstichting_logo.jpg</src>
+            <alt>Botterstichting Elburg</alt>
+            <id>TopLogo</id>
+            <url>https://www.botterselburg.nl/</url>
+        </logo>
+    </logos>
+    x?>
+    
+    <!-- 
+        ===================================================
+        info die voor ieder model ander is of kan zijn:
+        ===================================================
+    -->
+    
+    <title>Kadaster specificatie</title> 
+    <subtitle><!--geen subtitel--></subtitle>
+    
+    <edDraftURI>https://github.com/Kadaster</edDraftURI>
+    
+    <!-- specStatus is verplicht! (zie voor geldige statussen orgConfg.validSpecStats) -->
+    
+    <specStatus>WV</specStatus>    <!-- (verplicht) Werk Versie-->
+    <previousMaturity>WV</previousMaturity>    <!-- (verplicht) De vorige specStatus-->
+    
+    <!-- Publicatie datums -->
+    
+    <publishDate>2020-01-30</publishDate>    <!-- Format is "YYYY-MM-DD" (default = vandaag)-->
+    <previousPublishDate>1900-01-01</previousPublishDate>    <!-- Format is "YYYY-MM-DD" ("1900-01-01" als die er niet was)-->
+    
+    <!-- specType (zie voor geldige types orgConfg.validSpecTypes) -->
+    
+    <specTyp>CT</specTyp>    <!-- (verplicht) specType: catalogus-->
+    
+    <!-- shortName en pubDomain zijn vooralsnog vrij te kiezen -->
+    
+    <shortName>vlt</shortName>    <!-- Wordt gebruikt in de document URL-->
+    
+    <pubDomain>opl</pubDomain>    <!-- Metamodel Informatie Modellering-->
+    
     <!-- De editor(s) -->
-
+    
     <editors>
         <person>
             <name>Arjan Loeffen</name>
@@ -47,9 +75,9 @@
             <companyUrl>https://www.armatiek.nl/</companyUrl>
         </person>
     </editors>
-
+    
     <!-- De auteur(s) -->
-
+    
     <authors>
         <person>
             <name>Arjan Loeffen</name>
@@ -62,6 +90,13 @@
             <companyUrl>https://www.armatiek.nl/</companyUrl>
         </person>
     </authors>
+    
+    
+    <!-- 
+        ===================================================
+        info die stabiel is en die alleen kan worden uigebreid per model
+        =================================================== 
+    -->
     
     <!-- De Local biblio voor nette verwijzigen naar bronnen -->
 
@@ -84,14 +119,6 @@
         </biblio>
     </localBiblio>
 
-    <!-- Hier het aangepaste logo van je eigen organisatie -->
+    
 
-    <logos>
-        <logo>
-            <src>https://www.botterselburg.nl/images/botterstichting_logo.jpg</src>
-            <alt>Botterstichting Elburg</alt>
-            <id>TopLogo</id>
-            <url>https://www.botterselburg.nl/</url>
-        </logo>
-    </logos>
-</respecConfig>
+</respec-rules>
