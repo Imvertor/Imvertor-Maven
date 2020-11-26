@@ -214,6 +214,24 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+		<cs:Construct>
+                  <cs:name>GM_MultiPoint</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#MultiPoint</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiPoint</cs:name>
+                        <cs:asAttribute>MultiPointPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_Polygon</cs:name>
                   <cs:sentinel>false</cs:sentinel>
