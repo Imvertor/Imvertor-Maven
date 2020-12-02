@@ -54,7 +54,13 @@
          <tip>Should an EA profile be generated?</tip>
          <required>false</required>
       </cli-parm> 
-    
+      <cli-parm>
+         <name>createeatoolbox</name>
+         <arg>yes|no</arg>
+         <tip>Should an EA toolbox be generated?</tip>
+         <required>false</required>
+      </cli-parm> 
+      
    </cli-parms>
    
    <properties>

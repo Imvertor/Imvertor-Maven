@@ -57,16 +57,24 @@ public class ConfigCompiler  extends Step {
 		
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_CONFIG_FILE", "properties/IMVERTOR_CONFIG_XSLPATH") : false ;
 		
-		Boolean p = configurator.isTrue(configurator.getXParm("cli/createeaprofile",true));
-		if (p) {
-			// process the results of previous step info a EA profile
-			succeeds = succeeds ? transformer.transformStep("properties/WORK_CONFIG_FILE", "properties/WORK_EAPROFILE_FILE", "properties/IMVERTOR_EAPROFILE_XSLPATH") : false ;
+		Boolean p = configurator.isTrue(configurator.getXParm("cli/createeaprofile",false));
+		Boolean q = configurator.isTrue(configurator.getXParm("cli/createeatoolbox",false));
 		
-			// and copy this file to the etc folder
+		if (p | q) {
 			AnyFolder eaFolder = new AnyFolder(configurator.getXParm("system/work-ea-folder-path"));
 			XmlFile tempProfileFile = new XmlFile(configurator.getXParm("properties/WORK_EAPROFILE_FILE"));
-			XmlFile profileFile = new XmlFile(eaFolder,configurator.getXParm("appinfo/ea-profile-file-name"));
-			tempProfileFile.copyFile(profileFile); 
+			if (p) {
+				transformer.setXslParm("result-type", "profile");
+				succeeds = succeeds ? transformer.transformStep("properties/WORK_CONFIG_FILE", "properties/WORK_EAPROFILE_FILE", "properties/IMVERTOR_EAPROFILE_XSLPATH") : false ;
+				XmlFile profileFile = new XmlFile(eaFolder,configurator.getXParm("appinfo/ea-profile-file-name"));
+				tempProfileFile.copyFile(profileFile); 
+			}
+			if (q) {
+				transformer.setXslParm("result-type", "toolbox");
+				succeeds = succeeds ? transformer.transformStep("properties/WORK_CONFIG_FILE", "properties/WORK_EAPROFILE_FILE", "properties/IMVERTOR_EAPROFILE_XSLPATH") : false ;
+				XmlFile profileFile = new XmlFile(eaFolder,configurator.getXParm("appinfo/ea-toolbox-file-name"));
+				tempProfileFile.copyFile(profileFile); 
+			}
 		}
 		
 		configurator.setStepDone(STEP_NAME);

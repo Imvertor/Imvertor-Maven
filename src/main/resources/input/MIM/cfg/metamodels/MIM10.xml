@@ -194,7 +194,6 @@
                 -	Abstract van aard zoals kadastraal percelen, maatschappelijke activiteiten
             </desc>
             <construct>class</construct>
-            <profile color="WHITE" fontcolor="BLACK" border="WHITE"/> <!-- white is 16777215, black is 0 -->
         </stereo>
 
         <stereo id="stereotype-name-referentielijst" primary="yes">

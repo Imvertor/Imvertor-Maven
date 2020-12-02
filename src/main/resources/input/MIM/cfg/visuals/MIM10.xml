@@ -9,8 +9,8 @@
     -->
     <name>MIM 1.0</name>
 
-    <desc lang="en">Visuals for MIM10 exchange models</desc>
-    <desc lang="nl">Visuele aspecten van MIM10 logische modellen</desc>
+    <desc lang="en">Visuals for MIM 1.0 models</desc>
+    <desc lang="nl">Visuele aspecten van MIM 1.0 modellen</desc>
 
     <measures>
         <measure id="WHITE">16777215</measure>
@@ -19,59 +19,143 @@
         <measure id="THICK">2</measure>
     </measures>
 
-    <stereo id="stereotype-name-relatieklasse">
-        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
-    </stereo>
-    <stereo id="stereotype-name-composite">
-        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
-    </stereo>
-    <stereo id="stereotype-name-attribute"/>
-    <stereo id="stereotype-name-relatiesoort"/>
-    <stereo id="stereotype-name-externekoppeling"/>
-    <stereo id="stereotype-name-data-element"/>
-    <stereo id="stereotype-name-attributegroup"/>
-    <stereo id="stereotype-name-union">
-        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
-    </stereo>
-    <stereo id="stereotype-name-union-element"/>
-    <stereo id="stereotype-name-enumeration">
-        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
-    </stereo>
-    <stereo id="stereotype-name-enum"/>
-    <stereo id="stereotype-name-simpletype">
-        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
-    </stereo>
-    <stereo id="stereotype-name-complextype">
-        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
-    </stereo>
-    <stereo id="stereotype-name-objecttype">
-        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
-    </stereo>
-    <stereo id="stereotype-name-referentielijst">
-        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
-    </stereo>
-    <stereo id="stereotype-name-referentie-element"/>
-    <stereo id="stereotype-name-codelist">
-        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
-    </stereo>
-    <stereo id="stereotype-name-system-reference-package"/>
-    <stereo id="stereotype-name-system-reference-class"/>
-    <stereo id="stereotype-name-reference"/>
-    <stereo id="stereotype-name-composite-id"/>
-    <stereo id="stereotype-name-relation-role"/>
-    <stereo id="stereotype-name-identification"/>
-    <stereo id="stereotype-name-koppelklasse">
-        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
-    </stereo>
-    <stereo id="stereotype-name-voidable"/>
-    <stereo id="stereotype-name-generalization"/>
-    <stereo id="stereotype-name-static-liskov"/>
-    <stereo id="stereotype-name-static-generalization"/>
-    <stereo id="stereotype-name-dynamic-generalization"/>
-    <stereo id="stereotype-name-formele-historie"/>
-    <stereo id="stereotype-name-formele-levensduur"/>
-    <stereo id="stereotype-name-materiele-historie"/>
-    <stereo id="stereotype-name-materiele-levensduur"/>
-    <stereo id="stereotype-name-anonymous"/>
+    <categories>
+        <category id="OBJECTS">
+            <desc lang="nl">Objecten en attributen</desc>
+        </category>
+        <category id="RELATIONS">
+            <desc lang="nl">Relaties</desc>
+        </category>
+        <category id="DATATYPES">
+            <desc lang="nl">Datatypen</desc>
+        </category>
+        <category id="LISTS">
+            <desc lang="nl">Lijsten</desc>
+        </category>
+        <category id="MISCELLANEOUS">
+            <desc lang="nl">Andere constructies</desc>
+        </category>
+        <category id="HISTORY">
+            <desc lang="nl">Historie</desc>
+        </category>
+        <category id="PACKAGES">
+            <desc lang="nl">Packages</desc>
+        </category>
+    </categories>
+    
+    <stereos>
+        <stereo id="stereotype-name-relatieklasse">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        <stereo id="stereotype-name-composite">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+            <toolbox category="OBJECTS"/>
+        </stereo>
+        <stereo id="stereotype-name-attribute">
+            <toolbox category="OBJECTS"/>
+        </stereo>
+        <stereo id="stereotype-name-relatiesoort">
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        <stereo id="stereotype-name-externekoppeling">
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        <stereo id="stereotype-name-data-element">
+            <toolbox category="DATATYPES"/>
+        </stereo>
+        <stereo id="stereotype-name-attributegroup">
+            <toolbox category="OBJECTS"/>
+        </stereo>
+        <stereo id="stereotype-name-union">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
+            <toolbox category="DATATYPES"/>
+        </stereo>
+        <stereo id="stereotype-name-union-element">
+            <toolbox category="OBJECTS"/>
+        </stereo>
+        <stereo id="stereotype-name-enumeration">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
+            <toolbox category="LISTS"/>
+        </stereo>
+        <stereo id="stereotype-name-enum">
+            <toolbox category="LISTS"/>
+        </stereo>
+        <stereo id="stereotype-name-simpletype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
+            <toolbox category="DATATYPES"/>
+        </stereo>
+        <stereo id="stereotype-name-complextype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
+            <toolbox category="DATATYPES"/>
+        </stereo>
+        <stereo id="stereotype-name-objecttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="OBJECTS"/>
+        </stereo>
+        <stereo id="stereotype-name-referentielijst">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
+            <toolbox category="LISTS"/>
+        </stereo>
+        <stereo id="stereotype-name-referentie-element">
+            <toolbox category="LISTS"/>
+        </stereo>
+        <stereo id="stereotype-name-codelist">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
+            <toolbox category="LISTS"/>
+        </stereo>
+        <stereo id="stereotype-name-system-reference-package">
+            <toolbox category="PACKAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-system-reference-class">
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-reference">
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-composite-id">
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-relation-role">
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        <stereo id="stereotype-name-identification">
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-koppelklasse">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="OBJECTS"/>
+        </stereo>
+        <stereo id="stereotype-name-voidable">
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-generalization">
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        <stereo id="stereotype-name-static-liskov">
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        <stereo id="stereotype-name-static-generalization">
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        <stereo id="stereotype-name-dynamic-generalization">
+            <toolbox category="RELATIONS"/>        
+        </stereo>
+        <stereo id="stereotype-name-formele-historie">
+            <toolbox category="HISTORY"/>
+        </stereo>
+        <stereo id="stereotype-name-formele-levensduur">
+            <toolbox category="HISTORY"/>
+        </stereo>
+        <stereo id="stereotype-name-materiele-historie">
+            <toolbox category="HISTORY"/>
+        </stereo>
+        <stereo id="stereotype-name-materiele-levensduur">
+            <toolbox category="HISTORY"/>
+        </stereo>
+        <stereo id="stereotype-name-anonymous">
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+    </stereos>
 
 </visuals>
