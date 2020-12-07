@@ -104,6 +104,26 @@
             <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
             <toolbox category="LISTS"/>
         </stereo>
+        <stereo id="stereotype-name-relation-role">
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        <stereo id="stereotype-name-generalization">
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        <stereo id="stereotype-name-domain-package">
+            <toolbox category="PACKAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-application-package">
+            <toolbox category="PACKAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-external-package">
+            <toolbox category="PACKAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-view-package">
+            <toolbox category="PACKAGES"/>
+        </stereo>
+        
+        <?x 
         <stereo id="stereotype-name-system-reference-package">
             <toolbox category="PACKAGES"/>
         </stereo>
@@ -115,10 +135,7 @@
         </stereo>
         <stereo id="stereotype-name-composite-id">
             <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        <stereo id="stereotype-name-relation-role">
-            <toolbox category="RELATIONS"/>
-        </stereo>
+        </stereo> 
         <stereo id="stereotype-name-identification">
             <toolbox category="MISCELLANEOUS"/>
         </stereo>
@@ -128,9 +145,6 @@
         </stereo>
         <stereo id="stereotype-name-voidable">
             <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        <stereo id="stereotype-name-generalization">
-            <toolbox category="RELATIONS"/>
         </stereo>
         <stereo id="stereotype-name-static-liskov">
             <toolbox category="RELATIONS"/>
@@ -156,6 +170,7 @@
         <stereo id="stereotype-name-anonymous">
             <toolbox category="MISCELLANEOUS"/>
         </stereo>
+        x?>
     </stereos>
 
 </visuals>
