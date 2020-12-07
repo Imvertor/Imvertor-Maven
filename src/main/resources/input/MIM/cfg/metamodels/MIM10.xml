@@ -29,10 +29,6 @@
             <!-- <release/> identical to Imvertor release -->
             <desc>MIM10 Grouping EN</desc>
         </profile>
-        
-        <!-- and include the visual conventions -->     
-        <xi:include href="../../../MIM/cfg/visuals/MIM10.xml"/>
-    
     </profiles>
     
     <naming>

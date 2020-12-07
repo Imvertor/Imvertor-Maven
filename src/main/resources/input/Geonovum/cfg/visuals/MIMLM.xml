@@ -9,10 +9,10 @@
     <!-- 
         these visuals specify the basic visual aspects of the UML profile  
     -->
-    <name>NEN3610</name>
+    <name>Geonovum MIM LM</name>
 
-    <desc lang="en">Visuals for NEN3610 models</desc>
-    <desc lang="nl">Visuele aspecten van NEN3610 modellen</desc>
+    <desc lang="en">Visuals for Geonovum MIM LM models</desc>
+    <desc lang="nl">Visuele aspecten van Geonovum MIM LM modellen</desc>
     
     <measures>
         <!-- geen aanpassingen -->

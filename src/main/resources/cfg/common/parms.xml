@@ -180,6 +180,12 @@
          <tip>Yes if scalar types may be entered without reference to a UML datatype</tip>
          <required>false</required>
       </cli-parm>
+      <cli-parm>
+         <name>visuals</name>
+         <arg>name</arg>
+         <tip>Name of the visuals file</tip>
+         <required>true</required>
+      </cli-parm>
    </cli-parms>
    
    <!-- properties zijn directe mapping vanuit imvertor.properties. Die moeten dus later netjes worden verwerkt -->
@@ -225,6 +231,7 @@
       <configuration-notesrules-file>${system/inp-folder-path}/cfg/notesrules/${cli/notesrules}.xml</configuration-notesrules-file>
       <configuration-docrules-file>${system/inp-folder-path}/cfg/docrules/${cli/docrules}.xml</configuration-docrules-file>
       <configuration-versionrules-file>${system/inp-folder-path}/cfg/versionrules/${cli/versionrules}.xml</configuration-versionrules-file>
+      <configuration-visuals-file>${system/inp-folder-path}/cfg/visuals/${cli/visuals}.xml</configuration-visuals-file>
       <configuration-shaclrules-file>${system/inp-folder-path}/cfg/shaclrules/${cli/shaclrules}.xml</configuration-shaclrules-file>
       <configuration-skosrules-file>${system/inp-folder-path}/cfg/skosrules/${cli/skosrules}.xml</configuration-skosrules-file>
       <configuration-metamodel-file>${system/inp-folder-path}/cfg/metamodels/${cli/metamodel}.xml</configuration-metamodel-file>

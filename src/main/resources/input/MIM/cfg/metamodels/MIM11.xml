@@ -29,12 +29,6 @@
             <!-- <release/> identical to Imvertor release -->
             <desc>MIM11 Grouping EN</desc>
         </profile>
-        <!-- 
-            visual conventions are same as MIM 1.0
-        -->     
-        <visuals>
-            <!-- no adaptions -->
-        </visuals>
     </profiles>
       
     <features>

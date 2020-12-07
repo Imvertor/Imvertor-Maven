@@ -43,7 +43,8 @@
     <xsl:variable name="configuration-notesrules-doc" select="imf:document($configuration-notesrules-name,true())"/>
     <xsl:variable name="configuration-docrules-doc" select="imf:document($configuration-docrules-name,true())"/>
     <xsl:variable name="configuration-versionrules-doc" select="imf:document($configuration-versionrules-name,true())"/>
-   
+    <xsl:variable name="configuration-visuals-doc" select="imf:document($configuration-visuals-name,true())"/>
+    
     <xsl:variable name="configuration-xmlschemarules-doc" select="imf:document($configuration-xmlschemarules-name)"/><!-- not required -->
     <xsl:variable name="configuration-jsonschemarules-doc" select="imf:document($configuration-jsonschemarules-name)"/><!-- not required -->
     <xsl:variable name="configuration-shaclrules-doc" select="imf:document($configuration-shaclrules-name)"/><!-- not required -->
@@ -55,7 +56,8 @@
     <xsl:variable name="configuration-notesrules-file" select="imf:prepare-config($configuration-notesrules-doc)"/>
     <xsl:variable name="configuration-docrules-file" select="imf:prepare-config($configuration-docrules-doc)"/>
     <xsl:variable name="configuration-versionrules-file" select="imf:prepare-config($configuration-versionrules-doc)"/>
-  
+    <xsl:variable name="configuration-visuals-file" select="imf:prepare-config($configuration-visuals-doc)"/>
+    
     <xsl:variable name="configuration-xmlschemarules-file" select="imf:prepare-config($configuration-xmlschemarules-doc)"/><!-- not required -->
     <xsl:variable name="configuration-jsonschemarules-file" select="imf:prepare-config($configuration-jsonschemarules-doc)"/><!-- not required -->
     <xsl:variable name="configuration-shaclrules-file" select="imf:prepare-config($configuration-shaclrules-doc)"/><!-- not required -->
@@ -77,6 +79,7 @@
                 <xsl:sequence select="$configuration-notesrules-file"/>
                 <xsl:sequence select="$configuration-docrules-file"/>
                 <xsl:sequence select="$configuration-versionrules-file"/>
+                <xsl:sequence select="$configuration-visuals-file"/>
                 <xsl:sequence select="$configuration-shaclrules-file"/>
                 <xsl:sequence select="$configuration-skosrules-file"/>
             </config>
@@ -241,20 +244,6 @@
                     <xsl:for-each-group select="$metamodel//profiles/profile" group-by="@lang">
                         <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                     </xsl:for-each-group>   
-                    <xsl:for-each-group select="$metamodel//profiles/visuals/name" group-by=".">
-                        <visual-name>
-                            <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
-                        </visual-name>
-                    </xsl:for-each-group>   
-                    <xsl:for-each-group select="$metamodel//profiles/visuals/categories/category" group-by="@id">
-                        <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
-                    </xsl:for-each-group>   
-                    <xsl:for-each-group select="$metamodel//profiles/visuals/measures/measure" group-by="@id">
-                        <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
-                    </xsl:for-each-group>   
-                    <xsl:for-each-group select="$metamodel//profiles/visuals/stereos/stereo" group-by="@id">
-                        <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
-                    </xsl:for-each-group>   
                 </profiles>
                 
                 <scalars>
@@ -303,6 +292,20 @@
                 </stereotypes>
                 
             </metamodel>
+            
+            <visuals>
+                <xsl:variable name="visuals" select="visuals"/>
+                <xsl:sequence select="imf:fetch-applicable-name($visuals/name)"/>
+                <xsl:for-each-group select="$visuals//categories/category" group-by="@id">
+                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                </xsl:for-each-group>   
+                <xsl:for-each-group select="$visuals//measures/measure" group-by="@id">
+                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                </xsl:for-each-group>   
+                <xsl:for-each-group select="$visuals//stereos/stereo" group-by="@id">
+                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                </xsl:for-each-group>   
+            </visuals>
             
             <xmlschema-rules root="true">
                 <xsl:variable name="xmlschema-rules" select="xmlschema-rules"/> 

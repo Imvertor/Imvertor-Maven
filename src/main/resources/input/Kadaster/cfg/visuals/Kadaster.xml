@@ -3,16 +3,16 @@
  * Copyright (C) 2016 
 -->
 <visuals type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    
-    <xi:include href="../../../MIM/cfg/visuals/MIM11.xml"/>
-    
+
+    <xi:include href="../../../Geonovum/cfg/visuals/Geonovum-NEN3610.xml"/>
+
     <!-- 
         these visuals specify the basic visual aspects of the UML profile  
     -->
-    <name>NEN3610</name>
+    <name>Kadaster</name>
 
-    <desc lang="en">Visuals for NEN3610 models</desc>
-    <desc lang="nl">Visuele aspecten van NEN3610 modellen</desc>
+    <desc lang="en">Visuals for Kadaster INTERN models</desc>
+    <desc lang="nl">Visuele aspecten van Kadaster INTERN modellen</desc>
     
     <measures>
         <!-- geen aanpassingen -->

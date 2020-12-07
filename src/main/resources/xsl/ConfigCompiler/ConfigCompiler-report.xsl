@@ -81,7 +81,7 @@
                         <xsl:apply-templates select="." mode="metamodel-stereos"/>
                         <xsl:apply-templates select="." mode="metamodel-stereos-desc"/>
                         <xsl:apply-templates select="." mode="metamodel-stereos-tv"/>
-                    </div>  
+                    </div>
                     <div>
                         <h1>Metamodel: tagged values</h1>
                         <xsl:apply-templates select="." mode="metamodel-tvs"/>
@@ -91,6 +91,10 @@
                         <h1>Conceptual schemas</h1>
                         <xsl:apply-templates select="." mode="metamodel-cs"/>
                     </div>       
+                    <div>
+                        <h1>Visuals</h1>
+                        <xsl:apply-templates select="." mode="metamodel-visuals"/>
+                    </div>
                 </content>
             </page>
         </report>
@@ -159,7 +163,7 @@
                 </tr>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:sequence select="imf:create-result-table-by-tr($rows,'scalar:20,desc:40,info:20,config:20','table-scalars')"/>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'scalar:15,desc:30,info:20,config:35','table-scalars')"/>
     </xsl:template>
     
     <!--
@@ -193,7 +197,33 @@
                     </tr>
                 </xsl:for-each>
             </xsl:variable>
-            <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:40,on constructs:40,config:20','table-stereos')"/>
+            <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:40,on constructs:20,config:40','table-stereos')"/>
+        </div>
+    </xsl:template>
+    
+    <xsl:template match="/config" mode="metamodel-visuals">
+        <div>
+            <h2>Visuals configuration</h2>
+            <xsl:variable name="rows" as="element(tr)*">
+                <xsl:variable name="categories" select="$configuration-visuals-file/category" as="element()*"/>
+                <xsl:for-each select="$configuration-visuals-file/stereo">
+                    <xsl:sort select="imf:get-config-name-by-id(@id)"/>
+                    <xsl:variable name="category-id" select="toolbox/@category"/>
+                    <xsl:variable name="category" select="$categories[@id = $category-id]/desc"/>
+                    <tr>
+                        <td>
+                            <xsl:sequence select="imf:get-config-name-by-id(@id)"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="string-join($category,', ')"/>
+                        </td>
+                        <td>
+                            <xsl:sequence select="imf:get-src(toolbox)"/>
+                        </td>
+                    </tr>
+                </xsl:for-each>
+            </xsl:variable>
+            <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:20,visual category:40,config:40','table-visuals')"/>
         </div>
     </xsl:template>
     

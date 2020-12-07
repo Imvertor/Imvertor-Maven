@@ -45,7 +45,8 @@
     <xsl:variable name="configuration-notesrules-name" select="imf:get-config-string('system','configuration-notesrules-file')"/>
     <xsl:variable name="configuration-docrules-name" select="imf:get-config-string('system','configuration-docrules-file')"/>
     <xsl:variable name="configuration-versionrules-name" select="imf:get-config-string('system','configuration-versionrules-file')"/>
-   
+    <xsl:variable name="configuration-visuals-name" select="imf:get-config-string('system','configuration-visuals-file')"/>
+    
     <xsl:variable name="configuration-xmlschemarules-name" select="imf:get-config-string('system','configuration-xmlschemarules-file')"/>
     <xsl:variable name="configuration-jsonschemarules-name" select="imf:get-config-string('system','configuration-jsonschemarules-file')"/>
     <xsl:variable name="configuration-shaclrules-name" select="imf:get-config-string('system','configuration-shaclrules-file')"/>
@@ -59,6 +60,7 @@
     <xsl:variable name="configuration-notesrules-file" select="$configuration-file/config/notes-rules"/>
     <xsl:variable name="configuration-docrules-file" select="$configuration-file/config/doc-rules"/>
     <xsl:variable name="configuration-versionrules-file" select="$configuration-file/config/version-rules"/>
+    <xsl:variable name="configuration-visuals-file" select="$configuration-file/config/visuals"/>
     <xsl:variable name="configuration-prologue" select="$configuration-file/config/prologue"/>
 
     <xsl:variable name="configuration-xmlschemarules-file" select="$configuration-file/config/xmlschema-rules"/>
