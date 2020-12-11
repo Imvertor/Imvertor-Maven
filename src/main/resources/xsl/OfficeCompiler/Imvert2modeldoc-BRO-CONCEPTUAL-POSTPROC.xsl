@@ -60,6 +60,7 @@
             <xsl:apply-templates select="section[@type = 'IMAGEMAPS']"/>
             <xsl:apply-templates select="content"/>
             <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[@type = 'DETAILS']/section[@name = $name]/section[@type = 'DETAIL-ATTRIBUTE']"/>
+            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[@type = 'DETAILS']/section[@name = $name]/section[@type = 'DETAIL-ASSOCIATION']"/>
         </xsl:copy>            
     </xsl:template>
     
@@ -87,44 +88,6 @@
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>
-            
-            <?x
-            <!-- relaties hierheen -->
-            <xsl:variable name="r" as="element(item)*">
-                <xsl:for-each select="../section[@type = 'SHORT-ASSOCIATIONS']/content[@approach = 'target']/part/item[1]">
-                    <!-- [bron objecttype] [naam relatiesoort] [kardinaliteit bij doel, uitgeschreven*] [doel objecttype] -->
-                    <item>
-                        <xsl:choose>
-                            <xsl:when test="item[4]"><!-- -->
-                                <xsl:apply-templates select="item[1]"/>
-                                <xsl:value-of select="' '"/>
-                                <xsl:apply-templates select="item[3]" mode="name-only"/> <!-- alleen de naam van de relatie, niet de rol -->
-                                <xsl:value-of select="' '"/>
-                                <xsl:apply-templates select="item[5]" mode="new-card"/>
-                                <xsl:value-of select="' '"/>
-                                <xsl:apply-templates select="item[4]"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:apply-templates select="item[1]"/>
-                                <xsl:value-of select="' '"/>
-                                <xsl:apply-templates select="item[2]"/>
-                                <xsl:value-of select="' '"/>
-                                <xsl:apply-templates select="item[3]"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <item><br/></item>
-                    </item>
-                </xsl:for-each>
-            </xsl:variable>
-            <xsl:if test="exists($r)">
-                <part type="CFG-DOC-BRO-RELATIES">
-                    <item>Relaties met andere entiteiten</item>
-                    <item>
-                        <xsl:sequence select="$r"/>
-                     </item>
-                </part>
-            </xsl:if>
-            x?>
         </content>
     </xsl:template>
     
@@ -163,6 +126,55 @@
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEMATERIELEHISTORIE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEAFLEIDBAAR']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-MOGELIJKGEENWAARDE']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-EXPLAINNOVALUE']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>
+        </content>
+    </xsl:template>
+    
+    <xsl:template match="section[@type = ('DETAIL-ASSOCIATION')]/content[@approach = 'target']">
+        <xsl:variable name="relation-name" select="../@name"/>
+        <xsl:variable name="source-name" select="../../@name"/>
+        
+        <!-- even moeilijk doen omdat de rol niet is opgenomen in de detail weergave van de relatie -->
+        <xsl:variable name="association-id" select="../@id"/>
+         
+        <xsl:variable name="short-item" select="(//content[@approach='target']//item[@type = 'detail' and @idref = $association-id])[1]"/> <!-- possible duplicates shoud, have been signalled as error -->
+        <xsl:variable name="target-name" select="substring-before($short-item,': ')"/>
+        <xsl:variable name="target-role-name" select="substring-after($short-item,': ')"/>
+        
+        <content>
+            <part type="CFG-DOC-NAAM">
+                <item>Type gegeven</item>
+                <item>Associatie van <xsl:value-of select="$source-name"/></item>
+            </part>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-HERKOMST']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-DEFINITIE']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-HERKOMSTDEFINITIE']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEAUTHENTIEK']"/>
+            <part type="CFG-DOC-NAAM">
+                <item>Kardinaliteit</item>
+                <item>
+                    <xsl:value-of select="imf:new-card(part[@type='CFG-DOC-INDICATIEKARDINALITEIT']/item[2])"/>
+                </item>
+            </part>
+            <part type="CFG-DOC-NAAM">
+                <item>Relatiesoort naam</item>
+                <item><xsl:value-of select="$relation-name"/></item>
+            </part>
+            <part type="CFG-DOC-NAAM">
+                <item>Relatierol naam</item>
+                <item><xsl:value-of select="$target-role-name"/></item>
+            </part>
+            <part type="CFG-DOC-NAAM">
+                <item>Source</item>
+                <item><xsl:value-of select="$source-name"/></item>
+            </part>
+            <part type="CFG-DOC-NAAM">
+                <item>Target</item>
+                <item><xsl:value-of select="$target-name"/></item>
+            </part>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-MOGELIJKGEENWAARDE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-EXPLAINNOVALUE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>

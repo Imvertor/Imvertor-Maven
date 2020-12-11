@@ -395,8 +395,8 @@
     </item>
     <item>
         <key>DETAIL-ASSOCIATION</key>
-        <trans lang="nl">Relatiesoort details</trans>
-        <trans lang="en">AssociationType details</trans>
+        <trans lang="nl"><!--Relatiesoort details --></trans>
+        <trans lang="en"><!--AssociationType details--></trans>
     </item>
     <item>
         <key>DETAIL-REFERENCEELEMENT</key>

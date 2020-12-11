@@ -155,6 +155,9 @@
     <xsl:variable name="allow-scalar-in-union" select="imf:boolean($configuration-metamodel-file//features/feature[@name='allow-scalar-in-union'])"/>
     <xsl:variable name="unique-normalized-class-names" select="$configuration-metamodel-file//features/feature[@name='unique-normalized-class-names']"/>
     
+    <!-- all display names of all properties -->
+    <xsl:variable name="property-display-names" select="for $p in ($domain-package//imvert:attribute,$domain-package/imvert:association) return imf:get-display-name($p)"/>
+    
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
     <!-- 
@@ -993,6 +996,10 @@
             $is-combined-identification 
             and empty(($defining-classes/imvert:is-id)[imf:boolean(.)]), 
             'Combined identification on relation [1] to object type [2] without identifier',(imvert:name,$defining-class/imvert:name[1]))"/>
+        
+        <xsl:sequence select="imf:report-error(., 
+            count($property-display-names = imf:get-display-name(.)) gt 1, 
+            'Multiple properties with same descriptor')"/>
         
         <xsl:next-match/>
     </xsl:template>
