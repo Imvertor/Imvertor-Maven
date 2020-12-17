@@ -25,11 +25,8 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.exceptions.ConfiguratorException;

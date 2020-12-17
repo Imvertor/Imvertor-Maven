@@ -34,7 +34,7 @@
     
     <!-- return XML representation of the wiki using markup language as defined. -->
     
-    <xsl:function name="imf:parse-wiki" as="item()*">
+    <xsl:function name="imf:parse-wiki" as="element(xhtml:body)">
         <xsl:param name="wiki-string" as="xs:string"/>
         <xsl:param name="wiki-language" as="xs:string"/>
 

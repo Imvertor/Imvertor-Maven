@@ -39,7 +39,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
-import net.sf.saxon.lib.StandardLogger;
 import net.sf.saxon.om.Sequence;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.QName;
@@ -49,16 +48,15 @@ import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.StringValue;
+import nl.armatiek.saxon.extensions.http.SendRequest;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.XslFile;
-import nl.imvertor.common.trace.XmlTimingTraceListener;
 import nl.imvertor.common.xsl.extensions.ImvertorFileSpec;
 import nl.imvertor.common.xsl.extensions.ImvertorMergeParms;
 import nl.imvertor.common.xsl.extensions.ImvertorParameterFile;
 import nl.imvertor.common.xsl.extensions.ImvertorTrack;
-import nl.imvertor.common.xsl.extensions.expath.ImvertorExpathWrite;
 
 /**
  * This class represents a Saxon based transformer. 
@@ -74,7 +72,7 @@ public class Transformer {
 	
 	protected static boolean MAYPROFILE = false; // profiling required? then explicitly switch on in the chain!
 	
-	private ErrorListener errorListener;
+	private ErrorListener errorListener; // vooralsnog null. work in progress?
 	private Messenger messageEmitter;
 
 	private static Processor processor;
@@ -101,8 +99,7 @@ public class Transformer {
 		processor = new Processor(configurator.getSaxonConfiguration());
 		
 		compiler = processor.newXsltCompiler();
-		compiler.setErrorListener(errorListener); // for compile time errors
-		
+	
 		messageEmitter = configurator.getMessenger();
 		outputProperties = new Properties();
 
@@ -112,8 +109,28 @@ public class Transformer {
 		setExtensionFunction(new ImvertorFileSpec());
 		setExtensionFunction(new ImvertorParameterFile());
 		setExtensionFunction(new ImvertorTrack());
-		setExtensionFunction(new ImvertorExpathWrite());
 		setExtensionFunction(new ImvertorMergeParms());
+
+		// expath file functions
+		//setExtensionFunction(new Copy());
+		//setExtensionFunction(new CreateDir());
+		//setExtensionFunction(new Delete());
+		//setExtensionFunction(new Exists());
+		//setExtensionFunction(new IsDir());
+		//setExtensionFunction(new Move());
+		//setExtensionFunction(new Parent());
+		//setExtensionFunction(new PathToURI());
+		//setExtensionFunction(new ReadBinary());
+		//setExtensionFunction(new ReadText());
+		//setExtensionFunction(new ReadTextLines());
+		//setExtensionFunction(new Size());
+		//setExtensionFunction(new Write());
+		//setExtensionFunction(new WriteBinary());
+		//setExtensionFunction(new WriteText());
+		//setExtensionFunction(new WriteTextLines());
+		
+		// expath http functions
+		setExtensionFunction(new SendRequest());
 	}
 	
 	/**
@@ -128,16 +145,6 @@ public class Transformer {
 
 	public void setProfiled(Boolean profiled) {
 		this.profiled = profiled;
-	}
-	
-	/**
-	 * A transformation is Profiled when debugging is active for the stylesheet, and profiling is requested.
-	 *  
-	 * @return
-	 */
-	public boolean getProfiled() {
-		setProfiled(true); //TODO PROFILING ON STYLESHEET ALIAS
-		return (configurator.getRunner().getDebug("#ALL") && this.profiled && MAYPROFILE); // TODO must be the alias of the stylesheet, e.g. BES, or all #ALL
 	}
 	
 	/**
@@ -181,12 +188,12 @@ public class Transformer {
 	 */
 	public boolean transform(File infile, File outfile, File xslfile, String alias) throws Exception {
 
-		String task = getProfiled() ? "Profiling" : "Transforming";
+		String task = "Transforming";
 		
 		configurator.getRunner().debug(logger,"CHAIN",task + " " + infile.getCanonicalPath() + " using " + xslfile.getName());
 		
 		// first set the profile nature of the compiler
-		compiler.setCompileWithTracing(getProfiled());
+		compiler.setCompileWithTracing(false);
 		
 		// record for later inspection
 		this.infile = infile;
@@ -231,25 +238,10 @@ public class Transformer {
 		transformer.setDestination(processor.newSerializer(outfile));
 
 		PrintStream stream = null;
-		if (getProfiled()) {
-			File profileFolder = new File(configurator.getXParm("system/work-profile-folder-path"));
-			File profileFile = new File(profileFolder, xslfile.getName() + ".profile.xml");
-			
-			XmlTimingTraceListener tracer = new XmlTimingTraceListener();
-			StandardLogger logger = new StandardLogger();
-			stream = new PrintStream(profileFile);
-			logger.setPrintStream(stream);
-			tracer.setOutputDestination(logger);
-			transformer.setTraceListener(tracer);
-		}
 		
 		configurator.save(); // may throw exception when config file not avail
 		long starttime = System.currentTimeMillis();
 		transformer.transform();
-		
-		if (getProfiled()) {
-			stream.close();
-		}
 		
 		if (!outfile.isFile())
 			throw new Exception("Transformation did not produce the expected file result " + outfile.getCanonicalPath());

@@ -21,7 +21,6 @@
 package nl.imvertor.common.file;
 
 import java.io.File;
-import java.nio.charset.MalformedInputException;
 
 import org.apache.jena.atlas.RuntimeIOException;
 import org.apache.jena.rdf.model.Model;

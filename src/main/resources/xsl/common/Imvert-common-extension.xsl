@@ -29,6 +29,6 @@
     <xsl:import href="extension/Imvert-common-config.xsl"/>
     <xsl:import href="extension/Imvert-common-version.xsl"/>
     <xsl:import href="extension/Imvert-common-messages.xsl"/>
-    <xsl:import href="extension/Imvert-common-expath.xsl"/>
+    <xsl:import href="extension/Imvert-common-expath-http.xsl"/>
     
 </xsl:stylesheet>

@@ -25,6 +25,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
 
@@ -37,6 +39,8 @@
     
     <xsl:variable name="chop" select="imf:boolean(imf:get-config-string('cli','chop','no'))"/>
     
+    <xsl:output method="xml" encoding="UTF-8"/> 
+        
     <xsl:template match="/imvert:packages">
         <xsl:variable name="step1">
             <imvert:packages>
@@ -302,7 +306,10 @@
                                         </xsl:when>
                                         <xsl:when test="$value-normalization = 'note'">
                                             <xsl:attribute name="format" select="$value-format"/>
-                                            <xsl:sequence select="imf:parse-wiki(.,$value-format)"/>
+                                            <xsl:variable name="body" select="imf:parse-wiki(.,$value-format)" as="element(xhtml:body)"/>
+                                            <!-- issue michael kay saxonica, https://saxonica.plan.io/issues/4858 -->
+                                            <xsl:apply-templates select="$body" mode="copy-html"/>
+                                            <!--<xsl:sequence select="$body"/>-->
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <xsl:attribute name="format">unknown</xsl:attribute>
@@ -321,7 +328,7 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="node()|@*" mode="#default mode-tv">
+    <xsl:template match="node()|@*" mode="#default mode-tv copy-html">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates mode="#current"/>

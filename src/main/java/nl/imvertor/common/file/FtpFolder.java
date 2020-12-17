@@ -44,10 +44,6 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.commons.net.util.TrustManagerUtils;
 
-import com.jcraft.jsch.ConfigRepository.Config;
-
-import nl.imvertor.common.Configurator;
-
 // see for full explanation:
 
 

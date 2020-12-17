@@ -15,6 +15,14 @@
   <!-- MSL = mozilla license, https://www.mozilla.org/en-US/MPL/2.0/ -->
   <!-- ESL = Eclipse software license, http://www.eclipse.org/legal/epl-v10.html -->
 
+	<repositories>
+	  <repository>
+	    <id>repos-armatiek</id>
+	    <name>Armatiek Repository</name>
+	    <url>https://armatiek.nl/maven2</url>
+	  </repository>
+	</repositories>
+
   <dependencies>
 
 	<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
@@ -127,7 +135,7 @@
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>9.9.1-7</version>
+      <version>10.3</version>
       <!-- MSL -->
     </dependency>
 
@@ -291,6 +299,17 @@
       <version>3.0.25</version>
     </dependency>
     
+    <dependency>
+	    <groupId>nl.armatiek.saxon</groupId>
+	    <artifactId>saxon-ext-httpclient</artifactId>
+	    <version>1.1</version>
+	</dependency>
+	<dependency>
+	    <groupId>nl.armatiek.saxon</groupId>
+	    <artifactId>saxon-ext-file</artifactId>
+	    <version>1.1</version>
+	</dependency>
+	  
   </dependencies>
 
   <build>
