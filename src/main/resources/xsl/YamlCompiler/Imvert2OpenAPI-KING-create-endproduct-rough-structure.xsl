@@ -146,6 +146,9 @@
 		<!-- All message-classes refer to a class within the 'Berichtstructuren' package. It contains standard configuration for specific
 			 messagetypes. These configurations are picked-up here. -->
 		<xsl:variable name="berichtsjabloon" select="$packages//imvert:package[imvert:alias='/www.kinggemeenten.nl/BSM/Berichtstrukturen/Model']//imvert:class[.//imvert:tagged-value[@id='CFG-TV-BERICHTCODE']/imvert:value=$berichtcode]" />
+		<xsl:if test="empty($berichtsjabloon)">
+			<xsl:sequence select="imf:msg('ERROR','There is no class with berichtcode [1] within the Berichtstructuren model or that model is not present. Check this.',($berichtcode))" />
+		</xsl:if>
 		<xsl:variable name="grouping" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-GROUPING')" />
 		<xsl:variable name="pagination" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-PAGE')" />
 		<xsl:variable name="serialisation" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-SERIALISATION')" />
