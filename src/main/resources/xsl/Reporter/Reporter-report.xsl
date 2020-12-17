@@ -179,7 +179,7 @@
         <xsl:variable name="other-errors" select="$other-messages"/>
         <xsl:variable name="other-warnings" select="$other-messages"/>
 
-        <xsl:if test="($other-errors + $other-warnings) gt 0">
+        <xsl:if test="(count($other-errors) + count($other-warnings)) gt 0">
             <!--TODO samenbrengen in een lijst van fouten, anders dan validatiefouten... -->
             
         </xsl:if>

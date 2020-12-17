@@ -3,8 +3,10 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-    version="2.0">
     
+    version="3.0"
+    expand-text="yes"
+    >
     <xsl:import href="imvert-common-prettyprint.xsl"/>
     
     <xsl:variable name="xml-indented" as="element()">
@@ -30,6 +32,10 @@
         <xsl:param name="prettyprint" as="xs:boolean"/>
         <xsl:param name="prettyprint-with-mixed-content" as="xs:boolean"/>
         
+        <xsl:message>REPLACE ME BY DLOGGER ({$filename})</xsl:message>
+        
+        
+        <?x    
         <xsl:variable name="path" select="concat('c:/temp/', $filename)"/>
         
         <xsl:variable name="sequence-with-wrapper">
@@ -54,6 +60,7 @@
                 <xsl:sequence select="imf:expath-write($path,$doc,if ($prettyprint) then $xml-indented else $xml-not-indented)"/>
             </xsl:when>
         </xsl:choose>
+        x?>
     </xsl:function>
     
     <!-- write sequence to file, not pretty printed and assuming mixed content occurs --> 

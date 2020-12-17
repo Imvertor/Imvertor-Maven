@@ -24,13 +24,21 @@
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-report.xsl"/>
+    <xsl:import href="../common/dlogger/DLogger-proxy.xsl"/>
     
     <xsl:template match="/config">
+        <!-- start dlogger when active -->
+        <xsl:sequence select="dlogger:init()"/>
+        <xsl:sequence select="dlogger:save('Imvertor versie',imf:get-xparm('run/version'))"/>
+        
+        <!-- and report -->
         <report>
             <step-display-name>Run initializer</step-display-name>
             <status>succeeds</status>

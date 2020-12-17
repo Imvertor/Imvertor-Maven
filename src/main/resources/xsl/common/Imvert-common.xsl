@@ -565,29 +565,8 @@
         
         Any-content may be any content; all results are written in a <debug-result> wrapper.
     -->    
-    <xsl:function name="imf:create-debug-file">
-        <xsl:param name="debug-level" as="xs:string"/>
-        <xsl:param name="file-name" as="xs:string"/>
-        <xsl:param name="any-contents" as="item()*"/>
-        <xsl:if test="$debugging">
-            <xsl:variable name="file-path" select="concat($debug-work-folder-path,'\',$debug-level,'_',$file-name)"/>
-            <xsl:sequence select="imf:create-file($file-path,$any-contents)"/>
-        </xsl:if>
-    </xsl:function>
     
-    <xsl:function name="imf:create-file">
-        <xsl:param name="file-path" as="xs:string"/>
-        <xsl:param name="any-contents" as="item()*"/>
-        <xsl:variable name="xml-content">
-            <debug-result date="{current-dateTime()}">
-                <xsl:sequence select="$any-contents"/>
-            </debug-result>
-        </xsl:variable>
-        <xsl:sequence select="imf:expath-write($file-path,$xml-content)"/>
-
-    </xsl:function>
-    
-        <!-- compile a header for imvert file; only packages are processed after this part -->
+    <!-- compile a header for imvert file; only packages are processed after this part -->
     <xsl:function name="imf:compile-imvert-header" as="element()*">
         <xsl:param name="packages" as="element()"/>
         <xsl:sequence select="$packages/*[not(self::imvert:package or self::imvert:filters)]"/>
