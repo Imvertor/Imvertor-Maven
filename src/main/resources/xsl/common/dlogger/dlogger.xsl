@@ -2,6 +2,7 @@
 <xsl:stylesheet 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:imf="http://www.imvertor.org/xsl/functions"
   xmlns:dlogger-impl="http://www.armatiek.nl/functions/dlogger"
   xmlns:dlogger-proxy="http://www.armatiek.nl/functions/dlogger-proxy"
   exclude-result-prefixes="#all"
@@ -13,7 +14,16 @@
   <xsl:include href="../../../static/xsl/dlogger/DLogger.xsl" use-when="$dlogger-active"/>
   
   <xsl:function name="dlogger-proxy:init" as="empty-sequence()">
-    <xsl:message use-when="$dlogger-active">Running DLogger as "{'Imvertor'}"</xsl:message>
+    <xsl:message use-when="$dlogger-active">
+      <xsl:choose>
+        <xsl:when test="$dlogger-impl:dlogger-mode">
+          <xsl:sequence  select="imf:msg('INFO','DLogger active as [1]',($dlogger-impl:dlogger-client))"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence  select="imf:msg('INFO','DLogger active (but idle)')"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:message>
     <xsl:sequence select="dlogger-impl:init()" use-when="$dlogger-active"/>
   </xsl:function> 
   

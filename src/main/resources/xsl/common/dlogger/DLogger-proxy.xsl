@@ -9,12 +9,17 @@
     xmlns:dlogger-proxy="http://www.armatiek.nl/functions/dlogger-proxy"
     >
     
-    <xsl:param name="dlogger-impl:dlogger-mode" as="xs:boolean" select="true()"/><!-- determine correct mode based on OTAP -->
-    <xsl:param name="dlogger-impl:dlogger-client" as="xs:string" select="'Imvertor-' || 'Arjan'"/><!-- TODO determine dynamically by identifying machine/server -->
+    <xsl:param name="dlogger-mode" as="xs:string?"/>
+    <xsl:param name="dlogger-proxy-url" as="xs:string?"/>
+    <xsl:param name="dlogger-viewer-url" as="xs:string?"/>
+    <xsl:param name="dlogger-client-name" as="xs:string?"/>
+    
+    <xsl:param name="dlogger-impl:dlogger-mode" as="xs:boolean" select="$dlogger-mode = 'true'"/><!-- determine correct mode based on OTAP -->
+    <xsl:param name="dlogger-impl:dlogger-client" as="xs:string" select="$dlogger-client-name"/><!-- TODO determine dynamically by identifying machine/server -->
     <xsl:param name="dlogger-impl:dlogger-proxy" as="xs:boolean" select="true()"/><!-- imvertor is stand-alone and must go through proxy -->
     
-    <xsl:param name="dlogger-impl:dlogger-proxy-url" as="xs:string" select="'http://localhost:8080/xslweb/DLogger-proxy'"/><!-- determine correct mode based on OTAP -->
-    <xsl:param name="dlogger-impl:dlogger-viewer-url" as="xs:string" select="'http://localhost:8080/xslweb/DLogger-viewer'"/><!-- determine correct mode based on OTAP -->
+    <xsl:param name="dlogger-impl:dlogger-proxy-url" as="xs:string" select="$dlogger-proxy-url"/>
+    <xsl:param name="dlogger-impl:dlogger-viewer-url" as="xs:string" select="$dlogger-viewer-url"/>
     
     <!-- 
         Import the DLogger code, which is distributed and should not be altered within the settings of the client app. 

@@ -26,7 +26,9 @@
     
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
-
+    
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
 
@@ -43,6 +45,9 @@
     <xsl:variable name="huidige-registratie-object" select="//imvert:class[imvert:supertype/imvert:type-name = 'Registratieobject']"/>
 
     <xsl:template match="/imvert:packages">
+        
+        <xsl:sequence select="dlogger:save('Registratie object',$huidige-registratie-object)"/>
+        
         <xsl:variable name="domains" select="imvert:package[imvert:stereotype/@id = 'stereotype-name-domain-package']"/>
         <xsl:choose>
             <xsl:when test="count($domains) gt 1">

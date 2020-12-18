@@ -31,12 +31,11 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-report.xsl"/>
-    <xsl:import href="../common/dlogger/DLogger-proxy.xsl"/>
     
     <xsl:template match="/config">
         <!-- start dlogger when active -->
         <xsl:sequence select="dlogger:init()"/>
-        <xsl:sequence select="dlogger:save('Imvertor versie',imf:get-xparm('run/version'))"/>
+        <xsl:sequence select="dlogger:save('section: Imvertor start','Versie ' || imf:get-xparm('run/version'))"/>
         
         <!-- and report -->
         <report>

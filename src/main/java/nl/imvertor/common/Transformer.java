@@ -234,6 +234,13 @@ public class Transformer {
 		transformer.setParameter(new QName("xml-output-name"),new XdmAtomicValue(outfile.getName()));
 		transformer.setParameter(new QName("xml-stylesheet-name"),new XdmAtomicValue(xslfile.getName()));
 		transformer.setParameter(new QName("xml-stylesheet-alias"),new XdmAtomicValue(alias));
+		// pass on the value of the dlogger URLs. 
+		transformer.setParameter(new QName("dlogger-mode"),new XdmAtomicValue(configurator.getServerProperty("dlogger.mode")));
+		transformer.setParameter(new QName("dlogger-proxy-url"),new XdmAtomicValue(configurator.getServerProperty("dlogger.proxy.url")));
+		transformer.setParameter(new QName("dlogger-viewer-url"),new XdmAtomicValue(configurator.getServerProperty("dlogger.viewer.url")));
+		transformer.setParameter(new QName("dlogger-client-name"),new XdmAtomicValue(configurator.getServerProperty("dlogger.client.name")));
+			
+		
 		transformer.setSource(source);
 		transformer.setDestination(processor.newSerializer(outfile));
 

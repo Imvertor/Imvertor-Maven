@@ -24,6 +24,8 @@
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -50,6 +52,9 @@
     <xsl:variable name="collapsed-exists" select="$messages/wiki = $message-collapse-keys"/>
 
     <xsl:template match="/config">
+
+        <xsl:sequence select="dlogger:save('section: Imvertor stop','Erors/warnings: ' || $error-count || '/' || $warning-count)"/>
+        <xsl:sequence select="dlogger:init(false())"/>
         
         <report>
             <step-display-name>Run analysis</step-display-name>
