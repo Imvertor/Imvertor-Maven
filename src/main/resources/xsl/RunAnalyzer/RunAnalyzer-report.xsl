@@ -27,7 +27,7 @@
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all"
-    version="2.0">
+    version="3.0">
     
     <!-- 
          Reporting stylesheet for the reporting step itself.
@@ -54,6 +54,7 @@
     <xsl:template match="/config">
 
         <xsl:sequence select="dlogger:save('section: Imvertor stop','Erors/warnings: ' || $error-count || '/' || $warning-count)"/>
+        <xsl:sequence select="dlogger:save('report','file:/' || replace(imf:get-xparm('system/work-app-folder-path'),'\\','/') || '/doc/index.html' )"/>
         <xsl:sequence select="dlogger:init(false())"/>
         
         <report>
