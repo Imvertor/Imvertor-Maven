@@ -7,12 +7,18 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:bro="http://www.geostandaarden.nl/bro"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
     
     <!--
         This stylesheet reorganizes the modeldoc as created for BRO, in accordance with specific requirements not foreseen in earlier stages.
     -->
+    
+    <xsl:import href="../common/Imvert-common.xsl"/>
+    
+    <xsl:output method="xml" indent="no"/>
     
     <xsl:variable name="compiled-book" as="element(book)">
         <xsl:for-each select="/book"><!-- singleton -->

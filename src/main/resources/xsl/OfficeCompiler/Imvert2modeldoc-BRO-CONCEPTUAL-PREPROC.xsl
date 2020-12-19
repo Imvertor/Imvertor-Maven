@@ -40,13 +40,11 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     
-    <xsl:output method="xml" indent="yes"/>
+    <xsl:output method="xml" indent="no"/>
 
     <xsl:variable name="huidige-registratie-object" select="//imvert:class[imvert:supertype/imvert:type-name = 'Registratieobject']"/>
 
     <xsl:template match="/imvert:packages">
-        
-        <xsl:sequence select="dlogger:save('Registratie object',$huidige-registratie-object)"/>
         
         <xsl:variable name="domains" select="imvert:package[imvert:stereotype/@id = 'stereotype-name-domain-package']"/>
         <xsl:choose>
