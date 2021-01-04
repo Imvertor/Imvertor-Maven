@@ -978,6 +978,25 @@
                <cs:Construct>
                   <cs:name>Waterinrichtingselement</cs:name>
                </cs:Construct>
+			   <!-- Toevoeging M Welling om IM Metingen MIM compliant te krijgen in EA -->
+               <cs:Construct>
+                  <cs:name>GenericName</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>PreparationStep</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Any</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>OM_Observation</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>SF_SpatialSamplingFeature</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>SF_Specimen</cs:name>
+               </cs:Construct>
             </cs:constructs>
          </cs:Map>
       </cs:ConceptualSchemasComponents>
