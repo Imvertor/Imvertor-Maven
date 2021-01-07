@@ -76,8 +76,6 @@
                 </xsl:choose>
             </xsl:variable>
         
-            <xsl:sequence select="dlogger:save('outside name',$name)"/>
-            <xsl:sequence select="dlogger:save('outside constructs',$constructs)"/>
             <!-- 
                 We have drilled down to single construct (or none if error) 
                 Get the URL of the conceptual schema this is part of.
