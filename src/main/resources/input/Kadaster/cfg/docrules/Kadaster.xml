@@ -152,6 +152,28 @@
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-BEGRIP" order="035">
+        <name lang="nl">Begrip</name>
+        <name lang="en">Concept</name>
+        <levels>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
     <doc-rule id="CFG-DOC-DEFINITIE" order="040">
         <name lang="nl">Definitie</name>
         <name lang="en">Definition</name>
@@ -198,6 +220,7 @@
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
         </levels>
     </doc-rule>
+    
     <doc-rule id="CFG-DOC-TOELICHTING" order="060">
         <name lang="nl">Toelichting</name>
         <name lang="en">Explanation</name>

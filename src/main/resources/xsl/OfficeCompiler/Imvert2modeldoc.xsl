@@ -1052,6 +1052,9 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-HERKOMST'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-SOURCE'))"/> 
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-BEGRIP'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-CONCEPT'))"/>
+                </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-DEFINITIE'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DEFINITION'))"/>
                 </xsl:when>
