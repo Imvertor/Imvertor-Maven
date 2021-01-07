@@ -29,6 +29,8 @@
     xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
 
@@ -73,7 +75,9 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
-          
+        
+            <xsl:sequence select="dlogger:save('outside name',$name)"/>
+            <xsl:sequence select="dlogger:save('outside constructs',$constructs)"/>
             <!-- 
                 We have drilled down to single construct (or none if error) 
                 Get the URL of the conceptual schema this is part of.
@@ -113,6 +117,8 @@
     
     <xsl:template match="/imvert:packages">
      
+        <xsl:sequence select="dlogger:save('mapping',$document-packages[imvert:id = 'OUTSIDE']/imvert:class)"/>
+        
         <!-- set info on this model here (as early as possible!) -->
         <xsl:variable name="application-package" select=".//imvert:package[imf:boolean(imvert:is-root-package)]"/>
         
