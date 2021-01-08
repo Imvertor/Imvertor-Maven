@@ -142,17 +142,19 @@
         <xsl:variable name="relation-name" select="../@name"/>
         <xsl:variable name="source-name" select="../../@name"/>
         
+        <xsl:sequence select="dlogger:save('section',..)"></xsl:sequence>
         <!-- even moeilijk doen omdat de rol niet is opgenomen in de detail weergave van de relatie -->
         <xsl:variable name="association-id" select="../@id"/>
          
-        <xsl:variable name="short-item" select="(//content[@approach='target']//item[@type = 'detail' and @idref = $association-id])[1]"/> <!-- possible duplicates shoud, have been signalled as error -->
-        <xsl:variable name="target-name" select="substring-before($short-item,': ')"/>
+        <xsl:variable name="short-item" select="(//content[@approach='target']//item[@type = 'detail' and @idref = $association-id])[1]"/> <!-- possible duplicates should have been signalled as error -->
         <xsl:variable name="target-role-name" select="substring-after($short-item,': ')"/>
+        <xsl:variable name="target-name" select="part[@type = 'CFG-DOC-GERELATEERDOBJECTTYPE']/item[2]"/>
         
+        <xsl:variable name="association-type" select="if (../@original-stereotype-id = 'stereotype-name-attributegroup') then 'Gegevensgroep' else 'Associatie'"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 -->
         <content>
             <part type="CFG-DOC-NAAM">
                 <item>Type gegeven</item>
-                <item>Associatie van <xsl:value-of select="$source-name"/></item>
+                <item><xsl:value-of select="$association-type"/> van <xsl:value-of select="$source-name"/></item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-HERKOMST']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-DEFINITIE']"/>
@@ -181,6 +183,9 @@
                 <item><xsl:value-of select="$target-name"/></item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
+            <xsl:if test="$association-type = 'Association'"><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 -->
+                <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/>
+            </xsl:if>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-MOGELIJKGEENWAARDE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-EXPLAINNOVALUE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>

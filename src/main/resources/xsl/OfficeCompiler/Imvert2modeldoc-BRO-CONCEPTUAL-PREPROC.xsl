@@ -72,6 +72,9 @@
             <xsl:for-each select="$ag">
                 <xsl:variable name="current-ag" select="."/>
                 <imvert:association>
+                    <imvert:original-stereotype id="stereotype-name-attributegroup"><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 -->
+                        <xsl:value-of select="$current-ag/imvert:stereotype"/>
+                    </imvert:original-stereotype>
                     <xsl:apply-templates select="$current-ag/*"/>
                     
                     <imvert:target>

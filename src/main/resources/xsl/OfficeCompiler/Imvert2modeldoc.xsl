@@ -870,6 +870,9 @@
     <xsl:template match="imvert:association" mode="detail-normal">
      
         <section name="{imf:get-name(.,true())}" type="DETAIL-ASSOCIATION" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
+            <xsl:if test="imvert:original-stereotype"><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 -->
+                <xsl:attribute name="original-stereotype-id" select="imvert:original-stereotype/@id"/>                
+            </xsl:if>
             <xsl:sequence select="imf:calculate-position(.)"/>
             <content approach="association">
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-ASSOCIATION')"/>
