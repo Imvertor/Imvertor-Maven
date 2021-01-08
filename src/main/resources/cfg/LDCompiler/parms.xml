@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Linked Data compiler</name>
+      <version-control>$Id: parms.xml 7509 2016-04-25 13:30:29Z arjan $</version-control>
+   </id>
+   
+   <cli-parms>
+      <cli-parm>
+         <name>createld</name>
+         <arg>yes|no</arg>
+         <tip>Yes if Linked Data Turtle must be generated</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>ldrules</name>
+         <arg>name</arg>
+         <tip>The name of the Linked Data rules file</tip>
+         <required>false</required>
+      </cli-parm> 
+      
+   </cli-parms>
+  
+   <properties>
+   
+      <RESULT_LD_RDF_FILE_PATH>${system/work-imvert-folder-path}/imvertor.36.1.ld.xml</RESULT_LD_RDF_FILE_PATH>   
+      <RESULT_LD_TTL_FILE_PATH>${system/work-imvert-folder-path}/imvertor.36.2.ld.ttl</RESULT_LD_TTL_FILE_PATH>   
+      
+      <RESULT_LD_APPLICATION_FOLDER>${system/work-ld-folder-path}</RESULT_LD_APPLICATION_FOLDER>
+      
+      <IMVERTOR_METAMODEL_Kadaster_LD_XSLPATH>Imvert2LD-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_LD_XSLPATH>
+      
+   </properties>
+   
+   <system>
+      <configuration-ldrules-file>${system/inp-folder-path}/cfg/ldrules/${cli/ldrules}.xml</configuration-ldrules-file>
+   </system>
+   
+</config>

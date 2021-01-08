@@ -86,7 +86,8 @@ public class ChainTranslateAndReport {
 			configurator.getCli(ImvertCompiler.STEP_NAME);
 			configurator.getCli(XsdCompiler.STEP_NAME);
 			configurator.getCli(ShaclCompiler.STEP_NAME);
-			configurator.getCli(SkosCompiler.STEP_NAME);
+			configurator.getCli(ShaclCompiler.STEP_NAME);
+			configurator.getCli(LDCompiler.STEP_NAME);
 			configurator.getCli(EpCompiler.STEP_NAME);
 			configurator.getCli(JsonSchemaCompiler.STEP_NAME);
 			configurator.getCli(JsonConceptsCompiler.STEP_NAME);
@@ -205,6 +206,8 @@ public class ChainTranslateAndReport {
 				     
 				    if (configurator.isTrue("cli","createshacl",false)) 
 				    	succeeds = succeeds && (new ShaclCompiler()).run();
+				    if (configurator.isTrue("cli","createld",false)) 
+				    	succeeds = succeeds && (new LDCompiler()).run();
 		
 				    if (configurator.isTrue("cli","createjsonconcepts",false))
 			 			succeeds = succeeds && (new JsonConceptsCompiler()).run();

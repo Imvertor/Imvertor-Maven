@@ -1,6 +1,8 @@
 package nl.imvertor.common.file;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -10,6 +12,7 @@ import org.eclipse.rdf4j.model.impl.LinkedHashModel;
 import org.eclipse.rdf4j.rio.ParseErrorListener;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFWriter;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
@@ -23,7 +26,6 @@ public class RdfFile extends AnyFile {
 	protected static final Logger logger = Logger.getLogger(RdfFile.class);
 
 	private boolean isOpen = false;
-	//private Model model;
 	
 	public static int EXPORT_FORMAT_XML = 0;
 	public static int EXPORT_FORMAT_XMLABBREVIATED = 1;
@@ -33,6 +35,13 @@ public class RdfFile extends AnyFile {
 	public static int EXPORT_FORMAT_N3 = 5;
 	
 	//private String[] map = {"RDF/XML", "RDF/XML-ABBREV", "N-TRIPLE", "TURTLE", "TriG", "N3"};
+	
+	public static void main(String[] args) throws Exception {
+		RdfFile input = new RdfFile("c:/temp/rdf/input.xml");
+		RdfFile output = new RdfFile("c:/temp/rdf/input2.ttl");
+		input.export(output,RdfFile.EXPORT_FORMAT_XML,RdfFile.EXPORT_FORMAT_TURTLE);
+	}
+	
 	
 	public RdfFile(String pathname) {
 		super(pathname);
@@ -47,7 +56,7 @@ public class RdfFile extends AnyFile {
 	}	
 
 	public void open() {
-		//TODO open and mainatin model in memory for query and the like.
+		//TODO open and maintain model in memory for query and the like.
 	}
 	
 	public void parse(Configurator configurator) throws Exception {
@@ -74,10 +83,10 @@ public class RdfFile extends AnyFile {
 					 rdfParser.parse(inputStream, documentURL.toString());
 				 } catch (Exception e) {
 					// ignore
-				} finally {
+			 	 } finally {
 					 inputStream.close();
 				 }
-
+			
 			 } else if (ext.equals("yml")) {
 				 
 				 // TODO
@@ -105,9 +114,46 @@ public class RdfFile extends AnyFile {
 	 * @param exportFileType
 	 * @throws Exception 
 	 */
-	public void export(File file, int exportFileType) throws Exception {
-		testOpen();
-		//TODO
+	public void export(File file, int inputFileType, int outputFileType) throws Exception {
+		if (isOpen) close();
+		
+		InputStream inputStream = new FileInputStream(this);
+		FileOutputStream outputStream = new FileOutputStream(file);
+		
+		try {
+			// guess the format of the input file (default to RDF/XML)
+			
+			RDFFormat inputFormat = null;
+			if (inputFileType == EXPORT_FORMAT_XML)
+				inputFormat = Rio.getParserFormatForFileName("").orElse(RDFFormat.RDFXML);
+			else if (inputFileType == EXPORT_FORMAT_TURTLE)
+				inputFormat = Rio.getParserFormatForFileName("").orElse(RDFFormat.TURTLE);
+			else
+				throw new Exception("Unsupported output format: " + inputFileType);
+			
+			RDFWriter rdfWriter = null;
+			if (outputFileType == EXPORT_FORMAT_XML)
+				rdfWriter = Rio.createWriter(RDFFormat.RDFXML, outputStream);
+			else if (outputFileType == EXPORT_FORMAT_TURTLE)
+				rdfWriter = Rio.createWriter(RDFFormat.TURTLE, outputStream);
+			else
+				throw new Exception("Unsupported input format: " + outputFileType);
+			
+			// create a parser for the input file and a writer for Turtle format
+			RDFParser rdfParser = Rio.createParser(inputFormat);
+			
+			// link the parser to the writer
+			rdfParser.setRDFHandler(rdfWriter);
+	
+			// start the conversion
+			rdfParser.parse(inputStream, this.getCanonicalPath());
+		
+		} catch (Exception e) { 
+			Configurator.getInstance().getRunner().error(logger,e.getLocalizedMessage());
+		} finally {
+			inputStream.close();
+			outputStream.close();
+		}
 	}
 	
 	/**
