@@ -192,9 +192,10 @@ public class Transformer {
 		
 		configurator.getRunner().debug(logger,"CHAIN",task + " " + infile.getCanonicalPath() + " using " + xslfile.getName());
 		
-		configurator.getRunner().debug(logger,"CHAIN","Set trace");
+		configurator.getRunner().debug(logger,"CHAIN","1");
 		// first set the profile nature of the compiler
 		compiler.setCompileWithTracing(false);
+		configurator.getRunner().debug(logger,"CHAIN","2");
 		
 		// record for later inspection
 		this.infile = infile;
@@ -209,13 +210,14 @@ public class Transformer {
 		StreamSource source = new StreamSource(infile);
 		StreamSource xslt = new StreamSource(xslfile);
 
+		configurator.getRunner().debug(logger,"CHAIN","3");
 		XsltExecutable exec = compiler.compile(xslt);
+		configurator.getRunner().debug(logger,"CHAIN","4");
 		XsltTransformer transformer = exec.load();
+		configurator.getRunner().debug(logger,"CHAIN","5");
 		
-		configurator.getRunner().debug(logger,"CHAIN","Get controller");
 		transformer.getUnderlyingController().setMessageEmitter(messageEmitter);
 		
-		configurator.getRunner().debug(logger,"CHAIN","Set listener");
 		if (errorListener != null)
 			transformer.setErrorListener(errorListener); // for runtime errors
 		if (outputProperties != null) {
@@ -226,7 +228,6 @@ public class Transformer {
 		}
 		String url = (new AnyFile(configurator.getConfigFilepath())).getFilespec("U")[1];
 		
-		configurator.getRunner().debug(logger,"CHAIN","Set parameters");
 		// pass all parameters if available to the transformer
 		Iterator<Entry<String,String>> it = parms.entrySet().iterator();
 		while (it.hasNext()) {
@@ -239,23 +240,18 @@ public class Transformer {
 		transformer.setParameter(new QName("xml-stylesheet-name"),new XdmAtomicValue(xslfile.getName()));
 		transformer.setParameter(new QName("xml-stylesheet-alias"),new XdmAtomicValue(alias));
 		// pass on the value of the dlogger URLs. 
-		configurator.getRunner().debug(logger,"CHAIN","Set dlogger");
 		transformer.setParameter(new QName("dlogger-mode"),new XdmAtomicValue(configurator.getServerProperty("dlogger.mode")));
 		transformer.setParameter(new QName("dlogger-proxy-url"),new XdmAtomicValue(configurator.getServerProperty("dlogger.proxy.url")));
 		transformer.setParameter(new QName("dlogger-viewer-url"),new XdmAtomicValue(configurator.getServerProperty("dlogger.viewer.url")));
 		transformer.setParameter(new QName("dlogger-client-name"),new XdmAtomicValue(configurator.getServerProperty("dlogger.client.name")));
 		
-		configurator.getRunner().debug(logger,"CHAIN","Set source");
 		transformer.setSource(source);
 		transformer.setDestination(processor.newSerializer(outfile));
 
 		PrintStream stream = null;
 		
-		configurator.getRunner().debug(logger,"CHAIN","Save config");
-
 		configurator.save(); // may throw exception when config file not avail
 		long starttime = System.currentTimeMillis();
-		configurator.getRunner().debug(logger,"CHAIN","Start transform");
 		transformer.transform();
 		
 		if (!outfile.isFile())
