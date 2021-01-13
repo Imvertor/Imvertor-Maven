@@ -368,7 +368,7 @@ public class Runner {
 	 * @throws ConfiguratorException 
 	 * @throws IOException 
 	 */
-	public void fatal(Logger logger, String text, Exception e, String id, String wiki)  {
+	public void fatal(Logger logger, String text, Throwable t, String id, String wiki)  {
 		try {
 			imvertorErrors += 1;
 			Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
@@ -378,14 +378,14 @@ public class Runner {
 			info(logger, "Must stop.");
 			info(logger, "Please contact your system administrator.");
 			info(logger, "");
-			logger.fatal("Details on the error", e);
-		} catch (Exception ex) {
+			logger.fatal("Details on the error", t);
+		} catch (Exception e) {
 			// Do not handle exception
 		}
 		System.exit(0); // TODO must be -1, see mail "exec:exec-external met exitcode -1"
 	}
-	public void fatal(Logger logger, String text, Exception e, String wiki)  {
-		fatal(logger, text, e, null, wiki);
+	public void fatal(Logger logger, String text, Throwable t, String wiki)  {
+		fatal(logger, text, t, null, wiki);
 	}
 	
 	/**
@@ -409,8 +409,8 @@ public class Runner {
 				trackerFileWriter.append(fulltext + System.lineSeparator());
 				trackerFileWriter.flush();
 			}
-		} catch (Exception e) {
-			fatal(logger, "Cannot track", e, "WIKISTUB");
+		} catch (Throwable t) {
+			fatal(logger, "Cannot track", t, "WIKISTUB");
 		}
 	}
 	

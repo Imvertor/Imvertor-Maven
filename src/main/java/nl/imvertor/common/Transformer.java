@@ -193,10 +193,8 @@ public class Transformer {
 		
 		configurator.getRunner().debug(logger,"CHAIN",task + " " + infile.getCanonicalPath() + " using " + xslfile.getName());
 		
-		configurator.getRunner().debug(logger,"CHAIN","1");
 		// first set the profile nature of the compiler
 		compiler.setCompileWithTracing(false);
-		configurator.getRunner().debug(logger,"CHAIN","2");
 		
 		// record for later inspection
 		this.infile = infile;
@@ -211,18 +209,14 @@ public class Transformer {
 		StreamSource source = new StreamSource(infile);
 		StreamSource xslt = new StreamSource(xslfile);
 
-		configurator.getRunner().debug(logger,"CHAIN","3 " + xslfile.getCanonicalPath());
-		
 		XsltExecutable exec = null;
 		try {
 			exec = compiler.compile(xslt);
 		} catch (Throwable t) {
-			Exception e = new Exception(t.getMessage() + ExceptionUtils.getFullStackTrace(t) + t.getClass().getName());
+			Exception e = new Exception(t.getMessage() + t.getClass().getName() + ExceptionUtils.getFullStackTrace(t));
 			configurator.getRunner().fatal(logger,"Fout",e,"","");
 		}
-		configurator.getRunner().debug(logger,"CHAIN","4");
 		XsltTransformer transformer = exec.load();
-		configurator.getRunner().debug(logger,"CHAIN","5");
 		
 		transformer.getUnderlyingController().setMessageEmitter(messageEmitter);
 		
