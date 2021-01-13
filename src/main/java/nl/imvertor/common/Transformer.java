@@ -35,6 +35,7 @@ import javax.xml.transform.ErrorListener;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -216,7 +217,7 @@ public class Transformer {
 		try {
 			exec = compiler.compile(xslt);
 		} catch (Throwable t) {
-			Exception e = new Exception(t.getMessage());
+			Exception e = new Exception(t.getMessage() + ExceptionUtils.getFullStackTrace(t) + t.getClass().getName());
 			configurator.getRunner().fatal(logger,"Fout",e,"","");
 		}
 		configurator.getRunner().debug(logger,"CHAIN","4");
