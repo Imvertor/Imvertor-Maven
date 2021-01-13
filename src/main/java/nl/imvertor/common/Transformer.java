@@ -188,85 +188,88 @@ public class Transformer {
 	 */
 	public boolean transform(File infile, File outfile, File xslfile, String alias) throws Exception {
 
-		try {
-			
-			String task = "Transforming";
-			
-			configurator.getRunner().debug(logger,"CHAIN",task + " " + infile.getCanonicalPath() + " using " + xslfile.getName());
-			
-			// first set the profile nature of the compiler
-			compiler.setCompileWithTracing(false);
-			
-			// record for later inspection
-			this.infile = infile;
-			this.outfile = outfile;
-			this.xslfile = xslfile;
-			
-			if (!infile.isFile())
-				throw new Exception("No such input file: " + infile.getCanonicalPath());
-			if (!xslfile.isFile())
-				throw new Exception("No such XSL file: " + xslfile.getCanonicalPath());
-			
-			StreamSource source = new StreamSource(infile);
-			StreamSource xslt = new StreamSource(xslfile);
-	
-			XsltExecutable exec = compiler.compile(xslt);
-			XsltTransformer transformer = exec.load();
-			
-			transformer.getUnderlyingController().setMessageEmitter(messageEmitter);
-			
-			if (errorListener != null)
-				transformer.setErrorListener(errorListener); // for runtime errors
-			if (outputProperties != null) {
-				for (String key : outputProperties.stringPropertyNames()) {
-					String value = outputProperties.getProperty(key);      
-				    transformer.setParameter(new QName(key), new XdmAtomicValue(value));
-				}
+		String task = "Transforming";
+		
+		configurator.getRunner().debug(logger,"CHAIN",task + " " + infile.getCanonicalPath() + " using " + xslfile.getName());
+		
+		configurator.getRunner().debug(logger,"CHAIN","Set trace");
+		// first set the profile nature of the compiler
+		compiler.setCompileWithTracing(false);
+		
+		// record for later inspection
+		this.infile = infile;
+		this.outfile = outfile;
+		this.xslfile = xslfile;
+		
+		if (!infile.isFile())
+			throw new Exception("No such input file: " + infile.getCanonicalPath());
+		if (!xslfile.isFile())
+			throw new Exception("No such XSL file: " + xslfile.getCanonicalPath());
+		
+		StreamSource source = new StreamSource(infile);
+		StreamSource xslt = new StreamSource(xslfile);
+
+		XsltExecutable exec = compiler.compile(xslt);
+		XsltTransformer transformer = exec.load();
+		
+		configurator.getRunner().debug(logger,"CHAIN","Get controller");
+		transformer.getUnderlyingController().setMessageEmitter(messageEmitter);
+		
+		configurator.getRunner().debug(logger,"CHAIN","Set listener");
+		if (errorListener != null)
+			transformer.setErrorListener(errorListener); // for runtime errors
+		if (outputProperties != null) {
+			for (String key : outputProperties.stringPropertyNames()) {
+				String value = outputProperties.getProperty(key);      
+			    transformer.setParameter(new QName(key), new XdmAtomicValue(value));
 			}
-			String url = (new AnyFile(configurator.getConfigFilepath())).getFilespec("U")[1];
-			
-			// pass all parameters if available to the transformer
-			Iterator<Entry<String,String>> it = parms.entrySet().iterator();
-			while (it.hasNext()) {
-				Entry<String,String> e = it.next();
-				transformer.setParameter(new QName(e.getKey().toString()),new XdmAtomicValue(e.getValue().toString()));
-			}
-			transformer.setParameter(new QName("xml-configuration-url"),new XdmAtomicValue(url));
-			transformer.setParameter(new QName("xml-input-name"),new XdmAtomicValue(infile.getName()));
-			transformer.setParameter(new QName("xml-output-name"),new XdmAtomicValue(outfile.getName()));
-			transformer.setParameter(new QName("xml-stylesheet-name"),new XdmAtomicValue(xslfile.getName()));
-			transformer.setParameter(new QName("xml-stylesheet-alias"),new XdmAtomicValue(alias));
-			// pass on the value of the dlogger URLs. 
-			transformer.setParameter(new QName("dlogger-mode"),new XdmAtomicValue(configurator.getServerProperty("dlogger.mode")));
-			transformer.setParameter(new QName("dlogger-proxy-url"),new XdmAtomicValue(configurator.getServerProperty("dlogger.proxy.url")));
-			transformer.setParameter(new QName("dlogger-viewer-url"),new XdmAtomicValue(configurator.getServerProperty("dlogger.viewer.url")));
-			transformer.setParameter(new QName("dlogger-client-name"),new XdmAtomicValue(configurator.getServerProperty("dlogger.client.name")));
-				
-			
-			transformer.setSource(source);
-			transformer.setDestination(processor.newSerializer(outfile));
-	
-			PrintStream stream = null;
-			
-			configurator.save(); // may throw exception when config file not avail
-			long starttime = System.currentTimeMillis();
-			transformer.transform();
-			
-			if (!outfile.isFile())
-				throw new Exception("Transformation did not produce the expected file result " + outfile.getCanonicalPath());
-			
-			Long duration = (System.currentTimeMillis() - starttime);
-			
-			Configurator.getInstance().getRunner().debug(logger,"CHAIN","Transformation took " + duration + " msec");
-			
-			// send to log as to be able to determine the full chain of info through transformations. 
-			configurator.getXsltCallLogger().add(configurator.getCurrentStepName(), infile.getName(), xslfile.getName(), outfile.getName(), duration);
-			
-			return (configurator.forceCompile() || configurator.getRunner().getFirstErrorText(stylesheetIdentifier) == null);
-		} catch (Exception e) {
-			configurator.getRunner().fatal(logger,"Cannot transform!",e,"","");
-			return false;
 		}
+		String url = (new AnyFile(configurator.getConfigFilepath())).getFilespec("U")[1];
+		
+		configurator.getRunner().debug(logger,"CHAIN","Set parameters");
+		// pass all parameters if available to the transformer
+		Iterator<Entry<String,String>> it = parms.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String,String> e = it.next();
+			transformer.setParameter(new QName(e.getKey().toString()),new XdmAtomicValue(e.getValue().toString()));
+		}
+		transformer.setParameter(new QName("xml-configuration-url"),new XdmAtomicValue(url));
+		transformer.setParameter(new QName("xml-input-name"),new XdmAtomicValue(infile.getName()));
+		transformer.setParameter(new QName("xml-output-name"),new XdmAtomicValue(outfile.getName()));
+		transformer.setParameter(new QName("xml-stylesheet-name"),new XdmAtomicValue(xslfile.getName()));
+		transformer.setParameter(new QName("xml-stylesheet-alias"),new XdmAtomicValue(alias));
+		// pass on the value of the dlogger URLs. 
+		configurator.getRunner().debug(logger,"CHAIN","Set dlogger");
+		transformer.setParameter(new QName("dlogger-mode"),new XdmAtomicValue(configurator.getServerProperty("dlogger.mode")));
+		transformer.setParameter(new QName("dlogger-proxy-url"),new XdmAtomicValue(configurator.getServerProperty("dlogger.proxy.url")));
+		transformer.setParameter(new QName("dlogger-viewer-url"),new XdmAtomicValue(configurator.getServerProperty("dlogger.viewer.url")));
+		transformer.setParameter(new QName("dlogger-client-name"),new XdmAtomicValue(configurator.getServerProperty("dlogger.client.name")));
+		
+		configurator.getRunner().debug(logger,"CHAIN","Set source");
+		transformer.setSource(source);
+		transformer.setDestination(processor.newSerializer(outfile));
+
+		PrintStream stream = null;
+		
+		configurator.getRunner().debug(logger,"CHAIN","Save config");
+
+		configurator.save(); // may throw exception when config file not avail
+		long starttime = System.currentTimeMillis();
+		configurator.getRunner().debug(logger,"CHAIN","Start transform");
+		transformer.transform();
+		
+		if (!outfile.isFile())
+			throw new Exception("Transformation did not produce the expected file result " + outfile.getCanonicalPath());
+		
+		Long duration = (System.currentTimeMillis() - starttime);
+		
+		Configurator.getInstance().getRunner().debug(logger,"CHAIN","Transformation took " + duration + " msec");
+		
+		// send to log as to be able to determine the full chain of info through transformations. 
+		configurator.getXsltCallLogger().add(configurator.getCurrentStepName(), infile.getName(), xslfile.getName(), outfile.getName(), duration);
+		
+		return (configurator.forceCompile() || configurator.getRunner().getFirstErrorText(stylesheetIdentifier) == null);
+
 	}
 	
 	/**
