@@ -215,7 +215,8 @@ public class Transformer {
 		XsltExecutable exec = null;
 		try {
 			exec = compiler.compile(xslt);
-		} catch (Exception e) {
+		} catch (Throwable t) {
+			Exception e = new Exception(t.getMessage());
 			configurator.getRunner().fatal(logger,"Fout",e,"","");
 		}
 		configurator.getRunner().debug(logger,"CHAIN","4");
