@@ -209,7 +209,6 @@ public class Transformer {
 		StreamSource source = new StreamSource(infile);
 		StreamSource xslt = new StreamSource(xslfile);
 
-		//tick2
 		XsltExecutable exec = null;
 		try {
 			exec = compiler.compile(xslt);
