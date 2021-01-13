@@ -210,8 +210,14 @@ public class Transformer {
 		StreamSource source = new StreamSource(infile);
 		StreamSource xslt = new StreamSource(xslfile);
 
-		configurator.getRunner().debug(logger,"CHAIN","3");
-		XsltExecutable exec = compiler.compile(xslt);
+		configurator.getRunner().debug(logger,"CHAIN","3 " + xslfile.getCanonicalPath());
+		
+		XsltExecutable exec = null;
+		try {
+			exec = compiler.compile(xslt);
+		} catch (Exception e) {
+			configurator.getRunner().fatal(logger,"Fout",e,"","");
+		}
 		configurator.getRunner().debug(logger,"CHAIN","4");
 		XsltTransformer transformer = exec.load();
 		configurator.getRunner().debug(logger,"CHAIN","5");
