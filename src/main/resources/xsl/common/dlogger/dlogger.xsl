@@ -14,7 +14,7 @@
   <xsl:include href="../../../static/xsl/dlogger/DLogger.xsl" use-when="$dlogger-active"/>
   
   <xsl:function name="dlogger-proxy:init" as="empty-sequence()">
-    <xsl:message use-when="$dlogger-active">
+    <xsl:sequence use-when="$dlogger-active">
       <xsl:choose>
         <xsl:when test="$dlogger-impl:dlogger-mode">
           <xsl:sequence  select="imf:msg('INFO','DLogger active as [1]',($dlogger-impl:dlogger-client))"/>
@@ -23,8 +23,8 @@
           <xsl:sequence  select="imf:msg('INFO','DLogger active (but idle)')"/>
         </xsl:otherwise>
       </xsl:choose>
-    </xsl:message>
-    <xsl:sequence select="dlogger-impl:init()" use-when="$dlogger-active"/>
+      <xsl:sequence select="dlogger-impl:init()"/>
+    </xsl:sequence>
   </xsl:function> 
   
   <xsl:function name="dlogger-proxy:init" as="empty-sequence()">
