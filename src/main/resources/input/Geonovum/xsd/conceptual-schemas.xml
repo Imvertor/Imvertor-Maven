@@ -38,6 +38,7 @@
             <cs:shortName>gml</cs:shortName>
             <cs:desc>ISO19107 Geographic information – Spatial schema</cs:desc>
             <cs:url>http://www.geonovum.nl/conceptual-schemas/ISO19107</cs:url>
+            <cs:catalogUrl>https://isotc211.geolexica.org/concepts/[entry]/</cs:catalogUrl>
          </cs:ConceptualSchema>
          <cs:ConceptualSchema>
             <cs:id>NEN3610</cs:id>
@@ -95,6 +96,11 @@
                <cs:Construct>
                   <cs:name>GM_AbstractFeatureType</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>1296</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>AbstractFeatureType</cs:name>
@@ -165,6 +171,11 @@
                <cs:Construct>
                   <cs:name>GM_Point</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>336</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>Point</cs:name>
@@ -182,6 +193,11 @@
                <cs:Construct>
                   <cs:name>GM_Curve</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>101</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>Curve</cs:name>
@@ -199,6 +215,11 @@
                <cs:Construct>
                   <cs:name>GM_Surface</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>437</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>Surface</cs:name>
@@ -291,6 +312,11 @@
                <cs:Construct>
                   <cs:name>GM_ArcString</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>2029</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>ArcString</cs:name>
@@ -308,6 +334,11 @@
                <cs:Construct>
                   <cs:name>GM_LineString</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>270</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>LineStringSegment</cs:name>
@@ -325,6 +356,11 @@
                <cs:Construct>
                   <cs:name>GM_Polygon</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>695</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>PolygonPatch</cs:name>
@@ -342,6 +378,11 @@
                <cs:Construct>
                   <cs:name>GM_Object</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>312</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>Object</cs:name>
@@ -354,6 +395,11 @@
                <cs:Construct>
                   <cs:name>GM_Primitive</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>2164</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>Primitve</cs:name>
@@ -366,6 +412,11 @@
                <cs:Construct>
                   <cs:name>GM_Position</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>347</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>Position</cs:name>
@@ -395,6 +446,11 @@
                <cs:Construct>
                   <cs:name>GM_Solid</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>416</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>Solid</cs:name>
@@ -463,6 +519,11 @@
                <cs:Construct>
                   <cs:name>GM_Complex</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>212</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>Complex</cs:name>
@@ -475,6 +536,11 @@
                <cs:Construct>
                   <cs:name>GM_Aggregate</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>210</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>Aggregate</cs:name>
@@ -535,7 +601,7 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:catalogEntries>
                      <cs:CatalogEntry>
-                        <cs:name>#Measure</cs:name>
+                        <cs:name>2386</cs:name>
                      </cs:CatalogEntry>
                   </cs:catalogEntries>
                   <cs:xsdTypes>
@@ -553,7 +619,7 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:catalogEntries>
                      <cs:CatalogEntry>
-                        <cs:name>#TimePeriod</cs:name>
+                        <cs:name>330</cs:name>
                      </cs:CatalogEntry>
                   </cs:catalogEntries>
                   <cs:xsdTypes>
@@ -649,6 +715,11 @@
                <cs:Construct>
                   <cs:name>URI</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>481</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>xs:anyURI</cs:name>
