@@ -44,7 +44,8 @@
         <xsl:param name="construct" as="element(cs:Construct)?"/> <!-- the construct that is part of a conceptual map -->
            
         <xsl:variable name="conceptual-schema" select="imf:get-schema-for-construct($construct)"/>
-        <xsl:sequence select="if ($conceptual-schema/cs:catalogUrl) then replace($conceptual-schema/cs:catalogUrl,'\[entry\]',string($construct/cs:catalogEntries/cs:CatalogEntry/cs:name)) else ()"/>
+        <xsl:variable name="name" select="string($construct/cs:catalogEntries/cs:CatalogEntry/cs:name)"/>
+        <xsl:sequence select="if ($conceptual-schema/cs:catalogUrl and $name) then replace($conceptual-schema/cs:catalogUrl,'\[entry\]',$name) else ()"/>
  
     </xsl:function>
     

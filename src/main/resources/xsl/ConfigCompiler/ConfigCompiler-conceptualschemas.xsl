@@ -114,7 +114,7 @@
                             <xsl:sequence select="if ($curl) then imf:get-xhtml-link($curl,cs:name[1],true()) else cs:name[1]"/>
                             <xsl:for-each select="cs:catalogEntries/cs:CatalogEntry">
                                 <span class="tid">
-                                    <xsl:sequence select="imf:get-xhtml-link(cs:url,cs:name,true())"/> 
+                                    <xsl:sequence select="if (cs:url) then imf:get-xhtml-link(cs:url,cs:name,true()) else cs:name"/> 
                                 </span>
                                 <br/>
                             </xsl:for-each>
