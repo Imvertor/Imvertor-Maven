@@ -13,6 +13,7 @@
             <cs-ref:MapRef xlink:href="#GML321"/>
             <cs-ref:MapRef xlink:href="#MIM11"/>
             <cs-ref:MapRef xlink:href="#VNGR-MAP"/>
+            <cs-ref:MapRef xlink:href="#VNGR-GENERIEK"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
@@ -74,6 +75,32 @@
                </cs:Construct-->
                <cs:Construct>
                   <cs:name>YearMonth</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         
+         <cs:Map>
+            <cs:id>VNGR-GENERIEK</cs:id>
+            <cs:namespace>http://www.vngr.nl/</cs:namespace>
+            <cs:location>http://schemas.vngr.nl/vngr-generiek.xsd</cs:location><!-- bogus not used for schema generator -->
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0.0</cs:version>
+            <cs:release>20210115</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#VNGR"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>OIN</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>UUID</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>CompositeID</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
             </cs:constructs>
