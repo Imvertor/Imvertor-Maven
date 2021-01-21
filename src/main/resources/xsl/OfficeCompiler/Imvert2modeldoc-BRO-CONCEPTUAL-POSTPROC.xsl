@@ -554,6 +554,9 @@
             
             <xsl:when test="$unit-ucum = 'cm3/cm3'">cm<sup>3</sup>/cm<sup>3</sup> (kubieke centimeter/kubieke centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'm3'">m<sup>3</sup> (kubieke meter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'm3/h'">m<sup>3</sup>/h (kubieke meter per uur)</xsl:when>
+            <xsl:when test="$unit-ucum = 'MWh'">MWh (megawattuur)</xsl:when>
+            <xsl:when test="$unit-ucum = 'kW'">kW (kilowatt)</xsl:when>
             
             <xsl:otherwise>
                 <xsl:value-of select="$unit-ucum"/>
