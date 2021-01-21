@@ -11,6 +11,8 @@
     exclude-result-prefixes="#all" 
     version="2.0">
     
+    <xsl:param name="catalog-only">true</xsl:param>
+    
     <xsl:import href="Imvert2modeldoc-Kadaster-html-respec.xsl"/>
     
 </xsl:stylesheet>

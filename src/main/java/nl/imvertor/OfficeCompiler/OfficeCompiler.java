@@ -110,8 +110,8 @@ public class OfficeCompiler extends Step {
 			
 				if (vr.contains("msword")) {
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_MSWORD_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_MSWORD_XSLPATH") : false;
-					if (succeeds) processDoc(fn,"msword.html","appinfo/msword-documentation-filename","properties/WORK_MSWORD_FILE");
-					// copy along the msword template file (docm), if any
+					if (succeeds) processDoc(fn,"msword.html","appinfo/msword-documentation-filename","properties/WORK_MSWORD_FILE","none");
+					// copy along the msword template file (docm), if any, but do not pass to git/ftp
 					String path = configurator.getXParm("system/configuration-owner-msword-folder",false);
 					if (path != null) { 
 						AnyFolder mswordFolder = new AnyFolder(path);
@@ -120,8 +120,16 @@ public class OfficeCompiler extends Step {
 					}
 				}
 				if (vr.contains("respec")) {
+					if (configurator.isTrue("cli","fullrespec", false)) {
+						// process complete report
+						transformer.setXslParm("catalog-only", "false");
+						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_RESPEC_XSLPATH") : false;
+						if (succeeds) processDoc(fn,"respec.full.html","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
+					}
+					// process catalog only
+					transformer.setXslParm("catalog-only", "true");
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_RESPEC_XSLPATH") : false;
-					if (succeeds) processDoc(fn,"respec.html","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE");
+					if (succeeds) processDoc(fn,"respec.html","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE",configurator.getXParm("cli/passoffice",false));
 				}
 			} else {
 				runner.error(logger,"No (valid) office variant specified: " + vr.toString());
@@ -139,7 +147,7 @@ public class OfficeCompiler extends Step {
 	/*
 	 * Copy the file from work to cat folder, and pass on to ftp/git when needed.
 	 */
-	private void processDoc(String documentname, String extension, String xparmOfficefile, String xparmWorkfile) throws Exception {
+	private void processDoc(String documentname, String extension, String xparmOfficefile, String xparmWorkfile, String target) throws Exception {
 		configurator.setXParm(xparmOfficefile, documentname + "." + extension);
 		
 		AnyFile infoOfficeFile = new AnyFile(configurator.getXParm(xparmWorkfile));
@@ -147,7 +155,7 @@ public class OfficeCompiler extends Step {
 		infoOfficeFile.copyFile(officeFile);
 		
 		// see if this result should be sent on to FTP/GIT
-		String target = configurator.getXParm("cli/passoffice",false);
+		
 		if (target != null) 
 			if (target.equals("ftp")) {
 				passFTP(officeFile);

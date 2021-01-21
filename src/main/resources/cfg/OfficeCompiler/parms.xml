@@ -34,7 +34,13 @@
          <arg>msword/respec</arg>
          <tip>Specify the type of office file. Multiple formats are allowed, separate list by whitespace.</tip>
          <required>When createoffice is set to html</required>
-      </cli-parm> 
+      </cli-parm>
+      <cli-parm>
+         <name>fullrespec</name>
+         <arg>yes|no</arg>
+         <tip>Should a full respec version be generated along with the catalog?</tip>
+         <default>no</default>
+      </cli-parm>
       <cli-parm>
          <name>officename</name>
          <arg>template</arg>
