@@ -179,6 +179,7 @@
          <arg>yes|no</arg>
          <tip>Yes if scalar types may be entered without reference to a UML datatype</tip>
          <required>false</required>
+         <default>yes</default>
       </cli-parm>
       <cli-parm>
          <name>visuals</name>

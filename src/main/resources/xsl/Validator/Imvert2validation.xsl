@@ -25,6 +25,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
 
@@ -745,7 +747,7 @@
             not($assert-attribute-not-specified) and 
             (not($is-enumeration) and exists(imvert:baretype) and not(imf:is-known-baretype(imvert:baretype)) and empty(imvert:type-name)), 
             'Attribute type [1] is not a known type and not a scalar',imvert:baretype)"/>
-        
+              
         <xsl:sequence select="imf:report-error(., 
             not($assert-attribute-not-specified) and 
             (not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-package)), 
