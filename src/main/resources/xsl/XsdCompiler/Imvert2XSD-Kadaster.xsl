@@ -1338,7 +1338,7 @@
         
         <xsl:choose>
            <xsl:when test="$min-l and $is-integer">
-               <xs:minInclusive value="{math:pow(10,$min-l - 1)}"/>
+               <xs:minInclusive value="{xs:integer(math:pow(10,$min-l - 1))}"/>
                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on integer, minimum, for [1]',$primitive-type)"/>
            </xsl:when>
            <xsl:when test="$min-l">
@@ -1348,7 +1348,7 @@
         </xsl:choose> 
         <xsl:choose>
             <xsl:when test="$max-l and $is-integer">
-                <xs:maxInclusive value="{math:pow(10,$max-l) - 1}"/>
+                <xs:maxInclusive value="{xs:integer(math:pow(10,$max-l) - 1)}"/>
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on integer, maximum, for [1]',$primitive-type)"/>
             </xsl:when>
             <xsl:when test="$max-l">
@@ -1356,7 +1356,7 @@
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on non-integer, maximum, for [1]',$primitive-type)"/>
             </xsl:when>
         </xsl:choose>
-        <xsl:if test="$l and not($min-l) and not($pre-l)">
+        <xsl:if test="$l and not($min-l) and not($pre-l) and not($is-integer)">
             <xs:length value="{$l}"/>
         </xsl:if>
         <xsl:if test="$post-l">
