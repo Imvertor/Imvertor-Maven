@@ -174,11 +174,11 @@
                 <item><xsl:value-of select="$target-role-name"/></item>
             </part>
             <part type="CFG-DOC-NAAM">
-                <item>Source</item>
+                <item>Bron</item>
                 <item><xsl:value-of select="$source-name"/></item>
             </part>
             <part type="CFG-DOC-NAAM">
-                <item>Target</item>
+                <item>Doel</item>
                 <item><xsl:value-of select="$target-name"/></item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
