@@ -115,8 +115,6 @@
     
     <xsl:template match="/imvert:packages">
      
-        <xsl:sequence select="dlogger:save('mapping',$document-packages[imvert:id = 'OUTSIDE']/imvert:class)"/>
-        
         <!-- set info on this model here (as early as possible!) -->
         <xsl:variable name="application-package" select=".//imvert:package[imf:boolean(imvert:is-root-package)]"/>
         

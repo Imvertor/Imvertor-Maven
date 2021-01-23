@@ -142,7 +142,6 @@
         <xsl:variable name="relation-name" select="../@name"/>
         <xsl:variable name="source-name" select="../../@name"/>
         
-        <xsl:sequence select="dlogger:save('section',..)"></xsl:sequence>
         <!-- even moeilijk doen omdat de rol niet is opgenomen in de detail weergave van de relatie -->
         <xsl:variable name="association-id" select="../@id"/>
          
@@ -183,7 +182,7 @@
                 <item><xsl:value-of select="$target-name"/></item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
-            <xsl:if test="$association-type = 'Association'"><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 -->
+            <xsl:if test="$association-type = 'Associatie'"><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147  -->
                 <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/>
             </xsl:if>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-MOGELIJKGEENWAARDE']"/>
