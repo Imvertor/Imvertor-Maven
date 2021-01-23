@@ -20,7 +20,7 @@
             <xsl:apply-templates select="chapter"/><!-- calls upon the standard template for chapters such as CAT and REF -->
         </xsl:variable>
         <xsl:choose>
-            <xsl:when test="$catalog-only = 'true'">
+            <xsl:when test="imf:boolean($catalog-only)">
                 <xsl:sequence select="$catalog"/>
             </xsl:when>
             <xsl:otherwise>
@@ -105,7 +105,8 @@
     
     <xsl:function name="imf:insert-diagram-path">
         <xsl:param name="diagram-id"/>
-        <xsl:value-of select="concat('Images/',$diagram-id,'.png')"/>
+        <xsl:variable name="pre" select="if (imf:boolean($catalog-only)) then 'cat/' else ''"/>
+        <xsl:value-of select="concat($pre,'Images/',$diagram-id,'.png')"/>
     </xsl:function>
     
 </xsl:stylesheet>
