@@ -172,18 +172,20 @@
                     <xsl:value-of select="imf:new-card(part[@type='CFG-DOC-INDICATIEKARDINALITEIT']/item[2])"/>
                 </item>
             </part>
-            <part type="CFG-DOC-NAAM">
-                <item>Relatiesoort naam</item>
-                <item><xsl:value-of select="$relation-name"/></item>
-            </part>
-            <part type="CFG-DOC-NAAM">
-                <item>Relatierol naam</item>
-                <item><xsl:value-of select="$target-role-name"/></item>
-            </part>
-            <part type="CFG-DOC-NAAM">
-                <item>Bron</item>
-                <item><xsl:value-of select="$source-name"/></item>
-            </part>
+            <xsl:if test="$association-type = 'Associatie'">
+                <part type="CFG-DOC-NAAM">
+                    <item>Relatiesoort naam</item>
+                    <item><xsl:value-of select="$relation-name"/></item>
+                </part>
+                <part type="CFG-DOC-NAAM">
+                    <item>Relatierol naam</item>
+                    <item><xsl:value-of select="$target-role-name"/></item>
+                </part>
+                <part type="CFG-DOC-NAAM">
+                    <item>Bron</item>
+                    <item><xsl:value-of select="$source-name"/></item>
+                </part>
+            </xsl:if>
             <part type="CFG-DOC-NAAM">
                 <item>Doel</item>
                 <item><xsl:value-of select="$target-name"/></item>
