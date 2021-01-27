@@ -138,18 +138,25 @@
         </content>
     </xsl:template>
     
-    <xsl:template match="section[@type = ('DETAIL-ASSOCIATION')]/content[@approach = 'target']">
+    <xsl:template match="section[@type = 'DETAIL-ASSOCIATION']">
+        <xsl:copy>  
+           <xsl:apply-templates select="@*"/>
+            <xsl:variable name="target-role-name" select="imf:get-target-role-name(@id)"/>
+            <xsl:attribute name="name" select="($target-role-name,@name)[1]"/>
+           <xsl:apply-templates select="content[@approach = 'target']"/>
+       </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="section[@type = 'DETAIL-ASSOCIATION']/content[@approach = 'target']">
         <xsl:variable name="relation-name" select="../@name"/>
         <xsl:variable name="source-name" select="../../@name"/>
         
-        <!-- even moeilijk doen omdat de rol niet is opgenomen in de detail weergave van de relatie -->
-        <xsl:variable name="association-id" select="../@id"/>
-         
-        <xsl:variable name="short-item" select="(//content[@approach='target']//item[@type = 'detail' and @idref = $association-id])[1]"/> <!-- possible duplicates should have been signalled as error -->
-        <xsl:variable name="target-role-name" select="substring-after($short-item,': ')"/>
+        <xsl:variable name="target-role-name" select="imf:get-target-role-name(../@id)"/>
+        
         <xsl:variable name="target-name" select="part[@type = 'CFG-DOC-GERELATEERDOBJECTTYPE']/item[2]"/>
         
         <xsl:variable name="association-type" select="if (../@original-stereotype-id = 'stereotype-name-attributegroup') then 'Gegevensgroep' else 'Associatie'"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 -->
+        <xsl:comment>break4</xsl:comment>
         <content>
             <part type="CFG-DOC-NAAM">
                 <item>Type gegeven</item>
@@ -587,4 +594,10 @@
         </xsl:choose>
     </xsl:function>
     
+    <!-- even moeilijk doen omdat de rol niet is opgenomen in de detail weergave van de relatie -->
+    <xsl:function name="imf:get-target-role-name">
+        <xsl:param name="association-id" as="xs:string"/>
+        <xsl:variable name="short-item" select="($document//content[@approach='target']//item[@type = 'detail' and @idref = $association-id])[1]"/> <!-- possible duplicates should have been signalled as error -->
+        <xsl:value-of select="substring-after($short-item,': ')"/>
+    </xsl:function>
 </xsl:stylesheet>
