@@ -997,6 +997,12 @@
                <cs:Construct>
                   <cs:name>SF_Specimen</cs:name>
                </cs:Construct>
+               <cs:Construct>
+                  <cs:name>float</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>int</cs:name>
+               </cs:Construct>
             </cs:constructs>
          </cs:Map>
       </cs:ConceptualSchemasComponents>
