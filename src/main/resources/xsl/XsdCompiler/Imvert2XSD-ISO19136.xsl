@@ -478,6 +478,18 @@
         
         <xsl:variable name="is-keyed" select="imvert:attributes/imvert:attribute/imvert:stereotype/@id = 'stereotype-name-key'"/><!-- keyed classes are never represented on their own -->
         
+        <?x
+        <xsl:variable name="ref-master" select="if (imvert:ref-master) then imf:get-construct-by-id(imvert:ref-master-id) else ()"/>
+        <xsl:variable name="ref-masters" select="if ($ref-master) then ($ref-master,imf:get-superclasses($ref-master)) else ()"/>
+        <xsl:variable name="ref-master-idatts" select="for $m in $ref-masters return $m/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
+        <xsl:variable name="ref-master-identifiable-subtype-idatts" select="for $s in imf:get-subclasses($ref-master) return imf:get-id-attribute($s)"/>
+        <xsl:variable name="ref-master-identifiable-subtypes-with-domain" select="for $a in $ref-master-identifiable-subtype-idatts return if (imf:get-tagged-value($a,'##CFG-TV-DOMAIN')) then $a/ancestor::imvert:class else ()"/>
+        
+        <xsl:variable name="use-identifier-domains" select="imf:boolean(imf:get-xparm('cli/identifierdomains','no'))"/>
+        <xsl:variable name="domain-values" select="for $i in $ref-master-idatts return imf:get-tagged-value($i,'##CFG-TV-DOMAIN')"/>
+        <xsl:variable name="domain-value" select="$domain-values[1]"/>
+        x?>
+        
         <xsl:variable name="formal-pattern" select="imf:get-facet-pattern(.)"/>
         
         <!-- only generate elements for constructs thet may be referenced as an element. This is: all constructs but
@@ -513,12 +525,40 @@
         
         <xsl:variable name="content" as="element()?">
             <xsl:choose>
-                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and not($supertype-name)">
+                <?x
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and $use-identifier-domains and not($supertype-name) and $domain-value">
                     <complex>
-                        <xs:attribute name="type" type="xs:string" fixed="simple"/>
-                        <xs:attribute ref="xlink:href" use="required"/>
+                        <xsl:sequence select="imf:create-xml-debug-comment(.,'Has a domain value')"/>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute ref="xlink:href" use="optional"/>
+                                <xs:attribute name="domein" use="optional" fixed="{$domain-value}"/>
+                            </xs:extension>
+                        </xs:simpleContent>
                     </complex>
                 </xsl:when>
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and $use-identifier-domains and exists($ref-master-identifiable-subtypes-with-domain)">
+                    <complex>
+                        <xsl:sequence select="imf:create-xml-debug-comment(.,'Reference master has (some) identifiable subtypes that have a domain')"/>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute ref="xlink:href" use="optional"/>
+                                <xs:attribute name="domein" use="optional" type="xs:string"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </complex>
+                </xsl:when>
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and not($supertype-name)">
+                    <complex>
+                        <xsl:sequence select="imf:create-xml-debug-comment(.,'No supertypes, no domain processing')"/>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute ref="xlink:href" use="optional"/><!-- sinds 1.61 -->
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </complex>
+                </xsl:when>
+                x?>
                 <xsl:when test="imvert:stereotype/@id = ('stereotype-name-union')">
                     <!-- attributes of a NEN3610 union, i.e. a choice between classes. The choice is a specialization of a datatype -->
                     <xsl:variable name="atts">
@@ -1878,4 +1918,10 @@
         <xsl:param name="association" as="element()*"/>
         <xsl:sequence select="for $a in $association return ($a/imvert:target,$a)[1]"/>
     </xsl:function>
+    
+    <xsl:function name="imf:get-id-attribute" as="element(imvert:attribute)?">
+        <xsl:param name="class" as="element(imvert:class)"/>
+        <xsl:sequence select="$class/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
+    </xsl:function>
+    
 </xsl:stylesheet>
