@@ -414,6 +414,11 @@
         <trans lang="en">Data element details</trans>
     </item>
     <item>
+        <key>DETAIL-REFERENCELIST</key>
+        <trans lang="nl"><!--Referentielijst details--></trans>
+        <trans lang="en"><!--Reference list details--></trans>
+    </item>
+    <item>
         <key>DETAIL-ENUMERATION</key>
         <trans lang="nl">Enumeratie details</trans>
         <trans lang="en">Enumeration details</trans>
