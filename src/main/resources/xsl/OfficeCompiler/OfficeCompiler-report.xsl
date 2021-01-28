@@ -37,7 +37,7 @@
         <xsl:variable name="messages" select="$configuration//messages/message[src='XMI1Imvert']"/>
         <xsl:variable name="errors" select="$messages[type=('FATAL','ERROR')]"/>
         <xsl:variable name="msword-filename" select="imf:get-config-string('appinfo','msword-documentation-filename')"/>
-        <xsl:variable name="respec-filename" select="imf:get-config-string('appinfo','respec-documentation-filename')"/>
+        <xsl:variable name="respec-filename" select="imf:get-config-string('appinfo','full-respec-documentation-filename')"/>
         <xsl:variable name="remote-url" select="imf:get-config-string('properties','giturl-resolved',())"/>
         <report>
             <step-display-name>Model documentation</step-display-name>

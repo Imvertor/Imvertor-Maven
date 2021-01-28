@@ -686,7 +686,7 @@
         <xsl:variable name="is-imbro-list" select="imf:get-config-string('cli','owner') eq 'BRO'"/>
         <section 
             name="{imf:get-name(.,true())}" 
-            type="CONTENTS-REFERENCELIST" 
+            type="DETAIL-REFERENCELIST" 
             id="{imf:plugin-get-link-name(.,'detail')}" 
             id-global="{imf:plugin-get-link-name(.,'global')}" 
             uuid="{imvert:id}">

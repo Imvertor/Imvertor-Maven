@@ -124,7 +124,7 @@ public class OfficeCompiler extends Step {
 						// process complete report
 						transformer.setXslParm("catalog-only", "false");
 						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_RESPEC_XSLPATH") : false;
-						if (succeeds) processDoc(fn,"respec.full.html","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
+						if (succeeds) processDoc(fn,"respec.full.html","appinfo/full-respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
 					}
 					// process catalog only
 					transformer.setXslParm("catalog-only", "true");

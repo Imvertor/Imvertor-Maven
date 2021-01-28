@@ -8,6 +8,12 @@
     
     <xi:include href="../../../BRO/cfg/i3n/translation.xml"/>
     
+    <item>
+        <key>CONTENTS-REFERENCELIST</key>
+        <trans lang="nl">Referentielijst inhoud</trans>
+        <trans lang="en">Reference list contents</trans>
+    </item>
+    
     <!-- tagged values -->
 
     <item>
