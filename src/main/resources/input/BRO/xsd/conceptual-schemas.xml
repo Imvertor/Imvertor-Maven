@@ -974,7 +974,7 @@
             <cs:desc>Common constructies BRO</cs:desc>
             <cs:location>https://schema.broservices.nl/xsd/brocommon/3.0/brocommon.xsd</cs:location>
             <cs:phase>0</cs:phase>
-            <cs:version>3.0.4</cs:version>
+            <cs:version>3.0.5</cs:version>
             <cs:release>20190321</cs:release>
             <cs:forSchema>
                <cs-ref:ConceptualSchemaRef xlink:href="#RO-BRO"/>
