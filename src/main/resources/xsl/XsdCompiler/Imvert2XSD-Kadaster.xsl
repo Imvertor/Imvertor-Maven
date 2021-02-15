@@ -37,6 +37,8 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     xmlns:ekf="http://EliotKimber/functions"
 
     exclude-result-prefixes="#all"
@@ -1662,8 +1664,10 @@
         <xsl:param name="info-node" as="item()?"/>
         <xsl:param name="text" as="xs:string"/>
         <xsl:param name="parms" as="item()*"/>
+        <xsl:variable name="s" select="concat(if ($info-node) then imf:get-display-name($info-node) else concat('&quot;',$info-node,'&quot;'),' - ',imf:insert-fragments-by-index($text,$parms))"/>
+        <!--<xsl:sequence select="dlogger:save('debug',$s)"></xsl:sequence>-->
         <xsl:if test="$debugging">
-            <xsl:comment select="concat(if ($info-node) then imf:get-display-name($info-node) else concat('&quot;',$info-node,'&quot;'),' - ',imf:insert-fragments-by-index($text,$parms))"/>
+            <xsl:comment select="$s"/>
         </xsl:if>
     </xsl:function>
     
