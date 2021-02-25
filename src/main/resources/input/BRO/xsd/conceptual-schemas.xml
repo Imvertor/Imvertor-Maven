@@ -1332,7 +1332,7 @@
          </cs:Map>
          <cs:Map>
             <cs:id>INSPIRE-SOIL</cs:id>
-            <cs:namespace>http://inspire.ec.europa.eu/</cs:namespace>
+            <cs:namespace>http://inspire.ec.europa.eu/schemas/so/4.0</cs:namespace>
             <cs:desc>Links to the INSPIRE Soil cataloque and schemas.</cs:desc>
             <cs:location>http://inspire.ec.europa.eu/schemas/so/4.0/Soil.xsd</cs:location>
             <cs:phase>3</cs:phase>
