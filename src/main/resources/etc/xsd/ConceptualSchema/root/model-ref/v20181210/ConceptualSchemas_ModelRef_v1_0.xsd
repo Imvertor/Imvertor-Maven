@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:Model-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:imvert="http://www.imvertor.org/schema/system"
            xmlns:xlink="http://www.w3.org/1999/xlink"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
            targetNamespace="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
            elementFormDefault="qualified"
            attributeFormDefault="unqualified"
@@ -11,8 +11,8 @@
       <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.imvertor.org/metamodels/conceptualschemas/model-ref</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/version">1.0</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/release">20181210</xs:appinfo>
-      <xs:appinfo source="http://www.imvertor.org/schema-info/generated">2018-12-12T11:54:48Z</xs:appinfo>
-      <xs:appinfo source="http://www.imvertor.org/schema-info/generator">1.48.3</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/generated">2021-03-04T12:54:52Z</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/generator">1.63.1</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/owner">Kadaster</xs:appinfo>
       <xs:documentation source="http://www.imvertor.org/schema-info/file-location">root/model-ref/v20181210/ConceptualSchemas_ModelRef_v1_0.xsd</xs:documentation>
       <xs:documentation source="http://www.imvertor.org/schema-info/conversion">
@@ -20,10 +20,10 @@
     </xs:documentation>
    </xs:annotation>
    <xs:import namespace="http://www.w3.org/1999/xlink"
-              schemaLocation="../../../xlink/1.0.0/xlinks.xsd"/>
+      schemaLocation="../../../xlink/1.0.0/xlinks.xsd"/>
    <xs:element name="ConceptualSchemaRef"
-               type="Model-ref:ConceptualSchemaRef"
-               abstract="false"/>
+      type="Model-ref:ConceptualSchemaRef"
+      abstract="false"/>
    <xs:complexType name="ConceptualSchemaRef" abstract="false">
       <xs:attribute name="type" type="xs:string" fixed="simple"/>
       <xs:attribute ref="xlink:href" use="required"/>
