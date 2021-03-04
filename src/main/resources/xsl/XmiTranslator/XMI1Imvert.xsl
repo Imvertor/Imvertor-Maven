@@ -363,11 +363,12 @@
         <xsl:variable name="designation">
             <xsl:choose>
                 <xsl:when test="imf:get-system-tagged-value(.,'ea_stype')='DataType'">datatype</xsl:when>
+                <xsl:when test="imf:get-system-tagged-value(.,'ea_stype')='PrimitiveType'">datatype</xsl:when>
                 <xsl:when test="$stereotypes[imf:get-normalized-name(.,'class-name') = imf:get-normalized-name('datatype','class-name')]">datatype</xsl:when>
                 <xsl:when test="$stereotypes[imf:get-normalized-name(.,'stereotype-name') = imf:get-normalized-name('enumeration','stereotype-name')]">enumeration</xsl:when>
                 <xsl:when test="imf:get-system-tagged-value(.,'ea_stype')='Class'">class</xsl:when>
                 <xsl:when test="$document-associations/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='associationclass']/@value=$id">associationclass</xsl:when>
-                <xsl:otherwise>other</xsl:otherwise>
+                <xsl:otherwise>other</xsl:otherwise><!-- TODO foutmeldinmg genereren, en parameter opnemen waarin koppeling stereotype en umltype wordt gelegd -->
             </xsl:choose>
         </xsl:variable>
         <xsl:if test="$designation != 'other'">
