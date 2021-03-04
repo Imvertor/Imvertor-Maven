@@ -294,7 +294,7 @@
         </stereo>
        
         <stereo id="stereotype-name-relatiesoort" primary="yes">
-            <name lang="en">Relationkind</name>
+            <name lang="en">AssociationType</name>
             <name lang="nl">Relatiesoort</name>
             <desc lang="nl">De soort waartoe een relatie kan behoren.</desc>
             <construct>association</construct>

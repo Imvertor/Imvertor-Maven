@@ -56,13 +56,13 @@
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-attribute" primary="yes">
-            <name lang="en">Attributekind</name>
+            <name lang="en">AttributeType</name>
             <name lang="nl">Attribuutsoort</name>
             <desc lang="nl">De soort waartoe een attribuut kan behoren.</desc>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-relatiesoort" primary="yes">
-            <name lang="en">Relationkind</name>
+            <name lang="en">AssociationType</name>
             <name lang="nl">Relatiesoort</name>
             <desc lang="nl">De soort waartoe een relatie kan behoren.</desc>
             <construct>association</construct>
