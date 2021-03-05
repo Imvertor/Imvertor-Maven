@@ -215,13 +215,6 @@
                </xs:restriction>
             </xs:simpleType>
          </xs:element>
-         <xs:element name="oasTypes" minOccurs="0" maxOccurs="1">
-            <xs:complexType>
-               <xs:sequence>
-                  <xs:element ref="Model:OasType" minOccurs="1" maxOccurs="1"/>
-               </xs:sequence>
-            </xs:complexType>
-         </xs:element>
          <xs:element name="catalogEntries" minOccurs="0" maxOccurs="1">
             <xs:complexType>
                <xs:sequence>
@@ -240,6 +233,13 @@
             <xs:complexType>
                <xs:sequence>
                   <xs:element ref="Model:RdfType" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="oasTypes" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="Model:OasType" minOccurs="1" maxOccurs="1"/>
                </xs:sequence>
             </xs:complexType>
          </xs:element>
