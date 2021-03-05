@@ -108,6 +108,7 @@
                     <xsl:sort select="cs:name[1]"/>
                     <xsl:variable name="xt" select="cs:xsdTypes/cs:XsdType"/>
                     <xsl:variable name="rt" select="cs:rdfTypes/cs:RdfType"/>
+                    <xsl:variable name="oa" select="cs:oasTypes/cs:OasType"/>
                     <tr>
                         <td>
                             <xsl:variable name="curl" select="imf:create-catalog-url(.)"/>
@@ -141,6 +142,9 @@
                             <xsl:value-of select="$rt/cs:name"/>
                         </td>
                         <td>
+                            <xsl:value-of select="$oa/cs:name"/>
+                        </td>
+                        <td>
                             <xsl:value-of select="string-join(cs:managedIds/*,', ')"/>
                         </td>
                     </tr>
@@ -148,7 +152,7 @@
             </xsl:variable>
             <xsl:choose>
                 <xsl:when test="$rows">
-                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'name:20,xsd-name:10,prim?:5,xsd-attribute:20,nilreason:10,rdf-name:15,ids:20','table-cs')"/>
+                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'name:20,xsd-name:10,prim?:5,xsd-attribute:20,nilreason:10,rdf-name:10,oas-name:10,ids:15','table-cs')"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <strong>(Map is empty)</strong>
