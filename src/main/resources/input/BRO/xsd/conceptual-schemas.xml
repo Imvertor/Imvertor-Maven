@@ -1032,6 +1032,15 @@
                </cs:Construct>        
               <cs:Construct>
                   <cs:name>KvK-nummer</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>ChamberOfCommerceNumberType</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+	       <cs:Construct>
                   <cs:name>ChamberOfCommerceNumber</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
@@ -1040,7 +1049,7 @@
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
-               </cs:Construct>               
+               </cs:Construct>       
                <cs:Construct>
                   <cs:name>Meetwaarde</cs:name>
                   <cs:sentinel>false</cs:sentinel>
@@ -1106,7 +1115,6 @@
                </cs:Construct>
                <cs:Construct>
                   <cs:name>Registratieobjectcode</cs:name>
-                  <cs:name>RegistrationObjectCode</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
@@ -1115,6 +1123,16 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+               <cs:Construct>
+                  <cs:name>RegistrationObjectCode</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>RegistrationObjectCodeType</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>		    
                <cs:Construct>
                   <cs:name>Tekst</cs:name>
                   <cs:sentinel>false</cs:sentinel>
@@ -1157,7 +1175,6 @@
                </cs:Construct>
                <cs:Construct>
                   <cs:name>IndicatieJaNee</cs:name>
-                  <cs:name>IndicationYesNo</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
@@ -1170,6 +1187,19 @@
                   </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
+                  <cs:name>IndicationYesNo</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>IndicationYesNoEnumeration</cs:name>
+                        <cs:asAttribute>IndicationYesNoEnumeration</cs:asAttribute>
+                        <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+	       <cs:Construct>
                   <cs:name>IndicatieJaNeeOnbekend</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
@@ -1184,6 +1214,17 @@
                </cs:Construct>
                <cs:Construct>
                   <cs:name>Kwaliteitsregime</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>QualityRegimeType</cs:name>
+                        <cs:asAttribute>QualityRegimeType</cs:asAttribute>
+                        <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
                   <cs:name>QualityRegime</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
@@ -1195,6 +1236,7 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+
                <cs:Construct>
                   <cs:name>Coördinatenpaar</cs:name>
                   <cs:sentinel>false</cs:sentinel>
