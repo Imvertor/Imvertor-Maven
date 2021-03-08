@@ -205,6 +205,7 @@
             <xsl:when test="$construct = 'associationrole'">AssociationRole</xsl:when>
             <xsl:when test="$construct = 'generalization'">Generalization</xsl:when>
             <xsl:when test="$construct = 'constraint'">Constraint</xsl:when>
+            <xsl:when test="$construct = 'primitivetype'">PrimitiveType</xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:msg($construct,'FATAL','Unknown stereotype appliance: [1]', $construct)"/>
             </xsl:otherwise>
