@@ -19,11 +19,78 @@
     </measures>
 
     <categories>
-        <!-- geen aanpassingen -->
+        <category id="MESSAGES">
+            <desc lang="nl">Berichten en gerelateerde componenten</desc>
+        </category>
+        <category id="MESSAGERELATIONS">
+            <desc lang="nl">Relaties tussen berichtklassen</desc>
+        </category>
     </categories>
     
     <stereos>
-        <!-- geen aanpassingen -->
+        <stereo id="stereotype-name-message-package">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="PACKAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-vrijberichttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-vraagberichttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-antwoordberichttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-kennisgevingberichttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-synchronisatieberichttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-synchronisatieberichttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-getberichttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-postberichttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-putberichttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-patchberichttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-deleteberichttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-padtype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGES"/>
+        </stereo>
+        <stereo id="stereotype-name-entiteitrelatie">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGERELATIONS"/>
+        </stereo>
+        <stereo id="stereotype-name-berichtrelatie">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGERELATIONS"/>
+        </stereo>
+        <stereo id="stereotype-name-padrelatie">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MESSAGERELATIONS"/>
+        </stereo>
     </stereos>
- 
 </visuals>
