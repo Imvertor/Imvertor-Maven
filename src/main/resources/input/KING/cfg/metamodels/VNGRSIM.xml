@@ -96,6 +96,14 @@
          <desc lang="en">A proxy is TODO</desc>
          <construct>attribute</construct>
       </stereo>
+
+      <stereo id="stereotype-name-simpletype" primary="yes">
+         <name lang="nl">Primitief datatype</name>
+         <name lang="en">PrimitiveDatatype</name>
+         <desc lang="en">TODO</desc>
+         <desc lang="nl"></desc>
+         <construct>primitivetype</construct>
+      </stereo>
       
       
    </stereotypes>
