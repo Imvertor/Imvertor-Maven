@@ -2033,12 +2033,12 @@
 			</xsl:when>
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]/imvert:id"/>
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]/imvert:id"/>
-			<xsl:when test="imvert:type-id">
+			<xsl:when test="imvert:type-id and  not(imvert:primitive-oas)">
 				<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name,'type-name'))" />
 				<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name)" />
+				<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name-oas)" />
 				
 				<xsl:variable name="max-length" select="imvert:max-length" />
 				<xsl:variable name="total-digits" select="imvert:total-digits" />
