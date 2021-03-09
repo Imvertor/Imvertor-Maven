@@ -28,7 +28,7 @@
             </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
-                    <cs:name>string</cs:name>
+                    <cs:name>xs:string</cs:name>
                     <cs:asAttribute>xs:string</cs:asAttribute>
                     <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
                     <cs:primitive>true</cs:primitive>
@@ -52,7 +52,7 @@
             </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
-                    <cs:name>integer</cs:name>
+                    <cs:name>xs:integer</cs:name>
                     <cs:asAttribute>xs:integer</cs:asAttribute>
                     <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
                     <cs:primitive>true</cs:primitive>
@@ -76,7 +76,7 @@
             </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
-                    <cs:name>float</cs:name>
+                    <cs:name>xs:float</cs:name>
                     <cs:asAttribute>xs:float</cs:asAttribute>
                     <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
                     <cs:primitive>true</cs:primitive>
@@ -100,7 +100,7 @@
             </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
-                    <cs:name>decimal</cs:name>
+                    <cs:name>xs:decimal</cs:name>
                     <cs:asAttribute>xs:decimal</cs:asAttribute>
                     <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
                     <cs:primitive>true</cs:primitive>
@@ -124,7 +124,7 @@
             </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
-                    <cs:name>boolean</cs:name>
+                    <cs:name>xs:boolean</cs:name>
                     <cs:asAttribute>xs:boolean</cs:asAttribute>
                     <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
                     <cs:primitive>true</cs:primitive>
@@ -148,7 +148,7 @@
             </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
-                    <cs:name>date</cs:name>
+                    <cs:name>xs:date</cs:name>
                     <cs:asAttribute>xs:date</cs:asAttribute>
                     <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
                     <cs:primitive>true</cs:primitive>
@@ -172,7 +172,7 @@
             </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
-                    <cs:name>dateTime</cs:name>
+                    <cs:name>xs:dateTime</cs:name>
                     <cs:asAttribute>xs:dateTime</cs:asAttribute>
                     <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
                     <cs:primitive>true</cs:primitive>
@@ -196,7 +196,7 @@
             </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
-                    <cs:name>year</cs:name>
+                    <cs:name>xs:gYear</cs:name>
                     <cs:asAttribute>xs:gYear</cs:asAttribute>
                     <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
                     <cs:primitive>true</cs:primitive>
@@ -220,7 +220,7 @@
             </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
-                    <cs:name>day</cs:name>
+                    <cs:name>xs:gDay</cs:name>
                     <cs:asAttribute>xs:gDay</cs:asAttribute>
                     <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
                     <cs:primitive>true</cs:primitive>
@@ -244,7 +244,7 @@
             </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
-                    <cs:name>month</cs:name>
+                    <cs:name>xs:gMonth</cs:name>
                     <cs:asAttribute>xs:gMonth</cs:asAttribute>
                     <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
                     <cs:primitive>true</cs:primitive>
@@ -268,7 +268,7 @@
             </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
-                    <cs:name>uri</cs:name>
+                    <cs:name>xs:anyURI</cs:name>
                     <cs:asAttribute>xs:anyURI</cs:asAttribute>
                     <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
                     <cs:primitive>true</cs:primitive>
