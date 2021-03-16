@@ -619,7 +619,7 @@
             <name lang="en">custom_path_facet</name>
             <desc lang="nl">Het deel van de messagenaam dat niet uit het model afgeled kan worden. 
                 Om de messagenaam toch te kunnen verifieren tegen het model wordt daar eerst de custom_path_facet uit verwijderd. 
-                Deze tv mag geen ‘/’ (slashes) bevatten.</desc>
+                Deze tv mag ‘/’ (slashes) bevatten maar niet aan het begin en eind.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-padtype</stereo>

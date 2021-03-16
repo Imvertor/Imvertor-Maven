@@ -107,7 +107,7 @@
 		<xsl:variable name="customPathFacet">
 			<xsl:choose>
 				<xsl:when test="substring($rawCustomPathFacet,1,1) = '/' and substring($rawCustomPathFacet,string-length($rawCustomPathFacet),1) = '/'">
-					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains 2 slashes. Remove them..',($rawCustomPathFacet,$rawMessageName))"/>
+					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains 2 slashes. Remove them.',($rawCustomPathFacet,$rawMessageName))"/>
 					<xsl:value-of select="substring-before(substring-after($rawCustomPathFacet,'/'),'/')"/>
 				</xsl:when>
 				<xsl:when test="substring($rawCustomPathFacet,1,1) = '/'">
