@@ -2040,7 +2040,6 @@
 			<xsl:otherwise>
 				<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name-oas)" />
 				
-				<xsl:variable name="max-length" select="imvert:max-length" />
 				<xsl:variable name="total-digits" select="imvert:total-digits" />
 				<xsl:variable name="fraction-digits" select="imvert:fraction-digits" />
 				<xsl:variable name="min-value" select="imf:get-tagged-value(.,'##CFG-TV-MINVALUEINCLUSIVE')" />
@@ -2065,9 +2064,14 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+				<xsl:variable name="max-length">
+					<xsl:value-of select="xs:string(imf:get-tagged-value(.,'##CFG-TV-MAXLENGTH'))"/>
+				</xsl:variable>
 				<xsl:variable name="pattern" select="imvert:pattern" />
 				
-				<xsl:sequence select="imf:create-output-element('ep:max-length', $max-length)" />
+				<xsl:if test="$max-length != ''">
+					<xsl:sequence select="imf:create-output-element('ep:max-length', $max-length)" />
+				</xsl:if>
 				<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
 				<xsl:if test="$max-value != ''">
 					<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />

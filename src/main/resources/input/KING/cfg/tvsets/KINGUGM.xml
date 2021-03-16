@@ -153,6 +153,16 @@
             </declared-values>
         </tv>
         
+        <tv norm="space" id="CFG-TV-MAXLENGTH">
+            <name lang="nl">Lengte</name>
+            <desc lang="nl">De maximale lengte die een attribuut kan hebben.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+            </stereotypes>
+        </tv>
+        
         <tv norm="space" id="CFG-TV-MINLENGTH">
             <name lang="nl">Minimum lengte</name>
             <desc lang="nl">De minimale lengte die een attribuut moet hebben.</desc>

@@ -78,7 +78,7 @@
 		 * false()	-->		 
 	<xsl:variable name="json-schemadeclaration" select="true()"/>
 
-	<xsl:variable name="message-set">
+	<xsl:variable name="message-sets">
 		<ep:message-sets>
 			<xsl:copy-of select="//ep:message-set"/>
 		</ep:message-sets>
@@ -93,7 +93,7 @@
 
 		
 		<xsl:result-document href="{concat('file:/c:/temp/SubtypeConstruct/',generate-id(),'.xml')}" method="xml">
-			<xsl:copy-of select="$message-set"/>
+			<xsl:copy-of select="$message-sets"/>
 		</xsl:result-document>
 		
 <?x		<xsl:for-each select="//ep:construct[ep:parameters/ep:parameter[ep:name = 'type' and ep:value = 'association'] and ep:choice]">
@@ -374,7 +374,7 @@
 		
 		<xsl:choose>
 			<xsl:when test="$serialisation = 'hal+json'">
-				<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't 'enumeration', 'superclass', 'complex-datatype','groepCompositie' or 'table-datatype' constructs.
+				<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't 'enumeration', 'superclass', 'complex-datatype','groep' or 'table-datatype' constructs.
 					 This is only applicable when the serialisation is hal+json.
 					 See 'Imvertor-Maven\src\main\resources\xsl\YamlCompiler\documentatie\Explanation query constructions.xlsx' tab 'Query1' for an explanation on this query. -->
 				<xsl:variable name="entiteiten">
@@ -510,7 +510,7 @@
 				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$serialisation = 'json'">
-				<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't 'enumeration', 'superclass', 'complex-datatype','groepCompositie' or 'table-datatype' constructs.
+				<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't 'enumeration', 'superclass', 'complex-datatype','groep' or 'table-datatype' constructs.
 					 This is only applicable when the serialisation is json. -->
 				<xsl:variable name="entiteiten">					
 					<xsl:for-each select="ep:message-set/ep:construct
@@ -678,12 +678,12 @@
 						) 
 						or 
 						(
-						ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groepCompositie','table-datatype')
+						ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groep','table-datatype')
 						)
 						)
 						and
 						not(
-						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groepCompositie'])] 
+						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groep'])] 
 						and 
 						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
 						and 
@@ -777,10 +777,10 @@
 						/ep:type-name
 						)
 						and
-						ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groepCompositie','table-datatype')
+						ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groep','table-datatype')
 						and
 						not(
-						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groepCompositie'])] 
+						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groep'])] 
 						and 
 						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
 						and 
@@ -865,7 +865,7 @@
 						 * are part of the requesttree of a Po message or in the responsetree of an Gc or Gr message;
 						 * aren't of type 'complex-datatype';
 						 * aren't of type 'table-datatype';
-						 * aren't of type 'groepCompositie';
+						 * aren't of type 'groep';
 						 * aren't of type 'groepCompositieAssociation';
 						 * do have a type;
 						 * are part of a message which must be expanded or do have themself an ep:construct of 'association' type  or are reffered to from a 
@@ -924,7 +924,7 @@
 														and 
 														ep:parameters/ep:parameter[ep:name='type']/ep:value!='table-datatype' 
 														and 
-														ep:parameters/ep:parameter[ep:name='type']/ep:value!='groepCompositie' 
+														ep:parameters/ep:parameter[ep:name='type']/ep:value!='groep' 
 														and 
 														ep:parameters/ep:parameter[ep:name='type']/ep:value!='groepCompositieAssociation' 
 														and 
@@ -1254,7 +1254,7 @@
 
 		<xsl:choose>
 			<xsl:when test="$serialisation = 'hal+json'">
-				<!-- Loop over global constructs which are refered to from other constructs and are 'complex-datatype','groepCompositie' or 'table-datatype' constructs.
+				<!-- Loop over global constructs which are refered to from other constructs and are 'complex-datatype','groep' or 'table-datatype' constructs.
 					 This is only applicable when the serialisation is hal+json.
 					 See 'Imvertor-Maven\src\main\resources\xsl\YamlCompiler\documentatie\Explanation query constructions.xlsx' tab 'Query1' for an explanation on this query. -->
 				<xsl:variable name="constructs">
@@ -1291,13 +1291,13 @@
 						)
 						and
 						(
-						ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groepCompositie','table-datatype')
+						ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groep','table-datatype')
 						)
 						and
 						ep:tech-name = //ep:construct/ep:type-name
 						and
 						not(
-						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groepCompositie'])] 
+						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groep'])] 
 						and 
 						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
 						and 
@@ -1328,7 +1328,7 @@
 				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$serialisation = 'json'">
-				<!-- Loop over global constructs which are refered to from other constructs and are 'complex-datatype','groepCompositie' or 'table-datatype' constructs.
+				<!-- Loop over global constructs which are refered to from other constructs and are 'complex-datatype','groep' or 'table-datatype' constructs.
 					 This is only applicable when the serialisation is json. -->
 				<xsl:variable name="constructs">					
 					<xsl:for-each select="ep:message-set/ep:construct
@@ -1363,12 +1363,12 @@
 						)
 						)
 						and
-						ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groepCompositie','table-datatype')
+						ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groep','table-datatype')
 						and
 						ep:tech-name = //ep:construct/ep:type-name
 						and
 						not(
-						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groepCompositie'])] 
+						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groep'])] 
 						and 
 						ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
 						and 
@@ -1510,7 +1510,7 @@
 			<ep:supertypes>
 				<xsl:for-each select="$types//ep:type-name">
 					<xsl:variable name="type-name" select="."/>
-					<xsl:for-each select="$message-set//ep:construct[ep:tech-name = $type-name]//ep:construct[ep:ref]">
+					<xsl:for-each select="$message-sets//ep:construct[ep:tech-name = $type-name]//ep:construct[ep:ref]">
 						<ep:type-name><xsl:value-of select="ep:ref"/></ep:type-name>
 					</xsl:for-each>
 				</xsl:for-each>
@@ -1530,7 +1530,7 @@
 		<xsl:for-each select="$uniqueSupertypes//ep:type-name">
 			<xsl:sort select="." order="ascending"/>
 			<xsl:variable name="type-name" select="."/>
-			<xsl:apply-templates select="$message-set//ep:construct[ep:tech-name = $type-name and parent::ep:message-set]" mode="superclasscomponent"/>
+			<xsl:apply-templates select="$message-sets//ep:construct[ep:tech-name = $type-name and parent::ep:message-set]" mode="superclasscomponent"/>
 			<xsl:if test="position() != last()">
 				<!-- As long as the current construct isn't the last construct that's refered to from the constructs within the messages 
 					 a comma separator has to be generated. -->
@@ -1729,7 +1729,7 @@
 						) and 
 						ep:parameters/ep:parameter[ep:name='type']/ep:value != 'complex-datatype' and 
 						ep:parameters/ep:parameter[ep:name='type']/ep:value != 'table-datatype' and 
-						ep:parameters/ep:parameter[ep:name='type']/ep:value != 'groepCompositie' and
+						ep:parameters/ep:parameter[ep:name='type']/ep:value != 'groep' and
 						not(./ep:parameters/ep:parameter[ep:name='endpointavailable']/ep:value='Nee')">
 						<!-- If the current construct:
 						 * isn't abstract
@@ -1758,7 +1758,7 @@
 							
 							<xsl:if test=".[ep:parameters/ep:parameter[ep:name='type']/ep:value!='complex-datatype' and 
 								ep:parameters/ep:parameter[ep:name='type']/ep:value!='table-datatype' and 
-								ep:parameters/ep:parameter[ep:name='type']/ep:value!='groepCompositie']
+								ep:parameters/ep:parameter[ep:name='type']/ep:value!='groep']
 								//ep:construct
 								[(ep:parameters/ep:parameter[ep:name='type']/ep:value='association' or
 								ep:parameters/ep:parameter[ep:name='type']/ep:value='supertype-association') and 
@@ -1771,7 +1771,7 @@
 							</xsl:if>
 						</xsl:when>
 						<xsl:when test="$serialisation = 'json'">
-							<xsl:if test=".[ep:parameters/ep:parameter[ep:name='type']/ep:value!='complex-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='table-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='groepCompositie']//ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value='association' 
+							<xsl:if test=".[ep:parameters/ep:parameter[ep:name='type']/ep:value!='complex-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='table-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='groep']//ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value='association' 
 								or ep:parameters/ep:parameter[ep:name='type']/ep:value='supertype-association')]">
 								<xsl:variable name="typeName" select="ep:type-name"/>
 								<xsl:apply-templates select="ep:seq">
@@ -2154,21 +2154,21 @@
 				<xsl:variable name="datatype">
 					<xsl:call-template name="deriveDataType">
 						<xsl:with-param name="incomingType">
-							<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+							<xsl:value-of select="lower-case(ep:data-type)"/>
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="format">
 					<xsl:call-template name="deriveFormat">
 						<xsl:with-param name="incomingType">
-							<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+							<xsl:value-of select="lower-case(ep:data-type)"/>
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="facets">
 					<xsl:call-template name="deriveFacets">
 						<xsl:with-param name="incomingType">
-							<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+							<xsl:value-of select="lower-case(ep:data-type)"/>
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:variable>
@@ -2203,21 +2203,21 @@
 				<xsl:variable name="datatype">
 					<xsl:call-template name="deriveDataType">
 						<xsl:with-param name="incomingType">
-							<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+							<xsl:value-of select="lower-case(ep:data-type)"/>
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="format">
 					<xsl:call-template name="deriveFormat">
 						<xsl:with-param name="incomingType">
-							<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+							<xsl:value-of select="lower-case(ep:data-type)"/>
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="facets">
 					<xsl:call-template name="deriveFacets">
 						<xsl:with-param name="incomingType">
-							<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+							<xsl:value-of select="lower-case(ep:data-type)"/>
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:variable>
@@ -2287,38 +2287,38 @@
 	<xsl:template name="deriveDataType">
 		<xsl:param name="incomingType"/>
 		<xsl:choose>
-			<!-- Each scalar type resolves to a type 'string', 'integer', 'number' or 'boolean'. -->
-			<xsl:when test="$incomingType = 'date'">
-				<xsl:value-of select="'string'"/>
-			</xsl:when>
-			<xsl:when test="$incomingType = 'year'">
-				<xsl:value-of select="'string'"/>
-			</xsl:when>
-			<xsl:when test="$incomingType = 'yearmonth'">
-				<xsl:value-of select="'integer'"/>
-			</xsl:when>
-			<xsl:when test="$incomingType = 'dateTime'">
-				<xsl:value-of select="'string'"/>
-			</xsl:when>
-			<xsl:when test="$incomingType = 'postcode'">
-				<xsl:value-of select="'string'"/>
-			</xsl:when>
+			<!-- Each type resolves to a type 'string', 'integer', 'number' or 'boolean'. -->
 			<xsl:when test="$incomingType = 'boolean'">
 				<xsl:value-of select="'boolean'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'string'">
 				<xsl:value-of select="'string'"/>
 			</xsl:when>
+			<xsl:when test="$incomingType = 'date'">
+				<xsl:value-of select="'string'"/>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'datetime'">
+				<xsl:value-of select="'string'"/>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'day'">
+				<xsl:value-of select="'string'"/>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'decimal'">
+				<xsl:value-of select="'number'"/>
+			</xsl:when>
 			<xsl:when test="$incomingType = 'integer'">
 				<xsl:value-of select="'integer'"/>
 			</xsl:when>
-			<xsl:when test="$incomingType = 'decimal'">
+			<xsl:when test="$incomingType = 'month'">
+				<xsl:value-of select="'string'"/>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'real'">
 				<xsl:value-of select="'number'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'uri'">
 				<xsl:value-of select="'string'"/>
 			</xsl:when>
-			<xsl:when test="$incomingType = 'txt'">
+			<xsl:when test="$incomingType = 'year'">
 				<xsl:value-of select="'string'"/>
 			</xsl:when>
 			<xsl:otherwise>
@@ -2330,23 +2330,23 @@
 	<xsl:template name="deriveFormat">
 		<xsl:param name="incomingType"/>
 		<xsl:choose>
-			<!-- Some scalar types resolve to a format and/or pattern. -->
+			<!-- Some types resolve to a format and/or pattern. -->
 			<xsl:when test="$incomingType = 'date'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;date&quot;'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'year'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;date_fullyear&quot;'"/>
 			</xsl:when>
-			<xsl:when test="$incomingType = 'yearmonth'">
+<!--			<xsl:when test="$incomingType = 'yearmonth'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;jaarmaand&quot;'"/>
-			</xsl:when>
+			</xsl:when> -->
 			<xsl:when test="$incomingType = 'month'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;date_month&quot;'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'day'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;date_mday&quot;'"/>
 			</xsl:when>
-			<xsl:when test="$incomingType = 'dateTime'">
+			<xsl:when test="$incomingType = 'datetime'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;date-time&quot;'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'uri'">
@@ -2359,7 +2359,7 @@
 	<xsl:template name="deriveFacets">
 		<xsl:param name="incomingType"/>
 		<xsl:choose>
-			<!-- Some scalar types can have one or more facets which restrict the allowed value. -->
+			<!-- Some types can have one or more facets which restrict the allowed value. -->
 			<xsl:when test="$incomingType = 'string'">
 				<xsl:if test="ep:pattern and $json-version != '2.0'">
 					<xsl:value-of select="concat(',&quot;pattern&quot;: &quot;^',ep:pattern,'$&quot;')"/>
@@ -2372,6 +2372,14 @@
 				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'integer'">
+				<xsl:if test="ep:min-value">
+					<xsl:value-of select="concat(',&quot;minimum&quot;: ',ep:min-value)"/>
+				</xsl:if>
+				<xsl:if test="ep:max-value">
+					<xsl:value-of select="concat(',&quot;maximum&quot;: ',ep:max-value)"/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'real'">
 				<xsl:if test="ep:min-value">
 					<xsl:value-of select="concat(',&quot;minimum&quot;: ',ep:min-value)"/>
 				</xsl:if>
@@ -2392,7 +2400,7 @@
 					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}$&quot;'"/>
 				</xsl:if>
 			</xsl:when>
-			<xsl:when test="$incomingType = 'yearmonth'">
+<!--			<xsl:when test="$incomingType = 'yearmonth'">
 				<xsl:if test="$json-version != '2.0'">
 					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}-^[0-1]{1}[0-9]{1}$&quot;'"/>
 				</xsl:if>
@@ -2401,7 +2409,7 @@
 				<xsl:if test="$json-version != '2.0'">
 					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-9]{1}[0-9]{3}[A-Z]{2}$&quot;'"/>
 				</xsl:if>
-			</xsl:when>
+			</xsl:when> -->
 			<xsl:otherwise/>
 		</xsl:choose>
 	</xsl:template>
@@ -2409,8 +2417,14 @@
 	<xsl:template name="deriveExample">
 		<xsl:param name="datatype" select="'string'"/>
 		<xsl:choose>
-			<!-- Some scalar types can have one or more facets which restrict the allowed value. -->
+			<!-- Some types can have one or more facets which restrict the allowed value. -->
 			<xsl:when test="ep:example != '' and $datatype = 'integer'">
+				<xsl:value-of select="concat(',&quot;example&quot;: ',ep:example)"/>
+			</xsl:when>
+			<xsl:when test="ep:example != '' and $datatype = 'real'">
+				<xsl:value-of select="concat(',&quot;example&quot;: ',ep:example)"/>
+			</xsl:when>
+			<xsl:when test="ep:example != '' and $datatype = 'decimal'">
 				<xsl:value-of select="concat(',&quot;example&quot;: ',ep:example)"/>
 			</xsl:when>
 			<xsl:when test="ep:example != ''">
@@ -2828,13 +2842,13 @@
 	<xsl:function name="imf:determineIndicatorNonIdProperties">
 		<xsl:param name="type-name"/>
 		
-		<xsl:for-each select="$message-set//ep:construct[ep:tech-name=$type-name]/ep:seq/ep:construct[ep:ref]">
+		<xsl:for-each select="$message-sets//ep:construct[ep:tech-name=$type-name]/ep:seq/ep:construct[ep:ref]">
 			<xsl:variable name="type-nameRefConstruct" select="ep:ref"/>
 			<xsl:choose>
-				<xsl:when test="$message-set//ep:construct[ep:tech-name = $type-nameRefConstruct]/ep:seq/ep:construct/ep:parameters[ep:parameter[ep:name='is-id']/ep:value ='false']">
+				<xsl:when test="$message-sets//ep:construct[ep:tech-name = $type-nameRefConstruct]/ep:seq/ep:construct/ep:parameters[ep:parameter[ep:name='is-id']/ep:value ='false']">
 					<xsl:value-of select="'true;'"/>
 				</xsl:when>
-				<xsl:when test="$message-set//ep:construct[ep:tech-name = $type-nameRefConstruct]/ep:seq[not(ep:construct/ep:parameters[ep:parameter[ep:name='is-id']/ep:value ='false']) and ep:construct/ep:ref]">
+				<xsl:when test="$message-sets//ep:construct[ep:tech-name = $type-nameRefConstruct]/ep:seq[not(ep:construct/ep:parameters[ep:parameter[ep:name='is-id']/ep:value ='false']) and ep:construct/ep:ref]">
 					<xsl:sequence select="imf:determineIndicatorNonIdProperties($type-nameRefConstruct)"/>
 				</xsl:when>
 				<xsl:otherwise>

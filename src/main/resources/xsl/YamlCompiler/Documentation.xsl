@@ -44,7 +44,7 @@
 	<xsl:template match="ep:p">
 		<xsl:choose>
 			<!-- In een document waarin één van de ep:p elementen het @format 'markdown' heeft worden alle ep:p elementen als markdown verwerkt. -->
-			<xsl:when test="//ep:p/@format = 'markdown'">
+			<xsl:when test="$message-sets//ep:p/@format = 'markdown'">
 				<xsl:text>&lt;body&gt;</xsl:text>
 					<xsl:choose>
 						<xsl:when test="@format = 'markdown'">
