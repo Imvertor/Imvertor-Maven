@@ -4,7 +4,7 @@
                       xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                      xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+                      xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210
                       ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
    <cs:mappings>
       <cs:Mapping>
@@ -19,7 +19,7 @@
    </cs:mappings>
    <cs:components>
       <cs:ConceptualSchemasComponents>
-         
+
          <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
 
          <cs:ConceptualSchema>
@@ -28,16 +28,16 @@
             <cs:desc>ISO19107 Geographic information – Spatial schema</cs:desc>
             <cs:url>http://www.kadaster.nl/conceptual-schemas/ISO19107</cs:url>
          </cs:ConceptualSchema>
-         
+
          <cs:ConceptualSchema>
             <cs:id>VNGR</cs:id>
             <cs:shortName>vngr</cs:shortName>
             <cs:desc>VNGR schema</cs:desc>
             <cs:url>http://www.vng.nl/</cs:url>
          </cs:ConceptualSchema>
-         
+
          <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
-         
+
          <cs:Map>
             <cs:id>VNGR-MAP</cs:id>
             <cs:namespace>http://www.vngr.nl/</cs:namespace>
@@ -79,7 +79,7 @@
                </cs:Construct>
             </cs:constructs>
          </cs:Map>
-         
+
          <cs:Map>
             <cs:id>VNGR-GENERIEK</cs:id>
             <cs:namespace>http://www.vngr.nl/</cs:namespace>
@@ -97,6 +97,10 @@
                </cs:Construct>
                <cs:Construct>
                   <cs:name>UUID</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>DatumOnvolledig</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
                <cs:Construct>
@@ -600,7 +604,7 @@
                </cs:Construct-->
             </cs:constructs>
          </cs:Map>
-      
+
       </cs:ConceptualSchemasComponents>
    </cs:components>
 </cs:ConceptualSchemas>
