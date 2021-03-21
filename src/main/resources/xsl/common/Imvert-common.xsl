@@ -30,7 +30,9 @@
     xmlns:imvert-appconfig="http://www.imvertor.org/schema/appconfig"
     xmlns:imvert-message="http://www.imvertor.org/schema/message"
 	xmlns:ep="http://www.imvertor.org/schema/endproduct"
-    
+	
+	xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+	
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:ekf="http://EliotKimber/functions"
     xmlns:functx="http://www.functx.com"
