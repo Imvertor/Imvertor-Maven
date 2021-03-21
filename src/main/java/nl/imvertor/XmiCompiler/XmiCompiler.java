@@ -21,6 +21,7 @@
 package nl.imvertor.XmiCompiler;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.xml.xpath.XPathConstants;
 
@@ -30,6 +31,7 @@ import org.w3c.dom.NodeList;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.exceptions.EnvironmentException;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
@@ -76,13 +78,20 @@ public class XmiCompiler extends Step {
 
 		EapFile eapFile = umlFile.getExtension().toLowerCase().equals("eap") ? new EapFile(umlFile) : null;
 		XmiFile xmiFile = umlFile.getExtension().toLowerCase().equals("xmi") ? new XmiFile(umlFile) : null;
-		ZipFile zipFile = umlFile.getExtension().toLowerCase().equals("zip") ? new ZipFile(umlFile) : null; // always holds single XMI
+		ZipFile zipFile = umlFile.getExtension().toLowerCase().equals("zip") ? new ZipFile(umlFile) : null; // holds single XMI, /images, and an optional /modeldoc folder 
+		
+		AnyFolder xmiFolder = umlFile.isDirectory() ? new AnyFolder(umlFile) : null; // may hold a range of files and folders
 		
 		boolean succeeds = true;
 		
 		// assmume no images passed.
 		configurator.setXParm("system/xmi-image-count", 0);
 		
+		if (activeFileOrigin == null && xmiFolder != null) {
+			runner.debug(logger,"CHAIN", "Try XMI folder at: " + xmiFolder);
+			passedFile = xmiFolder;
+			activeFileOrigin = "XMI folder passed";
+		}
 		if (activeFileOrigin == null && zipFile != null) {
 			runner.debug(logger,"CHAIN", "Try compressed XMI file at: " + zipFile);
 			if (zipFile.isFile()) {
@@ -164,28 +173,15 @@ public class XmiCompiler extends Step {
 				// XMI is provided in compressed form
 				AnyFolder tempFolder = new AnyFolder(configurator.getXParm("properties/WORK_ZIP_FOLDER"));
 				((ZipFile) passedFile).decompress(tempFolder);
-				File[] files = tempFolder.listFiles(); // may be one file (xmi) or two (xmi and Images folder)
 				
-				if (files.length == 0) 
-					runner.fatal(logger, "No files found in ZIP",null,"NFFIZ");
-				else if (files.length == 1) {
-					(new AnyFile(files[0])).copyFile(activeFile);
-					cleanXMI(activeFile);
-				} else if (files.length == 2) {
-					File file = (files[0].getName().equals("Images")) ? files[1] : files[0];
-					File folder = (files[0].getName().equals("Images")) ? files[0] : files[1];
-					(new AnyFile(file)).copyFile(activeFile);
-					AnyFolder targetFolder = new AnyFolder(activeFile.getParentFile().getCanonicalPath() + File.separator + "Images");
-					AnyFolder sourceFolder = new AnyFolder(folder);
-					if (sourceFolder.isDirectory() && sourceFolder.list().length != 0) {
-						configurator.setXParm("system/xmi-image-count", sourceFolder.list().length);
-						sourceFolder.copy(targetFolder);
-					} 
-					cleanXMI(activeFile);
-				} else  
-					runner.fatal(logger, "Multiple files found in ZIP",null,"MFFIZ"); 
+				processFilesInDeliveryFolder(tempFolder);
 				
 				tempFolder.deleteDirectory();
+				
+			} else if (passedFile instanceof AnyFolder) { 
+				
+				processFilesInDeliveryFolder(passedFile);
+				
 			} else {
 				// XMI is provided directly
 				runner.info(logger,"Reading" + filespec);
@@ -229,6 +225,35 @@ public class XmiCompiler extends Step {
 
 	}
 		
+	/**
+	 * Kopieer de relevante onderdelen van de aangeleverde folder naar de werkomgeving
+	 * 
+	 * @param tempFolder
+	 * @throws Exception
+	 */
+	private void processFilesInDeliveryFolder(File tempFolder) throws Exception {
+		File[] files = tempFolder.listFiles(); // may be one file (xmi) or two (xmi and Images folder)
+		
+		if (files.length == 0) 
+			runner.fatal(logger, "No files found in ZIP",null,"NFFIZ");
+		else {
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].isDirectory()) {
+					AnyFolder sourceFolder = new AnyFolder(files[i]);
+					AnyFolder targetFolder = new AnyFolder(activeFile.getParentFile().getCanonicalPath() + File.separator + sourceFolder.getName());
+					sourceFolder.copy(targetFolder);
+					if (sourceFolder.getName().equals("Images")) 
+						configurator.setXParm("system/xmi-image-count", sourceFolder.list().length);
+				} 
+				else if (files[i].getName().endsWith(".xmi")) {
+					AnyFile file = new AnyFile(files[i]);
+					file.copyFile(activeFile);
+					cleanXMI(activeFile);
+				}
+			}
+		}
+	}
+
 	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile, String projectName, String modelName) throws Exception {
 		eapFile.open();
 		String packageGUID = (modelName == null) ? eapFile.getProjectPackageGUID(projectName) : eapFile.getModelPackageGUID(projectName, modelName);
