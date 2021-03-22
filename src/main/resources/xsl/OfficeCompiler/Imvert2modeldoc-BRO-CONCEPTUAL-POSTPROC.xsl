@@ -188,7 +188,7 @@
                 </part>
             </xsl:if>
             <part type="CFG-DOC-NAAM">
-                <item>Doel</item>
+                <item><xsl:value-of select="if ($association-type = 'Gegevensgroep') then 'Gegevensgroeptype' else 'Doel'"/></item>
                 <item><xsl:value-of select="$target-name"/></item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>

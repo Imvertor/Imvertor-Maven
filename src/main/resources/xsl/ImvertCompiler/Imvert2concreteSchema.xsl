@@ -28,6 +28,8 @@
     xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
     xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -181,6 +183,8 @@
         </xsl:if>
         
         <xsl:variable name="pack" select="$class/ancestor::imvert:package[imvert:namespace][1]"/>
+        
+        <xsl:sequence select="dlogger:save('$class',(.,$class))"/>
         <xsl:choose>
             <xsl:when test="$is-intern">
                 <!-- when taken from intern, all external references are already resolved. -->

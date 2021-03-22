@@ -1344,7 +1344,7 @@
             <cs:id>INSPIRE-GEO</cs:id>
             <cs:namespace>http://inspire.ec.europa.eu/</cs:namespace>
             <cs:desc>Links to the INSPIRE Geo core cataloque and schemas.</cs:desc>
-            <cs:location>http://inspire.ec.europa.eu/schemas/ge-core/4.0/GeologyCore.xsd </cs:location>
+            <cs:location>http://inspire.ec.europa.eu/schemas/ge-core/4.0/GeologyCore.xsd</cs:location>
             <cs:phase>3</cs:phase>
             <cs:version>1.0</cs:version>
             <cs:release>4.0</cs:release>
