@@ -18,6 +18,7 @@
 	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
 	
 	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
+	<xsl:variable name="standard-json-gemeente-components-url" select="concat(imf:get-config-parameter('standaard-gemeente-components-url'),imf:get-config-parameter('standard-gemeente-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
 	<xsl:variable name="standard-geojson-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-geojson-components-file'))"/>
 	<!--<xsl:variable name="standard-json-components-url" select="'http://www.test.nl/'"/>	
 	<xsl:variable name="standard-geojson-components-url" select="'http://www.test.nl/'"/>-->
@@ -2110,18 +2111,27 @@
 		<!-- The properties representing an uml attribute are generated here.
 			 To be able to do that it uses the derivePropertyContent template which on its turn uses the deriveDataType, deriveFormat and deriveFacets 
 			 templates. -->
-		<xsl:variable name="derivedPropertyContent">
-			<xsl:call-template name="derivePropertyContent">
-				<xsl:with-param name="typeName" select="ep:type-name"/>
-			</xsl:call-template>
-		</xsl:variable>
-		<!-- The following if only applies if the current construct has an ep:type-name or a ep:data-type and if it isn't an association type construct
+		<xsl:choose>
+			<xsl:when test="ep:outside-ref='VNGR'">
+				<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'&quot;: {' )"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
+				<xsl:value-of select="'}'"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:variable name="derivedPropertyContent">
+					<xsl:call-template name="derivePropertyContent">
+						<xsl:with-param name="typeName" select="ep:type-name"/>
+					</xsl:call-template>
+				</xsl:variable>
+				<!-- The following if only applies if the current construct has an ep:type-name or a ep:data-type and if it isn't an association type construct
 			 or if it is a gml type. -->
-		<xsl:if test="((exists(ep:type-name) or exists(ep:data-type)) and not(ep:parameters/ep:parameter[ep:name='type']/ep:value='association') or ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external')">
-			<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'&quot;: {' )"/>
-			<xsl:value-of select="$derivedPropertyContent"/>
-			<xsl:value-of select="'}'"/>
-		</xsl:if>
+				<xsl:if test="((exists(ep:type-name) or exists(ep:data-type)) and not(ep:parameters/ep:parameter[ep:name='type']/ep:value='association') or ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external')">
+					<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'&quot;: {' )"/>
+					<xsl:value-of select="$derivedPropertyContent"/>
+					<xsl:value-of select="'}'"/>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template name="derivePropertyContent">
@@ -2301,7 +2311,7 @@
 				<xsl:value-of select="'string'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'day'">
-				<xsl:value-of select="'string'"/>
+				<xsl:value-of select="'integer'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'decimal'">
 				<xsl:value-of select="'number'"/>
@@ -2310,7 +2320,7 @@
 				<xsl:value-of select="'integer'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'month'">
-				<xsl:value-of select="'string'"/>
+				<xsl:value-of select="'integer'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'real'">
 				<xsl:value-of select="'number'"/>
@@ -2319,7 +2329,7 @@
 				<xsl:value-of select="'string'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'year'">
-				<xsl:value-of select="'string'"/>
+				<xsl:value-of select="'integer'"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="'string'"/>

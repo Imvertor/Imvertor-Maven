@@ -23,6 +23,7 @@
 	<xsl:variable name="standard-yaml-parameters-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-yaml-parameters-path'))"/>
 	<xsl:variable name="standard-yaml-responses-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-yaml-responses-path'))"/>
 	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
+	<xsl:variable name="standard-json-gemeente-components-url" select="concat(imf:get-config-parameter('standaard-gemeente-components-url'),imf:get-config-parameter('standard-gemeente-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
 	<xsl:variable name="geonovum-yaml-parameters-url" select="concat(imf:get-config-parameter('geonovum-components-url'),imf:get-config-parameter('geonovum-yaml-parameters-file'))"/>
 
 	<xsl:variable name="Response406Required" select="boolean(//ep:construct/ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external')"/>
@@ -394,7 +395,7 @@
 						<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$geonovum-yaml-parameters-url,'acceptCrs&quot;')"/>
 					</xsl:if>
 					<xsl:if test="$pagination = true()">
-						<xsl:text>&#xa;        - in: query</xsl:text>
+						<xsl:text>&#xa;        - in: query</xsl:text><xsl:text></xsl:text>
 						<xsl:text>&#xa;          name: page</xsl:text>
 						<xsl:text>&#xa;          description: "Een pagina binnen de gepagineerde resultatenset."</xsl:text>
 						<xsl:text>&#xa;          required: false</xsl:text>
@@ -428,9 +429,17 @@
 							</xsl:call-template>
 						</xsl:variable>
 						<xsl:choose>
-							<xsl:when test="upper-case(ep:name) = 'UUID'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
+							<xsl:when test="ep:outside-ref='VNGR'">
+								<xsl:text>&#xa;        - in: path</xsl:text>
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          required: true</xsl:text>
+								<xsl:text>&#xa;          schema:</xsl:text>
+								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
 							</xsl:when>
+<?x							<xsl:when test="upper-case(ep:name) = 'UUID'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
+							</xsl:when> ?>
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;        - in: path</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
@@ -787,9 +796,17 @@
 							</xsl:call-template>
 						</xsl:variable>
 						<xsl:choose>
-							<xsl:when test="upper-case(ep:name) = 'UUID'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
+							<xsl:when test="ep:outside-ref='VNGR'">
+								<xsl:text>&#xa;        - in: path</xsl:text>
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          required: true</xsl:text>
+								<xsl:text>&#xa;          schema:</xsl:text>
+								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
 							</xsl:when>
+<?x							<xsl:when test="upper-case(ep:name) = 'UUID'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
+							</xsl:when> ?>
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;        - in: path</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
@@ -1081,9 +1098,17 @@
 							</xsl:call-template>
 						</xsl:variable>
 						<xsl:choose>
-							<xsl:when test="upper-case(ep:name) = 'UUID'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
+							<xsl:when test="ep:outside-ref='VNGR'">
+								<xsl:text>&#xa;        - in: path</xsl:text>
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          required: true</xsl:text>
+								<xsl:text>&#xa;          schema:</xsl:text>
+								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
 							</xsl:when>
+<?x							<xsl:when test="upper-case(ep:name) = 'UUID'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
+							</xsl:when> ?>
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;        - in: path</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
@@ -1364,6 +1389,9 @@
 				<xsl:if test="ep:example != ''">
 					<ep:example><xsl:value-of select="ep:example"/></ep:example>
 				</xsl:if>
+				<xsl:if test="ep:outside-ref != ''">
+					<ep:outside-ref><xsl:value-of select="ep:outside-ref"/></ep:outside-ref>
+				</xsl:if>
 			</ep:param>
 		</xsl:for-each>
 		<xsl:for-each select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'groep']">
@@ -1445,7 +1473,7 @@
 						<ep:entityName path="false"><xsl:value-of select="$entityName"/></ep:entityName>
 					</xsl:when>
 					<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:entityName = $entityName">
-						<!-- If the entityname of the current uriPart is equal to the entityname of the corresponding uriPart wthin the determined
+						<!-- If the entityname of the current uriPart is equal to the entityname of the corresponding uriPart within the determined
 							 uri structure. The entity belongs to the path. -->
 						<ep:entityName path="true"><xsl:value-of select="$entityName"/></ep:entityName>
 					</xsl:when>
@@ -1491,6 +1519,9 @@
 					<xsl:variable name="example">
 						<xsl:value-of select="ep:example"/>
 					</xsl:variable>
+					<xsl:variable name="outside-ref">
+						<xsl:value-of select="ep:outside-ref"/>
+					</xsl:variable>
 					<xsl:choose>
 						<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName and $is-id = 'true'">
 							<!-- If the param is part of the path and it's an id-type it's reproduced as a path parameter with all necessary 
@@ -1520,6 +1551,9 @@
 								</xsl:if>
 								<xsl:if test="$example != ''">
 									<ep:example><xsl:value-of select="$example"/></ep:example>
+								</xsl:if>
+								<xsl:if test="$outside-ref != ''">
+									<ep:outside-ref><xsl:value-of select="$outside-ref"/></ep:outside-ref>
 								</xsl:if>
 	<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
 								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
@@ -1559,7 +1593,10 @@
 								<xsl:if test="$example != ''">
 									<ep:example><xsl:value-of select="$example"/></ep:example>
 								</xsl:if>
-	<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
+								<xsl:if test="$outside-ref != ''">
+									<ep:outside-ref><xsl:value-of select="$outside-ref"/></ep:outside-ref>
+								</xsl:if>
+								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
 								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
@@ -1593,7 +1630,10 @@
 								<xsl:if test="$example != ''">
 									<ep:example><xsl:value-of select="$example"/></ep:example>
 								</xsl:if>
-	<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
+								<xsl:if test="$outside-ref != ''">
+									<ep:outside-ref><xsl:value-of select="$outside-ref"/></ep:outside-ref>
+								</xsl:if>
+								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
 								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
@@ -1636,7 +1676,10 @@
 								<xsl:if test="$example != ''">
 									<ep:example><xsl:value-of select="$example"/></ep:example>
 								</xsl:if>
-	<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
+								<xsl:if test="$outside-ref != ''">
+									<ep:outside-ref><xsl:value-of select="$outside-ref"/></ep:outside-ref>
+								</xsl:if>
+								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
 								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
@@ -1686,7 +1729,13 @@
 			<xsl:when test="$incomingType = 'year'">
 				<xsl:value-of select="'integer'"/>
 			</xsl:when>
-<!--			<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'yearmonth'">
+			<xsl:when test="$incomingType = 'monty'">
+				<xsl:value-of select="'integer'"/>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'day'">
+				<xsl:value-of select="'integer'"/>
+			</xsl:when>
+			<!--			<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'yearmonth'">
 				<xsl:value-of select="'integer'"/>
 			</xsl:when>
 			<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'postcode'">
@@ -1722,7 +1771,13 @@
 					<xsl:when test="lower-case($enumtype) = 'year'">
 						<xsl:value-of select="'integer'"/>
 					</xsl:when>
-<!--					<xsl:when test="substring-after($enumtype, 'scalar-') = 'yearmonth'">
+					<xsl:when test="lower-case($enumtype) = 'month'">
+						<xsl:value-of select="'integer'"/>
+					</xsl:when>
+					<xsl:when test="lower-case($enumtype) = 'day'">
+						<xsl:value-of select="'integer'"/>
+					</xsl:when>
+					<!--					<xsl:when test="substring-after($enumtype, 'scalar-') = 'yearmonth'">
 						<xsl:value-of select="'integer'"/>
 					</xsl:when>
 					<xsl:when test="substring-after($enumtype, 'scalar-') = 'postcode'">

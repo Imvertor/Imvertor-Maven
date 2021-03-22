@@ -1745,6 +1745,25 @@
 		</xsl:variable-->
 
 		<xsl:choose>
+			<xsl:when test="imvert:type-package = 'VNGR'">
+				<ep:construct>
+					<ep:parameters>
+						<xsl:call-template name="attributeParameters"/>
+					</ep:parameters>
+					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
+					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
+					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name,'type-name'))" />
+					<xsl:sequence select="imf:create-output-element('ep:outside-ref', imvert:type-package)" />
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:call-template name="documentationUnknown"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</ep:construct>
+			</xsl:when>
 			<xsl:when test="imvert:type-name = 'NEN3610ID'">
 				<ep:construct>
 					<ep:parameters>
