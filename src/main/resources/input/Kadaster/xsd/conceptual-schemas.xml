@@ -11,6 +11,7 @@
          <cs:name>NEN3610_GML322</cs:name>
          <cs:use>
             <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <cs-ref:MapRef xlink:href="#GML322"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
@@ -20,6 +21,7 @@
          <cs:name>NEN3610_GML322PROFILE</cs:name>
          <cs:use>
             <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
@@ -29,6 +31,7 @@
          <cs:name>NEN3610_GML322_ENV</cs:name>
          <cs:use>
             <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <cs-ref:MapRef xlink:href="#GML322"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
@@ -41,6 +44,7 @@
          <cs:name>NEN3610_GML322PROFILE_ENV</cs:name>
          <cs:use>
             <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
@@ -60,6 +64,15 @@
       <cs:ConceptualSchemasComponents>
          
          <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
+         
+         <cs:ConceptualSchema>
+            <!-- conceptual schema for MIM11: uitbreiding van Kadaster -->
+            <cs:id>MIM11KAD</cs:id>
+            <cs:shortName>mim11kad</cs:shortName>
+            <cs:desc>MIM11KAD schema</cs:desc>
+            <cs:url>http://www.kadaster.nl/conceptual-schemas/MIM11</cs:url>
+            <cs:catalogUrl>https://kadaster.github.io/MIM-Werkomgeving/[entry]</cs:catalogUrl><!-- TODO op welke plek beschreven? -->
+         </cs:ConceptualSchema>
          
          <cs:ConceptualSchema>
             <cs:id>GML</cs:id>
@@ -105,7 +118,57 @@
          </cs:ConceptualSchema>
          
          <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
-         
+         <!-- toevoeging aan deze MIM map: -->
+         <cs:Map>
+            <cs:id>MIM11KAD</cs:id>
+            <cs:namespace>http://www.kadaster.nl/MIM11</cs:namespace>
+            <cs:location>http://schemas.kadaster.nl/mim11.xsd</cs:location><!-- TODO --><!-- bogus not used for schema generator -->
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0.0</cs:version>
+            <cs:release>20210325</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#MIM11KAD"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>YearMonth</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:managedID>EAID_A69F4EF6_65B9_4a9f_BB90_B6BA3C08CB4D</cs:managedID>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#primitive-datatypes</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:gYearMonth</cs:name>
+                        <cs:asAttribute>xs:gYearMonth</cs:asAttribute>
+                        <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Time</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:managedID>EAID_79028B0D_4BB3_434a_9D1A_8D340D810ABE</cs:managedID>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#primitive-datatypes</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:time</cs:name>
+                        <cs:asAttribute>xs:time</cs:asAttribute>
+                        <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+      
          <cs:Map>
             <cs:id>GML322</cs:id>
             <cs:namespace>http://www.opengis.net/gml/3.2</cs:namespace>
