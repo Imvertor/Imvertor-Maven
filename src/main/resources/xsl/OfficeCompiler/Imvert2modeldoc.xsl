@@ -1438,8 +1438,21 @@
     </xsl:function>
     
     <xsl:function name="imf:get-tv-value" as="item()*">
-        <xsl:param name="tv-element" as="element(tv)?"/>
-        <xsl:sequence select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/node()"/>
+       <xsl:param name="tv-element" as="element(tv)?"/>
+       <xsl:variable name="val" select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/node()"/>
+       <xsl:choose>
+            <xsl:when test="imf:is-url(string-join($val,''))">
+                <span>
+                    <a href="{$val}" target="_blank">
+                        <xsl:value-of select="$val"/>
+                    </a>
+                </span>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="$val"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        
     </xsl:function>
     
     <xsl:function name="imf:create-section-for-diagrams">
@@ -1511,6 +1524,11 @@
                 </xsl:non-matching-substring>
             </xsl:analyze-string>
         </xsl:for-each>
+    </xsl:function>
+    
+    <xsl:function name="imf:is-url" as="xs:boolean">
+        <xsl:param name="url" as="xs:string?"/>
+        <xsl:sequence select="matches($url,'^https?:')"/>
     </xsl:function>
     
     <!-- ======== remove the sections that have @include set to false (as configured) =========== -->
