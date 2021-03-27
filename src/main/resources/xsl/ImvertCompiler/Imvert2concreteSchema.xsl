@@ -184,7 +184,7 @@
         
         <xsl:variable name="pack" select="$class/ancestor::imvert:package[imvert:namespace][1]"/>
         
-        <xsl:sequence select="dlogger:save('$class',(.,$class))"/>
+        <!--<xsl:sequence select="dlogger:save('$class',(.,$class))"/>-->
         <xsl:choose>
             <xsl:when test="$is-intern">
                 <!-- when taken from intern, all external references are already resolved. -->

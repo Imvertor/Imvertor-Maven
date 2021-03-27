@@ -34,6 +34,8 @@
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
     version="2.0">
 
@@ -1510,6 +1512,8 @@
         <xsl:variable name="t" select="imf:convert-to-atomic(imf:get-facet-total-digits($this),'xs:integer',true())"/>
         <xsl:variable name="f" select="imf:convert-to-atomic(imf:get-facet-fraction-digits($this),'xs:integer',true())"/>
         
+        <xsl:sequence select="dlogger:save(imf:get-display-name($this),($l))"/>
+    
         <xsl:variable name="is-integer" select="$primitive-type = ('xs:integer')"/>
         <xsl:variable name="is-decimal" select="$primitive-type = ('xs:decimal', 'xs:real')"/>
         
