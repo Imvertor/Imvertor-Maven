@@ -185,7 +185,7 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]">
         <section name="{imf:get-name(.,true())}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-OBJECTTYPE')"/>
@@ -200,7 +200,7 @@
 
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]">
         <section name="{imf:get-name(.,true())}" type="ASSOCIATIONCLASS" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-ASSOCIATIONCLASS')"/>
@@ -216,7 +216,7 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]">
         <section name="{imf:get-name(.,true())}" type="REFERENCELIST" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-REFERENCELIST')"/>
@@ -231,7 +231,7 @@
    
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
         <section name="{imf:get-name(.,true())}" type="UNION" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-UNION')"/>
@@ -246,7 +246,7 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]">
         <section name="{imf:get-name(.,true())}" type="STRUCTUREDDATATYPE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-STRUCTUREDDATATYPE')"/>
@@ -261,7 +261,7 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]">
         <section name="{imf:get-name(.,true())}" type="PRIMITIVEDATATYPE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-PRIMITIVEDATATYPE')"/>
@@ -275,7 +275,7 @@
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')]">
         <xsl:variable name="naam" select="imf:get-name(.,true())"/>
         <part>
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <item id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
                 <xsl:sequence select="imf:create-idref(.,'detail')"/>
                 <xsl:sequence select="imf:create-content($naam)"/>          
@@ -289,7 +289,7 @@
     <!-- uitzondering: gegevensgroeptype wordt apart getoond. -->
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]">
         <section name="{imf:get-name(.,true())}" type="COMPOSITE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-COMPOSITE')"/>
@@ -408,7 +408,7 @@
     <xsl:template match="imvert:attribute" mode="short">
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
        <part>
-           <xsl:sequence select="imf:calculate-position(.)"/>
+           <xsl:sequence select="imf:calculate-node-position(.)"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/> 
            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imf:plugin-splice(imvert:baretype),false())))"/>
@@ -419,7 +419,7 @@
     <xsl:template match="imvert:attribute" mode="gegevensgroeptype">
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
        <part type="COMPOSED">
-           <xsl:sequence select="imf:calculate-position(.)"/>
+           <xsl:sequence select="imf:calculate-node-position(.)"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imf:plugin-splice(imvert:baretype),false())))"/>
@@ -430,7 +430,7 @@
     <xsl:template match="imvert:association" mode="gegevensgroeptype-as-attribute">
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
         <part type="COMPOSED">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
             <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imvert:type-name/@original,false())))"/>
@@ -442,7 +442,7 @@
         <!-- toon alsof het een attribuut is -->
         <xsl:variable name="type" select="imf:get-construct-by-id(imvert:type-id)"/>
         <part type="COMPOSER">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <item>
               <xsl:variable name="attname" select="imf:get-name(.,true())"/>
               <xsl:variable name="typname" select="imf:get-name($type,true())"/>
@@ -500,7 +500,7 @@
         </xsl:variable>
         <xsl:variable name="r2" as="element()*">
             <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="#current">
-                <xsl:sort select="imf:calculate-position(..)" data-type="number" order="ascending"/>
+                <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
             </xsl:apply-templates>
             <xsl:if test="$include-incoming-associations">
                 <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="#current">
@@ -532,7 +532,7 @@
         
         <xsl:variable name="type" select="imf:get-construct-by-id(imvert:type-id)"/>
         <part>
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <item>
                 <!--
                 Voorbeeld: ZAAKTYPE [1..*] heeft relevant BESLUITTYPE [0..*]
@@ -599,7 +599,7 @@
     <!-- Stel detailinfo samen voor een objecttype, relatieklasse, enumeratie -->
     <xsl:template match="imvert:class" mode="detail">
         <section name="{imf:get-name(.,true())}" type="{imvert:stereotype[1]}" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             
             <xsl:variable name="associations" select="imvert:associations/imvert:association"/>
             <xsl:variable name="compositions" select="$associations[imvert:stereotype/@id = ('stereotype-name-association-to-composite')]"/>
@@ -610,7 +610,9 @@
                 <xsl:apply-templates select="$defining-class" mode="detail"/>
                 <!--<xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="detail"/>-->
             </xsl:for-each>
-            <xsl:apply-templates select="($associations except $compositions)" mode="detail"/>       
+            <xsl:apply-templates select="($associations except $compositions)" mode="detail">
+                <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
+            </xsl:apply-templates>       
         
         </section>
     </xsl:template>
@@ -630,7 +632,7 @@
             id="{imf:plugin-get-link-name(.,'detail')}" 
             id-global="{imf:plugin-get-link-name(.,'global')}" 
             uuid="{imvert:id}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <part>
                     <?x <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/> x?>
@@ -690,7 +692,7 @@
             id="{imf:plugin-get-link-name(.,'detail')}" 
             id-global="{imf:plugin-get-link-name(.,'global')}" 
             uuid="{imvert:id}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <part>
                     <item>
@@ -731,7 +733,7 @@
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]" mode="detail">
         
         <section name="{imf:get-name(.,true())}" type="DETAIL-COMPOSITE" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-COMPOSITE')"/>
             </content>
@@ -772,7 +774,7 @@
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean(imvert:is-value-derived)) then 'Ja' else 'Nee'"/>
         <section name="{imf:get-name(.,true())}" type="DETAIL-ATTRIBUTE" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-ATTRIBUTE')"/>
             </content>
@@ -784,7 +786,7 @@
         <xsl:param name="is-imbroa" as="xs:boolean"/>
         <xsl:param name="is-coded" as="xs:boolean"/>
         <part>
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:if test="$is-coded">
                 <xsl:sequence select="imf:create-element('item',imvert:alias)"/>
             </xsl:if>
@@ -799,7 +801,7 @@
     
     <xsl:template match="imvert:refelement" mode="detail-refelement">
         <part>
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:for-each select="imvert:element">
                 <xsl:sequence select="imf:create-element('item',string(.))"/>
             </xsl:for-each>
@@ -810,7 +812,7 @@
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-identifying" select="imf:boolean(imvert:is-id)"/>
         <section name="{imf:get-name(.,true())}" type="DETAIL-COMPOSITE-ATTRIBUTE" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <part type="COMPOSER">
                     <xsl:sequence select="imf:create-link($construct,'global', imf:get-name($construct,true()))"/>
@@ -825,7 +827,7 @@
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-identifying" select="imf:boolean(imvert:is-id)"/>
         <section name="{imf:get-name(.,true())}" type="DETAIL-REFERENCEELEMENT" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-REFERENCEELEMENT')"/>
             </content>
@@ -837,7 +839,7 @@
     <xsl:template match="imvert:attribute" mode="detail-unionelement">
         <xsl:variable name="construct" select="../.."/>
         <section name="{imf:get-name(.,true())}" type="DETAIL-UNIONELEMENT" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-UNIONELEMENT')"/>
             </content>
@@ -849,7 +851,7 @@
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean(imvert:is-value-derived)) then 'Ja' else 'Nee'"/>
         <section name="{imf:get-name(.,true())}" type="DETAIL-DATAELEMENT" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-DATAELEMENT')"/>
             </content>
@@ -875,7 +877,7 @@
             <xsl:if test="imvert:original-stereotype"><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 -->
                 <xsl:attribute name="original-stereotype-id" select="imvert:original-stereotype/@id"/>                
             </xsl:if>
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content approach="association">
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-ASSOCIATION')"/>
             </content>
@@ -891,7 +893,7 @@
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
         <section name="{imf:get-name(.,true())}" type="DETAIL-COMPOSITE-ASSOCIATION" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <?x
                 <part type="COMPOSER">
@@ -1504,7 +1506,7 @@
     </xsl:function>
     
     <!-- return a physical position of the construct in the tree. a higher position value means furtheron in the sequence within that branch. Positions are 1...n. --> 
-    <xsl:function name="imf:calculate-position" as="attribute(position)">
+    <xsl:function name="imf:calculate-node-position" as="attribute(position)">
         <xsl:param name="this" as="element()"/>
         <xsl:attribute name="position" select="count($this/preceding-sibling::*) + 1"/>
     </xsl:function>

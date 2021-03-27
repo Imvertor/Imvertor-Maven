@@ -24,6 +24,8 @@
 	xmlns:imf="http://www.imvertor.org/xsl/functions"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	
+	xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+	
 	exclude-result-prefixes="#all" 
 	version="2.0">
 	<!-- 
@@ -367,7 +369,10 @@
 		<xsl:param name="construct"/>
 		<xsl:variable name="my-position" select="$construct/imvert:position"/>
 		<xsl:variable name="derived-position" select="imf:get-most-relevant-compiled-taggedvalue($construct,'##CFG-TV-POSITION')"/>
-		<xsl:variable name="position" select="($derived-position, $my-position)[1]"/>
+		<xsl:variable name="target" select="$construct/imvert:target"/><!-- positie van een relatie kan ook door de target role worden bepaald -->
+		<xsl:variable name="target-position" select="$target/imvert:position"/>
+		<xsl:variable name="target-derived" select="if ($target) then imf:get-most-relevant-compiled-taggedvalue($target,'##CFG-TV-POSITION') else ()"/>
+		<xsl:variable name="position" select="($target-derived,$target-position,$derived-position, $my-position)[1]"/>
 		<xsl:sequence select="xs:integer(if (matches($position,'^\d+$')) then $position else '9999')"/>
 	</xsl:function>
 
