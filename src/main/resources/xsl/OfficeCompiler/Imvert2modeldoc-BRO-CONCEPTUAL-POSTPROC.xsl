@@ -51,6 +51,7 @@
                     <xsl:sort select="@position" order="ascending" data-type="number"/>
                     <xsl:sequence select="."/>
                 </xsl:for-each>
+                <xsl:apply-templates select="section[@type = 'OVERVIEW-UNION']/section[@type = 'UNION']"/>
             </section>
             <section type="SPECIAL-LISTS">
                 <!-- minder kopjes lijsten -->
@@ -100,6 +101,35 @@
     
     <xsl:template match="section[@type = ('SHORT-ATTRIBUTES', 'SHORT-ASSOCIATIONS')]">
         <!-- remove -->
+    </xsl:template>
+    
+    <xsl:template match="section[@type = ('UNION')]"><!-- zie de manier waarop objecttypen zijn uitgewerkt -->
+        <xsl:variable name="name" select="@name"/>
+        <xsl:copy>
+            <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates select="content"/>
+            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[@type = 'DETAILS']/section[@name = $name]/section[@type = 'DETAIL-UNIONELEMENT']"/>
+        </xsl:copy>
+    </xsl:template>
+    <xsl:template match="section[@type = ('UNION')]/content">
+        <content>
+            <part type="CFG-DOC-NAAM">
+                <item>Type gegeven</item>
+                <item>Keuze</item>
+            </part>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-DEFINITIE']"/>
+        </content>
+    </xsl:template>
+    <xsl:template match="section[@type = ('DETAIL-UNIONELEMENT')]/content">
+        <xsl:variable name="aname" select="../@name"/>
+        <xsl:variable name="oname" select="../../@name"/>
+        <content>
+            <part type="CFG-DOC-NAAM">
+                <item>Type gegeven</item>
+                <item>Keuze element van <xsl:value-of select="../../@name"/></item>
+            </part>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-DEFINITIE']"/>
+        </content>
     </xsl:template>
     
     <xsl:template match="section[@type = 'DETAIL-COMPOSITE-ATTRIBUTE']">
