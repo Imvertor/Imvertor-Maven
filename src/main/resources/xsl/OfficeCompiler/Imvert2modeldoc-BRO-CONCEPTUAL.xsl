@@ -25,7 +25,7 @@
     
     <xsl:template match="imvert:class[imvert:name = 'Registratieobject']" >
         <section name="{imf:get-name(.,true())}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
-            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <part>
