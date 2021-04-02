@@ -1427,6 +1427,35 @@
 			</xsl:choose>
 		</xsl:if>
 
+		<!-- Loop over all simpletype constructs (local datatypes). -->
+		<xsl:variable name="global-simpletype-constructs">
+			<xsl:for-each select="ep:message-set/ep:construct[ep:tech-name = //ep:message-set/ep:construct/ep:seq/ep:construct/ep:type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']">
+				<xsl:sort select="ep:tech-name" order="ascending"/>
+				<xsl:variable name="type-name" select="ep:type-name"/>
+				<!-- An enummeration property is generated. -->
+				<xsl:call-template name="simpletype-class"/>
+				<xsl:if test="position() != last()">
+					<!-- As long as the current construct isn't the last enumeration construct a comma separator has to be generated. -->
+					<xsl:value-of select="','"/>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:if test="$global-simpletype-constructs != ''">
+			<xsl:variable name="length" select="string-length($global-simpletype-constructs)"/>
+			,
+			<xsl:choose>
+				<xsl:when test="substring($global-simpletype-constructs,$length,1) = ','">
+					<xsl:variable name="global-simpletype-constructs-without-end-comma">
+						<xsl:sequence select="substring($global-simpletype-constructs,1,$length - 1)"/>
+					</xsl:variable>
+					<xsl:sequence select="$global-simpletype-constructs-without-end-comma"/>						
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:sequence select="$global-simpletype-constructs"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+
 		<xsl:choose>
 			<xsl:when test="$json-version = '2.0'"/>
 			<xsl:when test="$json-version = '3.0'">
@@ -1996,6 +2025,32 @@
 			}
 		</xsl:if>
 	</xsl:template>
+	
+	
+	<xsl:template name="simpletype-class">
+		<!-- simpletype-class constructs are processed here. -->
+		<xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
+		<xsl:variable name="derivedPropertyContent">
+			<xsl:call-template name="derivePropertyContent">
+				<xsl:with-param name="typeName" select="''"/>
+			</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:if test="$debugging">
+			"--------------Debuglocatie-03430 ": {
+			"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			},
+		</xsl:if>
+		<xsl:value-of select="concat('&quot;', $elementName,'&quot;: {' )"/>
+		<xsl:value-of select="$derivedPropertyContent"/>		
+		<xsl:value-of select="'}'"/>
+		<xsl:if test="$debugging">
+			,"--------------Debuglocatie-03460 ": {
+			"XPath": "<xsl:sequence select="imf:xpath-string(.)"/>"
+			}
+		</xsl:if>
+	</xsl:template>
+	
 
 	<!-- TODO: Het onderstaande template en ook de aanroep daarvan zijn is op dit moment onnodig omdat we er nu vanuit gaan dat er altijd hal+json 
 			   gegenereerd moet worden.
@@ -2145,7 +2200,7 @@
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-geojson-components-url,'GeoJSONGeometry&quot;')"/>
 			</xsl:when>
 			<xsl:when test="ep:type-name = 'Datum_onvolledig'">
-				<!-- If the property is a gml type this when applies. In all these case a standard content (except the documentation)
+				<!-- If the property is a Datum_onvolledig type this when applies. In all these case a standard content (except the documentation)
 					 is generated. -->
 				<xsl:value-of select="'&quot;allOff&quot;: ['"/>
 				<xsl:value-of select="'{'"/>
@@ -2237,7 +2292,9 @@
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:value-of select="concat('&quot;type&quot;: &quot;',$datatype,'&quot;')"/>
-				<xsl:value-of select="concat(',&quot;title&quot;: &quot;',ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value,'&quot;')"/>
+				<xsl:if test="ep:parameters/ep:parameter[ep:name='SIM-name']">
+					<xsl:value-of select="concat(',&quot;title&quot;: &quot;',ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value,'&quot;')"/>					
+				</xsl:if>
 				<xsl:variable name="documentation">
 					<xsl:apply-templates select="ep:documentation"/>
 				</xsl:variable>

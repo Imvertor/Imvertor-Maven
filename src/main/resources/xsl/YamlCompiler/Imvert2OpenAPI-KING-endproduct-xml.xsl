@@ -31,7 +31,8 @@
 	
 	<xsl:output indent="yes" method="xml" encoding="UTF-8" />
 
-	<xsl:key name="enumerationClass" match="imvert:class" use="imvert:name" />
+	<xsl:key name="enumerationClass" match="imvert:class[imvert:stereotype/@id='stereotype-name-enumeration']" use="imvert:name" />
+	<xsl:key name="dataTypeClass" match="imvert:class[imvert:stereotype/@id='stereotype-name-simpletype']" use="imvert:name"/>
 	
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean" />
@@ -267,6 +268,10 @@
 				<xsl:apply-templates select="$packages//imvert:package[not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]/
                                              imvert:class[imf:get-stereotype(.) = ('stereotype-name-enumeration') and generate-id(.) = 
                                              generate-id(key('enumerationClass',imvert:name,$packages)[1])]" mode="as-global-enumeration" />
+				<!-- Following apply creates all global ep:constructs elements being a local datatype. -->
+				<xsl:apply-templates select="$packages//imvert:package[not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]/
+					imvert:class[imf:get-stereotype(.) = ('stereotype-name-simpletype') and generate-id(.) = 
+					generate-id(key('dataTypeClass',imvert:name,$packages)[1])]" mode="as-global-dataType" />
 			</ep:message-set>
 		</ep:message-sets>
 	</xsl:template>
@@ -1762,6 +1767,8 @@
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
 						</xsl:otherwise>
 					</xsl:choose>
+					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
+					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
 				</ep:construct>
 			</xsl:when>
 			<xsl:when test="imvert:type-name = 'NEN3610ID'">
@@ -2038,26 +2045,43 @@
 		<xsl:param name="min-Occurs"/>
 		<xsl:param name="type-is-GM-external" select="false()"/>
 		
-		<xsl:variable name="id" select="imvert:id"/>
-		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
-		<xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" />
 		
 		<xsl:choose>
 			<xsl:when test="imvert:type-name = 'NEN3610ID'">
+				<xsl:variable name="id" select="imvert:id"/>
+				<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
+				<xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" />
+				
 				<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
 				<xsl:sequence select="imf:create-output-element('ep:type-name', 'NEN3610ID')" />
 			</xsl:when>
 			<xsl:when test="$type-is-GM-external">
+				<xsl:variable name="id" select="imvert:id"/>
+				<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
+				<xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" />
+				
 				<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
 			</xsl:when>
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]/imvert:id"/>
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]/imvert:id"/>
 			<xsl:when test="imvert:type-id and  not(imvert:primitive-oas)">
+				<xsl:variable name="id" select="imvert:id"/>
+				<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
+				<xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" />
+				
 				<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name,'type-name'))" />
 				<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name-oas)" />
+				<xsl:choose>
+					<xsl:when test="imvert:supertype/imvert:type-name-oas">
+						<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:supertype/imvert:type-name-oas)" />
+					</xsl:when>
+					<xsl:when test="imvert:supertype"/>
+					<xsl:otherwise>
+						<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name-oas)" />
+					</xsl:otherwise>
+				</xsl:choose>
 				
 				<xsl:variable name="total-digits" select="imvert:total-digits" />
 				<xsl:variable name="fraction-digits" select="imvert:fraction-digits" />
@@ -2099,7 +2123,13 @@
 					<xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)" />
 				</xsl:if>
 				<xsl:sequence select="imf:create-output-element('ep:pattern', $pattern)" />
-				<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+				<xsl:if test="imvert:id">
+					<xsl:variable name="id" select="imvert:id"/>
+					<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
+					<xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" />
+					
+					<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -2148,6 +2178,115 @@
 			<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-string')" />
 			<xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="as-local-enumeration" />
 		</ep:construct>
+	</xsl:template>
+	
+		<!-- TODO: Op dit moment worden alle datatypes, ook al worden ze niet gebruikt, omgezet naar ep:constructs. 
+			   Hoewel de niet gebruikte er in de volgdende stap uitgefilterd worden zou het netjes zijn ze al niet in het EP bestand te genereren. 
+			   Die taak moet nog een keer worden uitgevoerd. -->
+	<xsl:template match="imvert:class" mode="as-global-dataType">
+		<xsl:param name="as-supertype" select="false()"/>
+		<!-- Following template creates global ep:constructs for enumeration or for local datatypes. -->
+		<xsl:sequence select="imf:create-debug-comment-with-xpath('OAS31500',$debugging,.)" />
+		<xsl:variable name="compiled-name" select="imf:get-compiled-name(.)" />
+		<xsl:choose>
+			<xsl:when test="count($packages//imvert:package[not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]/
+				imvert:class[imf:get-stereotype(.) = ('stereotype-name-simpletype') and imf:get-compiled-name(.) = $compiled-name]) > 1">
+				<xsl:sequence select="imf:msg(.,'ERROR','Two or more DataType or PrimitiveType classes share the same name (case insensitive).',())" />			
+			</xsl:when>
+			<xsl:when test="$as-supertype and not(imvert:supertype)">
+				<xsl:call-template name="attributeFacets">
+					<xsl:with-param name="min-Occurs" select="0"/>
+				</xsl:call-template>				
+			</xsl:when>
+			<xsl:when test="$as-supertype and imvert:supertype">
+				<xsl:variable name="type-id" select="imvert:supertype/imvert:type-id"/>
+				<xsl:apply-templates select="//imvert:class[imvert:id=$type-id]" mode="as-global-dataType">
+					<xsl:with-param name="as-supertype" select="true()"/>
+				</xsl:apply-templates>
+				<xsl:call-template name="attributeFacets">
+					<xsl:with-param name="min-Occurs" select="0"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:variable name="compiled-name" select="imf:get-compiled-name(.)" />
+				<xsl:variable name="doc">
+					<xsl:if test="not(empty(imf:merge-documentation-up-to-level(.,'CFG-TV-DEFINITION',$description-level)))">
+						<ep:definition>
+							<xsl:sequence select="imf:merge-documentation-up-to-level(.,'CFG-TV-DEFINITION',$description-level)" />
+						</ep:definition>
+					</xsl:if>
+					<xsl:if test="not(empty(imf:merge-documentation-up-to-level(.,'CFG-TV-DESCRIPTION',$description-level)))">
+						<ep:description>
+							<xsl:if test="$debugging">
+								<xsl:attribute name="level" select="$description-level"/>
+							</xsl:if>
+							<xsl:sequence select="imf:merge-documentation-up-to-level(.,'CFG-TV-DESCRIPTION',$description-level)" />
+						</ep:description>
+					</xsl:if>
+					<xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+						<ep:pattern>
+							<ep:p>
+								<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')" />
+							</ep:p>
+						</ep:pattern>
+					</xsl:if>
+				</xsl:variable>
+				
+					<xsl:choose>
+						<xsl:when test="imvert:supertype[imvert:conceptual-schema-type]">
+							<ep:construct>
+								<ep:parameters>
+									<ep:parameter>
+										<ep:name>type</ep:name>
+										<ep:value>simpletype-class</ep:value>
+									</ep:parameter>
+								</ep:parameters>
+								<xsl:sequence select="imf:create-output-element('ep:name', imf:capitalize($compiled-name))" />
+								<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:capitalize($compiled-name))" />
+								<xsl:choose>
+									<xsl:when test="(empty($doc) or $doc='') and $debugging">
+										<xsl:call-template name="documentationUnknown"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+									</xsl:otherwise>
+								</xsl:choose>
+								<xsl:call-template name="attributeFacets">
+									<xsl:with-param name="min-Occurs" select="0"/>
+								</xsl:call-template>
+							</ep:construct>
+						</xsl:when>
+						<xsl:when test="imvert:supertype[imvert:type-id]">
+							<!-- Deze when is voor het afhandelen van request parameters die gebruik maken van lokale datatypen. -->
+							<xsl:variable name="type-id" select="imvert:supertype/imvert:type-id"/>
+							<ep:construct>
+								<ep:parameters>
+									<ep:parameter>
+										<ep:name>type</ep:name>
+										<ep:value>simpletype-class</ep:value>
+									</ep:parameter>
+								</ep:parameters>
+								<xsl:sequence select="imf:create-output-element('ep:name', imf:capitalize($compiled-name))" />
+								<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:capitalize($compiled-name))" />
+								<xsl:choose>
+									<xsl:when test="(empty($doc) or $doc='') and $debugging">
+										<xsl:call-template name="documentationUnknown"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+									</xsl:otherwise>
+								</xsl:choose>
+								<xsl:apply-templates select="//imvert:class[imvert:id=$type-id]" mode="as-global-dataType">
+									<xsl:with-param name="as-supertype" select="true()"/>
+								</xsl:apply-templates>
+								<xsl:call-template name="attributeFacets">
+									<xsl:with-param name="min-Occurs" select="0"/>
+								</xsl:call-template>
+							</ep:construct>
+						</xsl:when>
+					</xsl:choose>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="imvert:attribute" mode="as-local-enumeration">
@@ -2402,6 +2541,9 @@
 				<!-- this must be an external -->
 				<xsl:variable name="external-name" select="imf:get-external-type-name($this,true())" />
 				<xsl:value-of select="$external-name" />
+			</xsl:when>
+			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-simpletype')">
+				<xsl:value-of select="$name" />
 			</xsl:when>
 			<xsl:when test="$type = 'attribute' and $stereotype = ('stereotype-name-attribute')">
 				<xsl:value-of select="$name" />

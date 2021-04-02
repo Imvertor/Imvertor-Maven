@@ -475,14 +475,14 @@
 					</xsl:for-each>
 					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name) != 'EXPAND' and (empty(@path) or @path = 'false')]">
 						<xsl:sort select="ep:name" order="ascending"/>
+						<xsl:if test="$debugging">
+							# ---------Debuglocatie-01000a,  XPath: <xsl:sequence select="imf:xpath-string(.)"/>
+						</xsl:if>
 						<!-- Loop over de query ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a query parameter. -->
-						<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
-						<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
-						<xsl:variable name="datatype">
-							<xsl:call-template name="deriveDataType">
-								<xsl:with-param name="incomingType" select="$incomingType"/>
-								<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
-							</xsl:call-template>
+						<xsl:variable name="type-name">
+							<xsl:if test="ep:type-name">
+								<xsl:value-of select="ep:type-name"/>
+							</xsl:if>
 						</xsl:variable>
 						<xsl:choose>
 							<xsl:when test="upper-case(ep:name) = 'FIELDS'">
@@ -500,11 +500,39 @@
 							<xsl:when test="upper-case(ep:name) = 'API-VERSION'">
 								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'api-version&quot;')"/>
 							</xsl:when>
-							<xsl:when test="ep:data-type">
+							<xsl:when test="ep:outside-ref='VNGR'">
+								<xsl:variable name="required">
+									<xsl:choose>
+										<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
+										<xsl:otherwise>false</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
 								<xsl:text>&#xa;        - in: query</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
 								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
-								<xsl:text>&#xa;          required: false</xsl:text>
+								<xsl:text>&#xa;          required: </xsl:text><xsl:value-of select="$required"/>
+								<xsl:text>&#xa;          schema:</xsl:text>
+								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
+							</xsl:when>
+							<xsl:when test="ep:data-type">
+								<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
+								<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
+								<xsl:variable name="datatype">
+									<xsl:call-template name="deriveDataType">
+										<xsl:with-param name="incomingType" select="$incomingType"/>
+										<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
+									</xsl:call-template>
+								</xsl:variable>
+								<xsl:variable name="required">
+									<xsl:choose>
+										<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
+										<xsl:otherwise>false</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:text>&#xa;        - in: query</xsl:text>
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          required: </xsl:text><xsl:value-of select="$required"/>
 								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
 								<xsl:variable name="format">
@@ -522,6 +550,21 @@
 								<xsl:if test="ep:example">
 									<xsl:text>&#xa;            example: </xsl:text><xsl:value-of select="ep:example"/>
 								</xsl:if>
+							</xsl:when>
+							<xsl:when test="$type-name != '' and $message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']">
+								<!-- Deze when is voor het afhandelen van request parameters die gebruik maken van lokale datatypen. -->
+								<xsl:variable name="required">
+									<xsl:choose>
+										<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
+										<xsl:otherwise>false</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:text>&#xa;        - in: query</xsl:text>
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+								<xsl:text>&#xa;          required: </xsl:text><xsl:value-of select="$required"/>
+								<xsl:text>&#xa;          schema:</xsl:text>
+								<xsl:apply-templates select="$message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']" mode="simpletype-class"/> 
 							</xsl:when>
 							<xsl:when test="ep:type-name">
 								<xsl:text>&#xa;        - in: query</xsl:text>
@@ -757,6 +800,9 @@
 					<xsl:result-document href="{concat('file:/c:/temp/calculatedUriStructure/',$messageCategory,generate-id($calculatedUriStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$calculatedUriStructure"/>
 					</xsl:result-document>
+					<xsl:result-document href="{concat('file:/c:/temp/checkedUriStructure/',$messageCategory,generate-id($checkedUriStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+						<xsl:sequence select="$checkedUriStructure"/>
+					</xsl:result-document> 
 					<xsl:result-document href="{concat('file:/c:/temp/analyzedRequestbodyStructure/',$messageCategory,generate-id($analyzedRequestbodyStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$analyzedRequestbodyStructure"/>
 					</xsl:result-document>
@@ -851,12 +897,23 @@
 								<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
 							</xsl:call-template>
 						</xsl:variable>
+						<xsl:variable name="type-name">
+							<xsl:if test="ep:type-name">
+								<xsl:value-of select="ep:type-name"/>
+							</xsl:if>
+						</xsl:variable>
+						<xsl:if test="$debugging">
+							# ---------Debuglocatie-01000b,  XPath: <xsl:sequence select="imf:xpath-string(.)"/>
+						</xsl:if>
 						<xsl:text>&#xa;        - in: query</xsl:text>
 						<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
 						<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 						<xsl:text>&#xa;          required: false</xsl:text>
 						<xsl:text>&#xa;          schema:</xsl:text>
 						<xsl:choose>
+							<xsl:when test="ep:outside-ref='VNGR'">
+								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
+							</xsl:when>
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
 								<xsl:variable name="format">
@@ -874,6 +931,10 @@
 								<xsl:if test="ep:example">
 									<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
 								</xsl:if>
+							</xsl:when>
+							<xsl:when test="$type-name != '' and $message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']">
+								<!-- Deze when is voor het afhandelen van request parameters die gebruik maken van lokale datatypen. -->
+								<xsl:apply-templates select="$message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']" mode="simpletype-class"/> 
 							</xsl:when>
 							<xsl:when test="ep:type-name">
 								<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
@@ -1158,6 +1219,32 @@
 		</xsl:choose>
 	</xsl:template>
 	
+	<xsl:template match="ep:construct" mode="simpletype-class">
+		<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
+		<xsl:variable name="datatype">
+			<xsl:call-template name="deriveDataType">
+				<xsl:with-param name="incomingType" select="$incomingType"/>
+				<xsl:with-param name="incomingTypeName" select="''"/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
+		<xsl:variable name="format">
+			<xsl:call-template name="deriveFormat">
+				<xsl:with-param name="incomingType" select="$incomingType"/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="facets">
+			<xsl:call-template name="deriveFacets">
+				<xsl:with-param name="incomingType" select="$incomingType"/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:value-of select="$format"/>
+		<xsl:value-of select="$facets"/>
+		<xsl:if test="ep:example">
+			<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
+		</xsl:if>
+	</xsl:template>
+	
 	<xsl:template name="response200">
 		<xsl:param name="berichttype"/>
 		<xsl:param name="meervoudigeNaamResponseTree"/>
@@ -1392,6 +1479,8 @@
 				<xsl:if test="ep:outside-ref != ''">
 					<ep:outside-ref><xsl:value-of select="ep:outside-ref"/></ep:outside-ref>
 				</xsl:if>
+				<xsl:sequence select="imf:create-output-element('ep:min-occurs', ep:min-occurs)" />
+				<xsl:sequence select="imf:create-output-element('ep:max-occurs', ep:max-occurs)" />				
 			</ep:param>
 		</xsl:for-each>
 		<xsl:for-each select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'groep']">
@@ -1537,6 +1626,8 @@
 									</xsl:when>
 								</xsl:choose>
 								<xsl:copy-of select="ep:documentation"/>
+								<xsl:sequence select="imf:create-output-element('ep:min-occurs', ep:min-occurs)" />
+								<xsl:sequence select="imf:create-output-element('ep:max-occurs', ep:max-occurs)" />
 								<xsl:if test="$max-length != ''">
 									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
 								</xsl:if>
@@ -1578,6 +1669,8 @@
 									</xsl:when>
 								</xsl:choose>
 								<xsl:copy-of select="ep:documentation"/>
+								<xsl:sequence select="imf:create-output-element('ep:min-occurs', ep:min-occurs)" />
+								<xsl:sequence select="imf:create-output-element('ep:max-occurs', ep:max-occurs)" />
 								<xsl:if test="$max-length != ''">
 									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
 								</xsl:if>
@@ -1615,7 +1708,10 @@
 										<ep:type-name><xsl:value-of select="$type-name"/></ep:type-name>
 									</xsl:when>
 								</xsl:choose>
-								<xsl:copy-of select="ep:documentation"/>								<xsl:if test="$max-length != ''">
+								<xsl:copy-of select="ep:documentation"/>
+								<xsl:sequence select="imf:create-output-element('ep:min-occurs', ep:min-occurs)" />
+								<xsl:sequence select="imf:create-output-element('ep:max-occurs', ep:max-occurs)" />
+								<xsl:if test="$max-length != ''">
 									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
 								</xsl:if>
 								<xsl:if test="$min-value != ''">
@@ -1661,6 +1757,8 @@
 									</xsl:when>
 								</xsl:choose>
 								<xsl:copy-of select="ep:documentation"/>
+								<xsl:sequence select="imf:create-output-element('ep:min-occurs', ep:min-occurs)" />
+								<xsl:sequence select="imf:create-output-element('ep:max-occurs', ep:max-occurs)" />
 								<xsl:if test="$max-length != ''">
 									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
 								</xsl:if>
