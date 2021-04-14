@@ -15,4 +15,10 @@
         <trans lang="en">Model</trans>
     </item>
     
+    <item>
+        <key>KEUZEUIT</key>
+        <trans lang="nl">Keuze uit</trans>
+        <trans lang="en">Choose between</trans>
+    </item>
+    
 </picklist>

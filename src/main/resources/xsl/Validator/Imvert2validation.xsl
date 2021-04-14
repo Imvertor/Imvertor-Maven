@@ -146,6 +146,8 @@
         ('stereotype-name-simpletype',
         'stereotype-name-complextype',
         'stereotype-name-union',
+        'stereotype-name-union-attributes',
+        'stereotype-name-union-associations',
         'stereotype-name-referentielijst',
         'stereotype-name-codelist',
         'stereotype-name-interface',
@@ -568,10 +570,20 @@
 
         <xsl:sequence select="imf:report-error(., 
             (imvert:stereotype/@id = ('stereotype-name-union') and empty(imvert:attributes/imvert:attribute)), 
-            'Empty union class is not allowed.')"/>
+            'Empty union class is not allowed.')"/><!-- retain for historical purpose -->
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype/@id = ('stereotype-name-union') and exists(imvert:associations/imvert:association)), 
+            (imvert:stereotype/@id = ('stereotype-name-union','stereotype-name-union-attributes') and count(imvert:attributes/imvert:attribute) lt 2), 
+            'Union class with [1] attributes is not allowed.',count(imvert:attributes/imvert:attribute))"/>
+        <xsl:sequence select="imf:report-error(., 
+            (imvert:stereotype/@id = ('stereotyp    e-name-union-associations') and count(imvert:associations/imvert:association) lt 2), 
+            'Union class with [1] association(s) is not allowed.',count(imvert:associations/imvert:association))"/>
+        <xsl:sequence select="imf:report-error(., 
+            (imvert:stereotype/@id = ('stereotype-name-union','stereotype-name-union-attributes') and exists(imvert:associations/imvert:association)), 
             'Association on union class is not allowed.')"/>
+        <xsl:sequence select="imf:report-error(., 
+            (imvert:stereotype/@id = ('stereotype-name-union','stereotype-name-union-associations') and exists(imvert:attributes/imvert:atribute)), 
+            'Attribute on union class is not allowed.')"/>
+        
         <xsl:sequence select="imf:report-error(., 
             not(ancestor::imvert:package/imvert:stereotype/@id = $schema-oriented-stereotypes), 
             'Classes found outside a domain, system or external package: [1]', imf:string-group(imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-message-package'))))"/>
@@ -924,10 +936,10 @@
             'Association name does not obey convention')"/>
         <xsl:sequence select="imf:report-error(., 
             (not($is-collection) and not($is-process) and not($defining-class-is-group) and empty($association-class-id) and empty($applicable-name)), 
-            'Association without name.')"/>
+            'Association without name')"/>
         <xsl:sequence select="imf:report-error(., 
             not(imf:check-multiplicity(imvert:min-occurs,imvert:max-occurs)), 
-            'Invalid target multiplicity.')"/>
+            'Invalid target multiplicity')"/>
         
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
         <xsl:sequence select="imf:check-tagged-value-multi(.)"/>

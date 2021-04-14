@@ -509,6 +509,7 @@
             </xsl:if>
             <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
         </xsl:variable>
+        
         <xsl:if test="exists(($r1,$r2))">
             <section type="SHORT-ASSOCIATIONS">
                 <content approach="association">
@@ -1180,8 +1181,27 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:get-relatiesoort($relation))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-GERELATEERDOBJECTTYPE'">
-                    <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office($relation/imvert:type-id)"/>          
-                    <xsl:sequence select="imf:create-part-2(.,imf:create-link($defining-class,'global',$relation/imvert:type-name/@original))"/>
+                    <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office($relation/imvert:type-id)"/>
+                    <xsl:sequence select="dlogger:save('$gerobj',$defining-class)"/>
+                    <xsl:choose>
+                        <!-- als het een keuze klasse is, dan de gerelateerde objecten linken. -->
+                        <xsl:when test="$defining-class/imvert:stereotype/@id = 'stereotype-name-union-associations'">
+                            <xsl:variable name="links" as="element(item)">
+                                <item>
+                                    <item><xsl:value-of select="imf:plugin-translate-i3n('KEUZEUIT',false())"/></item>
+                                    <xsl:for-each select="$defining-class/imvert:associations/imvert:association">
+                                        <xsl:variable name="choice-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
+                                        <xsl:sequence select="imf:create-link($choice-class,'global',imvert:type-name/@original)"/>
+                                        <xsl:if test="following-sibling::imvert:association">, </xsl:if>
+                                    </xsl:for-each>
+                                </item>
+                            </xsl:variable>
+                            <xsl:sequence select="imf:create-part-2(.,$links)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imf:create-part-2(.,imf:create-link($defining-class,'global',$relation/imvert:type-name/@original))"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEAFLEIDBAAR'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-ISDERIVED'))"/>   
@@ -1279,7 +1299,7 @@
     </xsl:function>
     
     
-    <xsl:function name="imf:create-link">
+    <xsl:function name="imf:create-link" as="element(item)*">
         <xsl:param name="this"/>
         <xsl:param name="type"/>
         <xsl:param name="label"/>
