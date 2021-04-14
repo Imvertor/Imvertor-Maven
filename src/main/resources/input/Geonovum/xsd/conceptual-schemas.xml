@@ -1934,7 +1934,7 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
-               <cs:Construct>
+               <!-- <cs:Construct>
                   <cs:name>Boolean</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
@@ -1953,7 +1953,7 @@
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
-               </cs:Construct>
+               </cs:Construct> 
                <cs:Construct>
                   <cs:name>Date</cs:name>
                   <cs:sentinel>false</cs:sentinel>
@@ -1984,7 +1984,6 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
-		 <!-- duplicate 
 	          <cs:Construct>
                   <cs:name>Real</cs:name>
                   <cs:sentinel>false</cs:sentinel>
