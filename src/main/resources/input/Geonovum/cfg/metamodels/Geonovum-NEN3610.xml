@@ -93,7 +93,7 @@
             </desc>
             <construct>attribute</construct>
             <construct>association</construct>
-            <construct>associationrole</construct>
+            <construct>associationend</construct>
         </stereo>
         
         <stereo id="stereotype-name-formele-historie">

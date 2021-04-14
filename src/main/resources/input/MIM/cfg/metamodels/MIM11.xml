@@ -40,12 +40,36 @@
         <stereo id="stereotype-name-union" primary="yes">
             <name lang="nl">Keuze</name>
             <name lang="en">Union</name>
+            <construct>datatype</construct>
+            <construct>association</construct>
         </stereo>
-   
         <stereo id="stereotype-name-union-element" primary="yes">
             <name lang="nl">Keuze element</name>
             <name lang="en">UnionElement</name>
             <construct>attribute</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-union-attributes" primary="yes">
+            <name lang="nl">Keuze attributen</name>
+            <name lang="en">Union attributes</name>
+            <construct>class</construct>
+        </stereo>
+        <stereo id="stereotype-name-union-attribute" primary="yes">
+            <name lang="nl">Keuze attribuut</name>
+            <name lang="en">Union attribute</name>
+            <construct>attribute</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-union-associations" primary="yes">
+            <name lang="nl">Keuze relaties</name>
+            <name lang="en">Union associations</name>
+            <construct>class</construct>
+        </stereo>
+        <stereo id="stereotype-name-union-association" primary="yes">
+            <name lang="nl">Keuze relatie</name>
+            <name lang="en">Union association</name>
+            <construct>association</construct>
+            <construct>associationend</construct>
         </stereo>
         
         <stereo id="stereotype-name-codelist" primary="yes">
@@ -61,5 +85,6 @@
             <construct>primitivetype</construct>
         </stereo>
         
-    </stereotypes>    
+    </stereotypes>   
+    
 </metamodel>
