@@ -310,6 +310,11 @@
                         <xsl:apply-templates select="item[4]" mode="#current"/>
                     </td>
                 </xsl:when>
+                <xsl:when test="$type = 'DETAIL-ENUMERATION' and $items = 1"> 
+                    <td width="100%">
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </td>
+                </xsl:when>
                 <xsl:when test="$type = 'DETAIL-ENUMERATION' and $items = 2"> 
                     <td width="40%">
                         <b>
@@ -343,7 +348,7 @@
                 </xsl:when>
                 
                 <xsl:otherwise>
-                    <xsl:message select="concat('ONBEKEND: ', string-join($type,', ') , ' - ',$items)"></xsl:message>
+                    <xsl:message select="concat('ONBEKEND: ', string-join($type,', ') , ' #items = ',$items)"></xsl:message>
                 </xsl:otherwise>
             </xsl:choose>
         </tr>
