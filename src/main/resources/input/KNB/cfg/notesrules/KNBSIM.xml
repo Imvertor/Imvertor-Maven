@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../KING/cfg/notesrules/KINGSIM.xml"/>
+    
+    <name>KNBSIM</name>
+    
+    <desc lang="en">Regel voor KNB notitievelden in conceptuele informatiemodellen</desc>
+    
+</notes-rules>

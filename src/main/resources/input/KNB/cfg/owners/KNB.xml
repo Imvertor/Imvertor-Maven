@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<project-owner type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../KING/cfg/owners/KING.xml"/>
+  
+    <!-- override klant-specifiek -->
+    
+    <name>KNB</name>
+    
+    <!-- 
+        enter a list of CSS, JS, anything to be copied to the output file, separate with ";" 
+    -->
+    <parameter name="web-css">
+        ../web/css/report.css;
+        ../web/themes/purple/style.css;
+    </parameter> 
+    
+    <parameter name="web-logo">../web/img/logo-KNB-medium.png</parameter> 
+    <parameter name="web-logo-big">../web/img/logo-KNB-large.png</parameter> 
+    
+</project-owner>    
