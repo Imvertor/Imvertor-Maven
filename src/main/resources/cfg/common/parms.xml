@@ -187,6 +187,13 @@
          <tip>Name of the visuals file</tip>
          <required>true</required>
       </cli-parm>
+      <cli-parm>
+         <name>xlinkversion</name>
+         <arg>id</arg>
+         <tip>Version of the xlinks specification</tip>
+         <required>false</required>
+         <default>20010627</default>
+      </cli-parm>
    </cli-parms>
    
    <!-- properties zijn directe mapping vanuit imvertor.properties. Die moeten dus later netjes worden verwerkt -->

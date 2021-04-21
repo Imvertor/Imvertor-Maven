@@ -218,7 +218,7 @@
                                         <xsl:value-of select="imf:get-normalized-name('system','stereotype-name')"/>
                                     </imvert:stereotype>
                                     <imvert:location>http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd</imvert:location>
-                                    <imvert:release>20010627</imvert:release>
+                                    <imvert:release><xsl:value-of select="imf:get-xparm('cli/xlinkversion','20010627')"/></imvert:release>
                                 </imvert:package>
                             </xsl:if>
                             
