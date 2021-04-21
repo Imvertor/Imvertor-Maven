@@ -27,6 +27,8 @@
     
     xmlns:functx="http://www.functx.com"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -109,7 +111,7 @@
         <xsl:variable name="proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy','stereotype-name-prd-proxy'), false())"/>
         <xsl:sequence select="imf:set-config-string('system','supports-proxy',if ($proxy = '#unknown') then 'no' else 'yes')"/>
         
-        <xsl:variable name="okeys" select="$config-compact/config/project-owner/parameter[@name = 'message-collapse-keys']"/>
+        <xsl:variable name="okeys" select="$config-compact/config//project-owner/parameter[@name = 'message-collapse-keys'][last()]"/>
         <xsl:sequence select="imf:set-config-string('system','message-collapse-keys',$okeys)"/>
         <xsl:variable name="keys" select="imf:merge-parms(imf:get-config-string('cli','messagecollapsekeys'))"/>
         <xsl:sequence select="imf:set-config-string('appinfo','message-collapse-keys',$keys)"/>
@@ -222,8 +224,8 @@
             </prologue>
             
             <project-owner root="true">
-                <xsl:variable name="project-owner" select="project-owner"/> 
-                <xsl:apply-templates select="$project-owner/name" mode="#current"/>
+                <xsl:variable name="project-owner" select=".//project-owner"/> 
+                <xsl:apply-templates select="($project-owner/name)[last()]" mode="#current"/>
                 <xsl:for-each-group select="$project-owner/parameter" group-by="@name">
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>
