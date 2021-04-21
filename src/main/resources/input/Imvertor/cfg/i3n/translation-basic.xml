@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<picklist xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <item>
+        <key>YES</key>
+        <trans lang="nl">Ja</trans>
+        <trans lang="en">Yes</trans>
+    </item>
+    <item>
+        <key>NO</key>
+        <trans lang="nl">Nee</trans>
+        <trans lang="en">No</trans>
+    </item>
+    
+</picklist>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<picklist xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <!-- stereotypes Grouping -->
+    
+    <item>
+        <key>DOMAIN</key>
+        <trans lang="nl">Domein</trans>
+        <trans lang="en">Domain</trans>
+    </item>
+
+    <item>
+        <key>MODEL</key>
+        <trans lang="nl">Model</trans>
+        <trans lang="en">Model</trans>
+    </item>
+    
+    <item>
+        <key>KEUZEUIT</key>
+        <trans lang="nl">Keuze uit</trans>
+        <trans lang="en">Choose between</trans>
+    </item>
+
+</picklist>
