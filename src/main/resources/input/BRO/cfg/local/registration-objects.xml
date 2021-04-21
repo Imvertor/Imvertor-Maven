@@ -33,6 +33,11 @@
             <name lang="en">Sample EPL</name>
             <abbrev>SAMPLEEPL</abbrev>
         </registratieobject>
+        <registratieobject>
+            <name lang="nl">Github issue uitwerking</name>
+            <name lang="en">Github issue</name>
+            <abbrev>GITHUB</abbrev>
+        </registratieobject>
     </domein>
     
     <domein>
