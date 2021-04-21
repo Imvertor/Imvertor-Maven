@@ -1182,7 +1182,6 @@
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-GERELATEERDOBJECTTYPE'">
                     <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office($relation/imvert:type-id)"/>
-                    <xsl:sequence select="dlogger:save('$gerobj',$defining-class)"/>
                     <xsl:choose>
                         <!-- als het een keuze klasse is, dan de gerelateerde objecten linken. -->
                         <xsl:when test="$defining-class/imvert:stereotype/@id = 'stereotype-name-union-associations'">
