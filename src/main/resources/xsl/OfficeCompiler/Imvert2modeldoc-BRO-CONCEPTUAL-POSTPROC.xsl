@@ -302,8 +302,8 @@
     </xsl:template>
  
     <xsl:function name="imf:new-card">
-        <xsl:param name="card"/>
-        <xsl:if test="normalize-space($card)">
+        <xsl:param name="card" as="xs:string*"/><!-- TODO hoe kan het zijn dat er soms meerdere cardinaliteiten binnenkomen? -->
+        <xsl:if test="normalize-space($card[1])">
             <xsl:analyze-string select="$card" regex="^(\[\s)?(.+?)(\s\.\.\s(.+?))?(\s\])?$">
                 <xsl:matching-substring>
                     <xsl:choose>
