@@ -4,10 +4,10 @@
 -->
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../KING/cfg/notesrules/KINGBSM.xml"/>
+    <xi:include href="../../../KING/cfg/notesrules/KINGUGM.xml"/>
     
-    <name>KNBBSM</name>
+    <name>KNBUGM</name>
     
-    <desc lang="en">Regel voor KNB notitievelden in berichtmodellen</desc>
+    <desc lang="en">Regel voor KNB notitievelden in logische informatiemodellen</desc>
     
 </notes-rules>
