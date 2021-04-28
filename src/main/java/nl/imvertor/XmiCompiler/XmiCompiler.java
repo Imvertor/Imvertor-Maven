@@ -76,7 +76,7 @@ public class XmiCompiler extends Step {
 		AnyFile umlFile = new AnyFile(configurator.getFile(configurator.getXParm("cli/umlfile")));
 		boolean refreshXmi = configurator.isTrue("cli", "refreshxmi", false);
 
-		EapFile eapFile = umlFile.getExtension().toLowerCase().equals("eap") ? new EapFile(umlFile) : null;
+		EapFile eapFile = umlFile.getExtension().toLowerCase().startsWith("eap") ? new EapFile(umlFile) : null;
 		XmiFile xmiFile = umlFile.getExtension().toLowerCase().equals("xmi") ? new XmiFile(umlFile) : null;
 		ZipFile zipFile = umlFile.getExtension().toLowerCase().equals("zip") ? new ZipFile(umlFile) : null; // holds single XMI, /images, and an optional /modeldoc folder 
 		
