@@ -215,7 +215,7 @@
 				</xsl:variable>
 				<xsl:variable name="checkedUriStructure">
 					<!-- Within this variable the variables determinedUriStructure and the calculatedUriStructure are compared with eachother
-						 and durng that process a comparable structure as in those variables is generated. It's also determined if a parameter
+						 and during that process a comparable structure as in those variables is generated. It's also determined if a parameter
 						 is a query or a path parameter. -->
 					<xsl:variable name="checkOnParameters">
 						<xsl:for-each select="$determinedUriStructure//ep:uriPart">
@@ -485,6 +485,9 @@
 							</xsl:if>
 						</xsl:variable>
 						<xsl:choose>
+							<xsl:when test="upper-case(ep:name) = 'PAGESIZE'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'pageSize&quot;')"/>
+							</xsl:when>
 							<xsl:when test="upper-case(ep:name) = 'FIELDS'">
 								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'fields&quot;')"/>
 							</xsl:when>
