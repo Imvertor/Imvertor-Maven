@@ -57,17 +57,21 @@
             <xsl:variable name="referencing-constructs" select="$document-classes/descendant-or-self::*[imvert:type-id = $id]/ancestor-or-self::*[imvert:id][1]"/><!-- construct in dit document van dat type -->
             <xsl:variable name="construct" as="element(cs:Construct)?">
                 <xsl:choose>
+                    <!-- er zijn meerdere constructs onder deze naam, dus disambigueren, maar geen van de constructst heeft een ID -->
                     <xsl:when test="$constructs[2] and empty($identified-construct)">
                         <xsl:for-each select="$referencing-constructs">
                             <xsl:sequence select="imf:msg(.,'ERROR','Reference to [1] in outside model is not identified, but should be, as duplicates occur using mapping [2]',(imf:string-group($name),$conceptual-schema-mapping-name))"/>
                         </xsl:for-each>
                     </xsl:when>
+                    <!-- er zijn meerdere constructs onder deze naam, neem de construct met de opgegeven ID -->
                     <xsl:when test="$constructs[2]">
                         <xsl:sequence select="$identified-construct"/>
                     </xsl:when>
+                    <!-- er is precies één construct, dus dat moet de goede zijn -->
                     <xsl:when test="$constructs[1]">
                         <xsl:sequence select="$constructs"/>
                     </xsl:when>
+                    <!-- er is géén construct gevonden, dus meld dat bij alle referenties daarnaartoe -->
                     <xsl:otherwise>
                         <xsl:for-each select="$referencing-constructs">
                             <xsl:sequence select="imf:msg(.,'ERROR','Reference to [1] in outside model could not be resolved when using mapping [2]',(imf:string-group($name),$conceptual-schema-mapping-name))"/>
