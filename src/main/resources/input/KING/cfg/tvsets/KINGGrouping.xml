@@ -19,6 +19,7 @@
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-association-to-composite</stereo><!-- deprecated -->
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
             </stereotypes>            
         </tv>
         <tv norm="space"  id="CFG-TV-POSITION">
