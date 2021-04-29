@@ -33,6 +33,8 @@
             <cs-ref:MapRef xlink:href="#BRO-SAMPLE2"/>
             x?>
             <cs-ref:MapRef xlink:href="#BRO-COMMON"/>
+            <cs-ref:MapRef xlink:href="#BRO-SFR"/>
+            <cs-ref:MapRef xlink:href="#BRO-GUF"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
@@ -93,6 +95,20 @@
             <cs:desc>All registration object aspects that can be referenced between models</cs:desc>
             <cs:url>http://www.bro.nl/conceptual-schemas/bro/1.0/</cs:url>
             <cs:catalogUrl>https://broprogramma.github.io/SAMPLE/[entry]</cs:catalogUrl>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>RO-BRO-SFR</cs:id>
+            <cs:shortName>bro-sfr</cs:shortName>
+            <cs:desc>SFR object aspects that can be referenced between models</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/bro/1.0/SFR/</cs:url>
+            <cs:catalogUrl>https://broprogramma.github.io/SFR/[entry]</cs:catalogUrl>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>RO-BRO-GUF</cs:id>
+            <cs:shortName>bro-guf</cs:shortName>
+            <cs:desc>GPD object aspects that can be referenced between models</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/bro/1.0/GPD/</cs:url>
+            <cs:catalogUrl>https://broprogramma.github.io/GPD/[entry]</cs:catalogUrl>
          </cs:ConceptualSchema>
          <cs:ConceptualSchema>
             <cs:id>INSPIRE</cs:id>
@@ -1274,7 +1290,7 @@
             <cs:version>1.0.0</cs:version>
             <cs:release>20191127</cs:release>
             <cs:forSchema>
-               <cs-ref:ConceptualSchemaRef xlink:href="#RO-BRO"/>
+               <cs-ref:ConceptualSchemaRef xlink:href="#RO-BRO-SFR"/>
             </cs:forSchema>
             <cs:constructs>
                <cs:Construct>
@@ -1288,8 +1304,54 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Wandonderzoek</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:complexType</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
             </cs:constructs>
          </cs:Map>
+         
+         <cs:Map>
+            <cs:id>BRO-GUF</cs:id>
+            <cs:namespace>http://www.broservices.nl/xsd/gufcommon/1.0</cs:namespace>
+            <cs:desc>common definitions for BRO GUF</cs:desc>
+            <cs:location>https://schema.broservices.nl/xsd/gufcommon/1.0/gufcommon.xsd</cs:location>
+            <cs:phase>0</cs:phase>
+            <cs:version>1.0.0</cs:version>
+            <cs:release>20210201</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#RO-BRO-GUF"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>Grondwatergebruiksysteem</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:complexType</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Gerealiseerde installatie</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:complexType</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         
          <cs:Map>
             <cs:id>INSPIRE</cs:id>
             <cs:namespace>http://inspire.ec.europa.eu/</cs:namespace>
