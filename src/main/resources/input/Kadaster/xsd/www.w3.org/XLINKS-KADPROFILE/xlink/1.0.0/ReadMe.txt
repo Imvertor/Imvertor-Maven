@@ -1,5 +1,7 @@
 Profile made for Kadaster
 
+Adaption 20210430: renamed xlinks.xsd to xlink.xsd
+
 --a profile on:
 
 This XML Schema Document named xlinks.xsd has been stored here based 

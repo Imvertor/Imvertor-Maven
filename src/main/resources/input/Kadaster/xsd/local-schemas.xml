@@ -39,7 +39,7 @@
         <depends-on schemafolder="www.w3.org/XLINKS-KADPROFILE"/>
         <local-map 
             source-uri-prefix="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"
-            target-uri-prefix="../../xlink/1.0.0/xlinks.xsd"/>
+            target-uri-prefix="../../xlink/1.0.0/xlink.xsd"/>
         
     </local-schema>
     
@@ -51,7 +51,7 @@
             target-uri-prefix="../gml/3.2.2/gml.xsd"/>
         <local-map 
             source-uri-prefix="../xlink/xlinks.xsd"
-            target-uri-prefix="../xlink/1.0.0/xlinks.xsd"/>
+            target-uri-prefix="../xlink/1.0.0/xlink.xsd"/>
     </local-schema>
     
     <local-schema schemafolder="www.w3.org/XLINKS-20010627">
