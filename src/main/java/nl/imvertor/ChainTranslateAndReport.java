@@ -86,7 +86,6 @@ public class ChainTranslateAndReport {
 			configurator.getCli(ImvertCompiler.STEP_NAME);
 			configurator.getCli(XsdCompiler.STEP_NAME);
 			configurator.getCli(ShaclCompiler.STEP_NAME);
-			configurator.getCli(ShaclCompiler.STEP_NAME);
 			configurator.getCli(LDCompiler.STEP_NAME);
 			configurator.getCli(EpCompiler.STEP_NAME);
 			configurator.getCli(JsonSchemaCompiler.STEP_NAME);
