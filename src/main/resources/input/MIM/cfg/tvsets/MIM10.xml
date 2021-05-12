@@ -32,9 +32,10 @@
                 <stereo minmax="1..1">stereotype-name-codelist</stereo>
                 <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
                 <stereo minmax="1..1">stereotype-name-union</stereo>
+                <stereo minmax="1..1">stereotype-name-simpletype</stereo>
                 <stereo minmax="1..1">stereotype-name-complextype</stereo>
                 <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
-             <!-- vervallen in 0.98  
+                <!-- vervallen in 0.98  
                  <stereo minmax="1..1">stereotype-name-enumeration</stereo> -->
             </stereotypes>
         </tv> 
@@ -148,6 +149,7 @@
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
                 <stereo minmax="0..1">stereotype-name-union-element</stereo>
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-VOIDABLE">
