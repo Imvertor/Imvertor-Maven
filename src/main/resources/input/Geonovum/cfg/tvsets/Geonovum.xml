@@ -34,7 +34,7 @@
             </stereotypes>
         </tv>
         
-        <tv id="CFG-TV-MINIMUMVALUE">
+        <tv id="CFG-TV-MINVALUEINCLUSIVE">
             <name lang="nl">Minimumwaarde</name>/name>
             <name lang="en">MinInclusive</name>
             <desc lang="nl">De ondergrens (inclusief) voor de waarde van een getal.</desc>
@@ -42,9 +42,10 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
-        <tv id="CFG-TV-MAXIMUMVALUE">
+        <tv id="CFG-TV-MAXVALUEINCLUSIVE">
             <name lang="nl">Maximumwaarde</name>/name>
             <name lang="en">MaxInclusive</name>
             <desc lang="nl">De boven (inclusief) voor de waarde van een getal.</desc>
@@ -52,6 +53,7 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         

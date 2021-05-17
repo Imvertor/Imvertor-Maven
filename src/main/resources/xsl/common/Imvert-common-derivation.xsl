@@ -394,4 +394,12 @@
 		<xsl:param name="this" as="element()"/>
 		<xsl:sequence select="for $c in ($this/imvert:fraction-digits,imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-FRACTIONDIGITS'))[1] return normalize-space($c)"/>
 	</xsl:function>
+	<xsl:function name="imf:get-facet-min-value" as="xs:string?">
+		<xsl:param name="this" as="element()"/>
+		<xsl:sequence select="for $c in imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-MINVALUEINCLUSIVE') return normalize-space($c)"/>
+	</xsl:function>
+	<xsl:function name="imf:get-facet-max-value" as="xs:string?">
+		<xsl:param name="this" as="element()"/>
+		<xsl:sequence select="for $c in imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-MAXVALUEINCLUSIVE') return normalize-space($c)"/>
+	</xsl:function>
 </xsl:stylesheet>
