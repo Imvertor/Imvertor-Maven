@@ -399,7 +399,8 @@ public class Configurator {
 		setXParm(workConfiguration,"system/work-yaml-folder-path",    wf + s + "app" + s + "yaml", true);
 		setXParm(workConfiguration,"system/work-xmi-s-folder-path",   wf + s + "app" + s + "xmi", true);
 		setXParm(workConfiguration,"system/work-msword-folder-path",  wf + s + "app" + s + "msword", true);
-						
+		setXParm(workConfiguration,"system/work-mim-folder-path",     wf + s + "app" + s + "mim", true);				
+		
 		setXParm(workConfiguration,"system/work-rep-folder-path",     wf + s + "rep", true);
 		setXParm(workConfiguration,"system/work-imvert-folder-path",  wf + s + "imvert", true);
 		setXParm(workConfiguration,"system/work-comply-folder-path",  wf + s + "comply", true);
