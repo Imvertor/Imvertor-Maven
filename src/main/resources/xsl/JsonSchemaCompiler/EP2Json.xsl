@@ -149,6 +149,8 @@
                             <xsl:sequence select="imf:ep-to-namevaluepair('minLength',ep:min-length)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',ep:max-length)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('pattern',ep:formal-pattern)"/>
+                            <xsl:sequence select="imf:ep-to-namevaluepair('minItems',ep:min-occurs)"/>
+                            <xsl:sequence select="imf:ep-to-namevaluepair('maxItems',ep:max-occurs)"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:sequence select="imf:msg-comment(.,'WARN', 'Ken dit type niet: [1]',$n)"/>
@@ -228,6 +230,7 @@
             <xsl:when test="$data-type = 'ep:real'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:decimal'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:integer'">integer</xsl:when>
+            <xsl:when test="$data-type = 'ep:boolean'">boolean</xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="concat('UNKNOWN-DATATYPE: ',$data-type)"/>
             </xsl:otherwise>
