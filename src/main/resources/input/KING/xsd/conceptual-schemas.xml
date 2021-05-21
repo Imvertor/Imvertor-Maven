@@ -107,6 +107,10 @@
                   <cs:name>CompositeID</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GeoJsonGeometrie</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
             </cs:constructs>
          </cs:Map>
 
