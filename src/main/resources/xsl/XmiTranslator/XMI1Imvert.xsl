@@ -877,6 +877,8 @@
     <xsl:function name="imf:get-association-info" as="node()*">
         <xsl:param name="this" as="node()"/> <!-- UML:Association -->
         
+        <xsl:variable name="direction" select="$this/*/UML:TaggedValue[@tag = 'direction']/@value"/>
+        
         <xsl:variable name="source" select="$this/*/UML:AssociationEnd[*/UML:TaggedValue[@tag='ea_end' and @value='source']]"/>
         <xsl:variable name="target" select="$this/*/UML:AssociationEnd[*/UML:TaggedValue[@tag='ea_end' and @value='target']]"/>
         
@@ -899,6 +901,7 @@
         <xsl:sequence select="imf:create-output-element('imvert:min-occurs-source',$source-bounds[1])"/>
         <xsl:sequence select="imf:create-output-element('imvert:max-occurs-source',$source-bounds[2])"/>
         <xsl:sequence select="imf:create-output-element('imvert:aggregation',if (not($aggregation='none')) then $aggregation else '')"/>
+        <xsl:sequence select="imf:create-output-element('imvert:direction',if (starts-with($direction,'Destination')) then 'source' else 'destination')"/><!-- format is: <UML:TaggedValue tag="direction" value="Destination -&gt; Source"/> -->
         
         <xsl:variable name="rp" select="imf:get-position-value($this,'200')"/>
         <xsl:variable name="tp" select="imf:get-position-value($target,())"/>
