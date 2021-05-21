@@ -38,6 +38,8 @@
   
     <xsl:variable name="schema-defs" select="/imvert:schemas/imvert:schema"/>
   
+    <xsl:variable name="xlink-filename" select="if (imf:get-xparm('cli/xlinkversion') = 'KADPROFILE') then 'xlink' else 'xlinks'"/>
+    
     <xsl:template match="/imvert:schemas">
        
         <!-- 
@@ -141,7 +143,7 @@
                             </xsl:when>
                             <xsl:otherwise>
                                 <xs:import namespace="http://www.w3.org/1999/xlink"
-                                    schemaLocation="{$steps-back}xlink/1.0.0/xlinks.xsd"/>
+                                    schemaLocation="{$steps-back}xlink/1.0.0/{$xlink-filename}.xsd"/>
                             </xsl:otherwise>
                         </xsl:choose>
                         <namespace prefix="xlink" uri="http://www.w3.org/1999/xlink"/> 

@@ -32,6 +32,7 @@ import nl.imvertor.HistoryCompiler.HistoryCompiler;
 import nl.imvertor.ImvertCompiler.ImvertCompiler;
 import nl.imvertor.JsonConceptsCompiler.JsonConceptsCompiler;
 import nl.imvertor.JsonSchemaCompiler.JsonSchemaCompiler;
+import nl.imvertor.MIMCompiler.MIMCompiler;
 import nl.imvertor.ModelHistoryAnalyzer.ModelHistoryAnalyzer;
 import nl.imvertor.OfficeCompiler.OfficeCompiler;
 import nl.imvertor.ReadmeCompiler.ReadmeCompiler;
@@ -84,8 +85,8 @@ public class ChainTranslateAndReport {
 			configurator.getCli(ModelHistoryAnalyzer.STEP_NAME);
 			configurator.getCli(ConceptCollector.STEP_NAME);
 			configurator.getCli(ImvertCompiler.STEP_NAME);
+			configurator.getCli(MIMCompiler.STEP_NAME);
 			configurator.getCli(XsdCompiler.STEP_NAME);
-			configurator.getCli(ShaclCompiler.STEP_NAME);
 			configurator.getCli(ShaclCompiler.STEP_NAME);
 			configurator.getCli(LDCompiler.STEP_NAME);
 			configurator.getCli(EpCompiler.STEP_NAME);
@@ -168,6 +169,10 @@ public class ChainTranslateAndReport {
 					// compile a final usable representation of the input file for XML schema generation.
 					// TODO determine if this steps must be split into several steps
 				    succeeds = succeeds && (new ImvertCompiler()).run();
+				    
+				    // generate the MIM format from Imvertor embellish format
+				    if (configurator.isTrue("cli","createmimformat",false))
+			 			succeeds = succeeds && (new MIMCompiler()).run();
 					
 					// compare releases. 
 				    // Eg. check if this only concerns a "documentation release". If so, must not be different from existing release.

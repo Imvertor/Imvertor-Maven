@@ -330,6 +330,17 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>      
         </levels>
     </doc-rule>
+    
+    <doc-rule id="CFG-DOC-LENGTH" order="215">
+        <name lang="nl">Lengte</name>
+        <name lang="en">Length</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+        </levels>
+    </doc-rule>
     <doc-rule id="CFG-DOC-FORMAAT" order="220">
         <name lang="nl">Formaat</name>
         <name lang="en">Format</name>
@@ -361,6 +372,7 @@
             <!-- NOT FOR SIM -->
         </levels>
     </doc-rule>
+    
     <doc-rule id="CFG-DOC-RELATIESOORT" order="250">
         <name lang="nl">Relatiesoort</name>
         <levels>

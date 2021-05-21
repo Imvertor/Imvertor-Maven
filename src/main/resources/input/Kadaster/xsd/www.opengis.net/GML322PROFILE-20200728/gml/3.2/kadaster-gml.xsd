@@ -10,7 +10,7 @@
       <documentation>GML profile for Kadaster</documentation>
    </annotation>
    <import namespace="http://www.w3.org/1999/xlink"
-           schemaLocation="../../xlink/1.0.0/xlinks.xsd"/>
+           schemaLocation="../../xlink/1.0.0/xlink.xsd"/>
    <element name="AbstractCurve"
             type="gml:AbstractCurveType"
             abstract="true"

@@ -15,7 +15,7 @@
     
     <xsl:template match="/">
         <xsl:variable name="resolved">
-            <xsl:apply-templates select="/book/chapter"/>
+            <xsl:apply-templates select="/book"/>
         </xsl:variable>
         <section>
             <h1>Gegevensdefinitie</h1>

@@ -433,14 +433,14 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-MINIMUMVALUE" order="250">
+    <doc-rule id="CFG-DOC-MINVALUEINCLUSIVE" order="250">
         <name lang="nl">Minimumwaarde</name>
         <name lang="en">MinInclusive</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-MAXIMUMVALUE" order="260">
+    <doc-rule id="CFG-DOC-MAXVALUEINCLUSIVE" order="260">
         <name lang="nl">Maximumwaarde</name>
         <name lang="en">MaxInclusive</name>
         <levels>

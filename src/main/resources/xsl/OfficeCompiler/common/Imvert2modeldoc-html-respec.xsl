@@ -8,6 +8,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
     
@@ -28,6 +30,10 @@
     <xsl:variable name="document-ids" select="for $id in //@id return string($id)"/>
 
     <xsl:variable name="meta-is-role-based" select="imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/><!-- TODO duplicate declaration -->
+    
+    <xsl:template match="/book">
+        <xsl:apply-templates/>
+    </xsl:template>
     
     <xsl:template match="/book/chapter">
         <section id='{@type}' class="normative"> 

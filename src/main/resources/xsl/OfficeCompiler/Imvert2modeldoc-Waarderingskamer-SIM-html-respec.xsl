@@ -39,8 +39,9 @@
                             url: "http://www.waarderingskamer.nl",
                             }],
                             edDraftURI: "http://some.place",
-                            shortName: "msgdoc"
-                            };
+                            shortName: "msgdoc",
+                            maxTocLevel: 3
+                        };
                         </script>
                         <style type="text/css">
                             th, td {

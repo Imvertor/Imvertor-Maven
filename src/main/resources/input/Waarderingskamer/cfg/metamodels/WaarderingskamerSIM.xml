@@ -31,11 +31,13 @@
          <id>WKSIMNL</id>
          <release>1.1</release>
          <desc>WKSIM Grouping NL</desc> 
+         <profile-name>WKMIM</profile-name>
       </profile>
       <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
          <id>WKSIMEN</id>
          <release>1.1</release>
          <desc>WKSIM Grouping EN</desc>
+         <profile-name>WKMIM</profile-name>
       </profile>
    </profiles>
    

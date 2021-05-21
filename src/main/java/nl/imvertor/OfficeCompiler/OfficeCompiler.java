@@ -216,21 +216,25 @@ public class OfficeCompiler extends Step {
 							
 		runner.info(logger, "GIT Pushing as " + officeFile.getName());
 		
-		AnyFolder gitfolder = new AnyFolder(gitlocal + gitpath);
-		
-		// must remove this folder, as pushes and pulls will not work from OTAPs.
-		if (gitfolder.isDirectory()) gitfolder.deleteDirectory();
-		
-		// create and prepare the GIT resource pusher
-		ResourcePusher rp = new ResourcePusher();
-		rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gitemail);
-		
-		// copy the files to the work folder
-		catfolder.copy(new AnyFolder(gitfolder,"data"));
-        
-		// push with appropriate comment
-		rp.push(gitcomment);
-		
-		configurator.setXParm("properties/giturl-resolved", giturl);
+		try {
+			AnyFolder gitfolder = new AnyFolder(gitlocal + gitpath);
+			
+			// must remove this folder, as pushes and pulls will not work from OTAPs.
+			//if (gitfolder.isDirectory()) gitfolder.deleteDirectory();
+			
+			// create and prepare the GIT resource pusher
+			ResourcePusher rp = new ResourcePusher();
+			rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gitemail);
+			
+			// copy the files to the work folder
+			catfolder.copy(new AnyFolder(gitfolder,"data"));
+	        
+			// push with appropriate comment
+			rp.push(gitcomment);
+			
+			configurator.setXParm("properties/giturl-resolved", giturl);
+		} catch (Exception e) {
+			logger.error("Error pushing files to remote repository https://github.com" + gitpath, e);
+		}
 	}
 }

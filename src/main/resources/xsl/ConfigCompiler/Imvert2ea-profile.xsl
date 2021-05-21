@@ -23,6 +23,7 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all"
     expand-text="yes"
@@ -39,11 +40,13 @@
     <xsl:output method="xml" encoding="UTF-16" indent="yes"/><!-- bug fix may 1,2020 - Sparx: "I got it to work by changing the encoding in the first line to "UTF-16". I'm not entirely sure why that was necessary."-->
     
     <xsl:variable name="profile-id-string" select="$configuration-metamodel-file/profiles/profile[@lang=$language]/id"/>
-    <xsl:variable name="profile-name-string" select="$configuration-metamodel-file/profiles/profile[@lang=$language]/desc"/>
+    <xsl:variable name="profile-pname-string" select="$configuration-metamodel-file/profiles/profile[@lang=$language]/profile-name"/>
+    <xsl:variable name="profile-desc-string" select="$configuration-metamodel-file/profiles/profile[@lang=$language]/desc"/>
     <xsl:variable name="profile-release-string" select="$configuration-metamodel-file/profiles/profile[@lang=$language]/release"/><!-- optional -->
+  
+    <xsl:variable name="profile-name-string" select="($profile-pname-string,$profile-desc-string)[1]"/>
     
     <xsl:template match="/config">
-        
         <xsl:variable name="metamodel" select="metamodel"/>
         <xsl:variable name="visuals" select="visuals"/>
         <xsl:variable name="tagged-values" select="tagset/tagged-values"/>

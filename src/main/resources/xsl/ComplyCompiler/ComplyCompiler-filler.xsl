@@ -58,7 +58,7 @@
     <xsl:variable name="debug" select="true()"/>
     
     <xsl:variable name="ooxml-namespace" select="'http://schemas.openxmlformats.org/spreadsheetml/2006/main'"/>
-    <xsl:variable name="ooxml-schemalocation-file" select="'D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS\ImvertorCommon\trunk\xsd\ooxml\sml.xsd'"/>
+    <xsl:variable name="ooxml-schemalocation-file" select="'sml.xsd'"/><!-- e.g. D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS\ImvertorCommon\trunk\xsd\ooxml\sml.xsd -->
     <xsl:variable name="ooxml-schemalocation-url" select="imf:file-to-url($ooxml-schemalocation-file)"/>
     
     <xsl:variable name="quot">"</xsl:variable>
