@@ -28,12 +28,49 @@
     exclude-result-prefixes="#all" 
     version="2.0">
 
+    <xsl:variable name="niet-herbruikbare-klassen" select="('Generalisatie','MEER?')" as="xs:string*"/>
+    
     <xsl:template match="imvert:class" mode="mimformat">
         <xsl:comment>Processed class</xsl:comment>
         <xsl:copy>
             <xsl:apply-templates mode="#current"/>
-            <xsl:comment>Inserted stereo</xsl:comment>
-            <imvert:stereotype id="stereotype-name-objecttype">OBJECTTYPE</imvert:stereotype>
+            <xsl:if test="empty(imvert:stereotype)">
+                <xsl:comment>Inserted stereo</xsl:comment>
+                <imvert:stereotype id="stereotype-name-objecttype">OBJECTTYPE</imvert:stereotype>
+            </xsl:if>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="imvert:class/imvert:attributes" mode="mimformat">
+        <xsl:variable name="supertypes" select="../imvert:supertype[imvert:type-package != 'OUTSIDE']"/>
+        <xsl:copy>
+            <!-- ID niet toekennen als al gedefinieerd op supertype, of als niet "herbruikbaar" -->
+            <xsl:if test="empty($supertypes) and not(../imvert:name = $niet-herbruikbare-klassen)">
+                <imvert:attribute>
+                    <imvert:name original="id">id</imvert:name>
+                    <imvert:is-id>true</imvert:is-id>
+                    <imvert:static>false</imvert:static>
+                    <imvert:baretype>Integer</imvert:baretype>
+                    <imvert:type-name original="CharacterString">CharacterString</imvert:type-name>
+                    <imvert:type-id>EAID_18BFBA8D_E3F4_4d8c_9A8F_4429FA54B041</imvert:type-id>
+                    <imvert:type-package original="OUTSIDE">OUTSIDE</imvert:type-package>
+                    <imvert:min-occurs>1</imvert:min-occurs>
+                    <imvert:max-occurs>1</imvert:max-occurs>
+                    <imvert:position>50</imvert:position><!-- positie van attributen is default 100 -->
+                    <imvert:documentation>
+                        <section>
+                            <title>Definitie</title>
+                            <body>
+                                <text>
+                                    <line>ID van de MIM format construct</line>
+                                </text>
+                            </body>
+                        </section>
+                    </imvert:documentation>
+                    <imvert:stereotype id="stereotype-name-attribute">ATTRIBUUTSOORT</imvert:stereotype>
+                </imvert:attribute>
+            </xsl:if>
+            <xsl:apply-templates mode="#current"/>
         </xsl:copy>
     </xsl:template>
     
