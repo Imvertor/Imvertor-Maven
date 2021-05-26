@@ -28,7 +28,17 @@
     exclude-result-prefixes="#all" 
     version="2.0">
 
-    <xsl:variable name="niet-herbruikbare-klassen" select="('Generalisatie','MEER?')" as="xs:string*"/>
+    <xsl:variable name="herbruikbare-klassen" select="(
+        'Objecttype',
+        'Gegevensgroeptype',
+        '_Datatype'
+        )" as="xs:string*"/>
+    
+    <xsl:variable name="refereerbare-klassen" select="(
+        'Attribuutsoort',
+        'Gegevensgroep',
+        'Interface'
+        )" as="xs:string*"/>
     
     <xsl:template match="imvert:class" mode="mimformat">
         <xsl:comment>Processed class</xsl:comment>
@@ -45,7 +55,7 @@
         <xsl:variable name="supertypes" select="../imvert:supertype[imvert:type-package != 'OUTSIDE']"/>
         <xsl:copy>
             <!-- ID niet toekennen als al gedefinieerd op supertype, of als niet "herbruikbaar" -->
-            <xsl:if test="empty($supertypes) and not(../imvert:name = $niet-herbruikbare-klassen)">
+            <xsl:if test="empty($supertypes) and ../imvert:name = ($herbruikbare-klassen,$refereerbare-klassen)">
                 <imvert:attribute>
                     <imvert:name original="id">id</imvert:name>
                     <imvert:is-id>true</imvert:is-id>
