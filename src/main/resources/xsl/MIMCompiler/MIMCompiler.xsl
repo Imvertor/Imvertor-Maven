@@ -5,9 +5,8 @@
   xmlns:UML="omg.org/UML1.3"
   xmlns:imvert="http://www.imvertor.org/schema/system" 
   xmlns:imf="http://www.imvertor.org/xsl/functions" 
-  xmlns:Model="http://www.kadaster.nl/schemas/MIMFORMAT/model/v20210522" 
-  xmlns:Model-ref="http://www.kadaster.nl/schemas/MIMFORMAT/model-ref/v20210522" 
-  xmlns:Product="http://www.kadaster.nl/schemas/MIMFORMAT/product/v20210522" 
+  xmlns:mim="http://www.kadaster.nl/schemas/MIMFORMAT/model/v20210522" 
+  xmlns:mim-ref="http://www.kadaster.nl/schemas/MIMFORMAT/model-ref/v20210522"  
   xmlns:xlink="http://www.w3.org/1999/xlink" 
   xmlns:fn="http://www.w3.org/2005/xpath-functions" 
   expand-text="yes" 
@@ -21,7 +20,7 @@
   <xsl:import href="../common/Imvert-common.xsl"/>
   <xsl:import href="../common/Imvert-common-derivation.xsl"/>
   -->
-
+  
   <xsl:variable name="stylesheet-code">MIMCOMPILER</xsl:variable>
   <!--
   <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
@@ -74,100 +73,187 @@
   <xsl:variable name="stereotype-name-relatierol"              select="'RELATIEROL'"              as="xs:string"/>
   <xsl:variable name="stereotype-name-relatiesoort"            select="'RELATIESOORT'"            as="xs:string"/>
   <xsl:variable name="stereotype-name-view"                    select="'VIEW'"                    as="xs:string"/>
+  <xsl:variable name="stereotype-name-interface"               select="'INTERFACE'"               as="xs:string"/>
     
-  <xsl:variable name="mim-primitive-datatypes" as="element(Model:PrimitiefDatatype)+">
+  <xsl:variable name="waardebereik-authentiek" select="('Authentiek', 'Basisgegeven', 'Wettelijk gegeven', 'Landelijk kerngegeven', 'Overig')" as="xs:string+"/>  
+  <xsl:variable name="waardebereik-aggregatietype" select="('Compositie', 'Gedeeld', 'Geen')" as="xs:string+"/>  
+    
+  <xsl:variable name="mim-primitive-datatypes" as="element(mim:PrimitiefDatatype)+">
     <xsl:for-each select="document('../../input/Kadaster/eap/Kadaster-MIM11.xmi')//UML:Class">
-      <Model:PrimitiefDatatype id="id-{@xmi.id}">
-        <Model:id>id-{@xmi.id}</Model:id>
-        <Model:naam>{@name}</Model:naam>
-        <Model:herkomst>MIMCompiler</Model:herkomst>
-        <Model:datumOpname>2021-05-26</Model:datumOpname>
-      </Model:PrimitiefDatatype>
+      <mim:PrimitiefDatatype id="id-{imf:valid-id(@xmi.id)}">
+        <mim:id>id-{imf:valid-id(@xmi.id)}</mim:id>
+        <mim:naam>{@name}</mim:naam>
+        <mim:herkomst>MIMCompiler</mim:herkomst>
+        <mim:datumOpname>2021-05-26</mim:datumOpname>
+      </mim:PrimitiefDatatype>
     </xsl:for-each>
   </xsl:variable>
-  <xsl:variable name="mim-primitive-datatypes-lc-names" select="for $n in $mim-primitive-datatypes/Model:naam return lower-case($n)" as="xs:string+"/>
+  <xsl:variable name="mim-primitive-datatypes-lc-names" select="for $n in $mim-primitive-datatypes/mim:naam return lower-case($n)" as="xs:string+"/>
+  
+  <xsl:variable name="packages" select="//imvert:package" as="element(imvert:package)*"/>
+  <xsl:variable name="classes" select="//imvert:class" as="element(imvert:class)*"/>
+  <xsl:variable name="attributes" select="//imvert:attribute" as="element(imvert:attribute)*"/>
+  <xsl:variable name="associations" select="//imvert:association" as="element(imvert:association)*"/>
+  <xsl:variable name="supertypes" select="//imvert:supertype" as="element(imvert:supertype)*"/>
   
   <xsl:key name="key-imvert-construct-by-id" match="imvert:*[imvert:id]" use="imvert:id"/>
 
   <!-- positions alleen bij attribute, association, supertype, substitution -->
 
   <xsl:template match="/imvert:packages">
-    <xsl:variable name="classes" select=".//imvert:class" as="element(imvert:class)*"/>
-    <xsl:variable name="attributes" select=".//imvert:attribute" as="element(imvert:attribute)*"/>
-    <xsl:variable name="associations" select=".//imvert:association" as="element(imvert:association)*"/>
-    <xsl:variable name="supertypes" select=".//imvert:supertype" as="element(imvert:supertype)*"/>
-    
-    <Product:RaadplegenObjecttypen 
-      xmlns:Product="http://www.kadaster.nl/schemas/MIMFORMAT/product/v20210522"
-      xmlns:Model="http://www.kadaster.nl/schemas/MIMFORMAT/model/v20210522" 
-      xmlns:Model-ref="http://www.kadaster.nl/schemas/MIMFORMAT/model-ref/v20210522"
+    <mim:Informatiemodel
+      xmlns:mim="http://www.kadaster.nl/schemas/MIMFORMAT/model/v20210522"
+      xmlns:mim-ref="http://www.kadaster.nl/schemas/MIMFORMAT/model-ref/v20210522"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       
       <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.kadaster.nl/schemas/MIMFORMAT/product/v20210522 http://www.armatiek.nl/downloads/mim/imkad-MIMFORMAT-0.0.1-2-20210522-20210522-110834/xsd/MIMFORMAT/product/v20210522/MIMFORMAT_Product_v1_0.xsd</xsl:attribute>
       
-      <Product:id>{imvert:model-id}</Product:id>
-      <Product:omschrijving>
-        <!-- TODO: type: xs:string -> gestructureerd datatype? -->
-        <xsl:value-of select="imf:tagged-values(., 'CFG-TV-DEFINITION')"/>
-      </Product:omschrijving>
-      <Product:betreft>
-        <xsl:for-each select="$classes[imvert:stereotype = $stereotype-name-objecttype]">
+      <mim:naam>{imvert:model-id}</mim:naam>
+      <xsl:call-template name="definitie"/>
+      <xsl:call-template name="herkomst"/>
+      <mim:informatiedomein><xsl:comment> TODO </xsl:comment></mim:informatiedomein>
+      <mim:informatiemodeltype><xsl:comment> TODO </xsl:comment></mim:informatiemodeltype>
+      <mim:relatiemodelleringstype><xsl:comment> TODO </xsl:comment></mim:relatiemodelleringstype>
+      <mim:mIMVersie>{if (matches(imvert:metamodel, 'MIM\s+1\.1', 'i')) then '1.1' else if (matches(imvert:metamodel, 'MIM\s+1\.0', 'i')) then '1.0' else 'Onbekend'}</mim:mIMVersie>
+      <mim:mIMExtensie>Kadaster</mim:mIMExtensie> <!-- TODO: mapping? -->
+      <mim:mIMTaal>NL</mim:mIMTaal> <!-- TODO: mapping? -->
+      
+      <mim:bevat>
+        <xsl:apply-templates select="$packages[imvert:stereotype = ($stereotype-name-domein, $stereotype-name-view)]">
+          <xsl:sort select="imvert:stereotype"/>
           <xsl:sort select="imvert:name"/>
-          <Model-ref:ObjecttypeRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</Model-ref:ObjecttypeRef>
-        </xsl:for-each>
-      </Product:betreft>
-      <Product:components>
-        <Product:RaadplegenObjecttypenComponents>
-          <!-- Model:Objectype: -->
+        </xsl:apply-templates>
+      </mim:bevat>
+      
+      <xsl:where-populated>
+        <mim:maaktGebruikVan>
+          <xsl:apply-templates select="$packages[imvert:stereotype = $stereotype-name-extern]">
+            <xsl:sort select="imvert:name"/>
+          </xsl:apply-templates>
+        </mim:maaktGebruikVan>  
+      </xsl:where-populated>
+     
+      <mim:components>
+        <mim:InformatiemodelComponents>
+          <!-- mim:Objectype: -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-objecttype]"/>
-          <!-- Model:Gegevensgroeptype: -->
+          <!-- mim:Gegevensgroeptype: -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gegevensgroeptype]"/>
-          <!-- Model:Attribuutsoort: -->
+          <!-- mim:Attribuutsoort: -->
           <xsl:apply-templates select="$attributes[imvert:stereotype = $stereotype-name-attribuutsoort]"/>
-          <!-- Model:Gegevensgroep: -->
+          <!-- mim:Gegevensgroep: -->
           <xsl:apply-templates select="$attributes[imvert:stereotype = $stereotype-name-gegevensgroep]"/>
-          <!-- Model:Relatiesoort: -->
+          <!-- mim:Relatiesoort: -->
           <xsl:apply-templates select="$associations[imvert:stereotype = $stereotype-name-relatiesoort]"/>
-          <!-- Model:Relatieklasse: -->
+          <!-- mim:Relatieklasse: -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-relatieklasse]"/>
-          <!-- Model:GestructureerdDatatype -->
+          <!-- mim:GestructureerdDatatype -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gestructureerd-datatype]"/>
-          <!-- Model:PrimitiefDatatype -->
+          <!-- mim:PrimitiefDatatype -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-primitief-datatype]"/>
           <xsl:variable name="bare-types" select="for $b in distinct-values($attributes/imvert:baretype) return lower-case($b)" as="xs:string*"/>
-          <xsl:sequence select="$mim-primitive-datatypes[lower-case(Model:naam) = $bare-types]"/>
-          <!-- Model:Enumeratie -->
+          <xsl:sequence select="$mim-primitive-datatypes[lower-case(mim:naam) = $bare-types]"/>
+          <!-- mim:Enumeratie -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-enumeratie]"/>
-          <!-- Model:Codelijst -->
+          <!-- mim:Codelijst -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-codelijst]"/>
-          <!-- Model:Referentielijst -->
+          <!-- mim:Referentielijst -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-referentielijst]"/>
-          <!-- Model:Datatype -->
+          <!-- mim:Datatype -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-datatype]"/>
-          <!-- Model:DataElement -->
+          <!-- mim:DataElement -->
           <xsl:apply-templates select="$attributes[imvert:stereotype = $stereotype-name-data-element]"/>
-          <!-- Model:Enumeratiewaarde -->
+          <!-- mim:Enumeratiewaarde -->
           <xsl:apply-templates select="$attributes[imvert:stereotype = $stereotype-name-enumeratiewaarde]"/>
-          <!-- Model:ReferentieElement -->
+          <!-- mim:ReferentieElement -->
           <xsl:apply-templates select="$attributes[imvert:stereotype = $stereotype-name-referentie-element]"/>
-          <!-- Model:Generalisatie -->
+          <!-- mim:Generalisatie -->
           <xsl:apply-templates select="$supertypes[imvert:stereotype = $stereotype-name-generalisatie]"/>
-          <!-- Model:Keuze__Attribuutsoorten -->
+          <!-- mim:Keuze__Attribuutsoorten -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-keuze]"/> <!-- TODO -->
-          <!-- Model:Keuze__Datatypen -->
+          <!-- mim:Keuze__Datatypen -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-keuze]"/> <!-- TODO -->
-          <!-- Model:Keuze__Associaties -->
+          <!-- mim:Keuze__Associaties -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-keuze]"/> <!-- TODO -->
-          <!-- Model:ExterneKoppeling -->
+          <!-- TODO: mim:Extern toevoegen -->
+          <!-- mim:ExterneKoppeling -->
           <xsl:apply-templates select="$associations[imvert:stereotype = $stereotype-name-externe-koppeling]"/>
-        </Product:RaadplegenObjecttypenComponents>
-      </Product:components>
-    </Product:RaadplegenObjecttypen>
+          <!-- mim:Interface -->
+          <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-interface and imvert:id]"/>
+          <!-- TODO: hier ook mim:Domein en mim:View toevoegen -->
+        </mim:InformatiemodelComponents>
+      </mim:components>
+    </mim:Informatiemodel>
+  </xsl:template>
+  
+  <!-- mim:Domein -->
+  <xsl:template match="imvert:package[imvert:stereotype = $stereotype-name-domein]">
+    <xsl:variable name="type-package-id" select="imvert:id" as="xs:string"/>
+    <mim:Domein id="{imf:valid-id(imvert:id)}">
+      <xsl:where-populated>
+        <mim:bevat__datatype>
+          <!--
+          <xsl:for-each select="//*[imvert:stereotype = $stereotype-name-datatype and imvert:type-package-id = $type-package-id]">
+            <xsl:sort select="imvert:name"/>
+            <mim-ref:_DatatypeRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:_DatatypeRef>
+          </xsl:for-each>
+          -->
+          <xsl:for-each select="imvert:class[imvert:stereotype = $stereotype-name-gestructureerd-datatype]">
+            <xsl:sort select="imvert:name"/>
+            <mim-ref:GestructureerdDatatypeRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:GestructureerdDatatypeRef>
+          </xsl:for-each>
+          <xsl:for-each select="imvert:class[imvert:stereotype = $stereotype-name-primitief-datatype]">
+            <xsl:sort select="imvert:name"/>
+            <mim-ref:PrimitiefDatatypeRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:PrimitiefDatatypeRef>
+          </xsl:for-each>
+          <xsl:for-each select="imvert:class[imvert:stereotype = $stereotype-name-enumeratie]">
+            <xsl:sort select="imvert:name"/>
+            <mim-ref:EnumeratieRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:EnumeratieRef>
+          </xsl:for-each>
+          <xsl:for-each select="imvert:class[imvert:stereotype = $stereotype-name-codelijst]">
+            <xsl:sort select="imvert:name"/>
+            <mim-ref:CodelijstRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:CodelijstRef>
+          </xsl:for-each>
+          <xsl:for-each select="imvert:class[imvert:stereotype = $stereotype-name-referentielijst]">
+            <xsl:sort select="imvert:name"/>
+            <mim-ref:ReferentielijstRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:ReferentielijstRef>
+          </xsl:for-each>
+        </mim:bevat__datatype>  
+      </xsl:where-populated>
+      <xsl:where-populated>
+        <mim:bevat__objecttype>
+          <xsl:for-each select="imvert:class[imvert:stereotype = $stereotype-name-objecttype]">
+            <xsl:sort select="imvert:name"/>
+            <mim-ref:ObjecttypeRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:ObjecttypeRef>
+          </xsl:for-each>
+        </mim:bevat__objecttype>  
+      </xsl:where-populated>
+      <xsl:where-populated>
+        <mim:bevat__gegevensgroeptype>
+          <xsl:for-each select="imvert:class[imvert:stereotype = $stereotype-name-gegevensgroeptype]">
+            <xsl:sort select="imvert:name"/>
+            <mim-ref:GegevensgroeptypeRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:GegevensgroeptypeRef>
+          </xsl:for-each> 
+        </mim:bevat__gegevensgroeptype>  
+      </xsl:where-populated>
+      <xsl:call-template name="naam"/>
+    </mim:Domein>
   </xsl:template>
 
-  <!-- Model:Objectype -->
+  <!-- mim:View -->
+  <xsl:template match="imvert:package[imvert:stereotype = $stereotype-name-view]">
+    <mim:View id="{imf:valid-id(imvert:id)}">
+      <xsl:call-template name="naam"/>
+      <xsl:call-template name="locatie"/>
+      <xsl:call-template name="definitie"/>
+      <xsl:call-template name="herkomst"/>
+    </mim:View>
+  </xsl:template>
+
+  <!-- mim:Objectype -->
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-objecttype]">
-    <Model:Objecttype id="{imf:valid-id(imvert:id)}">
+    <mim:Objecttype id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -188,11 +274,11 @@
       <xsl:call-template name="bezitExterneRelatie"/>
       <xsl:call-template name="gebruikt__gegevensgroep"/>
       <xsl:call-template name="bezit"/>
-    </Model:Objecttype>
+    </mim:Objecttype>
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-gegevensgroeptype]">
-    <Model:Gegevensgroeptype id="{imf:valid-id(imvert:id)}">
+    <mim:Gegevensgroeptype id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -203,11 +289,11 @@
       <xsl:call-template name="datumOpname"/>
       <xsl:call-template name="gebruikt__attribuutsoort"/>
       <xsl:call-template name="gebruikt__gegevensgroep"/>
-    </Model:Gegevensgroeptype>
+    </mim:Gegevensgroeptype>
   </xsl:template>
   
   <xsl:template match="imvert:attribute[imvert:stereotype = $stereotype-name-attribuutsoort]">
-    <Model:Attribuutsoort id="{imf:valid-id(imvert:id)}">
+    <mim:Attribuutsoort id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -230,11 +316,11 @@
       <xsl:call-template name="identificerend"/>
       <xsl:call-template name="heeft__datatype"/>
       <xsl:call-template name="heeft__keuze"/>
-    </Model:Attribuutsoort>
+    </mim:Attribuutsoort>
   </xsl:template>
   
   <xsl:template match="imvert:attribute[imvert:stereotype = $stereotype-name-gegevensgroep]">
-    <Model:Gegevensgroep id="{imf:valid-id(imvert:id)}">
+    <mim:Gegevensgroep id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -249,11 +335,11 @@
       <xsl:call-template name="kardinalteit"/>
       <xsl:call-template name="authentiek"/>
       <xsl:call-template name="heeft"/>
-    </Model:Gegevensgroep>
+    </mim:Gegevensgroep>
   </xsl:template>
   
   <xsl:template match="imvert:association[imvert:stereotype = $stereotype-name-relatiesoort]">
-    <Model:Relatiesoort id="{imf:valid-id(imvert:id)}">
+    <mim:Relatiesoort id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -273,11 +359,11 @@
       <xsl:call-template name="mogelijkGeenWaarde"/>
       <xsl:call-template name="verwijstNaar__objecttype"/>
       <xsl:call-template name="verwijstNaar"/>
-    </Model:Relatiesoort>
+    </mim:Relatiesoort>
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-relatieklasse]">
-    <Model:Relatieklasse id="{imf:valid-id(imvert:id)}">
+    <mim:Relatieklasse id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -297,11 +383,11 @@
       <xsl:call-template name="mogelijkGeenWaarde"/>
       <xsl:call-template name="verwijstNaar__objecttype"/>
       <xsl:call-template name="verwijstNaar"/>
-    </Model:Relatieklasse>
+    </mim:Relatieklasse>
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-gestructureerd-datatype]">
-    <Model:GestructureerdDatatype id="{imf:valid-id(imvert:id)}">
+    <mim:GestructureerdDatatype id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="supertype"/>
       <xsl:call-template name="naam"/>
@@ -313,11 +399,11 @@
       <xsl:call-template name="formeelPatroon"/>
       <xsl:call-template name="datumOpname"/>
       <xsl:call-template name="bevat"/>
-    </Model:GestructureerdDatatype>
+    </mim:GestructureerdDatatype>
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-primitief-datatype]">
-    <Model:PrimitiefDatatype id="{imf:valid-id(imvert:id)}">
+    <mim:PrimitiefDatatype id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="supertype"/>
       <xsl:call-template name="naam"/>
@@ -329,11 +415,11 @@
       <xsl:call-template name="patroon"/>
       <xsl:call-template name="formeelPatroon"/>
       <xsl:call-template name="datumOpname"/>
-    </Model:PrimitiefDatatype>
+    </mim:PrimitiefDatatype>
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-enumeratie]">
-    <Model:Enumeratie id="{imf:valid-id(imvert:id)}">
+    <mim:Enumeratie id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="supertype"/>
       <xsl:call-template name="naam"/>
@@ -341,11 +427,11 @@
       <xsl:call-template name="definitie"/>
       <xsl:call-template name="begrip"/>
       <xsl:call-template name="bevat"/>
-    </Model:Enumeratie>
+    </mim:Enumeratie>
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-codelijst]">
-    <Model:Codelijst id="{imf:valid-id(imvert:id)}">
+    <mim:Codelijst id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="supertype"/>
       <xsl:call-template name="naam"/>
@@ -356,11 +442,11 @@
       <xsl:call-template name="datumOpname"/>
       <xsl:call-template name="toelichting"/>
       <xsl:call-template name="locatie"/>
-    </Model:Codelijst>
+    </mim:Codelijst>
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-referentielijst]">
-    <Model:Referentielijst id="{imf:valid-id(imvert:id)}">
+    <mim:Referentielijst id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="supertype"/>
       <xsl:call-template name="naam"/>
@@ -372,21 +458,21 @@
       <xsl:call-template name="toelichting"/>
       <xsl:call-template name="locatie"/>
       <xsl:call-template name="bevat"/>
-    </Model:Referentielijst>
+    </mim:Referentielijst>
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-datatype]">
-    <Model:Datatype id="{imf:valid-id(imvert:id)}">
+    <mim:Datatype id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
       <xsl:call-template name="kardinaliteit"/>
       <xsl:call-template name="type"/>
-    </Model:Datatype>
+    </mim:Datatype>
   </xsl:template>
   
   <xsl:template match="imvert:attribute[imvert:stereotype = $stereotype-name-data-element]">
-    <Model:DataElement id="{imf:valid-id(imvert:id)}">
+    <mim:DataElement id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -397,21 +483,21 @@
       <xsl:call-template name="formeelPatroon"/>
       <xsl:call-template name="kardinaliteit"/>
       <xsl:call-template name="heeft"/>
-    </Model:DataElement>
+    </mim:DataElement>
   </xsl:template>
   
   <xsl:template match="imvert:attribute[imvert:stereotype = $stereotype-name-enumeratiewaarde]">
-    <Model:Enumeratiewaarde id="{imf:valid-id(imvert:id)}">
+    <mim:Enumeratiewaarde id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="begrip"/>
       <xsl:call-template name="definitie"/>
       <xsl:call-template name="code"/>
-    </Model:Enumeratiewaarde>
+    </mim:Enumeratiewaarde>
   </xsl:template>
   
   <xsl:template match="imvert:attribute[imvert:stereotype = $stereotype-name-referentie-element]">
-    <Model:ReferentieElement id="{imf:valid-id(imvert:id)}">
+    <mim:ReferentieElement id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -425,19 +511,19 @@
       <xsl:call-template name="identificatie__F"/>
       <xsl:call-template name="toelichting"/>
       <xsl:call-template name="heeft"/>
-    </Model:ReferentieElement>
+    </mim:ReferentieElement>
   </xsl:template>
   
   <xsl:template match="imvert:supertype[imvert:stereotype = $stereotype-name-generalisatie]">
-    <Model:Generalisatie id="{imf:valid-id(imvert:id)}">
+    <mim:Generalisatie id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="datumOpname"/>
       <xsl:call-template name="supertype"/>
       <xsl:call-template name="verwijstNaarGenerieke"/>
-    </Model:Generalisatie>
+    </mim:Generalisatie>
   </xsl:template>
   
   <xsl:template match="imvert:association[imvert:stereotype = $stereotype-name-externe-koppeling]">
-    <Model:ExterneKoppeling id="{imf:valid-id(imvert:id)}">
+    <mim:ExterneKoppeling id="{imf:valid-id(imvert:id)}">
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -446,92 +532,118 @@
       <xsl:call-template name="uniDirectioneel"/>
       <xsl:call-template name="typeAggregatie"/>
       <xsl:call-template name="doel"/>
-    </Model:ExterneKoppeling>
+    </mim:ExterneKoppeling>
   </xsl:template>
-
+  
+  <xsl:template match="imvert:package[imvert:stereotype = $stereotype-name-extern]">
+    <mim:Extern id="{imf:valid-id(imvert:id)}">
+      <xsl:call-template name="naam"/>
+      <xsl:call-template name="locatie"/>
+      <xsl:call-template name="definitie"/>
+      <xsl:call-template name="herkomst"/>
+      <!-- TODO: mim:bevat én mim:-ref:interface zijn verplicht -> soms invalid XML -->
+      <mim:bevat>
+        <xsl:for-each select="imvert:class[imvert:stereotype = $stereotype-name-interface and imvert:id]">
+          <mim-ref:InterfaceRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:InterfaceRef>        
+        </xsl:for-each>
+      </mim:bevat>  
+    </mim:Extern>
+  </xsl:template>
+  
+  <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-interface]">
+    <mim:Interface id="{imf:valid-id(imvert:id)}">
+      <xsl:call-template name="id"/>
+      <xsl:call-template name="naam"/>  
+    </mim:Interface>
+  </xsl:template>
+  
   <!-- Attributen: -->
   <xsl:template name="alias">
     <xsl:where-populated>
-      <Model:alias>{imvert:alias}</Model:alias>
+      <mim:alias>{imvert:alias}</mim:alias>
     </xsl:where-populated>
   </xsl:template>
 
   <xsl:template name="authentiek">
-    <Model:authentiek>{imf:tagged-values(., 'CFG-TV-INDICATIONAUTHENTIC')}</Model:authentiek>
+    <xsl:variable name="value" select="imf:capitalize-first(imf:tagged-values(., 'CFG-TV-INDICATIONAUTHENTIC')[1])" as="xs:string?"/>
+    <xsl:if test="$value and $value[not(. = $waardebereik-authentiek)]">
+      <xsl:sequence select="imf:report-error('Tagged value CFG-TV-INDICATIONAUTHENTIC valt niet binnen MIM waardebereik (' || string-join($waardebereik-authentiek, ', ') || ')')"/>
+    </xsl:if>
+    <mim:authentiek>{$value}</mim:authentiek>
   </xsl:template>
 
   <xsl:template name="begrip">
     <xsl:for-each select="imf:tagged-values(., 'CFG-TV-CONCEPT')">
-      <Model:begrip>{.}</Model:begrip>
+      <mim:begrip>{.}</mim:begrip>
     </xsl:for-each>
   </xsl:template>
   
   <xsl:template name="bevat">
     <xsl:where-populated>
-      <Model:bevat>
+      <mim:bevat>
         <xsl:for-each select="imvert:attributes/imvert:attribute">
           <xsl:choose>
             <xsl:when test="imvert:stereotype = $stereotype-name-data-element">
-              <Model-ref:DataElementRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</Model-ref:DataElementRef>    
+              <mim-ref:DataElementRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:DataElementRef>    
             </xsl:when>
             <xsl:when test="imvert:stereotype = $stereotype-name-enumeratiewaarde">
-              <Model-ref:EnumeratiewaardeRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</Model-ref:EnumeratiewaardeRef>
+              <mim-ref:EnumeratiewaardeRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:EnumeratiewaardeRef>
             </xsl:when>
             <xsl:when test="imvert:stereotype = $stereotype-name-referentie-element">
-              <Model-ref:ReferentieElementRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</Model-ref:ReferentieElementRef>
+              <mim-ref:ReferentieElementRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:ReferentieElementRef>
             </xsl:when>
           </xsl:choose>
         </xsl:for-each>    
-      </Model:bevat>
+      </mim:bevat>
     </xsl:where-populated>
   </xsl:template>
   
   <xsl:template name="bezit">
     <!-- Objecttype.bezit.Relatiesoort -->
     <xsl:where-populated>
-      <Model:bezit>
+      <mim:bezit>
         <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = ($stereotype-name-relatiesoort, $stereotype-name-relatieklasse)]">
           <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
           <xsl:choose>
             <xsl:when test="imvert:stereotype = $stereotype-name-relatiesoort">
-              <Model-ref:RelatiesoortRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</Model-ref:RelatiesoortRef>
+              <mim-ref:RelatiesoortRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:RelatiesoortRef>
             </xsl:when>
             <xsl:otherwise>
-              <Model-ref:RelatieklasseRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</Model-ref:RelatieklasseRef>
+              <mim-ref:RelatieklasseRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:RelatieklasseRef>
             </xsl:otherwise>
           </xsl:choose>
-          <Model:RelatierolBron>
-            <Model:id>{imvert:name}</Model:id> <!-- TODO: Slaat dit ergens op? -->
-          </Model:RelatierolBron>
+          <mim:RelatierolBron>
+            <mim:id>{imvert:name}</mim:id> <!-- TODO: Slaat dit ergens op? -->
+          </mim:RelatierolBron>
         </xsl:for-each>  
-      </Model:bezit>
+      </mim:bezit>
     </xsl:where-populated>
   </xsl:template>
 
   <xsl:template name="bezitExterneRelatie">
     <xsl:where-populated>
-      <Model:bezitExterneRelatie>
+      <mim:bezitExterneRelatie>
         <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = $stereotype-name-externe-koppeling]">
           <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
-          <Model-ref:ExterneKoppelingRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</Model-ref:ExterneKoppelingRef>  
+          <mim-ref:ExterneKoppelingRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:ExterneKoppelingRef>  
         </xsl:for-each>
-      </Model:bezitExterneRelatie>  
+      </mim:bezitExterneRelatie>  
     </xsl:where-populated>
   </xsl:template>
   
   <xsl:template name="code">
     <xsl:where-populated>
-      <Model:code>{imvert:name}</Model:code>
+      <mim:code>{imvert:name}</mim:code>
     </xsl:where-populated>
   </xsl:template>
 
   <xsl:template name="datumOpname">
-    <Model:datumOpname>{imf:tagged-values(., 'CFG-TV-DATERECORDED')}</Model:datumOpname>
+    <mim:datumOpname>{imf:tagged-values(., 'CFG-TV-DATERECORDED')}</mim:datumOpname>
   </xsl:template>
 
   <xsl:template name="definitie">
     <!-- TODO: type: xs:string -> gestructureerd datatype? -->
-    <Model:definitie>{imf:tagged-values(., 'CFG-TV-DEFINITION')}</Model:definitie>
+    <mim:definitie>{imf:tagged-values(., 'CFG-TV-DEFINITION')}</mim:definitie>
   </xsl:template>
 
   <xsl:template name="doel">
@@ -540,7 +652,7 @@
   
   <xsl:template name="formeelPatroon">
     <xsl:where-populated>
-      <Model:formeelPatroon>{imf:tagged-values(., 'CFG-TV-FORMALPATTERN')}</Model:formeelPatroon>
+      <mim:formeelPatroon>{imf:tagged-values(., 'CFG-TV-FORMALPATTERN')}</mim:formeelPatroon>
     </xsl:where-populated>
   </xsl:template>
   
@@ -550,34 +662,34 @@
   
   <xsl:template name="gebruikt__attribuutsoort">
     <xsl:where-populated>
-      <Model:gebruikt__attribuutsoort>
+      <mim:gebruikt__attribuutsoort>
         <xsl:for-each select="imvert:attributes/imvert:attribute[imvert:stereotype = $stereotype-name-attribuutsoort]">
           <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
-          <Model-ref:AttribuutsoortRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</Model-ref:AttribuutsoortRef>  
+          <mim-ref:AttribuutsoortRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:AttribuutsoortRef>  
         </xsl:for-each>
-      </Model:gebruikt__attribuutsoort>  
+      </mim:gebruikt__attribuutsoort>  
     </xsl:where-populated>
   </xsl:template>
   
   <xsl:template name="gebruikt__gegevensgroep">
     <xsl:where-populated>
-      <Model:gebruikt__gegevensgroep>
+      <mim:gebruikt__gegevensgroep>
         <xsl:for-each select="imvert:attributes/imvert:attribute[imvert:stereotype = $stereotype-name-gegevensgroep]">
           <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
-          <Model-ref:GegevensgroepRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</Model-ref:GegevensgroepRef>  
+          <mim-ref:GegevensgroepRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:GegevensgroepRef>  
         </xsl:for-each>
-      </Model:gebruikt__gegevensgroep>  
+      </mim:gebruikt__gegevensgroep>  
     </xsl:where-populated>
   </xsl:template>
   
   <xsl:template name="gebruikt__keuze">
     <xsl:where-populated>
-      <Model:gebruikt__keuze>
+      <mim:gebruikt__keuze>
         <xsl:for-each select="imvert:attributes/imvert:attribute[imvert:stereotype = $stereotype-name-keuze]">
           <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
-          <Model-ref:Keuze__DatatypenRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</Model-ref:Keuze__DatatypenRef>  
+          <mim-ref:Keuze__DatatypenRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:Keuze__DatatypenRef>  
         </xsl:for-each>
-      </Model:gebruikt__keuze>  
+      </mim:gebruikt__keuze>  
     </xsl:where-populated>
   </xsl:template>
   
@@ -585,7 +697,7 @@
   
   <xsl:template name="heeft__datatype">
     <xsl:where-populated>
-      <Model:heeft__datatype>
+      <mim:heeft__datatype>
         <xsl:variable name="baretype" select="imvert:baretype" as="xs:string?"/>
         <xsl:choose>
           <xsl:when test="imvert:type-id">
@@ -595,22 +707,22 @@
             <xsl:variable name="stereotype" select="$type/imvert:stereotype" as="xs:string*"/>
             <xsl:choose>
               <xsl:when test="$stereotype = $stereotype-name-datatype">
-                <Model-ref:_DatatypeRef xlink:href="#{$ref-id}">{$ref-name}</Model-ref:_DatatypeRef>
+                <mim-ref:_DatatypeRef xlink:href="#{$ref-id}">{$ref-name}</mim-ref:_DatatypeRef>
               </xsl:when>
               <xsl:when test="$stereotype = $stereotype-name-gestructureerd-datatype">
-                <Model-ref:GestructureerdDatatypeRef xlink:href="#{$ref-id}">{$ref-name}</Model-ref:GestructureerdDatatypeRef>
+                <mim-ref:GestructureerdDatatypeRef xlink:href="#{$ref-id}">{$ref-name}</mim-ref:GestructureerdDatatypeRef>
               </xsl:when>
               <xsl:when test="$stereotype = $stereotype-name-primitief-datatype">
-                <Model-ref:PrimitiefDatatypeRef xlink:href="#{$ref-id}">{$ref-name}</Model-ref:PrimitiefDatatypeRef>
+                <mim-ref:PrimitiefDatatypeRef xlink:href="#{$ref-id}">{$ref-name}</mim-ref:PrimitiefDatatypeRef>
               </xsl:when>
               <xsl:when test="$stereotype = $stereotype-name-enumeratie">
-                <Model-ref:EnumeratieRef xlink:href="#{$ref-id}">{$ref-name}</Model-ref:EnumeratieRef>
+                <mim-ref:EnumeratieRef xlink:href="#{$ref-id}">{$ref-name}</mim-ref:EnumeratieRef>
               </xsl:when>
               <xsl:when test="$stereotype = $stereotype-name-codelijst">
-                <Model-ref:CodelijstRef xlink:href="#{$ref-id}">{$ref-name}</Model-ref:CodelijstRef>
+                <mim-ref:CodelijstRef xlink:href="#{$ref-id}">{$ref-name}</mim-ref:CodelijstRef>
               </xsl:when>
               <xsl:when test="$stereotype = $stereotype-name-referentielijst">
-                <Model-ref:ReferentielijstRef xlink:href="#{$ref-id}">{$ref-name}</Model-ref:ReferentielijstRef>
+                <mim-ref:ReferentielijstRef xlink:href="#{$ref-id}">{$ref-name}</mim-ref:ReferentielijstRef>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:sequence select="imf:report-error('Onverwacht stereotype ' || $stereotype || ' in heeft__datatype')"/>
@@ -619,14 +731,14 @@
           </xsl:when>
           <xsl:when test="$baretype[lower-case(.) = $mim-primitive-datatypes-lc-names]">
             <!-- MIM standaard datatype herkend dat als baretype is ingevoerd ( en dus geen gebruikmaakt van Kadaster-MIM11.xmi): -->
-            <xsl:variable name="datatype" select="$mim-primitive-datatypes[lower-case(Model:naam) = lower-case($baretype)]" as="element(Model:PrimitiefDatatype)"/>
-            <Model-ref:PrimitiefDatatypeRef xlink:href="#{$datatype/@id}">{$datatype/Model:naam}</Model-ref:PrimitiefDatatypeRef>
+            <xsl:variable name="datatype" select="$mim-primitive-datatypes[lower-case(mim:naam) = lower-case($baretype)]" as="element(mim:PrimitiefDatatype)"/>
+            <mim-ref:PrimitiefDatatypeRef xlink:href="#{$datatype/@id}">{$datatype/mim:naam}</mim-ref:PrimitiefDatatypeRef>
           </xsl:when>
           <xsl:otherwise>  
             <xsl:sequence select="imf:report-error('Baretype ' || $baretype || ' is geen standaard MIM datatype')"/>
           </xsl:otherwise>
         </xsl:choose>
-      </Model:heeft__datatype>  
+      </mim:heeft__datatype>  
     </xsl:where-populated>
   </xsl:template>
   
@@ -635,15 +747,15 @@
   </xsl:template>
 
   <xsl:template name="herkomst">
-    <Model:herkomst>{imf:tagged-values(., 'CFG-TV-SOURCE')}</Model:herkomst>
+    <mim:herkomst>{imf:tagged-values(., 'CFG-TV-SOURCE')}</mim:herkomst>
   </xsl:template>
 
   <xsl:template name="herkomstDefinitie">
-    <Model:herkomstDefinitie>{imf:tagged-values(., 'CFG-TV-SOURCEOFDEFINITION')}</Model:herkomstDefinitie>
+    <mim:herkomstDefinitie>{imf:tagged-values(., 'CFG-TV-SOURCEOFDEFINITION')}</mim:herkomstDefinitie>
   </xsl:template>
 
   <xsl:template name="id">
-    <Model:id>{imf:valid-id(imvert:id)}</Model:id>
+    <mim:id>{imf:valid-id(imvert:id)}</mim:id>
   </xsl:template>
 
   <xsl:template name="identificatie__F"><!--TODO--></xsl:template>
@@ -654,33 +766,33 @@
   
   <xsl:template name="indicatieAbstractObject">
     <!-- TODO: klopt default waarde 'false'? -->
-    <Model:indicatieAbstractObject>{(imvert:abstract, 'false')[1]}</Model:indicatieAbstractObject>
+    <mim:indicatieAbstractObject>{(imvert:abstract, 'false')[1]}</mim:indicatieAbstractObject>
   </xsl:template>
   
   <xsl:template name="indicatieAfleidbaar">
     <!-- TODO: klopt default waarde 'false'? -->
-    <Model:indicatieAfleidbaar>{imf:boolean(imf:tagged-values(., 'CFG-TV-INDICATIONDERIVABLE'))}</Model:indicatieAfleidbaar>
+    <mim:indicatieAfleidbaar>{imf:mim-boolean(imf:tagged-values(., 'CFG-TV-INDICATIONDERIVABLE'))}</mim:indicatieAfleidbaar>
   </xsl:template>
   
   <xsl:template name="indicatieClassificerend">
     <!-- TODO: klopt default waarde 'false'? -->
-    <Model:indicatieClassificerend>{imf:boolean(imf:tagged-values(., 'CFG-TV-INDICATIONCLASSIFICATION'))}</Model:indicatieClassificerend>
+    <mim:indicatieClassificerend>{imf:mim-boolean(imf:tagged-values(., 'CFG-TV-INDICATIONCLASSIFICATION'))}</mim:indicatieClassificerend>
   </xsl:template>
   
   <xsl:template name="indicatieFormeleHistorie">
     <!-- TODO: klopt default waarde van false()? -->
-    <Model:indicatieFormeleHistorie>{(imf:boolean(imf:tagged-values(., 'CFG-TV-INDICATIONFORMALHISTORY')[1]))}</Model:indicatieFormeleHistorie>
+    <mim:indicatieFormeleHistorie>{(imf:mim-boolean(imf:tagged-values(., 'CFG-TV-INDICATIONFORMALHISTORY')[1]))}</mim:indicatieFormeleHistorie>
   </xsl:template>
   
   <xsl:template name="indicatieMateriLeHistorie"> 
     <!-- TODO: tikfout in XML schema -->
     <!-- TODO: klopt default waarde van false()? -->
-    <Model:indicatieMateriLeHistorie>{(imf:boolean(imf:tagged-values(., 'CFG-TV-INDICATIONMATERIALHISTORY')[1]))}</Model:indicatieMateriLeHistorie>
+    <mim:indicatieMateriLeHistorie>{(imf:mim-boolean(imf:tagged-values(., 'CFG-TV-INDICATIONMATERIALHISTORY')[1]))}</mim:indicatieMateriLeHistorie>
   </xsl:template>
   
   <xsl:template name="kardinaliteit">
     <!-- TODO: bij associations spelen ook nog imvert:min-occurs-source en imvert:max-occurs-source. Welke hier gebruiken? --> 
-    <Model:kardinaliteit>
+    <mim:kardinaliteit>
       <xsl:variable name="min" select="(imvert:min-occurs, '1')[1]" as="xs:string"/>
       <xsl:variable name="max" select="(imvert:max-occurs, '1')[1]" as="xs:string"/>
       <xsl:choose>
@@ -689,7 +801,7 @@
         <xsl:when test="$min = '0' and $max = '1'">0..1</xsl:when>
         <xsl:when test="$min = '0' and $max = 'unbounded'">1..*</xsl:when>
       </xsl:choose>
-    </Model:kardinaliteit>
+    </mim:kardinaliteit>
   </xsl:template>
   
   <xsl:template name="kardinalteit">
@@ -699,85 +811,91 @@
   
   <xsl:template name="kwaliteit">
     <xsl:where-populated>
-      <Model:kwaliteit>{imf:tagged-values(., 'CFG-TV-QUALITY')}</Model:kwaliteit>
+      <mim:kwaliteit>{imf:tagged-values(., 'CFG-TV-QUALITY')}</mim:kwaliteit>
     </xsl:where-populated>
   </xsl:template>
   
   <xsl:template name="lengte">
     <xsl:where-populated>
-      <Model:lengte>{imf:tagged-values(., 'CFG-TV-LENGTH')}</Model:lengte>
+      <mim:lengte>{imf:tagged-values(., 'CFG-TV-LENGTH')}</mim:lengte>
     </xsl:where-populated>
   </xsl:template>
   
   <xsl:template name="locatie">
-    <Model:locatie>{imf:tagged-values(., 'CFG-TV-DATALOCATION')}</Model:locatie>
+    <mim:locatie>{imf:tagged-values(., 'CFG-TV-DATALOCATION')}</mim:locatie>
   </xsl:template>
   
   <xsl:template name="mogelijkGeenWaarde">
     <!-- TODO: in IMKAD model heeft een attribuut twee CFG-TV-VOIDABLE tagged values, één Ja en één Nee, kan dat? -->
-    <Model:mogelijkGeenWaarde>{imf:boolean(imf:tagged-values(., 'CFG-TV-VOIDABLE')[1])}</Model:mogelijkGeenWaarde>
+    <mim:mogelijkGeenWaarde>{imf:mim-boolean(imf:tagged-values(., 'CFG-TV-VOIDABLE')[1])}</mim:mogelijkGeenWaarde>
   </xsl:template>
 
   <xsl:template name="naam">
-    <Model:naam>{imvert:name}</Model:naam>
+    <mim:naam>{imvert:name}</mim:naam>
   </xsl:template>
 
   <xsl:template name="patroon">
     <xsl:where-populated>
-      <Model:patroon>{imf:tagged-values(., 'CFG-TV-PATTERN')}</Model:patroon>
+      <mim:patroon>{imf:tagged-values(., 'CFG-TV-PATTERN')}</mim:patroon>
     </xsl:where-populated>
   </xsl:template>
   
   <xsl:template name="populatie">
     <xsl:where-populated>
-      <Model:populatie>{imf:tagged-values(., 'CFG-TV-POPULATION')}</Model:populatie>
+      <mim:populatie>{imf:tagged-values(., 'CFG-TV-POPULATION')}</mim:populatie>
     </xsl:where-populated>
   </xsl:template>
   
   <xsl:template name="supertype">
-    <xsl:for-each select="imvert:supertype[imvert:stereotype = $stereotype-name-generalisatie]">
+    <xsl:for-each select="imvert:supertype[not(imvert:stereotype) or imvert:stereotype = $stereotype-name-generalisatie]">
       <xsl:variable name="super-type" select="key('key-imvert-construct-by-id', imvert:type-id)" as="element(imvert:class)"/>
-      <Model:supertype>
-        <Model:Generalisatie>
-          <Model:datumOpname>{imf:tagged-values(., 'CFG-TV-DATERECORDED')}</Model:datumOpname>
+      <mim:supertype>
+        <mim:Generalisatie>
+          <mim:datumOpname>{imf:tagged-values(., 'CFG-TV-DATERECORDED')}</mim:datumOpname>
           <!-- TODO: deze constructie begrijp ik niet
-          <Model:supertype>
-            <Model-ref:EnumeratieRef xlink:href="http://www.oxygenxml.com/">EnumeratieRef1</Model-ref:EnumeratieRef>
-          </Model:supertype>
+          <mim:supertype>
+            <mim-ref:EnumeratieRef xlink:href="http://www.oxygenxml.com/">EnumeratieRef1</mim-ref:EnumeratieRef>
+          </mim:supertype>
           -->
-          <Model:verwijstNaarGenerieke>
-            <Model-ref:ObjecttypeRef xlink:href="#{imf:valid-id($super-type/imvert:id)}">{$super-type/imvert:name}</Model-ref:ObjecttypeRef>
-          </Model:verwijstNaarGenerieke>
-        </Model:Generalisatie>  
-      </Model:supertype>
+          <mim:verwijstNaarGenerieke>
+            <mim-ref:ObjecttypeRef xlink:href="#{imf:valid-id($super-type/imvert:id)}">{$super-type/imvert:name}</mim-ref:ObjecttypeRef>
+          </mim:verwijstNaarGenerieke>
+        </mim:Generalisatie>  
+      </mim:supertype>
     </xsl:for-each>
   </xsl:template>
   
   <xsl:template name="toelichting">
     <xsl:where-populated>
-      <Model:toelichting>{imf:tagged-values(., 'CFG-TV-DESCRIPTION')}</Model:toelichting>
+      <mim:toelichting>{imf:tagged-values(., 'CFG-TV-DESCRIPTION')}</mim:toelichting>
     </xsl:where-populated>
   </xsl:template>
   
   <xsl:template name="type"><!--TODO--></xsl:template>
   
   <xsl:template name="typeAggregatie">
-    <Model:typeAggregatie>{(imf:capitalize-first(imvert:aggregation), 'Geen')[1]}</Model:typeAggregatie>
+    <xsl:variable name="value" select="(imf:capitalize-first(imvert:aggregation), 'Geen')[1]" as="xs:string?"/>
+    <!-- TODO: Mappings Composite -> Compositie --> 
+    
+    <xsl:if test="$value and $value[not(. = $waardebereik-aggregatietype)]">
+      <xsl:sequence select="imf:report-error('Aggregatietype valt niet binnen MIM waardebereik (' || string-join($waardebereik-aggregatietype, ', ') || ')')"/>
+    </xsl:if>
+    <mim:typeAggregatie>{$value}</mim:typeAggregatie>
   </xsl:template>
   
   <xsl:template name="uniDirectioneel">
     <!-- TODO: mapping?? -->
-    <Model:uniDirectioneel>{imvert:source/imvert:navigable = 'false'}</Model:uniDirectioneel>
+    <mim:uniDirectioneel>{imvert:source/imvert:navigable = 'false'}</mim:uniDirectioneel>
   </xsl:template>
   
   <xsl:template name="uniekeAanduiding">
-    <Model:uniekeAanduiding>
+    <mim:uniekeAanduiding>
       <!-- TODO: mapping?? -->
-    </Model:uniekeAanduiding>
+    </mim:uniekeAanduiding>
   </xsl:template>
   
   <xsl:template name="verwijstNaar">
-    <!-- TODO: keuze gerelateerd, Model-ref:Keuze__DatatypenRef -->
+    <!-- TODO: keuze gerelateerd, mim-ref:Keuze__DatatypenRef -->
   </xsl:template>
   
   <xsl:template name="verwijstNaarGenerieke">
@@ -787,12 +905,12 @@
   <xsl:template name="verwijstNaar__objecttype">
     <!-- TODO: dit werkt alleen met RELATIESOORT, niet met RELATIEKLASSE -->
     <xsl:where-populated>
-      <Model:verwijstNaar__objecttype>
-        <Model-ref:ObjecttypeRef xlink:href="#{imf:valid-id(imvert:type-id)}">{imvert:type-name}</Model-ref:ObjecttypeRef>
-        <Model:_Relatierol>
-          <Model:id>Doel</Model:id> <!-- TODO: mapping?? -->
-        </Model:_Relatierol>
-      </Model:verwijstNaar__objecttype>
+      <mim:verwijstNaar__objecttype>
+        <mim-ref:ObjecttypeRef xlink:href="#{imf:valid-id(imvert:type-id)}">{imvert:type-name}</mim-ref:ObjecttypeRef>
+        <mim:_Relatierol>
+          <mim:id>Doel</mim:id> <!-- TODO: mapping?? -->
+        </mim:_Relatierol>
+      </mim:verwijstNaar__objecttype>
     </xsl:where-populated>
   </xsl:template>
   
@@ -803,14 +921,14 @@
     <xsl:sequence select="for $v in $context-node/imvert:tagged-values/imvert:tagged-value[@id = $tag-id]/imvert:value return normalize-space(string-join($v//text(), ' '))"/>
   </xsl:function>
     
-  <xsl:function name="imf:boolean" as="xs:boolean">
+  <xsl:function name="imf:mim-boolean" as="xs:string">
     <xsl:param name="this" as="item()?"/>
     <xsl:variable name="v" select="lower-case(string($this))"/>
     <xsl:sequence select="
-      if ($v=('yes','true','ja','1')) then true() 
-      else if ($v=('no','false','nee','0')) then false() 
-      else if ($this) then true() 
-      else false()"/>
+      if ($v=('yes','true','ja','1')) then 'Ja' 
+      else if ($v=('no','false','nee','0')) then 'Nee' 
+      else if ($this) then 'Ja' 
+      else 'Nee'"/>
   </xsl:function>
   
   <xsl:function name="imf:capitalize-first" as="xs:string?">
