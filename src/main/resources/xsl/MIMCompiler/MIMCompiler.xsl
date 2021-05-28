@@ -16,40 +16,11 @@
   
   <xsl:mode on-no-match="shallow-skip"/>
 
-  <!--
   <xsl:import href="../common/Imvert-common.xsl"/>
   <xsl:import href="../common/Imvert-common-derivation.xsl"/>
-  -->
   
   <xsl:variable name="stylesheet-code">MIMCOMPILER</xsl:variable>
-  <!--
   <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
-  -->
-  
-  <!--
-  <xsl:variable name="stereotype-name-attribuutsoort" select="'stereotype-name-attribute'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-codelijst" select="'stereotype-name-codelist'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-data-element" select="'stereotype-name-data-element'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-datatype" select="'stereotype-name-designation-datatype stereotype-name-simpletype'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-domein" select="'stereotype-name-domain-package'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-enumeratie" select="'stereotype-name-enumeration'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-enumeratiewaarde" select="'stereotype-name-enum'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-extern" select="'CFG-ST-EXTERNAL stereotype-name-external-package'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-externe-koppeling" select="'stereotype-name-externekoppeling'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-gegevensgroep" select="'stereotype-name-attributegroup'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-gegevensgroeptype" select="'stereotype-name-composite'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-generalisatie" select="'stereotype-name-generalization'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-gestructureerd-datatype" select="'stereotype-name-complextype'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-keuze" select="'stereotype-name-union stereotype-name-union-associations stereotype-name-union-attributes'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-objecttype" select="'stereotype-name-objecttype'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-primitief-datatype" select="'stereotype-name-simpletype'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-referentie-element" select="'stereotype-name-referentie-element'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-referentielijst" select="'stereotype-name-referentielijst'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-relatieklasse" select="'stereotype-name-relatieklasse'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-relatierol" select="'stereotype-name-relation-role'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-relatiesoort" select="'stereotype-name-relatiesoort'" as="xs:string"/>
-  <xsl:variable name="stereotype-name-view" select="'stereotype-name-view-package'" as="xs:string"/>
-  -->
   
   <xsl:variable name="stereotype-name-attribuutsoort"          select="'ATTRIBUUTSOORT'"          as="xs:string"/>
   <xsl:variable name="stereotype-name-codelijst"               select="'CODELIJST'"               as="xs:string"/>
@@ -176,12 +147,11 @@
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-keuze]"/> <!-- TODO -->
           <!-- mim:Keuze__Associaties -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-keuze]"/> <!-- TODO -->
-          <!-- TODO: mim:Extern toevoegen -->
+          <!-- TODO: mim:Extern toevoegen? -->
           <!-- mim:ExterneKoppeling -->
           <xsl:apply-templates select="$associations[imvert:stereotype = $stereotype-name-externe-koppeling]"/>
           <!-- mim:Interface -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-interface and imvert:id]"/>
-          <!-- TODO: hier ook mim:Domein en mim:View toevoegen -->
         </mim:InformatiemodelComponents>
       </mim:components>
     </mim:Informatiemodel>
@@ -566,12 +536,18 @@
 
   <xsl:template name="authentiek">
     <xsl:variable name="value" select="imf:capitalize-first(imf:tagged-values(., 'CFG-TV-INDICATIONAUTHENTIC')[1])" as="xs:string?"/>
-    <xsl:if test="$value and $value[not(. = $waardebereik-authentiek)]">
-      <xsl:sequence select="imf:report-error('Tagged value CFG-TV-INDICATIONAUTHENTIC valt niet binnen MIM waardebereik (' || string-join($waardebereik-authentiek, ', ') || ')')"/>
+    <xsl:variable name="mapped-value" as="xs:string">
+      <xsl:choose>
+        <xsl:when test="false()"/> <!-- TODO: mapping toevoegen indien nodig -->
+        <xsl:otherwise>{$value}</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:if test="$mapped-value and $mapped-value[not(. = $waardebereik-authentiek)]">
+      <xsl:sequence select="imf:msg(., 'WARNING', 'Value of tag CFG-TV-INDICATIONAUTHENTIC [1] is outside scope of MIM value range ([2])', ($value, string-join($waardebereik-authentiek, ', ')))"/>
     </xsl:if>
-    <mim:authentiek>{$value}</mim:authentiek>
+    <mim:authentiek>{$mapped-value}</mim:authentiek>
   </xsl:template>
-
+  
   <xsl:template name="begrip">
     <xsl:for-each select="imf:tagged-values(., 'CFG-TV-CONCEPT')">
       <mim:begrip>{.}</mim:begrip>
@@ -725,7 +701,7 @@
                 <mim-ref:ReferentielijstRef xlink:href="#{$ref-id}">{$ref-name}</mim-ref:ReferentielijstRef>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:sequence select="imf:report-error('Onverwacht stereotype ' || $stereotype || ' in heeft__datatype')"/>
+                <xsl:sequence select="imf:msg(., 'WARNING', 'Unexpected stereotype [1] in &quot;heeft__datype&quot;', ($stereotype))"/>
               </xsl:otherwise>
             </xsl:choose>  
           </xsl:when>
@@ -735,7 +711,7 @@
             <mim-ref:PrimitiefDatatypeRef xlink:href="#{$datatype/@id}">{$datatype/mim:naam}</mim-ref:PrimitiefDatatypeRef>
           </xsl:when>
           <xsl:otherwise>  
-            <xsl:sequence select="imf:report-error('Baretype ' || $baretype || ' is geen standaard MIM datatype')"/>
+            <xsl:sequence select="imf:msg(., 'WARNING', 'Baretype [1] is not a standard MIM datatype', ($baretype))"/>
           </xsl:otherwise>
         </xsl:choose>
       </mim:heeft__datatype>  
@@ -755,7 +731,9 @@
   </xsl:template>
 
   <xsl:template name="id">
+    <!-- TODO: genereren van mim:id helemaal verwijderen?
     <mim:id>{imf:valid-id(imvert:id)}</mim:id>
+    -->
   </xsl:template>
 
   <xsl:template name="identificatie__F"><!--TODO--></xsl:template>
@@ -766,7 +744,7 @@
   
   <xsl:template name="indicatieAbstractObject">
     <!-- TODO: klopt default waarde 'false'? -->
-    <mim:indicatieAbstractObject>{(imvert:abstract, 'false')[1]}</mim:indicatieAbstractObject>
+    <mim:indicatieAbstractObject>{imf:mim-boolean(imvert:abstract)}</mim:indicatieAbstractObject>
   </xsl:template>
   
   <xsl:template name="indicatieAfleidbaar">
@@ -875,17 +853,22 @@
   
   <xsl:template name="typeAggregatie">
     <xsl:variable name="value" select="(imf:capitalize-first(imvert:aggregation), 'Geen')[1]" as="xs:string?"/>
-    <!-- TODO: Mappings Composite -> Compositie --> 
-    
-    <xsl:if test="$value and $value[not(. = $waardebereik-aggregatietype)]">
-      <xsl:sequence select="imf:report-error('Aggregatietype valt niet binnen MIM waardebereik (' || string-join($waardebereik-aggregatietype, ', ') || ')')"/>
+    <xsl:variable name="mapped-value" as="xs:string">
+      <xsl:choose>
+        <xsl:when test="imf:equals-ci($value, 'composite')">Compositie</xsl:when>
+        <xsl:when test="imf:equals-ci($value, 'shared')">Gedeeld</xsl:when>
+        <xsl:otherwise>{$value}</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:if test="$mapped-value and $mapped-value[not(. = $waardebereik-aggregatietype)]">
+      <xsl:sequence select="imf:msg(., 'WARNING', 'Aggregation type [1] is outside scope of MIM value range ([2])', ($value, string-join($waardebereik-aggregatietype, ', ')))"/>
     </xsl:if>
-    <mim:typeAggregatie>{$value}</mim:typeAggregatie>
+    <mim:typeAggregatie>{$mapped-value}</mim:typeAggregatie>
   </xsl:template>
   
   <xsl:template name="uniDirectioneel">
     <!-- TODO: mapping?? -->
-    <mim:uniDirectioneel>{imvert:source/imvert:navigable = 'false'}</mim:uniDirectioneel>
+    <mim:uniDirectioneel>{imf:mim-boolean(xs:string(imvert:source/imvert:navigable = 'false'))}</mim:uniDirectioneel>
   </xsl:template>
   
   <xsl:template name="uniekeAanduiding">
@@ -918,7 +901,11 @@
   <xsl:function name="imf:tagged-values" as="xs:string*">
     <xsl:param name="context-node" as="element()"/>
     <xsl:param name="tag-id" as="xs:string"/>
+    <!--
     <xsl:sequence select="for $v in $context-node/imvert:tagged-values/imvert:tagged-value[@id = $tag-id]/imvert:value return normalize-space(string-join($v//text(), ' '))"/>
+    -->
+    
+    <xsl:sequence select="for $v in imf:get-most-relevant-compiled-taggedvalue($context-node, '##' || $tag-id) return normalize-space(string-join($v//text(), ' '))"/>
   </xsl:function>
     
   <xsl:function name="imf:mim-boolean" as="xs:string">
@@ -936,15 +923,15 @@
     <xsl:sequence select="if ($arg) then concat(upper-case(substring($arg,1,1)), substring($arg,2)) else ()"/>
   </xsl:function>
   
-  <xsl:function name="imf:report-error" as="comment()">
-    <xsl:param name="message" as="xs:string"/>
-    <xsl:message terminate="no" select="$message"/>
-    <xsl:comment> {$message} </xsl:comment>
-  </xsl:function>
-
   <xsl:function name="imf:valid-id" as="xs:string">
     <xsl:param name="id" as="xs:string?"/>
     <xsl:sequence select="'id-' || translate($id, '{}', '')"/>
+  </xsl:function>
+  
+  <xsl:function name="imf:equals-ci" as="xs:boolean">
+    <xsl:param name="str1" as="xs:string?"/>
+    <xsl:param name="str2" as="xs:string?"/>
+    <xsl:sequence select="lower-case($str1) = fn:lower-case($str2)"/>
   </xsl:function>
 
 </xsl:stylesheet>
