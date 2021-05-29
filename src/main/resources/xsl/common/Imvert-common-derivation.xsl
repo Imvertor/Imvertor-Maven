@@ -307,7 +307,7 @@
 		<xsl:sequence select="if (exists($elm)) then $elm/node() else ()"/>
 	</xsl:function>
 	
-	<xsl:function name="imf:get-most-relevant-compiled-taggedvalue-element" as="element(tv)?">
+	<xsl:function name="imf:get-most-relevant-compiled-taggedvalue-element" as="element(tv)*">
 		<xsl:param name="this" as="element()"/>
 		<xsl:param name="tv-id" as="xs:string"/>
 		<xsl:variable name="tvs" select="imf:get-applicable-tagged-values($this)"/>
