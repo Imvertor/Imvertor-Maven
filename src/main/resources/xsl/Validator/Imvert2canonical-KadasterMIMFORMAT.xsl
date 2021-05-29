@@ -30,14 +30,15 @@
 
     <xsl:variable name="herbruikbare-klassen" select="(
         'Objecttype',
+        'Relatieklasse',
         'Gegevensgroeptype',
-        '_Datatype'
+        '_Datatype',
+        'Keuze__Datatypen',
+        'Keuze__Attribuutsoorten',
+        'Keuze__Associaties'
         )" as="xs:string*"/>
     
     <xsl:variable name="refereerbare-klassen" select="(
-        'Attribuutsoort',
-        'Gegevensgroep',
-        'Interface'
         )" as="xs:string*"/>
     
     <xsl:template match="imvert:class" mode="mimformat">
@@ -60,11 +61,11 @@
                     <imvert:name original="id">id</imvert:name>
                     <imvert:is-id>true</imvert:is-id>
                     <imvert:static>false</imvert:static>
-                    <imvert:baretype>Integer</imvert:baretype>
+                    <imvert:baretype>CharacterString</imvert:baretype>
                     <imvert:type-name original="CharacterString">CharacterString</imvert:type-name>
                     <imvert:type-id>EAID_18BFBA8D_E3F4_4d8c_9A8F_4429FA54B041</imvert:type-id>
                     <imvert:type-package original="OUTSIDE">OUTSIDE</imvert:type-package>
-                    <imvert:min-occurs>1</imvert:min-occurs>
+                    <imvert:min-occurs>0</imvert:min-occurs>
                     <imvert:max-occurs>1</imvert:max-occurs>
                     <imvert:position>50</imvert:position><!-- positie van attributen is default 100 -->
                     <imvert:documentation>
@@ -90,13 +91,14 @@
             <xsl:apply-templates mode="#current"/>
             <xsl:if test="empty(imvert:baretype)">
                 <xsl:choose>
+                    <!-- TODO beter uitwerken van typen van de tagged values -->
                     <xsl:when test="imvert:name = (
-                        'indicatieAfleidbaar',
-                        'indicatieClassificerend',
-                        'indicatieMateriLeHistorie',
-                        'indicatieFormeleHistorie',
-                        'mogelijkGeenWaarde',
-                        'identificerend'
+                        'XXindicatieAfleidbaar',
+                        'XXindicatieClassificerend',
+                        'XXindicatieMateriLeHistorie',
+                        'XXindicatieFormeleHistorie',
+                        'XXmogelijkGeenWaarde',
+                        'XXidentificerend'
                         )">
                         <imvert:baretype>Boolean</imvert:baretype>
                         <imvert:type-name original="Boolean">Boolean</imvert:type-name>
