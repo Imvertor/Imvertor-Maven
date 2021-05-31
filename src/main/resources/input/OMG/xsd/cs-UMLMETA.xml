@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchema xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+    
+    <!-- conceptual schema for UML contructs (metaklassen) -->
+    <cs:id>UMLMETA</cs:id>
+    <cs:shortName>umlmeta</cs:shortName>
+    <cs:desc>Alle UML constructs in de vorm van metaklassen tbv. de MIM 11 specificatie, waarin constructs subtypen zijn van deze metaklassen.</cs:desc>
+    <!-- all including conceptual schemas should include the prefix http://www.geonovum.nl/conceptual-schemas/ in their configuration! -->
+    <cs:url>http://www.geonovum.nl/conceptual-schemas/UML-meta</cs:url>
+    <cs:catalogUrl>https://www.omg.org/spec/UML/2.5/About-UML/</cs:catalogUrl><!-- TODO hoe kun je goed linken naar specifieke klassen? voeg [entry] toe -->
+    
+</cs:ConceptualSchema>

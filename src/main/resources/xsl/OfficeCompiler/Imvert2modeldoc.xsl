@@ -85,6 +85,7 @@
                     <!-- exclude package replacements (resolved stereotype internal) -->
                     <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
                 </xsl:variable>
+                <xsl:sequence select="dlogger:save('$sections',$sections)"/>
                 <xsl:apply-templates select="$sections" mode="section-cleanup"/>    
             </chapter>
             
@@ -1028,13 +1029,13 @@
    </xsl:function>
   
     <xsl:function name="imf:create-parts-cfg" as="element(part)*">
-        <xsl:param name="this" as="element()"/>
+        <xsl:param name="this" as="element()"/><!-- an imvert:* element -->
         <xsl:param name="level" as="xs:string"/> <!-- a description of what to show, see docrules. --> 
         
         <xsl:variable name="isrole" select="exists($this/self::imvert:target)"/>
         <xsl:variable name="relation" select="if ($isrole) then $this/.. else $this"/>
         
-        <xsl:for-each select="$configuration-docrules-file/doc-rule/levels/level[. = $level]">
+        <xsl:for-each select="$configuration-docrules-file/doc-rule/levels/level[. = $level]"><!-- a level in a docrule, i.e. indication of where the tagged value should be shown, for example "DISPLAY-GLOBAL-OBJECTTYPE" -->
            
             <xsl:variable name="doc-rule-id" select="../../@id"/>
             

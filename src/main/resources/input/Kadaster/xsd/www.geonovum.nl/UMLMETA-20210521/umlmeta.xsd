@@ -1,0 +1,15 @@
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:umlmeta="http://www.geonovum.nl/UMLMETA"
+    targetNamespace="http://www.geonovum.nl/UMLMETA"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="1.1">
+    
+    <!-- empty -->
+    
+    <xs:complexType name="UMLClass">
+        <xs:sequence/>
+    </xs:complexType>
+    
+</xs:schema>

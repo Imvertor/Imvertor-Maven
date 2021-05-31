@@ -35,11 +35,24 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
+    <xsl:import href="Imvert2canonical-KadasterMIMFORMAT.xsl"/>
+    
     <xsl:template match="/imvert:packages">
-        <imvert:packages>
-            <xsl:sequence select="imf:compile-imvert-header(.)"/>
-            <xsl:apply-templates select="imvert:package"/>
-        </imvert:packages>
+        <xsl:variable name="result-app" as="element(imvert:packages)">
+            <imvert:packages>
+                <xsl:sequence select="imf:compile-imvert-header(.)"/>
+                <xsl:apply-templates select="imvert:package"/>
+            </imvert:packages>
+        </xsl:variable>
+        <!-- introduceer aparte canonisering wanneer UML van specifiek type is. -->
+        <xsl:choose>
+            <xsl:when test="$result-app/imvert:application = 'MIMFORMAT'"><!-- UMLMETA type tbv. MIMFORMAT -->
+                <xsl:apply-templates select="$result-app" mode="mimformat"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="$result-app"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
   
     <xsl:template match="imvert:phase">

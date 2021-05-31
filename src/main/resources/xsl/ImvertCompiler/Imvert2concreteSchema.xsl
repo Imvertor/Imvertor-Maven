@@ -243,7 +243,7 @@
                         </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:msg(..,'ERROR','Cannot resolve interface name [1] in namespace [2] when using mapping [3]',($original-name,$pack/imvert:namespace,$conceptual-schema-mapping-name))"/>
+                        <xsl:sequence select="imf:msg(..,'WARNING','No type mapping found for [1] in namespace [2] when using mapping [3]',($original-name,$pack/imvert:namespace,$conceptual-schema-mapping-name))"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
