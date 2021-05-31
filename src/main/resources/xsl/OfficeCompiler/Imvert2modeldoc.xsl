@@ -85,7 +85,6 @@
                     <!-- exclude package replacements (resolved stereotype internal) -->
                     <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
                 </xsl:variable>
-                <xsl:sequence select="dlogger:save('$sections',$sections)"/>
                 <xsl:apply-templates select="$sections" mode="section-cleanup"/>    
             </chapter>
             
@@ -932,8 +931,6 @@
         <xsl:param name="level"/>
         <xsl:param name="this"/>
         <xsl:param name="tv-id"/>
-        
-        <xsl:sequence select="if ($tv-id = 'CFG-TV-CONCEPT') then dlogger:save('$begrip',$this) else ()"/>
         <xsl:choose>
             <xsl:when test="$level/@compile = 'full'">
                 <xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())" as="element(tv)*"/>
