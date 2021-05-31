@@ -932,6 +932,8 @@
         <xsl:param name="level"/>
         <xsl:param name="this"/>
         <xsl:param name="tv-id"/>
+        
+        <xsl:sequence select="if ($tv-id = 'CFG-TV-CONCEPT') then dlogger:save('$begrip',$this) else ()"/>
         <xsl:choose>
             <xsl:when test="$level/@compile = 'full'">
                 <xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())" as="element(tv)*"/>
