@@ -170,7 +170,15 @@
         <key>TXT</key>
         <trans lang="nl">Tekst</trans>
     </item>
-
+    <item>
+        <key>YEARMONTH</key>
+        <trans lang="nl">JaarMaand</trans>
+    </item>
+    <item>
+        <key>ANY</key>
+        <trans lang="nl">Any</trans>
+    </item>
+    
     <item>
         <key>POSTCODE</key>
         <trans lang="nl">Postcode</trans>
