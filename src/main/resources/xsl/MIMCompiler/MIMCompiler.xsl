@@ -10,17 +10,19 @@
   xmlns:UML="omg.org/UML1.3" 
   xmlns:imf="http://www.imvertor.org/xsl/functions"    
   expand-text="yes" 
-  exclude-result-prefixes="imvert imf fn">
+  exclude-result-prefixes="imvert imf fn UML">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
   
   <xsl:mode on-no-match="shallow-skip"/>
 
-  <xsl:import href="../common/Imvert-common.xsl"/>
-  <xsl:import href="../common/Imvert-common-derivation.xsl"/>
+  <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
+
+  <xsl:import href="../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
+  <xsl:import href="../common/Imvert-common-derivation.xsl" use-when="$runs-in-imvertor-context"/>
   
   <xsl:variable name="stylesheet-code">MIMCOMPILER</xsl:variable>
-  <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+  <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" use-when="$runs-in-imvertor-context"/>
   
   <xsl:variable name="stereotype-name-attribuutsoort"          select="'ATTRIBUUTSOORT'"                     as="xs:string"/>
   <xsl:variable name="stereotype-name-codelijst"               select="'CODELIJST'"                          as="xs:string"/>
@@ -84,9 +86,9 @@
       <mim:naam>{imvert:model-id}</mim:naam>
       <xsl:call-template name="definitie"/>
       <xsl:call-template name="herkomst"/>
-      <mim:informatiedomein><xsl:comment> TODO </xsl:comment></mim:informatiedomein>
-      <mim:informatiemodeltype><xsl:comment> TODO </xsl:comment></mim:informatiemodeltype>
-      <mim:relatiemodelleringstype><xsl:comment> TODO </xsl:comment></mim:relatiemodelleringstype>
+      <mim:informatiedomein>{imvert:application}</mim:informatiedomein> <!-- TODO: mapping -->
+      <mim:informatiemodeltype><xsl:comment> TODO </xsl:comment></mim:informatiemodeltype> <!-- TODO: mapping, bv "conceptueel", "logisch", "technisch" -->
+      <mim:relatiemodelleringstype>{if ($associations/(imvert:target|imvert:source)[imvert:tagged-values/imvert:tagged-value]) then 'Relatierol leidend' else 'Relatiesoort leidend'}</mim:relatiemodelleringstype> <!-- TODO: "Relatiesoort leidend" of "Relatierol leidend" -->
       <mim:mIMVersie>{if (matches(imvert:metamodel, 'MIM\s+1\.1', 'i')) then '1.1' else if (matches(imvert:metamodel, 'MIM\s+1\.0', 'i')) then '1.0' else 'Onbekend'}</mim:mIMVersie>
       <mim:mIMExtensie>Kadaster</mim:mIMExtensie> <!-- TODO: mapping? -->
       <mim:mIMTaal>NL</mim:mIMTaal> <!-- TODO: mapping? -->
@@ -112,7 +114,11 @@
         <mim:InformatiemodelComponents>
           <!-- mim:Objectype: -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-objecttype]"/>
-          <!-- mim:Gegevensgroeptype: -->
+          <!-- mi
+            
+            
+            
+            m:Gegevensgroeptype: -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gegevensgroeptype]"/>
           <?x
           <!-- mim:Relatiesoort: -->
@@ -310,7 +316,7 @@
   </xsl:template>
   
   <xsl:template match="imvert:association[imvert:stereotype = $stereotype-name-relatiesoort]">
-    <mim:Relatiesoort id="{imf:valid-id(imvert:id)}"> <!-- id verwijderen als ingebed -->
+    <mim:Relatiesoort>
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -642,7 +648,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:if test="$mapped-value and $mapped-value[not(. = $waardebereik-authentiek)]">
-      <xsl:sequence select="imf:msg(., 'WARNING', 'Value of tag CFG-TV-INDICATIONAUTHENTIC [1] is outside scope of MIM value range ([2])', ($value, string-join($waardebereik-authentiek, ', ')))"/>
+      <xsl:sequence select="imf:message(., 'WARNING', 'Value of tag CFG-TV-INDICATIONAUTHENTIC [1] is outside scope of MIM value range ([2])', ($value, string-join($waardebereik-authentiek, ', ')))"/>
     </xsl:if>
     <mim:authentiek>{$mapped-value}</mim:authentiek>
   </xsl:template>
@@ -679,11 +685,15 @@
     <!-- Objecttype.bezit.Relatiesoort -->
     <xsl:where-populated>
       <mim:bezit>
-        <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = ($stereotype-name-relatiesoort, $stereotype-name-relatieklasse)]">
+        <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = ($stereotype-name-relatiesoort, $stereotype-name-relatieklasse) 
+          and not(key('key-imvert-construct-by-id', imvert:type-id)/imvert:stereotype/@id = $stereotype-id-keuze-attributes)]">
           <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
           <xsl:choose>
             <xsl:when test="imvert:stereotype = $stereotype-name-relatiesoort">
+              <xsl:apply-templates select="."/>
+              <!--
               <mim-ref:RelatiesoortRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:RelatiesoortRef>
+              -->
             </xsl:when>
             <xsl:otherwise>
               <mim-ref:RelatieklasseRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:RelatieklasseRef>
@@ -809,7 +819,7 @@
             <!-- Wordt afgehandeld in mim:heeft__keuze -->
           </xsl:when>
           <xsl:otherwise>
-            <xsl:sequence select="imf:msg(., 'WARNING', 'Unexpected stereotype [1] in &quot;process-datatype&quot;', ($stereotype))"/>
+            <xsl:sequence select="imf:message(., 'WARNING', 'Unexpected stereotype [1] in &quot;process-datatype&quot;', ($stereotype))"/>
           </xsl:otherwise>
         </xsl:choose>  
       </xsl:when>
@@ -819,7 +829,7 @@
         <mim-ref:PrimitiefDatatypeRef xlink:href="#{$datatype/@id}">{$datatype/mim:naam}</mim-ref:PrimitiefDatatypeRef>
       </xsl:when>
       <xsl:otherwise>  
-        <xsl:sequence select="imf:msg(., 'WARNING', 'Baretype [1] is not a standard MIM datatype', ($baretype))"/>
+        <xsl:sequence select="imf:message(., 'WARNING', 'Baretype [1] is not a standard MIM datatype', ($baretype))"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -974,7 +984,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:if test="$mapped-value and $mapped-value[not(. = $waardebereik-aggregatietype)]">
-      <xsl:sequence select="imf:msg(., 'WARNING', 'Aggregation type [1] is outside scope of MIM value range ([2])', ($value, string-join($waardebereik-aggregatietype, ', ')))"/>
+      <xsl:sequence select="imf:message(., 'WARNING', 'Aggregation type [1] is outside scope of MIM value range ([2])', ($value, string-join($waardebereik-aggregatietype, ', ')))"/>
     </xsl:if>
     <mim:typeAggregatie>{$mapped-value}</mim:typeAggregatie>
   </xsl:template>
@@ -1010,10 +1020,32 @@
     </xsl:where-populated>
   </xsl:template>
   
-  <xsl:function name="imf:tagged-values" as="xs:string*">
+  <xsl:function name="imf:tagged-values" as="xs:string*" use-when="$runs-in-imvertor-context">
     <xsl:param name="context-node" as="element()"/>
     <xsl:param name="tag-id" as="xs:string"/>
-    <xsl:sequence select="for $v in imf:get-most-relevant-compiled-taggedvalue($context-node, '##' || $tag-id) return normalize-space(string-join($v//text(), ' '))"/>
+    <xsl:sequence select="for $v in imf:get-most-relevant-compiled-taggedvalue-element($context-node, '##' || $tag-id) return normalize-space(string-join($v//text(), ' '))"/>
+  </xsl:function>
+  
+  <xsl:function name="imf:tagged-values" as="xs:string*" use-when="not($runs-in-imvertor-context)">
+    <xsl:param name="context-node" as="element()"/>
+    <xsl:param name="tag-id" as="xs:string"/>
+    <xsl:sequence select="for $v in $context-node/imvert:tagged-values/imvert:tagged-value[@id = $tag-id]/imvert:value return normalize-space(string-join($v//text(), ' '))"/>
+  </xsl:function>
+  
+  <xsl:function name="imf:message" as="empty-sequence()" use-when="$runs-in-imvertor-context">
+    <xsl:param name="this" as="node()*"/>
+    <xsl:param name="type" as="xs:string"/>
+    <xsl:param name="text" as="xs:string"/>
+    <xsl:param name="info" as="item()*"/>
+    <xsl:sequence select="imf:msg($this, $type, $text, $info)"/>
+  </xsl:function>
+  
+  <xsl:function name="imf:message" as="empty-sequence()" use-when="not($runs-in-imvertor-context)">
+    <xsl:param name="this" as="node()*"/>
+    <xsl:param name="type" as="xs:string"/>
+    <xsl:param name="text" as="xs:string"/>
+    <xsl:param name="info" as="item()*"/>
+    <xsl:message select="$type || ': ' || $text"/>
   </xsl:function>
     
   <xsl:function name="imf:mim-boolean" as="xs:string">
