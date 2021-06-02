@@ -72,7 +72,6 @@
   <xsl:variable name="classes" select="//imvert:class" as="element(imvert:class)*"/>
   <xsl:variable name="attributes" select="//imvert:attribute" as="element(imvert:attribute)*"/>
   <xsl:variable name="associations" select="//imvert:association" as="element(imvert:association)*"/>
-  <xsl:variable name="supertypes" select="//imvert:supertype" as="element(imvert:supertype)*"/>
   
   <xsl:template match="/imvert:packages">
     <mim:Informatiemodel
@@ -114,18 +113,12 @@
         <mim:InformatiemodelComponents>
           <!-- mim:Objectype: -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-objecttype]"/>
-          <!-- mi
-            
-            
-            
-            m:Gegevensgroeptype: -->
+          <!-- mim:Gegevensgroeptype: -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gegevensgroeptype]"/>
           <?x
-          <!-- mim:Relatiesoort: -->
-          <xsl:apply-templates select="$associations[imvert:stereotype = $stereotype-name-relatiesoort]"/>
-          ?>
           <!-- mim:Relatieklasse: -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-relatieklasse]"/>
+          ?>
           <!-- mim:GestructureerdDatatype -->
           <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gestructureerd-datatype]"/>
           <!-- mim:PrimitiefDatatype -->
@@ -315,7 +308,8 @@
     </mim:Gegevensgroep>
   </xsl:template>
   
-  <xsl:template match="imvert:association[imvert:stereotype = $stereotype-name-relatiesoort]">
+  <xsl:template match="imvert:association[imvert:stereotype = $stereotype-name-relatiesoort 
+    and not(imf:association-is-relatie-klasse(.)) and not(imf:association-is-keuze-attributes(.))]">
     <mim:Relatiesoort>
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
@@ -340,7 +334,7 @@
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-relatieklasse]">
-    <mim:Relatieklasse id="{imf:valid-id(imvert:id)}"> <!-- id verwijderen als ingebed -->
+    <mim:Relatieklasse>
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -358,6 +352,7 @@
       <xsl:call-template name="indicatieAfleidbaar"/>
       <xsl:call-template name="toelichting"/>
       <xsl:call-template name="mogelijkGeenWaarde"/>
+      <xsl:call-template name="gebruikt__attribuutsoort"/>
       <xsl:call-template name="verwijstNaar__objecttype"/>
       <xsl:call-template name="verwijstNaar"/>
     </mim:Relatieklasse>
@@ -682,26 +677,26 @@
   -->
   
   <xsl:template name="bezit">
-    <!-- Objecttype.bezit.Relatiesoort -->
     <xsl:where-populated>
       <mim:bezit>
-        <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = ($stereotype-name-relatiesoort, $stereotype-name-relatieklasse) 
-          and not(key('key-imvert-construct-by-id', imvert:type-id)/imvert:stereotype/@id = $stereotype-id-keuze-attributes)]">
+        <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = $stereotype-name-relatiesoort]">
           <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
           <xsl:choose>
-            <xsl:when test="imvert:stereotype = $stereotype-name-relatiesoort">
-              <xsl:apply-templates select="."/>
+            <xsl:when test="imf:association-is-relatie-klasse(.)">
+              <xsl:apply-templates select="key('key-imvert-construct-by-id', imvert:association-class/imvert:type-id)"/>
               <!--
-              <mim-ref:RelatiesoortRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:RelatiesoortRef>
+              <mim-ref:RelatieklasseRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:RelatieklasseRef>
               -->
             </xsl:when>
             <xsl:otherwise>
-              <mim-ref:RelatieklasseRef xlink:href="#{imf:valid-id(imvert:id)}">{imvert:name}</mim-ref:RelatieklasseRef>
+              <xsl:apply-templates select="."/>
             </xsl:otherwise>
           </xsl:choose>
+          <?x
           <mim:RelatierolBron>
             <mim:id>{imvert:name}</mim:id> <!-- TODO: Slaat dit ergens op? -->
           </mim:RelatierolBron>
+          ?>
         </xsl:for-each>  
       </mim:bezit>
     </xsl:where-populated>
@@ -1072,6 +1067,16 @@
     <xsl:param name="str1" as="xs:string?"/>
     <xsl:param name="str2" as="xs:string?"/>
     <xsl:sequence select="lower-case($str1) = fn:lower-case($str2)"/>
+  </xsl:function>
+  
+  <xsl:function name="imf:association-is-relatie-klasse" as="xs:boolean">
+    <xsl:param name="association" as="element(imvert:association)"/>
+    <xsl:sequence select="key('key-imvert-construct-by-id', $association/imvert:association-class/imvert:type-id, $association/root())/imvert:stereotype = $stereotype-name-relatieklasse"/>
+  </xsl:function>
+  
+  <xsl:function name="imf:association-is-keuze-attributes" as="xs:boolean">
+    <xsl:param name="association" as="element(imvert:association)"/>
+    <xsl:sequence select="key('key-imvert-construct-by-id', $association/imvert:type-id, $association/root())/imvert:stereotype/@id = $stereotype-id-keuze-attributes"/>
   </xsl:function>
 
 </xsl:stylesheet>
