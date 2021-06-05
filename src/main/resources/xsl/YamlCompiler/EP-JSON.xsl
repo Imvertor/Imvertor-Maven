@@ -2052,8 +2052,8 @@
 	</xsl:template>
 	
 
-	<!-- TODO: Het onderstaande template en ook de aanroep daarvan zijn is op dit moment onnodig omdat we er nu vanuit gaan dat er altijd hal+json 
-			   gegenereerd moet worden.
+	<!-- TODO: Het onderstaande template en ook de aanroep daarvan zijn is op dit moment onnodig omdat we er nu vanuit gaan dat als er hal+json gegenereerd 
+			   moet worden er ook in de gehele standaard hal+json gegenereerd moet worden.
 			   Alleen als we later besluiten dat er ook af en toe geen json_hal gegenereerd moet worden kan deze if weer opportuun worden. 
 			   Voor nu is het template uitgeschakeld. -->
 	<!-- A HAL type is generated here. -->
