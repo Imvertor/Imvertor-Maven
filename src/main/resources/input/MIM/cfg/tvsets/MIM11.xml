@@ -52,7 +52,7 @@
                 <stereo minmax="0..*">stereotype-name-data-element</stereo>
                 <stereo minmax="0..*">stereotype-name-union-element</stereo>
                 <stereo minmax="0..*">stereotype-name-enum</stereo>
-                
+                <stereo minmax="0..*">stereotype-name-generalization</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-INDICATIONDERIVABLE">

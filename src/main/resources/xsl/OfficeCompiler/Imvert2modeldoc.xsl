@@ -85,7 +85,6 @@
                     <!-- exclude package replacements (resolved stereotype internal) -->
                     <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
                 </xsl:variable>
-                <xsl:sequence select="dlogger:save('$sections',$sections)"/>
                 <xsl:apply-templates select="$sections" mode="section-cleanup"/>    
             </chapter>
             
