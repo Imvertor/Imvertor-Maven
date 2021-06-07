@@ -84,6 +84,14 @@
     </xsl:copy>
   </xsl:template>
   
+  <xsl:template match="imvert:id[string-length(.) ge 32]" mode="preprocess">
+    <xsl:copy>{imf:create-id(..)}</xsl:copy>
+  </xsl:template>
+  
+  <xsl:template match="(imvert:type-id|imvert:type-package-id)[string-length(.) ge 32]" mode="preprocess">
+    <xsl:copy>{imf:create-id(key('key-imvert-construct-by-id', .))}</xsl:copy>
+  </xsl:template>
+  
   <xsl:template match="/imvert:packages">
     <mim:Informatiemodel
       xmlns:mim="http://www.geonovum.nl/schemas/MIMFORMAT/model/v20210522" 
@@ -1050,11 +1058,11 @@
     <xsl:sequence select="'id-' || translate($id, '{}', '')"/>
   </xsl:function>
   
-  <xsl:function name="imf:valid-name-id" as="xs:string">
-    <xsl:param name="name" as="xs:string?"/>
-    <xsl:variable name="id-1" select="lower-case(replace(normalize-space($name), '\s', '_'))" as="xs:string"/>
-    <xsl:variable name="id-2" select="replace($id-1, '(^\d.)', 'id-$1')" as="xs:string"/>
-    <xsl:value-of select="$id-2"/>
+  <xsl:function name="imf:create-id" as="xs:string">
+    <xsl:param name="elem" as="element()"/>
+    <xsl:variable name="prefix" select="lower-case(replace(normalize-space(($elem/imvert:stereotype, local-name($elem))[1]), '\s', '-'))" as="xs:string"/>
+    <xsl:variable name="suffix" select="lower-case(replace(normalize-space($elem/imvert:name), '\s', '-'))" as="xs:string"/>
+    <xsl:value-of select="$prefix || '-' || $suffix"/>
   </xsl:function>
   
   <xsl:function name="imf:name" as="xs:string">
