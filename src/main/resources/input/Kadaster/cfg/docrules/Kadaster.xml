@@ -373,6 +373,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
+    <?x
     <doc-rule id="CFG-DOC-INDICATIEINONDERZOEK" order="180">
         <name lang="nl">Indicatie in onderzoek</name>
         <name lang="en">Indication under investigation</name>
@@ -394,6 +395,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
+    x?>
     <doc-rule id="CFG-DOC-INDICATIEKARDINALITEIT" order="200">
         <name lang="nl">Indicatie kardinaliteit</name>
         <name lang="en">Indication multiplicity</name>
