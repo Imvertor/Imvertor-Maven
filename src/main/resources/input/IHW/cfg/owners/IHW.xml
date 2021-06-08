@@ -115,7 +115,9 @@
     <!--parameter name="standard-components-url">https://github.com/VNG-Realisatie/Haal-Centraal-BRP-bevragen/blob/master/api-specificatie/</parameter-->
     <parameter name="standard-components-url">https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.0.0/api-specificatie/</parameter>
     <parameter name="geonovum-components-url">https://cdn.jsdelivr.net/gh/geonovum/kp-api-guidelines@1.0.0/components/</parameter>
+
     <parameter name="standard-components-file">common.yaml</parameter>
+
     <parameter name="standard-json-components-path">#/components/schemas/</parameter>
     <parameter name="standard-yaml-headers-path">#/components/headers/</parameter>
     <parameter name="standard-yaml-parameters-path">#/components/parameters/</parameter>
@@ -123,6 +125,6 @@
     <parameter name="geonovum-yaml-parameters-file">parameters.yaml#/</parameter>
     <parameter name="standard-geojson-components-file">geojson.yaml#/</parameter>
     
-    <parameter name="yamlCompiler-stylesheets-version">20191021</parameter>
+    <parameter name="yamlCompiler-stylesheets-version">20210605</parameter>
     
 </project-owner>    

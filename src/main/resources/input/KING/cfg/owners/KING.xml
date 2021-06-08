@@ -112,7 +112,7 @@
     <parameter name="message-collapse-keys">TV1NSBRF2 NAFFA NAFF1 TCBR1</parameter>
     
     <!-- URL of the standard JSON components are available --> 
-    <parameter name="standard-components-url">https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.2.0/api-specificatie/</parameter>
+    <parameter name="standard-components-url">https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/</parameter>
     <parameter name="standaard-gemeente-components-url">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/</parameter>
     <parameter name="geonovum-components-url">https://cdn.jsdelivr.net/gh/geonovum/kp-api-guidelines@1.0.0/components/</parameter>
 
@@ -126,6 +126,6 @@
     <parameter name="standard-yaml-parameters-path">#/components/parameters/</parameter>
     <parameter name="standard-yaml-responses-path">#/components/responses/</parameter>
     
-    <parameter name="yamlCompiler-stylesheets-version">20210428</parameter>
+    <parameter name="yamlCompiler-stylesheets-version">20210605</parameter>
     
 </project-owner>    
