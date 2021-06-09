@@ -4,8 +4,8 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xlink="http://www.w3.org/1999/xlink" 
   xmlns:err="http://www.w3.org/2005/xqt-errors"
-  xmlns:mim="http://www.geonovum.nl/schemas/MIMFORMAT/model/v20210522" 
-  xmlns:mim-ref="http://www.geonovum.nl/schemas/MIMFORMAT/model-ref/v20210522"
+  xmlns:mim="http://www.geostandaarden.nl/mim/v20210609" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/v20210609"
   xmlns:http="http://expath.org/ns/http-client"
   xmlns:imf="http://www.imvertor.org/xsl/functions"
   xmlns:svg="http://www.w3.org/2000/svg"
@@ -85,7 +85,8 @@
       <xsl:sequence select="imf:line(0, 1, '!define primitiefdatatype(x) class x &lt;&lt;(D,#FF7700) Primitief datatype&gt;&gt;')"/>
       <xsl:sequence select="imf:line(0, 1, '!define gestructureerddatatype(x) class x &lt;&lt;(D,#FF7700) Gestructureerd datatype&gt;&gt;')"/>
       <xsl:sequence select="imf:line(0, 1, '!define codelijst(x) class x &lt;&lt;(D,#FF7700) Codelijst&gt;&gt;')"/>
-      <xsl:sequence select="imf:line(0, 2, '!define referentielijst(x) class x &lt;&lt;(D,#FF7700) Referentielijst&gt;&gt;')"/>
+      <xsl:sequence select="imf:line(0, 1, '!define referentielijst(x) class x &lt;&lt;(D,#FF7700) Referentielijst&gt;&gt;')"/>
+      <xsl:sequence select="imf:line(0, 2, '!define keuze_datatypen(x) class x &lt;&lt;(D,#FF7700) Keuze&gt;&gt;')"/>
       <!-- <xsl:sequence select="imf:line(0, 2, 'skinparam linetype ortho')"/> -->
       <xsl:sequence select="imf:line(0, 2, 'hide empty members')"/>
       <xsl:sequence select="imf:line(0, 2, 'skinparam svgLinkTarget _self')"/>
@@ -288,6 +289,44 @@
         <xsl:apply-templates select="mim:bevat/mim:ReferentieElement"/>
         <xsl:sequence select="imf:line(1, 2, '}')"/>
         <xsl:apply-templates select="mim:supertype"/>    
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+  <!--
+  <xsl:template match="mim:Keuze__Attribuutsoorten">
+    <xsl:param name="generate-stub" select="false()" as="xs:boolean?"/>
+    <xsl:sequence select="imf:line(1, 1, 'keuze_datatypen(' || mim:naam || ')'  || imf:generate-link($generate-stub, .))"/>
+    <xsl:choose>
+      <xsl:when test="$generate-stub">
+        <xsl:call-template name="generate-stub-contents"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="imf:line(1, 1, '{')"/>
+        <xsl:for-each select="mim:bevat__datatype/mim-ref:*[@xlink:href]">
+          <xsl:sequence select="imf:line(2, 1, '+keuze' || position() || ' : ' || imf:element-by-ref-elem(.)/mim:naam || imf:generate-link(false(), .))"/>
+        </xsl:for-each>
+        <xsl:sequence select="imf:line(1, 2, '}')"/>
+        <xsl:apply-templates select="mim:supertype"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  -->
+  
+  <xsl:template match="mim:Keuze__Datatypen">
+    <xsl:param name="generate-stub" select="false()" as="xs:boolean?"/>
+    <xsl:sequence select="imf:line(1, 1, 'keuze_datatypen(' || mim:naam || ')'  || imf:generate-link($generate-stub, .))"/>
+    <xsl:choose>
+      <xsl:when test="$generate-stub">
+        <xsl:call-template name="generate-stub-contents"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="imf:line(1, 1, '{')"/>
+        <xsl:for-each select="mim:bevat__datatype/mim-ref:*[@xlink:href]">
+          <xsl:sequence select="imf:line(2, 1, '+keuze' || position() || ' : ' || imf:element-by-ref-elem(.)/mim:naam || imf:generate-link(false(), .))"/>
+        </xsl:for-each>
+        <xsl:sequence select="imf:line(1, 2, '}')"/>
+        <xsl:apply-templates select="mim:supertype"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
