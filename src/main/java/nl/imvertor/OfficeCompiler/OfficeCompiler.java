@@ -22,9 +22,11 @@ package nl.imvertor.OfficeCompiler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jgit.transport.PushResult;
 import org.springframework.util.StringUtils;
 
 import nl.imvertor.common.Configurator;
@@ -230,7 +232,11 @@ public class OfficeCompiler extends Step {
 			catfolder.copy(new AnyFolder(gitfolder,"data"));
 	        
 			// push with appropriate comment
-			rp.push(gitcomment);
+			Iterator<PushResult> result = rp.push(gitcomment).iterator();
+			while (result.hasNext()) {
+				String next = result.next().getMessages();
+				if (!next.equals("")) logger.warn(next);
+			}
 			
 			configurator.setXParm("properties/giturl-resolved", giturl);
 		} catch (Exception e) {
