@@ -153,6 +153,11 @@ public class ResourcePusher {
 			runner.debug(logger, "GITHUB", "Opening existing local repository \"" + localWorkDir.getAbsolutePath() + "\" ...");
 			/* Open the existing local repository: */
 			git = Git.open(localWorkDir);
+			
+			runner.debug(logger, "GITHUB", "Pulling latest files to local repository ...");
+			/* Add the source files (that were not already added) to the repository: */
+			git.pull()
+				.call();
 		}
 		gitopen = true;
 	}
