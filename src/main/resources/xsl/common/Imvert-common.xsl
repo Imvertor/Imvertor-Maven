@@ -144,8 +144,9 @@
         <xsl:variable name="id-attribute-inheriting" select="($class, imf:get-subclasses($class))/*/imvert:attribute[imvert:is-id='true']"/>
         <xsl:variable name="is-not-anonymous" select="exists(($id-attribute-inherited,$id-attribute-inheriting))"/>
         <xsl:variable name="is-not-id-voidable" select="not($id-attribute-inherited/imvert:stereotype/@id = ('stereotype-name-voidable'))"/>
+        <xsl:variable name="is-not-id-tv-voidable" select="if ($id-attribute-inherited) then not(imf:boolean(imf:get-tagged-value($id-attribute-inherited,'##CFG-TV-VOIDABLE'))) else true()"/>
         
-        <xsl:sequence select="$is-objecttype and ($is-not-static or $is-not-lonely or $is-not-sad) and $is-not-anonymous and $is-not-id-voidable"/>
+        <xsl:sequence select="$is-objecttype and ($is-not-static or $is-not-lonely or $is-not-sad) and $is-not-anonymous and ($is-not-id-voidable and $is-not-id-tv-voidable)"/>
     </xsl:function>
     
     <!-- return all subclasses (by subtype or substitution), not self -->
