@@ -155,7 +155,7 @@ public class ResourcePusher {
 			git = Git.open(localWorkDir);
 			
 			runner.debug(logger, "GITHUB", "Pulling latest files to local repository ...");
-			/* Add the source files (that were not already added) to the repository: */
+			/* Pull latest remote changes: */
 			git.pull()
 				.call();
 		}
