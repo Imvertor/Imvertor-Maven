@@ -27,19 +27,6 @@
             <cs-ref:MapRef xlink:href="#STUB"/>
          </cs:use>
       </cs:Mapping>
-      <?x
-      <cs:Mapping>
-         <cs:name>MIM-NEN3610-ONTDUBBELD</cs:name>
-         <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM11-GML322"/>
-            <cs-ref:MapRef xlink:href="#NEN3610"/>
-            <cs-ref:MapRef xlink:href="#GMLSF"/>
-            <cs-ref:MapRef xlink:href="#CITYGML"/>
-            <cs-ref:MapRef xlink:href="#STUB"/>
-         </cs:use>
-      </cs:Mapping>
-      x?>
-      
    </cs:mappings>
    <cs:components>
       <cs:ConceptualSchemasComponents>
@@ -655,6 +642,8 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+               <?x
+               <!-- Geonovum volgt MIM11 -->
                <cs:Construct>
                   <cs:name>Boolean</cs:name>
                   <cs:sentinel>false</cs:sentinel>
@@ -715,6 +704,7 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+               x?>
                <cs:Construct>
                   <cs:name>Time</cs:name>
                   <cs:sentinel>false</cs:sentinel>
@@ -725,6 +715,8 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+               <?x
+               <!-- Geonovum volgt MIM11 -->
                <cs:Construct>
                   <cs:name>URI</cs:name>
                   <cs:sentinel>false</cs:sentinel>
@@ -740,6 +732,7 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+               x?>
                <cs:Construct>
                   <cs:name>DoubleList</cs:name>
                   <cs:sentinel>false</cs:sentinel>
