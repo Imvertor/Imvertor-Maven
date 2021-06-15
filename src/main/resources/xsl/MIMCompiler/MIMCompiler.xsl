@@ -479,7 +479,7 @@
   <xsl:template match="imvert:attribute[imvert:stereotype = $stereotype-name-enumeratiewaarde]">
     <mim:Enumeratiewaarde>
       <xsl:call-template name="id"/>
-      <xsl:call-template name="naam"/>
+      <xsl:call-template name="naam-original"/>
       <xsl:call-template name="begrip"/>
       <xsl:call-template name="definitie"/>
       <xsl:call-template name="code"/>
@@ -489,7 +489,10 @@
   <xsl:template match="imvert:attribute[imvert:stereotype = $stereotype-name-referentie-element]">
     <mim:ReferentieElement>
       <xsl:call-template name="id"/>
+      <!--
       <xsl:call-template name="naam"/>
+      -->
+      <xsl:call-template name="naam-original"/>
       <xsl:call-template name="alias"/>
       <xsl:call-template name="begrip"/>
       <xsl:call-template name="definitie"/>
@@ -915,6 +918,10 @@
   <xsl:template name="naam">
     <mim:naam>{imf:name(.)}</mim:naam>
   </xsl:template>
+  
+  <xsl:template name="naam-original">
+    <mim:naam>{xs:string(imvert:name/@original)}</mim:naam>
+  </xsl:template>
 
   <xsl:template name="patroon">
     <xsl:where-populated>
@@ -1042,10 +1049,10 @@
     <xsl:param name="this" as="item()?"/>
     <xsl:variable name="v" select="lower-case(string($this))"/>
     <xsl:sequence select="
-      if ($v=('yes','true','ja','1')) then 'Ja' 
-      else if ($v=('no','false','nee','0')) then 'Nee' 
-      else if ($this) then 'Ja' 
-      else 'Nee'"/>
+      if ($v=('yes','true','ja','1')) then 'true' 
+      else if ($v=('no','false','nee','0')) then 'false' 
+      else if ($this) then 'true' 
+      else 'false'"/>
   </xsl:function>
   
   <xsl:function name="imf:capitalize-first" as="xs:string?">
@@ -1062,15 +1069,21 @@
   
   <xsl:function name="imf:create-id" as="xs:string">
     <xsl:param name="elem" as="element()"/>
-    <xsl:variable name="prefix" select="lower-case(replace(normalize-space(($elem/imvert:stereotype, local-name($elem))[1]), '\s', '-'))" as="xs:string"/>
+    <xsl:variable name="prefix" select="imf:valid-id(($elem/imvert:stereotype, local-name($elem))[1])" as="xs:string"/>
+    <xsl:variable name="package-name" select="imf:valid-id($elem/ancestor-or-self::imvert:package[imvert:stereotype = ($stereotype-name-domein, $stereotype-name-view)]/imvert:name)" as="xs:string?"/>
     <xsl:variable name="name" as="xs:string">
       <xsl:choose>
         <xsl:when test="$elem/self::imvert:class and $elem/imvert:stereotype = 'INTERFACE'">{$elem/imvert:name/@original}</xsl:when>
         <xsl:otherwise>{$elem/imvert:name}</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="suffix" select="lower-case(replace(normalize-space($name), '\s', '-'))" as="xs:string"/>
-    <xsl:value-of select="$prefix || '-' || $suffix"/>
+    <xsl:variable name="suffix" select="imf:valid-id($name)" as="xs:string?"/>
+    <xsl:value-of select="string-join(($package-name, $prefix, $suffix), '-')"/>
+  </xsl:function>
+  
+  <xsl:function name="imf:valid-id" as="xs:string?">
+    <xsl:param name="id" as="xs:string?"/>
+    <xsl:sequence select="if ($id) then replace(replace(lower-case(normalize-space($id)), '[^a-z_0-9 ]', ''), ' ', '-') else ()"/>
   </xsl:function>
   
   <xsl:function name="imf:name" as="xs:string">
