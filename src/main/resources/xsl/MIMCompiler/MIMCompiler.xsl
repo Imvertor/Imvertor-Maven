@@ -5,8 +5,8 @@
   xmlns:xlink="http://www.w3.org/1999/xlink" 
   xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xmlns:imvert="http://www.imvertor.org/schema/system"
-  xmlns:mim="http://www.geostandaarden.nl/mim/v20210609" 
-  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/v20210609"
+  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
   xmlns:UML="omg.org/UML1.3" 
   xmlns:imf="http://www.imvertor.org/xsl/functions"    
   expand-text="yes" 
@@ -94,12 +94,12 @@
   
   <xsl:template match="/imvert:packages">
     <mim:Informatiemodel
-      xmlns:mim="http://www.geostandaarden.nl/mim/v20210609" 
-      xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/v20210609"
+      xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
+      xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
       xmlns:xlink="http://www.w3.org/1999/xlink"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       
-      <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/v20210609 ../xsd/MIMFORMAT/model/v20210609/MIMFORMAT_Mim_v0_0_1.xsd</xsl:attribute>
+      <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel/v1 ../xsd/MIMFORMAT/model/v20210609/MIMFORMAT_Mim_v0_0_1.xsd</xsl:attribute>
       
       <mim:naam>{imvert:model-id}</mim:naam>
       <xsl:call-template name="definitie"/>
@@ -839,7 +839,9 @@
   <xsl:template name="identificatie__F"><!--TODO--></xsl:template>
   
   <xsl:template name="identificerend">
-    <!-- TODO: mapping?? -->
+    <xsl:where-populated>
+      <mim:identificerend>{imf:mim-boolean(imvert:is-id)}</mim:identificerend>  
+    </xsl:where-populated>
   </xsl:template>
   
   <xsl:template name="indicatieAbstractObject">
@@ -1151,7 +1153,7 @@
       </xsl:choose>   
     </xsl:variable>
     <xsl:if test="$element-name">
-      <xsl:element name="mim-ref:{$element-name}" namespace="http://www.geostandaarden.nl/mim-ref/v20210609">
+      <xsl:element name="mim-ref:{$element-name}" namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1">
         <xsl:attribute name="xlink:href" namespace="http://www.w3.org/1999/xlink">#{$ref-id}</xsl:attribute>
         <xsl:value-of select="imf:name($target-element)"/>
       </xsl:element>  
