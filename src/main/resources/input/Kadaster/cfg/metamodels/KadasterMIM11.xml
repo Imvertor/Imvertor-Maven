@@ -21,6 +21,8 @@
     
     <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
     
+    <xi:include href="KadasterMIM11-scalar.xml"/>
+    
     <name>Kadaster MIM 1.1</name>
     <desc lang="en">Metamodel for Kadaster specific MIM 1.1 extensions</desc>
     <desc lang="nl">Metamodel voor Kadaster specifieke MIM 1.1 uitbreidingen</desc>

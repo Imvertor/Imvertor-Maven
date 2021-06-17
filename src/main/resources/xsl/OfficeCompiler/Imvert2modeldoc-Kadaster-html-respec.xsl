@@ -39,7 +39,8 @@
                                     url: "http://your.site/",
                                 }],
                                 edDraftURI: "http://some.place",
-                                shortName: "msgdoc"
+                                shortName: "msgdoc",
+                                maxTocLevel: 4
                             };
                         </script>
                         <style type="text/css"><![CDATA[

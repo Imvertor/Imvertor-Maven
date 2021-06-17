@@ -30,6 +30,8 @@ public class ResourcePusher {
 	private Git git;
 	private boolean gitopen = false;
 
+	private Runner runner = Configurator.getInstance().getRunner();
+	
 	/**
 	 * Pushes all files from a local directory to a remote git repository
 	 * 
@@ -54,13 +56,13 @@ public class ResourcePusher {
 		if (!gitopen) git = Git.open(localWorkDir);
 
 		try {
-			//runner.debug(logger, "GITHUB", "Adding files to local repository ...");
+			runner.debug(logger, "GITHUB", "Adding files to local repository ...");
 			/* Add the source files (that were not already added) to the repository: */
 			git.add()
 				.addFilepattern(".")
 				.call();
 
-			//runner.debug(logger, "GITHUB", "Comitting files to local repository ...");
+			runner.debug(logger, "GITHUB", "Comitting files to local repository ...");
 			/* Commit the files to the repository: */
 			git.commit()
 				.setMessage(commitMessage)
@@ -68,7 +70,7 @@ public class ResourcePusher {
 				.setAuthor(user, email)
 			 	.call();
 			
-			//runner.debug(logger, "GITHUB", "Pushing files to remote repository \"" + remoteRepositoryURI + "\" ...");
+			runner.debug(logger, "GITHUB", "Pushing files to remote repository \"" + remoteRepositoryURI + "\" ...");
 			/* Push all changes to the remote server: */
 			return git.push()
 				.setCredentialsProvider(new UsernamePasswordCredentialsProvider(user, pass))
@@ -100,7 +102,7 @@ public class ResourcePusher {
 
 		//Runner runner = Configurator.getInstance().getRunner();
 
-		//runner.debug(logger, "GITHUB", "Copying files from the source directory \"" + localWorkDir.getAbsolutePath() + "\" to local work directory ...");
+		runner.debug(logger, "GITHUB", "Copying files from the source directory \"" + localWorkDir.getAbsolutePath() + "\" to local work directory ...");
 		/* Copy the source files over the local repository */
 		FileUtils.copyDirectory(srcDir, localWorkDir);
 
@@ -139,7 +141,7 @@ public class ResourcePusher {
 		/* Create the Git instance: */
 		File gitFile = new File(localWorkDir, ".git");
 		if (!gitFile.isDirectory()) {
-			//runner.debug(logger, "GITHUB", "Cloning remote git repository \"" + remoteRepositoryURI + "\" to local work directory \"" + localWorkDir.getAbsolutePath() + "\" ...");
+			runner.debug(logger, "GITHUB", "Cloning remote git repository \"" + remoteRepositoryURI + "\" to local work directory \"" + localWorkDir.getAbsolutePath() + "\" ...");
 
 			/* Local work directory does not exists; clone remot repository: */
 			FileUtils.cleanDirectory(localWorkDir);
@@ -148,33 +150,16 @@ public class ResourcePusher {
 					.setDirectory(localWorkDir)
 					.call();
 		} else if (!gitopen) {
-			//runner.debug(logger, "GITHUB", "Opening existing local repository \"" + localWorkDir.getAbsolutePath() + "\" ...");
+			runner.debug(logger, "GITHUB", "Opening existing local repository \"" + localWorkDir.getAbsolutePath() + "\" ...");
 			/* Open the existing local repository: */
 			git = Git.open(localWorkDir);
+			
+			runner.debug(logger, "GITHUB", "Pulling latest files to local repository ...");
+			/* Pull latest remote changes: */
+			git.pull()
+				.call();
 		}
 		gitopen = true;
-	}
-
-	public static void main(String[] args) {
-		try {
-			ResourcePusher rp = new ResourcePusher();
-			File workdir = new File("c:/temp/git-geonovum");
-
-			// start up the local work folder
-			//rp.prepare("https://github.com/Armatiek/jgittest", workdir, "ArjanLoeffen", AnyFile.getFileContent("i:/git.txt"),"arjan.loeffen@armatiek.nl");
-			
-			rp.prepare("https://github.com/Geonovum/IMG", workdir, "gn-bot", "YN5pTj2kim2KCz", "github@geonovum.nl");
-			
-			// copy file to that work folder
-			AnyFile testfile = new AnyFile(workdir,"test1.txt");
-			testfile.setContent("Test1");
-			
-			// push the stuff
-			rp.push("test1");
-			
-		} catch (Exception e) {
-			logger.error("Error pushing files to remote repository", e);
-		}
 	}
 
 }

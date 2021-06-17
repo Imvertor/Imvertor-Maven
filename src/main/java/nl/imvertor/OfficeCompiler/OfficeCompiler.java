@@ -22,9 +22,11 @@ package nl.imvertor.OfficeCompiler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jgit.transport.PushResult;
 import org.springframework.util.StringUtils;
 
 import nl.imvertor.common.Configurator;
@@ -216,21 +218,29 @@ public class OfficeCompiler extends Step {
 							
 		runner.info(logger, "GIT Pushing as " + officeFile.getName());
 		
-		AnyFolder gitfolder = new AnyFolder(gitlocal + gitpath);
-		
-		// must remove this folder, as pushes and pulls will not work from OTAPs.
-		//if (gitfolder.isDirectory()) gitfolder.deleteDirectory();
-		
-		// create and prepare the GIT resource pusher
-		ResourcePusher rp = new ResourcePusher();
-		rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gitemail);
-		
-		// copy the files to the work folder
-		catfolder.copy(new AnyFolder(gitfolder,"data"));
-        
-		// push with appropriate comment
-		rp.push(gitcomment);
-		
-		configurator.setXParm("properties/giturl-resolved", giturl);
+		try {
+			AnyFolder gitfolder = new AnyFolder(gitlocal + gitpath);
+			
+			// must remove this folder, as pushes and pulls will not work from OTAPs.
+			//if (gitfolder.isDirectory()) gitfolder.deleteDirectory();
+			
+			// create and prepare the GIT resource pusher
+			ResourcePusher rp = new ResourcePusher();
+			rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gitemail);
+			
+			// copy the files to the work folder
+			catfolder.copy(new AnyFolder(gitfolder,"data"));
+	        
+			// push with appropriate comment
+			Iterator<PushResult> result = rp.push(gitcomment).iterator();
+			while (result.hasNext()) {
+				String next = result.next().getMessages();
+				if (!next.equals("")) logger.warn(next); else logger.info("Push succeeds"); 
+			}
+			
+			configurator.setXParm("properties/giturl-resolved", giturl);
+		} catch (Exception e) {
+			logger.error("Error pushing files to remote repository https://github.com" + gitpath, e);
+		}
 	}
 }

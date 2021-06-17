@@ -480,7 +480,6 @@
         
         <xsl:variable name="is-keyed" select="imvert:attributes/imvert:attribute/imvert:stereotype/@id = 'stereotype-name-key'"/><!-- keyed classes are never represented on their own -->
         
-        <?x
         <xsl:variable name="ref-master" select="if (imvert:ref-master) then imf:get-construct-by-id(imvert:ref-master-id) else ()"/>
         <xsl:variable name="ref-masters" select="if ($ref-master) then ($ref-master,imf:get-superclasses($ref-master)) else ()"/>
         <xsl:variable name="ref-master-idatts" select="for $m in $ref-masters return $m/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
@@ -490,7 +489,6 @@
         <xsl:variable name="use-identifier-domains" select="imf:boolean(imf:get-xparm('cli/identifierdomains','no'))"/>
         <xsl:variable name="domain-values" select="for $i in $ref-master-idatts return imf:get-tagged-value($i,'##CFG-TV-DOMAIN')"/>
         <xsl:variable name="domain-value" select="$domain-values[1]"/>
-        x?>
         
         <xsl:variable name="formal-pattern" select="imf:get-facet-pattern(.)"/>
         
@@ -527,40 +525,6 @@
         
         <xsl:variable name="content" as="element()?">
             <xsl:choose>
-                <?x
-                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and $use-identifier-domains and not($supertype-name) and $domain-value">
-                    <complex>
-                        <xsl:sequence select="imf:create-xml-debug-comment(.,'Has a domain value')"/>
-                        <xs:simpleContent>
-                            <xs:extension base="xs:string">
-                                <xs:attribute ref="xlink:href" use="optional"/>
-                                <xs:attribute name="domein" use="optional" fixed="{$domain-value}"/>
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </complex>
-                </xsl:when>
-                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and $use-identifier-domains and exists($ref-master-identifiable-subtypes-with-domain)">
-                    <complex>
-                        <xsl:sequence select="imf:create-xml-debug-comment(.,'Reference master has (some) identifiable subtypes that have a domain')"/>
-                        <xs:simpleContent>
-                            <xs:extension base="xs:string">
-                                <xs:attribute ref="xlink:href" use="optional"/>
-                                <xs:attribute name="domein" use="optional" type="xs:string"/>
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </complex>
-                </xsl:when>
-                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and not($supertype-name)">
-                    <complex>
-                        <xsl:sequence select="imf:create-xml-debug-comment(.,'No supertypes, no domain processing')"/>
-                        <xs:simpleContent>
-                            <xs:extension base="xs:string">
-                                <xs:attribute ref="xlink:href" use="optional"/><!-- sinds 1.61 -->
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </complex>
-                </xsl:when>
-                x?>
                 <xsl:when test="imvert:stereotype/@id = ('stereotype-name-union')">
                     <!-- attributes of a NEN3610 union, i.e. a choice between classes. The choice is a specialization of a datatype -->
                     <xsl:variable name="atts">
@@ -947,7 +911,12 @@
             ($this/imvert:conceptual-schema-type = 'Meetwaarde' and $this/imvert:type-package = 'RO-BRO')
             "/>
 
+        <xsl:variable name="data-location" select="imf:get-appinfo-location($this)"/>
+        
         <xsl:variable name="has-key" select="$defining-class/imvert:attributes/imvert:attribute[imvert:stereotype/@id = 'stereotype-name-key']"/>
+        
+        <xsl:variable name="use-identifier-domains" select="imf:boolean(imf:get-xparm('cli/identifierdomains','no'))"/>
+        <xsl:variable name="domain-value" select="imf:get-tagged-value($this,'##CFG-TV-DOMAIN')"/>
         
         <xsl:choose>
             
@@ -1318,6 +1287,22 @@
                         <xs:simpleContent>
                             <xs:extension base="{$type}{$Type-suffix}">
                                 <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="$is-datatype and $use-identifier-domains and $domain-value"><!-- TODO ook nillable hier kunnen opvangen? -->
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A datatype with domain')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="{concat($type,$Type-suffix)}">
+                                <xs:attribute name="domein" type="xs:string" fixed="{$domain-value}"/>
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>

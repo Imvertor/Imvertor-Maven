@@ -53,6 +53,13 @@
             <cs-ref:MapRef xlink:href="#ENVLOG"/>
          </cs:use>
       </cs:Mapping>
+      <cs:Mapping>
+         <cs:name>UMLMETA</cs:name>
+         <cs:use>
+            <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#UMLMETA"/>
+         </cs:use>
+      </cs:Mapping>
       <!--<cs:Mapping>
          <cs:name>CERTIFICATES</cs:name>
          <cs:use>
@@ -62,6 +69,8 @@
    </cs:mappings>
    <cs:components>
       <cs:ConceptualSchemasComponents>
+         
+         <xi:include href="../../OMG/xsd/cs-UMLMETA.xml"/><!-- implements UML model -->
          
          <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
          
@@ -117,7 +126,10 @@
             <cs:url>http://www.kadaster.nl/conceptual-schemas/GMLSF</cs:url>
          </cs:ConceptualSchema>
          
+         <xi:include href="../../OMG/xsd/cm-UMLMETA.xml"/><!-- implements Map #UMLMETA -->
+
          <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
+
          <!-- toevoeging aan deze MIM map: -->
          <cs:Map>
             <cs:id>MIM11KAD</cs:id>

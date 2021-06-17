@@ -1024,33 +1024,33 @@
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>
-                <xsl:when test="$is-datatype and $use-identifier-domains and $domain-value">
-                    <xs:element>
-                        <xsl:attribute name="name" select="$name"/>
-                        <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
-                        <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                        <xsl:sequence select="imf:create-xml-debug-comment($this,'A datatype with domain')"/>
-                        <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                        <xs:complexType>
-                            <xs:simpleContent>
-                                <xs:extension base="{$type}">
-                                    <xs:attribute name="domein" type="xs:string" fixed="{$domain-value}"/>
-                                </xs:extension>
-                            </xs:simpleContent>
-                        </xs:complexType>
-                    </xs:element>
-                </xsl:when>
-                <xsl:when test="$is-datatype">
-                    <xs:element>
-                        <xsl:attribute name="name" select="$name"/>
-                        <xsl:attribute name="type" select="$type"/>
-                        <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
-                        <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                        <xsl:sequence select="imf:create-xml-debug-comment($this,'A datatype')"/>
-                        <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                    </xs:element>
-                </xsl:when>
-                <xsl:when test="not($name) and $is-external">
+            <xsl:when test="$is-datatype and $use-identifier-domains and $domain-value">
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A datatype with domain')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="{$type}">
+                                <xs:attribute name="domein" type="xs:string" fixed="{$domain-value}"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="$is-datatype">
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="type" select="$type"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A datatype')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="not($name) and $is-external">
                 <!-- a reference to an external construct -->
                 <xs:element>
                     <xsl:attribute name="ref" select="$type"/>

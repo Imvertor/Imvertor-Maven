@@ -6,5 +6,29 @@
     <xi:include href="../../../Imvertor/cfg/i3n/translation.xml"/>
    
     <!-- add or override translations here: -->
+    <item>
+        <key>DETAILS-OBJECTTYPE</key>
+        <trans lang="nl">Entiteittype details</trans>
+        <trans lang="en">Featuretype details</trans>
+    </item>
+    <item>
+        <key>GERELATEERDOBJECTTYPE</key>
+        <trans lang="nl">Gerelateerd entiteittype</trans>
+        <trans lang="en">Related featureType</trans>
+    </item>
+    <item>
+        <key>SPECIAL-OTHEROBJECTS</key>
+        <trans lang="nl">Entiteittypen en attributen</trans>
+    </item>
+    <item>
+        <key>OVERVIEW-OBJECTTYPE</key>
+        <trans lang="nl">Entiteittypen</trans>
+        <trans lang="en">Featuretypes</trans>
+    </item>
+    <item>
+        <key>DETAILS-OBJECTTYPE</key>
+        <trans lang="nl">Entiteittype details</trans>
+        <trans lang="en">Featuretype details</trans>
+    </item>
     
 </picklist>

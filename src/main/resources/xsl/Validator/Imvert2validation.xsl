@@ -1020,6 +1020,10 @@
     
     <xsl:template match="imvert:association">
         
+        <xsl:sequence select="imf:report-error(., 
+            imvert:direction = 'source', 
+            'Association may not be directed from destination [1] to source',imf:get-display-name(imf:get-construct-by-id(imvert:type-id)))"/>
+        
         <xsl:next-match/>  
     </xsl:template>
     
