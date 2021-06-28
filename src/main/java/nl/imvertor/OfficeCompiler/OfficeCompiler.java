@@ -210,6 +210,7 @@ public class OfficeCompiler extends Step {
 		String gitemail     	        = configurator.getServerProperty("git.email" + postfix); // email address
 		String gituser     	            = configurator.getServerProperty("git.user" + postfix); // user name
 		String gitpass     	            = configurator.getServerProperty("git.pass" + postfix); // password
+		String gittoken     	        = configurator.getServerProperty("git.token" + postfix); // personal access token
 		String gitlocal     	        = configurator.getServerProperty("git.local" + postfix); // location of local git repositories 
 			
 		String giturl     	            = configurator.mergeParms(configurator.getXParm("cli/giturl")); //url of web page
@@ -226,7 +227,7 @@ public class OfficeCompiler extends Step {
 			
 			// create and prepare the GIT resource pusher
 			ResourcePusher rp = new ResourcePusher();
-			rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gitemail);
+			rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gittoken, gitemail);
 			
 			// copy the files to the work folder
 			catfolder.copy(new AnyFolder(gitfolder,"data"));
