@@ -38,6 +38,9 @@
         <xsl:variable name="errors" select="$messages[type=('FATAL','ERROR')]"/>
         <xsl:variable name="msword-filename" select="imf:get-config-string('appinfo','msword-documentation-filename')"/>
         <xsl:variable name="respec-filename" select="imf:get-config-string('appinfo','full-respec-documentation-filename')"/>
+        
+        <xsl:variable name="model-respec-filename" select="concat(imf:get-config-string('appinfo','application-name'),'.html')"/>
+        
         <xsl:variable name="remote-url" select="imf:get-config-string('properties','giturl-resolved',())"/>
         <report>
             <step-display-name>Model documentation</step-display-name>
@@ -88,6 +91,12 @@
                                 <p>Packaged documentation files are <a href="{concat('../../cat/',$respec-filename)}">here</a>.</p>
                             </div>
                         </xsl:if>
+                        <div>
+                            <h1>External documentation</h1>
+                            <p>Packaged externally compiled documentation files may be found <a href="{concat('../../cat/',$model-respec-filename)}">here</a>.</p>
+                            <p><i>Please consult your Imvertor provider if the link does not resolve to a valid HTML document.</i></p>
+                        </div>
+
                     </div>
                 </content>
             </page>

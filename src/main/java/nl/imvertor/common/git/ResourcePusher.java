@@ -26,6 +26,7 @@ public class ResourcePusher {
 	private File localWorkDir;
 	private String user;
 	private String pass;
+	private String token;
 	private String email;
 	private Git git;
 	private boolean gitopen = false;
@@ -72,8 +73,15 @@ public class ResourcePusher {
 			
 			runner.debug(logger, "GITHUB", "Pushing files to remote repository \"" + remoteRepositoryURI + "\" ...");
 			/* Push all changes to the remote server: */
+			
+			UsernamePasswordCredentialsProvider cred;
+			if (token != null) 
+				cred = new UsernamePasswordCredentialsProvider(token, ""); // https://stackoverflow.com/questions/28073266/how-to-use-jgit-to-push-changes-to-remote-with-oauth-access-token
+			else 
+				cred = new UsernamePasswordCredentialsProvider(user, pass);
+	
 			return git.push()
-				.setCredentialsProvider(new UsernamePasswordCredentialsProvider(user, pass))
+				.setCredentialsProvider(cred) 
 				.call();
 
 		} finally {
@@ -124,7 +132,7 @@ public class ResourcePusher {
 	 *          password to login to remote repository 
 	 * @throws Exception
 	 */
-	public void prepare(String remoteRepositoryURI, File localWorkDir, String username, String password, String email) throws Exception {
+	public void prepare(String remoteRepositoryURI, File localWorkDir, String username, String password, String token, String email) throws Exception {
 
 		//Runner runner = Configurator.getInstance().getRunner();
 
@@ -132,6 +140,7 @@ public class ResourcePusher {
 		this.localWorkDir = localWorkDir;
 		this.user = username;
 		this.pass = password;
+		this.token = token;
 		this.email = email;
 
 		/* Make sure localWorkDir exists: */
