@@ -29,6 +29,7 @@
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     xmlns:functx="http://www.functx.com"
     
@@ -1688,18 +1689,22 @@
     
     <xsl:function name="imf:fetch-additional-tagged-values-quick" as="element(imvert:tagged-values)?">
         <xsl:param name="this" as="element()"/>
-        
+        <xsl:variable name="norm-stereos" select="for $s in $this/UML:ModelElement.stereotype/UML:Stereotype return upper-case($s)"/><!-- bijv. ATTRIBUUTSOORT, IDENTIFICATIE -->
         <xsl:variable name="tagged-values" select="imf:get-tagged-values-quick($this,true())"/>
         <xsl:variable name="seq" as="element()*">
             <xsl:for-each select="$tagged-values"> <!-- <tv> elements --> 
                 <xsl:variable name="name" select="@tag"/>
                 <xsl:variable name="level" select="@imvert-level"/>
                 <xsl:variable name="norm-name" select="imf:get-normalized-name(string($name),'tv-name')"/>
-                <xsl:variable name="declared-tv" select="$additional-tagged-values[name = $norm-name]"/>
+                
+                <!-- tagged values met dezelfde naam kunnen in de configuratie voorkomen; als twee dezelfde aangetroffen bepaal dan welke declaratie geldt voor dit type construct --> 
+                <xsl:variable name="declared-tv" select="$additional-tagged-values[name = $norm-name]"/><!-- kunnen er dus meerdere zijn, voorbeeld is CFG-TV-DOMAIN -->
+                <xsl:variable name="declared-tv-unique" select="if ($declared-tv[2]) then $declared-tv[stereotypes/stereo = $norm-stereos] else $declared-tv"/>
                 <xsl:variable name="value" select="imf:get-tagged-value-original(.)"/>
-                <xsl:variable name="norm-value" select="imf:get-tagged-value-norm($value,$declared-tv/@norm)"/>
-                <xsl:if test="exists($declared-tv) and normalize-space($norm-value)">
-                    <imvert:tagged-value id="{$declared-tv/@id}" level="{$level}">
+                
+                <xsl:variable name="norm-value" select="imf:get-tagged-value-norm($value,$declared-tv-unique/@norm)"/>
+                <xsl:if test="exists($declared-tv-unique) and normalize-space($norm-value)">
+                    <imvert:tagged-value id="{$declared-tv-unique/@id}" level="{$level}">
                         <imvert:name original="{$name}">
                             <xsl:value-of select="$norm-name"/>
                         </imvert:name>
