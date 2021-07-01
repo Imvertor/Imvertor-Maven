@@ -48,8 +48,11 @@
         attributes alphabetically sorted within element. Texts must be normalized-spaced. Needed for technical diffs. -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-validation.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     <xsl:import href="../common/Imvert-common-doc.xsl"/>
+    
+    <xsl:import href="common-xsd.xsl"/>
     
     <xsl:variable name="stylesheet-code">KAS</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
@@ -1318,67 +1321,6 @@
         </xs:attribute>
     </xsl:function>
 
-    <xsl:function name="imf:create-datatype-property" as="node()*">
-        <xsl:param name="this" as="node()"/>
-        <xsl:param name="primitive-type" as="xs:string"/><!-- een xs:* qname -->
-        
-        <xsl:variable name="p" select="imf:get-facet-pattern($this)"/>
-        <xsl:if test="$p">
-            <xs:pattern value="{$p}"/><!-- toegestaan op alle constructs -->
-        </xsl:if>
-  
-        <xsl:variable name="l" select="imf:get-facet-max-length($this)"/>
-        <xsl:variable name="min-l" select="imf:convert-to-atomic(substring-before($l,'..'),'xs:integer',true())"/>
-        <xsl:variable name="max-l" select="imf:convert-to-atomic(substring-after($l,'..'),'xs:integer',true())"/>
-        <xsl:variable name="pre-l" select="imf:convert-to-atomic(substring-before($l,','),'xs:integer',true())"/>
-        <xsl:variable name="post-l" select="imf:convert-to-atomic(substring-after($l,','),'xs:integer',true())"/>
-        <xsl:variable name="t" select="imf:convert-to-atomic(imf:get-facet-total-digits($this),'xs:integer',true())"/>
-        <xsl:variable name="f" select="imf:convert-to-atomic(imf:get-facet-fraction-digits($this),'xs:integer',true())"/>
-
-        <xsl:variable name="is-integer" select="$primitive-type = ('xs:integer')"/>
-        <xsl:variable name="is-decimal" select="$primitive-type = ('xs:decimal', 'xs:real')"/>
-        
-        <xsl:choose>
-           <xsl:when test="$min-l and $is-integer">
-               <xs:minInclusive value="{xs:integer(math:pow(10,$min-l - 1))}"/>
-               <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on integer, minimum, for [1]',$primitive-type)"/>
-           </xsl:when>
-           <xsl:when test="$min-l">
-               <xs:minLength value="{$min-l}"/>
-               <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on non-integer, minimum, for [1]',$primitive-type)"/>
-           </xsl:when>
-        </xsl:choose> 
-        <xsl:choose>
-            <xsl:when test="$max-l and $is-integer">
-                <xs:maxInclusive value="{xs:integer(math:pow(10,$max-l) - 1)}"/>
-                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on integer, maximum, for [1]',$primitive-type)"/>
-            </xsl:when>
-            <xsl:when test="$max-l">
-                <xs:maxLength value="{$max-l}"/>
-                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on non-integer, maximum, for [1]',$primitive-type)"/>
-            </xsl:when>
-        </xsl:choose>
-        <xsl:if test="$l and not($min-l) and not($pre-l) and not($is-integer)">
-            <xs:length value="{$l}"/>
-        </xsl:if>
-        <xsl:if test="$post-l">
-            <xs:fractionDigits value="{$post-l}"/>
-        </xsl:if>
-        <xsl:if test="$pre-l">
-            <xs:totalDigits value="{$pre-l + $post-l}"/>
-        </xsl:if>
-        <xsl:if test="$f and not($min-l) and not($pre-l)">
-            <xs:fractionDigits value="{$f}"/>
-        </xsl:if>
-        <xsl:if test="$t and not($min-l) and not($pre-l)">
-            <xs:totalDigits value="{$t}"/>
-        </xsl:if>
-        
-        <xsl:if test="empty(($p,$t)) and not($this/imvert:baretype='TXT')">
-            <xsl:sequence select="imf:create-nonempty-constraint($this/imvert:type-name)"/>
-        </xsl:if>
-    </xsl:function>
-  
     <xsl:template match="imvert:union">
         <xsl:variable name="membertypes" as="item()*">
             <!-- for each referenced datatype, determine the actual XSD equivalent. Produce a xs:union construct. -->
@@ -1753,4 +1695,12 @@
         <xsl:sequence select="$class/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
     </xsl:function>
     
+    <xsl:function name="imf:get-facet-total-digits" as="xs:string?">
+        <xsl:param name="this" as="element()"/>
+        <xsl:sequence select="$this/imvert:total-digits"/>
+    </xsl:function>
+    <xsl:function name="imf:get-facet-fraction-digits" as="xs:string?">
+        <xsl:param name="this" as="element()"/>
+        <xsl:sequence select="$this/imvert:fraction-digits"/>
+    </xsl:function>
 </xsl:stylesheet>
