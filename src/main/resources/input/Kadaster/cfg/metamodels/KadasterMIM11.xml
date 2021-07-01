@@ -57,6 +57,18 @@
     
     <stereotypes xml:id="stereotypes">
         
+        <stereo id="stereotype-name-base-package" primary="yes"><!-- TODO -->
+            <name lang="nl">Basismodel</name>
+            <name lang="en">Base model</name>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-application-package" primary="yes"><!-- TODO -->
+            <name lang="nl">Toepassing</name>
+            <name lang="en">Application model</name>
+            <construct>package</construct>
+        </stereo>
+        
         <stereo id="stereotype-name-featurecollection">
             <name lang="en">FeatureCollection</name>
             <name lang="nl">Objectverzameling</name>
