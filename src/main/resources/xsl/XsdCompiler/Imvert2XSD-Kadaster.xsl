@@ -1695,12 +1695,4 @@
         <xsl:sequence select="$class/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
     </xsl:function>
     
-    <xsl:function name="imf:get-facet-total-digits" as="xs:string?">
-        <xsl:param name="this" as="element()"/>
-        <xsl:sequence select="$this/imvert:total-digits"/>
-    </xsl:function>
-    <xsl:function name="imf:get-facet-fraction-digits" as="xs:string?">
-        <xsl:param name="this" as="element()"/>
-        <xsl:sequence select="$this/imvert:fraction-digits"/>
-    </xsl:function>
 </xsl:stylesheet>
