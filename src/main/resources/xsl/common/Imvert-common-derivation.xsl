@@ -386,14 +386,6 @@
 		<xsl:variable name="maxl" select="if ($this/imvert:max-length) then ($minl || '..' || $this/imvert:max-length) else ()"/>
 		<xsl:sequence select="for $c in ($maxl, imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-LENGTH'))[1] return normalize-space($c)"/>
 	</xsl:function>
-	<xsl:function name="imf:get-facet-total-digits" as="xs:string?">
-		<xsl:param name="this" as="element()"/>
-		<xsl:sequence select="for $c in ($this/imvert:total-digits,imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-TOTALDIGITS'))[1] return normalize-space($c)"/>
-	</xsl:function>
-	<xsl:function name="imf:get-facet-fraction-digits" as="xs:string?">
-		<xsl:param name="this" as="element()"/>
-		<xsl:sequence select="for $c in ($this/imvert:fraction-digits,imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-FRACTIONDIGITS'))[1] return normalize-space($c)"/>
-	</xsl:function>
 	<xsl:function name="imf:get-facet-min-value" as="xs:string?">
 		<xsl:param name="this" as="element()"/>
 		<xsl:sequence select="for $c in imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-MINVALUEINCLUSIVE') return normalize-space($c)"/>

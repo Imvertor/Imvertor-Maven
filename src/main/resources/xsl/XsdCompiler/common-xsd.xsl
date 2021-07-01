@@ -61,8 +61,8 @@
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, minimum value, for [1]',$primitive-type)"/>
             </xsl:when>
             <xsl:when test="$min-l and $is-integer">
-                <xs:minInclusive value="{math:pow(10,$min-l - 1)}"/>
-                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on integer, minimum, for [1]',$primitive-type)"/>
+                <?x <xs:minInclusive value="{math:pow(10,$min-l - 1)}"/> x?>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on integer, minimum, for [1] (ignored)',$primitive-type)"/>
             </xsl:when>
             <xsl:when test="$min-l">
                 <xs:minLength value="{$min-l}"/>
@@ -80,7 +80,8 @@
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, maximum value, for [1]',$primitive-type)"/>
             </xsl:when>
             <xsl:when test="$max-l and $is-integer">
-                <xs:maxInclusive value="{math:pow(10,$max-l) - 1}"/>
+                <xs:totalDigits value="{$max-l}"/>
+                <!--<xs:maxInclusive value="{math:pow(10,$max-l) - 1}"/>-->
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on integer, maximum, for [1]',$primitive-type)"/>
             </xsl:when>
             <xsl:when test="$max-l">
@@ -93,6 +94,9 @@
         </xsl:if>
         <xsl:if test="$post-l">
             <xs:fractionDigits value="{$post-l}"/>
+        </xsl:if>
+        <xsl:if test="$length and not($max-l) and $is-integer">
+            <xs:totalDigits value="{$length}"/>
         </xsl:if>
         <xsl:if test="$pre-l">
             <xs:totalDigits value="{$pre-l + $post-l}"/>

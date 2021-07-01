@@ -79,6 +79,83 @@
                 <stereo minmax="0..1">stereotype-name-complextype</stereo><!-- TODO moet eigenlijk verwijderd worden, ook in 1.0 en misschien zelfs in SBR? -->
             </stereotypes>
         </tv>
+
+        <tv norm="space" id="CFG-TV-IMDOMAIN">
+            <name lang="nl">Informatiedomein</name>
+            <name lang="en">Information domain</name>
+            <derive>yes</derive>
+            <desc lang="nl">Aanduiding van het functionele domein waartoe het informatiemodel behoort.</desc>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-IMTYPE">
+            <name lang="nl">Informatiemodel type</name>
+            <name lang="en">Information model type</name>
+            <derive>yes</derive>
+            <desc lang="nl">De beschrijving van de aard van het informatiemodel, hoe het geïnterpreteerd moet worden.</desc>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">Conceptueel</value>
+                <value>Logisch</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" id="CFG-TV-IMRELATIONMODELINGTYPE">
+            <name lang="nl">Relatiemodelleringstype</name>
+            <name lang="en">Relation modeling type</name>
+            <derive>yes</derive>
+            <desc lang="nl">Aanduiding van een in MIM gedefinieerd alternatief voor een modelleringswijze, en welke keuze hierbij is gemaakt.</desc>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">Relatie</value>
+                <value>Rol</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" id="CFG-TV-MIMVERSION">
+            <name lang="nl">MIM versie</name>
+            <name lang="en">MIM version</name>
+            <derive>yes</derive>
+            <desc lang="nl">De versie van de MIM specificatie die gebruikt is om het informatiemodel in uit te drukken.</desc>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">1.1</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" id="CFG-TV-MIMEXTENSION">
+            <name lang="nl">MIM extensie</name>
+            <name lang="en">MIM extension</name>
+            <derive>yes</derive>
+            <desc lang="nl">De aanduiding van een extensie op MIM.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-MIMLANGUAGE">
+            <name lang="nl">MIM taal</name>
+            <name lang="en">MIM language</name>
+            <derive>yes</derive>
+            <desc lang="nl">De aanduiding van de taal die gebruikt is voor de modelelementen.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">NL</value>
+                <value>EN</value>
+            </declared-values>
+        </tv>
+        
         <?x
         <tv norm="space" id="CFG-TV-BASETYPE"><!-- https://github.com/Imvertor/Imvertor-Maven/issues/139 -->
             <name lang="nl">Basistype</name>
