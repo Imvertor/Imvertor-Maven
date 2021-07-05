@@ -39,14 +39,14 @@
     
         <!-- In MIM kennen we alleen informatiemodellen, geen "toepassingsmodellen" -->    
         <stereo id="stereotype-name-base-package" primary="yes"><!-- TODO hoe omgaaan met toepassingsmodellen in MIM context? -->
-            <name lang="nl">Informatiemodel</name>
-            <name lang="en">Information model</name>
+            <name lang="nl">Basismodel</name><!-- TODO dit moet informatiemodel worden -->
+            <name lang="en">Base model</name>
             <construct>package</construct>
         </stereo>
      
         <stereo id="stereotype-name-union" primary="yes">
             <name lang="nl">Keuze</name>
-            <name lang="en">Union</name>
+            <name lang="en">Union</name><!-- TODO moet dit niet choice worden? (overal union -> choice) -->
             <construct>datatype</construct>
             <construct>association</construct>
         </stereo>

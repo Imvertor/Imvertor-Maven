@@ -27,7 +27,7 @@
         <xsl:variable name="min-v" select="imf:get-facet-min-value($this)"/>
         <xsl:variable name="max-v" select="imf:get-facet-max-value($this)"/>
         
-        <xsl:sequence select="dlogger:save(imf:get-display-name($this),($min-v,$max-v))"/>
+        <xsl:sequence select="dlogger:save(imf:get-display-name($this),($min-v,'|',$max-v,'|',$length,'|',$total))"/>
         
         <xsl:variable name="is-integer" select="$primitive-type = ('xs:integer')"/>
         <xsl:variable name="is-decimal" select="$primitive-type = ('xs:decimal')"/>
@@ -104,7 +104,7 @@
         <xsl:if test="$fraction and not($min-l) and not($pre-l)">
             <xs:fractionDigits value="{$fraction}"/>
         </xsl:if>
-        <xsl:if test="$total and not($min-l) and not($pre-l)">
+        <xsl:if test="$total and not($min-l) and not($pre-l) and not($length)"><!-- bij native scalars wordt ook een imvert:total-digits gezet. Hier dubbeling tegengaan. -->
             <xs:totalDigits value="{$total}"/>
         </xsl:if>
         
