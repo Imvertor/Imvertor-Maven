@@ -847,12 +847,17 @@
         <!--setup-->
         <xsl:variable name="class" select="../.."/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
-        <xsl:variable name="allowed-attribute-stereos" select="imf:get-config-stereotypes(('stereotype-name-attribute','stereotype-name-attributegroup'))"/>
+        
         <!--validation-->
         
         <xsl:sequence select="imf:report-error(., 
-            not(imvert:stereotype = $allowed-attribute-stereos), 
-            'Attribute must be stereotyped as [1]', imf:string-group($allowed-attribute-stereos,' or '))"/>
+            imvert:stereotype/@id = 'stereotype-name-attribute' and $defining-class/imvert:designation = 'class', 
+            '[1] type must be an UML datatype', imf:string-group(imf:get-config-stereotypes('stereotype-name-attribute'),' or '))"/>
+        
+        <xsl:sequence select="imf:report-error(., 
+            imvert:stereotype/@id = 'stereotype-name-attributegroup' and not($defining-class/imvert:designation = 'class'), 
+            '[1] type must be an UML class', imf:string-group(imf:get-config-stereotypes('stereotype-name-attributegroup'),' or '))"/>
+        
         <xsl:next-match/>
     </xsl:template>
     
