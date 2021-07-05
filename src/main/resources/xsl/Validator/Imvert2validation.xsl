@@ -850,11 +850,11 @@
         
         <!--validation-->
         
-        <xsl:sequence select="imf:report-error(., 
+        <xsl:sequence select="imf:report-warning(., 
             imvert:stereotype/@id = 'stereotype-name-attribute' and $defining-class/imvert:designation = 'class', 
             '[1] type must be an UML datatype', imf:string-group(imf:get-config-stereotypes('stereotype-name-attribute'),' or '))"/>
         
-        <xsl:sequence select="imf:report-error(., 
+        <xsl:sequence select="imf:report-warning(., 
             imvert:stereotype/@id = 'stereotype-name-attributegroup' and not($defining-class/imvert:designation = 'class'), 
             '[1] type must be an UML class', imf:string-group(imf:get-config-stereotypes('stereotype-name-attributegroup'),' or '))"/>
         
