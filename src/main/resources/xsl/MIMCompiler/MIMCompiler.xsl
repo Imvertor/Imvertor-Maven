@@ -28,7 +28,7 @@
   <xsl:variable name="stylesheet-code">MIMCOMPILER</xsl:variable>
   <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" use-when="$runs-in-imvertor-context"/>
   
-  <xsl:variable name="stereotype-name-basismodel"              select="'BASISMODEL'"                         as="xs:string"/>
+  <xsl:variable name="stereotype-name-informatiemodel"         select="'INFORMATIEMODEL'"                    as="xs:string"/>
   <xsl:variable name="stereotype-name-attribuutsoort"          select="'ATTRIBUUTSOORT'"                     as="xs:string"/>
   <xsl:variable name="stereotype-name-codelijst"               select="'CODELIJST'"                          as="xs:string"/>
   <xsl:variable name="stereotype-name-data-element"            select="'DATA ELEMENT'"                       as="xs:string"/>
@@ -64,7 +64,7 @@
     $stereotype-name-externe-koppeling, $stereotype-name-gegevensgroep, $stereotype-name-gegevensgroeptype, $stereotype-name-generalisatie, 
     $stereotype-name-gestructureerd-datatype, $stereotype-name-keuze, $stereotype-name-objecttype, $stereotype-name-primitief-datatype, 
     $stereotype-name-referentie-element, $stereotype-name-referentielijst, $stereotype-name-relatieklasse, $stereotype-name-relatierol, 
-    $stereotype-name-relatiesoort, $stereotype-name-view, $stereotype-name-interface, $stereotype-name-basismodel)" as="xs:string+"/>
+    $stereotype-name-relatiesoort, $stereotype-name-view, $stereotype-name-interface, $stereotype-name-informatiemodel)" as="xs:string+"/>
   <xsl:variable name="mim-stereotype-ids" select="($stereotype-id-keuze-datatypes, $stereotype-id-keuze-attributes, 
     $stereotype-id-keuze-associations, $stereotype-id-keuze-element)" as="xs:string+"/>
   <xsl:variable name="mim-tagged-value-ids" select="('CFG-TV-INDICATIONAUTHENTIC', 'CFG-TV-CONCEPT', 'CFG-TV-DATERECORDED', 'CFG-TV-DEFINITION',
@@ -107,8 +107,6 @@
   </xsl:template>
   
   <xsl:template match="/imvert:packages">
-    <xsl:message select="string-join(distinct-values(for $a in //imvert:stereotype[not(. = $mim-stereotype-names) and not(@id = $mim-stereotype-ids)] return $a), '|')"/>
-    
     <mim:Informatiemodel
       xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
       xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
@@ -121,12 +119,12 @@
       <mim:naam>{imvert:model-id}</mim:naam>
       <xsl:call-template name="definitie"/>
       <xsl:call-template name="herkomst"/>
-      <mim:informatiedomein>{imvert:application}</mim:informatiedomein> <!-- TODO: mapping -->
-      <mim:informatiemodeltype><xsl:comment> TODO: Specifieke tagged value vaststellen en implementeren/configureren </xsl:comment></mim:informatiemodeltype> <!-- TODO: mapping, bv "conceptueel", "logisch", "technisch" -->
-      <mim:relatiemodelleringstype><xsl:comment> TODO: Specifieke tagged value vaststellen en implementeren/configureren </xsl:comment></mim:relatiemodelleringstype> <!-- TODO: "Relatiesoort leidend" of "Relatierol leidend" -->
-      <mim:mIMVersie>{if (matches(imvert:metamodel, 'MIM\s+1\.1', 'i')) then '1.1' else if (matches(imvert:metamodel, 'MIM\s+1\.0', 'i')) then '1.0' else 'Onbekend'}</mim:mIMVersie> <!-- TODO: mapping -->
-      <mim:mIMExtensie><xsl:comment> TODO: Specifieke tagged value vaststellen en implementeren/configureren </xsl:comment></mim:mIMExtensie> <!-- TODO: mapping? -->
-      <mim:mIMTaal><xsl:comment> TODO: Specifieke tagged value vaststellen en implementeren/configureren </xsl:comment></mim:mIMTaal> <!-- TODO: mapping? -->
+      <mim:informatiedomein>{imf:tagged-values(., 'CFG-TV-IMDOMAIN')}</mim:informatiedomein>
+      <mim:informatiemodeltype>{imf:tagged-values(., 'CFG-TV-IMTYPE')}</mim:informatiemodeltype>
+      <mim:relatiemodelleringstype>{imf:tagged-values(., 'CFG-TV-IMRELATIONMODELINGTYPE')}</mim:relatiemodelleringstype>
+      <mim:mIMVersie>{imf:tagged-values(., 'CFG-TV-MIMVERSION')}</mim:mIMVersie>
+      <mim:mIMExtensie>{imf:tagged-values(., 'CFG-TV-MIMEXTENSION')}</mim:mIMExtensie>
+      <mim:mIMTaal>{imf:tagged-values(., 'CFG-TV-MIMLANGUAGE')}</mim:mIMTaal>
       
       <xsl:where-populated>
         <mim:bevat>
@@ -662,7 +660,7 @@
     </mim:Interface>
   </xsl:template>
   
-  <xsl:template match="(imvert:class|imvert:attribute|imvert:associatie)[imf:is-not-mim-construct(.)]">
+  <xsl:template match="(imvert:class|imvert:attribute|imvert:association)[imf:is-not-mim-construct(.)]">
     <mim-ext:Constructie id="{imvert:id}">
       <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype>
       <!--
@@ -739,7 +737,9 @@
       <xsl:if test="imvert:is-id">
         <xsl:call-template name="identificerend"/>
       </xsl:if>
-      <xsl:call-template name="uniDirectioneel"/> <!-- mapping? -->
+      <xsl:if test="self::imvert:association">
+        <xsl:call-template name="uniDirectioneel"/> <!-- mapping? -->  
+      </xsl:if>
       <xsl:if test="imvert:aggregation">
         <xsl:call-template name="typeAggregatie"/>  
       </xsl:if>
@@ -753,17 +753,38 @@
       <!--
       <xsl:call-template name="doel"/>
       -->
-      <xsl:call-template name="supertype"/>
-      <xsl:where-populated>
-        <mim-ext:bevat__attributen>
-          <xsl:apply-templates select="imvert:attributes"/>
-        </mim-ext:bevat__attributen>  
-      </xsl:where-populated>
-      <xsl:where-populated>
-        <mim-ext:bevat__associaties>
-          <xsl:apply-templates select="imvert:associations"/>  
-        </mim-ext:bevat__associaties>  
-      </xsl:where-populated>
+      <xsl:choose>
+        <xsl:when test="self::imvert:class">
+          <xsl:call-template name="supertype"/>
+          <xsl:where-populated>
+            <mim-ext:bevat__attributen>
+              <xsl:apply-templates select="imvert:attributes/imvert:attribute"/>
+            </mim-ext:bevat__attributen>  
+          </xsl:where-populated>
+          <xsl:where-populated>
+            <mim-ext:bevat__associaties>
+              <xsl:apply-templates select="imvert:associations/imvert:association"/>  
+            </mim-ext:bevat__associaties>  
+          </xsl:where-populated>
+        </xsl:when>
+        <xsl:when test="self::imvert:attribute">
+          <xsl:call-template name="heeft__datatype"/>
+          <xsl:call-template name="heeft__keuze"/>
+        </xsl:when>
+        <xsl:when test="self::imvert:association">
+          <xsl:where-populated>
+            <mim:verwijstNaar>
+              <xsl:call-template name="create-ref-element">
+                <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
+              </xsl:call-template>
+              <mim:_Relatierol>
+                <mim:id>Doel</mim:id> <!-- TODO: mapping?? -->
+              </mim:_Relatierol>
+            </mim:verwijstNaar>
+          </xsl:where-populated>
+        </xsl:when>
+      </xsl:choose>
+      
       <!-- TODO: constraints, derivation, concepts, substitution? -->  
       <xsl:call-template name="extensieKenmerken"/>
     </mim-ext:Constructie>
@@ -1074,35 +1095,42 @@
   
   <xsl:template name="supertype">
     <xsl:variable name="stereotype" select="imvert:stereotype" as="xs:string*"/>
-    <mim:supertype>
-      <xsl:for-each select="imvert:supertype[not(imvert:stereotype) or imvert:stereotype = $stereotype-name-generalisatie]">
-        <xsl:variable name="super-type" select="key('key-imvert-construct-by-id', imvert:type-id)" as="element(imvert:class)"/>
-        <mim:Generalisatie>
-          <mim:datumOpname>{imf:tagged-values(., 'CFG-TV-DATERECORDED')}</mim:datumOpname>
-          <xsl:choose>
-            <xsl:when test="($stereotype = $stereotype-name-objecttype) or imf:is-not-mim-construct($super-type)">
-              <mim:verwijstNaarGenerieke>
-                <xsl:call-template name="create-ref-element">
-                  <xsl:with-param name="ref-id" select="imvert:type-id"/>
-                </xsl:call-template>
-              </mim:verwijstNaarGenerieke>    
-            </xsl:when>
-            <xsl:otherwise>
-              <mim:supertype>
-                <xsl:call-template name="create-ref-element">
-                  <xsl:with-param name="ref-id" select="imvert:type-id"/>
-                </xsl:call-template>
-              </mim:supertype>
-            </xsl:otherwise>
-          </xsl:choose>
-        </mim:Generalisatie>  
-      </xsl:for-each>
-      
-      
-      
-    </mim:supertype>
-    
-    
+    <xsl:if test="imvert:supertype">
+      <mim:supertype>
+        <xsl:for-each select="imvert:supertype[not(imvert:stereotype) or imvert:stereotype = $stereotype-name-generalisatie]">
+          <xsl:variable name="super-type" select="key('key-imvert-construct-by-id', imvert:type-id)" as="element(imvert:class)"/>
+          <mim:Generalisatie>
+            <mim:datumOpname>{imf:tagged-values(., 'CFG-TV-DATERECORDED')}</mim:datumOpname>
+            <xsl:choose>
+              <xsl:when test="($stereotype = $stereotype-name-objecttype)">
+                <mim:verwijstNaarGenerieke>
+                  <xsl:call-template name="create-ref-element">
+                    <xsl:with-param name="ref-id" select="imvert:type-id"/>
+                  </xsl:call-template>
+                </mim:verwijstNaarGenerieke>    
+              </xsl:when>
+              <xsl:otherwise>
+                <mim:supertype>
+                  <xsl:call-template name="create-ref-element">
+                    <xsl:with-param name="ref-id" select="imvert:type-id"/>
+                  </xsl:call-template>
+                </mim:supertype>
+              </xsl:otherwise>
+            </xsl:choose>
+          </mim:Generalisatie>  
+        </xsl:for-each>
+        <xsl:for-each select="imvert:supertype[imvert:stereotype[normalize-space()] and imf:is-not-mim-construct(.)]">
+          <mim-ext:Constructie>
+            <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype>
+            <mim:verwijstNaarGenerieke>
+              <xsl:call-template name="create-ref-element">
+                <xsl:with-param name="ref-id" select="imvert:type-id"/>
+              </xsl:call-template>
+            </mim:verwijstNaarGenerieke> 
+          </mim-ext:Constructie>
+        </xsl:for-each>
+      </mim:supertype>  
+    </xsl:if>
   </xsl:template>
   
   <xsl:template name="toelichting">
