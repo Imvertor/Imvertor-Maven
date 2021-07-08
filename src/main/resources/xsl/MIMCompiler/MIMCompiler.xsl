@@ -1,3 +1,21 @@
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
 <xsl:stylesheet 
   version="3.0" 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -12,6 +30,11 @@
   xmlns:imf="http://www.imvertor.org/xsl/functions"    
   expand-text="yes" 
   exclude-result-prefixes="imvert imf fn UML">
+  
+  <!--
+  This stylesheet converts a system.imvert.xml serialisation (Imvertor "embellish" format) to a 
+  MIM format serialisation.      
+  -->
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
   
@@ -72,6 +95,7 @@
     'CFG-TV-INDICATIONFORMALHISTORY', 'CFG-TV-INDICATIONMATERIALHISTORY', 'CFG-TV-QUALITY', 'CFG-TV-LENGTH','CFG-TV-DATALOCATION',
     'CFG-TV-VOIDABLE', 'CFG-TV-PATTERN', 'CFG-TV-POPULATION', 'CFG-TV-DATERECORDED', 'CFG-TV-DESCRIPTION')" as="xs:string+"/>
   
+  <!-- Include MIM11 package constructs (if necessary) and convert EA identifiers to "human readable" identifiers: -->
   <xsl:variable name="preprocessed-xml" as="document-node()">
     <xsl:apply-templates select="." mode="preprocess"/>  
   </xsl:variable>
