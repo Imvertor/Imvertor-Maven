@@ -147,9 +147,12 @@
       <mim:informatiemodeltype>{imf:tagged-values(., 'CFG-TV-IMTYPE')}</mim:informatiemodeltype>
       <mim:relatiemodelleringstype>{imf:tagged-values(., 'CFG-TV-IMRELATIONMODELINGTYPE')}</mim:relatiemodelleringstype>
       <mim:mIMVersie>{imf:tagged-values(., 'CFG-TV-MIMVERSION')}</mim:mIMVersie>
-      <mim:mIMExtensie>{imf:tagged-values(., 'CFG-TV-MIMEXTENSION')}</mim:mIMExtensie>
-      <mim:mIMTaal>{imf:tagged-values(., 'CFG-TV-MIMLANGUAGE')}</mim:mIMTaal>
-      
+      <xsl:where-populated>
+        <mim:mIMExtensie>{imf:tagged-values(., 'CFG-TV-MIMEXTENSION')}</mim:mIMExtensie>    
+      </xsl:where-populated>
+      <xsl:where-populated>
+        <mim:mIMTaal>{imf:tagged-values(., 'CFG-TV-MIMLANGUAGE')}</mim:mIMTaal>  
+      </xsl:where-populated>
       <xsl:where-populated>
         <mim:bevat>
           <xsl:apply-templates select="$packages[imvert:stereotype = ($stereotype-name-domein, $stereotype-name-view)]">
@@ -781,14 +784,9 @@
         <xsl:when test="self::imvert:class">
           <xsl:call-template name="supertype"/>
           <xsl:where-populated>
-            <mim-ext:bevat__attributen>
-              <xsl:apply-templates select="imvert:attributes/imvert:attribute"/>
-            </mim-ext:bevat__attributen>  
-          </xsl:where-populated>
-          <xsl:where-populated>
-            <mim-ext:bevat__associaties>
-              <xsl:apply-templates select="imvert:associations/imvert:association"/>  
-            </mim-ext:bevat__associaties>  
+            <mim-ext:bevat>
+              <xsl:apply-templates select="imvert:attributes/imvert:attribute|imvert:associations/imvert:association"/>
+            </mim-ext:bevat>  
           </xsl:where-populated>
         </xsl:when>
         <xsl:when test="self::imvert:attribute">
@@ -1202,14 +1200,16 @@
   <xsl:template name="verwijstNaar__objecttype">
     <!-- TODO: dit werkt alleen met RELATIESOORT, niet met RELATIEKLASSE -->
     <xsl:where-populated>
-      <mim:verwijstNaar__objecttype>
-        <xsl:call-template name="create-ref-element">
-          <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
-        </xsl:call-template>
-        <mim:_Relatierol>
-          <mim:id>Doel</mim:id> <!-- TODO: mapping?? -->
-        </mim:_Relatierol>
-      </mim:verwijstNaar__objecttype>
+      <xsl:if test="imvert:type-id">
+        <mim:verwijstNaar__objecttype>
+          <xsl:call-template name="create-ref-element">
+            <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
+          </xsl:call-template>
+          <mim:_Relatierol>
+            <mim:id>Doel</mim:id> <!-- TODO: mapping?? -->
+          </mim:_Relatierol>
+        </mim:verwijstNaar__objecttype>  
+      </xsl:if>
     </xsl:where-populated>
   </xsl:template>
   
