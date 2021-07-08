@@ -1200,14 +1200,16 @@
   <xsl:template name="verwijstNaar__objecttype">
     <!-- TODO: dit werkt alleen met RELATIESOORT, niet met RELATIEKLASSE -->
     <xsl:where-populated>
-      <mim:verwijstNaar__objecttype>
-        <xsl:call-template name="create-ref-element">
-          <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
-        </xsl:call-template>
-        <mim:_Relatierol>
-          <mim:id>Doel</mim:id> <!-- TODO: mapping?? -->
-        </mim:_Relatierol>
-      </mim:verwijstNaar__objecttype>
+      <xsl:if test="imvert:type-id">
+        <mim:verwijstNaar__objecttype>
+          <xsl:call-template name="create-ref-element">
+            <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
+          </xsl:call-template>
+          <mim:_Relatierol>
+            <mim:id>Doel</mim:id> <!-- TODO: mapping?? -->
+          </mim:_Relatierol>
+        </mim:verwijstNaar__objecttype>  
+      </xsl:if>
     </xsl:where-populated>
   </xsl:template>
   
