@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Stelselcatalogus CSV compiler</name>
+     <version-control>$Id: $</version-control>
+   </id>
+   
+   <cli-parms>
+      <cli-parm>
+         <name>createstccsv</name>
+         <arg>yes|no</arg>
+         <tip>Yes if Stelselcatalogus CSV must be generated</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>stccsvname</name>
+         <arg>string</arg>
+         <tip>The name of the Stelselcatalogus CSV file generated</tip>
+         <required>false</required>
+      </cli-parm> 
+   </cli-parms>
+   
+   <properties>
+   
+      <WORK_STCCSVG_XMLPATH>${system/work-imvert-folder-path}/imvertor.27.stc-gegevens.xml</WORK_STCCSVG_XMLPATH>   
+      <WORK_STCCSVB_XMLPATH>${system/work-imvert-folder-path}/imvertor.27.stc-bronnen.xml</WORK_STCCSVB_XMLPATH>   
+      
+      <IMVERTOR_STCCSVG_XSLPATH>StcCompiler-gegevens.xsl</IMVERTOR_STCCSVG_XSLPATH>
+      <IMVERTOR_STCCSVB_XSLPATH>StcCompiler-bronnen.xsl</IMVERTOR_STCCSVB_XSLPATH>
+      
+   </properties>
+   
+</config>

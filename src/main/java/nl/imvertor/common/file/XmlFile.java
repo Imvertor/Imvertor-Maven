@@ -35,7 +35,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.custommonkey.xmlunit.DetailedDiff;
@@ -43,6 +45,7 @@ import org.custommonkey.xmlunit.Difference;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
@@ -660,5 +663,35 @@ public class XmlFile extends AnyFile implements ErrorHandler {
     	targetFile.fromXml(this);
     }
 	
+    /**
+	 * Create CSV representation of XML contents.
+	 * 
+	 * Format: /sheet/r/c
+	 * 
+	 * @param targetFile
+	 * @throws Exception 
+	 */
+    
+    public void toCsv(AnyFile targetFile) throws Exception {
+		FileWriterWithEncoding writer = targetFile.getWriter(false);
+		Document dom = getDom();
+		
+		XPathFactory xpf = XPathFactory.newInstance();
+        XPath xp = xpf.newXPath();
+        NodeList rows = (NodeList)xp.evaluate("/sheet/r", dom, XPathConstants.NODESET);
+        for (int i=0; i < rows.getLength(); i++) {
+            Node row = rows.item(i);
+            NodeList cells = (NodeList)xp.evaluate("c", row, XPathConstants.NODESET);
+            for (int j=0; j < cells.getLength(); j++) {
+                Node cell = cells.item(j);
+            	writer.write("\"" + cell.getTextContent().replace("\"","\"\"") + "\"");
+            	writer.write(";");
+            } 
+            writer.write("\n");
+        }
+        
+		writer.close();
+	}
+	    
 
 }
