@@ -41,6 +41,27 @@
   
   <xsl:variable name="stylesheet-code">STCCOMPILER</xsl:variable>
   <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+
+  <xsl:variable name="headers" as="xs:string">
+    Registratielabel,
+    Clusterbegrip (URI),
+    Begrip,
+    Begrip (URI),
+    Definitie,
+    Toelichting,
+    Populatie,
+    Herkomst,
+    Herkomst (URI),
+    Eigenaar,
+    Eigenaar (URI),
+    Wetgeving,
+    Wetgeving (URI),
+    Authentiek,
+    AuthentiekRelatie (URI),
+    Relaties,
+    Relaties (URI),
+    Kwaliteit
+  </xsl:variable>
   
   <xsl:template match="/">
     <xsl:apply-templates select="/imvert:packages"/>
@@ -48,13 +69,22 @@
   
   <xsl:template match="/imvert:packages">
     <sheet>
+      <r>
+        <xsl:for-each select="tokenize($headers,',\s*')">
+          <c>{.}</c>
+        </xsl:for-each>
+      </r>
       <xsl:apply-templates select="imvert:package/imvert:class[imvert:stereotype/@id = 'stereotype-name-objecttype']"/>
     </sheet>
   </xsl:template>
   
   <xsl:template match="imvert:class">
-    <xsl:variable name="relaties">
-      <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype/@id = 'stereotype-name-relatiesoort']">
+    <xsl:variable name="relaties" as="xs:string*">
+      <xsl:for-each select="imvert:associations/imvert:association[
+        (imvert:stereotype/@id = 'stereotype-name-relatiesoort') 
+        or 
+        (imvert:target/imvert:stereotype/@id = 'stereotype-name-relation-role')]
+      ">
         <xsl:value-of select="imf:formatted-name((imvert:name,imvert:target/imvert:role)[1]/@original)"/>
       </xsl:for-each>
     </xsl:variable>
@@ -74,7 +104,7 @@
       <xsl:sequence select="imf:col('Wetgeving (URI)',$empty)"/>
       <xsl:sequence select="imf:col('Authentiek','(issue 6)')"/>
       <xsl:sequence select="imf:col('AuthentiekRelatie','(issue 5)')"/>
-      <xsl:sequence select="imf:col('Relaties',string-join($relaties,';'))"/>
+      <xsl:sequence select="imf:col('Relaties',string-join($relaties,'; '))"/>
       <xsl:sequence select="imf:col('Relaties (URI)',$empty)"/>
       <xsl:sequence select="imf:col('Kwaliteit',imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-QUALITY'))"/>
     </r>

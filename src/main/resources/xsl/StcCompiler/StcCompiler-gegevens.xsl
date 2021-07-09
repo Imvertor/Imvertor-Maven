@@ -42,12 +42,41 @@
   <xsl:variable name="stylesheet-code">STCCOMPILER</xsl:variable>
   <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
   
+  <xsl:variable name="headers" as="xs:string">
+    Registratielabel,
+    Begrip,
+    Begrip (URI),
+    Gegevenselement,
+    Gegevenselement (URI),
+    Definitie,
+    Toelichting,
+    Populatie,
+    Herkomst,
+    Herkomst (URI),
+    Eigenaar,
+    Eigenaar (URI),
+    Wetgeving,
+    Wetgeving (URI),
+    Authentiek,
+    AuthentiekRelatie,
+    Relaties,
+    Relaties (URI),
+    Kwaliteit,
+    Toegankelijkheid,
+    Gebruiksvoorwaarden
+  </xsl:variable>
+  
   <xsl:template match="/">
     <xsl:apply-templates select="/imvert:packages"/>
   </xsl:template>
   
   <xsl:template match="/imvert:packages">
     <sheet>
+      <r>
+        <xsl:for-each select="tokenize($headers,',\s*')">
+          <c>{.}</c>
+        </xsl:for-each>
+      </r>
       <xsl:apply-templates select="imvert:package/imvert:class[imvert:stereotype/@id = 'stereotype-name-objecttype']"/>
     </sheet>
   </xsl:template>
