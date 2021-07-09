@@ -74,6 +74,10 @@
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
             <xsl:apply-templates select="imvert:package"/>
         </imvert:packages>
+        
+        <!-- store some info to xparms -->
+        <xsl:sequence select="imf:set-config-string('appinfo','model-abbreviation',imf:get-tagged-value(/*,'##CFG-TV-ABBREV'))"/>
+   
     </xsl:template>
     
     <xsl:template match="imvert:package">

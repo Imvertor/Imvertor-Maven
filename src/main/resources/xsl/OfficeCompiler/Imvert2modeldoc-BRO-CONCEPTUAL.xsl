@@ -48,19 +48,21 @@
     <!-- overrides the default -->
     <xsl:function name="imf:initialize-modeldoc" as="item()*">
         
-        <!-- the abbreviation for the registration object must be set here; this is part of the path in GIT where the catalog is uploaded -->
-        <xsl:variable name="abbrev" select="imf:get-tagged-value($imvert-document/*,'##CFG-TV-ABBREV')" as="xs:string?"/>
+        <!-- 
+            the abbreviation for the registration object must be available here; this is part of the path in GIT where the catalog is uploaded 
+        -->
+        <xsl:variable name="abbrev" select="imf:get-config-string('appinfo','model-abbreviation')" as="xs:string?"/>
         <xsl:variable name="object" select="$configuration-registration-objects-doc//registratieobject[abbrev = $abbrev]"/>
         
         <xsl:choose>
             <xsl:when test="empty($abbrev)">
-                <xsl:sequence select="imf:msg($imvert-document,'ERROR','No [1] found for this model',imf:get-config-name-by-id('CFG-TV-ABBREV'))"/>
+                <xsl:sequence select="imf:msg($imvert-document,'ERROR','No [1] found for this model','model abbreviation')"/>
             </xsl:when>
             <xsl:when test="empty($object)">
-                <xsl:sequence select="imf:msg($imvert-document,'ERROR','The [1] value [2] is not valid',(imf:get-config-name-by-id('CFG-TV-ABBREV'), $abbrev))"/>
+                <xsl:sequence select="imf:msg($imvert-document,'ERROR','The [1] value [2] is not valid',('model abbreviation', $abbrev))"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:set-config-string('appinfo','model-abbreviation',$abbrev)"/>
+                <!-- okay -->
             </xsl:otherwise>
         </xsl:choose>
         
