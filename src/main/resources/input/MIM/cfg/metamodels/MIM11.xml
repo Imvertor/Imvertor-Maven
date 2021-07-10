@@ -47,7 +47,9 @@
         <stereo id="stereotype-name-union" primary="yes">
             <name lang="nl">Keuze</name>
             <name lang="en">Union</name><!-- TODO moet dit niet choice worden? (overal union -> choice) -->
+            <construct>class</construct>
             <construct>datatype</construct>
+            <construct>attribute</construct>
             <construct>association</construct>
         </stereo>
         <stereo id="stereotype-name-union-element" primary="yes">
@@ -56,23 +58,23 @@
             <construct>attribute</construct>
         </stereo>
         
-        <stereo id="stereotype-name-union-attributes" primary="yes">
+        <stereo id="stereotype-name-union-attributes" primary="no">
             <name lang="nl">Keuze attributen</name>
             <name lang="en">Union attributes</name>
             <construct>class</construct>
         </stereo>
-        <stereo id="stereotype-name-union-attribute" primary="yes">
+        <stereo id="stereotype-name-union-attribute" primary="no">
             <name lang="nl">Keuze attribuut</name>
             <name lang="en">Union attribute</name>
             <construct>attribute</construct>
         </stereo>
         
-        <stereo id="stereotype-name-union-associations" primary="yes">
+        <stereo id="stereotype-name-union-associations" primary="no">
             <name lang="nl">Keuze relaties</name>
             <name lang="en">Union associations</name>
             <construct>class</construct>
         </stereo>
-        <stereo id="stereotype-name-union-association" primary="yes">
+        <stereo id="stereotype-name-union-association" primary="no">
             <name lang="nl">Keuze relatie</name>
             <name lang="en">Union association</name>
             <construct>association</construct>

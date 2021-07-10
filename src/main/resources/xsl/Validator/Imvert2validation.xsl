@@ -146,8 +146,6 @@
         ('stereotype-name-simpletype',
         'stereotype-name-complextype',
         'stereotype-name-union',
-        'stereotype-name-union-attributes',
-        'stereotype-name-union-associations',
         'stereotype-name-referentielijst',
         'stereotype-name-codelist',
         'stereotype-name-interface',
@@ -546,6 +544,7 @@
         <xsl:variable name="is-toplevel" select="imf:is-toplevel($this)"/>
         <xsl:variable name="is-association-class" select="$document-classes/imvert:associations/imvert:association/imvert:association-class/imvert:type-id = $this-id"/>
         <xsl:variable name="allow-multiple-supertypes" select="imf:boolean($configuration-metamodel-file//features/feature[@name='allow-multiple-supertypes'])"/>
+        <xsl:variable name="is-union-class" select="imvert:stereotype/@id = ('stereotype-name-union')"/>
         
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 
@@ -569,20 +568,22 @@
             'Stereotype of base type not assigned to its subtype')"/>
 
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype/@id = ('stereotype-name-union') and empty(imvert:attributes/imvert:attribute)), 
+            ($is-union-class and empty(imvert:stereotype/@id = ('stereotype-name-union-attributes','stereotype-name-union-associations')) and count(imvert:attributes/imvert:attribute) eq 0), 
             'Empty union class is not allowed.')"/><!-- retain for historical purpose -->
+        
+        <!-- MIM11 -->
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype/@id = ('stereotype-name-union','stereotype-name-union-attributes') and count(imvert:attributes/imvert:attribute) lt 2), 
+            (imvert:stereotype/@id = ('stereotype-name-union-attributes') and count(imvert:attributes/imvert:attribute) lt 2), 
             'Union class with [1] attributes is not allowed.',count(imvert:attributes/imvert:attribute))"/>
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype/@id = ('stereotyp    e-name-union-associations') and count(imvert:associations/imvert:association) lt 2), 
+            (imvert:stereotype/@id = ('stereotype-name-union-associations') and count(imvert:associations/imvert:association) lt 2), 
             'Union class with [1] association(s) is not allowed.',count(imvert:associations/imvert:association))"/>
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype/@id = ('stereotype-name-union','stereotype-name-union-attributes') and exists(imvert:associations/imvert:association)), 
-            'Association on union class is not allowed.')"/>
+            ($is-union-class and empty(imvert:stereotype/@id = 'stereotype-name-union-assocations') and exists(imvert:associations/imvert:association)), 
+            'Association(s) on union class are not allowed.')"/>
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype/@id = ('stereotype-name-union','stereotype-name-union-associations') and exists(imvert:attributes/imvert:atribute)), 
-            'Attribute on union class is not allowed.')"/>
+            ($is-union-class and exists(imvert:stereotype/@id = 'stereotype-name-union-associations') and exists(imvert:attributes/imvert:atribute)), 
+            'Attribute(s) on union class are not allowed.')"/>
         
         <xsl:sequence select="imf:report-error(., 
             not(ancestor::imvert:package/imvert:stereotype/@id = $schema-oriented-stereotypes), 
@@ -696,7 +697,7 @@
         <!--validation-->
         <xsl:for-each select="imvert:stereotype">
             <xsl:sequence select="imf:report-error(.., 
-                not(@id = ($datatype-stereos)), 
+                not(@id = $datatype-stereos) and imf:get-config-stereotype-is-primary(@id), 
                 'UML datatypes should be stereotyped as: [1] and not [2]',(string-join(imf:get-config-stereotypes($datatype-stereos),' or '),imf:string-group(.)))"/>
         </xsl:for-each>
         <xsl:sequence select="imf:report-error(., 

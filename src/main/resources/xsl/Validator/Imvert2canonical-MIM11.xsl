@@ -51,10 +51,11 @@
                 </xsl:choose>
             </xsl:for-each>
         </xsl:variable>
+        <xsl:next-match/>
         <xsl:choose>
             <xsl:when test="$attribute-uses = 'D'">
                 <!-- neem aan dat het een keuze tussen datatypen betreft -->
-                <xsl:next-match/>
+                <imvert:stereotype id="stereotype-name-union-datatypes" origin="system">{.}</imvert:stereotype>
             </xsl:when>
             <xsl:when test="$attribute-uses = ('C','E')">
                 <!-- TODO neem aan dat het een keuze tussen attributen betreft (casussen nog nalopen)-->
@@ -74,6 +75,7 @@
             <xsl:apply-templates select="*[empty(self::imvert:stereotype) and empty(self::imvert:name)]"/>
             <!-- geef een naam; formeel mag er geen naam zijn -->
             <imvert:name original="{$name}" origin="system">{$name}</imvert:name>
+            <xsl:sequence select="imvert:stereotype"/>
             <imvert:stereotype id="stereotype-name-union-association" origin="system">
                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-union-association')"/>
             </imvert:stereotype>
@@ -96,6 +98,7 @@
         <xsl:copy>
             <xsl:apply-templates select="*[empty(self::imvert:stereotype) and empty(self::imvert:role)]"/>
             <imvert:role original="{$name}" origin="system">{$name}</imvert:role>
+            <xsl:sequence select="imvert:stereotype"/>
             <imvert:stereotype id="stereotype-name-union-association" origin="system">
                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-union-association')"/>
             </imvert:stereotype>
