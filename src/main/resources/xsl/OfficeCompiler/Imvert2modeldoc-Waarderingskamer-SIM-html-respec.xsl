@@ -53,6 +53,11 @@
                             table {
                             width: 100%;
                             }
+                            .debug {
+                            color: gray;
+                            font-size: 70%;
+                            font-weight: normal;
+                            }
                         </style>
                     </head>
                     <body>

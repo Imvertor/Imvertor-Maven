@@ -11,11 +11,14 @@
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all" 
-    version="2.0">
+    version="3.0">
     
     <xsl:import href="../../common/Imvert-common.xsl"/>
     
     <xsl:output method="html" indent="yes" omit-xml-declaration="yes"/>
+    
+    <xsl:variable name="stylesheet-code">OFFICE-RESPEC</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
     <!-- 
         create a Respec HTML representation of the section structure 
@@ -114,7 +117,16 @@
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ATTRIBUTE'">
                 <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
                 <section id="{$id}" class="notoc" level="{$level}">
-                    <xsl:sequence select="imf:create-section-header-name($section,$level,'ATTRIBUTE',$language-model,concat(' ',@name,' ', $composer))"/>
+                    <xsl:variable name="name">
+                        <xsl:if test="exists(../@id-global)">
+                            <a href="#{../@id-global}">
+                                <xsl:value-of select="../@name"/>
+                            </a>
+                            <xsl:value-of select="' '"/>
+                        </xsl:if>
+                        <xsl:value-of select="@name"/>
+                    </xsl:variable>
+                    <xsl:sequence select="imf:create-section-header-name($section,$level,'COMPOSITE',$language-model,$name)"/>
                     <xsl:apply-templates mode="detail"/>
                 </section>
             </xsl:when>
@@ -580,6 +592,26 @@
             <xsl:apply-templates select="node()|@*" mode="#current"/>
         </xsl:copy>
     </xsl:template>
+    <xsl:template match="text()" mode="windup">
+        <xsl:choose>
+            <xsl:when test="contains(.,'[')"><!-- probably debugging -->
+                <xsl:analyze-string select="." regex="\[[a-z]+:.*?\]">
+                    <xsl:matching-substring>
+                        <span class="debug">
+                            <xsl:value-of select="' '|| . || ' '"/>
+                        </span>
+                    </xsl:matching-substring>
+                    <xsl:non-matching-substring>
+                        <xsl:value-of select="."/>
+                    </xsl:non-matching-substring>
+                </xsl:analyze-string>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="."/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
     <xsl:template match="section[@level ge '7']" mode="windup">
         <div class="deepheader">
             <xsl:apply-templates select="node()|@*" mode="#current"/>
@@ -667,6 +699,7 @@
         <xsl:param name="name"/>
 
         <xsl:element name="{imf:get-section-header-element-name($level)}">
+            <xsl:sequence select="if ($debugging) then '[lvl:' || $level || ']' else ()"/>
             <xsl:sequence select="imf:translate-i3n($type,$language-model,())"/>
             <xsl:sequence select="' '"/>
             <xsl:sequence select="$name"/>

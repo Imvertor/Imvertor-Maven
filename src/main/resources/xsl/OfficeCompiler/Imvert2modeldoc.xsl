@@ -41,6 +41,9 @@
     
     <xsl:output method="xml" indent="yes"/>
     
+    <xsl:variable name="stylesheet-code">OFFICE-MD</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+    
     <xsl:variable name="i3n-document" select="imf:document('../../config/i3n/translate.xml')"/>
     
     <xsl:variable name="quot"><!--'--></xsl:variable>
@@ -447,12 +450,14 @@
               <xsl:variable name="attname" select="imf:get-name(.,true())"/>
               <xsl:variable name="typname" select="imf:get-name($type,true())"/>
               <xsl:variable name="name" select="if ($reveal-composition-name) then concat($attname,' (', $typname, ')') else ($attname)"/>
-              <xsl:sequence select="imf:create-link($type,'detail',$name)"/>
+              <xsl:sequence select="imf:create-link(.,'detail',$name)"/>
           </item>
           <item>
-              <xsl:sequence select="imf:get-formatted-tagged-value($type,'CFG-TV-DEFINITION')"/>
+              <xsl:sequence select="imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION')"/>
           </item>
           <item>
+              <xsl:variable name="typname" select="imf:get-name($type,true())"/>
+              <xsl:sequence select="imf:create-link($type,'detail',$typname)"/>
           </item>
           <item>
              <xsl:sequence select="imf:get-cardinality(imvert:min-occurs,imvert:max-occurs)"/>
@@ -744,17 +749,14 @@
         </section>
   
     </xsl:template>
-    
     <xsl:template match="imvert:attribute" mode="detail">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
         <xsl:variable name="naam" select="imf:get-name($construct,true())"/>
         <xsl:choose>
             <xsl:when test="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')">
-                <xsl:apply-templates select="$defining-class" mode="detail"/>
-            </xsl:when>
-            <xsl:when test="$construct/imvert:stereotype/@id = ('stereotype-name-composite')">
                 <xsl:apply-templates select="." mode="detail-gegevensgroeptype"/>
+                <xsl:apply-templates select="$defining-class" mode="detail"/>
             </xsl:when>
             <xsl:when test="imvert:stereotype/@id = ('stereotype-name-referentie-element')">
                 <xsl:apply-templates select="." mode="detail-referentie-element"/>
@@ -1010,7 +1012,8 @@
    
        <xsl:if test="exists($display-waarde)">
            <part type="{$doc-rule-id}">
-               <xsl:sequence select="imf:create-element('item',string($name))"/>
+               <xsl:variable name="debug-string" select="if ($debugging) then '[id:' || $doc-rule-id || ']' else ''"/>
+               <xsl:sequence select="imf:create-element('item',string($name) || $debug-string)"/>
                <xsl:choose>
                    <xsl:when test="$format = 'plain'">
                        <xsl:sequence select="imf:create-element('item',$display-waarde)"/>          
