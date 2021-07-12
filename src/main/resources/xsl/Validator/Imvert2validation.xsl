@@ -140,6 +140,8 @@
     <xsl:variable name="allow-multiple-tv" select="imf:boolean(imf:get-config-string('cli','allowduplicatetv','no'))"/>
     <xsl:variable name="allow-native-scalars" select="imf:boolean(imf:get-config-string('cli','nativescalars','yes'))"/>
     
+    <xsl:variable name="signal-dead-urls" select="imf:boolean(imf:get-config-string('cli','signaldeadurls','no'))"/>
+  
     <xsl:variable name="model-is-general" select="$application-package/imvert:model-level = 'general'"/>
     
     <xsl:variable name="datatype-stereos" select="
@@ -1370,6 +1372,14 @@
                             <!-- okay, allowed -->
                         </xsl:when>
                     </xsl:choose>
+                    
+                    <xsl:if test="$signal-dead-urls">
+                        <xsl:for-each select="$value/node()">
+                            <xsl:variable name="urls" select="imf:check-urls-not-available(.)"/>
+                            <xsl:sequence select="imf:report-warning($this,exists($urls),'URL(s) in tagged value [1] are not accessible: [2]',($name,imf:string-group($urls)))"/>
+                        </xsl:for-each>
+                    </xsl:if>
+                    
                 </xsl:for-each>
             </xsl:for-each-group>
         </xsl:if>
@@ -1563,5 +1573,16 @@
             (count($stereo-primary-ids) gt 1), 
             'Invalid combination of stereotypes: [1]', imf:string-group(for $s in $stereo-primary-ids return imf:get-config-name-by-id($s)))"/>
                     
+    </xsl:function>
+    
+    <!-- return the URLs that are not accessible -->
+    <xsl:variable name="imf:check-urls-not-available-regex-for-url">http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&amp;+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+</xsl:variable><!-- http://urlregex.com -->
+    <xsl:function name="imf:check-urls-not-available" as="xs:string*">
+        <xsl:param name="string-with-urls" as="xs:string"/>
+        <xsl:analyze-string select="$string-with-urls" regex="{$imf:check-urls-not-available-regex-for-url}">
+            <xsl:matching-substring>
+                <xsl:sequence select="if (unparsed-text-available(.)) then () else ."/>
+            </xsl:matching-substring>
+        </xsl:analyze-string>
     </xsl:function>
 </xsl:stylesheet>
