@@ -33,7 +33,6 @@
     <xsl:function name="imf:expath-write" as="xs:boolean?">
         <xsl:param name="file-path"/>
         <xsl:param name="xml-contents"/>
-        <xsl:message select="'write 2 to ' || $file-path"></xsl:message>
         <xsl:sequence select="file:write($file-path,$xml-contents)"/>
     </xsl:function>
     
@@ -41,8 +40,12 @@
         <xsl:param name="file-path"/>
         <xsl:param name="xml-contents"/>
         <xsl:param name="output-parameters"/>
-        <xsl:message select="'write 3 to ' || $file-path"></xsl:message>
         <xsl:sequence select="file:write($file-path,$xml-contents,$output-parameters)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:expath-exists" as="xs:boolean?">
+        <xsl:param name="file-path"/>
+        <xsl:sequence select="file:exists($file-path)"/>
     </xsl:function>
     
 </xsl:stylesheet>
