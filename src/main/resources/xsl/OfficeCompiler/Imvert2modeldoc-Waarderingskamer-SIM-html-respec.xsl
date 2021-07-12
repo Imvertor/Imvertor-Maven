@@ -63,11 +63,11 @@
                             font-weight: bold; 
                             font-style: italic; 
                             }
-                            h6 {
+                            h6, h7 {
                             font-style: italic; 
                             }
-                            h7, h8 {
-                            font-weight: normal; 
+                            h8 {
+                            font-style: italic; 
                             }
                             .deepheader {
                                 padding-top: 1em;
@@ -82,7 +82,9 @@
                                 padding-left: 2em;
                                 margin-top: 0em !important;
                             }
-                            
+                            .notoc {
+                                margin-top: 1em;
+                            }
                             
                         </style>
                     </head>

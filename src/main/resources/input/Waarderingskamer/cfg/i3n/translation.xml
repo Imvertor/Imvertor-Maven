@@ -34,6 +34,11 @@
         <trans lang="en">Characterstring</trans>
     </item>
     <item>
+        <key>DECIMAL</key>
+        <trans lang="nl">Decimal</trans>
+        <trans lang="en">Decimal</trans>
+    </item>
+    <item>
         <key>REAL</key>
         <trans lang="nl">Real</trans>
         <trans lang="en">Real</trans>
