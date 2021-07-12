@@ -24,7 +24,7 @@
     <web>http://stelselcatalogus.logius.nl/over-de-stelselcatalogus/metadata/</web>
     
     <tagged-values xml:id="tagset">
-        <tv norm="space" id="CFG-TV-SOURCE">
+        <tv norm="note" id="CFG-TV-SOURCE">
             <name lang="nl">Herkomst</name>
             <name lang="en">Source</name>
             <desc lang="nl">De registratie in wiens catalogus de constructie is gespecificeerd (oftewel de registratie waar de constructie deel van uitmaakt). 
@@ -45,7 +45,7 @@
                 <stereo minmax="1..1">stereotype-name-union-element</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
+        <tv norm="note" id="CFG-TV-SOURCEOFDEFINITION">
             <name lang="nl">Herkomst definitie</name>
             <name lang="en">Source of definition</name>
             <desc lang="nl">TODO</desc>

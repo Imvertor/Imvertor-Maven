@@ -248,8 +248,8 @@
     -->
     <xsl:template match="imvert:tagged-values" mode="mode-tv">
         <xsl:copy>
-            <!-- first copy all existing; only when a value is specified  -->
-            <xsl:apply-templates select="imvert:tagged-value[normalize-space(imvert:value)]"/>
+            <!-- first process all existing; only when a value is specified  -->
+            <xsl:apply-templates select="imvert:tagged-value[normalize-space(imvert:value)]" mode="#current"/>
             
             <!-- then add the tvs extracted from notes -->
             <xsl:variable name="construct" select=".."/> 
@@ -325,6 +325,28 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:for-each>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="imvert:tagged-value" mode="mode-tv">
+        <xsl:variable name="toks" select="tokenize(imvert:value,'\n')"/>
+        <xsl:copy>
+           <xsl:sequence select="@*"/>
+           <xsl:sequence select="imvert:name"/>
+           <xsl:choose>
+               <xsl:when test="count($toks) gt 1">
+                   <imvert:value format="memo">
+                       <body xmlns="http://www.w3.org/1999/xhtml">
+                           <xsl:for-each select="$toks">
+                               <p><xsl:value-of select="."/></p>
+                           </xsl:for-each>
+                       </body>
+                   </imvert:value>
+               </xsl:when>
+               <xsl:otherwise>
+                   <xsl:sequence select="imvert:value"/>
+               </xsl:otherwise>
+           </xsl:choose>
         </xsl:copy>
     </xsl:template>
     

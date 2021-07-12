@@ -122,7 +122,7 @@
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
             </stereotypes>
         </tv> 
-        <tv norm="space" id="CFG-TV-PATTERN"><!-- MIG -->
+        <tv norm="note" id="CFG-TV-PATTERN"><!-- MIG -->
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
             <desc lang="nl">TODO</desc>
@@ -189,13 +189,13 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-SOURCE">
+        <tv norm="note" id="CFG-TV-SOURCE">
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-codelist</stereo>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
+        <tv norm="note" id="CFG-TV-SOURCEOFDEFINITION">
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
             </stereotypes>
