@@ -255,11 +255,16 @@
         <trans lang="en">Data element</trans>
     </item>
     <item>
-        <key>GEGEVENSGROEPTYPE</key>
+        <key>GEGEVENSGROEP</key>
         <key>COMPOSITE</key>
+        <trans lang="nl">Gegevensgroep</trans><!-- excluded from heads -->
+        <trans lang="en">Group</trans>
+    </item>
+    <item>
+        <key>GEGEVENSGROEPTYPE</key>
+        <key>COMPOSITION</key>
         <trans lang="nl"><!--Gegevensgroeptype--></trans><!-- excluded from heads -->
         <trans lang="en">Grouptype</trans>
-        
     </item>
     <item>
         <key>CODE</key>
