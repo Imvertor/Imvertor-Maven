@@ -58,6 +58,32 @@
                             font-size: 70%;
                             font-weight: normal;
                             }
+                            
+                            h5 {
+                            font-weight: bold; 
+                            font-style: italic; 
+                            }
+                            h6 {
+                            font-style: italic; 
+                            }
+                            h7, h8 {
+                            font-weight: normal; 
+                            }
+                            .deepheader {
+                                padding-top: 1em;
+                            }   
+                            .imageinfo {
+                               /* none yet */
+                            }
+                            .imageinfo p {
+                                text-align: left;
+                                font-size: 90%;
+                                color: #6e6e6e;
+                                padding-left: 2em;
+                                margin-top: 0em !important;
+                            }
+                            
+                            
                         </style>
                     </head>
                     <body>
