@@ -7,4 +7,36 @@
     
     <!-- add or override translations here: -->
     
+    <item>
+        <key>OBJECTTYPE</key>
+        <trans lang="nl">Objecttype</trans>
+        <trans lang="en">Objecttype</trans>
+    </item>
+    <item>
+        <key>UNION</key>
+        <trans lang="nl">Keuze</trans>
+        <trans lang="en">Choice</trans>
+    </item>
+    <item>
+        <key>DETAIL-ATTRIBUTE</key>
+        <trans lang="nl">Attribuutsoort</trans>
+        <trans lang="en">Attribute</trans>
+    </item>
+    <item>
+        <key>DETAIL-COMPOSITE</key>
+        <trans lang="nl">Gegevensgroeptype</trans>
+        <trans lang="en">GroupType</trans>
+    </item>
+    
+    <item>
+        <key>CHARACTERSTRING</key>
+        <trans lang="nl">Characterstring</trans>
+        <trans lang="en">Characterstring</trans>
+    </item>
+    <item>
+        <key>REAL</key>
+        <trans lang="nl">Real</trans>
+        <trans lang="en">Real</trans>
+    </item>
+    
 </picklist>
