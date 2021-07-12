@@ -21,6 +21,7 @@
 package nl.imvertor.common;
 
 import nl.imvertor.common.xsl.extensions.ImvertorParseHTML;
+import nl.imvertor.common.xsl.extensions.ImvertorStripAccents;
 
 /**
  * A step is a class that is runnable, and is able to report on the run. 
@@ -67,6 +68,8 @@ public class Step {
 	public boolean report() throws Exception {
 		Transformer transformer = new Transformer();
 		transformer.setExtensionFunction(new ImvertorParseHTML());
+		transformer.setExtensionFunction(new ImvertorStripAccents());	
+		
 		return report(transformer);
 	}
 		
