@@ -594,23 +594,27 @@
         </xsl:copy>
     </xsl:template>
     <xsl:template match="text()" mode="windup">
-        <xsl:choose>
-            <xsl:when test="contains(.,'[')"><!-- probably debugging -->
-                <xsl:analyze-string select="." regex="\[[a-z]+:.*?\]">
-                    <xsl:matching-substring>
-                        <span class="debug">
-                            <xsl:value-of select="' '|| . || ' '"/>
-                        </span>
-                    </xsl:matching-substring>
-                    <xsl:non-matching-substring>
-                        <xsl:value-of select="."/>
-                    </xsl:non-matching-substring>
-                </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="."/>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:variable name="r1">
+            <xsl:choose>
+                <xsl:when test="contains(.,'[')"><!-- probably debugging -->
+                    <xsl:analyze-string select="." regex="\[[a-z]+:.*?\]">
+                        <xsl:matching-substring>
+                            <span class="debug">
+                                <xsl:value-of select="' '|| . || ' '"/>
+                            </span>
+                        </xsl:matching-substring>
+                        <xsl:non-matching-substring>
+                            <xsl:value-of select="."/>
+                        </xsl:non-matching-substring>
+                    </xsl:analyze-string>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="."/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="r2" select="if (imf:boolean(imf:get-config-parameter('insert-html-wordbreaks'))) then imf:insert-soft-hyphen($r1) else $r1"/>
+        <xsl:sequence select="$r2"/>
     </xsl:template>
     
     <xsl:template match="section[@level ge '7']" mode="windup">
@@ -712,4 +716,18 @@
         <xsl:sequence select="$document-ids = $idref"/>
     </xsl:function>
     
+    <xsl:function name="imf:insert-soft-hyphen" as="xs:string">
+        <xsl:param name="text"/>
+        <xsl:variable name="r" as="xs:string*">
+            <xsl:analyze-string select="$text" regex="([a-z]{{1,7}})([A-Z])">
+                <xsl:matching-substring>
+                    <xsl:value-of select="regex-group(1) || '&#173;' || regex-group(2)"/>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:value-of select="."/>
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        <xsl:value-of select="string-join($r,'')"/>
+    </xsl:function>
 </xsl:stylesheet>

@@ -74,7 +74,12 @@
     <parameter name="documentation-separator-pattern">\n---*\n</parameter> <!-- two hyphens or more, must be limited by newlines. -->
     
     <parameter name="documentation-newline">&#10;</parameter>
-  
+
+    <!-- 
+        insert a break in HTML office documents when a wordt becomes too long and is camelcased. 
+    -->
+    <parameter name="insert-html-wordbreaks">yes</parameter>
+    
     <parameter name="local-mapping-notification">
         This schema is provided by Waarderingskamer as a local copy, as a convenience to the user.
         This schema may itself reference a local copy of the schema originally referenced by URI. 
