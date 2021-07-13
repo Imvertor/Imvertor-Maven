@@ -4,27 +4,17 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../KING/cfg/docrules/KINGSIM.xml"/>
+    <xi:include href="../../../MIM/cfg/docrules/MIM11-extended.xml"/>
     
     <xi:include href="Waarderingskamer.xml"/>
     
     <name>Waarderingskamer SIM</name>
     
-    <desc>Waarderingskamer SIM specific requirements on documentation.</desc>
-        
-    <doc-rule id="CFG-DOC-FORMEELPATROON" order="160"><!-- anders dan VNG hier wel opnemen -->
-        <name lang="nl">Formeel patroon</name>
-        <name lang="en">Formal pattern</name>
-        <levels>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
-            
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
-        </levels>
-    </doc-rule>
+    <desc>Waarderingskamer SIM specific requirements on documentation. Follows MIM 11 rules.</desc>
+  
+    <!--
+        Where to show the explanation?
+    -->
+    <explanation-location>as-row</explanation-location>
     
 </doc-rules>

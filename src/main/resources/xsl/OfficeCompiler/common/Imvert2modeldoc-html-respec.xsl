@@ -35,6 +35,7 @@
     <xsl:variable name="meta-is-role-based" select="imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/><!-- TODO duplicate declaration -->
     
     <xsl:template match="/book">
+        <xsl:sequence select="imf:track('Generating HTML',())"/>
         <xsl:apply-templates/>
     </xsl:template>
     

@@ -43,5 +43,10 @@
         <trans lang="nl">Real</trans>
         <trans lang="en">Real</trans>
     </item>
+    <item>
+        <key>DATE</key>
+        <trans lang="nl">Date</trans>
+        <trans lang="en">Date</trans>
+    </item>
     
 </picklist>

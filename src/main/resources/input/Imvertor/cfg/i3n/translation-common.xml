@@ -314,6 +314,11 @@
         <trans lang="en">Featuretypes</trans>
     </item>
     <item>
+        <key>OVERVIEW-COMPOSITION</key>
+        <trans lang="nl">Gegevensgroeptypen</trans>
+        <trans lang="en">Grouptypes</trans>
+    </item>
+    <item>
         <key>OVERVIEW-ASSOCIATIONCLASS</key>
         <trans lang="nl">Relatieklassen</trans>
         <trans lang="en">Association classes</trans>

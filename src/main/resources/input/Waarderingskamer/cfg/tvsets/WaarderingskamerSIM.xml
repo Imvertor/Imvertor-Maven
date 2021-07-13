@@ -46,5 +46,23 @@
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
+        <tv norm="space" id="CFG-TV-INDICATIEINONDERZOEK">
+            <name lang="nl">Indicatie in onderzoek</name>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                De indicatie of te bevragen is dat er twijfel is of is geweest aan de juistheid van de attribuutwaarde en dat een onderzoek wordt 
+                of is uitgevoerd naar de juistheid van de attribuutwaarde. 
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+                <value>Zie groep</value>
+            </declared-values>
+        </tv>
     </tagged-values>
 </tagset>
