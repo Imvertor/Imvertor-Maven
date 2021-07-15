@@ -114,8 +114,8 @@
                 <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
-                <value default="yes">Relatie</value>
-                <value>Rol</value>
+                <value default="yes">Relatiesoort leidend</value>
+                <value>Relatierol leidend</value>
             </declared-values>
         </tv>
         <tv norm="space" id="CFG-TV-MIMVERSION">
