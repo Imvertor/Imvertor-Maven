@@ -36,4 +36,9 @@
     <parameter name="web-logo">../web/img/logo-KNB-medium.png</parameter> 
     <parameter name="web-logo-big">../web/img/logo-KNB-large.png</parameter> 
     
+    <!-- 
+        insert a break in HTML office documents when a wordt becomes too long and is camelcased. 
+    -->
+    <parameter name="insert-html-wordbreaks">yes</parameter>
+    
 </project-owner>    

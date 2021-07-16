@@ -76,7 +76,12 @@
     
     <parameter name="documentation-newline">&#10;</parameter>
     <parameter name="concept-documentation-state-obsolete-uri">http://brk.kadaster.nl/id/lifecycle/afgekeurd</parameter>
-
+    
+    <!-- 
+        insert a break in HTML office documents when a wordt becomes too long and is camelcased. 
+    -->
+    <parameter name="insert-html-wordbreaks">yes</parameter>
+    
     <parameter name="local-mapping-notification">
         This schema is provided by Kennisnet as a local copy, as a convenience to the user.
         This schema may itself reference a local copy of the schema originally referenced by URI. 
