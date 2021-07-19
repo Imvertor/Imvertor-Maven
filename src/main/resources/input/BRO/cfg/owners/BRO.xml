@@ -65,7 +65,7 @@
     <!-- 
         insert a break in HTML office documents when a wordt becomes too long and is camelcased. 
     -->
-    <parameter name="insert-html-wordbreaks">yes</parameter>
+    <parameter name="insert-html-wordbreaks">no</parameter>
     
     <parameter name="local-mapping-notification">
         This schema is provided by BRO as a local copy, as a convenience to the user.

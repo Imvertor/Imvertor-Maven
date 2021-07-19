@@ -31,4 +31,29 @@
         <trans lang="en">Featuretype details</trans>
     </item>
     
+    <item>
+        <key>DETAIL-ATTRIBUTE</key>
+        <trans lang="nl"><!-- niks--></trans>
+        <trans lang="en"><!-- niks--></trans>
+    </item>
+    <item>
+        <key>DETAIL-ASSOCIATION</key>
+        <trans lang="nl"><!-- niks--></trans>
+        <trans lang="en"><!-- niks--></trans>
+    </item>
+    <item>
+        <key>DETAIL-UNIONELEMENT</key>
+        <trans lang="nl"><!-- niks--></trans>
+        <trans lang="en"><!--niks--></trans>
+    </item>
+    <item>
+        <key>DETAIL-REFERENCELIST</key>
+        <trans lang="nl"><!--niks--></trans>
+        <trans lang="en"><!--niks--></trans>
+    </item>
+    <item>
+        <key>DETAIL-CODELIST</key>
+        <trans lang="nl"><!--niks--></trans>
+        <trans lang="en"><!--niks--></trans>
+    </item>
 </picklist>
