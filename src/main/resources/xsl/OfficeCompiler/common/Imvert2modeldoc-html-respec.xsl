@@ -107,6 +107,10 @@
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-ATTRIBUTES',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
+            <xsl:when test="@type = 'SHORT-UNIONELEMENTS'">
+                <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-UNIONELEMENTS',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
             <xsl:when test="@type = 'SHORT-ASSOCIATIONS'">
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-ASSOCIATIONS',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
@@ -399,6 +403,22 @@
                         <xsl:apply-templates select="item[2]" mode="#current"/>
                     </td>
                 </xsl:when>
+                <xsl:when test="$type = 'SHORT-UNIONELEMENTS'"> <!-- 30 50 10 10 -->
+                    <td>
+                        <xsl:if test="@type = 'COMPOSED'">- </xsl:if>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                        <xsl:if test="@type = 'COMPOSER'">:</xsl:if>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
                 <xsl:when test="$type = 'SHORT-ATTRIBUTES'"> <!-- 30 50 10 10 -->
                     <td>
                         <xsl:if test="@type = 'COMPOSED'">- </xsl:if>
@@ -416,20 +436,6 @@
                     </td>
                 </xsl:when>
                 <xsl:when test="$type = 'SHORT-DATAELEMENTS'">
-                    <td>
-                        <xsl:apply-templates select="item[1]" mode="#current"/>
-                    </td>
-                    <td>
-                        <xsl:apply-templates select="item[2]" mode="#current"/>
-                    </td>
-                    <td>
-                        <xsl:apply-templates select="item[3]" mode="#current"/>
-                    </td>
-                    <td>
-                        <xsl:apply-templates select="item[4]" mode="#current"/>
-                    </td>
-                </xsl:when>
-                <xsl:when test="$type = 'SHORT-UNIONELEMENTS'">
                     <td>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>
@@ -594,27 +600,23 @@
         </xsl:copy>
     </xsl:template>
     <xsl:template match="text()" mode="windup">
-        <xsl:variable name="r1">
-            <xsl:choose>
-                <xsl:when test="contains(.,'[')"><!-- probably debugging -->
-                    <xsl:analyze-string select="." regex="\[[a-z]+:.*?\]">
-                        <xsl:matching-substring>
-                            <span class="debug">
-                                <xsl:value-of select="' '|| . || ' '"/>
-                            </span>
-                        </xsl:matching-substring>
-                        <xsl:non-matching-substring>
-                            <xsl:value-of select="."/>
-                        </xsl:non-matching-substring>
-                    </xsl:analyze-string>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="."/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="r2" select="if (imf:boolean(imf:get-config-parameter('insert-html-wordbreaks'))) then imf:insert-soft-hyphen($r1) else $r1"/>
-        <xsl:sequence select="$r2"/>
+        <xsl:choose>
+            <xsl:when test="contains(.,'[')"><!-- probably debugging -->
+                <xsl:analyze-string select="." regex="\[[a-z]+:.*?\]">
+                    <xsl:matching-substring>
+                        <span class="debug">
+                            <xsl:value-of select="' '|| . || ' '"/>
+                        </span>
+                    </xsl:matching-substring>
+                    <xsl:non-matching-substring>
+                        <xsl:value-of select="if (imf:boolean(imf:get-config-parameter('insert-html-wordbreaks'))) then imf:insert-soft-hyphen(.) else ."/>
+                    </xsl:non-matching-substring>
+                </xsl:analyze-string>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="if (imf:boolean(imf:get-config-parameter('insert-html-wordbreaks'))) then imf:insert-soft-hyphen(.) else ."/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="section[@level ge '7']" mode="windup">

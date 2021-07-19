@@ -39,33 +39,52 @@
     
     <xsl:template match="imvert:class/imvert:stereotype[@id = 'stereotype-name-union']" priority="1">
         <xsl:variable name="attributes" select="../imvert:attributes/imvert:attribute"/>
-        <xsl:variable name="attribute-uses" as="xs:string*">
-            <xsl:for-each select="$attributes">
-                <xsl:variable name="designation" select="$document-classes[imvert:id = current()/imvert:type-id]/imvert:designation"/>
-                <xsl:choose>
-                    <xsl:when test="$designation = 'datatype'">D</xsl:when>
-                    <xsl:when test="$designation = 'class'">C</xsl:when>
-                    <xsl:when test="$designation = 'enumeration'">E</xsl:when>
-                    <!-- anders: het betreft wrsch een interface, dus in een outside package. -->
-                    <xsl:otherwise>D</xsl:otherwise><!-- TODO moeten we eigenlijk hier oplossen maar we gaan er maar vanuit dat het een datatype betreft -->
-                </xsl:choose>
-            </xsl:for-each>
-        </xsl:variable>
-        <xsl:next-match/>
+        
+        <xsl:sequence select="."/>
+        
+        <xsl:variable name="firstatt-stereo" select="$attributes[1]/imvert:stereotype"/>
         <xsl:choose>
-            <xsl:when test="$attribute-uses = 'D'">
-                <!-- neem aan dat het een keuze tussen datatypen betreft -->
-                <imvert:stereotype id="stereotype-name-union-datatypes" origin="system">{.}</imvert:stereotype>
+            <xsl:when test="$firstatt-stereo/@id = 'stereotype-name-union-element'">
+                <imvert:stereotype id="stereotype-name-union-datatypes" origin="system">{imf:get-config-name-by-id('stereotype-name-union-datatypes')}</imvert:stereotype>
             </xsl:when>
-            <xsl:when test="$attribute-uses = ('C','E')">
-                <!-- TODO neem aan dat het een keuze tussen attributen betreft (casussen nog nalopen)-->
-                <imvert:stereotype id="stereotype-name-union-attributes" origin="system">{.}</imvert:stereotype>
+            <xsl:when test="$firstatt-stereo/@id = ('stereotype-name-attribute','stereotype-name-attributegroup')">
+                <imvert:stereotype id="stereotype-name-union-attributes" origin="system">{imf:get-config-name-by-id('stereotype-name-union-attributes')}</imvert:stereotype>
+            </xsl:when>
+            <xsl:when test="empty($attributes)">
+                <imvert:stereotype id="stereotype-name-union-associations" origin="system">{imf:get-config-name-by-id('stereotype-name-union-associations')}</imvert:stereotype>
+            </xsl:when>
+            <xsl:when test="empty($firstatt-stereo)">
+                <xsl:sequence select="imf:report-error(..,true(),'Attributes in a union must be stereotyped')"/>
             </xsl:when>
             <xsl:otherwise>
-                <!-- neem aan dat het een keuze tussen associaties betreft -->
-                <imvert:stereotype id="stereotype-name-union-associations" origin="system">{.}</imvert:stereotype>
+                <xsl:sequence select="imf:report-error(..,true(),'Cannot recognize type of choice. Stereotype of first attribute is [1]',imf:get-config-name-by-id($firstatt-stereo/@id))"/>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+    
+    <!-- keuze attribute heeft geen betekenis, use case 2 -->
+    <xsl:template match="imvert:attribute/imvert:stereotype[@id = 'stereotype-name-union']" priority="1">
+        <xsl:sequence select="."/>
+        <!-- voeg intern stereotype type -->
+        <imvert:stereotype id="stereotype-name-union-for-attributes" origin="system">
+            <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-union-for-attributes')"/>
+        </imvert:stereotype>
+    </xsl:template>
+    
+    <!-- keuze attribuut heeft betekenis, use case 3 -->
+    <xsl:template match="imvert:attribute/imvert:stereotype[@id = ('stereotype-name-attribute','stereotype-name-attributegroup')]" priority="1">
+        <xsl:variable name="type-id" select="../imvert:type-id"/>
+        <xsl:variable name="target-stereo-id" select="if ($type-id) then imf:get-construct-by-id($type-id)/imvert:stereotype/@id else ()"/>
+        <xsl:variable name="parent-stereo-id" select="ancestor::imvert:class/imvert:stereotype/@id"/>
+        
+        <xsl:sequence select="."/>
+        
+        <xsl:if test="$parent-stereo-id = 'stereotype-name-union'">
+            <imvert:stereotype id="stereotype-name-union-attribute" origin="system">{imf:get-config-stereotypes('stereotype-name-union-attribute')}</imvert:stereotype>
+        </xsl:if>
+        <xsl:if test="$target-stereo-id = 'stereotype-name-union'">
+            <imvert:stereotype id="stereotype-name-union-by-attribute" origin="system">{imf:get-config-stereotypes('stereotype-name-union-by-attribute')}</imvert:stereotype>
+        </xsl:if>
     </xsl:template>
     
     <!-- de relatie heeft stereotype "keuze" -->

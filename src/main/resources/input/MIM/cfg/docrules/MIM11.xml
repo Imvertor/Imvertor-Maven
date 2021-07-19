@@ -105,6 +105,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNION</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
@@ -120,18 +121,18 @@
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
-            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
             
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
-            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="IMPLIED" compile="full" format="plain">DISPLAY-DETAIL-UNION</level>
         </levels>
     </doc-rule>
     <?insert alias ?>
@@ -143,7 +144,6 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
         </levels>
@@ -185,6 +185,7 @@
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNION</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-DEFINITIE" order="060">
@@ -203,6 +204,7 @@
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNION</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
@@ -218,7 +220,6 @@
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
-            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
@@ -226,7 +227,6 @@
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
-            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
@@ -249,6 +249,7 @@
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNION</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
@@ -277,7 +278,8 @@
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
-            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNION</level><!-- de term FORMAAT is wellicht niet goed, beter term in documentatie opnemen -->
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level><!-- de term FORMAAT is wellicht niet goed, beter term in documentatie opnemen -->
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-LENGTH" order="120">
@@ -297,7 +299,6 @@
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
-            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-FORMEELPATROON" order="140">
@@ -308,7 +309,6 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
             
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
@@ -346,7 +346,6 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
-            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-INDICATIEAUTHENTIEK" order="180">
@@ -389,7 +388,6 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
@@ -398,7 +396,6 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>

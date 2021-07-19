@@ -11,10 +11,5 @@
     <name>Waarderingskamer SIM</name>
     
     <desc>Waarderingskamer SIM specific requirements on documentation. Follows MIM 11 rules.</desc>
-  
-    <!--
-        Where to show the explanation?
-    -->
-    <explanation-location>as-row</explanation-location>
     
 </doc-rules>

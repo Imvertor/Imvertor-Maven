@@ -44,43 +44,77 @@
             <construct>package</construct>
         </stereo>
      
+        <!--
+            Hieronder worden de keuzes uitgewerkt    
+        -->
         <stereo id="stereotype-name-union" primary="yes">
             <name lang="nl">Keuze</name>
             <name lang="en">Union</name><!-- TODO moet dit niet choice worden? (overal union -> choice) -->
+            <desc lang="nl">Het stereotype Keuze is een catch-all naam voor alle mogelijke keuze gerelateerde onderdelen van de MIM standaard. Imvertor voegt (bij canonisering) een stereotype toe dat meer exact aangeeft welk type keuze bedoeld is.</desc>
             <construct>class</construct>
             <construct>datatype</construct>
             <construct>attribute</construct>
             <construct>association</construct>
         </stereo>
+        
+        <stereo id="stereotype-name-union-datatypes" primary="no">
+            <name lang="nl">Keuze datatypen</name>
+            <name lang="en">Union datatypes</name>
+            <desc lang="nl">Keuze klasse waarbij keuze tussen datatypen is bedoeld. MIM: Use case 1.
+                <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
+            <construct>class</construct>
+            <construct>datatype</construct>
+        </stereo>
         <stereo id="stereotype-name-union-element" primary="yes">
-            <name lang="nl">Keuze element</name>
-            <name lang="en">UnionElement</name>
+            <name lang="nl">Datatype</name>
+            <name lang="en">Datatype</name>
+            <desc lang="nl">Een representatie van een datatype in een keuze tussen datatypen. MIM: Use case 1: een keuze tussen datatypen</desc>
             <construct>attribute</construct>
         </stereo>
-        
+        <stereo id="stereotype-name-union-for-attributes" primary="no">
+            <name lang="nl">Keuze zonder betekenis</name>
+            <name lang="en">Meaningless choice attribute</name>
+            <desc lang="nl">De keuze betreft attributen, waarbij het keuze attribuut zelf geen betekenis heeft. MIM: Use case 2: een keuze tussen attribuutsoorten.
+            <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
+            <construct>attribute</construct>
+        </stereo>
+        <stereo id="stereotype-name-union-by-attribute" primary="no">
+            <name lang="nl">Keuze met betekenis</name>
+            <name lang="en">Meaningful choice attribute</name>
+            <desc lang="nl">De keuze betreft attributen, waarbij de keuze zelf wel eigen betekenis heeft (en dus kenmerken / tagged values). MIM: Use case 3: een keuze tussen attribuutsoorten, als nadere invulling van een betekenisvol attribuutsoort van een objecttype.
+                <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
+            <construct>attribute</construct>
+        </stereo>
         <stereo id="stereotype-name-union-attributes" primary="no">
             <name lang="nl">Keuze attributen</name>
             <name lang="en">Union attributes</name>
+            <desc lang="nl">Keuze klasse waarbij keuze tussen attribuutsoorten is bedoeld. MIM: Use case 2 en 3.
+                <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-union-attribute" primary="no">
             <name lang="nl">Keuze attribuut</name>
             <name lang="en">Union attribute</name>
+            <desc lang="nl">Attribuutsoort binnen Keuze klasse.  MIM: Use case 2 en 3.
+                <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
             <construct>attribute</construct>
         </stereo>
-        
         <stereo id="stereotype-name-union-associations" primary="no">
             <name lang="nl">Keuze relaties</name>
             <name lang="en">Union associations</name>
+            <desc lang="nl">Keuze klasse waarbij keuze tussen relatiesoorten is bedoeld.  MIM: Use case 4.
+                <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-union-association" primary="no">
             <name lang="nl">Keuze relatie</name>
             <name lang="en">Union association</name>
+            <desc lang="nl">Relatiesoort binnen Keuze klasse. MIM: Use case 4.
+                <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
             <construct>association</construct>
             <construct>associationend</construct>
         </stereo>
-        
+       
         <stereo id="stereotype-name-codelist" primary="yes">
             <name lang="nl">Codelijst</name>
             <name lang="en">Codelist</name>

@@ -769,6 +769,9 @@
             <xsl:when test="imvert:stereotype/@id = ('stereotype-name-referentie-element')">
                 <xsl:apply-templates select="." mode="detail-referentie-element"/>
             </xsl:when>
+            <xsl:when test="imvert:stereotype/@id = ('stereotype-name-union')">
+                <xsl:apply-templates select="." mode="detail-union"/>
+            </xsl:when>
             <xsl:when test="imvert:stereotype/@id = ('stereotype-name-union-element')">
                 <xsl:apply-templates select="." mode="detail-unionelement"/>
             </xsl:when>
@@ -847,12 +850,23 @@
         
     </xsl:template>
     
-    <xsl:template match="imvert:attribute" mode="detail-unionelement">
+    <xsl:template match="imvert:attribute" mode="detail-unionelement"><!-- het attribuut representeert een optie binnen een keuze -->
         <xsl:variable name="construct" select="../.."/>
         <section name="{imf:get-name(.,true())}" type="DETAIL-UNIONELEMENT" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-UNIONELEMENT')"/>
+            </content>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
+        </section>
+    </xsl:template>
+    
+    <xsl:template match="imvert:attribute" mode="detail-union"><!-- het attribuut representeert een keuze -->
+        <xsl:variable name="construct" select="../.."/>
+        <section name="{imf:get-name(.,true())}" type="DETAIL-UNION" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
+            <content>
+                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-UNION')"/>
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>

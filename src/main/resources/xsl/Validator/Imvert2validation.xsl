@@ -832,6 +832,8 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <!-- TODO alle unions valideren -->
+    <?x
     <xsl:template match="imvert:attribute[../../imvert:stereotype/@id = ('stereotype-name-union')]">
         <!--setup-->
         <xsl:variable name="class" select="../.."/>
@@ -845,6 +847,7 @@
             'Union element must be stereotyped as [1]',(imf:get-config-stereotypes('stereotype-name-union-element')))"/>
         <xsl:next-match/>
     </xsl:template>
+    x?>
     
     <xsl:template match="imvert:attribute[../../imvert:stereotype/@id = ('stereotype-name-objecttype')]">
         <!--setup-->
