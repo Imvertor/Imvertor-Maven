@@ -64,5 +64,15 @@
                 <value>Zie groep</value>
             </declared-values>
         </tv>
+        <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC"><!-- https://geonovum.github.io/MIM-Werkomgeving/#authentieke-gegevens -->
+            <declared-values lang="nl">
+                <value>Authentiek</value>
+                <value default="yes">Basisgegeven</value>
+                <value>Landelijk kerngegeven</value>
+                <value>Wettelijk gegeven</value>
+                <value>Overig</value>
+            </declared-values>
+        </tv>
+        
     </tagged-values>
 </tagset>
