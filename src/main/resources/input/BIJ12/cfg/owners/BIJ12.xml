@@ -80,6 +80,12 @@
     -->
     <parameter name="insert-html-wordbreaks">yes</parameter>
     
+    <!-- 
+        Add a TV in profile when a notes field that is linked to that tagged value exists? 
+        Applied in: EA toolbox. 
+    -->
+    <parameter name="ea-omit-tv-when-notes-field-exists">no</parameter>
+    
     <parameter name="local-mapping-notification">
         This schema is provided by BIJ12 as a local copy, as a convenience to the user.
         This schema may itself reference a local copy of the schema originally referenced by URI. 

@@ -41,4 +41,10 @@
     -->
     <parameter name="insert-html-wordbreaks">yes</parameter>
     
+    <!-- 
+        Add a TV in profile when a notes field that is linked to that tagged value exists? 
+        Applied in: EA toolbox. 
+    -->
+    <parameter name="ea-omit-tv-when-notes-field-exists">no</parameter>
+    
 </project-owner>    

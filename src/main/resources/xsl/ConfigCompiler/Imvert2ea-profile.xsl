@@ -118,11 +118,13 @@
                                         <!-- https://github.com/Imvertor/Imvertor-Maven/issues/141 
                                              Neem de tagged values op als die NIET in de notes field is opgenomen.
                                              Ofwel, alleen als de notes field het niet overneemt van de EA tagged values editor.
+                                             
+                                             Teruggedraaid; keuze om via notes if via een tv info in te voeren ligt bij de analist.
                                         -->
                                         <xsl:variable name="tv-notes-exists" select="$configuration-notesrules-file/notes-rule/section/@tagged-value = $tv-id"/>
-                                        
+                                        <xsl:variable name="ea-omit-tv-when-notes-field-exists" select="imf:boolean(imf:get-config-parameter('ea-omit-tv-when-notes-field-exists'))"/>
                                         <xsl:choose>
-                                            <xsl:when test="not($tv-notes-exists)">
+                                            <xsl:when test="not($tv-notes-exists) or not($ea-omit-tv-when-notes-field-exists)">
                                                 <Tag name="{$tv-name}" type="{$tv-type}" description="{$tv-note}" unit="{$tv-unit}" values="{$tv-values}" default="{$tv-default}"/>
                                             </xsl:when>
                                             <xsl:otherwise>
