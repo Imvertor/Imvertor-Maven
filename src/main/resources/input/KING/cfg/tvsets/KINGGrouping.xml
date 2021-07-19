@@ -14,7 +14,8 @@
     <desc lang="en">Deviations and additions to generic grouping for KING metamodels.</desc>  
    
     <tagged-values>
-        
+       
+       <?x
        <tv norm="space" id="CFG-TV-ISDERIVED">
             <derive>no</derive>
             <stereotypes>
@@ -39,6 +40,7 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo><!-- SIM Referentie element -->
             </stereotypes>
         </tv>
+        x?>
         
     </tagged-values>
     

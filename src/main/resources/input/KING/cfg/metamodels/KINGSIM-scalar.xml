@@ -19,7 +19,7 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
  
-    <xi:include href="../../../BP/cfg/metamodels/BP-scalar.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM11-scalar.xml"/>
     
     <name>KINGSIM-scalar</name>
 
