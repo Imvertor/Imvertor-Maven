@@ -93,7 +93,8 @@
   <xsl:variable name="mim-tagged-value-ids" select="('CFG-TV-INDICATIONAUTHENTIC', 'CFG-TV-CONCEPT', 'CFG-TV-DATERECORDED', 'CFG-TV-DEFINITION',
     'CFG-TV-FORMALPATTERN', 'CFG-TV-SOURCE', 'CFG-TV-SOURCEOFDEFINITION', 'CFG-TV-INDICATIONDERIVABLE', 'CFG-TV-INDICATIONCLASSIFICATION',
     'CFG-TV-INDICATIONFORMALHISTORY', 'CFG-TV-INDICATIONMATERIALHISTORY', 'CFG-TV-QUALITY', 'CFG-TV-LENGTH','CFG-TV-DATALOCATION',
-    'CFG-TV-VOIDABLE', 'CFG-TV-PATTERN', 'CFG-TV-POPULATION', 'CFG-TV-DATERECORDED', 'CFG-TV-DESCRIPTION')" as="xs:string+"/>
+    'CFG-TV-VOIDABLE', 'CFG-TV-PATTERN', 'CFG-TV-POPULATION', 'CFG-TV-DATERECORDED', 'CFG-TV-DESCRIPTION', 'CFG-TV-IMDOMAIN',
+    'CFG-TV-IMTYPE', 'CFG-TV-IMRELATIONMODELINGTYPE', 'CFG-TV-MIMVERSION', 'CFG-TV-MIMEXTENSION', 'CFG-TV-MIMLANGUAGE')" as="xs:string+"/>
   
   <!-- Include MIM11 package constructs (if necessary) and convert EA identifiers to "human readable" identifiers: -->
   <xsl:variable name="preprocessed-xml" as="document-node()">
@@ -241,6 +242,16 @@
           </xsl:call-template>
         </xsl:for-each>
       </mim:bevat__gegevensgroeptype>  
+    </xsl:where-populated>
+    <xsl:where-populated>
+      <mim:bevat__keuze>
+        <xsl:for-each select="imvert:class[imvert:stereotype/@id = ($stereotype-id-keuze-datatypes, $stereotype-id-keuze-attributes, $stereotype-id-keuze-associations)]">
+          <xsl:sort select="imvert:name"/>
+          <xsl:call-template name="create-ref-element">
+            <xsl:with-param name="ref-id" select="imvert:id" as="xs:string"/>
+          </xsl:call-template>
+        </xsl:for-each>
+      </mim:bevat__keuze>
     </xsl:where-populated>
     <xsl:where-populated>
       <mim-ext:bevat__constructies>
@@ -913,7 +924,11 @@
   </xsl:template>
 
   <xsl:template name="doel">
-    <!-- TODO: mapping?? -->
+    <mim:doel>
+      <xsl:call-template name="create-ref-element">
+        <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
+      </xsl:call-template>
+    </mim:doel>
   </xsl:template>
   
   <xsl:template name="formeelPatroon">
