@@ -197,27 +197,7 @@
                 </cs:XsdType>
             </cs:xsdTypes>
         </cs:Construct>
-    
-        <!-- TODO betsaat deze?? IMNa verwijst ernaar. -->
-        <cs:Construct>
-            <cs:name>MaterieleLevensduur</cs:name>
-            <cs:sentinel>false</cs:sentinel>
-            <cs:catalogEntries>
-                <cs:CatalogEntry>
-                    <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/MaterieleLevensduur</cs:name>
-                </cs:CatalogEntry>
-            </cs:catalogEntries>
-            <cs:xsdTypes>
-                <cs:XsdType>
-                    <cs:name>MaterieleLevensduur</cs:name>
-                    <cs:asAttribute>MaterieleLevensduur</cs:asAttribute>
-                    <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                    <cs:primitive>false</cs:primitive>
-                    <cs:hasNilreason>false</cs:hasNilreason>
-                </cs:XsdType>
-            </cs:xsdTypes>
-        </cs:Construct>
-        
+       
     </cs:constructs>
     
 </cs:Map>
