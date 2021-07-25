@@ -383,7 +383,7 @@
   </xsl:template>
   
   <xsl:template match="imvert:association[imvert:stereotype = $stereotype-name-relatiesoort 
-    and not(imf:association-is-relatie-klasse(.)) and not(imf:association-is-keuze-attributes(.))]">
+    and not(imf:association-is-keuze-attributes(.))]">
     <mim:Relatiesoort>
       <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
@@ -404,32 +404,24 @@
       <xsl:call-template name="mogelijkGeenWaarde"/>
       <xsl:call-template name="verwijstNaar__objecttype"/>
       <xsl:call-template name="verwijstNaar"/>
+      <xsl:where-populated>
+        <mim:heeft_relatieklasse>
+          <xsl:if test="imf:association-is-relatie-klasse(.)">
+            <xsl:apply-templates select="key('key-imvert-construct-by-id', imvert:association-class/imvert:type-id)"/>
+          </xsl:if>  
+        </mim:heeft_relatieklasse>
+      </xsl:where-populated>
       <xsl:call-template name="extensieKenmerken"/>
     </mim:Relatiesoort>
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-relatieklasse]">
     <mim:Relatieklasse>
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
       <xsl:call-template name="begrip"/>
-      <xsl:call-template name="uniDirectioneel"/>
-      <xsl:call-template name="typeAggregatie"/>
-      <xsl:call-template name="kardinaliteit"/>
-      <xsl:call-template name="herkomst"/>
       <xsl:call-template name="definitie"/>
-      <xsl:call-template name="herkomstDefinitie"/>
-      <xsl:call-template name="datumOpname"/>
-      <xsl:call-template name="indicatieMateriLeHistorie"/>
-      <xsl:call-template name="indicatieFormeleHistorie"/>
-      <xsl:call-template name="authentiek"/>
-      <xsl:call-template name="indicatieAfleidbaar"/>
-      <xsl:call-template name="toelichting"/>
-      <xsl:call-template name="mogelijkGeenWaarde"/>
       <xsl:call-template name="gebruikt__attribuutsoort"/>
-      <xsl:call-template name="verwijstNaar__objecttype"/>
-      <xsl:call-template name="verwijstNaar"/>
       <xsl:call-template name="extensieKenmerken"/>
     </mim:Relatieklasse>
   </xsl:template>
@@ -877,17 +869,7 @@
       <mim:bezit>
         <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = $stereotype-name-relatiesoort]">
           <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
-          <xsl:choose>
-            <xsl:when test="imf:association-is-relatie-klasse(.)">
-              <xsl:apply-templates select="key('key-imvert-construct-by-id', imvert:association-class/imvert:type-id)"/>
-              <!--
-              <mim-ref:RelatieklasseRef xlink:href="#{imvert:id}">{imvert:name}</mim-ref:RelatieklasseRef>
-              -->
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="."/>
-            </xsl:otherwise>
-          </xsl:choose>
+          <xsl:apply-templates select="."/>
           <?x
           <mim:RelatierolBron>
             <mim:id>{imvert:name}</mim:id> <!-- TODO: Slaat dit ergens op? -->
