@@ -5,7 +5,7 @@
     
     <name>Waarderingskamer</name>
     
-    <xi:include href="../../../MIM/cfg/docrules/MIM11-extended.xml"/>
+    <xi:include href="../../../MIM/cfg/docrules/MIM11.xml"/>
     
     <!--
         Where to show the explanation?
@@ -13,5 +13,17 @@
     <explanation-location>as-row</explanation-location>
     
     <include-overview-section-level>no</include-overview-section-level>
+    
+    <doc-rule id="CFG-DOC-INDICATIEINONDERZOEK" order="185">
+        <name lang="nl">Indicatie in onderzoek</name>
+        <name lang="en">Indication under investigation</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
     
 </doc-rules>
