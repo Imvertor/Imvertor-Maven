@@ -41,6 +41,9 @@
     
     <xsl:output method="xml" indent="yes"/>
     
+    <xsl:variable name="stylesheet-code">OFFICE-MD</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+    
     <xsl:variable name="i3n-document" select="imf:document('../../config/i3n/translate.xml')"/>
     
     <xsl:variable name="quot"><!--'--></xsl:variable>
@@ -67,6 +70,8 @@
     <xsl:variable name="has-imbroa" select="//imvert:attribute/imvert:stereotype/@id = 'stereotype-name-imbroa'"/>
     
     <xsl:template match="/imvert:packages">
+        <xsl:sequence select="imf:track('Generating modeldoc',())"/>
+        
         <book name="{imvert:application}" subpath="{$subpath}" type="{imvert:stereotype}" id="{imvert:id}" generator-version="{$imvertor-version}" generator-date="{$generation-date}">
             
             <!-- call a general initialization function -->
@@ -131,6 +136,9 @@
                     </section>
                     <section type="OVERVIEW-UNION" include="{$include-overview-sections-by-type}">
                         <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]"/>
+                    </section>
+                    <section type="OVERVIEW-COMPOSITION" include="{$include-overview-sections-by-type}">
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]"/>
                     </section>
                     <section type="OVERVIEW-STRUCTUREDDATATYPE" include="{$include-overview-sections-by-type}">
                         <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]"/>
@@ -447,12 +455,14 @@
               <xsl:variable name="attname" select="imf:get-name(.,true())"/>
               <xsl:variable name="typname" select="imf:get-name($type,true())"/>
               <xsl:variable name="name" select="if ($reveal-composition-name) then concat($attname,' (', $typname, ')') else ($attname)"/>
-              <xsl:sequence select="imf:create-link($type,'detail',$name)"/>
+              <xsl:sequence select="imf:create-link(.,'detail',$name)"/>
           </item>
           <item>
-              <xsl:sequence select="imf:get-formatted-tagged-value($type,'CFG-TV-DEFINITION')"/>
+              <xsl:sequence select="imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION')"/>
           </item>
           <item>
+              <xsl:variable name="typname" select="imf:get-name($type,true())"/>
+              <xsl:sequence select="imf:create-link($type,'detail',$typname)"/>
           </item>
           <item>
              <xsl:sequence select="imf:get-cardinality(imvert:min-occurs,imvert:max-occurs)"/>
@@ -731,6 +741,7 @@
         </section>
     </xsl:template>
     
+    <?x
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]" mode="detail">
         
         <section name="{imf:get-name(.,true())}" type="DETAIL-COMPOSITE" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
@@ -744,6 +755,7 @@
         </section>
   
     </xsl:template>
+    x?>
     
     <xsl:template match="imvert:attribute" mode="detail">
         <xsl:variable name="construct" select="../.."/>
@@ -751,13 +763,14 @@
         <xsl:variable name="naam" select="imf:get-name($construct,true())"/>
         <xsl:choose>
             <xsl:when test="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')">
-                <xsl:apply-templates select="$defining-class" mode="detail"/>
-            </xsl:when>
-            <xsl:when test="$construct/imvert:stereotype/@id = ('stereotype-name-composite')">
                 <xsl:apply-templates select="." mode="detail-gegevensgroeptype"/>
+                <xsl:apply-templates select="$defining-class" mode="detail"/>
             </xsl:when>
             <xsl:when test="imvert:stereotype/@id = ('stereotype-name-referentie-element')">
                 <xsl:apply-templates select="." mode="detail-referentie-element"/>
+            </xsl:when>
+            <xsl:when test="imvert:stereotype/@id = ('stereotype-name-union')">
+                <xsl:apply-templates select="." mode="detail-union"/>
             </xsl:when>
             <xsl:when test="imvert:stereotype/@id = ('stereotype-name-union-element')">
                 <xsl:apply-templates select="." mode="detail-unionelement"/>
@@ -837,12 +850,23 @@
         
     </xsl:template>
     
-    <xsl:template match="imvert:attribute" mode="detail-unionelement">
+    <xsl:template match="imvert:attribute" mode="detail-unionelement"><!-- het attribuut representeert een optie binnen een keuze -->
         <xsl:variable name="construct" select="../.."/>
         <section name="{imf:get-name(.,true())}" type="DETAIL-UNIONELEMENT" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-UNIONELEMENT')"/>
+            </content>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
+        </section>
+    </xsl:template>
+    
+    <xsl:template match="imvert:attribute" mode="detail-union"><!-- het attribuut representeert een keuze -->
+        <xsl:variable name="construct" select="../.."/>
+        <section name="{imf:get-name(.,true())}" type="DETAIL-UNION" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
+            <content>
+                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-UNION')"/>
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
@@ -1010,7 +1034,8 @@
    
        <xsl:if test="exists($display-waarde)">
            <part type="{$doc-rule-id}">
-               <xsl:sequence select="imf:create-element('item',string($name))"/>
+               <xsl:variable name="debug-string" select="if ($debugging) then '[id:' || $doc-rule-id || ']' else ''"/>
+               <xsl:sequence select="imf:create-element('item',string($name) || $debug-string)"/>
                <xsl:choose>
                    <xsl:when test="$format = 'plain'">
                        <xsl:sequence select="imf:create-element('item',$display-waarde)"/>          
@@ -1172,7 +1197,10 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-FORMALPATTERN'))"/>         
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-FORMAAT'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($relation/imvert:baretype,false()))"/>         
+                    <xsl:variable name="type" select="imf:get-construct-by-id-for-office($this/imvert:type-id)"/>
+                    <xsl:variable name="formaat-type" select="if ($type) then imf:create-link($type,'detail',imf:get-name($type,true())) else ()"/>
+                    <xsl:variable name="formaat-bare" select="imf:plugin-translate-i3n($relation/imvert:baretype,false())"/>
+                    <xsl:sequence select="imf:create-part-2(., ($formaat-type,$formaat-bare)[1])"/>         
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-LENGTH'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-LENGTH'))"/>         
@@ -1208,6 +1236,13 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-WAARDEAFLEIDBAAR'">
                     <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean($relation/imvert:is-value-derived)) then 'YES' else 'NO'"/>
                     <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($is-afleidbaar-text,false()))"/>
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEIDENTIFICEREND'">
+                    <xsl:variable name="is-identifying-text" select="if (imf:boolean(imvert:is-id)) then 'YES' else 'NO'"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($is-identifying-text,false()))"/>
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIECLASSIFICATIE'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-INDICATIONCLASSIFICATION'))"/>         
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-TRACE'">
                     <xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct($this,1)"/>

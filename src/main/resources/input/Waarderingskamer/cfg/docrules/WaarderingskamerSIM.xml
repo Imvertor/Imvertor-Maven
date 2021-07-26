@@ -4,12 +4,10 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../KING/cfg/docrules/KINGSIM.xml"/>
-    
     <xi:include href="Waarderingskamer.xml"/>
     
     <name>Waarderingskamer SIM</name>
     
-    <desc>Waarderingskamer SIM specific requirements on documentation.</desc>
-        
+    <desc>Waarderingskamer SIM specific requirements on documentation. Follows MIM 11 rules.</desc>
+    
 </doc-rules>

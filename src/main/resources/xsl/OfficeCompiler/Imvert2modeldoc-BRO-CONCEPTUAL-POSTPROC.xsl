@@ -363,7 +363,7 @@
         <xsl:param name="context" as="element()"/>
         <xsl:variable name="item-text" select="normalize-space($item)"/>
         
-            <xsl:variable name="minmax-specified" select="$context[part[@type = 'CFG-DOC-MINVALUEINCLUSIVE']/item[2]/text() | part[@type = 'CFG-DOC-MAXVALUEINCLUSIVE']/item[2]/text()]"/>
+        <xsl:variable name="minmax-specified" select="$context[part[@type = 'CFG-DOC-MINVALUEINCLUSIVE']/item[2]/text() | part[@type = 'CFG-DOC-MAXVALUEINCLUSIVE']/item[2]/text()]"/>
         <xsl:variable name="in-machten" select="$context[part[@type = 'CFG-DOC-MINVALUEINCLUSIVE']/item[2]/* | part[@type = 'CFG-DOC-MAXVALUEINCLUSIVE']/item[2]/*]"/>
         
         <xsl:choose>
@@ -507,7 +507,8 @@
                 </part>
             </xsl:when>
             <xsl:otherwise> 
-                <xsl:variable name="defining-class-section" select="root($context)//section[@id = concat('detail_class_Model_',$item)]"/>
+                <xsl:variable name="id" select="concat('detail_class_Model_',$item-text)"/>
+                <xsl:variable name="defining-class-section" select="root($context)//section[@id = $id]"/>
                 <xsl:variable name="defining-class-type" select="$defining-class-section/parent::section/@type"/>
                 <xsl:variable name="identifiers" select="$defining-class-section//itemtype[@is-id = 'true']"/>
                 <xsl:choose>
@@ -515,7 +516,7 @@
                     <xsl:when test="$defining-class-type = ('CONTENTS-CODELIST','CONTENTS-REFERENCELIST')">
                         <part>
                             <item>&#160;&#160;Naam</item>
-                            <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item"/></item></item>
+                            <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item-text"/></item></item>
                         </part>
                         <part>
                             <item>&#160;&#160;Type</item>
@@ -539,7 +540,7 @@
                     <xsl:otherwise>
                         <part>
                             <item>&#160;&#160;Naam</item>
-                            <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item"/></item></item>
+                            <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item-text"/></item></item>
                         </part>
                     </xsl:otherwise>
                 </xsl:choose>

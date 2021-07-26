@@ -36,6 +36,8 @@
     exclude-result-prefixes="#all"
     version="2.0">
   
+    <xsl:import href="extension/Imvert-common-text.xsl"/>
+    
     <!-- The current runtime parms.xml file -->
     <xsl:variable name="configuration" select="imf:document($xml-configuration-url,true())"/>
   
@@ -339,6 +341,8 @@
         <xsl:param name="name-type" as="xs:string"/> <!-- P(ackage), C(lass), p(R)operty), (T)agged value, (E)lement name -->
         <xsl:param name="metamodel-based" as="xs:boolean"/> <!-- when metamodel, then stricter rules; otherwise return an XML schema valid form -->
         
+        <xsl:variable name="name-no-diacrits" select="imf:strip-accents($name-as-found)"/>
+        
         <xsl:variable name="naming-convention" select="
             if ($name-type = 'P')  then $naming-convention-package
             else if ($name-type = 'C')  then $naming-convention-class 
@@ -359,14 +363,14 @@
                 <xsl:value-of select="$name-as-found"/>
             </xsl:when>
             <xsl:when test="$naming-convention = 'lowercase'">
-                <xsl:value-of select="lower-case($name-as-found)"/>
+                <xsl:value-of select="lower-case($name-no-diacrits)"/>
             </xsl:when>
             <xsl:when test="$naming-convention = 'Upperstart'">
-                <xsl:value-of select="concat(upper-case(substring($name-as-found,1,1)), substring($name-as-found,2))"/>
+                <xsl:value-of select="concat(upper-case(substring($name-no-diacrits,1,1)), substring($name-no-diacrits,2))"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="metamodel-form">
-                    <xsl:variable name="parts" select="tokenize(normalize-space($name-as-found),'[^A-Za-z0-9_\.]+')"/>
+                    <xsl:variable name="parts" select="tokenize(normalize-space($name-no-diacrits),'[^A-Za-z0-9_\.]+')"/>
                     <xsl:variable name="frags" as="xs:string*">
                         <xsl:for-each select="$parts">
                             <xsl:choose>
@@ -393,7 +397,7 @@
                     </xsl:variable>
                     <xsl:value-of select="string-join($frags,'')"/>
                 </xsl:variable>
-                <xsl:value-of select="imf:extract(if ($metamodel-based) then $metamodel-form else $name-as-found,'[A-Za-z0-9_\-\.]+')"/>
+                <xsl:value-of select="imf:extract(if ($metamodel-based) then $metamodel-form else $name-no-diacrits,'[A-Za-z0-9_\-\.]+')"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -439,7 +443,7 @@
             <!--<xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'case'">
                 <xsl:value-of select="normalize-space($value)"/>
             </xsl:when>-->
-            <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'note'">
+            <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'note'"><!-- dit kan een notitie veld zijn of een memo veld! -->
                 <xsl:value-of select="imf:import-ea-note($value)"/>
             </xsl:when>
             <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'compact'">
@@ -475,7 +479,8 @@
         <xsl:param name="lang" as="xs:string"/>
         <xsl:param name="default" as="xs:string?"/>
         <xsl:variable name="trans" select="($configuration-i3n-file//item[key=$key]/trans[@lang = $lang])[last()]"/>
-        <xsl:value-of select="if (exists($trans)) then $trans else if (exists($default)) then $default else concat('[TODO: ', $key, ']')"/>
+        <xsl:variable name="debug-string" select="if (exists($stylesheet-code) and imf:debug-mode($stylesheet-code)) then ('[key:' || $key || ']') else ''"/>
+        <xsl:value-of select="if (exists($trans)) then ($trans || $debug-string) else if (exists($default)) then ($default || $debug-string) else concat('[TODO: ', $key, ']')"/>
     </xsl:function>
     
     <xsl:function name="imf:get-concept-by-URI-or-name" as="xs:string?">
@@ -489,4 +494,9 @@
         <xsl:value-of select="$uri"/>
     </xsl:function>
     
+    <xsl:function name="imf:parse-memo" as="xs:string*">
+        <xsl:param name="value" as="xs:string?"/>
+        <xsl:sequence select="tokenize($value,'\n')"/>
+    </xsl:function>
+
 </xsl:stylesheet>

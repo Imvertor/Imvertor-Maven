@@ -255,11 +255,16 @@
         <trans lang="en">Data element</trans>
     </item>
     <item>
-        <key>GEGEVENSGROEPTYPE</key>
+        <key>GEGEVENSGROEP</key>
         <key>COMPOSITE</key>
-        <trans lang="nl"><!--Gegevensgroeptype--></trans><!-- excluded from heads -->
+        <trans lang="nl">Gegevensgroep</trans>
+        <trans lang="en">Group</trans>
+    </item>
+    <item>
+        <key>GEGEVENSGROEPTYPE</key>
+        <key>COMPOSITION</key>
+        <trans lang="nl">Gegevensgroeptype</trans>
         <trans lang="en">Grouptype</trans>
-        
     </item>
     <item>
         <key>CODE</key>
@@ -307,6 +312,11 @@
         <key>OVERVIEW-OBJECTTYPE</key>
         <trans lang="nl">Objecttypen</trans>
         <trans lang="en">Featuretypes</trans>
+    </item>
+    <item>
+        <key>OVERVIEW-COMPOSITION</key>
+        <trans lang="nl">Gegevensgroeptypen</trans>
+        <trans lang="en">Grouptypes</trans>
     </item>
     <item>
         <key>OVERVIEW-ASSOCIATIONCLASS</key>
@@ -361,23 +371,23 @@
     </item>
     <item>
         <key>DETAILS-ENUMERATION</key>
-        <trans lang="nl">Enumeratie details</trans>
-        <trans lang="en">Enumeration details</trans>
+        <trans lang="nl">Enumeratie</trans>
+        <trans lang="en">Enumeration</trans>
     </item>
     <item>
         <key>DETAILS-REFERENCELIST</key>
-        <trans lang="nl">Referentielijst details</trans>
-        <trans lang="en">Reference list details</trans>
+        <trans lang="nl">Referentielijst</trans>
+        <trans lang="en">Reference list</trans>
     </item>
     <item>
         <key>DETAILS-CODELIST</key>
-        <trans lang="nl">Codelist details</trans>
-        <trans lang="en">Code list details</trans>
+        <trans lang="nl">Codelist</trans>
+        <trans lang="en">Code list</trans>
     </item>
     <item>
         <key>DETAILS-UNION</key>
-        <trans lang="nl">Keuze details</trans>
-        <trans lang="en">Choice details</trans>
+        <trans lang="nl">Keuze</trans>
+        <trans lang="en">Choice</trans>
     </item>
     <item>
         <key>DETAILS-STRUCTUREDDATATYPE</key>
@@ -391,33 +401,38 @@
 
     <item>
         <key>DETAIL-ATTRIBUTE</key>
-        <trans lang="nl"><!--Attribuutsoort details--></trans>
-        <trans lang="en"><!--AttributeType details--></trans>
+        <trans lang="nl">Attribuutsoort details</trans>
+        <trans lang="en">AttributeType details</trans>
     </item>
     <item>
         <key>DETAIL-ASSOCIATION</key>
-        <trans lang="nl"><!--Relatiesoort details --></trans>
-        <trans lang="en"><!--AssociationType details--></trans>
+        <trans lang="nl">Relatiesoort details</trans>
+        <trans lang="en">AssociationType</trans>
     </item>
     <item>
         <key>DETAIL-REFERENCEELEMENT</key>
-        <trans lang="nl">Referentie element details</trans>
-        <trans lang="en">Reference element details</trans>
+        <trans lang="nl">Referentie element</trans>
+        <trans lang="en">Reference element</trans>
+    </item>
+    <item>
+        <key>DETAIL-UNION</key>
+        <trans lang="nl">Keuze</trans>
+        <trans lang="en">Union</trans>
     </item>
     <item>
         <key>DETAIL-UNIONELEMENT</key>
-        <trans lang="nl"><!--Union element details--></trans>
-        <trans lang="en"><!--Union element details--></trans>
+        <trans lang="nl">Keuze element</trans>
+        <trans lang="en">Union element</trans>
     </item>
     <item>
         <key>DETAIL-DATAELEMENT</key>
-        <trans lang="nl">Data element details</trans>
-        <trans lang="en">Data element details</trans>
+        <trans lang="nl">Data element</trans>
+        <trans lang="en">Data element</trans>
     </item>
     <item>
         <key>DETAIL-REFERENCELIST</key>
-        <trans lang="nl"><!--Referentielijst details--></trans>
-        <trans lang="en"><!--Reference list details--></trans>
+        <trans lang="nl">Referentielijst</trans>
+        <trans lang="en">Reference list</trans>
     </item>
     <item>
         <key>DETAIL-ENUMERATION</key>
@@ -426,19 +441,19 @@
     </item>
     <item>
         <key>DETAIL-CODELIST</key>
-        <trans lang="nl"><!--Codelijst details--></trans>
-        <trans lang="en"><!--Codelist details--></trans>
+        <trans lang="nl">Codelijst details</trans>
+        <trans lang="en">Codelist details</trans>
     </item>
     <item>
         <key>DETAIL-COMPOSITE</key>
-        <trans lang="nl"><!--Gegevensgroeptype details--></trans>
-        <trans lang="en"><!--GroupType details--></trans>
+        <trans lang="nl">Gegevensgroeptype</trans>
+        <trans lang="en">GroupType</trans>
     </item>
     
     <item>
         <key>CONTENTS-REFERENCELIST</key>
-        <trans lang="nl"><!--Referentielijst inhoud--></trans>
-        <trans lang="en"><!--Reference list contents--></trans>
+        <trans lang="nl">Referentielijst inhoud</trans>
+        <trans lang="en">Reference list contents</trans>
     </item>
     <item>
         <key>CONTENTS-CODELIST</key>

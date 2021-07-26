@@ -74,7 +74,18 @@
     <parameter name="documentation-separator-pattern">\n---*\n</parameter> <!-- two hyphens or more, must be limited by newlines. -->
     
     <parameter name="documentation-newline">&#10;</parameter>
-  
+
+    <!-- 
+        insert a break in HTML office documents when a wordt becomes too long and is camelcased. 
+    -->
+    <parameter name="insert-html-wordbreaks">yes</parameter>
+    
+    <!-- 
+        Add a TV in profile when a notes field that is linked to that tagged value exists? 
+        Applied in: EA toolbox. 
+    -->
+    <parameter name="ea-omit-tv-when-notes-field-exists">no</parameter>
+    
     <parameter name="local-mapping-notification">
         This schema is provided by Waarderingskamer as a local copy, as a convenience to the user.
         This schema may itself reference a local copy of the schema originally referenced by URI. 
@@ -107,7 +118,7 @@
         Which messages may be collapsed in the EA interface? 
         This is a set defined by this owner which may be referenced as [system/collapse-key-set] as the value of -messagecollapsekeys 
     -->  
-    <parameter name="message-collapse-keys">TV1NSBRF2 NAFFA NAFF1 TCBR1</parameter>
+    <parameter name="message-collapse-keys">TV1NSBRF2 TV1NEOS2 NAFFA NAFF1 TCBR1 1TMBAUD</parameter>
     
     <!-- URL of the standard JSON components are available --> 
     <!--parameter name="standard-components-url">https://github.com/VNG-Realisatie/Haal-Centraal-BRP-bevragen/blob/master/api-specificatie/</parameter-->

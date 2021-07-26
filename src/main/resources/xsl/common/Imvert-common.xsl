@@ -66,6 +66,7 @@
     <xsl:variable name="baretype-pattern" select="concat('^',$baretype-pattern-c,$baretype-pattern-i,$baretype-pattern-ii,$baretype-pattern-p,'$')"/>
     
     <xsl:variable name="stylesheet-version" select="imf:source-file-version($xml-stylesheet-name)"/>
+    <xsl:variable name="stylesheet-code" select="()"/><!-- default stylesheet code -->
     
     <!-- avoid SVN dollar-text-dollar pattern -->
     <xsl:variable name="char-dollar">$</xsl:variable>
@@ -596,16 +597,22 @@
     </xsl:function>
    
     <!-- true when value is text is 'yes'|'true' | 1, false when 'no'|'false' | 0, if evaluates to true then true,else false  -->  
-    <xsl:function name="imf:boolean" as="xs:boolean">
+    <xsl:function name="imf:as-boolean" as="xs:boolean">
         <xsl:param name="this" as="item()?"/>
         <xsl:variable name="v" select="lower-case(string($this))"/>
         <xsl:sequence select="
             if ($v=('yes','true','ja','1')) then true() 
             else if ($v=('no','false','nee','0')) then false() 
-                else if ($this) then true() 
-                    else false()"/>
+            else if ($this) then true() 
+            else false()"/>
     </xsl:function>
-   
+    
+    <!-- if any of the items is compatible with true, return true, else false -->
+    <xsl:function name="imf:boolean" as="xs:boolean">
+        <xsl:param name="this" as="item()*"/>
+        <xsl:sequence select="(for $b in $this return imf:as-boolean($b)) = true()"/><!-- true komt voor in de reeks booleans die wordt afgegeven -->
+    </xsl:function>
+    
     <!--
         Return all values that are duplicated in sequence passed 
         Credits: http://dnovatchev.wordpress.com/2008/11/13/xpath-2-0-gems-find-all-duplicate-values-in-a-sequence/

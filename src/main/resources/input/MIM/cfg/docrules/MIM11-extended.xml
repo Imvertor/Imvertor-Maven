@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="MIM11.xml"/>
+    
+    <name>MIM11 extensie (tijdelijk)</name>
+    
+    <desc>MIM 11 requirements on documentation (extended)</desc>
+    
+    <doc-rule id="CFG-DOC-REGELS" order="145">
+        <name lang="nl">Regels</name>
+        <name lang="en">Rules</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>      
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-TRACE" order="500">
+        <name lang="nl">Onderliggende constructies</name>
+        <name lang="en">Underlying constructs</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-INDICATIEINONDERZOEK" order="185">
+        <name lang="nl">Indicatie in onderzoek</name>
+        <name lang="en">Indication under investigation</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-AANDUIDINGSTRIJDIGHEIDNIETIGHEID" order="188">
+        <name lang="nl">Aanduiding strijdigheid/nietigheid</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-VOORBEELD" order="225">
+        <name lang="nl">Voorbeeld</name>
+        <name lang="en">Example</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
+        </levels>
+    </doc-rule>
+  
+</doc-rules>

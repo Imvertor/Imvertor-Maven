@@ -1194,8 +1194,8 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>IndicationYesNoEnumeration</cs:name>
-                        <cs:asAttribute>IndicationYesNoEnumeration</cs:asAttribute>
+                        <cs:name>IndicationYesNoType</cs:name>
+                        <cs:asAttribute>IndicationYesNoType</cs:asAttribute>
                         <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
                         <cs:primitive>false</cs:primitive>
                         <cs:hasNilreason>false</cs:hasNilreason>
@@ -1207,8 +1207,8 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>IndicationYesNoEnumeration</cs:name>
-                        <cs:asAttribute>IndicationYesNoEnumeration</cs:asAttribute>
+                        <cs:name>IndicationYesNoType</cs:name>
+                        <cs:asAttribute>IndicationYesNoType</cs:asAttribute>
                         <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
                         <cs:primitive>false</cs:primitive>
                         <cs:hasNilreason>false</cs:hasNilreason>
@@ -1220,8 +1220,8 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>IndicationYesNoUnknownEnumeration</cs:name>
-                        <cs:asAttribute>IndicationYesNoUnknownEnumeration</cs:asAttribute>
+                        <cs:name>IndicationYesNoUnknownType</cs:name>
+                        <cs:asAttribute>IndicationYesNoUnknownType</cs:asAttribute>
                         <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
                         <cs:primitive>false</cs:primitive>
                         <cs:hasNilreason>false</cs:hasNilreason>

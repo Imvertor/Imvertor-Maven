@@ -9,23 +9,25 @@
     -->
     <xi:include href="../../../Imvertor/cfg/tvsets/Grouping.xml"/>
     
-    <name>Grouping for IHW</name>
+    <name>Grouping for Waarderingskamer</name>
   
-    <desc lang="en">Deviations and additions to generic grouping for IHW metamodels.</desc>  
+    <desc lang="en">Deviations and additions to generic grouping for Waarderingskamer metamodels.</desc>  
    
     <tagged-values>
         
-        <tv norm="space" id="CFG-TV-DATALOCATION">
-            <!-- bepaal de naam van deze tagged value hier, en ken toe aan nieuwe stereo's -->
-            <name lang="nl">Data locatie</name>
-            <name lang="en">Data location</name>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-referentielijst</stereo><!-- SIM Referentielijst -->
-                <stereo minmax="0..1">stereotype-name-attribute</stereo><!-- SIM Referentie element -->
-            </stereotypes>
+        <tv norm="space" id="CFG-TV-ISDERIVED"><!-- Waarderingskamer: default is leeg -->
+            <declared-values lang="nl">
+                <value default="no">Nee</value>
+                <value default="no">Ja</value>
+                <value default="no">Zie package</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value default="no">No</value>
+                <value default="no">Yes</value>
+                <value default="no">See package</value>
+            </declared-values>
         </tv>
-        
+  
     </tagged-values>
     
 </tagset>

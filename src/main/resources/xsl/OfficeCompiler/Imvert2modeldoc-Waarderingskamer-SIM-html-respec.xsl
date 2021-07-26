@@ -53,6 +53,39 @@
                             table {
                             width: 100%;
                             }
+                            .debug {
+                            color: gray;
+                            font-size: 70%;
+                            font-weight: normal;
+                            }
+                            
+                            h5 {
+                            font-weight: bold; 
+                            font-style: italic; 
+                            }
+                            h6, h7 {
+                            font-style: italic; 
+                            }
+                            h8 {
+                            font-style: italic; 
+                            }
+                            .deepheader {
+                                padding-top: 1em;
+                            }   
+                            .imageinfo {
+                               /* none yet */
+                            }
+                            .imageinfo p {
+                                text-align: left;
+                                font-size: 90%;
+                                color: #6e6e6e;
+                                padding-left: 2em;
+                                margin-top: 0em !important;
+                            }
+                            .notoc {
+                                margin-top: 1em;
+                            }
+                            
                         </style>
                     </head>
                     <body>

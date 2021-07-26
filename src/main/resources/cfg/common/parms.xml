@@ -194,6 +194,13 @@
          <required>false</required>
          <default>20010627</default>
       </cli-parm>
+      <cli-parm>
+         <name>signaldeadurls</name>
+         <arg>yes|no</arg>
+         <tip>Yes if a warning should, be issued for each inaccessible URL detected in notes and tagged values.</tip>
+         <required>false</required>
+         <default>no</default>
+      </cli-parm>
    </cli-parms>
    
    <!-- properties zijn directe mapping vanuit imvertor.properties. Die moeten dus later netjes worden verwerkt -->

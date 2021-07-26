@@ -372,6 +372,22 @@
             <!-- NOT FOR SIM -->
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-MINVALUEINCLUSIVE" order="250">
+        <name lang="nl">Minimumwaarde</name>
+        <name lang="en">MinInclusive</name>
+        <levels>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-DATAELEMENT</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MAXVALUEINCLUSIVE" order="260">
+        <name lang="nl">Maximumwaarde</name>
+        <name lang="en">MaxInclusive</name>
+        <levels>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-DATAELEMENT</level>
+        </levels>
+    </doc-rule>
     
     <doc-rule id="CFG-DOC-RELATIESOORT" order="250">
         <name lang="nl">Relatiesoort</name>

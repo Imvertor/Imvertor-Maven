@@ -33,6 +33,7 @@ import nl.imvertor.ImvertCompiler.ImvertCompiler;
 import nl.imvertor.JsonConceptsCompiler.JsonConceptsCompiler;
 import nl.imvertor.JsonSchemaCompiler.JsonSchemaCompiler;
 import nl.imvertor.MIMCompiler.MIMCompiler;
+import nl.imvertor.StcCompiler.StcCompiler;
 import nl.imvertor.ModelHistoryAnalyzer.ModelHistoryAnalyzer;
 import nl.imvertor.OfficeCompiler.OfficeCompiler;
 import nl.imvertor.ReadmeCompiler.ReadmeCompiler;
@@ -86,6 +87,7 @@ public class ChainTranslateAndReport {
 			configurator.getCli(ConceptCollector.STEP_NAME);
 			configurator.getCli(ImvertCompiler.STEP_NAME);
 			configurator.getCli(MIMCompiler.STEP_NAME);
+			configurator.getCli(StcCompiler.STEP_NAME);
 			configurator.getCli(XsdCompiler.STEP_NAME);
 			configurator.getCli(ShaclCompiler.STEP_NAME);
 			configurator.getCli(LDCompiler.STEP_NAME);
@@ -173,6 +175,10 @@ public class ChainTranslateAndReport {
 				    // generate the MIM format from Imvertor embellish format
 				    if (configurator.isTrue("cli","createmimformat",false))
 			 			succeeds = succeeds && (new MIMCompiler()).run();
+					
+				    // generate the Stelselcatalogus CSV
+				    if (configurator.isTrue("cli","createstccsv",false))
+			 			succeeds = succeeds && (new StcCompiler()).run();
 					
 					// compare releases. 
 				    // Eg. check if this only concerns a "documentation release". If so, must not be different from existing release.

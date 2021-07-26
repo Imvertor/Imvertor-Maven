@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <name>MIM11</name>
+    
+    <desc>MIM 11 requirements on documentation. 
+        See also <a href="https://docs.geostandaarden.nl/mim/mim/#modellering-metagegevens-voor-objecten-en-attributen-in-uml">the MIM11 standard</a>.</desc>
+    
+    <!-- check https://docs.geostandaarden.nl/mim/mim/#modellering-metagegevens-voor-objecten-en-attributen-in-uml voor de hele lijst -->
+    
+    <!-- 
+        Linking strategy: link by EAID or NAME 
+    -->
+    <link-by>NAME</link-by>
+    
+    <!--
+        Where to show the explanation? (at-bottom or as-row)
+    -->
+    <explanation-location>at-bottom</explanation-location>
+    
+    <!-- 
+        Append the role name at end of the association name? 
+    --> 
+    <append-role-name>no</append-role-name>
+    
+    <!--
+        Determine the type of any diagram image by "suffix", i.e. the diagram name after "-" as in "Objecttypen  – overzicht".
+        If no stategy ("none"), include no diagrams.
+    -->
+    <diagram-type-strategy>suffix</diagram-type-strategy>
+    
+    <!--
+        Include incoming associations in the short overview?
+    -->
+    <include-incoming-associations>yes</include-incoming-associations>
+    
+    <!-- 
+        collect the codelist and enumeration contents in a separate section?
+    -->
+    <lists-to-listing>true</lists-to-listing>
+    
+    <!-- which sections to include in the modeldoc? --> 
+    <include-overview-section-level>yes</include-overview-section-level>
+    <include-detail-section-level>yes</include-detail-section-level>
+    <include-overview-sections-by-type>yes</include-overview-sections-by-type>
+    <include-detail-sections-by-type>yes</include-detail-sections-by-type>
+    
+    <!-- visibility of properties: show in accordance with configuration (@show) or compact: only the specified parts -->
+    
+    <show-properties>config</show-properties> <!-- config, all, compact -->
+    
+    <image-purpose id="CFG-IMG-OVERVIEW">
+        <name lang="nl">Overzichtsdiagram</name>
+        <name lang="en">Overview diagram</name>
+        <!-- markers are placed after the name of the diagram, as in "Sample simple constructs - overzicht" -->
+        <marker lang="nl">overzicht</marker>
+        <marker lang="en">overview</marker>
+        <show-caption>yes</show-caption>
+    </image-purpose>
+    
+    <image-purpose id="CFG-IMG-DETAIL">
+        <name lang="nl">Detaildiagram</name>
+        <name lang="en">Detail diagram</name>
+        <marker lang="nl">detail</marker>
+        <marker lang="en">detail</marker>
+        <show-caption>no</show-caption>
+    </image-purpose>
+    
+    <doc-rule id="CFG-DOC-NORMNAAM" order="000">
+        <name lang="nl">Naam (genormaliseerd)</name>
+        <name lang="en">Name (normalized)</name>
+        <levels>
+             <!-- none here -->
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-NAAM" order="010">
+        <!-- 
+            you may specify @lang on the name; in that case, that name will appear in documentation for that language.
+        -->
+        <name lang="nl">Naam</name>
+        <name lang="en">Name</name>
+        <levels>
+            <!-- 
+                This rule specifies: global info on classes must show the name of the class 
+                
+                You may specify @lang on the level; in that case, for the specified language the documentation construct will be added 
+                
+                @show should be force, implied or none
+                @compile should be single or full (full is: complete derivation info)
+                @format should be plain (for future improvements).
+            -->
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNION</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-BEGRIP" order="020">
+        <name lang="nl">Begrip</name>
+        <name lang="en">Concept</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
+            
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="IMPLIED" compile="full" format="plain">DISPLAY-DETAIL-UNION</level>
+        </levels>
+    </doc-rule>
+    <?insert alias ?>
+    <doc-rule id="CFG-DOC-ALTERNATIEVENAAM" order="030">
+        <name lang="nl">Alternatieve naam</name>
+        <name lang="en">Alternative name</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MNEMONIC" order="040">
+        <name lang="nl">Mnemonic</name>
+        <name lang="en">Mnemonic</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level> 
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+        </levels>
+    </doc-rule>
+
+    <?insert relatiesoort.unidirectioneel ?>
+    
+    <?insert relatiesoort.relatieeigenaar ?>
+    
+    <?insert relatiesoort.relatiedoel ?>
+    
+    <?insert relatiesoort.aggregatietype ?>
+    
+    
+    <doc-rule id="CFG-DOC-HERKOMST" order="050">
+        <name lang="nl">Herkomst</name>
+        <name lang="en">Origin</name>
+        <levels>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-DEFINITIE" order="060">
+        <name lang="nl">Definitie</name>
+        <name lang="en">Definition</name>
+        <levels>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-HERKOMSTDEFINITIE" order="070">
+        <name lang="nl">Herkomst definitie</name>
+        <name lang="en">Origin of definition</name>
+        <levels>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-DATUMOPNAME" order="080">
+        <name lang="nl">Datum opname</name>
+        <name lang="en">Date</name>
+        <levels>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    <?insert domein= ?>
+    <doc-rule id="CFG-DOC-GERELATEERDOBJECTTYPE" order="090">
+        <name lang="nl">Gerelateerd objecttype</name>
+        <name lang="en">Associated objecttype</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-RELATIESOORT" order="100">
+        <name lang="nl">Relatiesoort</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-FORMAAT" order="110"><!-- MIM: type -->
+        <name lang="nl">Formaat</name>
+        <name lang="en">Format</name>
+        <levels>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNION</level><!-- de term FORMAAT is wellicht niet goed, beter term in documentatie opnemen -->
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level><!-- de term FORMAAT is wellicht niet goed, beter term in documentatie opnemen -->
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-LENGTH" order="120">
+        <name lang="nl">Lengte</name>
+        <name lang="en">Length</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-PATROON" order="130">
+        <name lang="nl">Patroon</name>
+        <name lang="en">Pattern</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-FORMEELPATROON" order="140">
+        <name lang="nl">Formeel patroon</name>
+        <name lang="en">Formal pattern</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-INDICATIEMATERIELEHISTORIE" order="150">
+        <name lang="nl">Indicatie materiële historie</name>
+        <name lang="en">Indication material history</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-INDICATIEFORMELEHISTORIE" order="160">
+        <name lang="nl">Indicatie formele historie</name>
+        <name lang="en">Indication formal history</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-INDICATIEKARDINALITEIT" order="170">
+        <name lang="nl">Indicatie kardinaliteit</name>
+        <name lang="en">Indication multiplicity</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-INDICATIEAUTHENTIEK" order="180">
+        <name lang="nl">Indicatie authentiek</name>
+        <name lang="en">Indication authentic</name>
+        <levels>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-UNIEKEAANDUIDING" order="190">
+        <name lang="nl">Unieke aanduiding</name>
+        <name lang="en">Identifier</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-POPULATIE" order="200">
+        <name lang="nl">Populatie</name>
+        <name lang="en">Population</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-KWALITEITSBEGRIP" order="210">
+        <name lang="nl">Indicatie kwaliteit</name>
+        <name lang="en">Indication quality</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-TOELICHTING" order="220">
+        <name lang="nl">Toelichting</name>
+        <name lang="en">Explanation</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-INDICATIEABSTRACTOBJECT" order="230">
+        <name lang="nl">Indicatie abstract object</name>
+        <name lang="en">Abstract object</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-INDICATIEAFLEIDBAAR" order="240">
+        <name lang="nl">Indicatie afleidbaar</name>
+        <name lang="en">May be derived</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    
+    <?insert gegevensgroep.gegevensgroeptype ?>
+    
+    <doc-rule id="CFG-DOC-INDICATIECLASSIFICATIE" order="245">
+        <name lang="nl">Indicatie classificerend</name>
+        <name lang="en">Classifying</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-MOGELIJKGEENWAARDE" order="250">
+        <name lang="nl">Mogelijk geen waarde</name>
+        <name lang="en">Voidable</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-INDICATIEIDENTIFICEREND" order="255">
+        <name lang="nl">Indicatie identificerend</name>
+        <name lang="en">Identifying</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-DATALOCATIE" order="260">
+        <name lang="nl">Data locatie</name>
+        <name lang="en">Data location</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+        </levels>
+    </doc-rule>
+    
+</doc-rules>

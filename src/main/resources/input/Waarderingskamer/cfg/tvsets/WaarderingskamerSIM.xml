@@ -21,9 +21,67 @@
     
     <!-- Waarderingskamer follows MIM1.1 requirements -->
     <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
+      
+    <!-- speciale grouping constructs -->
+    <xi:include href="grouping.xml"/>
     
     <name>Waarderingskamer SIM</name>
     <tagged-values>
-        
+        <tv id="CFG-TV-MINVALUEINCLUSIVE">
+            <name lang="nl">Minimumwaarde</name>/name>
+            <name lang="en">MinInclusive</name>
+            <desc lang="nl">De ondergrens (inclusief) voor de waarde van een getal.</desc>
+            <desc lang="en">Defines lower bounds for numeric values including this number.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+            </stereotypes>
+        </tv>
+        <tv id="CFG-TV-MAXVALUEINCLUSIVE">
+            <name lang="nl">Maximumwaarde</name>/name>
+            <name lang="en">MaxInclusive</name>
+            <desc lang="nl">De boven (inclusief) voor de waarde van een getal.</desc>
+            <desc lang="en">Defines upper bounds for numeric values including this number.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-INDICATIEINONDERZOEK">
+            <name lang="nl">Indicatie in onderzoek</name>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <desc lang="nl">
+                De indicatie of te bevragen is dat er twijfel is of is geweest aan de juistheid van de attribuutwaarde en dat een onderzoek wordt 
+                of is uitgevoerd naar de juistheid van de attribuutwaarde. 
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+                <value>Zie groep</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC"><!-- https://geonovum.github.io/MIM-Werkomgeving/#authentieke-gegevens -->
+            <declared-values lang="nl">
+                <value>Authentiek</value>
+                <value default="yes">Basisgegeven</value>
+                <value>Landelijk kerngegeven</value>
+                <value>Wettelijk gegeven</value>
+                <value>Overig</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" id="CFG-TV-IMRELATIONMODELINGTYPE">
+            <declared-values lang="nl">
+                <value default="yes">Relatiesoort leidend</value>
+                <value>Relatierol leidend</value>
+                <value>Relatie</value><!-- TODO tijdelijk -->
+            </declared-values>
+        </tv>
     </tagged-values>
 </tagset>

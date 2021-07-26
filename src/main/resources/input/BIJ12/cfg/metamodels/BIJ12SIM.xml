@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+   <!-- BIJ12 follows MIM requirements -->
+   <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+
+   <name>BIJ12 SIM</name>
+   
+   <desc lang="en">Metamodel for BIJ12 information models: semantisch informatiemodel</desc>
+   
+   <profiles>
+      <profile lang="nl"> 
+         <id>BIJ12SIMNL</id>
+         <release>1.1</release>
+         <desc>BIJ12 SIM Grouping NL</desc> 
+         <profile-name>BMIM</profile-name>
+      </profile>
+      <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+         <id>BIJ12SIMEN</id>
+         <release>1.1</release>
+         <desc>BIJ12 SIM Grouping EN</desc>
+         <profile-name>BMIM</profile-name>
+      </profile>
+   </profiles>
+   
+   <!-- 
+      The normal direction of the composition is from Whole to Part (source to target). 
+      If this is reversed (as is discussied in Task #487339), set this parameter to "part", otherwise set to "whole" (default).
+   -->  
+   <composition-direction-source>part</composition-direction-source>
+   
+   <naming>
+      <package>
+         <format>AsIs</format>
+      </package>
+      <class>
+         <format>AsIs</format>
+      </class>
+      <property>
+         <format>AsIs</format>
+      </property>
+      <tv>
+         <format>Upperstart</format> <!-- first character must be upper case. -->
+      </tv>
+   </naming>
+   
+   <features>
+      <feature name="role-based">false</feature>
+      <feature name="allow-multiple-supertypes">false</feature>
+      <feature name="allow-scalar-in-union">true</feature>
+   </features>
+   
+</metamodel>

@@ -140,14 +140,14 @@
     <xsl:variable name="allow-multiple-tv" select="imf:boolean(imf:get-config-string('cli','allowduplicatetv','no'))"/>
     <xsl:variable name="allow-native-scalars" select="imf:boolean(imf:get-config-string('cli','nativescalars','yes'))"/>
     
+    <xsl:variable name="signal-dead-urls" select="imf:boolean(imf:get-config-string('cli','signaldeadurls','no'))"/>
+  
     <xsl:variable name="model-is-general" select="$application-package/imvert:model-level = 'general'"/>
     
     <xsl:variable name="datatype-stereos" select="
         ('stereotype-name-simpletype',
         'stereotype-name-complextype',
         'stereotype-name-union',
-        'stereotype-name-union-attributes',
-        'stereotype-name-union-associations',
         'stereotype-name-referentielijst',
         'stereotype-name-codelist',
         'stereotype-name-interface',
@@ -546,6 +546,7 @@
         <xsl:variable name="is-toplevel" select="imf:is-toplevel($this)"/>
         <xsl:variable name="is-association-class" select="$document-classes/imvert:associations/imvert:association/imvert:association-class/imvert:type-id = $this-id"/>
         <xsl:variable name="allow-multiple-supertypes" select="imf:boolean($configuration-metamodel-file//features/feature[@name='allow-multiple-supertypes'])"/>
+        <xsl:variable name="is-union-class" select="imvert:stereotype/@id = ('stereotype-name-union')"/>
         
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 
@@ -569,20 +570,22 @@
             'Stereotype of base type not assigned to its subtype')"/>
 
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype/@id = ('stereotype-name-union') and empty(imvert:attributes/imvert:attribute)), 
+            ($is-union-class and empty(imvert:stereotype/@id = ('stereotype-name-union-attributes','stereotype-name-union-associations')) and count(imvert:attributes/imvert:attribute) eq 0), 
             'Empty union class is not allowed.')"/><!-- retain for historical purpose -->
+        
+        <!-- MIM11 -->
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype/@id = ('stereotype-name-union','stereotype-name-union-attributes') and count(imvert:attributes/imvert:attribute) lt 2), 
+            (imvert:stereotype/@id = ('stereotype-name-union-attributes') and count(imvert:attributes/imvert:attribute) lt 2), 
             'Union class with [1] attributes is not allowed.',count(imvert:attributes/imvert:attribute))"/>
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype/@id = ('stereotyp    e-name-union-associations') and count(imvert:associations/imvert:association) lt 2), 
+            (imvert:stereotype/@id = ('stereotype-name-union-associations') and count(imvert:associations/imvert:association) lt 2), 
             'Union class with [1] association(s) is not allowed.',count(imvert:associations/imvert:association))"/>
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype/@id = ('stereotype-name-union','stereotype-name-union-attributes') and exists(imvert:associations/imvert:association)), 
-            'Association on union class is not allowed.')"/>
+            ($is-union-class and empty(imvert:stereotype/@id = 'stereotype-name-union-assocations') and exists(imvert:associations/imvert:association)), 
+            'Association(s) on union class are not allowed.')"/>
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype/@id = ('stereotype-name-union','stereotype-name-union-associations') and exists(imvert:attributes/imvert:atribute)), 
-            'Attribute on union class is not allowed.')"/>
+            ($is-union-class and exists(imvert:stereotype/@id = 'stereotype-name-union-associations') and exists(imvert:attributes/imvert:atribute)), 
+            'Attribute(s) on union class are not allowed.')"/>
         
         <xsl:sequence select="imf:report-error(., 
             not(ancestor::imvert:package/imvert:stereotype/@id = $schema-oriented-stereotypes), 
@@ -696,7 +699,7 @@
         <!--validation-->
         <xsl:for-each select="imvert:stereotype">
             <xsl:sequence select="imf:report-error(.., 
-                not(@id = ($datatype-stereos)), 
+                not(@id = $datatype-stereos) and imf:get-config-stereotype-is-primary(@id), 
                 'UML datatypes should be stereotyped as: [1] and not [2]',(string-join(imf:get-config-stereotypes($datatype-stereos),' or '),imf:string-group(.)))"/>
         </xsl:for-each>
         <xsl:sequence select="imf:report-error(., 
@@ -829,6 +832,8 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <!-- TODO alle unions valideren -->
+    <?x
     <xsl:template match="imvert:attribute[../../imvert:stereotype/@id = ('stereotype-name-union')]">
         <!--setup-->
         <xsl:variable name="class" select="../.."/>
@@ -842,6 +847,7 @@
             'Union element must be stereotyped as [1]',(imf:get-config-stereotypes('stereotype-name-union-element')))"/>
         <xsl:next-match/>
     </xsl:template>
+    x?>
     
     <xsl:template match="imvert:attribute[../../imvert:stereotype/@id = ('stereotype-name-objecttype')]">
         <!--setup-->
@@ -1369,6 +1375,14 @@
                             <!-- okay, allowed -->
                         </xsl:when>
                     </xsl:choose>
+                    
+                    <xsl:if test="$signal-dead-urls">
+                        <xsl:for-each select="$value/node()">
+                            <xsl:variable name="urls" select="imf:check-urls-not-available(.)"/>
+                            <xsl:sequence select="imf:report-warning($this,exists($urls),'URL(s) in tagged value [1] are not accessible: [2]',($name,imf:string-group($urls)))"/>
+                        </xsl:for-each>
+                    </xsl:if>
+                    
                 </xsl:for-each>
             </xsl:for-each-group>
         </xsl:if>
@@ -1562,5 +1576,16 @@
             (count($stereo-primary-ids) gt 1), 
             'Invalid combination of stereotypes: [1]', imf:string-group(for $s in $stereo-primary-ids return imf:get-config-name-by-id($s)))"/>
                     
+    </xsl:function>
+    
+    <!-- return the URLs that are not accessible -->
+    <xsl:variable name="imf:check-urls-not-available-regex-for-url">http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&amp;+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+</xsl:variable><!-- http://urlregex.com -->
+    <xsl:function name="imf:check-urls-not-available" as="xs:string*">
+        <xsl:param name="string-with-urls" as="xs:string"/>
+        <xsl:analyze-string select="$string-with-urls" regex="{$imf:check-urls-not-available-regex-for-url}">
+            <xsl:matching-substring>
+                <xsl:sequence select="if (unparsed-text-available(.)) then () else ."/>
+            </xsl:matching-substring>
+        </xsl:analyze-string>
     </xsl:function>
 </xsl:stylesheet>

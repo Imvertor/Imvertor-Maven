@@ -23,9 +23,7 @@
         this metamodel is subject to standard Grouping conventions 
     -->
    
-   <xi:include href="../../../Imvertor/cfg/metamodels/Grouping.xml"/>
-   
-   <xi:include href="../../../BP/cfg/metamodels/BP.xml"/>
+   <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
    
    <xi:include href="KINGSIM-scalar.xml"/> 
 
