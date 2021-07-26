@@ -21,6 +21,9 @@
     
     <!-- Waarderingskamer follows MIM1.1 requirements -->
     <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
+      
+    <!-- speciale grouping constructs -->
+    <xi:include href="grouping.xml"/>
     
     <name>Waarderingskamer SIM</name>
     <tagged-values>
@@ -55,7 +58,7 @@
             </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
