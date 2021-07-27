@@ -75,7 +75,10 @@
   <xsl:variable name="stereotype-name-relatiesoort"            select="'RELATIESOORT'"                       as="xs:string"/>
   <xsl:variable name="stereotype-name-view"                    select="'VIEW'"                               as="xs:string"/>
   <xsl:variable name="stereotype-name-interface"               select="'INTERFACE'"                          as="xs:string"/>
+  <xsl:variable name="stereotype-id-keuze-datatypes"           select="'stereotype-name-union-datatypes'"    as="xs:string"/>
+  <!--
   <xsl:variable name="stereotype-id-keuze-datatypes"           select="'stereotype-name-union'"              as="xs:string"/>
+  -->
   <xsl:variable name="stereotype-id-keuze-attributes"          select="'stereotype-name-union-attributes'"   as="xs:string"/>
   <xsl:variable name="stereotype-id-keuze-associations"        select="'stereotype-name-union-associations'" as="xs:string"/>
   <xsl:variable name="stereotype-id-keuze-element"             select="'stereotype-name-union-element'"      as="xs:string"/>
@@ -989,9 +992,11 @@
   <xsl:template name="heeft__keuze">
     <xsl:if test="imvert:type-id/text()">
       <xsl:variable name="type" select="key('key-imvert-construct-by-id', imvert:type-id)" as="element()?"/>
-      <xsl:if test="$type/imvert:stereotype = $stereotype-name-keuze">
+      <xsl:if test="$type/imvert:stereotype/@id = ($stereotype-id-keuze-datatypes, $stereotype-id-keuze-attributes)">
         <mim:heeft__keuze>
-          <mim-ref:Keuze__DatatypenRef xlink:href="#{$type/imvert:id}">{$type/imvert:name}</mim-ref:Keuze__DatatypenRef>
+          <xsl:call-template name="create-ref-element">
+            <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
+          </xsl:call-template>
         </mim:heeft__keuze>
       </xsl:if>
     </xsl:if>
@@ -1277,7 +1282,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="suffix" select="imf:valid-id($name)" as="xs:string?"/>
-    <xsl:value-of select="string-join(($package-name, $prefix, $suffix), '-')"/>
+    <xsl:value-of select="string-join(($package-name, $prefix, $suffix, generate-id($elem)), '-')"/>
   </xsl:function>
   
   <xsl:function name="imf:valid-id" as="xs:string?">
