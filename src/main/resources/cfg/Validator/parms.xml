@@ -66,7 +66,8 @@
       <WORK_BASE_METAMODEL_FILE_7>${system/work-imvert-folder-path}/imvertor.02.7.base.xml</WORK_BASE_METAMODEL_FILE_7>
       
       <!-- location of the generated validation file; this is a dummy file as all reported messages are made part of the process parms file. -->
-      <WORK_VALIDATE_FILE>${system/work-imvert-folder-path}/imvertor.13.validate.xml</WORK_VALIDATE_FILE>
+      <WORK_VALIDATE_FILE>${system/work-imvert-folder-path}/imvertor.13.1.validate.xml</WORK_VALIDATE_FILE>
+      <WORK_VALIDATE_FILE_2>${system/work-imvert-folder-path}/imvertor.13.2.validate.xml</WORK_VALIDATE_FILE_2>
       
       <!-- external stubs require the conceptual schema mapping file to be known -->
       <CONCEPTUAL_SCHEMA_MAPPING_FILE>${system/inp-folder-path}/xsd/conceptual-schemas.xml</CONCEPTUAL_SCHEMA_MAPPING_FILE>
