@@ -144,4 +144,10 @@
         </xsl:copy>
     </xsl:template>
     
+    <!-- Relatie en Rol vervangen als waarde van informatiemodelleringstype door correcte waarden. --> 
+    <xsl:template match="/imvert:packages/imvert:package/imvert:tagged-values/imvert:tagged-value[@id = 'CFG-TV-IMRELATIONMODELINGTYPE']/imvert:value[. = ('Relatie','Rol')]">
+        <xsl:sequence select="imf:report-warning(..,true(),'Tagged value is deprecated: [1]',.)"/>
+        <imvert:value>{if (. = 'Relatie') then 'Relatiesoort leidend' else 'Relatierol leidend'}</imvert:value>
+    </xsl:template>
+    
 </xsl:stylesheet>
