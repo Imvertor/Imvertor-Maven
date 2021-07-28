@@ -65,6 +65,14 @@
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>
+        <stereo id="stereotype-name-union-element-DEPRECATED" primary="no"><!-- niet primary, want is deprecated en wordt omgezet in canonisering -->
+            <name lang="nl">Keuze element</name>
+            <name lang="en">UnionElement</name>
+            <desc lang="nl">
+                Dit stereotype is vervallen in de laatste versie van MIM 1.1. Ze blijf vooralsnog gehandhaafd voor "backward compatibility" maar moet worden veranderd in stereotype DATATYPE. 
+            </desc>
+            <construct>attribute</construct>
+        </stereo>
         <stereo id="stereotype-name-union-element" primary="yes">
             <name lang="nl">Datatype</name>
             <name lang="en">Datatype</name>
