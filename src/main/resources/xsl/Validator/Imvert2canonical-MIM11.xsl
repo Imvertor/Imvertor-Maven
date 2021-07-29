@@ -100,17 +100,10 @@
     
     <!-- keuze attribuut heeft betekenis, use case 3 -->
     <xsl:template match="imvert:attribute/imvert:stereotype[@id = ('stereotype-name-attribute','stereotype-name-attributegroup')]" priority="1">
-        <xsl:variable name="type-id" select="../imvert:type-id"/>
-        <xsl:variable name="target-stereo-id" select="if ($type-id) then imf:get-construct-by-id($type-id)/imvert:stereotype/@id else ()"/>
         <xsl:variable name="parent-stereo-id" select="ancestor::imvert:class/imvert:stereotype/@id"/>
-        
         <xsl:sequence select="."/>
-        
         <xsl:if test="$parent-stereo-id = 'stereotype-name-union'">
             <imvert:stereotype id="stereotype-name-union-attribute" origin="system">{imf:get-config-stereotypes('stereotype-name-union-attribute')}</imvert:stereotype>
-        </xsl:if>
-        <xsl:if test="$target-stereo-id = 'stereotype-name-union'">
-            <imvert:stereotype id="stereotype-name-union-by-attribute" origin="system">{imf:get-config-stereotypes('stereotype-name-union-by-attribute')}</imvert:stereotype>
         </xsl:if>
     </xsl:template>
     
@@ -149,6 +142,12 @@
                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-union-association')"/>
             </imvert:stereotype>
         </xsl:copy>
+    </xsl:template>
+    
+    <!-- Relatie en Rol vervangen als waarde van informatiemodelleringstype door correcte waarden. --> 
+    <xsl:template match="/imvert:packages/imvert:package/imvert:tagged-values/imvert:tagged-value[@id = 'CFG-TV-IMRELATIONMODELINGTYPE']/imvert:value[. = ('Relatie','Rol')]">
+        <xsl:sequence select="imf:report-warning(..,true(),'Tagged value is deprecated: [1]',.)"/>
+        <imvert:value>{if (. = 'Relatie') then 'Relatiesoort leidend' else 'Relatierol leidend'}</imvert:value>
     </xsl:template>
     
 </xsl:stylesheet>

@@ -484,5 +484,16 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REGISTRATIEOBJECT</level><!-- special case! -->
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-INDICATIEIDENTIFICEREND" order="280">
+        <name lang="nl">Identificerend</name>
+        <name lang="en">Identifying</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATION</level>
+   
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
     
 </doc-rules>

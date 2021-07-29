@@ -82,15 +82,9 @@
         <stereo id="stereotype-name-union-for-attributes" primary="no">
             <name lang="nl">Keuze zonder betekenis</name>
             <name lang="en">Meaningless choice attribute</name>
-            <desc lang="nl">De keuze betreft attributen, waarbij het keuze attribuut zelf geen betekenis heeft. MIM: Use case 2: een keuze tussen attribuutsoorten.
+            <desc lang="nl">De keuze betreft attributen, waarbij het keuze attribuut zelf geen betekenis heeft. MIM: Use case 2: een keuze tussen attribuutsoorten. 
+                NB. Er is géén door Imvertor toegevoegd stereotype voor attribuurtsoort van type Keuze in use case 3.
             <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
-            <construct>attribute</construct>
-        </stereo>
-        <stereo id="stereotype-name-union-by-attribute" primary="no">
-            <name lang="nl">Keuze met betekenis</name>
-            <name lang="en">Meaningful choice attribute</name>
-            <desc lang="nl">De keuze betreft attributen, waarbij de keuze zelf wel eigen betekenis heeft (en dus kenmerken / tagged values). MIM: Use case 3: een keuze tussen attribuutsoorten, als nadere invulling van een betekenisvol attribuutsoort van een objecttype.
-                <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-union-attributes" primary="no">

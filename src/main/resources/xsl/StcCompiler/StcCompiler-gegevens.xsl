@@ -100,15 +100,15 @@
       <xsl:sequence select="imf:col('Herkomst (URI)',$empty)"/>
       <xsl:sequence select="imf:col('Eigenaar',imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-OWNER'))"/>
       <xsl:sequence select="imf:col('Eigenaar (URI)',$empty)"/>
-      <xsl:sequence select="imf:col('Wetgeving','(issue 4)')"/>
+      <xsl:sequence select="imf:col('Wetgeving',$empty)"/><!-- relevant, maar vooralsnog niets opnemen -->
       <xsl:sequence select="imf:col('Wetgeving (URI)',$empty)"/>
       <xsl:sequence select="imf:col('Authentiek',imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-INDICATIONAUTHENTIC'))"/>
-      <xsl:sequence select="imf:col('AuthentiekRelatie','(issue 5)')"/>
-      <xsl:sequence select="imf:col('Relaties','(issue 1)')"/>
+      <xsl:sequence select="imf:col('AuthentiekRelatie',$empty)"/><!-- moet een URI worden, is niet bekend -->
+      <xsl:sequence select="imf:col('Relaties',$empty)"/><!-- niets opnemen -->
       <xsl:sequence select="imf:col('Relaties (URI)',$empty)"/>
       <xsl:sequence select="imf:col('Kwaliteit',imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-QUALITY'))"/>
-      <xsl:sequence select="imf:col('Toegankelijkheid','(issue 2)')"/>
-      <xsl:sequence select="imf:col('Gebruiksvoorwaarden','(issue 3)')"/>
+      <xsl:sequence select="imf:col('Toegankelijkheid',$empty)"/><!-- vooralsnog niets opnemen -->
+      <xsl:sequence select="imf:col('Gebruiksvoorwaarden',$empty)"/><!-- vooralsnog niets opnemen -->
     </r>
   </xsl:template>
   

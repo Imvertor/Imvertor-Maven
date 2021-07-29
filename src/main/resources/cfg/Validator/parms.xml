@@ -66,7 +66,8 @@
       <WORK_BASE_METAMODEL_FILE_7>${system/work-imvert-folder-path}/imvertor.02.7.base.xml</WORK_BASE_METAMODEL_FILE_7>
       
       <!-- location of the generated validation file; this is a dummy file as all reported messages are made part of the process parms file. -->
-      <WORK_VALIDATE_FILE>${system/work-imvert-folder-path}/imvertor.13.validate.xml</WORK_VALIDATE_FILE>
+      <WORK_VALIDATE_FILE>${system/work-imvert-folder-path}/imvertor.13.1.validate.xml</WORK_VALIDATE_FILE>
+      <WORK_VALIDATE_FILE_2>${system/work-imvert-folder-path}/imvertor.13.2.validate.xml</WORK_VALIDATE_FILE_2>
       
       <!-- external stubs require the conceptual schema mapping file to be known -->
       <CONCEPTUAL_SCHEMA_MAPPING_FILE>${system/inp-folder-path}/xsd/conceptual-schemas.xml</CONCEPTUAL_SCHEMA_MAPPING_FILE>
@@ -108,7 +109,8 @@
       <IMVERTOR_METAMODEL_KadasterMIM11_CANONICAL_XSLPATH_3>Imvert2canonical-MIM11.xsl</IMVERTOR_METAMODEL_KadasterMIM11_CANONICAL_XSLPATH_3>
       <IMVERTOR_METAMODEL_KadasterMIM11_CANONICAL_XSLPATH_4>Imvert2canonical-KadasterMIM11.xsl</IMVERTOR_METAMODEL_KadasterMIM11_CANONICAL_XSLPATH_4>
       <!--validate-->
-      <IMVERTOR_METAMODEL_KadasterMIM11_VALIDATE_XSLPATH>Imvert2validation-KadasterMIM11.xsl</IMVERTOR_METAMODEL_KadasterMIM11_VALIDATE_XSLPATH>
+      <IMVERTOR_METAMODEL_KadasterMIM11_VALIDATE_XSLPATH>Imvert2validation-MIM11.xsl</IMVERTOR_METAMODEL_KadasterMIM11_VALIDATE_XSLPATH>
+      <IMVERTOR_METAMODEL_KadasterMIM11_VALIDATE_XSLPATH_2>Imvert2validation-KadasterMIM11.xsl</IMVERTOR_METAMODEL_KadasterMIM11_VALIDATE_XSLPATH_2>
       
       <!--canonize-->
       <IMVERTOR_METAMODEL_UMLMETA_CANONICAL_XSLPATH>Imvert2canonical.xsl</IMVERTOR_METAMODEL_UMLMETA_CANONICAL_XSLPATH>
@@ -255,7 +257,7 @@
       <IMVERTOR_METAMODEL_WaarderingskamerSIM_CANONICAL_XSLPATH_3>Imvert2canonical-KING.xsl</IMVERTOR_METAMODEL_WaarderingskamerSIM_CANONICAL_XSLPATH_3>
       <IMVERTOR_METAMODEL_WaarderingskamerSIM_CANONICAL_XSLPATH_4>Imvert2canonical-KINGSIM.xsl</IMVERTOR_METAMODEL_WaarderingskamerSIM_CANONICAL_XSLPATH_4>
       <!--validate-->
-      <IMVERTOR_METAMODEL_WaarderingskamerSIM_VALIDATE_XSLPATH>Imvert2validation-KINGSIM.xsl</IMVERTOR_METAMODEL_WaarderingskamerSIM_VALIDATE_XSLPATH>
+      <IMVERTOR_METAMODEL_WaarderingskamerSIM_VALIDATE_XSLPATH>Imvert2validation-MIM11.xsl</IMVERTOR_METAMODEL_WaarderingskamerSIM_VALIDATE_XSLPATH>
       
       <!--canonize-->
       <IMVERTOR_METAMODEL_BIJ12SIM_CANONICAL_XSLPATH>Imvert2canonical.xsl</IMVERTOR_METAMODEL_BIJ12SIM_CANONICAL_XSLPATH>

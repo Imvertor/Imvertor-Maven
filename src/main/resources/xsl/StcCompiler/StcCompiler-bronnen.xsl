@@ -100,10 +100,10 @@
       <xsl:sequence select="imf:col('Herkomst (URI)',$empty)"/>
       <xsl:sequence select="imf:col('Eigenaar',imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-OWNER'))"/>
       <xsl:sequence select="imf:col('Eigenaar (URI)',$empty)"/>
-      <xsl:sequence select="imf:col('Wetgeving','(issue 4)')"/>
+      <xsl:sequence select="imf:col('Wetgeving',$empty)"/>
       <xsl:sequence select="imf:col('Wetgeving (URI)',$empty)"/>
-      <xsl:sequence select="imf:col('Authentiek','(issue 6)')"/>
-      <xsl:sequence select="imf:col('AuthentiekRelatie','(issue 5)')"/>
+      <xsl:sequence select="imf:col('Authentiek','Ja')"/>
+      <xsl:sequence select="imf:col('AuthentiekRelatie',$empty)"/>
       <xsl:sequence select="imf:col('Relaties',string-join($relaties,'; '))"/>
       <xsl:sequence select="imf:col('Relaties (URI)',$empty)"/>
       <xsl:sequence select="imf:col('Kwaliteit',imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-QUALITY'))"/>
