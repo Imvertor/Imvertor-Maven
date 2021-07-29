@@ -52,37 +52,38 @@
   <xsl:variable name="stylesheet-code">MIMCOMPILER</xsl:variable>
   <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" use-when="$runs-in-imvertor-context"/>
   
-  <xsl:variable name="stereotype-name-informatiemodel"         select="'INFORMATIEMODEL'"                    as="xs:string"/>
-  <xsl:variable name="stereotype-name-attribuutsoort"          select="'ATTRIBUUTSOORT'"                     as="xs:string"/>
-  <xsl:variable name="stereotype-name-codelijst"               select="'CODELIJST'"                          as="xs:string"/>
-  <xsl:variable name="stereotype-name-data-element"            select="'DATA ELEMENT'"                       as="xs:string"/>
-  <xsl:variable name="stereotype-name-datatype"                select="'DATATYPE'"                           as="xs:string"/>
-  <xsl:variable name="stereotype-name-domein"                  select="'DOMEIN'"                             as="xs:string"/>
-  <xsl:variable name="stereotype-name-enumeratie"              select="'ENUMERATIE'"                         as="xs:string"/>
-  <xsl:variable name="stereotype-name-enumeratiewaarde"        select="'ENUMERATIEWAARDE'"                   as="xs:string"/>
-  <xsl:variable name="stereotype-name-extern"                  select="'EXTERN'"                             as="xs:string"/>
-  <xsl:variable name="stereotype-name-externe-koppeling"       select="'EXTERNE KOPPELING'"                  as="xs:string"/>
-  <xsl:variable name="stereotype-name-gegevensgroep"           select="'GEGEVENSGROEP'"                      as="xs:string"/>
-  <xsl:variable name="stereotype-name-gegevensgroeptype"       select="'GEGEVENSGROEPTYPE'"                  as="xs:string"/>
-  <xsl:variable name="stereotype-name-generalisatie"           select="'GENERALISATIE'"                      as="xs:string"/>
-  <xsl:variable name="stereotype-name-gestructureerd-datatype" select="'GESTRUCTUREERD DATATYPE'"            as="xs:string"/>
-  <xsl:variable name="stereotype-name-keuze"                   select="'KEUZE'"                              as="xs:string"/>
-  <xsl:variable name="stereotype-name-objecttype"              select="'OBJECTTYPE'"                         as="xs:string"/>
-  <xsl:variable name="stereotype-name-primitief-datatype"      select="'PRIMITIEF DATATYPE'"                 as="xs:string"/>
-  <xsl:variable name="stereotype-name-referentie-element"      select="'REFERENTIE ELEMENT'"                 as="xs:string"/>
-  <xsl:variable name="stereotype-name-referentielijst"         select="'REFERENTIELIJST'"                    as="xs:string"/>
-  <xsl:variable name="stereotype-name-relatieklasse"           select="'RELATIEKLASSE'"                      as="xs:string"/>
-  <xsl:variable name="stereotype-name-relatierol"              select="'RELATIEROL'"                         as="xs:string"/>
-  <xsl:variable name="stereotype-name-relatiesoort"            select="'RELATIESOORT'"                       as="xs:string"/>
-  <xsl:variable name="stereotype-name-view"                    select="'VIEW'"                               as="xs:string"/>
-  <xsl:variable name="stereotype-name-interface"               select="'INTERFACE'"                          as="xs:string"/>
-  <xsl:variable name="stereotype-id-keuze-datatypes"           select="'stereotype-name-union-datatypes'"    as="xs:string"/>
-  <xsl:variable name="stereotype-id-keuze-attributes"          select="'stereotype-name-union-attributes'"   as="xs:string"/>
-  <xsl:variable name="stereotype-id-keuze-associations"        select="'stereotype-name-union-associations'" as="xs:string"/>
-  <xsl:variable name="stereotype-id-keuze-element"             select="'stereotype-name-union-element'"      as="xs:string"/>
-  <xsl:variable name="stereotype-id-union-by-attribute"        select="'stereotype-name-union-by-attribute'" as="xs:string"/>   <!-- KEUZE MET BETEKENIS -->
+  <xsl:variable name="stereotype-name-informatiemodel"         select="'INFORMATIEMODEL'"                      as="xs:string"/>
+  <xsl:variable name="stereotype-name-attribuutsoort"          select="'ATTRIBUUTSOORT'"                       as="xs:string"/>
+  <xsl:variable name="stereotype-name-codelijst"               select="'CODELIJST'"                            as="xs:string"/>
+  <xsl:variable name="stereotype-name-data-element"            select="'DATA ELEMENT'"                         as="xs:string"/>
+  <xsl:variable name="stereotype-name-datatype"                select="'DATATYPE'"                             as="xs:string"/>
+  <xsl:variable name="stereotype-name-domein"                  select="'DOMEIN'"                               as="xs:string"/>
+  <xsl:variable name="stereotype-name-enumeratie"              select="'ENUMERATIE'"                           as="xs:string"/>
+  <xsl:variable name="stereotype-name-enumeratiewaarde"        select="'ENUMERATIEWAARDE'"                     as="xs:string"/>
+  <xsl:variable name="stereotype-name-extern"                  select="'EXTERN'"                               as="xs:string"/>
+  <xsl:variable name="stereotype-name-externe-koppeling"       select="'EXTERNE KOPPELING'"                    as="xs:string"/>
+  <xsl:variable name="stereotype-name-gegevensgroep"           select="'GEGEVENSGROEP'"                        as="xs:string"/>
+  <xsl:variable name="stereotype-name-gegevensgroeptype"       select="'GEGEVENSGROEPTYPE'"                    as="xs:string"/>
+  <xsl:variable name="stereotype-name-generalisatie"           select="'GENERALISATIE'"                        as="xs:string"/>
+  <xsl:variable name="stereotype-name-gestructureerd-datatype" select="'GESTRUCTUREERD DATATYPE'"              as="xs:string"/>
+  <xsl:variable name="stereotype-name-keuze"                   select="'KEUZE'"                                as="xs:string"/>
+  <xsl:variable name="stereotype-name-objecttype"              select="'OBJECTTYPE'"                           as="xs:string"/>
+  <xsl:variable name="stereotype-name-primitief-datatype"      select="'PRIMITIEF DATATYPE'"                   as="xs:string"/>
+  <xsl:variable name="stereotype-name-referentie-element"      select="'REFERENTIE ELEMENT'"                   as="xs:string"/>
+  <xsl:variable name="stereotype-name-referentielijst"         select="'REFERENTIELIJST'"                      as="xs:string"/>
+  <xsl:variable name="stereotype-name-relatieklasse"           select="'RELATIEKLASSE'"                        as="xs:string"/>
+  <xsl:variable name="stereotype-name-relatierol"              select="'RELATIEROL'"                           as="xs:string"/>
+  <xsl:variable name="stereotype-name-relatiesoort"            select="'RELATIESOORT'"                         as="xs:string"/>
+  <xsl:variable name="stereotype-name-view"                    select="'VIEW'"                                 as="xs:string"/>
+  <xsl:variable name="stereotype-name-interface"               select="'INTERFACE'"                            as="xs:string"/>
+  <xsl:variable name="stereotype-id-keuze-datatypes"           select="'stereotype-name-union-datatypes'"      as="xs:string"/>
+  <xsl:variable name="stereotype-id-keuze-attributes"          select="'stereotype-name-union-attributes'"     as="xs:string"/>
+  <xsl:variable name="stereotype-id-keuze-associations"        select="'stereotype-name-union-associations'"   as="xs:string"/>
+  <xsl:variable name="stereotype-id-keuze-element"             select="'stereotype-name-union-element'"        as="xs:string"/>
+  <xsl:variable name="stereotype-id-union-by-attribute"        select="'stereotype-name-union-by-attribute'"   as="xs:string"/> <!-- KEUZE MET BETEKENIS -->
   <xsl:variable name="stereotype-id-union-for-attributes"      select="'stereotype-name-union-for-attributes'" as="xs:string"/> <!-- KEUZE ZONDER BETEKENIS -->
-  
+  <xsl:variable name="stereotype-id-union-association"         select="'stereotype-name-union-association'"    as="xs:string"/> <!-- KEUZE RELATIE -->
+ 
   <xsl:variable name="waardebereik-authentiek" select="('Authentiek', 'Basisgegeven', 'Wettelijk gegeven', 'Landelijk kerngegeven', 'Overig')" as="xs:string+"/>  
   <xsl:variable name="waardebereik-aggregatietype" select="('Compositie', 'Gedeeld', 'Geen')" as="xs:string+"/> 
   <xsl:variable name="mim-stereotype-names" select="($stereotype-name-attribuutsoort, $stereotype-name-codelijst, $stereotype-name-data-element, 
@@ -92,7 +93,8 @@
     $stereotype-name-referentie-element, $stereotype-name-referentielijst, $stereotype-name-relatieklasse, $stereotype-name-relatierol, 
     $stereotype-name-relatiesoort, $stereotype-name-view, $stereotype-name-interface, $stereotype-name-informatiemodel)" as="xs:string+"/>
   <xsl:variable name="mim-stereotype-ids" select="($stereotype-id-keuze-datatypes, $stereotype-id-keuze-attributes, 
-    $stereotype-id-keuze-associations, $stereotype-id-keuze-element)" as="xs:string+"/>
+    $stereotype-id-keuze-associations, $stereotype-id-keuze-element, $stereotype-id-union-by-attribute, 
+    $stereotype-id-union-for-attributes, $stereotype-id-union-association)" as="xs:string+"/>
   <xsl:variable name="mim-tagged-value-ids" select="('CFG-TV-INDICATIONAUTHENTIC', 'CFG-TV-CONCEPT', 'CFG-TV-DATERECORDED', 'CFG-TV-DEFINITION',
     'CFG-TV-FORMALPATTERN', 'CFG-TV-SOURCE', 'CFG-TV-SOURCEOFDEFINITION', 'CFG-TV-INDICATIONDERIVABLE', 'CFG-TV-INDICATIONCLASSIFICATION',
     'CFG-TV-INDICATIONFORMALHISTORY', 'CFG-TV-INDICATIONMATERIALHISTORY', 'CFG-TV-QUALITY', 'CFG-TV-LENGTH','CFG-TV-DATALOCATION',
@@ -290,7 +292,6 @@
   <!-- mim:Objectype -->
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-objecttype]">
     <mim:Objecttype id="{imvert:id}">
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
       <xsl:call-template name="begrip"/>
@@ -318,7 +319,6 @@
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-gegevensgroeptype]">
     <mim:Gegevensgroeptype id="{imvert:id}">
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
       <xsl:call-template name="begrip"/>
@@ -334,7 +334,6 @@
   
   <xsl:template match="imvert:attribute[not(imvert:stereotype) or (imvert:stereotype = $stereotype-name-attribuutsoort) or (imvert:stereotype/@id = $stereotype-id-keuze-element)]">
     <mim:Attribuutsoort>
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
       <xsl:call-template name="begrip"/>
@@ -362,7 +361,6 @@
   
   <xsl:template match="imvert:attribute[imvert:stereotype = $stereotype-name-gegevensgroep]">
     <mim:Gegevensgroep>
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
       <xsl:call-template name="begrip"/>
@@ -384,10 +382,9 @@
     </mim:Gegevensgroep>
   </xsl:template>
   
-  <xsl:template match="imvert:association[imvert:stereotype = $stereotype-name-relatiesoort 
-    and not(imf:association-is-keuze-attributes(.))]">
+  <xsl:template match="imvert:association[(imvert:stereotype = $stereotype-name-relatiesoort or 
+    imvert:stereotype/@id = $stereotype-id-union-association) and not(imf:association-is-keuze-attributes(.))]">
     <mim:Relatiesoort>
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
       <xsl:call-template name="begrip"/>
@@ -430,7 +427,6 @@
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-gestructureerd-datatype]">
     <mim:GestructureerdDatatype id="{imvert:id}">
-      <xsl:call-template name="id"/>
       <xsl:call-template name="supertype"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -453,7 +449,6 @@
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-primitief-datatype]">
     <mim:PrimitiefDatatype id="{imvert:id}">
-      <xsl:call-template name="id"/>
       <xsl:call-template name="supertype"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -470,7 +465,6 @@
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-enumeratie]">
     <mim:Enumeratie id="{imvert:id}">
-      <xsl:call-template name="id"/>
       <xsl:call-template name="supertype"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -487,7 +481,6 @@
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-codelijst]">
     <mim:Codelijst id="{imvert:id}">
-      <xsl:call-template name="id"/>
       <xsl:call-template name="supertype"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -503,7 +496,6 @@
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-referentielijst]">
     <mim:Referentielijst id="{imvert:id}">
-      <xsl:call-template name="id"/>
       <xsl:call-template name="supertype"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
@@ -524,7 +516,6 @@
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-datatype]">
     <mim:Datatype id="{imvert:id}">
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
       <xsl:call-template name="kardinaliteit"/>
@@ -535,7 +526,6 @@
   
   <xsl:template match="imvert:attribute[imvert:stereotype = $stereotype-name-data-element]">
     <mim:DataElement>
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
       <xsl:call-template name="begrip"/>
@@ -553,7 +543,6 @@
   
   <xsl:template match="imvert:attribute[imvert:stereotype = $stereotype-name-enumeratiewaarde]">
     <mim:Enumeratiewaarde>
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="begrip"/>
       <xsl:call-template name="definitie"/>
@@ -564,7 +553,6 @@
   
   <xsl:template match="imvert:attribute[imvert:stereotype = $stereotype-name-referentie-element]">
     <mim:ReferentieElement>
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
       <xsl:call-template name="begrip"/>
@@ -596,14 +584,11 @@
   <!-- mim:Keuze__Attribuutsoorten -->
   <xsl:template match="imvert:class[imvert:stereotype/@id = $stereotype-id-keuze-attributes]">
     <mim:Keuze__Attribuutsoorten id="{imvert:id}">
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
-      <xsl:call-template name="alias"/>
       <xsl:call-template name="begrip"/>
       <xsl:call-template name="herkomst"/>
       <xsl:call-template name="definitie"/>
       <xsl:call-template name="datumOpname"/>
-      <xsl:call-template name="toelichting"/>
       <mim:bevat__attribuutsoort>
         <xsl:apply-templates select="imvert:attributes/imvert:attribute">
           <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
@@ -616,26 +601,16 @@
   <!-- mim:Keuze__Datatypen -->
   <xsl:template match="imvert:class[imvert:stereotype/@id = $stereotype-id-keuze-datatypes]">
     <mim:Keuze__Datatypen id="{imvert:id}">
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
-      <xsl:call-template name="alias"/>
       <xsl:call-template name="begrip"/>
       <xsl:call-template name="herkomst"/>
       <xsl:call-template name="definitie"/>
-      <xsl:call-template name="datumOpname"/>
-      <xsl:call-template name="toelichting"/>
-      <!-- TODO: mapping 
-      <xsl:call-template name="bevat__attribuutsoort"/> 
-      -->
+      <xsl:call-template name="datumOpname"/>      
       <mim:bevat__datatype>
         <xsl:for-each select="imvert:attributes/imvert:attribute">
           <xsl:call-template name="process-datatype"/>
         </xsl:for-each>  
       </mim:bevat__datatype>
-      <!-- TODO: mapping
-      <xsl:call-template name="bevat"/>
-      <xsl:call-template name="keuzeUit__G"/>
-      -->
       <xsl:call-template name="extensieKenmerken"/>
     </mim:Keuze__Datatypen>
   </xsl:template> 
@@ -643,20 +618,22 @@
   <!-- mim:Keuze__Associaties -->
   <xsl:template match="imvert:class[imvert:stereotype/@id = $stereotype-id-keuze-associations]">
     <mim:Keuze__Associaties id="{imvert:id}">
-      <xsl:call-template name="id"/>
-      <xsl:call-template name="uniDirectioneel"/>
-      <xsl:call-template name="typeAggregatie"/>
-      <xsl:call-template name="kardinaliteit"/>
-      <!-- imvert:class heeft geen type-id
-      <xsl:call-template name="doel"/>
-      -->
+      <xsl:call-template name="naam"/>
+      <xsl:call-template name="begrip"/>
+      <xsl:call-template name="herkomst"/>
+      <xsl:call-template name="definitie"/>
+      <xsl:call-template name="datumOpname"/>      
       <xsl:call-template name="extensieKenmerken"/>
+      <mim:bevat__relatiesoort>
+        <xsl:apply-templates select="imvert:associations/imvert:association">
+          <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
+        </xsl:apply-templates>
+      </mim:bevat__relatiesoort>
     </mim:Keuze__Associaties>
   </xsl:template> 
   
   <xsl:template match="imvert:association[imvert:stereotype = $stereotype-name-externe-koppeling]">
     <mim:ExterneKoppeling>
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
       <xsl:call-template name="datumOpname"/>
@@ -688,7 +665,6 @@
   
   <xsl:template match="imvert:class[imvert:stereotype = $stereotype-name-interface]">
     <mim:Interface id="{imvert:id}">
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="extensieKenmerken"/>
     </mim:Interface>
@@ -704,7 +680,6 @@
       <xsl:variable name="applicable-tv-ids" select="imf:get-config-applicable-tagged-value-ids(.)" as="xs:string*" use-when="$runs-in-imvertor-context"/>
       <xsl:variable name="applicable-tv-ids" select="()" as="xs:string*" use-when="not($runs-in-imvertor-context)"/>
       
-      <xsl:call-template name="id"/>
       <xsl:call-template name="naam"/>
       <xsl:call-template name="alias"/>
       <xsl:if test="empty($applicable-tv-ids) or 'CFG-TV-CONCEPT' = $applicable-tv-ids">
@@ -950,7 +925,7 @@
     UC2: stereotype-name-union-for-attributes: KEUZE ZONDER BETEKENIS op OBJECTTYPE   
     UC3: stereotype-name-union-by-attribute: KEUZE MET BETEKENIS (samen met ATTRIBUUTSOORT)
    
-    NB. Hier worden alleen "stereotype-name-union-for-attributes" afgehandeld, "stereotype-name-union-by-attribute" worden geserialiseerd
+    NB. Hier worden alleen "stereotype-name-union-for-attributes" afgehandeld (UC2), "stereotype-name-union-by-attribute" worden geserialiseerd
     als attribuutsoorten.
     -->
     <xsl:where-populated>
@@ -1014,12 +989,6 @@
 
   <xsl:template name="herkomstDefinitie">
     <mim:herkomstDefinitie>{imf:tagged-values(., 'CFG-TV-SOURCEOFDEFINITION')}</mim:herkomstDefinitie>
-  </xsl:template>
-
-  <xsl:template name="id">
-    <!-- TODO: genereren van mim:id helemaal verwijderen?
-    <mim:id>{imvert:id}</mim:id>
-    -->
   </xsl:template>
 
   <xsl:template name="identificatie__F"><!--TODO--></xsl:template>
