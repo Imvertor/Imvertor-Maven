@@ -1500,6 +1500,9 @@
 			<xsl:when test="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association' and (empty(ep:parameters/ep:parameter[ep:name='meervoudigeNaam']) or ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value = '')]">
 				<xsl:sequence select="imf:msg(.,'ERROR','The association connected to and orginated from the request class [1] does not have a tagged value meervoudige naam, supply one.', (ep:name))" />			
 			</xsl:when>
+			<xsl:when test="ep:tech-name = ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association']/ep:type-name">
+				<xsl:sequence select="imf:msg(.,'ERROR','An association connected to and orginated from the request class [1] is creating a recursive relation. This is not allowed within the request tree.', (ep:name))" />			
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:for-each select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association']">
 					<xsl:variable name="meervoudigeNaam" select="ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
