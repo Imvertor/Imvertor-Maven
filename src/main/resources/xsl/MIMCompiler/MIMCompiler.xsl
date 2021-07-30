@@ -42,6 +42,7 @@
   
   <xsl:mode on-no-match="shallow-skip"/>
   <xsl:mode name="preprocess" on-no-match="shallow-copy"/>
+  <xsl:mode name="postprocess" on-no-match="shallow-copy"/>
 
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   <xsl:variable name="generate-readable-ids" select="true()" as="xs:boolean" static="yes"/>
@@ -114,6 +115,8 @@
   <xsl:variable name="mim11-primitive-datatypes-lc-names" select="for $n in $mim11-package/imvert:class/imvert:name/@original return lower-case($n)" as="xs:string+"/>
   
   <xsl:key name="key-imvert-construct-by-id" match="imvert:*[imvert:id]" use="imvert:id"/>
+  <xsl:key name="key-mim-construct-by-id" match="*[@id]" use="@id"/>
+  <xsl:key name="key-mim-domain-by-xlink" match="mim:Domein|mim:View|mim:Extern" use="for $a in .//mim-ref:*/@xlink:href return substring($a, 2)"/>
   
   <xsl:template match="/">
     <xsl:apply-templates select="$preprocessed-xml/imvert:packages"/>
@@ -128,87 +131,95 @@
     </xsl:copy>
   </xsl:template>
   
-  <xsl:template match="imvert:id[string-length(.) ge 32]" mode="preprocess" use-when="$generate-readable-ids">
-    <xsl:copy>{imf:create-id(..)}</xsl:copy>
+  <xsl:template match="@id[string-length(.) ge 32]" mode="postprocess" use-when="$generate-readable-ids">
+    <xsl:attribute name="id" select="imf:create-id(..)"/>
   </xsl:template>
   
-  <xsl:template match="(imvert:type-id|imvert:type-package-id)[string-length(.) ge 32]" mode="preprocess" use-when="$generate-readable-ids">
-    <xsl:copy>{imf:create-id(key('key-imvert-construct-by-id', .))}</xsl:copy>
+  <xsl:template match="@xlink:href[string-length(.) ge 32]" mode="postprocess" use-when="$generate-readable-ids">
+    <xsl:attribute name="xlink:href" namespace="http://www.w3.org/1999/xlink" select="'#' || imf:create-id(key('key-mim-construct-by-id', substring(., 2), root()))"/>
   </xsl:template>
   
   <xsl:template match="/imvert:packages">
-    <mim:Informatiemodel
-      xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
-      xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
-      xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      
-      <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel/v1 ../xsd/MIMFORMAT/model/v20210609/MIMFORMAT_Mim_v0_0_1.xsd</xsl:attribute>
-      
-      <mim:naam>{imvert:model-id}</mim:naam>
-      <xsl:call-template name="definitie"/>
-      <xsl:call-template name="herkomst"/>
-      <mim:informatiedomein>{imf:tagged-values(., 'CFG-TV-IMDOMAIN')}</mim:informatiedomein>
-      <mim:informatiemodeltype>{imf:tagged-values(., 'CFG-TV-IMTYPE')}</mim:informatiemodeltype>
-      <mim:relatiemodelleringstype>{imf:tagged-values(., 'CFG-TV-IMRELATIONMODELINGTYPE')}</mim:relatiemodelleringstype>
-      <mim:mIMVersie>{imf:tagged-values(., 'CFG-TV-MIMVERSION')}</mim:mIMVersie>
-      <xsl:where-populated>
-        <mim:mIMExtensie>{imf:tagged-values(., 'CFG-TV-MIMEXTENSION')}</mim:mIMExtensie>    
-      </xsl:where-populated>
-      <xsl:where-populated>
-        <mim:mIMTaal>{imf:tagged-values(., 'CFG-TV-MIMLANGUAGE')}</mim:mIMTaal>  
-      </xsl:where-populated>
-      <xsl:where-populated>
-        <mim:bevat>
-          <xsl:apply-templates select="$packages[imvert:stereotype = ($stereotype-name-domein, $stereotype-name-view)]">
-            <xsl:sort select="imvert:stereotype"/>
-            <xsl:sort select="imvert:name"/>
-          </xsl:apply-templates>
-        </mim:bevat>
-      </xsl:where-populated>
-      
-      <xsl:where-populated>
-        <mim:maaktGebruikVan>
-          <xsl:apply-templates select="$packages[imvert:stereotype = $stereotype-name-extern]">
-            <xsl:sort select="imvert:name"/>
-          </xsl:apply-templates>
-        </mim:maaktGebruikVan>  
-      </xsl:where-populated>
-     
-      <mim:components>
-        <mim:InformatiemodelComponents>
-          <!-- mim:Objectype: -->
-          <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-objecttype]"/>
-          <!-- mim:Gegevensgroeptype: -->
-          <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gegevensgroeptype]"/>
-          <!-- mim:GestructureerdDatatype -->
-          <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gestructureerd-datatype]"/>
-          <!-- mim:PrimitiefDatatype -->
-          <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-primitief-datatype]"/>
-          <!-- mim:Enumeratie -->
-          <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-enumeratie]"/>
-          <!-- mim:Codelijst -->
-          <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-codelijst]"/>
-          <!-- mim:Referentielijst -->
-          <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-referentielijst]"/>
-          <!-- mim:Datatype -->
-          <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-datatype]"/>
-          <!-- mim:Keuze__Attribuutsoorten -->
-          <xsl:apply-templates select="$classes[imvert:stereotype/@id = $stereotype-id-keuze-attributes]"/>
-          <!-- mim:Keuze__Datatypen -->
-          <xsl:apply-templates select="$classes[imvert:stereotype/@id = $stereotype-id-keuze-datatypes]"/>
-          <!-- mim:Keuze__Associaties -->
-          <xsl:apply-templates select="$classes[imvert:stereotype/@id = $stereotype-id-keuze-associations]"/>
-          <!-- TODO: mim:Extern toevoegen? -->
-          <!-- mim:Interface -->
-          <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-interface and imvert:id]"/>
-          <!-- mim-ext:Constructie -->
-          <xsl:apply-templates select="$classes[imf:is-not-mim-construct(.)]"/>
-        </mim:InformatiemodelComponents>
-      </mim:components>
-      <xsl:call-template name="extensieKenmerken"/>
-    </mim:Informatiemodel>
+    <xsl:variable name="intermediate-result" as="document-node()">
+      <xsl:document>
+        <mim:Informatiemodel
+          xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
+          xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
+          xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          
+          <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel/v1 ../xsd/MIMFORMAT/model/v20210609/MIMFORMAT_Mim_v0_0_1.xsd</xsl:attribute>
+          
+          <mim:naam>{imvert:model-id}</mim:naam>
+          <xsl:call-template name="definitie"/>
+          <xsl:call-template name="herkomst"/>
+          <mim:informatiedomein>{imf:tagged-values(., 'CFG-TV-IMDOMAIN')}</mim:informatiedomein>
+          <mim:informatiemodeltype>{imf:tagged-values(., 'CFG-TV-IMTYPE')}</mim:informatiemodeltype>
+          <mim:relatiemodelleringstype>{imf:tagged-values(., 'CFG-TV-IMRELATIONMODELINGTYPE')}</mim:relatiemodelleringstype>
+          <mim:mIMVersie>{imf:tagged-values(., 'CFG-TV-MIMVERSION')}</mim:mIMVersie>
+          <xsl:where-populated>
+            <mim:mIMExtensie>{imf:tagged-values(., 'CFG-TV-MIMEXTENSION')}</mim:mIMExtensie>    
+          </xsl:where-populated>
+          <xsl:where-populated>
+            <mim:mIMTaal>{imf:tagged-values(., 'CFG-TV-MIMLANGUAGE')}</mim:mIMTaal>  
+          </xsl:where-populated>
+          <xsl:where-populated>
+            <mim:bevat>
+              <xsl:apply-templates select="$packages[imvert:stereotype = ($stereotype-name-domein, $stereotype-name-view)]">
+                <xsl:sort select="imvert:stereotype"/>
+                <xsl:sort select="imvert:name"/>
+              </xsl:apply-templates>
+            </mim:bevat>
+          </xsl:where-populated>
+          
+          <xsl:where-populated>
+            <mim:maaktGebruikVan>
+              <xsl:apply-templates select="$packages[imvert:stereotype = $stereotype-name-extern]">
+                <xsl:sort select="imvert:name"/>
+              </xsl:apply-templates>
+            </mim:maaktGebruikVan>  
+          </xsl:where-populated>
+          
+          <mim:components>
+            <mim:InformatiemodelComponents>
+              <!-- mim:Objectype: -->
+              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-objecttype]"/>
+              <!-- mim:Gegevensgroeptype: -->
+              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gegevensgroeptype]"/>
+              <!-- mim:GestructureerdDatatype -->
+              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gestructureerd-datatype]"/>
+              <!-- mim:PrimitiefDatatype -->
+              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-primitief-datatype]"/>
+              <!-- mim:Enumeratie -->
+              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-enumeratie]"/>
+              <!-- mim:Codelijst -->
+              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-codelijst]"/>
+              <!-- mim:Referentielijst -->
+              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-referentielijst]"/>
+              <!-- mim:Datatype -->
+              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-datatype]"/>
+              <!-- mim:Keuze__Attribuutsoorten -->
+              <xsl:apply-templates select="$classes[imvert:stereotype/@id = $stereotype-id-keuze-attributes]"/>
+              <!-- mim:Keuze__Datatypen -->
+              <xsl:apply-templates select="$classes[imvert:stereotype/@id = $stereotype-id-keuze-datatypes]"/>
+              <!-- mim:Keuze__Associaties -->
+              <xsl:apply-templates select="$classes[imvert:stereotype/@id = $stereotype-id-keuze-associations]"/>
+              <!-- TODO: mim:Extern toevoegen? -->
+              <!-- mim:Interface -->
+              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-interface and imvert:id]"/>
+              <!-- mim-ext:Constructie -->
+              <xsl:apply-templates select="$classes[imf:is-not-mim-construct(.)]"/>
+            </mim:InformatiemodelComponents>
+          </mim:components>
+          <xsl:call-template name="extensieKenmerken"/>
+        </mim:Informatiemodel>    
+      </xsl:document>
+    </xsl:variable>
+    <xsl:apply-templates select="$intermediate-result" mode="postprocess"/>
+    <!--
+    <xsl:sequence select="$intermediate-result" />
+    -->
   </xsl:template>
   
   <xsl:template name="domein-of-view">
@@ -1239,32 +1250,18 @@
     <xsl:sequence select="if ($arg) then concat(upper-case(substring($arg,1,1)), substring($arg,2)) else ()"/>
   </xsl:function>
  
-  <!-- 
-  <xsl:function name="imf:valid-id" as="xs:string">
-    <xsl:param name="id" as="xs:string?"/>
-    <xsl:sequence select="'id-' || translate($id, '{}', '')"/>
-  </xsl:function>
-  -->
-  
   <xsl:function name="imf:create-id" as="xs:string">
     <xsl:param name="elem" as="element()"/>
-    <xsl:variable name="prefix" select="imf:valid-id(($elem/imvert:stereotype, local-name($elem))[1])" as="xs:string"/>
-    <xsl:variable name="package-name" select="imf:valid-id($elem/ancestor-or-self::imvert:package[imvert:stereotype = ($stereotype-name-domein, $stereotype-name-view)]/imvert:name)" as="xs:string?"/>
-    <xsl:variable name="name" as="xs:string">
-      <xsl:choose>
-        <xsl:when test="$elem/self::imvert:class and $elem/imvert:stereotype = 'INTERFACE'">{$elem/imvert:name/@original}</xsl:when>
-        <xsl:otherwise>{$elem/imvert:name}</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:variable name="suffix" select="imf:valid-id($name)" as="xs:string?"/>
-    <xsl:value-of select="string-join(($package-name, $prefix, $suffix, generate-id($elem)), '-')"/>
+    <xsl:variable name="package" select="key('key-mim-domain-by-xlink', $elem/ancestor-or-self::*[@id][1]/@id, $elem/root())/mim:naam" as="xs:string?"/>
+    <xsl:variable name="modelelement" select="local-name($elem)" as="xs:string"/>
+    <xsl:variable name="naam" select="imf:valid-id($elem/mim:naam)" as="xs:string"/>
+    <xsl:value-of select="lower-case(string-join(($package, $modelelement, $naam, generate-id($elem)), '-'))"/>
   </xsl:function>
   
   <xsl:function name="imf:valid-id" as="xs:string?">
     <xsl:param name="id" as="xs:string?"/>
     <xsl:sequence select="if ($id) then replace(replace(lower-case(normalize-space($id)), '[^a-z_0-9 ]', ''), ' ', '-') else ()"/>
   </xsl:function>
-  
   
   <xsl:function name="imf:name" as="xs:string">
     <xsl:param name="imvert-element" as="element()"/>
