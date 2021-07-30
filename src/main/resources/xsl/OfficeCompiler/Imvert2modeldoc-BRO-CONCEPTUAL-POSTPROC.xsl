@@ -166,6 +166,7 @@
             <xsl:apply-templates select="part[@type = 'CFG-DOC-MOGELIJKGEENWAARDE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-EXPLAINNOVALUE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEIDENTIFICEREND' and item[2] eq 'Ja']"/>
         </content>
     </xsl:template>
     
@@ -240,6 +241,7 @@
             <xsl:apply-templates select="part[@type = 'CFG-DOC-MOGELIJKGEENWAARDE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-EXPLAINNOVALUE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEIDENTIFICEREND' and item[2] eq 'Ja']"/>
         </content>
     </xsl:template>
     

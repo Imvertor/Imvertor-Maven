@@ -50,11 +50,5 @@
     <!--
         More rules?
     -->
-    
-    <!-- associatierol met stereotype name "keuze" --> 
-    <xsl:template match="/imvert:packages/imvert:package/imvert:tagged-values/imvert:tagged-value[@id = 'CFG-TV-IMRELATIONMODELINGTYPE']/imvert:value[. = ('Relatie','Rol')]">
-        <xsl:sequence select="imf:report-warning(..,true(),'Tagged value is deprecated: [1]',.)"/>
-        <imvert:value>{if (. = 'Relatie') then 'Relatiesoort leidend' else 'Relatierol leidend'}</imvert:value>
-    </xsl:template>
-    
+        
 </xsl:stylesheet>

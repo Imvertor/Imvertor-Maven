@@ -1238,7 +1238,7 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($is-afleidbaar-text,false()))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEIDENTIFICEREND'">
-                    <xsl:variable name="is-identifying-text" select="if (imf:boolean(imvert:is-id)) then 'YES' else 'NO'"/>
+                    <xsl:variable name="is-identifying-text" select="if (imf:boolean($this/imvert:is-id)) then 'YES' else 'NO'"/>
                     <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($is-identifying-text,false()))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIECLASSIFICATIE'">

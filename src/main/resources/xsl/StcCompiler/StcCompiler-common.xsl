@@ -61,7 +61,7 @@
     <xsl:param name="value" as="xs:string*"/>
     <!-- enige regel is nu: max 50 woorden. Hoe beperken? -->
     <xsl:variable name="v" select="imf:string($value)"/>
-    <xsl:value-of select="$v || (if (count(tokenize($v,'\s+')) gt 50) then '(issue 7)' else '')"/>
+    <xsl:value-of select="$v"/><!-- ... || (if (count(tokenize($v,'\s+')) gt 50) then '(issue 7)' else '') -->
   </xsl:function>
   
   <xsl:function name="imf:string" as="xs:string">
