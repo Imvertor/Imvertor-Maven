@@ -1252,7 +1252,7 @@
  
   <xsl:function name="imf:create-id" as="xs:string">
     <xsl:param name="elem" as="element()"/>
-    <xsl:variable name="package" select="key('key-mim-domain-by-xlink', $elem/ancestor-or-self::*[@id][1]/@id, $elem/root())/mim:naam" as="xs:string?"/>
+    <xsl:variable name="package" select="imf:valid-id(key('key-mim-domain-by-xlink', $elem/ancestor-or-self::*[@id][1]/@id, $elem/root())/mim:naam)" as="xs:string?"/>
     <xsl:variable name="modelelement" select="local-name($elem)" as="xs:string"/>
     <xsl:variable name="naam" select="imf:valid-id($elem/mim:naam)" as="xs:string"/>
     <xsl:value-of select="lower-case(string-join(($package, $modelelement, $naam, generate-id($elem)), '-'))"/>
