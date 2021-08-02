@@ -8,13 +8,13 @@
         this metamodel is subject to standard Grouping conventions 
     -->
     <xi:include href="Grouping.xml"/>
+
+    <!-- MIM 1.0 follows SBR requirements -->
+    <xi:include href="../../../BiZa/cfg/tvsets/SBR.xml"/>
     
     <name>MIM 1.0</name>
     
     <tagged-values>
-        
-        <!-- BP follows SBR requirements -->
-        <xi:include href="../../../BiZa/cfg/tvsets/SBR.xml"/>
         
         <tv norm="space" id="CFG-TV-DATERECORDED">
             <name lang="nl">Datum opname</name>
