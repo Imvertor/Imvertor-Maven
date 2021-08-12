@@ -182,35 +182,33 @@
           </xsl:where-populated>
           
           <mim:components>
-            <mim:InformatiemodelComponents>
-              <!-- mim:Objectype: -->
-              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-objecttype]"/>
-              <!-- mim:Gegevensgroeptype: -->
-              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gegevensgroeptype]"/>
-              <!-- mim:GestructureerdDatatype -->
-              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gestructureerd-datatype]"/>
-              <!-- mim:PrimitiefDatatype -->
-              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-primitief-datatype]"/>
-              <!-- mim:Enumeratie -->
-              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-enumeratie]"/>
-              <!-- mim:Codelijst -->
-              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-codelijst]"/>
-              <!-- mim:Referentielijst -->
-              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-referentielijst]"/>
-              <!-- mim:Datatype -->
-              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-datatype]"/>
-              <!-- mim:Keuze__Attribuutsoorten -->
-              <xsl:apply-templates select="$classes[imvert:stereotype/@id = $stereotype-id-keuze-attributes]"/>
-              <!-- mim:Keuze__Datatypen -->
-              <xsl:apply-templates select="$classes[imvert:stereotype/@id = $stereotype-id-keuze-datatypes]"/>
-              <!-- mim:Keuze__Associaties -->
-              <xsl:apply-templates select="$classes[imvert:stereotype/@id = $stereotype-id-keuze-associations]"/>
-              <!-- TODO: mim:Extern toevoegen? -->
-              <!-- mim:Interface -->
-              <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-interface and imvert:id]"/>
-              <!-- mim-ext:Constructie -->
-              <xsl:apply-templates select="$classes[imf:is-not-mim-construct(.)]"/>
-            </mim:InformatiemodelComponents>
+            <!-- mim:Objectype: -->
+            <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-objecttype]"/>
+            <!-- mim:Gegevensgroeptype: -->
+            <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gegevensgroeptype]"/>
+            <!-- mim:GestructureerdDatatype -->
+            <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-gestructureerd-datatype]"/>
+            <!-- mim:PrimitiefDatatype -->
+            <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-primitief-datatype]"/>
+            <!-- mim:Enumeratie -->
+            <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-enumeratie]"/>
+            <!-- mim:Codelijst -->
+            <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-codelijst]"/>
+            <!-- mim:Referentielijst -->
+            <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-referentielijst]"/>
+            <!-- mim:Datatype -->
+            <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-datatype]"/>
+            <!-- mim:Keuze__Attribuutsoorten -->
+            <xsl:apply-templates select="$classes[imvert:stereotype/@id = $stereotype-id-keuze-attributes]"/>
+            <!-- mim:Keuze__Datatypen -->
+            <xsl:apply-templates select="$classes[imvert:stereotype/@id = $stereotype-id-keuze-datatypes]"/>
+            <!-- mim:Keuze__Associaties -->
+            <xsl:apply-templates select="$classes[imvert:stereotype/@id = $stereotype-id-keuze-associations]"/>
+            <!-- TODO: mim:Extern toevoegen? -->
+            <!-- mim:Interface -->
+            <xsl:apply-templates select="$classes[imvert:stereotype = $stereotype-name-interface and imvert:id]"/>
+            <!-- mim-ext:Constructie -->
+            <xsl:apply-templates select="$classes[imf:is-not-mim-construct(.)]"/>
           </mim:components>
           <xsl:call-template name="extensieKenmerken"/>
         </mim:Informatiemodel>    
@@ -1260,7 +1258,7 @@
   
   <xsl:function name="imf:valid-id" as="xs:string?">
     <xsl:param name="id" as="xs:string?"/>
-    <xsl:sequence select="if ($id) then replace(replace(lower-case(normalize-space($id)), '[^a-z_0-9 ]', ''), ' ', '-') else ()"/>
+    <xsl:sequence select="if ($id) then replace(replace(lower-case(normalize-space($id)), '[^a-z0-9 ]', ''), ' ', '-') else ()"/>
   </xsl:function>
   
   <xsl:function name="imf:name" as="xs:string">
@@ -1340,6 +1338,11 @@
         <xsl:for-each select="imvert:tagged-values/imvert:tagged-value[not(@id = $mim-tagged-value-ids)]">
           <mim-ext:kenmerk naam="{imvert:name/@original}">{imvert:value/@original}</mim-ext:kenmerk>
         </xsl:for-each>  
+        <!--
+        <xsl:where-populated>
+          <mim-ext:kenmerk naam="identificerend">{imf:mim-boolean(imvert:is-id)}</mim-ext:kenmerk>
+        </xsl:where-populated>
+        -->
         <xsl:where-populated>
           <mim-ext:kenmerk naam="positie">{imvert:position/@original}</mim-ext:kenmerk>
         </xsl:where-populated>
