@@ -152,17 +152,17 @@
           <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel/v1 ../xsd/MIMFORMAT/model/v20210609/MIMFORMAT_Mim_v0_0_1.xsd</xsl:attribute>
           
           <mim:naam>{imvert:model-id}</mim:naam>
-          <xsl:call-template name="definitie"/>
-          <xsl:call-template name="herkomst"/>
-          <mim:informatiedomein>{imf:tagged-values(., 'CFG-TV-IMDOMAIN')}</mim:informatiedomein>
-          <mim:informatiemodeltype>{imf:tagged-values(., 'CFG-TV-IMTYPE')}</mim:informatiemodeltype>
-          <mim:relatiemodelleringstype>{imf:tagged-values(., 'CFG-TV-IMRELATIONMODELINGTYPE')}</mim:relatiemodelleringstype>
-          <mim:mIMVersie>{imf:tagged-values(., 'CFG-TV-MIMVERSION')}</mim:mIMVersie>
+          <mim:definitie>{imf:tagged-values-not-traced(., 'CFG-TV-DEFINITION')}</mim:definitie>
+          <mim:herkomst>{imf:tagged-values-not-traced(., 'CFG-TV-SOURCE')}</mim:herkomst>
+          <mim:informatiedomein>{imf:tagged-values-not-traced(., 'CFG-TV-IMDOMAIN')}</mim:informatiedomein>
+          <mim:informatiemodeltype>{imf:tagged-values-not-traced(., 'CFG-TV-IMTYPE')}</mim:informatiemodeltype>
+          <mim:relatiemodelleringstype>{imf:tagged-values-not-traced(., 'CFG-TV-IMRELATIONMODELINGTYPE')}</mim:relatiemodelleringstype>
+          <mim:mIMVersie>{imf:tagged-values-not-traced(., 'CFG-TV-MIMVERSION')}</mim:mIMVersie>
           <xsl:where-populated>
-            <mim:mIMExtensie>{imf:tagged-values(., 'CFG-TV-MIMEXTENSION')}</mim:mIMExtensie>    
+            <mim:mIMExtensie>{imf:tagged-values-not-traced(., 'CFG-TV-MIMEXTENSION')}</mim:mIMExtensie>    
           </xsl:where-populated>
           <xsl:where-populated>
-            <mim:mIMTaal>{imf:tagged-values(., 'CFG-TV-MIMLANGUAGE')}</mim:mIMTaal>  
+            <mim:mIMTaal>{imf:tagged-values-not-traced(., 'CFG-TV-MIMLANGUAGE')}</mim:mIMTaal>  
           </xsl:where-populated>
           <xsl:where-populated>
             <mim:bevat>
@@ -1206,6 +1206,12 @@
   </xsl:function>
   
   <xsl:function name="imf:tagged-values" as="xs:string*" use-when="not($runs-in-imvertor-context)">
+    <xsl:param name="context-node" as="element()"/>
+    <xsl:param name="tag-id" as="xs:string"/>
+    <xsl:sequence select="imf:tagged-values-not-traced($context-node, $tag-id)"/>
+  </xsl:function>
+  
+  <xsl:function name="imf:tagged-values-not-traced" as="xs:string*">
     <xsl:param name="context-node" as="element()"/>
     <xsl:param name="tag-id" as="xs:string"/>
     <xsl:sequence select="for $v in $context-node/imvert:tagged-values/imvert:tagged-value[@id = $tag-id]/imvert:value return normalize-space(string-join($v//text(), ' '))"/>
