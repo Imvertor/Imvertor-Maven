@@ -181,5 +181,24 @@
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
         </tv> 
+        
+        <tv norm="space" id="CFG-TV-IDENTIFYING">
+            <name lang="nl">Identificerend</name>
+            <name lang="en">Identifying</name>
+            <desc lang="nl">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value>Yes</value>
+                <value default="yes">No</value>
+            </declared-values>
+        </tv>
+        
     </tagged-values>
 </tagset>
