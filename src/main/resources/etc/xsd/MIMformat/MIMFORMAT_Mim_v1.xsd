@@ -55,24 +55,6 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="components" minOccurs="0">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="mim:Objecttype" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="mim:Gegevensgroeptype" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="mim:Gegevensgroep" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="mim:GestructureerdDatatype" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="mim:PrimitiefDatatype" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="mim:Enumeratie" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="mim:Codelijst" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="mim:Referentielijst" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="mim:Keuze" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="mim:ExterneKoppeling" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="mim:Interface" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="mim-ext:Constructie" minOccurs="0" maxOccurs="unbounded"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:ID" use="required"/>
@@ -84,33 +66,43 @@
     <xs:sequence>
       <xs:element name="datatypen" minOccurs="0">
         <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="mim-ref:DatatypeRef" maxOccurs="unbounded"/>
-          </xs:sequence>
+          <xs:choice maxOccurs="unbounded">
+            <xs:element ref="mim:GestructureerdDatatype"/>
+            <xs:element ref="mim:PrimitiefDatatype"/>
+            <xs:element ref="mim:Enumeratie"/>
+            <xs:element ref="mim:Codelijst"/>
+            <xs:element ref="mim:Referentielijst"/>
+          </xs:choice>
         </xs:complexType>
       </xs:element>
       <xs:element name="objecttypen" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="mim-ref:ObjecttypeRef" maxOccurs="unbounded"/>
+            <xs:element ref="mim:Objecttype" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
       <xs:element name="gegevensgroeptypen" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="mim-ref:GegevensgroeptypeRef" maxOccurs="unbounded"/>
+            <xs:element ref="mim:Gegevensgroeptype" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
       <xs:element name="keuzen" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="mim-ref:KeuzeRef" maxOccurs="unbounded"/>
+            <xs:element ref="mim:Keuze" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element ref="mim-ext:constructies" minOccurs="0"/>
+      <xs:element name="constructies" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim-ext:Constructie" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:ID" use="optional"/>
@@ -207,7 +199,7 @@
       <xs:element name="interfaces" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="mim-ref:InterfaceRef" maxOccurs="unbounded"/>
+            <xs:element ref="mim:Interface" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
