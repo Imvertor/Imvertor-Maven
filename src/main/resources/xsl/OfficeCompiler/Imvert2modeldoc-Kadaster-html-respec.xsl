@@ -101,10 +101,16 @@
           </xsl:comment>
     </xsl:function>
     
+    <?x
     <xsl:function name="imf:insert-diagram-path">
         <xsl:param name="diagram-id"/>
         <xsl:variable name="pre" select="if (imf:boolean($catalog-only)) then 'cat/' else ''"/>
         <xsl:value-of select="concat($pre,'Images/',$diagram-id,'.png')"/>
+    </xsl:function>
+    x?>
+   <xsl:function name="imf:insert-diagram-path">
+        <xsl:param name="diagram-id"/>
+        <xsl:value-of select="concat('Images/',$diagram-id,'.png')"/>
     </xsl:function>
     
 </xsl:stylesheet>
