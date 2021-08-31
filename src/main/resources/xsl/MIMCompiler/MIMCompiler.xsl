@@ -119,6 +119,9 @@
   <xsl:key name="key-mim-domain-by-xlink" match="mim:Domein|mim:View|mim:Extern" use="for $a in .//mim-ref:*/@xlink:href return substring($a, 2)"/>
   
   <xsl:template match="/">
+    <xsl:if test="imf:boolean-value(imf:get-xparam('cli/nativescalars', 'no'))">
+      <xsl:sequence select="imf:message(., 'WARNING', 'Please run the job with &quot;nativescalars = no&quot; when serializing to MIM', ())"/>
+    </xsl:if>
     <xsl:apply-templates select="$preprocessed-xml/imvert:packages"/>
   </xsl:template>
   
@@ -149,7 +152,9 @@
           xmlns:xlink="http://www.w3.org/1999/xlink"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           
+          <!--
           <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel/v1 ../xsd/MIMFORMAT/model/v20210609/MIMFORMAT_Mim_v0_0_1.xsd</xsl:attribute>
+          -->
           
           <mim:naam>{imvert:model-id}</mim:naam>
           <mim:definitie>{imf:tagged-values-not-traced(., 'CFG-TV-DEFINITION')}</mim:definitie>
@@ -968,9 +973,16 @@
       <xsl:when test="$baretype[lower-case(.) = $mim11-primitive-datatypes-lc-names]">
         <!-- MIM standaard datatype herkend dat als baretype is ingevoerd ( en dus geen gebruikmaakt van Kadaster-MIM11.xmi): -->
         <xsl:variable name="mim11-class" select="$packages[imvert:name = 'MIM11']/imvert:class[imf:equals-ci(imvert:name/@original, $baretype)]" as="element(imvert:class)?"/>
-        <xsl:call-template name="create-ref-element">
-          <xsl:with-param name="ref-id" select="$mim11-class/imvert:id" as="xs:string"/>
-        </xsl:call-template> 
+        <xsl:choose>
+          <xsl:when test="$mim11-class/imvert:id">
+            <xsl:call-template name="create-ref-element">
+              <xsl:with-param name="ref-id" select="$mim11-class/imvert:id" as="xs:string"/>
+            </xsl:call-template> 
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:sequence select="imf:message(., 'WARNING', 'The MIM modelelement for baretype [1] could not be found in the MIM11 package', ($baretype))"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:otherwise>  
         <xsl:sequence select="imf:message(., 'WARNING', 'Baretype [1] is not a standard MIM datatype', ($baretype))"/>
@@ -1232,6 +1244,18 @@
     <xsl:param name="info" as="item()*"/>
     <xsl:message select="$type || ': ' || $text"/>
   </xsl:function>
+  
+  <xsl:function name="imf:get-xparam" as="xs:string?" use-when="$runs-in-imvertor-context">
+    <xsl:param name="group-and-name"/>
+    <xsl:param name="default"/>
+    <xsl:sequence select="imf:get-xparm($group-and-name, $default)"/>      
+  </xsl:function>
+  
+  <xsl:function name="imf:get-xparam" as="xs:string?" use-when="not($runs-in-imvertor-context)">
+    <xsl:param name="group-and-name"/>
+    <xsl:param name="default"/>
+    <xsl:sequence select="$default"/>      
+  </xsl:function>
     
   <xsl:function name="imf:mim-boolean" as="xs:string">
     <xsl:param name="this" as="item()?"/>
@@ -1247,6 +1271,16 @@
   <xsl:function name="imf:mim-boolean" as="xs:string">
     <xsl:param name="this" as="item()?"/>
     <xsl:value-of select="imf:mim-boolean($this, 'false')"/>
+  </xsl:function>
+  
+  <xsl:function name="imf:boolean-value" as="xs:boolean">
+    <xsl:param name="this" as="item()?"/>
+    <xsl:variable name="v" select="lower-case(string($this))"/>
+    <xsl:sequence select="
+      if ($v=('yes','true','ja','1')) then true() 
+      else if ($v=('no','false','nee','0')) then false() 
+      else if ($this) then true() 
+      else false()"/>
   </xsl:function>
   
   <xsl:function name="imf:capitalize-first" as="xs:string?">
