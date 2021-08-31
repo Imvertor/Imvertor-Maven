@@ -251,11 +251,13 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De datum waarop het objecttype is opgenomen in het informatiemodel.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <!--
       <xs:element name="uniekeAanduiding" type="xs:string">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Voor objecttypen die deel uitmaken van een (basis)registratie of informatiemodel betreft dit de wijze waarop daarin voorkomende objecten (van dit type) uniek in de registratie worden aangeduid. Afgeleid gegeven op basis van combinatie van attribuutsoorten en relatiesoorten met is ID = True</xs:documentation>
         </xs:annotation>
       </xs:element>
+      -->
       <xs:element name="populatie" type="xs:string" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Voor objecttypen die deel uitmaken van een (basis)registratie betreft dit de beschrijving van de exemplaren van het gedefinieerde objecttype die in de desbetreffende (basis)registratie voorhanden zijn.</xs:documentation>
@@ -287,7 +289,7 @@
       <xs:element ref="mim:gegevensgroepen" minOccurs="0"/>
       <xs:element name="relatiesoorten" minOccurs="0">
         <xs:complexType>
-          <xs:choice>
+          <xs:choice maxOccurs="unbounded">
             <xs:element ref="mim:RelatiesoortRelatiesoortLeidend"/>
             <xs:element ref="mim:RelatiesoortRelatierolLeidend"/>
           </xs:choice>
