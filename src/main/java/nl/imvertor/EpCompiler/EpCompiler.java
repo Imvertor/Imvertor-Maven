@@ -98,6 +98,8 @@ public class EpCompiler extends Step {
 			// Debug: test if EP is okay
 			succeeds = succeeds && resultEpFile.isValid();
 		}
+		configurator.setXParm("system/ep-schema-created",succeeds);
+
 		return succeeds;
 	}
 }
