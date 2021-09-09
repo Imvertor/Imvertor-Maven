@@ -363,6 +363,7 @@
         <xsl:variable name="class-cardinality" select="imf:get-class-cardinality-bounds(.)"/>
         <xsl:variable name="designation">
             <xsl:choose>
+                <xsl:when test="$stereotypes=imf:get-config-stereotypes('stereotype-name-union')">choice</xsl:when>
                 <xsl:when test="imf:get-system-tagged-value(.,'ea_stype')='DataType'">datatype</xsl:when>
                 <xsl:when test="imf:get-system-tagged-value(.,'ea_stype')='PrimitiveType'">datatype</xsl:when>
                 <xsl:when test="$stereotypes[imf:get-normalized-name(.,'class-name') = imf:get-normalized-name('datatype','class-name')]">datatype</xsl:when>
@@ -431,75 +432,57 @@
                 <xsl:sequence select="imf:create-output-element('imvert:min-occurs',$class-cardinality[1])"/>
                 <xsl:sequence select="imf:create-output-element('imvert:max-occurs',$class-cardinality[2])"/>
                 
-                <xsl:choose>
-                    <xsl:when test="$is-datatype or $is-complextype">
-                        <xsl:sequence select="imf:get-datatype-info(.)"/>
-                        <imvert:attributes>
-                            <xsl:for-each select="$attributes">
-                                <imvert:attribute>
-                                    <xsl:sequence select="imf:get-id-info(.,'A')"/>
-                                    <xsl:sequence select="imf:get-scope-info(.)"/>
-                                    <xsl:sequence select="imf:get-attribute-info(.)"/>
-                                    <xsl:sequence select="imf:get-attribute-documentation-info(.)"/>
-                                    <!-- <xsl:sequence select="imf:get-history-info(.)"/> not available for attribute -->
-                                    <xsl:sequence select="imf:get-stereotypes-info(.,'my')"/>
-                                    <xsl:sequence select="imf:get-constraint-info(.)"/>
-                                    <xsl:sequence select="imf:get-external-resources-info(.)"/>
-                                    <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
-                                </imvert:attribute>
-                            </xsl:for-each>
-                        </imvert:attributes>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <imvert:attributes>
-                            <xsl:for-each select="$attributes">
-                                <imvert:attribute>
-                                    <xsl:sequence select="imf:get-id-info(.,'A')"/>
-                                    <xsl:sequence select="imf:get-scope-info(.)"/>
-                                    <xsl:sequence select="imf:get-attribute-info(.)"/>
-                                    <xsl:sequence select="imf:get-attribute-documentation-info(.)"/>
-                                    <!-- <xsl:sequence select="imf:get-history-info(.)"/> not available for attribute -->
-                                    <xsl:sequence select="imf:get-stereotypes-info(.,'my')"/>
-                                    <xsl:sequence select="imf:get-constraint-info(.)"/>
-                                    <xsl:sequence select="imf:get-external-resources-info(.)"/>
-                                    <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
-                                </imvert:attribute>
-                            </xsl:for-each>
-                        </imvert:attributes>
-                        <imvert:associations>
-                            <xsl:for-each select="$associations">
-                                <xsl:sort select="imf:compile-sort-key(.)"/>
-                                <imvert:association>
-                                    <xsl:sequence select="imf:get-id-info(.,'R')"/>
-                                    <xsl:sequence select="imf:get-scope-info(.)"/>
-                                    <xsl:sequence select="imf:get-association-info(.)"/>
-                                    <xsl:sequence select="imf:get-association-documentation-info(.)"/>
-                                    <!-- <xsl:sequence select="imf:get-history-info(.)"/>-->
-                                    <xsl:sequence select="imf:get-stereotypes-info(.,'my')"/>
-                                    <xsl:sequence select="imf:get-constraint-info(.)"/>
-                                    <xsl:sequence select="imf:get-association-class-info(.)"/>
-                                    <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
-                                </imvert:association>                            
-                            </xsl:for-each>
-                        </imvert:associations>
-                        <xsl:if test="$designation='associationclass'">
-                            <!--TODO enhance: check correct implementation of association class -->
-                            <xsl:variable name="association" select="$document-associations[imf:get-system-tagged-value(.,'associationclass')=$id]"/>
-                            <imvert:associates>
-                                <xsl:variable name="source-localid" select="$association/*/UML:AssociationEnd[imf:get-system-tagged-value(.,'ea_end')='source']/@type"/>
-                                <xsl:variable name="source" select="imf:element-by-id($source-localid)"/>
-                                <xsl:variable name="target-localid" select="$association/*/UML:AssociationEnd[imf:get-system-tagged-value(.,'ea_end')='target']/@type"/>
-                                <xsl:variable name="target" select="imf:element-by-id($target-localid)"/>
-                                <imvert:source>
-                                    <xsl:sequence select="imf:get-id-info($source,'C')"/>
-                                </imvert:source>
-                                <imvert:target>
-                                    <xsl:sequence select="imf:get-id-info($target,'C')"/>
-                                </imvert:target>
-                            </imvert:associates>
-                        </xsl:if>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <xsl:if test="$is-datatype or $is-complextype">
+                    <xsl:sequence select="imf:get-datatype-info(.)"/>
+                </xsl:if>
+                
+                <imvert:attributes>
+                    <xsl:for-each select="$attributes">
+                        <imvert:attribute>
+                            <xsl:sequence select="imf:get-id-info(.,'A')"/>
+                            <xsl:sequence select="imf:get-scope-info(.)"/>
+                            <xsl:sequence select="imf:get-attribute-info(.)"/>
+                            <xsl:sequence select="imf:get-attribute-documentation-info(.)"/>
+                            <!-- <xsl:sequence select="imf:get-history-info(.)"/> not available for attribute -->
+                            <xsl:sequence select="imf:get-stereotypes-info(.,'my')"/>
+                            <xsl:sequence select="imf:get-constraint-info(.)"/>
+                            <xsl:sequence select="imf:get-external-resources-info(.)"/>
+                            <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
+                        </imvert:attribute>
+                    </xsl:for-each>
+                </imvert:attributes>
+                <imvert:associations>
+                    <xsl:for-each select="$associations">
+                        <xsl:sort select="imf:compile-sort-key(.)"/>
+                        <imvert:association>
+                            <xsl:sequence select="imf:get-id-info(.,'R')"/>
+                            <xsl:sequence select="imf:get-scope-info(.)"/>
+                            <xsl:sequence select="imf:get-association-info(.)"/>
+                            <xsl:sequence select="imf:get-association-documentation-info(.)"/>
+                            <!-- <xsl:sequence select="imf:get-history-info(.)"/>-->
+                            <xsl:sequence select="imf:get-stereotypes-info(.,'my')"/>
+                            <xsl:sequence select="imf:get-constraint-info(.)"/>
+                            <xsl:sequence select="imf:get-association-class-info(.)"/>
+                            <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
+                        </imvert:association>                            
+                    </xsl:for-each>
+                </imvert:associations>
+                <xsl:if test="$designation='associationclass'">
+                    <!--TODO enhance: check correct implementation of association class -->
+                    <xsl:variable name="association" select="$document-associations[imf:get-system-tagged-value(.,'associationclass')=$id]"/>
+                    <imvert:associates>
+                        <xsl:variable name="source-localid" select="$association/*/UML:AssociationEnd[imf:get-system-tagged-value(.,'ea_end')='source']/@type"/>
+                        <xsl:variable name="source" select="imf:element-by-id($source-localid)"/>
+                        <xsl:variable name="target-localid" select="$association/*/UML:AssociationEnd[imf:get-system-tagged-value(.,'ea_end')='target']/@type"/>
+                        <xsl:variable name="target" select="imf:element-by-id($target-localid)"/>
+                        <imvert:source>
+                            <xsl:sequence select="imf:get-id-info($source,'C')"/>
+                        </imvert:source>
+                        <imvert:target>
+                            <xsl:sequence select="imf:get-id-info($target,'C')"/>
+                        </imvert:target>
+                    </imvert:associates>
+                </xsl:if>
                 <xsl:sequence select="imf:get-constraint-info(.)"/>
                 <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
                 
