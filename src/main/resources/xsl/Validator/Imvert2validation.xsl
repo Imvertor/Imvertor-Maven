@@ -571,21 +571,21 @@
 
         <xsl:sequence select="imf:report-error(., 
             ($is-union-class and empty(imvert:stereotype/@id = ('stereotype-name-union-attributes','stereotype-name-union-associations')) and count(imvert:attributes/imvert:attribute) eq 0), 
-            'Empty union class is not allowed.')"/><!-- retain for historical purpose -->
+            'Empty class stereotyped as [1] is not allowed.',imf:string-group(imvert:stereotype))"/><!-- retain for historical purpose -->
         
         <!-- MIM11 -->
         <xsl:sequence select="imf:report-error(., 
             (imvert:stereotype/@id = ('stereotype-name-union-attributes') and count(imvert:attributes/imvert:attribute) lt 2), 
-            'Union class with [1] attributes is not allowed.',count(imvert:attributes/imvert:attribute))"/>
+            'Class stereotyped as [1] with [2] attributes is not allowed.',(imf:string-group(imvert:stereotype),count(imvert:attributes/imvert:attribute)))"/>
         <xsl:sequence select="imf:report-error(., 
             (imvert:stereotype/@id = ('stereotype-name-union-associations') and count(imvert:associations/imvert:association) lt 2), 
-            'Union class with [1] association(s) is not allowed.',count(imvert:associations/imvert:association))"/>
+            'Class stereotyped as [1] with [2] association(s) is not allowed.',(imf:string-group(imvert:stereotype), count(imvert:associations/imvert:association)))"/>
         <xsl:sequence select="imf:report-error(., 
             ($is-union-class and empty(imvert:stereotype/@id = 'stereotype-name-union-assocations') and exists(imvert:associations/imvert:association)), 
-            'Association(s) on union class are not allowed.')"/>
+            'Association(s) on class stereotyped as [1] are not allowed.',imf:string-group(imvert:stereotype))"/>
         <xsl:sequence select="imf:report-error(., 
             ($is-union-class and exists(imvert:stereotype/@id = 'stereotype-name-union-associations') and exists(imvert:attributes/imvert:atribute)), 
-            'Attribute(s) on union class are not allowed.')"/>
+            'Attribute(s) on class stereotyped as [1] are not allowed.',imf:string-group(imvert:stereotype))"/>
         
         <xsl:sequence select="imf:report-error(., 
             not(ancestor::imvert:package/imvert:stereotype/@id = $schema-oriented-stereotypes), 
@@ -664,10 +664,10 @@
         <!--validation-->
         <xsl:sequence select="imf:report-error(.,
             not($allow-scalar-in-union) and $types-are-scalars, 
-            'Union elements must not be a scalar')"/>
+            'Elements of class stereotyped as [1] must not be a scalar',imf:string-group(imvert:stereotype))"/>
         <xsl:sequence select="imf:report-error(.,
             $allow-native-scalars and not($types-are-scalars) and count($types) ne count(distinct-values($types)), 
-            'Union elements must all be of a different datatype')"/> <!-- TODO allow-native-scalars is een fix, feitelijk speelt dit voor primitives en scalars, zie #139, uitwerken en herimplementeren -->
+            'Elements of class stereotyped as [1] must all be of a different datatype',imf:string-group(imvert:stereotype))"/> <!-- TODO allow-native-scalars is een fix, feitelijk speelt dit voor primitives en scalars, zie #139, uitwerken en herimplementeren -->
         <xsl:next-match/>
     </xsl:template>
     
@@ -769,7 +769,7 @@
             'Unknown attribute type. Is the package that defines this class in scope?')"/>
         <xsl:sequence select="imf:report-error(., 
             (exists(imvert:type-id) and ($class/imvert:stereotype/@id = ('stereotype-name-union') and empty(imvert:type-package))), 
-            'Attribute of union class is not a known class.')"/>
+            'Attribute of class stereotyped as [1] is not a known class.',imf:string-group($class/imvert:stereotype))"/>
         <!-- When a class is a union, the union attributes must be classes, not value types (baretypes). -->
         <xsl:sequence select="imf:report-error(., 
             not(imf:check-multiplicity(imvert:min-occurs,imvert:max-occurs)), 
@@ -831,23 +831,6 @@
         
         <xsl:next-match/>
     </xsl:template>
-    
-    <!-- TODO alle unions valideren -->
-    <?x
-    <xsl:template match="imvert:attribute[../../imvert:stereotype/@id = ('stereotype-name-union')]">
-        <!--setup-->
-        <xsl:variable name="class" select="../.."/>
-        <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
-        <!--validation-->
-        <!--<xsl:sequence select="imf:report-error(., 
-            not($defining-class), 
-            'Union element has unknown type: [1]',imvert:type-name)"/>-->
-        <xsl:sequence select="imf:report-error(., 
-            not(imvert:stereotype/@id = ('stereotype-name-union-element')), 
-            'Union element must be stereotyped as [1]',(imf:get-config-stereotypes('stereotype-name-union-element')))"/>
-        <xsl:next-match/>
-    </xsl:template>
-    x?>
     
     <xsl:template match="imvert:attribute[../../imvert:stereotype/@id = ('stereotype-name-objecttype')]">
         <!--setup-->

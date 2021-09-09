@@ -161,6 +161,9 @@
                     <section type="DETAILS-OBJECTTYPE" include="{$include-detail-sections-by-type}">
                         <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]" mode="detail"/>
                     </section>
+                    <section type="DETAILS-COMPOSITE" include="{$include-detail-sections-by-type}">
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]" mode="detail"/>
+                    </section>
                     <section type="DETAILS-ASSOCIATIONCLASS" include="{$include-detail-sections-by-type}">
                         <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]" mode="detail"/>
                     </section>

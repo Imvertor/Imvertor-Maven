@@ -35,11 +35,11 @@
    
     <xsl:template match="/config">
         <report>
-            <step-display-name>Json schema compiler</step-display-name>
+            <step-display-name>EP compiler</step-display-name>
             <status/>
             <summary>
                 <info label="Status">
-                    <xsl:sequence select="imf:report-key-label('Json schema created','system','json-schema-created')"/>
+                    <xsl:sequence select="imf:report-key-label('EP schema created','system','ep-schema-created')"/>
                 </info>
             </summary>
 

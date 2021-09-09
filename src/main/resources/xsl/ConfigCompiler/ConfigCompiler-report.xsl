@@ -295,28 +295,6 @@
         </li>
     </xsl:template>
     
-    
-    <!--
-     <tv id="CFG-TV-SOURCE" norm="space">
-            <name lang="nl" original="Herkomst">herkomst</name>
-            <derive>yes</derive>
-            <stereotypes>
-               <stereo required="yes" lang="nl" original="Objecttype">OBJECTTYPE</stereo>
-               <stereo required="yes" lang="nl" original="Complex datatype">COMPLEX DATATYPE</stereo>
-               <stereo required="yes" lang="nl" original="Data element">DATA ELEMENT</stereo>
-               <stereo required="yes" lang="nl" original="Attribuutsoort">ATTRIBUUTSOORT</stereo>
-               <stereo required="yes" lang="nl" original="Relatiesoort">RELATIESOORT</stereo>
-               <stereo required="yes" lang="nl" original="Gegevensgroeptype">GEGEVENSGROEPTYPE</stereo>
-               <stereo required="yes" lang="nl" original="Referentielijst">REFERENTIELIJST</stereo>
-               <stereo required="yes" lang="nl" original="Referentie element">REFERENTIE ELEMENT</stereo>
-               <stereo required="yes" lang="nl" original="Union">UNION</stereo>
-               <stereo required="yes" lang="nl" original="Union element">UNION ELEMENT</stereo>
-               <stereo required="no" lang="nl" original="Codelijst">CODELIJST</stereo>
-               <stereo required="no" lang="nl" original="Relatierol">RELATIEROL</stereo>
-            </stereotypes>
-            <declared-values/>
-     </tv> 
-    -->
     <xsl:template match="/config" mode="metamodel-tvs">
         <div>
             <h2>Tagged value configuration</h2>

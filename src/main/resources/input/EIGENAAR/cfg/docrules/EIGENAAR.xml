@@ -296,8 +296,8 @@
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-INDICATIEKARDINALITEIT" order="070">
-        <name lang="nl">Indicatie kardinaliteit</name>
-        <name lang="en">Indication multiplicity</name>
+        <name lang="nl">Kardinaliteit</name>
+        <name lang="en">Multiplicity</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
