@@ -397,8 +397,8 @@
     </doc-rule>
     x?>
     <doc-rule id="CFG-DOC-INDICATIEKARDINALITEIT" order="200">
-        <name lang="nl">Indicatie kardinaliteit</name>
-        <name lang="en">Indication multiplicity</name>
+        <name lang="nl">Kardinaliteit</name>
+        <name lang="en">Multiplicity</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
@@ -411,8 +411,8 @@
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-INDICATIEAUTHENTIEK" order="210">
-        <name lang="nl">Indicatie authentiek</name>
-        <name lang="en">Indication authentic</name>
+        <name lang="nl">Authentiek</name>
+        <name lang="en">Authentic</name>
         <levels>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
