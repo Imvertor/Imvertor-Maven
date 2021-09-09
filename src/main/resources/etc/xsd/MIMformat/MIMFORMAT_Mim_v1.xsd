@@ -3,7 +3,8 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
   xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
   xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1" 
-  xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1" 
+  xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
   targetNamespace="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
   elementFormDefault="qualified" 
   attributeFormDefault="unqualified" 
@@ -30,7 +31,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de view package. Deze is, indien mogelijk, analoog aan de naamgeving in het externe schema waar de view over gaat, eventueel met een prefix.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string">
+      <xs:element name="definitie" type="mim:xhtmlText">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de package.</xs:documentation>
         </xs:annotation>
@@ -148,7 +149,7 @@
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De verwijzing naar de locatie van de bijbehorende schema’s waar de view over gaat.</xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element name="definitie" type="xs:string">
+          <xs:element name="definitie" type="mim:xhtmlText">
             <xs:annotation>
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de package.</xs:documentation>
             </xs:annotation>
@@ -186,7 +187,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De verwijzing naar de locatie van de bijbehorende schema’s.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string">
+      <xs:element name="definitie" type="mim:xhtmlText">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de package.</xs:documentation>
         </xs:annotation>
@@ -236,7 +237,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie in wiens catalogus het objecttype is gespecificeerd (oftewel de registratie waar het objecttype deel van uitmaakt). Deze specificatie is toegevoegd omdat het wel duidelijk moet zijn in welke (basis)registratie of informatiemodel het objecttype voorkomt (indien van toepassing). </xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string">
+      <xs:element name="definitie" type="mim:xhtmlText">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van het objecttype zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie of informatiemodel.</xs:documentation>
         </xs:annotation>
@@ -268,7 +269,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Voor objecttypen die deel uitmaken van een registratie betreft dit de waarborgen voor de juistheid van de in de registratie opgenomen objecten van het desbetreffende type.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="toelichting" type="xs:string" minOccurs="0">
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Voor objecttypen die deel uitmaken van een (basis)registratie of informatiemodel betreft dit de daarin opgenomen toelichting.</xs:documentation>
         </xs:annotation>
@@ -338,7 +339,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string" minOccurs="0">
+      <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de attribuutsoort.</xs:documentation>
         </xs:annotation>
@@ -348,7 +349,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die aangeeft uit welke bronnen de defintie is samengesteld.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="toelichting" type="xs:string" minOccurs="0">
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de attribuutsoort.</xs:documentation>
         </xs:annotation>
@@ -390,7 +391,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan de attribuutsoort ontleend is dan wel de eigen organisatie indien het door de eigen organisatie toegevoegd is.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string">
+      <xs:element name="definitie" type="mim:xhtmlText">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de attribuutsoort.</xs:documentation>
         </xs:annotation>
@@ -449,7 +450,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding of het een authentiek gegeven (attribuutsoort) betreft.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="toelichting" type="xs:string" minOccurs="0">
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de attribuutsoort.</xs:documentation>
         </xs:annotation>
@@ -502,12 +503,12 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string">
+      <xs:element name="definitie" type="mim:xhtmlText">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de type gegevensgroep.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="toelichting" type="xs:string" minOccurs="0">
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de type gegevensgroep.</xs:documentation>
         </xs:annotation>
@@ -601,12 +602,12 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan de relatiesoort ontleend is, dan wel de eigen organisatie. Indien zelf toegevoegd, dan is de herkomst de eigen organisatie. </xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string">
+      <xs:element name="definitie" type="mim:xhtmlText">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="toelichting" type="xs:string" minOccurs="0">
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de relatiesoort.</xs:documentation>
         </xs:annotation>
@@ -674,7 +675,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string" minOccurs="0">
+      <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
         </xs:annotation>
@@ -706,7 +707,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string" minOccurs="0">
+      <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatierol. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
         </xs:annotation>
@@ -738,7 +739,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan de relatiesoort ontleend is, dan wel de eigen organisatie. Indien zelf toegevoegd, dan is de herkomst de eigen organisatie. </xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string">
+      <xs:element name="definitie" type="mim:xhtmlText">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
         </xs:annotation>
@@ -774,7 +775,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding dat relatiesoort geen waarde met betekenis kan bevatten.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="toelichting" type="xs:string" minOccurs="0">
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de relatiesoort.</xs:documentation>
         </xs:annotation>
@@ -810,7 +811,7 @@
                 <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
               </xs:annotation>
             </xs:element>
-            <xs:element name="definitie" type="xs:string" minOccurs="0">
+            <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
               <xs:annotation>
                 <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
               </xs:annotation>
@@ -843,7 +844,7 @@
                 <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan de relatiesoort ontleend is, dan wel de eigen organisatie. Indien zelf toegevoegd, dan is de herkomst de eigen organisatie. </xs:documentation>
               </xs:annotation>
             </xs:element>
-            <xs:element name="definitie" type="xs:string">
+            <xs:element name="definitie" type="mim:xhtmlText">
               <xs:annotation>
                 <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
               </xs:annotation>
@@ -879,7 +880,7 @@
                 <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding dat relatiesoort geen waarde met betekenis kan bevatten.</xs:documentation>
               </xs:annotation>
             </xs:element>
-            <xs:element name="toelichting" type="xs:string" minOccurs="0">
+            <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
               <xs:annotation>
                 <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de relatiesoort.</xs:documentation>
               </xs:annotation>
@@ -936,7 +937,7 @@
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan de relatierol ontleend is, dan wel de eigen organisatie. Indien zelf toegevoegd, dan is de herkomst de eigen organisatie. </xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element name="definitie" type="xs:string" minOccurs="0">
+          <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
             <xs:annotation>
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Beschrijving van de betekenis van de relatierol.</xs:documentation>
             </xs:annotation>
@@ -968,7 +969,7 @@
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding dat relatierol geen waarde met betekenis kan bevatten.</xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element name="toelichting" type="xs:string" minOccurs="0">
+          <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
             <xs:annotation>
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de relatierol.</xs:documentation>
             </xs:annotation>
@@ -1019,7 +1020,7 @@
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element name="definitie" type="xs:string" minOccurs="0"/>
+          <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0"/>
           <xs:element name="lengte" type="xs:string" minOccurs="0"/>
           <xs:element name="patroon" type="xs:string" minOccurs="0">
             <xs:annotation>
@@ -1072,7 +1073,7 @@
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan de complex datatype ontleend is dan wel de eigen organisatie indien het door de eigen organisatie toegevoegd is.</xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element name="definitie" type="xs:string">
+          <xs:element name="definitie" type="mim:xhtmlText">
             <xs:annotation>
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de complex datatype zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie. </xs:documentation>
             </xs:annotation>
@@ -1123,7 +1124,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string" minOccurs="0">
+      <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van het data element zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie. </xs:documentation>
         </xs:annotation>
@@ -1181,7 +1182,7 @@
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element name="definitie" type="xs:string">
+          <xs:element name="definitie" type="mim:xhtmlText">
             <xs:annotation>
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de enumeratie zoals gespecificeerd in de catalogus van de desbetreffende registratie.</xs:documentation>
             </xs:annotation>
@@ -1211,7 +1212,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de enumeratiewaarde zoals gespecificeerd in de catalogus van de desbetreffende registratie. </xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string" minOccurs="0">
+      <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de enumeratiewaarde zoals gespecificeerd in de catalogus van de desbetreffende registratie.</xs:documentation>
         </xs:annotation>
@@ -1256,7 +1257,7 @@
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie in wiens catalogus de lijst is gespecificeerd (oftewel de registratie waar de lijst deel van uitmaakt). Deze specificatie is toegevoegd t.o.v. de registratie-catalogus aangezien het hier niet om een registratie gaat maar wel duidelijk moet zijn in welke registratie de (verwijzing naar de) referentielijst voorkomt (indien van toepassing).</xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element name="definitie" type="xs:string">
+          <xs:element name="definitie" type="mim:xhtmlText">
             <xs:annotation>
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de lijst zoals gespecificeerd in de catalogus van de desbetreffende registratie. </xs:documentation>
             </xs:annotation>
@@ -1266,7 +1267,7 @@
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De datum waarop de lijst is opgenomen in het informatiemodel.</xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element name="toelichting" type="xs:string" minOccurs="0">
+          <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
             <xs:annotation>
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Voor lijsten die deel uitmaken van een registratie betreft dit de daarin opgenomen toelichting.</xs:documentation>
             </xs:annotation>
@@ -1312,7 +1313,7 @@
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie in wiens catalogus de lijst is gespecificeerd (oftewel de registratie waar de referentielijst deel van uitmaakt). Deze specificatie is toegevoegd t.o.v. de registratie catalogus aangezien het hier niet om een registratie gaat maar wel duidelijk moet zijn in welke registratie de (verwijzing naar de) lijst voorkomt (indien van toepassing). </xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element name="definitie" type="xs:string">
+          <xs:element name="definitie" type="mim:xhtmlText">
             <xs:annotation>
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de lijst zoals gespecificeerd in de catalogus van de desbetreffende registratie. </xs:documentation>
             </xs:annotation>
@@ -1322,7 +1323,7 @@
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De datum waarop de lijst is opgenomen in het informatiemodel.</xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element name="toelichting" type="xs:string" minOccurs="0">
+          <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
             <xs:annotation>
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Voor lijsten die deel uitmaken van een registratie betreft dit de daarin opgenomen toelichting. </xs:documentation>
             </xs:annotation>
@@ -1367,7 +1368,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string">
+      <xs:element name="definitie" type="mim:xhtmlText">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van het referentie element.</xs:documentation>
         </xs:annotation>
@@ -1410,7 +1411,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding dat referentie element onderdeel uitmaakt van de unieke aanduiding van een referentielijst.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="toelichting" type="xs:string" minOccurs="0">
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op het referentie element.</xs:documentation>
         </xs:annotation>
@@ -1443,7 +1444,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string">
+      <xs:element name="definitie" type="mim:xhtmlText">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van het referentie element.</xs:documentation>
         </xs:annotation>
@@ -1553,7 +1554,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie in wiens catalogus de keuze is gespecificeerd (oftewel de registratie waar het objecttype deel van uitmaakt). Deze specificatie is toegevoegd omdat het wel duidelijk moet zijn in welke (basis)registratie of informatiemodel het objecttype voorkomt (indien van toepassing). </xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="definitie" type="xs:string">
+      <xs:element name="definitie" type="mim:xhtmlText">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de keuze.</xs:documentation>
         </xs:annotation>
@@ -1745,5 +1746,15 @@
       <xs:enumeration value="Overig"/>
     </xs:restriction>
   </xs:simpleType>
+  
+  <xs:complexType name="xhtmlText" mixed="true"> 
+    <xs:sequence> 
+      <xs:any
+        minOccurs="0" 
+        maxOccurs="unbounded" 
+        namespace="http://www.w3.org/1999/xhtml" 
+        processContents="lax"/> 
+    </xs:sequence> 
+  </xs:complexType>
   
 </xs:schema>
