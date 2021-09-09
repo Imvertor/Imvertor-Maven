@@ -41,7 +41,23 @@
             'Attribute with stereotype [1] must have cardinality of 1..1', 'KEUZE')"/>
         <xsl:next-match/>
     </xsl:template>
-
+    
+    <xsl:template match="imvert:association">
+        <!--setup-->
+        <xsl:variable name="class" select="../.."/>
+        <xsl:variable name="is-choice" select="$class/imvert:designation = 'choice'"/>
+        
+        <xsl:sequence select="imf:report-error(., 
+            ($class/imvert:designation = 'datatype'), 
+            'Association is not allowed on datatype')"/>
+        
+        <xsl:sequence select="imf:report-error(., 
+            ($is-choice and not(imvert:stereotype/@id = 'stereotype-name-union-association')), 
+            'Unexpected stereotype in choice: [1]',imf:string-group(imvert:stereotype))"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
     <!-- 
         other validation that is required for the immediate XMI translation result. 
     -->
