@@ -106,6 +106,7 @@ public class YamlCompiler extends Step {
 
 		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLHEADER_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH");
 		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLBODY_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH");
+		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_XML4JSONMAPPING_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_XML4JSONMAPPING_XSLPATH");
 
 		transformer.setXslParm("json-version","2.0");
 		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLBODY_FILE_PATH2", "properties/IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH");
