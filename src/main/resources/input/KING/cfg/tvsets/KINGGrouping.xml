@@ -29,18 +29,20 @@
                 <stereo minmax="0..1">stereotype-name-association-to-composite</stereo><!-- deprecated -->
             </stereotypes>
         </tv>
+        x?>
         
         <tv norm="space" id="CFG-TV-DATALOCATION">
             <!-- bepaal de naam van deze tagged value hier, en ken toe aan nieuwe stereo's -->
             <name lang="nl">Data locatie</name>
             <name lang="en">Data location</name>
+       <?x
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-referentielijst</stereo><!-- SIM Referentielijst -->
                 <stereo minmax="0..1">stereotype-name-attribute</stereo><!-- SIM Referentie element -->
             </stereotypes>
-        </tv>
         x?>
+        </tv>
         
     </tagged-values>
     
