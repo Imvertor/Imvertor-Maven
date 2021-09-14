@@ -518,7 +518,7 @@
                     <xsl:when test="$defining-class-type = ('CONTENTS-CODELIST','CONTENTS-REFERENCELIST')">
                         <part>
                             <item>&#160;&#160;Naam</item>
-                            <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item-text"/></item></item>
+                            <item><item idref="detail_class_Model_{$item-text}"><xsl:value-of select="$item"/></item></item>
                         </part>
                         <part>
                             <item>&#160;&#160;Type</item>
@@ -542,7 +542,7 @@
                     <xsl:otherwise>
                         <part>
                             <item>&#160;&#160;Naam</item>
-                            <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item-text"/></item></item>
+                            <item><item idref="detail_class_Model_{$item-text}"><xsl:value-of select="$item"/></item></item>
                         </part>
                     </xsl:otherwise>
                 </xsl:choose>
