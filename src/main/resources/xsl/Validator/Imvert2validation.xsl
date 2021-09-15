@@ -900,6 +900,7 @@
         <xsl:variable name="superclasses" select="imf:get-superclasses($class)"/>
         <xsl:variable name="package" select="$class/.."/>
         <xsl:variable name="is-collection" select="$class/imvert:stereotype/@id = ('stereotype-name-collection')"/>
+        <xsl:variable name="is-choice" select="$class/imvert:stereotype/@id = ('stereotype-name-union')"/>
         <xsl:variable name="is-featurecollection" select="$class/imvert:stereotype/@id = ('stereotype-name-featurecollection')"/>
         <xsl:variable name="is-process" select="$class/imvert:stereotype/@id = ('stereotype-name-process')"/>
         <xsl:variable name="association-class-id" select="imvert:association-class/imvert:type-id"/>
@@ -912,7 +913,7 @@
         <xsl:variable name="defining-class-is-group" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')"/>
         <xsl:variable name="meta-is-role-based" select="imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/>
         
-        <xsl:variable name="applicable-name" select="if ($meta-is-role-based) then imvert:target/imvert:role else imvert:name"/>
+        <xsl:variable name="applicable-name" select="if ($meta-is-role-based and not($is-choice)) then imvert:target/imvert:role else imvert:name"/>
             
         <!--validation-->
         

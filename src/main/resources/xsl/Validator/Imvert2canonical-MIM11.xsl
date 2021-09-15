@@ -109,34 +109,8 @@
     
     <!-- de relatie heeft stereotype "keuze" -->
     <xsl:template name="association-with-union" match="imvert:association[imvert:stereotype/@id = 'stereotype-name-union']" priority="1">
-        <xsl:variable name="name" select="'association_' || count(preceding-sibling::imvert:association)"/>
         <xsl:copy>
-            <xsl:apply-templates select="*[empty(self::imvert:stereotype) and empty(self::imvert:name)]"/>
-            <!-- geef een naam; formeel mag er geen naam zijn -->
-            <imvert:name original="{$name}" origin="system">{$name}</imvert:name>
-            <xsl:sequence select="imvert:stereotype"/>
-            <imvert:stereotype id="stereotype-name-union-association" origin="system">
-                <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-union-association')"/>
-            </imvert:stereotype>
-        </xsl:copy>
-    </xsl:template>
-    
-    <!-- de relatie heeft een relatierol met stereotype "keuze" -->
-    <xsl:template match="imvert:association[imvert:target/imvert:stereotype/@id = 'stereotype-name-union']" priority="1">
-        <xsl:variable name="name" select="'association_' || count(preceding-sibling::imvert:association)"/>
-        <xsl:copy>
-            <xsl:apply-templates select="*[empty(self::imvert:name)]"/>
-            <!-- geef een naam; formeel mag er geen naam zijn -->
-            <imvert:name original="{$name}" origin="system">{$name}</imvert:name>
-        </xsl:copy>
-    </xsl:template>
-    
-    <!-- associatierol met stereotype name "keuze" --> 
-    <xsl:template match="imvert:association/imvert:target[imvert:stereotype/@id = 'stereotype-name-union']" priority="1">
-        <xsl:variable name="name" select="'associationrole_' || count(../preceding-sibling::imvert:association)"/>
-        <xsl:copy>
-            <xsl:apply-templates select="*[empty(self::imvert:stereotype) and empty(self::imvert:role)]"/>
-            <imvert:role original="{$name}" origin="system">{$name}</imvert:role>
+            <xsl:apply-templates select="*[empty(self::imvert:stereotype)]"/>
             <xsl:sequence select="imvert:stereotype"/>
             <imvert:stereotype id="stereotype-name-union-association" origin="system">
                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-union-association')"/>

@@ -114,7 +114,6 @@
             <desc lang="nl">Relatiesoort binnen Keuze klasse. MIM: Use case 4.
                 <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
             <construct>association</construct>
-            <construct>associationend</construct>
         </stereo>
        
         <stereo id="stereotype-name-codelist" primary="yes">
