@@ -667,7 +667,10 @@
                     <b>
                         <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
                     </b>
-                    <xsl:value-of select="if (normalize-space($caption-desc)) then concat(' &#8212; ',$caption-desc) else ()"/>
+                    <xsl:if test="normalize-space($caption-desc)">    
+                        <!--<xsl:text> &#8212; </xsl:text>-->
+                        <xsl:sequence select="$caption-desc/node()"/>
+                    </xsl:if>
                 </p>    
             </div>
         </xsl:for-each>

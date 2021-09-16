@@ -7,4 +7,10 @@
     
     <!-- add or override translations here: -->
     
+    <item>
+        <key>IMAGE</key>
+        <trans lang="nl"><!--leeg--></trans>
+        <trans lang="en"><!--leeg--></trans>
+    </item>
+    
 </picklist>

@@ -37,6 +37,10 @@
     version="2.0">
     
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-doc.xsl"/>
+    <xsl:import href="../common/Imvert-common-entity.xsl"/>
+    <xsl:import href="../common/Imvert-common-inspire.xsl"/>
+    
     <xsl:import href="common.xsl"/>
     
     <xsl:variable name="stylesheet-code">IMVIM</xsl:variable>
@@ -76,7 +80,7 @@
                 </imvert-imap:in-construct>
             </xsl:if>
             <imvert-imap:documentation>
-                <xsl:value-of select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag = 'documentation']/@value"/>
+                <xsl:sequence select="imf:eadoc-to-xhtml(UML:ModelElement.taggedValue/UML:TaggedValue[@tag = 'documentation']/@value)"/>
             </imvert-imap:documentation>
             
             <xsl:variable name="purpose" as="element()?">

@@ -299,6 +299,11 @@
         <trans lang="en">Contents of value lists</trans>
     </item>
     <item>
+        <key>IMAGE</key>
+        <trans lang="nl">Diagram</trans>
+        <trans lang="en">Diagram</trans>
+    </item>
+    <item>
         <key>IMAGEMAPS</key>
         <trans lang="nl">Overzichtsdiagrammen</trans>
         <trans lang="en">Overview diagrams</trans>

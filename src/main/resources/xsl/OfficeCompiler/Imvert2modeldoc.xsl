@@ -38,6 +38,7 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
+    <xsl:import href="../common/extension/extension-parse-html.xsl"/>
     
     <xsl:output method="xml" indent="yes"/>
     
@@ -1538,7 +1539,7 @@
                                                <item>
                                                    <xsl:value-of select="imf:plugin-translate-i3n('DIAGRAM-DESCRIPTION',true())"/>
                                                </item>
-                                               <item><xsl:value-of select="imvert-imap:documentation"/></item>
+                                               <item><xsl:sequence select="imvert-imap:documentation/node()"/></item>
                                            </part>
                                        </content>
                                    </xsl:when>
