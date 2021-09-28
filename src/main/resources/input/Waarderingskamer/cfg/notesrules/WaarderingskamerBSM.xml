@@ -4,10 +4,8 @@
 -->
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="WaarderingskamerUGM.xml"/>
+    <xi:include href="../../../MIM/cfg/notesrules/MIM11.xml"/>
     
     <name>Waarderingskamer BSM</name>
-    
-    <desc>WaarderingskamerBSM follows UGM conventions.</desc>
     
 </notes-rules>

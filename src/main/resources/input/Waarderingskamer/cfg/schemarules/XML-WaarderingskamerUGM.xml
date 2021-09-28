@@ -17,10 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<xmlschema-rules type="config">
+<xmlschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
     <!-- 
-        Waarderingskamer specific rules for UGM XML schemas
+        WK volgt VNGR
     -->
+    <xi:include href="../../../KING/cfg/schemarules/XML-KINGSIM.xml"/>
+    
     <name>Waarderingskamer UGM</name>
     <desc lang="en">Rule for processing UGM models to XML schemas</desc>
     <desc lang="nl">Regels voor het verwerken van UGM modellen tot XML schema's</desc>

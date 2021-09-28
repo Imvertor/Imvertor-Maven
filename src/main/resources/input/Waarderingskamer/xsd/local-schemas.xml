@@ -2,5 +2,48 @@
     Mappings for local schemas 
 -->
 <local-schemas>
+    <svn-id>$Id: local-schemas.xml 7209 2015-08-25 12:28:42Z arjan $</svn-id>
+    
+    <local-schema schemafolder="www.opengis.net/GML321-20070906">
+        <!-- 
+            This schema depends on the local schema folders specified below.
+        -->
+        <depends-on schemafolder="www.isotc211.org/GEOMATICS-20050101"/>
+        <depends-on schemafolder="www.w3.org/XLINKS-20010627"/>
+        <depends-on schemafolder="www.w3.org/SMIL20-20010731"/>
+        <!-- 
+            Define which local paths will be valid for internet imports and includes 
+            This specifies the source URI prefix, as found in the local copy,
+            and the target URI prefix, that will be valid for the local copy.
+        -->
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/iso/19139/20070417"
+            target-uri-prefix="../.."/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/gml/3.1.1/smil/smil20.xsd"
+            target-uri-prefix="../../smil20/smil20.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"
+            target-uri-prefix="../../xlink/1.0.0/xlinks.xsd"/>
+        
+    </local-schema>
+    
+    <local-schema schemafolder="www.isotc211.org/GEOMATICS-20050101">
+        <depends-on schemafolder="www.opengis.net/GML321-20070906"/>
+        <depends-on schemafolder="www.w3.org/XLINKS-20010627"/>
+        <local-map 
+            source-uri-prefix="../gml/gml.xsd"
+            target-uri-prefix="../gml/3.2.1/gml.xsd"/>
+        <local-map 
+            source-uri-prefix="../xlink/xlinks.xsd"
+            target-uri-prefix="../xlink/1.0.0/xlinks.xsd"/>
+    </local-schema>
+    
+    <local-schema schemafolder="www.geonovum.nl/NEN3610-20110301">
+        <depends-on schemafolder="www.opengis.net/GML321-20070906"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/gml/3.2.1/gml.xsd"
+            target-uri-prefix="../../gml/3.2.1/gml.xsd"/>
+    </local-schema>
     
 </local-schemas>
