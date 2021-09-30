@@ -35,6 +35,7 @@
                 <stereo minmax="1..1">stereotype-name-simpletype</stereo>
                 <stereo minmax="1..1">stereotype-name-complextype</stereo>
                 <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo><!--TODO uitwerken in aparte validatiestap; relatiesoort/relatierol leidend -->
                 <!-- vervallen in 0.98  
                  <stereo minmax="1..1">stereotype-name-enumeration</stereo> -->
             </stereotypes>
@@ -47,9 +48,10 @@
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for the following stereo's -->
-                <stereo minmax="0..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
-                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo><!--TODO uitwerken in aparte validatiestap; relatiesoort/relatierol leidend -->
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -70,9 +72,10 @@
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for the following stereo's -->
-                <stereo minmax="0..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
-                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo><!--TODO uitwerken in aparte validatiestap; relatiesoort/relatierol leidend -->
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -93,9 +96,10 @@
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for inherited stereos -->
-                <stereo minmax="0..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
-                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo><!--TODO uitwerken in aparte validatiestap; relatiesoort/relatierol leidend -->
             </stereotypes>
             <declared-values lang="nl">
                 <value default="yes">Authentiek</value>
@@ -120,6 +124,7 @@
                     <stereo minmax="0..1">stereotype-name-enumeration</stereo>-->
                 <stereo minmax="0..1">stereotype-name-codelist</stereo>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo>
             </stereotypes>
         </tv> 
         <tv norm="note" id="CFG-TV-PATTERN"><!-- MIG -->
@@ -159,9 +164,10 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
-                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo><!--TODO uitwerken in aparte validatiestap; relatiesoort/relatierol leidend -->
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo><!--TODO uitwerken in aparte validatiestap; relatiesoort/relatierol leidend -->
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -198,6 +204,7 @@
         <tv norm="note" id="CFG-TV-SOURCEOFDEFINITION">
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo><!--TODO uitwerken in aparte validatiestap; relatiesoort/relatierol leidend -->
             </stereotypes>
         </tv>
         

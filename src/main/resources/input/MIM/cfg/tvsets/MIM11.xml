@@ -13,6 +13,13 @@
     
     <tagged-values>
         
+        <tv norm="note" id="CFG-TV-DEFINITION" origin="system">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo><!--TODO uitwerken in aparte validatiestap; relatiesoort/relatierol leidend -->
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo><!--TODO uitwerken in aparte validatiestap; relatiesoort/relatierol leidend -->
+            </stereotypes>
+        </tv>
+        
         <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC"><!-- https://geonovum.github.io/MIM-Werkomgeving/#authentieke-gegevens -->
             <declared-values lang="nl">
                 <value default="yes">Authentiek</value>
@@ -77,6 +84,7 @@
         <tv norm="space" id="CFG-TV-SOURCE">
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-complextype</stereo><!-- TODO moet eigenlijk verwijderd worden, ook in 1.0 en misschien zelfs in SBR? -->
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo><!--TODO uitwerken in aparte validatiestap; relatiesoort/relatierol leidend -->
             </stereotypes>
         </tv>
 
