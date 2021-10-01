@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
  * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
- * 
+ *
  * This file is part of Imvertor.
  *
  * Imvertor is free software: you can redistribute it and/or modify
@@ -18,14 +18,14 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <xmlschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    
-    <!-- 
+
+    <!--
         WK volgt VNGR
     -->
-    <xi:include href="../../../KING/cfg/schemarules/XML-KINGSIM.xml"/>
-    
+    <xi:include href="../../../KING/cfg/schemarules/XML-KINGUGM.xml"/>
+
     <name>Waarderingskamer UGM</name>
     <desc lang="en">Rule for processing UGM models to XML schemas</desc>
     <desc lang="nl">Regels voor het verwerken van UGM modellen tot XML schema's</desc>
-    
+
 </xmlschema-rules>
