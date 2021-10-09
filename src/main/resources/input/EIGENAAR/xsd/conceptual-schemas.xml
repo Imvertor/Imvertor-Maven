@@ -2,6 +2,7 @@
 <cs:ConceptualSchemas xmlns:xlink="http://www.w3.org/1999/xlink"
                       xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
                       xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+                      xmlns:xi="http://www.w3.org/2001/XInclude"
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                       xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210
                       ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
@@ -9,32 +10,34 @@
       <cs:Mapping>
          <cs:name>NEN3610_GML321</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#NEN3610"/>
+            <cs-ref:MapRef xlink:href="#MIM11"/>
             <cs-ref:MapRef xlink:href="#GML321"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
+   
    <cs:components>
       <cs:ConceptualSchemasComponents>
+         
+         <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
+         
          <cs:ConceptualSchema>
             <cs:id>GML</cs:id>
             <cs:shortName>gml</cs:shortName>
             <cs:desc>ISO19107 Geographic information – Spatial schema</cs:desc>
             <cs:url>http://www.eigenaar.nl/conceptual-schemas/ISO19107</cs:url>
          </cs:ConceptualSchema>
-         <cs:ConceptualSchema>
-            <cs:id>NEN3610</cs:id>
-            <cs:shortName>nen3610</cs:shortName>
-            <cs:desc>NEN3610 (2011)</cs:desc>
-            <cs:url>http://www.eigenaar.nl/conceptual-schemas/NEN3610</cs:url>
-         </cs:ConceptualSchema>
+         
          <cs:ConceptualSchema>
             <cs:id>GMLSF</cs:id>
             <cs:shortName>gmlsf</cs:shortName>
             <cs:desc>GML Simple Feature Profile</cs:desc>
             <cs:url>http://www.eigenaar.nl/conceptual-schemas/GMLSF</cs:url>
          </cs:ConceptualSchema>
+         
+         <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
+         
          <cs:Map>
             <cs:id>GML321</cs:id>
             <cs:namespace>http://www.opengis.net/gml/3.2</cs:namespace>
@@ -543,174 +546,9 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
-               <cs:Construct>
-                  <cs:name>Boolean</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>xs:boolean</cs:name>
-                        <cs:primitive>true</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>CharacterString</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>xs:string</cs:name>
-                        <cs:primitive>true</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>Date</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>xs:date</cs:name>
-                        <cs:primitive>true</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>DateTime</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>xs:dateTime</cs:name>
-                        <cs:primitive>true</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>Integer</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>xs:integer</cs:name>
-                        <cs:primitive>true</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>Real</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>xs:decimal</cs:name>
-                        <cs:primitive>true</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>Time</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>xs:time</cs:name>
-                        <cs:primitive>true</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>URI</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>xs:anyURI</cs:name>
-                        <cs:primitive>true</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
             </cs:constructs>
          </cs:Map>
-         <cs:Map>
-            <cs:id>NEN3610</cs:id>
-            <cs:namespace>http://www.geonovum.nl/NEN3610/schemas/v20110301</cs:namespace>
-            <cs:desc>TODO</cs:desc>
-            <cs:location>http://www.geonovum.nl/NEN3610/v20110301/NEN3610_NEN3610_v1_0_0.xsd</cs:location>
-            <cs:phase>3</cs:phase>
-            <cs:version>2011</cs:version>
-            <cs:release>20110301</cs:release>
-            <cs:forSchema>
-               <cs-ref:ConceptualSchemaRef xlink:href="#NEN3610"/>
-            </cs:forSchema>
-            <cs:constructs>
-               <cs:Construct>
-                  <cs:name>NEN3610ID</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>NEN3610ID</cs:name>
-                        <cs:asAttribute>NEN3610ID</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>GeoObject</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>GeoObject</cs:name>
-                        <cs:asAttribute>GeoObject</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>Historie</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>Historie</cs:name>
-                        <cs:asAttribute>Historie</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>Levensduur</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>Levensduur</cs:name>
-                        <cs:asAttribute>Levensduur</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>RegistratiefGebied</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>RegistratiefGebied</cs:name>
-                        <cs:asAttribute>RegistratiefGebied</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>VoidReasonValue</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>VoidReasonValue</cs:name>
-                        <cs:asAttribute>VoidReasonValue</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-            </cs:constructs>
-         </cs:Map>
+         
          <cs:Map>
             <cs:id>GMLSF</cs:id>
             <cs:namespace>http://www.opengis.net/gmlsf/2.0</cs:namespace>
@@ -729,6 +567,7 @@
                </cs:Construct>
             </cs:constructs>
          </cs:Map>
+         
       </cs:ConceptualSchemasComponents>
    </cs:components>
 </cs:ConceptualSchemas>
