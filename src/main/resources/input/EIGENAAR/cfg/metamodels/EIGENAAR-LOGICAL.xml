@@ -3,11 +3,7 @@
  * Copyright (C) 2016 
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <!-- 
-        EIGENAAR follows MIM10 ISO (alt 2)
-        
-        Including scalars.
-    --> 
+  
     <xi:include href="EIGENAAR-CONCEPTUAL.xml"/>
     
     <name>EIGENAAR LOGISCH</name>

@@ -3,26 +3,29 @@
  * Copyright (C) 2016 
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <!-- 
-        EIGENAAR follows MIM10 ISO (alt 2)
+
+    <!-- EIGENAAR follows MIM requirements -->
+    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
         
-        Including scalars.
-    --> 
-    <xi:include href="../../../MIM/cfg/metamodels/MIM11-ISO.xml"/>
-    
     <name>EIGENAAR CONCEPTUEEL</name>
     
     <profiles>
         <profile lang="nl"> 
-            <id>MKGNL</id>
+            <id>MEGNL</id>
             <!-- <release/> identical to Imvertor release -->
             <desc>MIM EIGENAAR Grouping NL</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
-            <id>MKGEN</id>
+            <id>MEGEN</id>
             <!-- <release/> identical to Imvertor release -->
             <desc>MIM EIGENAAR Grouping EN</desc>
         </profile>
     </profiles>
+    
+    <features>
+        <feature name="role-based">false</feature>
+        <feature name="allow-multiple-supertypes">false</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+    </features>
     
 </metamodel>
