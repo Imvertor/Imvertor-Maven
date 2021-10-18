@@ -949,14 +949,7 @@
 				<xsl:text>&#xa;        content:</xsl:text>
 				<xsl:text>&#xa;          application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;            schema:</xsl:text>
-				<xsl:choose>
-					<xsl:when test="$serialisation = 'json'">
-						<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$requestbodyConstructName"/><xsl:text>'</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$requestbodyConstructName"/><xsl:text>Hal'</xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$requestbodyConstructName"/><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;      responses:</xsl:text>
 				<xsl:choose>
 					<xsl:when test="$messageCategory = 'Pa' or $messageCategory = 'Pu'">
@@ -1305,7 +1298,7 @@
 						<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName"/><xsl:text>HalCollectie'</xsl:text>
 					</xsl:when>
 					<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu')">
-						<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
+						<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" />Hal<xsl:text>'</xsl:text>
 					</xsl:when>
 				</xsl:choose>
 			</xsl:for-each>
