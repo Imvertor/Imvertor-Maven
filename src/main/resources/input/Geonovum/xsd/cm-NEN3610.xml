@@ -125,6 +125,7 @@
                 </cs:XsdType>
             </cs:xsdTypes>
         </cs:Construct>
+        
         <cs:Construct>
             <cs:name>Gebouw</cs:name>
             <cs:sentinel>false</cs:sentinel>
@@ -196,6 +197,87 @@
                     <cs:hasNilreason>false</cs:hasNilreason>
                 </cs:XsdType>
             </cs:xsdTypes>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>GeografischGebied</cs:name>
+            <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/GeografischGebied</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Inrichtingselement</cs:name>
+            <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/Inrichtingselement</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Kunstwerk</cs:name>
+            <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/Kunstwerk</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Leiding</cs:name>
+            <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/Leiding</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>PlanologischGebied</cs:name>
+            <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/PlanologischGebied</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Spoorbaan</cs:name>
+            <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/Spoorbaan</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Terrein</cs:name>
+            <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/Terrein</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Water</cs:name>
+            <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/Water</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Weg</cs:name>
+            <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/Weg</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
         </cs:Construct>
        
     </cs:constructs>

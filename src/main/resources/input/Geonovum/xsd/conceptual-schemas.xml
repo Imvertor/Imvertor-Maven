@@ -32,6 +32,7 @@
       <cs:ConceptualSchemasComponents>
          
          <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
+         <xi:include href="../../Geonovum/xsd/cs-NEN3610.xml"/><!-- implements ConceptualSchema NEN3610 -->
          
          <cs:ConceptualSchema>
             <cs:id>GML</cs:id>
@@ -39,12 +40,6 @@
             <cs:desc>ISO19107 Geographic information – Spatial schema</cs:desc>
             <cs:url>http://www.geonovum.nl/conceptual-schemas/ISO19107</cs:url>
             <cs:catalogUrl>https://isotc211.geolexica.org/concepts/[entry]/</cs:catalogUrl>
-         </cs:ConceptualSchema>
-         <cs:ConceptualSchema>
-            <cs:id>NEN3610</cs:id>
-            <cs:shortName>nen3610</cs:shortName>
-            <cs:desc>NEN3610 (2011)</cs:desc>
-            <cs:url>http://www.geonovum.nl/conceptual-schemas/NEN3610</cs:url>
          </cs:ConceptualSchema>
          <cs:ConceptualSchema>
             <cs:id>CITYGML</cs:id>
@@ -66,6 +61,7 @@
          </cs:ConceptualSchema>
          
          <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
+         <xi:include href="../../Geonovum/xsd/cm-NEN3610.xml"/><!-- implements Map #NEN3610 -->
          
          <cs:Map>
             <cs:id>GML321</cs:id>
@@ -765,92 +761,7 @@
                </cs:Construct>
             </cs:constructs>
          </cs:Map>
-         <cs:Map>
-            <cs:id>NEN3610</cs:id>
-            <cs:namespace>http://www.geonovum.nl/NEN3610/schemas/v20110301</cs:namespace>
-            <cs:desc>TODO</cs:desc>
-            <cs:location>http://www.geonovum.nl/NEN3610/v20110301/NEN3610_NEN3610_v1_0_0.xsd</cs:location>
-            <cs:phase>3</cs:phase>
-            <cs:version>2011</cs:version>
-            <cs:release>20110301</cs:release>
-            <cs:forSchema>
-               <cs-ref:ConceptualSchemaRef xlink:href="#NEN3610"/>
-            </cs:forSchema>
-            <cs:constructs>
-               <cs:Construct>
-                  <cs:name>NEN3610ID</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>NEN3610ID</cs:name>
-                        <cs:asAttribute>NEN3610ID</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>GeoObject</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>GeoObject</cs:name>
-                        <cs:asAttribute>GeoObject</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>Historie</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>Historie</cs:name>
-                        <cs:asAttribute>Historie</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>Levensduur</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>Levensduur</cs:name>
-                        <cs:asAttribute>Levensduur</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>RegistratiefGebied</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>RegistratiefGebied</cs:name>
-                        <cs:asAttribute>RegistratiefGebied</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>VoidReasonValue</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>VoidReasonValue</cs:name>
-                        <cs:asAttribute>VoidReasonValue</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-               </cs:Construct>
-            </cs:constructs>
-         </cs:Map>
+         
          <cs:Map>
             <cs:id>CITYGML</cs:id>
             <cs:namespace>http://schemas.opengis.net/citygml/</cs:namespace>
