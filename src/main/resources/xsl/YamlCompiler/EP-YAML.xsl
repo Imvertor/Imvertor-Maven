@@ -205,7 +205,7 @@
 							</xsl:when>
 							<xsl:otherwise>
 								<ep:uriPart>
-									<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
+									<ep:entityName original="{$meervoudigeNaam}"><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
 									<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getParameters"/>
 								</ep:uriPart>
 								<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getUriPart"/>
@@ -511,7 +511,7 @@
 									</xsl:choose>
 								</xsl:variable>
 								<xsl:text>&#xa;        - in: query</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
 								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 								<xsl:text>&#xa;          required: </xsl:text><xsl:value-of select="$required"/>
 								<xsl:text>&#xa;          schema:</xsl:text>
@@ -533,7 +533,7 @@
 									</xsl:choose>
 								</xsl:variable>
 								<xsl:text>&#xa;        - in: query</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
 								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 								<xsl:text>&#xa;          required: </xsl:text><xsl:value-of select="$required"/>
 								<xsl:text>&#xa;          schema:</xsl:text>
@@ -563,7 +563,7 @@
 									</xsl:choose>
 								</xsl:variable>
 								<xsl:text>&#xa;        - in: query</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
 								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 								<xsl:text>&#xa;          required: </xsl:text><xsl:value-of select="$required"/>
 								<xsl:text>&#xa;          schema:</xsl:text>
@@ -571,7 +571,7 @@
 							</xsl:when>
 							<xsl:when test="ep:type-name">
 								<xsl:text>&#xa;        - in: query</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
 								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 								<xsl:text>&#xa;          required: false</xsl:text>
 								<xsl:text>&#xa;          schema:</xsl:text>
@@ -670,7 +670,7 @@
 							</xsl:when>
 							<xsl:when test="contains($messageName,'/')">
 								<ep:uriPart>
-									<ep:entityName><xsl:value-of select="lower-case(substring-after($messageName,'/'))"/></ep:entityName>
+									<ep:entityName original="{substring-after($messageName,'/')}"><xsl:value-of select="lower-case(substring-after($messageName,'/'))"/></ep:entityName>
 								</ep:uriPart>
 							</xsl:when>
 						</xsl:choose>
@@ -689,7 +689,7 @@
 							</xsl:when>
 							<xsl:otherwise>
 								<ep:uriPart>
-									<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
+									<ep:entityName original="{$meervoudigeNaam}"><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
 									<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getParameters"/>
 								</ep:uriPart>
 								<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getUriPart"/>
@@ -909,7 +909,7 @@
 							# ---------Debuglocatie-01000b,  XPath: <xsl:sequence select="imf:xpath-string(.)"/>
 						</xsl:if>
 						<xsl:text>&#xa;        - in: query</xsl:text>
-						<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+						<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
 						<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
 						<xsl:text>&#xa;          required: false</xsl:text>
 						<xsl:text>&#xa;          schema:</xsl:text>
@@ -1022,7 +1022,7 @@
 							</xsl:when>
 							<xsl:when test="contains($messageName,'/')">
 								<ep:uriPart>
-									<ep:entityName><xsl:value-of select="lower-case(substring-after($messageName,'/'))"/></ep:entityName>
+									<ep:entityName original="{substring-after($messageName,'/')}"><xsl:value-of select="lower-case(substring-after($messageName,'/'))"/></ep:entityName>
 								</ep:uriPart>
 							</xsl:when>
 						</xsl:choose>
@@ -1041,7 +1041,7 @@
 							</xsl:when>
 							<xsl:otherwise>
 								<ep:uriPart>
-									<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
+									<ep:entityName original="{$meervoudigeNaam}"><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
 									<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getParameters"/>
 								</ep:uriPart>
 								<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getUriPart"/>
@@ -1447,7 +1447,7 @@
 				<xsl:if test="ep:parameters/ep:parameter[ep:name='is-id']/ep:value = 'true'">
 					<xsl:attribute name="is-id" select="'true'"/>
 				</xsl:if>
-				<ep:name><xsl:value-of select="lower-case(ep:name)"/></ep:name>
+				<ep:name original="{ep:name}"><xsl:value-of select="lower-case(ep:name)"/></ep:name>
 				<xsl:copy-of select="ep:documentation"/>
 				<xsl:choose>
 					<xsl:when test="ep:data-type">
@@ -1501,7 +1501,7 @@
 					<xsl:variable name="meervoudigeNaam" select="ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
 					<xsl:variable name="parameterConstruct" select="ep:type-name"/>
 					<ep:uriPart>
-						<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
+						<ep:entityName original="{$meervoudigeNaam}"><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
 						<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getParameters"/>
 					</ep:uriPart>
 					<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getUriPart"/>
@@ -1554,32 +1554,34 @@
 		<xsl:for-each select="ep:uriPart[position() = $uriPart2Check]">
 			<!-- Loop over all ep:uriPart elements within the calculatedstructure and reproduce that. -->
 			<xsl:variable name="entityName" select="ep:entityName"/>
+			<xsl:variable name="originalEntityName" select="ep:entityName/@original"/>
 			<ep:uriPart>
 				<xsl:choose>
 					<xsl:when test="substring($rawMessageName,string-length($rawMessageName),1) = '/'">
 						<xsl:sequence select="imf:msg(.,'ERROR','The messagename [1] ends with a &quot;/&quot;, this is not allowed.', ($rawMessageName))" />			
-						<ep:entityName path="false"><xsl:value-of select="$entityName"/></ep:entityName>
+						<ep:entityName original="{$originalEntityName}" path="false"><xsl:value-of select="$entityName"/></ep:entityName>
 					</xsl:when>
 					<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:entityName = $entityName">
 						<!-- If the entityname of the current uriPart is equal to the entityname of the corresponding uriPart within the determined
 							 uri structure. The entity belongs to the path. -->
-						<ep:entityName path="true"><xsl:value-of select="$entityName"/></ep:entityName>
+						<ep:entityName original="{$originalEntityName}" path="true"><xsl:value-of select="$entityName"/></ep:entityName>
 					</xsl:when>
 					<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:entityName != $entityName">
 						<!-- If the entityname of the current uriPart isn't equal to the entityname of the corresponding uriPart within the determined
 							 uri structure it doesn't belong to the path. This is an error and for now a warning is generated. -->
 						<xsl:sequence select="imf:msg(.,'WARNING','The entityname [1] within the message [2] is not available within the query tree or is not on the right position within the path.', ($entityName,$rawMessageName))" />			
-						<ep:entityName path="false"><xsl:value-of select="$entityName"/></ep:entityName>
+						<ep:entityName original="{$originalEntityName}" path="false"><xsl:value-of select="$entityName"/></ep:entityName>
 					</xsl:when>
 					<xsl:when test="empty($determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check])">
 						<!-- The path in the determined uri structure is smaller than the path within the calculated uri structure.
 							 This is allowed but it's indicated the entity doesn't belong to the path. -->
-						<ep:entityName path="false"><xsl:value-of select="$entityName"/></ep:entityName>
+						<ep:entityName original="{$originalEntityName}" path="false"><xsl:value-of select="$entityName"/></ep:entityName>
 					</xsl:when>
 				</xsl:choose>
 				<xsl:for-each select="ep:param">
 					<!-- Loop over the ep:param elements within the current (calculated) uripart a.o. mistakes within the determined uripart. -->
 					<xsl:variable name="paramName" select="ep:name"/>
+					<xsl:variable name="originalParamName" select="ep:name/@original"/>
 					<xsl:variable name="is-id">
 						<xsl:choose>
 							<xsl:when test="@is-id = 'true'">true</xsl:when>
@@ -1615,7 +1617,7 @@
 							<!-- If the param is part of the path and it's an id-type it's reproduced as a path parameter with all necessary 
 								 properties. -->
 							<ep:param path="true">
-								<ep:name><xsl:value-of select="$paramName"/></ep:name>
+								<ep:name original="{$originalParamName}"><xsl:value-of select="$paramName"/></ep:name>
 								<xsl:choose>
 									<xsl:when test="string-length($data-type)">
 										<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
@@ -1658,7 +1660,7 @@
 								 id-type. -->
 							<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not an id attribute.', ($paramName,$rawMessageName))" />			
 							<ep:param path="false">
-								<ep:name><xsl:value-of select="$paramName"/></ep:name>
+								<ep:name original="{$originalParamName}"><xsl:value-of select="$paramName"/></ep:name>
 								<xsl:choose>
 									<xsl:when test="string-length($data-type)">
 										<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
@@ -1698,7 +1700,7 @@
 						<xsl:otherwise>
 							<!-- In all other cases the parameter is reproduced with all necessary properties. -->
 							<ep:param>
-								<ep:name><xsl:value-of select="$paramName"/></ep:name>
+								<ep:name original="{$originalParamName}"><xsl:value-of select="$paramName"/></ep:name>
 								<xsl:choose>
 									<xsl:when test="string-length($data-type)">
 										<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
@@ -1740,13 +1742,14 @@
 						<!-- Since we also want to detect mistakes within the calculated uripart we also loop over the ep:param elements of the 
 							 determined uripart corresponding with the current calcutaled uriPart. -->
 						<xsl:variable name="paramName" select="ep:name"/>
+						<xsl:variable name="originalParamName" select="ep:name/@original"/>
 						<xsl:if test="not($calculatedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName)">
 							<!-- If there is no param within the current calculated urpart which is equal to the name of the param of the corresponding
 								 determined uripart it is reproduced with all necessary properties and with an indcator stating there's an error.
 								 Also a warning is generated. -->
 							<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not avalable as query parameter.', ($paramName,$rawMessageName))" />			
 							<ep:param path="false">
-								<ep:name><xsl:value-of select="$paramName"/></ep:name>
+								<ep:name original="{$originalParamName}"><xsl:value-of select="$paramName"/></ep:name>
 								<xsl:choose>
 									<xsl:when test="string-length($data-type)">
 										<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
@@ -2015,9 +2018,9 @@
 					<xsl:when test="starts-with(substring-after($uri,'/'),'{')">
 						<!-- If the first uripart has a parameter the uriPart element will consist of an entityName and a param element. -->
 						<ep:uriPart condition="1">
-							<ep:entityName><xsl:value-of select="lower-case(substring-before($uri,'/'))"/></ep:entityName>
+							<ep:entityName original="{substring-before($uri,'/')}"><xsl:value-of select="lower-case(substring-before($uri,'/'))"/></ep:entityName>
 							<ep:param>
-								<ep:name><xsl:value-of select="lower-case(substring-after(substring-before($uri,'}'),'{'))"/></ep:name>
+								<ep:name original="{substring-before($uri,'}')}"><xsl:value-of select="lower-case(substring-after(substring-before($uri,'}'),'{'))"/></ep:name>
 							</ep:param>
 						</ep:uriPart>
 						<xsl:if test="contains(substring-after($uri,'}'),'/')">
@@ -2029,7 +2032,7 @@
 					<xsl:otherwise>
 						<!-- Otherwise only an entityName element is generated. -->
 						<ep:uriPart condition="2">
-							<ep:entityName><xsl:value-of select="lower-case(substring-before($uri,'/'))"/></ep:entityName>
+							<ep:entityName original="{substring-before($uri,'/')}"><xsl:value-of select="lower-case(substring-before($uri,'/'))"/></ep:entityName>
 						</ep:uriPart>
 						<!-- If there's a '/' char after the first uripart there is a following uripart which is processed again with the 
 							 current function. -->
@@ -2040,7 +2043,7 @@
 			<xsl:when test="contains($uri,'/')">
 				<!-- If the uri doesn't contains '}' characters it consists only of entityName. -->
 				<ep:uriPart condition="3">
-					<ep:entityName><xsl:value-of select="lower-case(substring-before($uri,'/'))"/></ep:entityName>
+					<ep:entityName original="{substring-before($uri,'/')}"><xsl:value-of select="lower-case(substring-before($uri,'/'))"/></ep:entityName>
 				</ep:uriPart>
 				<!-- If there's a '/' char after the first uripart there is a following uripart which is processed again with the 
 								 current function. -->
@@ -2049,7 +2052,7 @@
 			<xsl:otherwise>
 				<!-- The messagepath consists of only one uripart. -->
 				<ep:uriPart condition="4">
-					<ep:entityName><xsl:value-of select="lower-case($uri)"/></ep:entityName>
+					<ep:entityName original="{$uri}"><xsl:value-of select="lower-case($uri)"/></ep:entityName>
 				</ep:uriPart>
 			</xsl:otherwise>
 		</xsl:choose>
