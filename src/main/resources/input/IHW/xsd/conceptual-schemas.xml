@@ -20,14 +20,15 @@
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <cs-ref:MapRef xlink:href="#CITYGML"/>
             <cs-ref:MapRef xlink:href="#IMGEO211"/>
+            <cs-ref:MapRef xlink:href="#IHW-GENERIEK"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
    <cs:components>
       <cs:ConceptualSchemasComponents>
-        
+
          <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
-         
+
          <cs:ConceptualSchema>
             <cs:id>GML3</cs:id>
             <cs:shortName>gml</cs:shortName>
@@ -73,9 +74,9 @@
             <cs:url>https://www.geonovum.nl/geo-standaarden/bgt-imgeo</cs:url>
             <cs:catalogUrl>http://imgeo.geostandaarden.nl/def/imgeo-object/[entry]</cs:catalogUrl>
          </cs:ConceptualSchema>
-       
+
          <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
-         
+
          <cs:Map>
             <cs:id>GML321</cs:id>
             <cs:namespace>http://www.opengis.net/gml/3.2</cs:namespace>
@@ -1002,6 +1003,63 @@
                </cs:Construct>
                <cs:Construct>
                   <cs:name>int</cs:name>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>IHW-GENERIEK</cs:id>
+            <cs:namespace>http://www.ihw.nl/</cs:namespace>
+            <cs:location>http://schemas.ihw.nl/ihw-generiek.xsd</cs:location><!-- bogus not used for schema generator -->
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0.0</cs:version>
+            <cs:release>20211020</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#IHW"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>OIN</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>UUID</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Point</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Polygon</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>LineString</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>MultiPoint</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>MultiPolygon</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>MultiLineString</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>DatumOnvolledig</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>CompositeID</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GeoJsonGeometrie</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
             </cs:constructs>
          </cs:Map>
