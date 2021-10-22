@@ -452,7 +452,7 @@ public class XsdCompiler extends Step {
 					createProfile(
 							(profileName == null || profileName.equals("")) ? "GmlProfile" : profileName, 
 							(profileVersion == null || profileVersion.equals("")) ? "1.0.0-3.2.2" : profileVersion, 
-							"../../xlink/1.0.0/xlinks.xsd", 
+							"../../xlink/1.0.0/xlink.xsd", 
 							xsdFolder, //"D:\Projects\gitprojects\Imvertor-Maven\src\main\resources\input\Kadaster\xsd\www.opengis.net\GML322PROFILE-20200728"
 							new AnyFile(targetXsdFolder,"gml/3.2/" + profileName + ".xsd") 
 							);
