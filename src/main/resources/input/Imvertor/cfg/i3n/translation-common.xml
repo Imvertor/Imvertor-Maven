@@ -403,7 +403,12 @@
         <trans lang="nl">Primitief type details</trans>
         <trans lang="en">Primitive type details</trans>
     </item>
-
+    <item>
+        <key>DETAILS-COMPOSITE</key>
+        <trans lang="nl">Gegevensgroeptype details</trans>
+        <trans lang="en">Composite details</trans>
+    </item>
+    
     <item>
         <key>DETAIL-ATTRIBUTE</key>
         <trans lang="nl">Attribuutsoort details</trans>

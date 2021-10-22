@@ -5,7 +5,7 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- 
-        Geonovum NEN3610 follows MIM10-ISO-EN
+        Geonovum NEN3610 follows MIM11-ISO
     --> 
     <xi:include href="../../../MIM/cfg/tvsets/MIM11-ISO.xml"/>
     
