@@ -33,6 +33,12 @@
             </stereotypes>
         </tv>
         
+        <tv norm="space" id="CFG-TV-ISDERIVED">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
     
 </tagset>
