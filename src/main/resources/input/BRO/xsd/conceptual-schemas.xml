@@ -806,7 +806,7 @@
             <cs:id>CIT10</cs:id>
             <cs:namespace>http://standards.iso.org/iso/19115/-3/cit/1.0</cs:namespace>
             <cs:desc>Citation and responsible party information</cs:desc>
-            <cs:location>http://standards.iso.org/iso/19115/-3/cit/1.0/cit.xsd</cs:location>
+            <cs:location>https://standards.iso.org/iso/19115/-3/cit/1.0/cit.xsd</cs:location>
             <cs:phase>3</cs:phase>
             <cs:version>1.0</cs:version>
             <cs:release>2006</cs:release>
@@ -1438,7 +1438,7 @@
             <cs:id>INSPIRE-SOIL</cs:id>
             <cs:namespace>http://inspire.ec.europa.eu/schemas/so/4.0</cs:namespace>
             <cs:desc>Links to the INSPIRE Soil cataloque and schemas.</cs:desc>
-            <cs:location>http://inspire.ec.europa.eu/schemas/so/4.0/Soil.xsd</cs:location>
+            <cs:location>https://inspire.ec.europa.eu/schemas/so/4.0/Soil.xsd</cs:location>
             <cs:phase>3</cs:phase>
             <cs:version>1.0</cs:version>
             <cs:release>4.0</cs:release>
