@@ -24,15 +24,11 @@
     -->
     
     <!-- IHW follows MIM requirements -->
-    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+    <xi:include href="../../../KING/cfg/metamodels/KINGUGM.xml"/>
 
     <name>IHW UGM</name>
     
     <desc lang="en">Metamodel for IHW exchange models: uitwisseling gegevensmodel</desc>
-  
-    <composition-direction-source>part</composition-direction-source>
-    
-    <model-designation>LOGICAL</model-designation>
     
     <profiles>
         <profile lang="nl"> 
@@ -46,46 +42,5 @@
             <desc>IHWUGM Grouping EN</desc>
         </profile>
     </profiles>
-    
-    <naming>
-        <package>
-            <format>AsIs</format>
-        </package>
-        <class>
-            <format>AsIs</format>
-        </class>
-        <property>
-            <format>AsIs</format>
-        </property>
-        <tv>
-            <format>Upperstart</format> <!-- first character must be upper case. -->
-        </tv>
-        <element>
-            <format>LowerCamel</format>
-        </element>
-    </naming>
-    
-    <features>
-        <feature name="role-based">false</feature>
-        <feature name="allow-multiple-supertypes">false</feature>
-        <feature name="allow-scalar-in-union">true</feature>
-    </features>
-    
-    <stereotypes xml:id="stereotypes">
-        <stereo id="stereotype-name-tekentechnisch">
-            <name lang="nl">Tekentechnisch</name>
-            <name lang="en">Draw</name>
-            <construct>association</construct>
-            <!-- this assiociation is removed explicitly from the model by VNG/KING canonization -->
-        </stereo>
-        
-        <stereo id="stereotype-name-association-to-composite">
-            <name lang="en">Group composition</name>
-            <name lang="nl">Groep compositie</name>
-            <desc lang="nl">
-            </desc>
-            <construct>association</construct>
-        </stereo>
-    </stereotypes>
-    
+  
 </metamodel>
