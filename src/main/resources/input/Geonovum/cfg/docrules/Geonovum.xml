@@ -311,12 +311,15 @@
         <name lang="en">Rules</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-OBJECTTYPE</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level><!-- TODO bestaat deze? -->
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>        </levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>        
+        </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-PATROON" order="170">
         <name lang="nl">Patroon</name>
