@@ -147,14 +147,6 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" id="CFG-TV-GROEPNAAM">
-            <name lang="nl">Groepnaam</name>
-            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-tekentechnisch</stereo>
-            </stereotypes>
-        </tv>
-        
         <tv norm="space" id="CFG-TV-SOURCE">
             <name lang="nl">Herkomst</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->

@@ -67,13 +67,6 @@
    
    <stereotypes>
 
-      <stereo id="stereotype-name-tekentechnisch">
-         <name lang="nl">Tekentechnisch</name>
-         <name lang="en">Draw</name>
-         <construct>association</construct>
-         <!-- this assiociation is removed explicitly from the model by VNG/VNGR canonization -->
-      </stereo>
-
       <!-- REDMINE #487891 -->
       <stereo id="stereotype-name-att-proxy">
          <name lang="nl">Attribuutsoort_proxy</name>
