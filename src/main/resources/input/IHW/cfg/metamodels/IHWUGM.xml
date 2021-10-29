@@ -28,7 +28,7 @@
 
     <name>IHW UGM</name>
     
-    <desc lang="en">Metamodel for IHW exchange models: uitwisseling gegevensmodel</desc>
+    <desc lang="en">Metamodel for IHW exchange models: uitwisseling gegevensmodel. Gebaseerd op VNG Realisatie UGM.</desc>
     
     <profiles>
         <profile lang="nl"> 
