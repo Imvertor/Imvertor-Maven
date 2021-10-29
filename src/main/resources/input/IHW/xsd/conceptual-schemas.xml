@@ -36,6 +36,14 @@
             <cs:url>http://www.bro.nl/conceptual-schemas/ISO19107</cs:url>
             <cs:catalogUrl>http://www.opengeospatial.org/standards/gml[entry]</cs:catalogUrl>
          </cs:ConceptualSchema>
+        
+         <cs:ConceptualSchema>
+            <cs:id>IHW</cs:id>
+            <cs:shortName>ihw</cs:shortName>
+            <cs:desc>IHW schema</cs:desc>
+            <cs:url>http://www.ihw.nl/</cs:url>
+         </cs:ConceptualSchema>
+         
          <cs:ConceptualSchema>
             <cs:id>CPI</cs:id>
             <cs:shortName>cit</cs:shortName>
