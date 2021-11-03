@@ -12,7 +12,7 @@
             <name lang="nl">Imvertor</name>
             <name lang="en">Imvertor</name>
             <derive>no</derive>
-            <desc lang="nnl">
+            <desc lang="nl">
                 Deze waarde geeft aan dat het pakket een volledig model is dat kan worden verwerkt door de Imvertor-software.
                 Deze waarde is vereist door de Imvertor add-in op Enterprise Architect.
             </desc>
