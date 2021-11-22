@@ -124,41 +124,5 @@
             <construct>generalization</construct>
         </stereo>
         
-        <!-- tbv. json koppeling: -->
-        
-        <stereo id="stereotype-name-getberichttype">
-            <name lang="en">Getberichttype</name>
-            <name lang="nl">Getberichttype</name>
-            <desc lang="nl">TODO</desc>
-            <construct>class</construct>
-            <toplevel>true</toplevel>
-            <entity-relation-constraint>
-                <relation lang="nl">request</relation>
-                <relation lang="nl">response</relation>
-                <relation lang="nl">pad</relation>
-            </entity-relation-constraint>
-        </stereo>
-        
-        <stereo id="stereotype-name-padtype">
-            <name lang="en">Path type</name>
-            <name lang="nl">Padtype</name>
-            <desc lang="nl">TODO</desc>
-            <construct>class</construct>
-        </stereo>
-        
-        <stereo id="stereotype-name-padrelatie">
-            <name lang="en">Pathrelation</name>
-            <name lang="nl">Padrelatie</name>
-            <desc lang="nl">TODO</desc>
-            <construct>association</construct>
-        </stereo>
-        
-        <stereo id="stereotype-name-entiteitrelatie">
-            <name lang="en">Entityrelation</name>
-            <name lang="nl">Entiteitrelatie</name>
-            <desc lang="nl">TODO</desc>
-            <construct>association</construct>
-        </stereo>
-        
     </stereotypes>
 </metamodel>
