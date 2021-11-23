@@ -29,9 +29,11 @@
     xmlns:ekf="http://EliotKimber/functions"
 
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
-
+    
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
-    version="2.0">
+    version="3.0">
 
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
@@ -52,6 +54,9 @@
     <xsl:variable name="prefixSkos" select="'skos'"/>
     <xsl:variable name="baseurl" select="$configuration-skosrules-file/vocabularies/base"/>
     
+    <xsl:variable name="uri-pattern">^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?$</xsl:variable><!-- https://www.rfc-editor.org/rfc/rfc3986#appendix-B -->
+    <xsl:variable name="url-pattern">^((?:(?:https?|ftp|gopher|telnet|file|notes|ms-help):(?://|\\\\)(?:www\.)?|www\.)[\w\d:#@%/;$()~_?\+,\-=\\.&amp;]+)$</xsl:variable><!-- https://stackoverflow.com/questions/7107683/regular-expression-for-recognizing-url#7108673 -->
+        
     <xsl:output method="text"/>
     
     <xsl:template match="/">
@@ -72,10 +77,10 @@
         <xsl:value-of select="concat(
             concat('begrippenkader:', $abbrev,'&#10;'),
             imf:ttl(('a','skos:ConceptScheme')),
-            imf:ttl(('rdfs:label',imf:ttl-value($model-name,'2q'))))
+            imf:ttl(('rdfs:label',imf:ttl-value($model-name,'2q'))),
+            imf:ttl(('skos:prefLabel',imf:ttl-value($model-name,'2q','nl'))),
+            imf:ttl('.'))
             "/>
-        
-        <xsl:value-of select="imf:ttl-comment(())"/>
         
         <!-- 
             process the imvertor info 
@@ -94,24 +99,74 @@
         <xsl:apply-templates select="imvert:class"/>
     </xsl:template>
     
-    <!--=============== objects ================== -->
-    
     <xsl:template match="imvert:class">
         <xsl:variable name="this" select="."/>
         
         <xsl:value-of select="imf:ttl-debug(.,'mode-data-subject')"/>
         
         <xsl:value-of select="imf:ttl-start($this)"/>
-
-        <xsl:value-of select="for $s in imf:get-superclass($this) return imf:ttl(('skosthes:broaderGeneric',imf:ttl-get-uri-name($s)))"/>
-        <xsl:value-of select="for $s in imf:get-subclasses($this) return imf:ttl(('skosthes:narrowerGeneric',imf:ttl-get-uri-name($s)))"/>
+        
+        <xsl:value-of select="for $s in imf:get-superclass($this) return imf:ttl(('skosthes:broaderGeneric',imf:ttl-get-uri($s)))"/>
+        <xsl:value-of select="for $s in imf:get-subclasses($this) return imf:ttl(('skosthes:narrowerGeneric',imf:ttl-get-uri($s)))"/>
         
         <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
-                
+        
+        <xsl:if test="imvert:designation = 'enumeration'">
+            <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="enum"/>
+        </xsl:if>
+        
+        <xsl:value-of select="imf:ttl('.')"/>
+        
+        <!-- als attributen, enumeratiewaarden of relaties, dan hier opnemen. -->
+        
+        <xsl:apply-templates select="imvert:attributes/imvert:attribute"/>
+        
+        <xsl:apply-templates select="imvert:associations/imvert:association"/>
+        
+    </xsl:template>
+    
+    
+    <xsl:template match="imvert:attribute">
+        <xsl:variable name="this" select="."/>
+        
+        <xsl:variable name="class" select="$this/../.."/>
+        
+        <xsl:value-of select="imf:ttl-debug(.,'mode-data-attribute')"/>
+        
+        <xsl:value-of select="imf:ttl-start($this)"/>
+        
+        <xsl:value-of select="imf:ttl(('skosthes:broaderPartitive',imf:ttl-get-uri($class)))"/>
+        
+        <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
+        
         <xsl:value-of select="imf:ttl('.')"/>
         
     </xsl:template>
+    
+    <xsl:template match="imvert:attribute" mode="enum">
+        <xsl:variable name="this" select="."/>
         
+        <xsl:value-of select="imf:ttl(('skos:member',imf:ttl-get-uri($this)))"/>
+        
+    </xsl:template>
+    
+    <xsl:template match="imvert:association">
+        <xsl:variable name="this" select="."/>
+
+        <xsl:variable name="class" select="$this/../.."/>
+
+        <xsl:value-of select="imf:ttl-debug(.,'mode-data-association')"/>
+        
+        <xsl:value-of select="imf:ttl-start($this)"/>
+        
+        <xsl:value-of select="imf:ttl(('skos:related',imf:ttl-get-uri($class)))"/>
+        
+        <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
+        
+        <xsl:value-of select="imf:ttl('.')"/>
+        
+    </xsl:template>
+    
     <xsl:template match="node()" mode="#all">
         <!-- skip -->        
     </xsl:template>
@@ -142,12 +197,22 @@
     <xsl:function name="imf:ttl-start" as="xs:string">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="name" select="$this/imvert:name/@original"/>
+        
+        <xsl:variable name="is-enumeration" select="$this/imvert:designation = 'enumeration'"/>
+        <xsl:variable name="is-enumeration-value" select="$this/../../imvert:designation = 'enumeration'"/>
+        <xsl:variable name="type" select="if ($is-enumeration) then 'Collection' else 'Concept'"/>
+        <xsl:variable name="created" select="imf:create-datum($this/imvert:created)"/>
+        <xsl:variable name="modified" select="imf:create-datum($this/imvert:modified)"/>
+        
         <xsl:value-of select="concat(
             imf:ttl-comment(('Construct:',imf:get-display-name($this), concat('(', string-join($this/imvert:stereotype,', ') ,')'))),
-            concat(imf:ttl-get-uri-name($this),'&#10;'),
-            imf:ttl(('a',concat($prefixSkos, ':Concept'))),
+            concat(imf:ttl-get-uri($this),'&#10;'),
+            imf:ttl(('a',concat($prefixSkos, ':', $type))),
             imf:ttl((concat($prefixSkos,':prefLabel'),imf:ttl-value($name,'2q','nl'))),
             imf:ttl(('rdfs:label',imf:ttl-value($name,'2q'))),
+            if ($is-enumeration or $is-enumeration-value) then imf:ttl((concat($prefixSkos,':notation'),imf:ttl-value($name,'4q','xsd:string'))) else '',
+            if ($created) then imf:ttl(('dct:created',imf:ttl-value($created,'4q','xsd:date'))) else '',
+            if ($modified) then imf:ttl(('dct:modified',imf:ttl-value($modified,'4q','xsd:date'))) else '',
             imf:ttl(('skos:inScheme',concat('begrippenkader:',$abbrev))))
         "/>
     </xsl:function>
@@ -209,6 +274,9 @@
             <xsl:when test="not(normalize-space($string))">
                 <!-- skip -->
             </xsl:when>
+            <xsl:when test="$type = '4q'">
+                <xsl:value-of select="concat($str2quot,imf:normalize-ttl-string($string),$str2quot,'^^',$lang)"/>
+            </xsl:when>
             <xsl:when test="$type = '3q'">
                 <xsl:value-of select="concat($str3quot,imf:normalize-ttl-string($string),$str3quot,$langstr)"/>
             </xsl:when>
@@ -232,7 +300,15 @@
             <xsl:variable name="tv" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',.))"/>
             <xsl:variable name="map" select="imf:ttl-map($tv/@id)"/>
             <xsl:if test="exists($tv) and exists($map)">
-                <xsl:value-of select="imf:ttl(($map, imf:ttl-value($tv,$map/@type, if (imf:boolean($map/@requires-lang)) then 'nl' else ())))"/>
+                <xsl:variable name="domain" select="analyze-string($tv,$url-pattern)/*:match/*:group[@nr=4]"/>
+                <xsl:choose>
+                    <xsl:when test="$map/@rule = 'when-uri' and empty($domain)">
+                        <!-- skip -->
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="imf:ttl(($map, imf:ttl-value($tv,$map/@type, if (imf:boolean($map/@requires-lang)) then 'nl' else ())))"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:if>
         </xsl:for-each>
     </xsl:function>
@@ -248,13 +324,20 @@
         </xsl:if>
     </xsl:function>
     
+    
     <xsl:function name="imf:ttl-get-uri-name">
         <xsl:param name="construct"/>
-        <!--
-        <xsl:variable name="dn" select="subsequence(tokenize(imf:get-display-name($class),'\s\('),1,1)"/>
-        <xsl:value-of select="concat('data:', string-join(tokenize($dn,'[^A-Za-z0-9]+'),'_'))"/>
-        -->
         <xsl:value-of select="concat($prefixData,':', imf:get-normalized-name($construct/imvert:name,'element-name'))"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:ttl-get-uri">
+        <xsl:param name="construct"/>
+        <xsl:variable name="ndn" select="tokenize(imf:get-display-name($construct),'(::)|(\.)|(\()')"/>
+        
+        <xsl:variable name="domain" select="imf:for-uri($ndn[1])"/><!-- voor BRO niet relevant, altijd 'Model' -->
+        <xsl:variable name="construct" select="imf:for-uri($ndn[2])"/>
+        <xsl:variable name="property" select="imf:for-uri($ndn[3])"/>
+        <xsl:value-of select="concat('&lt;',$baseurl,$abbrev,'/',$construct,if ($property != '') then '/' else '',$property,'&gt;')"/>
     </xsl:function>
     
     <xsl:function name="imf:normalize-ttl-string">
@@ -262,5 +345,14 @@
         <xsl:value-of select="replace(replace(replace(replace($string,'\\','\\\\'),'&#10;','\\n'),'&quot;','\\&quot;'),$apos,concat('\\',$apos))"/>
     </xsl:function>
   
+    <xsl:function name="imf:for-uri">
+        <xsl:param name="part"/>
+        <xsl:value-of select="encode-for-uri(normalize-space(tokenize($part,'=')[1]))"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-datum" as="xs:string?">
+        <xsl:param name="date" as="xs:string?"/>
+        <xsl:sequence select="if ($date) then substring($date,1,10) else ()"/>
+    </xsl:function>
     
 </xsl:stylesheet>
