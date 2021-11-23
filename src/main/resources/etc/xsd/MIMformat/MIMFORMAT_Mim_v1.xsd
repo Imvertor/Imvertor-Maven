@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema 
-  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
-  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1" 
-  xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  targetNamespace="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
-  elementFormDefault="qualified" 
-  attributeFormDefault="unqualified" 
-  version="1">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1" xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://www.geostandaarden.nl/mim/informatiemodel/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1">
 
   <xs:annotation>
     <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/mim/informatiemodel/v1</xs:appinfo>
@@ -41,8 +32,8 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan het package ontleend is. Bij een view is de herkomst nooit de eigen organsiatie.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="informatiedomein" type="xs:string"/>
       <xs:element name="informatiemodeltype" type="xs:string"/>
+      <xs:element name="informatiedomein" type="xs:string"/>
       <xs:element name="relatiemodelleringstype" type="mim:relatiemodelleringstype"/>
       <xs:element name="MIMVersie" type="xs:string"/>
       <xs:element name="MIMExtensie" type="xs:string" minOccurs="0"/>
@@ -58,55 +49,44 @@
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
   </xs:complexType>
 
   <!-- DomeinOfView: -->
-  <xs:element name="DomeinOfView" type="mim:DomeinOfView" abstract="true"/>
-  <xs:complexType name="DomeinOfView" abstract="true">
+  <xs:complexType name="DomeinViewDatatypen">
     <xs:sequence>
-      <xs:element name="datatypen" minOccurs="0">
-        <xs:complexType>
-          <xs:choice maxOccurs="unbounded">
-            <xs:element ref="mim:GestructureerdDatatype"/>
-            <xs:element ref="mim:PrimitiefDatatype"/>
-            <xs:element ref="mim:Enumeratie"/>
-            <xs:element ref="mim:Codelijst"/>
-            <xs:element ref="mim:Referentielijst"/>
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="objecttypen" minOccurs="0">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="mim:Objecttype" maxOccurs="unbounded"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="gegevensgroeptypen" minOccurs="0">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="mim:Gegevensgroeptype" maxOccurs="unbounded"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="keuzen" minOccurs="0">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="mim:Keuze" maxOccurs="unbounded"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="constructies" minOccurs="0">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="mim-ext:Constructie" maxOccurs="unbounded"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="mim:GestructureerdDatatype"/>
+        <xs:element ref="mim:PrimitiefDatatype"/>
+        <xs:element ref="mim:Enumeratie"/>
+        <xs:element ref="mim:Codelijst"/>
+        <xs:element ref="mim:Referentielijst"/>
+      </xs:choice>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="DomeinViewObjectTypen">
+    <xs:sequence>
+      <xs:element ref="mim:Objecttype" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DomeinViewGegevensgroepTypen">
+    <xs:sequence>
+      <xs:element ref="mim:Gegevensgroeptype" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DomeinViewKeuzen">
+    <xs:sequence>
+      <xs:element ref="mim:Keuze" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DomeinViewConstructies">
+    <xs:sequence>
+      <xs:element ref="mim-ext:Constructie" maxOccurs="unbounded"/>
+    </xs:sequence>
   </xs:complexType>
 
   <!-- Domein: -->
@@ -116,17 +96,20 @@
     </xs:annotation>
   </xs:element>
   <xs:complexType name="Domein">
-    <xs:complexContent>
-      <xs:extension base="mim:DomeinOfView">
-        <xs:sequence>
-          <xs:element name="naam" type="xs:string">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de domein package. </xs:documentation>
-            </xs:annotation>
-          </xs:element>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de domein package. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datatypen" type="mim:DomeinViewDatatypen" minOccurs="0"/>
+      <xs:element name="objecttypen" type="mim:DomeinViewObjectTypen" minOccurs="0"/>
+      <xs:element name="gegevensgroeptypen" type="mim:DomeinViewGegevensgroepTypen" minOccurs="0"/>
+      <xs:element name="keuzen" type="mim:DomeinViewKeuzen" minOccurs="0"/>
+      <xs:element name="constructies" type="mim:DomeinViewConstructies" minOccurs="0"/>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="required"/>
   </xs:complexType>
 
   <!-- View: -->
@@ -136,32 +119,35 @@
     </xs:annotation>
   </xs:element>
   <xs:complexType name="View">
-    <xs:complexContent>
-      <xs:extension base="mim:DomeinOfView">
-        <xs:sequence>
-          <xs:element name="naam" type="xs:string">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de view package. Deze is, indien mogelijk, analoog aan de naamgeving in het externe schema waar de view over gaat, eventueel met een prefix.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="locatie" type="xs:string">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De verwijzing naar de locatie van de bijbehorende schema’s waar de view over gaat.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="definitie" type="mim:xhtmlText">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de package.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="herkomst" type="xs:string">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan het package ontleend is. Bij een view is de herkomst nooit de eigen organsiatie.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de view package. Deze is, indien mogelijk, analoog aan de naamgeving in het externe schema waar de view over gaat, eventueel met een prefix.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="locatie" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De verwijzing naar de locatie van de bijbehorende schema’s waar de view over gaat.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText">
+        <xs:annotation>
+          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de package.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomst" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan het package ontleend is. Bij een view is de herkomst nooit de eigen organsiatie.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datatypen" type="mim:DomeinViewDatatypen" minOccurs="0"/>
+      <xs:element name="objecttypen" type="mim:DomeinViewObjectTypen" minOccurs="0"/>
+      <xs:element name="gegevensgroeptypen" type="mim:DomeinViewGegevensgroepTypen" minOccurs="0"/>
+      <xs:element name="keuzen" type="mim:DomeinViewKeuzen" minOccurs="0"/>
+      <xs:element name="constructies" type="mim:DomeinViewConstructies" minOccurs="0"/>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="required"/>
   </xs:complexType>
 
   <!-- Extern: -->
@@ -175,11 +161,6 @@
       <xs:element name="naam" type="xs:string">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de externe package zoals gespecificeerd door de externe instantie.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="alias" type="xs:string" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="locatie" type="xs:string">
@@ -513,6 +494,13 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de type gegevensgroep.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="gegevensgroepType">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim-ref:GegevensgroeptypeRef"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="herkomst" type="xs:string">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan de type gegevensgroep ontleend is dan wel de eigen organisatie indien het door de eigen organisatie toegevoegd is.</xs:documentation>
@@ -527,13 +515,6 @@
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De datum waarop de type gegevensgroep is opgenomen in het informatiemodel.</xs:documentation>
         </xs:annotation>
-      </xs:element>
-      <xs:element name="type">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="mim-ref:GegevensgroeptypeRef"/>
-          </xs:sequence>
-        </xs:complexType>
       </xs:element>
       <xs:element name="indicatieMaterieleHistorie" type="mim:boolean">
         <xs:annotation>
@@ -584,14 +565,12 @@
       <xs:element name="doel">
         <xs:complexType>
           <xs:choice>
-            <xs:choice>
-              <xs:element ref="mim-ref:ObjecttypeRef"/>
-              <xs:element ref="mim-ref:KeuzeRef"/>
-            </xs:choice>
+            <xs:element ref="mim-ref:ObjecttypeRef"/>
+            <xs:element ref="mim-ref:KeuzeRef"/>
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element name="aggregatieType" type="mim:typeAggregatie">
+      <xs:element name="aggregatietype" type="mim:aggregatietype">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Standaard betreft het geen aggregatie (None). Het type aggregatie mag ‘composite’ zijn. Dit wordt gedaan als er een afhankelijkheid is dat de target niet kan bestaan zonder de source c.q. de target vervalt als de source vervalt.</xs:documentation>
         </xs:annotation>
@@ -647,17 +626,17 @@
       <xs:element name="relatierolDoel" type="mim:RelatierolRelatiesoortLeidend"/>
       <xs:element name="relatieklasse" type="mim:Relatieklasse" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
-    </xs:sequence>  
-    <xs:attribute name="id" type="xs:ID" use="optional"/>  
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
   </xs:complexType>
-      
-  <!-- RelatiesoortRelatierolLeidend: -->    
+
+  <!-- RelatiesoortRelatierolLeidend: -->
   <xs:element name="RelatiesoortRelatierolLeidend" type="mim:RelatiesoortRelatierolLeidend">
-    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringstype == "Relatierol leidend" -->  
+    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringstype == "Relatierol leidend" -->
     <xs:annotation>
       <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De typering van het structurele verband tussen een object van een objecttype en een (ander) object van een ander (of hetzelfde) objecttype.</xs:documentation>
     </xs:annotation>
-  </xs:element>    
+  </xs:element>
   <xs:complexType name="RelatiesoortRelatierolLeidend">
     <xs:sequence>
       <xs:element name="naam" type="xs:string" minOccurs="0">
@@ -687,7 +666,7 @@
     </xs:sequence>
     <xs:attribute name="id" type="xs:ID" use="optional"/>
   </xs:complexType>
-     
+
   <!-- Relatierol: -->
   <xs:complexType name="RelatierolRelatiesoortLeidend">
     <!-- Relatiesoort leidend (alternatief 1); relatiemodelleringstype == "Relatiesoort leidend" -->
@@ -713,11 +692,11 @@
         </xs:annotation>
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
-    </xs:sequence>  
+    </xs:sequence>
   </xs:complexType>
-     
+
   <xs:complexType name="RelatierolRelatierolLeidend">
-    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringstype == "Relatierol leidend" --> 
+    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringstype == "Relatierol leidend" -->
     <xs:sequence>
       <xs:element name="naam" type="xs:string">
         <xs:annotation>
@@ -783,9 +762,8 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
-  
-  <?x
-  <xs:element name="Relatierol" type="mim:Relatierol" abstract="true">
+
+  <?x <xs:element name="Relatierol" type="mim:Relatierol" abstract="true">
     <xs:annotation>
       <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De benaming van de manier waarop een object deelneemt aan een relatie met een ander object.</xs:documentation>
     </xs:annotation>
@@ -893,9 +871,8 @@
     <xs:attribute name="id" type="xs:ID" use="optional"/>
   </xs:complexType>
   ?>
-  
-  <?x
-  <!-- RelatierolBron: -->
+
+  <?x <!-- RelatierolBron: -->
   <xs:element name="RelatierolBron" type="mim:RelatierolBron">
     <xs:annotation>
       <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De relatierol die de rol beschrijft van de bron van de relatie.</xs:documentation>
@@ -1333,7 +1310,7 @@
               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De verwijzing (URL) naar de locatie van de bijbehorende schema’s met waardenlijsten.</xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element name="referentieElementen">
+          <xs:element name="referentieElementen" minOccurs="0">
             <xs:complexType>
               <xs:sequence>
                 <xs:element ref="mim:ReferentieElement" maxOccurs="unbounded"/>
@@ -1490,7 +1467,7 @@
       <xs:element name="supertype">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="mim-ref:ObjecttypeRef"/>
+            <xs:element ref="mim-ref:ObjecttypeRef" minOccurs="0"/>
             <xs:element ref="mim-ext:Constructie" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
@@ -1587,14 +1564,14 @@
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element ref="mim-ref:ObjecttypeRef"/>
-                  </xs:sequence>  
+                  </xs:sequence>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
       </xs:choice>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:ID" use="required"/>
   </xs:complexType>
@@ -1626,6 +1603,11 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de externe koppeling. Standaard 'betreft'. </xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="alias" type="xs:string" minOccurs="0">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
@@ -1636,23 +1618,18 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De datum waarop de externe koppeling is opgenomen in het informatiemodel.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
       <xs:element name="uniDirectioneel" type="xs:string"/>
-      <xs:element name="aggregatieType" type="mim:typeAggregatie">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding dat het een compositie relatie is.Waarde is altijd Composite.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
       <xs:element name="doel">
         <xs:complexType>
           <xs:choice>
             <xs:element ref="mim-ref:ObjecttypeRef"/>
           </xs:choice>
         </xs:complexType>
+      </xs:element>
+      <xs:element name="aggregatieType" type="mim:aggregatietype">
+        <xs:annotation>
+          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding dat het een compositie relatie is.Waarde is altijd Composite.</xs:documentation>
+        </xs:annotation>
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
@@ -1676,7 +1653,7 @@
     </xs:sequence>
     <xs:attribute name="id" type="xs:ID" use="required"/>
   </xs:complexType>
-  
+
   <xs:element name="attribuutsoorten">
     <xs:complexType>
       <xs:choice maxOccurs="unbounded">
@@ -1684,7 +1661,7 @@
       </xs:choice>
     </xs:complexType>
   </xs:element>
-  
+
   <xs:element name="gegevensgroepen">
     <xs:complexType>
       <xs:choice maxOccurs="unbounded">
@@ -1711,32 +1688,32 @@
     -->
   </xs:simpleType>
 
-  <xs:simpleType name="typeAggregatie">
+  <xs:simpleType name="aggregatietype">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Geen"/>
       <xs:enumeration value="Compositie"/>
       <xs:enumeration value="Gedeeld"/>
     </xs:restriction>
   </xs:simpleType>
-  
+
   <xs:simpleType name="relatiemodelleringstype">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Relatiesoort leidend"/>
       <xs:enumeration value="Relatierol leidend"/>
     </xs:restriction>
   </xs:simpleType>
-  
+
   <xs:simpleType name="MIMVersie">
     <xs:restriction base="xs:string">
       <xs:enumeration value="1.0"/>
       <xs:enumeration value="1.1"/>
     </xs:restriction>
   </xs:simpleType>
-  
+
   <xs:simpleType name="MIMTaal">
     <xs:restriction base="xs:language"/>
   </xs:simpleType>
-  
+
   <xs:simpleType name="authentiek">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Authentiek"/>
@@ -1746,15 +1723,11 @@
       <xs:enumeration value="Overig"/>
     </xs:restriction>
   </xs:simpleType>
-  
-  <xs:complexType name="xhtmlText" mixed="true"> 
-    <xs:sequence> 
-      <xs:any
-        minOccurs="0" 
-        maxOccurs="unbounded" 
-        namespace="http://www.w3.org/1999/xhtml" 
-        processContents="lax"/> 
-    </xs:sequence> 
+
+  <xs:complexType name="xhtmlText" mixed="true">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
+    </xs:sequence>
   </xs:complexType>
-  
+
 </xs:schema>
