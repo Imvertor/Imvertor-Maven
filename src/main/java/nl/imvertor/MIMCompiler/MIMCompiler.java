@@ -20,6 +20,7 @@
 
 package nl.imvertor.MIMCompiler;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
@@ -82,12 +83,37 @@ public class MIMCompiler extends Step {
 		
 		// Transform Imvertor info to MIM format
 		if (configurator.getXParm("properties/WORK_EMBELLISH_FILE", false) != null) {
-			succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_MIMFORMAT_XMLPATH", "properties/IMVERTOR_MIMFORMAT_XSLPATH"); //TODO must relocate generation of WORK_LISTS_FILE to a EMBELLISH step.
+			String mimFormatType = configurator.getXParm("cli/mimformattype", false);
+			if (mimFormatType == null) {
+				mimFormatType = "xml";
+			} else {
+				mimFormatType = configurator.mergeParms(mimFormatType);	
+			}
+			boolean isRDFType = StringUtils.equalsAny(mimFormatType, "rdf");
+			
+			String xslFileParam;
+			switch (mimFormatType) {
+			case "legacy": 
+				xslFileParam = "properties/IMVERTOR_MIMFORMAT_LEGACY_XSLPATH";
+				break;
+			default:
+				xslFileParam = "properties/IMVERTOR_MIMFORMAT_XSLPATH";
+				break;
+			}
+			if (isRDFType) {
+				transformer.setXslParm("generate-readable-ids", "false");
+			}
+			
+			succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_MIMFORMAT_XMLPATH", xslFileParam); //TODO must relocate generation of WORK_LISTS_FILE to a EMBELLISH step.
 			
 			/*
 			// Debug: test if xml is okay
 			succeeds = succeeds && xmlFile.isValid(); // TODO: add when XML schema is available and schemaLocation is set
 			*/
+			
+			if (isRDFType) {
+				succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", "properties/WORK_MIMFORMAT_RDFPATH", "properties/IMVERTOR_MIMFORMAT_RDF_XSLPATH");
+			}
 			
 			// store to mim folder
 			if (succeeds) {
@@ -100,6 +126,14 @@ public class MIMCompiler extends Step {
 				AnyFile appXmlFile = new AnyFile(xmlFolder, mimFormatName + ".xml");
 				xmlFolder.mkdirs();
 				resultMimFile.copyFile(appXmlFile);
+				
+				if (isRDFType) {
+					XmlFile resultRDFFile = new XmlFile(configurator.getXParm("properties/WORK_MIMFORMAT_RDFPATH"));
+					AnyFile appRDFFile = new AnyFile(xmlFolder, mimFormatName + ".rdf");
+					resultRDFFile.copyFile(appRDFFile);
+				}
+				
+				// C:\projects\Imvertor-Maven\src\main\resources\etc\xsd\MIMformat
 			}
 			
 		} else {
