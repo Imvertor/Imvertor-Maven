@@ -45,14 +45,15 @@
   <xsl:mode name="postprocess" on-no-match="shallow-copy"/>
   <xsl:mode name="missing-metadata"/>
 
-  <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
-  <xsl:variable name="generate-readable-ids" select="true()" as="xs:boolean" static="yes"/>
+  <xsl:param name="generate-readable-ids" select="'true'" as="xs:string"/>
 
+  <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
+  
   <xsl:import href="../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
   <xsl:import href="../common/Imvert-common-derivation.xsl" use-when="$runs-in-imvertor-context"/>
   
   <xsl:variable name="mim11-model" as="document-node(element(mim11))">
-    <xsl:sequence select="document('mim11-model.xml')"/>  
+    <xsl:sequence select="document('MIM11-model.xml')"/>  
   </xsl:variable>
   
   <xsl:variable name="stylesheet-code">MIMCOMPILER</xsl:variable>
@@ -141,12 +142,30 @@
     </xsl:copy>
   </xsl:template>
   
-  <xsl:template match="@id[string-length(.) ge 32]" mode="postprocess" use-when="$generate-readable-ids">
-    <xsl:attribute name="id" select="imf:create-id(..)"/>
+  <xsl:template match="@id[string-length(.) ge 32]" mode="postprocess">
+    <xsl:attribute name="id">
+      <xsl:choose>
+        <xsl:when test="$generate-readable-ids = 'true'">
+          <xsl:value-of select="imf:create-id(..)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="imf:clean-id(.)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:attribute>
   </xsl:template>
   
-  <xsl:template match="@xlink:href[string-length(.) ge 32]" mode="postprocess" use-when="$generate-readable-ids">
-    <xsl:attribute name="xlink:href" namespace="http://www.w3.org/1999/xlink" select="'#' || imf:create-id(key('key-mim-construct-by-id', substring(., 2), root()))"/>
+  <xsl:template match="@xlink:href[string-length(.) ge 32]" mode="postprocess">
+    <xsl:attribute name="xlink:href" namespace="http://www.w3.org/1999/xlink">
+      <xsl:choose>
+        <xsl:when test="$generate-readable-ids = 'true'">
+          <xsl:value-of select="'#' || imf:create-id(key('key-mim-construct-by-id', substring(., 2), root()))"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'#' || imf:clean-id(key('key-mim-construct-by-id', substring(., 2), root())/@id)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:attribute>
   </xsl:template>
   
   <xsl:template match="/imvert:packages">
@@ -673,7 +692,7 @@
     <xsl:if test="$mapped-value and $mapped-value[not(. = $waardebereik-aggregatietype)]">
       <xsl:sequence select="imf:message(., 'WARNING', 'Aggregation type [1] is outside scope of MIM value range ([2])', ($value, string-join($waardebereik-aggregatietype, ', ')))"/>
     </xsl:if>
-    <mim:aggregatieType>{$mapped-value}</mim:aggregatieType>
+    <mim:aggregatietype>{$mapped-value}</mim:aggregatietype>
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Alias']">
@@ -983,7 +1002,9 @@
           <xsl:sequence select="$metagegeven"/>
         </xsl:when>
         <xsl:when test="starts-with($kardinaliteit, '1')">
+          <!--
           <xsl:sequence select="imf:message(., 'WARNING', 'Modelelement [1] of type [2] is missing required metadata [3]', ($modelelement-name, $modelelement-type, .))"/>
+          -->
           <xsl:apply-templates select="$metagegeven" mode="missing-metadata"/>
         </xsl:when>
         <xsl:otherwise>
@@ -1063,6 +1084,7 @@
   
   <xsl:template name="process-datatype">
     <xsl:variable name="baretype" select="imvert:baretype" as="xs:string?"/>
+    <xsl:variable name="is-extensie"/>
     <xsl:choose>
       <xsl:when test="imvert:type-id">
         <xsl:call-template name="create-ref-element">
@@ -1207,6 +1229,11 @@
     <xsl:variable name="modelelement" select="local-name($elem)" as="xs:string"/>
     <xsl:variable name="naam" select="imf:valid-id($elem/mim:naam)" as="xs:string"/>
     <xsl:value-of select="lower-case(string-join(($package, $modelelement, $naam, generate-id($elem)), '-'))"/>
+  </xsl:function>
+  
+  <xsl:function name="imf:clean-id" as="xs:string">
+    <xsl:param name="id" as="xs:string"/>
+    <xsl:value-of select="'id-' || replace($id, '(EAID_|EAPK_|\&#x7D;|\&#x7B;)', '')"/>
   </xsl:function>
   
   <xsl:function name="imf:valid-id" as="xs:string?">
