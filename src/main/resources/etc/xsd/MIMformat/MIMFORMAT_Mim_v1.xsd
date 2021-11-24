@@ -14,6 +14,10 @@
     <xs:annotation>
       <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De groepering van alle modelelementen waaruit het informatiemodel is opgebouwd. Het informatiemodel als geheel.</xs:documentation>
     </xs:annotation>
+    <xs:unique name="uniqueId">
+      <xs:selector xpath=".//*"/>
+      <xs:field xpath="@id"/>
+    </xs:unique>
   </xs:element>
   <xs:complexType name="Informatiemodel">
     <xs:sequence>
@@ -49,7 +53,7 @@
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- DomeinOfView: -->
@@ -109,7 +113,7 @@
       <xs:element name="constructies" type="mim:DomeinViewConstructies" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
   </xs:complexType>
 
   <!-- View: -->
@@ -147,7 +151,7 @@
       <xs:element name="constructies" type="mim:DomeinViewConstructies" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
   </xs:complexType>
 
   <!-- Extern: -->
@@ -187,7 +191,7 @@
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- Objecttype: -->
@@ -294,7 +298,7 @@
       <xs:element ref="mim:constraints" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
   </xs:complexType>
 
   <!-- Gegevensgroeptype: -->
@@ -341,7 +345,7 @@
       <xs:element ref="mim:constraints" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
   </xs:complexType>
 
   <!-- Attribuutsoort: -->
@@ -458,7 +462,7 @@
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- Gegevensgroep: -->
@@ -494,7 +498,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de type gegevensgroep.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="gegevensgroepType">
+      <xs:element name="gegevensgroeptype">
         <xs:complexType>
           <xs:sequence>
             <xs:element ref="mim-ref:GegevensgroeptypeRef"/>
@@ -534,7 +538,7 @@
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- RelatiesoortRelatiesoortLeidend: -->
@@ -622,12 +626,30 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding dat relatiesoort geen waarde met betekenis kan bevatten.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="relatierolBron" type="mim:RelatierolRelatiesoortLeidend"/>
-      <xs:element name="relatierolDoel" type="mim:RelatierolRelatiesoortLeidend"/>
-      <xs:element name="relatieklasse" type="mim:Relatieklasse" minOccurs="0"/>
+      <xs:element name="relatierolBron" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="RelatierolBron" type="mim:RelatierolRelatiesoortLeidend"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="relatierolDoel" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="RelatierolDoel" type="mim:RelatierolRelatiesoortLeidend"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="relatieklasse" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim:Relatieklasse"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- RelatiesoortRelatierolLeidend: -->
@@ -659,12 +681,30 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="relatierolBron" type="mim:RelatierolRelatierolLeidend"/>
-      <xs:element name="relatierolDoel" type="mim:RelatierolRelatierolLeidend"/>
-      <xs:element name="relatieklasse" type="mim:Relatieklasse" minOccurs="0"/>
+      <xs:element name="relatierolBron" minOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="RelatierolBron" type="mim:RelatierolRelatierolLeidend"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="relatierolDoel" minOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="RelatierolDoel" type="mim:RelatierolRelatierolLeidend"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="relatieklasse" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim:Relatieklasse"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- Relatierol: -->
@@ -693,6 +733,7 @@
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <xs:complexType name="RelatierolRelatierolLeidend">
@@ -761,6 +802,7 @@
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <?x <xs:element name="Relatierol" type="mim:Relatierol" abstract="true">
@@ -868,7 +910,7 @@
         </xs:complexType>
       </xs:element>
     </xs:choice>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
   ?>
 
@@ -974,7 +1016,7 @@
         </xs:complexType>
       </xs:element>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
   </xs:complexType>
 
   <!-- Primitief Datatype -->
@@ -1136,7 +1178,7 @@
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- Enumeratie -->
@@ -1201,7 +1243,7 @@
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- Codelijst -->
@@ -1395,7 +1437,7 @@
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- Relatieklasse -->
@@ -1430,7 +1472,7 @@
       <xs:element ref="mim:constraints" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- Constraint: -->
@@ -1474,7 +1516,7 @@
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- Generalisatie tussen datatypes: -->
@@ -1502,14 +1544,15 @@
       </xs:element>
       <xs:element name="supertype">
         <xs:complexType>
-          <xs:sequence>
+          <xs:choice>
             <xs:element ref="mim-ref:DatatypeRef"/>
-          </xs:sequence>
+            <xs:element ref="mim-ref:InterfaceRef"/>
+          </xs:choice>
         </xs:complexType>
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- Keuze: -->
@@ -1565,6 +1608,7 @@
                   <xs:sequence>
                     <xs:element ref="mim-ref:ObjecttypeRef"/>
                   </xs:sequence>
+                  <xs:attribute name="id" type="xs:string" use="optional"/>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
@@ -1573,7 +1617,7 @@
       </xs:choice>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
   </xs:complexType>
 
   <!--
@@ -1626,14 +1670,14 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element name="aggregatieType" type="mim:aggregatietype">
+      <xs:element name="aggregatietype" type="mim:aggregatietype">
         <xs:annotation>
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding dat het een compositie relatie is.Waarde is altijd Composite.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
   <xs:element name="Interface" type="mim:Interface">
     <xs:annotation>
@@ -1651,7 +1695,7 @@
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
   </xs:complexType>
 
   <xs:element name="attribuutsoorten">

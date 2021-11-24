@@ -51,7 +51,7 @@
           maxOccurs="unbounded"
           processContents="lax"/>
       </xs:sequence>
-      <xs:attribute name="id" type="xs:ID" use="optional"/>
+      <xs:attribute name="id" type="xs:string" use="optional"/>
     </xs:complexType>
   </xs:element>
     

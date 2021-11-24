@@ -20,6 +20,9 @@
 
 package nl.imvertor.MIMCompiler;
 
+import java.io.File;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -100,8 +103,11 @@ public class MIMCompiler extends Step {
 				xslFileParam = "properties/IMVERTOR_MIMFORMAT_XSLPATH";
 				break;
 			}
+			
+			
 			if (isRDFType) {
 				transformer.setXslParm("generate-readable-ids", "false");
+				transformer.setXslParm("generate-all-ids", "true");
 			}
 			
 			succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_MIMFORMAT_XMLPATH", xslFileParam); //TODO must relocate generation of WORK_LISTS_FILE to a EMBELLISH step.
@@ -127,13 +133,20 @@ public class MIMCompiler extends Step {
 				xmlFolder.mkdirs();
 				resultMimFile.copyFile(appXmlFile);
 				
+				if (!mimFormatType.equals("legacy")) {
+					/* Copy the MIM XML Schema directory: */
+					File xslDir = new File(configurator.getXslPath(configurator.getParm("properties", "IMVERTOR_MIMFORMAT_XSLPATH"))).getParentFile();
+					File xsdSourceFolder = new File(xslDir, "../../etc/xsd/MIMformat");
+					File xsdTargetFolder = new File(xmlFolder, "xsd");
+					FileUtils.copyDirectory(xsdSourceFolder, xsdTargetFolder);
+				}
+				
 				if (isRDFType) {
 					XmlFile resultRDFFile = new XmlFile(configurator.getXParm("properties/WORK_MIMFORMAT_RDFPATH"));
 					AnyFile appRDFFile = new AnyFile(xmlFolder, mimFormatName + ".rdf");
 					resultRDFFile.copyFile(appRDFFile);
 				}
 				
-				// C:\projects\Imvertor-Maven\src\main\resources\etc\xsd\MIMformat
 			}
 			
 		} else {
