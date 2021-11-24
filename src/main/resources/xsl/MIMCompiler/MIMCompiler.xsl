@@ -20,7 +20,8 @@
   version="3.0" 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-  xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xmlns:imvert="http://www.imvertor.org/schema/system"
   xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
@@ -689,8 +690,9 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   
   <xsl:template match="metagegeven[. = 'Definitie']">
     <xsl:param name="context" as="element()"/>
-    <!-- TODO: type: xs:string -> gestructureerd datatype? -->
-    <mim:definitie>{imf:tagged-values($context, 'CFG-TV-DEFINITION')}</mim:definitie>
+    <mim:definitie>
+      <xsl:sequence select="imf:tagged-values($context, 'CFG-TV-DEFINITION')"/>
+    </mim:definitie>
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Formeel patroon']">
@@ -911,7 +913,9 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   
   <xsl:template match="metagegeven[. = 'Toelichting']">
     <xsl:param name="context" as="element()"/>
-    <mim:toelichting>{imf:tagged-values($context, 'CFG-TV-DESCRIPTION')}</mim:toelichting>
+    <mim:toelichting>
+      <xsl:sequence select="imf:tagged-values($context, 'CFG-TV-DESCRIPTION')"/>
+    </mim:toelichting>
   </xsl:template>
   
   <xsl:template name="type" match="metagegeven[. = 'Type']">
@@ -1103,11 +1107,25 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
     </xsl:choose>
   </xsl:function>
   
-  <xsl:function name="imf:tagged-values" as="xs:string*" use-when="$runs-in-imvertor-context">
+  <xsl:function name="imf:tagged-values" as="item()*" use-when="$runs-in-imvertor-context">
     <xsl:param name="context-node" as="element()"/>
     <xsl:param name="tag-id" as="xs:string"/>
-    <xsl:sequence select="for $v in imf:get-most-relevant-compiled-taggedvalue-element($context-node, '##' || $tag-id) return normalize-space(string-join($v//text(), ' '))"/>
+    <xsl:choose>
+      <xsl:when test="$tag-id = ('CFG-TV-DEFINITION', 'CFG-TV-DESCRIPTION')">
+        <xsl:apply-templates select="for $v in imf:get-most-relevant-compiled-taggedvalue-element($context-node, '##' || $tag-id) return $v/*" mode="xhtml"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="for $v in imf:get-most-relevant-compiled-taggedvalue-element($context-node, '##' || $tag-id) return normalize-space(string-join($v//text(), ' '))"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:function>
+  
+  <xsl:template match="xhtml:*" mode="xhtml">
+    <xsl:element name="xhtml:{local-name()}" namespace="http://www.w3.org/1999/xhtml">
+      <xsl:apply-templates select="@*"/>
+      <xsl:apply-templates mode="#current"/>
+    </xsl:element>
+  </xsl:template>
   
   <xsl:function name="imf:tagged-values" as="xs:string*" use-when="not($runs-in-imvertor-context)">
     <xsl:param name="context-node" as="element()"/>
