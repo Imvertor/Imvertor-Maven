@@ -169,7 +169,7 @@
         <tv norm="note" id="CFG-TV-EXAMPLE">
             <name lang="nl">Voorbeeld</name>
             <name lang="en">Example</name>
-            <desc lang="nl">Een of meerdere voorbeelden van het gebryuik van deze constructie.</desc>
+            <desc lang="nl">Een of meerdere voorbeelden van het gebruik van deze constructie.</desc>
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>

@@ -68,24 +68,25 @@
    <stereotypes>
 
       <!-- REDMINE #487891 -->
-      <stereo id="stereotype-name-att-proxy">
+<!--      <stereo id="stereotype-name-att-proxy">
          <name lang="nl">Attribuutsoort_proxy</name>
          <desc lang="en">A proxy is TODO</desc>
          <construct>attribute</construct>
-      </stereo>
-      <stereo id="stereotype-name-obj-proxy">
+      </stereo> -->
+<!--      <stereo id="stereotype-name-obj-proxy">
          <name lang="nl">Objecttype_proxy</name>
          <desc lang="en">A proxy is TODO</desc>
          <construct>class</construct>
-      </stereo>
-      <stereo id="stereotype-name-grp-proxy">
+      </stereo> -->
+<!--      <stereo id="stereotype-name-grp-proxy">
          <name lang="nl">Gegevensgroeptype_proxy</name>
          <desc lang="en">A proxy is TODO</desc>
          <construct>class</construct>
-      </stereo>
+      </stereo> -->
       <!-- N.a.v. introductie MIM 1.1 -->
       <stereo id="stereotype-name-attgrp-proxy" primary="yes">
          <name lang="nl">Gegevensgroep_proxy</name>
+         <name lang="en">AttributeGroupProxy</name>
          <desc lang="en">A proxy is TODO</desc>
          <construct>attribute</construct>
       </stereo>
