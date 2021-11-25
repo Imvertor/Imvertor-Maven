@@ -20,7 +20,18 @@
 
 package nl.imvertor.MIMCompiler;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFWriter;
+import org.eclipse.rdf4j.rio.Rio;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
@@ -82,12 +93,39 @@ public class MIMCompiler extends Step {
 		
 		// Transform Imvertor info to MIM format
 		if (configurator.getXParm("properties/WORK_EMBELLISH_FILE", false) != null) {
-			succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_MIMFORMAT_XMLPATH", "properties/IMVERTOR_MIMFORMAT_XSLPATH"); //TODO must relocate generation of WORK_LISTS_FILE to a EMBELLISH step.
+			String mimFormatType = configurator.getXParm("cli/mimformattype", false);
+			if (mimFormatType == null) {
+				mimFormatType = "xml";
+			} else {
+				mimFormatType = configurator.mergeParms(mimFormatType);	
+			}
+			boolean isRDFType = StringUtils.equalsAny(mimFormatType, "rdf-xml", "turtle", "json-ld", "n-triples", "n-quads", "trig", "trix");
+			
+			String xslFileParam;
+			switch (mimFormatType) {
+			case "legacy": 
+				xslFileParam = "properties/IMVERTOR_MIMFORMAT_LEGACY_XSLPATH";
+				break;
+			default:
+				xslFileParam = "properties/IMVERTOR_MIMFORMAT_XSLPATH";
+				break;
+			}
+			
+			if (isRDFType) {
+				transformer.setXslParm("generate-readable-ids", "false");
+				transformer.setXslParm("generate-all-ids", "false"); /* "true" maken wanneer in system.imvert.xml alle imvert:id's uniek zijn */
+			}
+			
+			succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_MIMFORMAT_XMLPATH", xslFileParam); //TODO must relocate generation of WORK_LISTS_FILE to a EMBELLISH step.
 			
 			/*
 			// Debug: test if xml is okay
 			succeeds = succeeds && xmlFile.isValid(); // TODO: add when XML schema is available and schemaLocation is set
 			*/
+			
+			if (isRDFType) {
+				succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", "properties/WORK_MIMFORMAT_RDFPATH", "properties/IMVERTOR_MIMFORMAT_RDF_XSLPATH");
+			}
 			
 			// store to mim folder
 			if (succeeds) {
@@ -100,6 +138,62 @@ public class MIMCompiler extends Step {
 				AnyFile appXmlFile = new AnyFile(xmlFolder, mimFormatName + ".xml");
 				xmlFolder.mkdirs();
 				resultMimFile.copyFile(appXmlFile);
+				
+				if (!mimFormatType.equals("legacy")) {
+					/* Copy the MIM XML Schema directory: */
+					File xslDir = new File(configurator.getXslPath(configurator.getParm("properties", "IMVERTOR_MIMFORMAT_XSLPATH"))).getParentFile();
+					File xsdSourceFolder = new File(xslDir, "../../etc/xsd/MIMformat");
+					File xsdTargetFolder = new File(xmlFolder, "xsd");
+					FileUtils.copyDirectory(xsdSourceFolder, xsdTargetFolder);
+				}
+				
+				if (isRDFType) {
+					XmlFile resultRDFFile = (isRDFType) ? new XmlFile(configurator.getXParm("properties/WORK_MIMFORMAT_RDFPATH")) : null;
+					switch (mimFormatType) {
+					case "rdf-xml" :
+						AnyFile appRDFFile = new AnyFile(xmlFolder, mimFormatName + ".rdf");
+						resultRDFFile.copyFile(appRDFFile);
+						break;
+					default :
+						RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
+						RDFFormat outputFormat = null;
+						String outputExtension = null;
+						switch (mimFormatType) {
+						case "turtle" :
+							outputFormat = RDFFormat.TURTLE;
+							outputExtension = ".ttl";
+							break;
+						case "json-ld" :
+							outputFormat = RDFFormat.JSONLD;
+							outputExtension = ".jsonld";
+							break;
+						case "n-triples" :
+							outputFormat = RDFFormat.NTRIPLES;
+							outputExtension = ".nt";
+							break;
+						case "n-quads" :
+							outputFormat = RDFFormat.NQUADS;
+							outputExtension = ".nq";
+							break;
+						case "trig" :
+							outputFormat = RDFFormat.TRIG;
+							outputExtension = ".trig";
+							break;
+						case "trix" :
+							outputFormat = RDFFormat.TRIX;
+							outputExtension = ".trix";
+							break;
+						}	
+						AnyFile outputFile = new AnyFile(xmlFolder, mimFormatName + outputExtension);
+						RDFWriter rdfWriter = Rio.createWriter(outputFormat, new FileOutputStream(outputFile));
+						rdfParser.setRDFHandler(rdfWriter);
+						URL inputURL = resultRDFFile.toURI().toURL();
+						try (InputStream inputStream = inputURL.openStream()) {
+							rdfParser.parse(inputStream, inputURL.toString());
+						}
+					}
+				}
+				
 			}
 			
 		} else {
