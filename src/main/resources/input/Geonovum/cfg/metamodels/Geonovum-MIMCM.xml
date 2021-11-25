@@ -30,4 +30,12 @@
         <feature name="allow-scalar-in-union">true</feature>
     </features>
     
+    <stereotypes>
+        <stereo id="stereotype-name-static-generalization">
+            <name lang="nl">Static</name>
+            <name lang="en">Static</name>
+            <construct>generalization</construct>
+        </stereo>
+    </stereotypes>
+    
 </metamodel>

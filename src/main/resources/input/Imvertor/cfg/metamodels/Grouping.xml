@@ -177,7 +177,7 @@
         </stereo>
         <stereo id="stereotype-name-grp-proxy" primary="yes">
             <name lang="nl">Gegevensgroeptype_proxy</name>
-            <name lang="en">AttributeGroupProxy</name>
+            <name lang="en">AttributeGroupTypeProxy</name>
             <desc lang="nl">A proxy is TODO</desc>
             <construct>class</construct>
         </stereo>

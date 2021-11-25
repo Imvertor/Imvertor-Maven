@@ -36,6 +36,8 @@
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
                 <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-INDICATIEINONDERZOEK">
@@ -49,6 +51,8 @@
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
                 <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -72,6 +76,10 @@
                 <stereo minmax="1..1">stereotype-name-complextype</stereo>        <!-- TODO remove? -->
                 <stereo minmax="1..1">stereotype-name-data-element</stereo>       <!-- TODO remove? -->
                 <stereo minmax="1..1">stereotype-name-composite</stereo>          <!-- verplicht voor SIM -->
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
@@ -81,6 +89,9 @@
                 <stereo minmax="1..1">stereotype-name-composite</stereo>         <!-- TODO determine if presence is valid -->
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>    <!-- TODO determine cardinality -->
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <desc lang="nl">
@@ -103,6 +114,9 @@
                 <stereo minmax="1..1">stereotype-name-composite</stereo>         <!-- TODO determine if presence is valid -->
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>    <!-- TODO determine cardinality -->
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <desc lang="nl">
@@ -129,6 +143,9 @@
                 <stereo minmax="1..1">stereotype-name-composite</stereo>         <!-- TODO determine if presence is valid -->
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>    <!-- TODO determine cardinality -->
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
         <tv norm="compact" rules="NOC" id="CFG-TV-VOIDABLE">
@@ -137,6 +154,9 @@
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
                 <stereo minmax="1..1">stereotype-name-composite</stereo>         <!-- TODO determine if presence is valid -->
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>      <!-- TODO determine if presence is valid -->
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
             <desc lang="nl">
                 Indicatie waarmee wordt aangegeven dat het gegeven ook geen waarde kan hebben.
@@ -158,6 +178,10 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
                 <stereo minmax="1..1">stereotype-name-composite</stereo><!-- verplicht voor SIM -->
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
 
@@ -171,8 +195,27 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..*">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..*">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..*">stereotype-name-obj-proxy</stereo>
+                <stereo minmax="0..*">stereotype-name-grp-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
+        <tv norm="space" id="CFG-TV-INDICATIONDERIVABLE">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-DATERECORDED">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
+            </stereotypes>
+        </tv> 
         <tv norm="note" id="CFG-TV-QUALITY">   <!-- in aanvulling op SBR --><!-- Wat voegt dit  dan toe tov SBR? Volgens mij niets en kan het weg. -->
             <name lang="nl">Kwaliteitsbegrip</name>
             <derive>yes</derive>
@@ -184,6 +227,10 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-composite</stereo> <!-- verplicht voor SIM -->
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
         <tv norm="note" id="CFG-TV-DESCRIPTION">   <!-- in aanvulling op SBR -->
@@ -234,6 +281,54 @@
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
                 <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-FORMALPATTERN">
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-LENGTH">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-DATALOCATION">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OWNER">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="note" id="CFG-TV-NAME">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
+            </stereotypes>
+        </tv> 
+        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-INDICATIONCLASSIFICATION">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
             </stereotypes>
         </tv>
         

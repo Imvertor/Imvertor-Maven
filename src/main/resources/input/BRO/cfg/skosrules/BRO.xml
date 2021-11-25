@@ -47,8 +47,16 @@
         <vocabulary>
             <prefix>dct</prefix>
             <URI>http://purl.org/dc/terms/</URI>
+        </vocabulary> 
+        <vocabulary>
+            <prefix>xsd</prefix>
+            <URI>http://www.w3.org/2001/XMLSchema#</URI>
+        </vocabulary> 
+        <vocabulary>
+            <prefix>begrippenkader</prefix>
+            <URI>http://definities.geostandaarden.nl/id/begrippenkader/</URI>
         </vocabulary>        
-
+        
     </vocabularies>
     
     <node-mapping>
@@ -58,8 +66,15 @@
             Requires-lang betekent: de taalcode @nl oid moet worden toegevoegd.
         -->
         <map id="CFG-TV-DEFINITION" type="3q" lang="#all" requires-lang="true">skos:definition</map>
-        <map id="CFG-TV-SOURCEOFDEFINITION" type="2q" lang="#all" requires-lang="false">dct:source</map>
-        <map id="CFG-TV-DESCRIPTION" type="2q" lang="#all" requires-lang="true">skos:scopeNote</map>
+        <map id="CFG-TV-SOURCEOFDEFINITION" type="2q" lang="#all" requires-lang="false" rule="when-uri">skos:exactMatch</map>
+        <map id="CFG-TV-DESCRIPTION" type="2q" lang="#all" requires-lang="true">skos:note</map>
+        
+        <map id="CFG-TV-ABBREV" type="2q" lang="#all" requires-lang="true">skos:altLabel</map>
+        <map id="CFG-TV-CODE" type="2q" lang="#all" requires-lang="false">skos:notation</map>
+        <map id="CFG-TV-DATERECORDED" type="2q" lang="#all" requires-lang="false">dct:created</map>
+        <map id="CFG-TV-OWNER" type="2q" lang="#all" requires-lang="false">dct:creator</map>
+        <map id="CFG-TV-SOURCE" type="2q" lang="#all" requires-lang="false">dct:source</map>
+        
     </node-mapping>
     
 </skos-rules>

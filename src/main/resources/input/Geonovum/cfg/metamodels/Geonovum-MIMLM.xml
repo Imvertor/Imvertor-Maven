@@ -8,7 +8,7 @@
         
         Including scalars.
     --> 
-    <xi:include href="../../../Geonovum/cfg/metamodels/Geonovum-NEN3610.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM11-ISO.xml"/>
     
     <name>Geonovum MIMLM</name>
     
@@ -39,9 +39,17 @@
     </naming>
     
     <features>
-        <feature name="allow-multiple-supertypes">false</feature>
+        <feature name="allow-multiple-supertypes">true</feature>
         <feature name="allow-scalar-in-union">true</feature>
         <feature name="unique-normalized-class-names">domain</feature>
     </features>
+    
+    <stereotypes>
+        <stereo id="stereotype-name-static-generalization">
+            <name lang="nl">Static</name>
+            <name lang="en">Static</name>
+            <construct>generalization</construct>
+        </stereo>
+    </stereotypes>
     
 </metamodel>
