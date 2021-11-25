@@ -46,7 +46,9 @@
             <xsl:for-each  select="../imvert:supertype[imvert:stereotype/@id = ('stereotype-name-static-generalization')]">
                 <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
                 <xsl:variable name="copy-down-superids" select="imvert:type-id"/>
-                <xsl:apply-templates select="$document-classes[imvert:id=$copy-down-superids]/imvert:attributes" mode="copy-down"/> 
+                <xsl:apply-templates select="$document-classes[imvert:id=$copy-down-superids]/imvert:attributes" mode="copy-down">
+                    <xsl:with-param name="construct" select=".." tunnel="yes"/>
+                </xsl:apply-templates> 
             </xsl:for-each>
             <xsl:apply-templates/>
         </xsl:copy> 
@@ -54,13 +56,17 @@
     
     <xsl:template match="imvert:attributes" mode="copy-down">
         <xsl:variable name="copy-down-superids" select="../imvert:supertype[imvert:stereotype/@id = ('stereotype-name-static-generalization')]/imvert:type-id"/>
-        <xsl:apply-templates select="$document-classes[imvert:id=$copy-down-superids]/imvert:attributes" mode="copy-down"/>  
+        <xsl:apply-templates select="$document-classes[imvert:id=$copy-down-superids]/imvert:attributes" mode="copy-down"></xsl:apply-templates>  
         <xsl:apply-templates select="imvert:attribute" mode="copy-down"/>
     </xsl:template>
     
     <xsl:template match="imvert:attribute" mode="copy-down">
+        <xsl:param name="construct" tunnel="yes"/>
         <xsl:copy>
-            <xsl:apply-templates/>
+            <imvert:id>
+                <xsl:value-of select="concat($construct/imvert:id,'_',replace(imf:normalize-xmi-id(imvert:id),'\.','_'))"/>
+            </imvert:id>
+            <xsl:apply-templates select="*[empty(self::imvert:id)]"/>
             <xsl:sequence select="imf:create-output-element('imvert:copy-down-type-id', ../../imvert:id)"/>
         </xsl:copy>
     </xsl:template>
@@ -80,8 +86,12 @@
     </xsl:template>
     
     <xsl:template match="imvert:association" mode="copy-down">
+        <xsl:param name="construct" tunnel="yes"/>
         <xsl:copy>
-            <xsl:apply-templates/>
+            <imvert:id>
+                <xsl:value-of select="concat($construct/imvert:id,'_',replace(imf:normalize-xmi-id(imvert:id),'\.','_'))"/>
+            </imvert:id>
+            <xsl:apply-templates select="*[empty(self::imvert:id)]"/>
             <xsl:sequence select="imf:create-output-element('imvert:copy-down-type-id', ../../imvert:id)"/>
         </xsl:copy>
     </xsl:template>
