@@ -119,7 +119,8 @@
   <xsl:variable name="classes" select="$preprocessed-xml//imvert:class" as="element(imvert:class)*"/>
   <xsl:variable name="attributes" select="$preprocessed-xml//imvert:attribute" as="element(imvert:attribute)*"/>
   <xsl:variable name="associations" select="$preprocessed-xml//imvert:association" as="element(imvert:association)*"/>
-  <xsl:variable name="relatiemodelleringstype" select="imf:tagged-values-not-traced($preprocessed-xml/imvert:packages, 'CFG-TV-IMRELATIONMODELINGTYPE')" as="xs:string?"/>
+  <xsl:variable name="specified-relatiemodelleringstype" select="imf:tagged-values-not-traced($preprocessed-xml/imvert:packages, 'CFG-TV-IMRELATIONMODELINGTYPE')" as="xs:string?"/>
+  <xsl:variable name="relatiemodelleringstype" select="if ($specified-relatiemodelleringstype) then $specified-relatiemodelleringstype else 'Relatiesoort leidend'" as="xs:string"/>
   
   <xsl:variable name="mim11-primitive-datatypes-lc-names" select="for $n in $mim11-package/imvert:class/imvert:name/@original return lower-case($n)" as="xs:string+"/>
   
