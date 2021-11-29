@@ -113,7 +113,7 @@ public class MIMCompiler extends Step {
 			
 			if (isRDFType) {
 				transformer.setXslParm("generate-readable-ids", "false");
-				transformer.setXslParm("generate-all-ids", "false"); /* "true" maken wanneer in system.imvert.xml alle imvert:id's uniek zijn */
+				transformer.setXslParm("generate-all-ids", "true");
 			}
 			
 			succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_MIMFORMAT_XMLPATH", xslFileParam); //TODO must relocate generation of WORK_LISTS_FILE to a EMBELLISH step.
