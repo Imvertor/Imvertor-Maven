@@ -264,10 +264,10 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Indicatie dat er geen instanties (objecten) voor het betreffende objecttype mogen voorkomen.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="supertype" minOccurs="0">
+      <xs:element name="supertypes" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="mim:GeneralisatieObjecttypes"/>
+            <xs:element ref="mim:GeneralisatieObjecttypes" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>

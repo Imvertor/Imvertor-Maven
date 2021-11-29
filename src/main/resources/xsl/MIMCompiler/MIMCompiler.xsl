@@ -362,7 +362,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
       <mim:relatierolBron>
         <xsl:where-populated>
           <mim:RelatierolBron>
-            <!-- <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/> -->
+            <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
             <xsl:for-each select="imvert:source">
               <xsl:call-template name="genereer-metagegevens">
                 <xsl:with-param name="modelelement-type" select="$rol-type" as="xs:string"/>
@@ -377,7 +377,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
       <mim:relatierolDoel>
         <xsl:where-populated>
           <mim:RelatierolDoel>
-            <!-- <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/> -->
+            <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
             <xsl:for-each select="imvert:target">
               <xsl:call-template name="genereer-metagegevens">
                 <xsl:with-param name="modelelement-type" select="$rol-type" as="xs:string"/>
@@ -600,9 +600,11 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
       </xsl:call-template>
       <xsl:choose>
         <xsl:when test="self::imvert:class">
+          <!--
           <xsl:call-template name="supertype">
             <xsl:with-param name="context" select="." as="element()"/>
           </xsl:call-template>
+          -->
           <xsl:where-populated>
             <mim-ext:bevat>
               <xsl:apply-templates select="imvert:attributes/imvert:attribute|imvert:associations/imvert:association"/>
@@ -864,50 +866,56 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   
   <xsl:template name="supertype" match="metagegeven[. = 'Supertype']">
     <xsl:param name="context" as="element()"/>
-    <xsl:for-each select="$context">
-      <xsl:if test="imvert:supertype">
-        <xsl:variable name="first-supertype" select="key('key-imvert-construct-by-id', (imvert:supertype/imvert:type-id)[1])" as="element()"/>
-        <mim:supertype>
-          <xsl:choose>
-            <xsl:when test="$first-supertype/imvert:stereotype = $stereotype-name-objecttype">
+    <xsl:for-each select="$context[imvert:supertype]">
+      <xsl:variable name="first-supertype" select="key('key-imvert-construct-by-id', (imvert:supertype/imvert:type-id)[1])" as="element()"/>
+      <xsl:choose>
+        <xsl:when test="$first-supertype/imvert:stereotype = $stereotype-name-objecttype">
+          <mim:supertypes>
+            <xsl:for-each select="imvert:supertype">
               <mim:GeneralisatieObjecttypes>
-                <!-- <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/> -->
+                <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
                 <mim:supertype>
-                  <xsl:for-each select="imvert:supertype[not(imvert:stereotype) or imvert:stereotype = $stereotype-name-generalisatie]">
-                    <xsl:call-template name="create-ref-element">
-                      <xsl:with-param name="ref-id" select="imvert:type-id"/>
-                    </xsl:call-template>
-                  </xsl:for-each>
-                  <xsl:for-each select="imvert:supertype[imvert:stereotype[normalize-space()] and imf:is-not-mim-construct(.)]">
-                    <mim-ext:Constructie>
-                      <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype>
+                  <xsl:choose>
+                    <xsl:when test="not(imvert:stereotype) or (imvert:stereotype = $stereotype-name-generalisatie)">
                       <xsl:call-template name="create-ref-element">
                         <xsl:with-param name="ref-id" select="imvert:type-id"/>
                       </xsl:call-template>
-                    </mim-ext:Constructie>
-                  </xsl:for-each>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <mim-ext:Constructie>
+                        <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype>
+                        <xsl:call-template name="create-ref-element">
+                          <xsl:with-param name="ref-id" select="imvert:type-id"/>
+                        </xsl:call-template>
+                      </mim-ext:Constructie>
+                    </xsl:otherwise>
+                  </xsl:choose>
                 </mim:supertype>
                 <xsl:call-template name="extensieKenmerken"/>
               </mim:GeneralisatieObjecttypes>
-            </xsl:when>
-            <xsl:otherwise>
+            </xsl:for-each>
+          </mim:supertypes>
+        </xsl:when>
+        <xsl:otherwise>
+          <mim:supertype>
+            <xsl:for-each select="imvert:supertype">
               <mim:GeneralisatieDatatypes>
-                <!-- <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/> -->
+                <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
                 <xsl:call-template name="genereer-metagegevens">
                   <xsl:with-param name="modelelement-type" as="xs:string">Generalisatie Datatypes</xsl:with-param>
                   <xsl:with-param name="metagegevens-to-skip" select="'Supertype'" as="xs:string"/>
                 </xsl:call-template>
                 <mim:supertype>
                   <xsl:call-template name="create-ref-element">
-                    <xsl:with-param name="ref-id" select="imvert:supertype/imvert:type-id"/>
+                    <xsl:with-param name="ref-id" select="imvert:type-id"/>
                   </xsl:call-template>
                 </mim:supertype>
                 <xsl:call-template name="extensieKenmerken"/>
               </mim:GeneralisatieDatatypes>
-            </xsl:otherwise>
-          </xsl:choose>
-        </mim:supertype>
-      </xsl:if>  
+            </xsl:for-each>
+          </mim:supertype>
+        </xsl:otherwise>
+      </xsl:choose>  
     </xsl:for-each>
   </xsl:template>
   
@@ -945,10 +953,10 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   </xsl:template>
   
   <xsl:template name="genereer-metagegevens">
-    <xsl:param name="modelelement-type" select="imvert:stereotype" as="xs:string?"/>
+    <xsl:param name="modelelement-type" select="imvert:stereotype" as="xs:string*"/>
     <xsl:param name="modelelement-name" select="imvert:name" as="xs:string?"/>
     <xsl:param name="metagegevens-to-skip" select="()" as="xs:string*"/>
-    <xsl:variable name="modelelement" select="key('key-metagegeven-by-name', lower-case($modelelement-type), $mim11-model)" as="element(modelelement)"/>
+    <xsl:variable name="modelelement" select="key('key-metagegeven-by-name', for $a in $modelelement-type return lower-case($a), $mim11-model)" as="element(modelelement)"/>
     <xsl:variable name="context" select="." as="element()"/>
     <xsl:for-each select="$modelelement/metagegeven[not(. = $metagegevens-to-skip)]">
       <xsl:variable name="metagegeven" as="element()?">
