@@ -396,6 +396,7 @@
                     <xsl:choose>
                         <xsl:when test="$stereotypes=imf:get-config-stereotypes('stereotype-name-static-liskov')">
                             <imvert:substitution>
+                                <xsl:sequence select="imf:get-id-info($generalization,'R')"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:supplier',$supertype/@name)"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:supplier-id',$supertype-id)"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:supplier-package',imf:get-package-name($supertype-id))"/>
@@ -412,6 +413,7 @@
                         </xsl:when>
                         <xsl:otherwise>
                             <imvert:supertype>
+                                <xsl:sequence select="imf:get-id-info($generalization,'R')"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:type-name',$supertype/@name)"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:type-id',$supertype-id)"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:type-package',imf:get-package-name($supertype-id))"/>
@@ -476,9 +478,11 @@
                         <xsl:variable name="target-localid" select="$association/*/UML:AssociationEnd[imf:get-system-tagged-value(.,'ea_end')='target']/@type"/>
                         <xsl:variable name="target" select="imf:element-by-id($target-localid)"/>
                         <imvert:source>
+                            <xsl:sequence select="imf:create-output-element('imvert:id',concat(imf:get-xmi-id($association), '_S'))"/>
                             <xsl:sequence select="imf:get-id-info($source,'C')"/>
                         </imvert:source>
                         <imvert:target>
+                            <xsl:sequence select="imf:create-output-element('imvert:id',concat(imf:get-xmi-id($association), '_T'))"/>
                             <xsl:sequence select="imf:get-id-info($target,'C')"/>
                         </imvert:target>
                     </imvert:associates>
@@ -671,8 +675,8 @@
             </xsl:if>
         </xsl:if>
         <xsl:sequence select="imf:create-output-element('imvert:alias',imf:get-alias($this,$type))"/>
-        <xsl:variable name="id" select="distinct-values(($this/@xmi.id, imf:get-system-tagged-value($this,'ea_guid')))"/> 
-        <xsl:sequence select="imf:create-output-element('imvert:id',$id[1])"/>
+      
+        <xsl:sequence select="imf:create-output-element('imvert:id',imf:get-xmi-id($this)[1])"/>
         <xsl:sequence select="imf:create-output-element('imvert:keywords',imf:get-system-tagged-value($this,'keywords'))"/> 
      
         <xsl:sequence select="imf:create-output-element('imvert:is-id',if ($xref-isid) then 'true' else ())"/> 
@@ -685,6 +689,11 @@
         <xsl:variable name="ass-der" select="$parsed-xref-properties[@id=generate-id($this)]/imvert:props/imvert:des[imvert:name = 'isDerived']/imvert:valu = '-1'"/>
         <xsl:sequence select="imf:create-output-element('imvert:is-value-derived',if ($att-der or $ass-der) then 'true' else ())"/> 
         
+    </xsl:function>
+    
+    <xsl:function name="imf:get-xmi-id" as="xs:string*">
+        <xsl:param name="this" as="node()"/>
+        <xsl:sequence select="distinct-values(($this/@xmi.id, imf:get-system-tagged-value($this,'ea_guid')))"/> 
     </xsl:function>
     
     <xsl:function name="imf:get-scope-info" as="node()*">
@@ -895,6 +904,7 @@
         <xsl:variable name="target-parse" select="imf:parse-style($target/*/UML:TaggedValue[@tag='deststyle']/@value)"/>
         
         <imvert:source>
+            <xsl:sequence select="imf:create-output-element('imvert:id',concat(imf:get-xmi-id($this), '_S'))"/>
             <xsl:sequence select="imf:get-stereotypes-info($this,'src')"/>
             <xsl:sequence select="imf:create-output-element('imvert:role',$source-role)"/>
             <xsl:sequence select="imf:create-output-element('imvert:navigable',if ($source-parse[@name='Navigable'] = 'Navigable') then 'true' else 'false')"/>
@@ -904,6 +914,7 @@
         </imvert:source>
         
         <imvert:target>
+            <xsl:sequence select="imf:create-output-element('imvert:id',concat(imf:get-xmi-id($this), '_T'))"/>
             <xsl:sequence select="imf:get-stereotypes-info($this,'dst')"/>
             <xsl:sequence select="imf:create-output-element('imvert:role',$target-role)"/>
             <xsl:sequence select="imf:create-output-element('imvert:navigable',if ($target-parse[@name='Navigable'] = 'Navigable') then 'true' else 'false')"/>
