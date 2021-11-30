@@ -285,6 +285,8 @@
 					</xsl:choose>
 				</xsl:if>
 
+				<!--xsl:if test="$debugging and ($checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
+					and empty(following-sibling::ep:uriPart[ep:param])])"-->
 				<xsl:if test="$debugging">
 						<xsl:result-document href="{concat('file:/c:/temp/analyzedResponseStructure/get',generate-id($analyzedResponseStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$analyzedResponseStructure"/>
@@ -330,6 +332,7 @@
 				</xsl:if> ?>
 				
 				<xsl:variable name="method">get</xsl:variable>
+				
 				<xsl:variable name="expand" as="xs:boolean">
 					<xsl:choose>
 						<xsl:when test="ep:parameters/ep:parameter[upper-case(ep:name)='EXPAND']/ep:value = 'true' and $serialisation = 'hal+json'">
@@ -352,6 +355,17 @@
 						<xsl:sequence select="imf:msg(.,'WARNING','An expand parameter is not applicable for the [1] message [2], remove it.', ($messageName))" />			
 					</xsl:when>
 				</xsl:choose>
+				
+<?x				<xsl:variable name="pagination" as="xs:boolean">
+					<xsl:choose>
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">
+							<xsl:value-of select="true()"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="false()"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable> ?>
 				<!-- Aangezien het uitgangspunt is dat in de parameters class expliciet een 'page' en 'pagesize' attribute (dus parameter) wordt gedefinieerd
 					 wordt gecheckt of pagination van toepassing is als deze gedefiniëerd zijn. 
 					 Wel mag er natuurlijk voor worden gekozen een page attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is.
@@ -367,6 +381,17 @@
 						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for the [1] message [2] since no page parameter has been created, remove it or create a page parameter.', ($method, $messageName))" />			
 					</xsl:when>
 				</xsl:choose>
+				
+<?x				<xsl:variable name="sort" as="xs:boolean">
+					<xsl:choose>
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='sort']/ep:value = 'true'">
+							<xsl:value-of select="true()"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="false()"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable> ?>
 				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sort' attribute (dus parameter) wordt gedefinieerd
 					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. 
 					 Wel mag er natuurlijk voor worden gekozen een sort attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is. -->
@@ -416,6 +441,9 @@
 										<xsl:text>&#xa;          schema:</xsl:text>
 										<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
 									</xsl:when>
+									<?x							<xsl:when test="upper-case(ep:name) = 'UUID'">
+									<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
+								</xsl:when> ?>
 									<xsl:when test="ep:data-type">
 										<xsl:text>&#xa;        - in: path</xsl:text>
 										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
@@ -628,7 +656,30 @@
 					<xsl:sequence select="//ep:message[ep:name = $rawMessageName and ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response'and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]]"/>
 				</xsl:variable>
 				<xsl:variable name="responseConstruct" select="$relatedResponseMessage/ep:message/ep:seq/ep:construct/ep:type-name"/>
+
+
+
+
+
+
+
+				<!-- De uitwerking in de uitbecommentarieerde variabele kreeg alleen een waarde als de betreffende responseConstruct ook een parameter met de naam 'berichtcode' had die gelijk was aan de in bewerking zijnde 
+					 berichttype (Pa01, Pu01, Po01, etc...).
+				     Aangezien een responseConstruct die in meerdere berichten gebruikt wordt in het EP formaat maar voor 1 van die berichten wordt uitgewerkt kan het voorkomen dat voor de andere berichten geen meervoudige 
+				     naam kan worden gevonden wat in de yaml code resulteert in een fout. Vandaar dat de tweede vorm van deze variabele is uitgewerkt.
+					 De kans is echter dat deze uitwerking weer tot andere fouten leidt. -->
 				<xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode' and contains(ep:value,$berichttype)]]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
+				<!--xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/-->
+				<!--xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response']/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/-->
+
+
+
+
+
+
+
+
+
 				<xsl:variable name="requestbodyConstructName" select="$requestbodymessage//ep:type-name"/>
 				<xsl:variable name="responseConstructName" select="$relatedResponseMessage//ep:type-name"/>
 
@@ -800,6 +851,16 @@
 					<xsl:sequence select="imf:msg(.,'ERROR','An expand parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />		
 				</xsl:if>
 				
+<?x				<xsl:variable name="pagination" as="xs:boolean">
+					<xsl:choose>
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true' and $method ='post'">
+							<xsl:value-of select="true()"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="false()"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable> ?>
 				<!-- Aangezien het uitgangspunt is dat in de parameters class expliciet een 'page' en 'pagesize' attribute (dus parameter) wordt gedefinieerd
 					 wordt gecheckt of pagination van toepassing is als deze gedefiniëerd zijn. 
 					 Wel mag er natuurlijk voor worden gekozen een page attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is.
@@ -816,6 +877,16 @@
 					</xsl:when>
 				</xsl:choose>
 				
+<?x				<xsl:variable name="sort" as="xs:boolean">
+					<xsl:choose>
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='sort']/ep:value = 'true' and $method ='post'">
+							<xsl:value-of select="true()"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="false()"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable> ?>
 				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sort' attribute (dus parameter) wordt gedefinieerd
 					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. 
 					 Wel mag er natuurlijk voor worden gekozen een sort attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is. -->
@@ -825,6 +896,16 @@
 					</xsl:when>
 				</xsl:choose>
 				
+<?x				<xsl:variable name="fields" as="xs:boolean">
+					<xsl:choose>
+						<xsl:when test="$method ='post'">
+							<xsl:value-of select="true()"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="false()"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable> ?>
 				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sort' attribute (dus parameter) wordt gedefinieerd
 					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. 
 					 Wel mag er natuurlijk voor worden gekozen een sort attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is. -->
@@ -873,6 +954,9 @@
 										<xsl:text>&#xa;          schema:</xsl:text>
 										<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
 									</xsl:when>
+									<!--							<xsl:when test="upper-case(ep:name) = 'UUID'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
+							</xsl:when> -->
 									<xsl:when test="ep:data-type">
 										<xsl:text>&#xa;        - in: path</xsl:text>
 										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
@@ -1242,6 +1326,9 @@
 								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
 							</xsl:when>
+<!--							<xsl:when test="upper-case(ep:name) = 'UUID'">
+								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
+							</xsl:when> -->
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;        - in: path</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
@@ -1726,6 +1813,11 @@
 								<xsl:if test="$outside-ref != ''">
 									<ep:outside-ref><xsl:value-of select="$outside-ref"/></ep:outside-ref>
 								</xsl:if>
+	<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
+								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
+								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
+								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:when>
 						<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName and $is-id = 'false'">
@@ -1764,6 +1856,11 @@
 								<xsl:if test="$outside-ref != ''">
 									<ep:outside-ref><xsl:value-of select="$outside-ref"/></ep:outside-ref>
 								</xsl:if>
+								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
+								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
+								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
+								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:when>
 						<xsl:otherwise>
@@ -1799,6 +1896,11 @@
 								<xsl:if test="$outside-ref != ''">
 									<ep:outside-ref><xsl:value-of select="$outside-ref"/></ep:outside-ref>
 								</xsl:if>
+								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
+								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
+								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
+								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -1843,6 +1945,11 @@
 								<xsl:if test="$outside-ref != ''">
 									<ep:outside-ref><xsl:value-of select="$outside-ref"/></ep:outside-ref>
 								</xsl:if>
+								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
+								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
+								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
+								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:if>
 					</xsl:for-each>
