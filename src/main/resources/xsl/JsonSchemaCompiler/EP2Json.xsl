@@ -5,16 +5,31 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:ep="http://www.imvertor.org/schema/endproduct"
     xmlns:j="http://www.w3.org/2005/xpath-functions"
-    
+    xmlns:ext="http://www.imvertor.org/xsl/extensions"
+    xmlns:cw="http://www.armatiek.nl/namespace/folder-content-wrapper"
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+
     exclude-result-prefixes="#all"
     >
     
     <xsl:import href="../common/Imvert-common.xsl"/>
-    
+   
     <xsl:variable name="stylesheet-code">JSONSCHEMA</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/> 
     
     <xsl:output method="xml" encoding="UTF-8"/>
+    
+    <xsl:variable name="geoJSONfiles" select="imf:collect-geoJSONs()"/>
+    <xsl:variable name="references-geoJSON-collection" select="//*[ep:tech-name = ('geometryGeoJSON','geometrycollectionGeoJSON')]"/>
+    <xsl:variable name="geoJSONnames" select="(
+        'geometryGeoJSON',
+        'geometrycollectionGeoJSON',
+        'linestringGeoJSON',
+        'multilinestringGeoJSON',
+        'multipointGeoJSON',
+        'multipolygonGeoJSON',
+        'pointGeoJSON',
+        'polygonGeoJSON')"/>
     
     <xsl:template match="/ep:construct">
         <j:map>
@@ -22,7 +37,14 @@
             <xsl:sequence select="imf:ep-to-namevaluepair('title',imf:get-ep-parameter(.,'subpath'))"/>
             <j:map key="json">
                 <j:map key="definitions">
-                    <xsl:apply-templates select="ep:seq/ep:construct/ep:seq/ep:construct"/>
+                    <xsl:apply-templates select="ep:seq/ep:construct/ep:seq/ep:construct[empty(ep:external)]"/>
+                    <xsl:if test="$references-geoJSON-collection">
+                        <xsl:sequence select="$geoJSONfiles[@construct = 'geometryGeoJSON']/j:map/*"/>
+                        <xsl:sequence select="$geoJSONfiles[@construct = 'geometrycollectionGeoJSON']/j:map/*"/>
+                    </xsl:if>
+                    <xsl:for-each-group select="ep:seq/ep:construct/ep:seq/ep:construct[exists(ep:external)]" group-by="ep:tech-name"><!-- van iedere geoJson external de eerste -->
+                        <xsl:apply-templates select="current-group()[1]" mode="external"/>
+                    </xsl:for-each-group>
                 </j:map>
             </j:map>
         </j:map>
@@ -152,6 +174,11 @@
                             <xsl:sequence select="imf:ep-to-namevaluepair('minItems',ep:min-occurs)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('maxItems',ep:max-occurs)"/>
                         </xsl:when>
+                        
+                        <xsl:when test="ep:external">
+                            <!-- deze constructs worden aan het einde toegevoegd, wanneer vernaar verwezen wordt --> 
+                            <xsl:sequence select="imf:ep-to-namevaluepair('$ref',concat('#/definitions/',ep:tech-name))"/>
+                        </xsl:when>
                         <xsl:otherwise>
                             <xsl:sequence select="imf:msg-comment(.,'WARN', 'Ken dit type niet: [1]',$n)"/>
                         </xsl:otherwise>
@@ -159,6 +186,26 @@
                 </xsl:otherwise>
             </xsl:choose>
         </j:map>
+    </xsl:template>
+    
+    <xsl:template match="ep:construct" mode="external">
+        <xsl:variable name="tech-name" select="ep:tech-name"/>
+        <xsl:choose>
+            <xsl:when test="not($references-geoJSON-collection) and $tech-name = $geoJSONnames">
+                <j:map key="{$tech-name}">
+                    <xsl:sequence select="$geoJSONfiles[@construct = $tech-name]/j:map/*"/>
+                </j:map>
+            </xsl:when>
+            <xsl:when test="$tech-name = $geoJSONnames">
+                <!-- de naam is een geoJSON naam maar er is al een collectie gegenereerd -->
+            </xsl:when>
+            <xsl:otherwise>
+                <j:map key="{$tech-name}">
+                    <xsl:sequence select="imf:msg-comment(.,'ERROR', 'Cannot resolve EP construct [1] to a type in [2]',($tech-name,'GeoJSON'))"/>
+                    <xsl:sequence select="imf:ep-to-namevaluepair('error','undefined')"/>
+                </j:map>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="node()">
@@ -205,7 +252,7 @@
         <xsl:param name="info" as="item()*"/>
         <xsl:if test="imf:debug-mode()">
             <xsl:variable name="ctext" select="imf:msg-insert-parms($text,$info)"/>
-            <xsl:sequence select="imf:ep-to-namevaluepair('_comment',$ctext)"/>
+            <?x <xsl:sequence select="imf:ep-to-namevaluepair('_comment',$ctext)"/> x?>
             <xsl:sequence select="imf:msg($this,$type,$text,$info)"/>
         </xsl:if>
     </xsl:function>
@@ -231,6 +278,7 @@
             <xsl:when test="$data-type = 'ep:decimal'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:integer'">integer</xsl:when>
             <xsl:when test="$data-type = 'ep:boolean'">boolean</xsl:when>
+            <xsl:when test="$data-type = 'ep:time'">string</xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="concat('UNKNOWN-DATATYPE: ',$data-type)"/>
             </xsl:otherwise>
@@ -242,6 +290,7 @@
         <xsl:choose>
             <xsl:when test="$data-type = 'ep:date'">date-time</xsl:when>
             <xsl:when test="$data-type = 'ep:datetime'">date-time</xsl:when>
+            <xsl:when test="$data-type = 'ep:time'">time</xsl:when>
             <xsl:when test="$data-type = 'ep:year'">year</xsl:when>
             <xsl:when test="$data-type = 'ep:uri'">uri</xsl:when>
             <xsl:otherwise>
@@ -249,4 +298,21 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+    
+    <xsl:function name="imf:collect-geoJSONs" as="element(geoJSONfile)*">
+        <xsl:variable name="path" select="concat(imf:get-xparm('system/folder-path'),'/input/OGC/openapi/schemas')"/>
+        <xsl:variable name="tempfile" select="imf:get-xparm('properties/WORK_GEOJSONXML_XMLPATH')"/>
+        <xsl:variable name="files" select="if (ext:imvertorFolderSerializer($path,$tempfile,'')) then imf:document($tempfile) else ()"/>
+        <xsl:variable name="geoJSONfiles" as="element(geoJSONfile)*">
+            <xsl:for-each select="$files/cw:files/cw:file[@ext = 'yaml']">
+                <!-- transform to Saxon JsonXML -->
+                <geoJSONfile construct="{substring-before(@path,'.')}">
+                    <xsl:sequence select="parse-xml(ext:imvertorParseYaml(string(@fullpath)))"/>
+                </geoJSONfile>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:sequence select="dlogger:save('geoJSONfiles',$geoJSONfiles)"/>
+        <xsl:sequence select="$geoJSONfiles"/>
+    </xsl:function>
+
 </xsl:stylesheet>

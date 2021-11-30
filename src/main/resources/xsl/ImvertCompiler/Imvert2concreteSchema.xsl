@@ -155,13 +155,15 @@
     
     <xsl:template match="imvert:class/imvert:name" mode="conceptual">
         <xsl:param name="map" as="element(cs:Map)"/>
+        <xsl:sequence select="dlogger:save('name',.)"></xsl:sequence>
         <xsl:variable name="mapped-construct" select="$map//cs:Construct[cs:name = current()/@original]"/>
+        <xsl:sequence select="dlogger:save('map',$mapped-construct)"></xsl:sequence>
         <xsl:choose>
             <xsl:when test="$mapped-construct">
                 <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-class-name',.)"/>
                 <imvert:name>
                     <xsl:copy-of select="@*"/>
-                    <xsl:value-of select="$mapped-construct/cs:xsdTypes/cs:XsdType/cs:name"/>
+                    <xsl:value-of select="$mapped-construct/cs:oasTypes/cs:OasType/cs:name"/>
                 </imvert:name>
             </xsl:when>
             <xsl:otherwise>

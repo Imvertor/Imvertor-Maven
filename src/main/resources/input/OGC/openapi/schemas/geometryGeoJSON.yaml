@@ -1,0 +1,122 @@
+geometryGeoJSON:
+   oneOf:
+   - $ref: '#/definitions/pointGeoJSON'
+   - $ref: '#/definitions/multipointGeoJSON'
+   - $ref: '#/definitions/linestringGeoJSON'
+   - $ref: '#/definitions/multilinestringGeoJSON'
+   - $ref: '#/definitions/polygonGeoJSON'
+   - $ref: '#/definitions/multipolygonGeoJSON'
+   - $ref: '#/definitions/geometrycollectionGeoJSON'
+pointGeoJSON:
+   type: object
+   required:
+     - type
+     - coordinates
+   properties:
+     type:
+       type: string
+       enum:
+         - Point
+     coordinates:
+       type: array
+       minItems: 2
+       items:
+         type: number
+multipointGeoJSON:
+   type: object
+   required:
+     - type
+     - coordinates
+   properties:
+     type:
+       type: string
+       enum:
+         - MultiPoint
+     coordinates:
+       type: array
+       items:
+         type: array
+         minItems: 2
+         items:
+           type: number
+linestringGeoJSON: 
+   type: object
+   required:
+     - type
+     - coordinates
+   properties:
+     type:
+       type: string
+       enum:
+         - LineString
+     coordinates:
+       type: array
+       minItems: 2
+       items:
+         type: array
+         minItems: 2
+         items:
+           type: number
+multilinestringGeoJSON:
+   type: object
+   required:
+     - type
+     - coordinates
+   properties:
+     type:
+       type: string
+       enum:
+         - MultiLineString
+     coordinates:
+       type: array
+       items:
+         type: array
+         minItems: 2
+         items:
+           type: array
+           minItems: 2
+           items:
+             type: number
+polygonGeoJSON:
+   type: object
+   required:
+     - type
+     - coordinates
+   properties:
+     type:
+       type: string
+       enum:
+         - Polygon
+     coordinates:
+       type: array
+       items:
+         type: array
+         minItems: 4
+         items:
+           type: array
+           minItems: 2
+           items:
+             type: number
+multipolygonGeoJSON:
+   type: object
+   required:
+     - type
+     - coordinates
+   properties:
+     type:
+       type: string
+       enum:
+         - MultiPolygon
+     coordinates:
+       type: array
+       items:
+         type: array
+         items:
+           type: array
+           minItems: 4
+           items:
+             type: array
+             minItems: 2
+             items:
+               type: number
+         

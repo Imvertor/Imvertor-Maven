@@ -20,14 +20,19 @@
 
 package nl.imvertor.JsonSchemaCompiler;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
-import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.JsonFile;
 import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.file.YamlFile;
+import nl.imvertor.common.xsl.extensions.ImvertorFolderSerializer;
+import nl.imvertor.common.xsl.extensions.ImvertorParseYaml;
+import nl.imvertor.common.xsl.extensions.expath.ImvertorExpathReadText;
 
 /**
  * The json schema compiler takes an EP file and transforms it to a Json schema file.
@@ -80,7 +85,10 @@ public class JsonSchemaCompiler extends Step {
 		
 		// create a transformer
 		Transformer transformer = new Transformer();
-						
+		transformer.setExtensionFunction(new ImvertorFolderSerializer());
+		transformer.setExtensionFunction(new ImvertorExpathReadText());
+		transformer.setExtensionFunction(new ImvertorParseYaml());
+							
 		boolean succeeds = true;
 		
 		runner.debug(logger,"CHAIN","Generating Json");
@@ -91,6 +99,7 @@ public class JsonSchemaCompiler extends Step {
 		// convert the json xml to Json.
 		XmlFile jsonXmlFile = new XmlFile(configurator.getXParm("properties/WORK_JSONXML_XMLPATH"));
 		JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/WORK_SCHEMA_JSONPATH"));
+		YamlFile yamlFile = new YamlFile(configurator.getXParm("properties/WORK_SCHEMA_YAMLPATH"));
 		jsonXmlFile.toJson(jsonFile);
 		
 		// Debug: test if json is okay
@@ -98,15 +107,22 @@ public class JsonSchemaCompiler extends Step {
 		
 		// pretty print and store to json folder
 		if (succeeds) {
-		
+	
+			jsonFile.toYaml(yamlFile);
+			
 			// copy to the app folder
 			String schemaName = configurator.mergeParms(configurator.getXParm("cli/jsonschemaname"));
 			
 			// Create the folder; it is not expected to exist yet.
 			AnyFolder jsonFolder = new AnyFolder(configurator.getXParm("system/work-json-folder-path"));
-			AnyFile appJsonFile = new AnyFile(jsonFolder,schemaName + ".json");
+			
+			JsonFile appJsonFile = new JsonFile(new File(jsonFolder,schemaName + ".json"));
+			YamlFile appYamlFile = new YamlFile(new File(jsonFolder,schemaName + ".yaml"));
+			
 			jsonFolder.mkdirs();
 			jsonFile.copyFile(appJsonFile);
+			yamlFile.copyFile(appYamlFile);
+			
 		}
 		configurator.setXParm("system/json-schema-created",succeeds);
 		

@@ -648,7 +648,8 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	 * @throws Exception
 	 */
 	public void toJson(JsonFile targetFile) throws Exception {
-    	targetFile.fromXml(this);
+		targetFile.setIndent(true);
+		targetFile.fromXml(this);
     }
 	
 	/**

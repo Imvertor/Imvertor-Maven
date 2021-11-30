@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
     
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:imvert="http://www.imvertor.org/schema/system"
@@ -7,6 +7,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     
+    expand-text="yes"
     >
     
     <xsl:import href="../common/Imvert-common.xsl"/>
@@ -76,6 +77,7 @@
             <ep:construct>
                 <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Extern package',())"/>
                 <ep:parameters>
+                    <xsl:sequence select="imf:set-parameter('namespace',imvert:namespace)"/>
                 </ep:parameters>
                 <xsl:sequence select="imf:get-names(.)"/>
                 <xsl:sequence select="imf:get-documentation(.)"/>
@@ -217,15 +219,18 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface']">
-        <ep:construct>
-            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Interface (extern)',())"/>
-            <ep:parameters>
-            </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
-            <xsl:sequence select="imf:get-documentation(.)"/>
-            <ep:data-type>ep:string</ep:data-type>
-        </ep:construct>
+        <xsl:variable name="attribute" select="($domain-packages//imvert:attribute[imvert:type-id = current()/imvert:id])[1]"/>
+        <xsl:if test="$attribute">
+            <ep:construct>
+                <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Interface (extern)',())"/>
+                <ep:parameters>
+                </ep:parameters>
+                <xsl:sequence select="imf:get-id(.)"/>
+                <xsl:sequence select="imf:get-names(.)"/>
+                <xsl:sequence select="imf:get-documentation(.)"/>
+                <xsl:sequence select="imf:get-interface-type($attribute)"/><!-- geef attribuut mee; daarin is de type info van de conceptual schema opgenomen -->
+            </ep:construct>
+        </xsl:if>
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-complextype']">
@@ -490,49 +495,49 @@
     <xsl:function name="imf:get-type" as="node()*">
         <xsl:param name="this"/>
         <xsl:choose>
+            <xsl:when test="$this/imvert:type-name = 'scalar-string' or $this/imvert:primitive-oas = 'string'">
+                <ep:data-type>ep:string</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-integer' or $this/imvert:primitive-oas = 'integer'">
+                <ep:data-type>ep:integer</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-decimal' or $this/imvert:primitive-oas = 'decimal'">
+                <ep:data-type>ep:decimal</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-real' or $this/imvert:primitive-oas = 'real'">
+                <ep:data-type>ep:real</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-boolean' or $this/imvert:primitive-oas = 'boolean'">
+                <ep:data-type>ep:boolean</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-year' or $this/imvert:primitive-oas = 'year'">
+                <ep:data-type>ep:year</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-month' or $this/imvert:primitive-oas = 'month'">
+                <ep:data-type>ep:month</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-day' or $this/imvert:primitive-oas = 'day'">
+                <ep:data-type>ep:day</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-yearmonth' or $this/imvert:primitive-oas = 'yearmonth'">
+                <ep:data-type>ep:yearmonth</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-date' or $this/imvert:primitive-oas = 'date'">
+                <ep:data-type>ep:date</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-datetime' or $this/imvert:primitive-oas = 'datetime'">
+                <ep:data-type>ep:datetime</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-time' or $this/imvert:primitive-oas = 'time'">
+                <ep:data-type>ep:time</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-uri' or $this/imvert:primitive-oas = 'uri'">
+                <ep:data-type>ep:uri</ep:data-type>
+            </xsl:when>
             <xsl:when test="$this/imvert:type-id">
                 <ep:ref>
                     <xsl:value-of select="$this/imvert:type-id"/>
                 </ep:ref>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-string'">
-                <ep:data-type>ep:string</ep:data-type>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-integer'">
-                <ep:data-type>ep:integer</ep:data-type>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-decimal'">
-                <ep:data-type>ep:decimal</ep:data-type>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-real'">
-                <ep:data-type>ep:real</ep:data-type>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-boolean'">
-                <ep:data-type>ep:boolean</ep:data-type>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-year'">
-                <ep:data-type>ep:year</ep:data-type>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-month'">
-                <ep:data-type>ep:month</ep:data-type>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-day'">
-                <ep:data-type>ep:day</ep:data-type>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-yearmonth'">
-                <ep:data-type>ep:yearmonth</ep:data-type>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-date'">
-                <ep:data-type>ep:date</ep:data-type>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-datetime'">
-                <ep:data-type>ep:datetime</ep:data-type>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-time'">
-                <ep:data-type>ep:time</ep:data-type>
-            </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-uri'">
-                <ep:data-type>ep:uri</ep:data-type>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:msg-comment($this,'WARNING','Unknown (data)type: [1]',($this/imvert:type-name, $this/imvert:baretype)[1])"/>
@@ -577,6 +582,20 @@
         </ep:example>
     </xsl:function>
     
+    <xsl:function name="imf:get-interface-type" as="node()*">
+        <xsl:param name="attribute"/>
+        <xsl:variable name="ep-type" select="imf:get-type($attribute)"/>
+        <xsl:choose>
+            <xsl:when test="$ep-type/self::ep:ref">
+                <ep:external/><!-- signalleer dat dit een externe constructie is; oplossen door de verwerkende software -->
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="$ep-type"/>
+            </xsl:otherwise>
+        </xsl:choose>
+            
+    </xsl:function>    
+    
     <xsl:function name="imf:set-parameter" as="element(ep:parameter)*">
         <xsl:param name="name"/>
         <xsl:param name="value"/>
@@ -599,8 +618,8 @@
         <xsl:param name="info" as="item()*"/>
       
         <xsl:variable name="ctext" select="imf:msg-insert-parms($text,$info)"/>
-        <xsl:comment select="concat($type,' : ',imf:get-display-name($this),' : ',$ctext)"/>
-       
+        <xsl:comment>{$type} : {imf:get-display-name($this)} : {$ctext}</xsl:comment>
+      
         <xsl:sequence select="imf:msg($this,$type,$text,$info)"/>
         
     </xsl:function>
