@@ -1666,12 +1666,6 @@
 				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
 					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
 				</xsl:if>
-				<xsl:if test="$maxOccurs != 'unbounded'">
-					<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
-				</xsl:if>
-				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
-				</xsl:if>
 			</xsl:if>
 			<xsl:choose>
 				<!-- Depending on the occurence-type and the type of construct content is generated. -->

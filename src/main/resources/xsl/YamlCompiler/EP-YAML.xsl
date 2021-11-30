@@ -285,9 +285,8 @@
 					</xsl:choose>
 				</xsl:if>
 
-				<xsl:if test="$debugging and ($checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
-					and empty(following-sibling::ep:uriPart[ep:param])])">
-					<xsl:result-document href="{concat('file:/c:/temp/analyzedResponseStructure/get',generate-id($analyzedResponseStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+				<xsl:if test="$debugging">
+						<xsl:result-document href="{concat('file:/c:/temp/analyzedResponseStructure/get',generate-id($analyzedResponseStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$analyzedResponseStructure"/>
 					</xsl:result-document>
 
@@ -341,183 +340,65 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'expand' attribute (dus parameter) wordt gegenereerd
-					 wordt gecheckt of deze wel terecht gedefiniëerd wordt. Dit is niet het geval als er geen hal+json wordt gegenereerd of als er 
+				<!-- Aangezien het uitgangspunt is dat in de parameters class expliciet een 'expand' attribute (dus parameter) wordt gedefinieerd
+					 wordt gecheckt of deze wel terecht gedefiniëerd wordt. Dit is niet het geval als er geen hal+json wordt gegenereerd en/of als er 
 					 in de onderliggende resources geen non-id type attributen voorkomen. Wel mag er natuurlijk voor worden gekozen geen expand te
 					 definiëren terwijl dat wel zou mogen. -->
 				<xsl:choose>
 					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND'] and $serialisation = 'json'">
-						<xsl:sequence select="imf:msg(.,'WARNING',' The serialisation for this OAS3 interface is json, an expand attribute is only applicable for hal+json.', ($messageName))" />			
+						<xsl:sequence select="imf:msg(.,'ERROR','An expand parameter is only applicable for hal+json, remove it from the [1] message [2].', ($method, $messageName))" />			
 					</xsl:when>
 					<xsl:when test="$expand = false() and $checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND']">
-						<xsl:sequence select="imf:msg(.,'WARNING','An expand attribute is not applicable for the [1] message, remove it or make it applicable.', ($messageName))" />			
+						<xsl:sequence select="imf:msg(.,'WARNING','An expand parameter is not applicable for the [1] message [2], remove it.', ($messageName))" />			
 					</xsl:when>
 				</xsl:choose>
-				<xsl:variable name="pagination" as="xs:boolean">
-					<xsl:choose>
-						<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true' and $serialisation = 'hal+json'">
-							<xsl:value-of select="true()"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="false()"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<xsl:variable name="sort" as="xs:boolean">
-					<xsl:choose>
-						<xsl:when test="ep:parameters/ep:parameter[ep:name='sort']/ep:value = 'true'">
-							<xsl:value-of select="true()"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="false()"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<xsl:variable name="parametersRequired">
-					<xsl:if test="$pagination = true()">J</xsl:if>
-					<xsl:if test="$expand = true()">J</xsl:if>
-					<!--xsl:if test="ep:parameters/ep:parameter[ep:name='fields']/ep:value = 'true'">J</xsl:if-->
-					<xsl:if test="$sort = true()">J</xsl:if>
-				</xsl:variable>
-	
+				<!-- Aangezien het uitgangspunt is dat in de parameters class expliciet een 'page' en 'pagesize' attribute (dus parameter) wordt gedefinieerd
+					 wordt gecheckt of pagination van toepassing is als deze gedefiniëerd zijn. 
+					 Wel mag er natuurlijk voor worden gekozen een page attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is.
+					 Daarnaast wordt ook gecheckt of er wel een 'page' parameter is gedefinieerd als er een 'pagesize' parameter is gedefinieerd. -->
+				<xsl:choose>
+					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE'] and not(contains(upper-case($berichttype),'GC'))">
+						<xsl:sequence select="imf:msg(.,'ERROR','A page parameter is not applicable for the [1] message [2], remove it.', ($method, $messageName))" />			
+					</xsl:when>
+					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and not(contains(upper-case($berichttype),'GC'))">
+						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for the [1] message [2], remove it', ($method, $messageName))" />			
+					</xsl:when>
+					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and empty($checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE']) and upper-case($berichttype) = 'GC'">
+						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for the [1] message [2] since no page parameter has been created, remove it or create a page parameter.', ($method, $messageName))" />			
+					</xsl:when>
+				</xsl:choose>
+				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sort' attribute (dus parameter) wordt gedefinieerd
+					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. 
+					 Wel mag er natuurlijk voor worden gekozen een sort attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is. -->
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='SORTEER'] and not(contains(upper-case($berichttype),'GC'))">
+					<xsl:sequence select="imf:msg(.,'ERROR','A sorteer parameter is not applicable for the [1] message [2], remove it', ($method,$messageName))" />			
+				</xsl:if>
+				
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[(empty(@path) or @path = 'false') and (not(@position) or @position='')]">
+					<xsl:sequence select="imf:msg(.,'WARNING','On one or more query parameters on the [1] message [2] no tagged value Positie has been defined. These parameters will be sorted alphabetically!', ($method, $messageName))" />			
+				</xsl:if>
+				
 				<!-- For each message the next structure is generated. -->
 				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;      operationId: </xsl:text><xsl:value-of select="$operationId" />
 				<xsl:text>&#xa;      description: "</xsl:text><xsl:value-of select="$documentation" /><xsl:text>"</xsl:text>
 				<xsl:if test="$acceptCrsParamPresent or
-								contains($parametersRequired,'J') or 
 								$checkedUriStructure//ep:uriPart/ep:param[@path = 'true'] or 
-								$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false' and upper-case(ep:name) != 'EXPAND']">
+								$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
 					<!-- If parameters apply the parameters section is generated. -->
 					<xsl:text>&#xa;      parameters: </xsl:text>
 					<xsl:if test="$acceptCrsParamPresent">
 						<!-- If accept-Crs-parameter applies that parameter is generated. -->
 						<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$geonovum-yaml-parameters-url,'acceptCrs&quot;')"/>
 					</xsl:if>
-					<xsl:if test="$pagination = true()">
-						<xsl:text>&#xa;        - in: query</xsl:text><xsl:text></xsl:text>
-						<xsl:text>&#xa;          name: page</xsl:text>
-						<xsl:text>&#xa;          description: "Een pagina binnen de gepagineerde resultatenset."</xsl:text>
-						<xsl:text>&#xa;          required: false</xsl:text>
-						<xsl:text>&#xa;          schema:</xsl:text>
-						<xsl:text>&#xa;            type: integer</xsl:text>
-						<xsl:text>&#xa;            minimum: 1</xsl:text>
-					</xsl:if>
-					<!-- Als de expand parameter toegestaan is en ook voorkomt in de parametersclass wordt een referentie naar het expand component in de common.yaml geplaatst. -->
-					<xsl:if test="$expand = true() and $checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND']">
-						<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'expand&quot;')"/>
-					</xsl:if>
-					<xsl:if test="$sort = true()">
-						<xsl:text>&#xa;        - in: query</xsl:text>
-						<xsl:text>&#xa;          name: sorteer</xsl:text>
-						<xsl:text>&#xa;          description: "Aangeven van de sorteerrichting van resultaten. Deze query-parameter accepteert een lijst van velden waarop gesorteerd moet worden gescheiden door een komma. Door een minteken (“-”) voor de veldnaam te zetten wordt het veld in aflopende sorteervolgorde gesorteerd."</xsl:text>
-						<xsl:text>&#xa;          required: false</xsl:text>
-						<xsl:text>&#xa;          schema:</xsl:text>
-						<xsl:text>&#xa;            type: string</xsl:text>
-						<xsl:text>&#xa;            example: -prio,aanvraag_datum</xsl:text>
-					</xsl:if>
-		
-					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[@path = 'true']">
-						<xsl:sort select="ep:name" order="ascending"/>
-						<!-- Loop over de path ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a path parameter. -->
-						<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
-						<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
-						<xsl:variable name="datatype">
-							<xsl:call-template name="deriveDataType">
-								<xsl:with-param name="incomingType" select="$incomingType"/>
-								<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
-							</xsl:call-template>
-						</xsl:variable>
+
+					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param">
+						<xsl:sort order="ascending" select="@position" data-type="number"/>
+						<xsl:sort order="ascending" select="ep:name"/>
+						<!-- Loop over the ep:param elements within the checkeduristructure and generate for each of them a path or a query parameter. -->
 						<xsl:choose>
-							<xsl:when test="ep:outside-ref='VNGR'">
-								<xsl:text>&#xa;        - in: path</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
-								<xsl:text>&#xa;          required: true</xsl:text>
-								<xsl:text>&#xa;          schema:</xsl:text>
-								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
-							</xsl:when>
-<?x							<xsl:when test="upper-case(ep:name) = 'UUID'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
-							</xsl:when> ?>
-							<xsl:when test="ep:data-type">
-								<xsl:text>&#xa;        - in: path</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
-								<xsl:text>&#xa;          required: true</xsl:text>
-								<xsl:text>&#xa;          schema:</xsl:text>
-								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
-								<xsl:variable name="format">
-									<xsl:call-template name="deriveFormat">
-										<xsl:with-param name="incomingType" select="$incomingType"/>
-									</xsl:call-template>
-								</xsl:variable>
-								<xsl:variable name="facets">
-									<xsl:call-template name="deriveFacets">
-										<xsl:with-param name="incomingType" select="$incomingType"/>
-									</xsl:call-template>
-								</xsl:variable>
-								<xsl:value-of select="$format"/>
-								<xsl:value-of select="$facets"/>
-								<xsl:if test="ep:example">
-									<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
-								</xsl:if>
-							</xsl:when>
-							<xsl:when test="ep:type-name">
-								<xsl:text>&#xa;        - in: path</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
-								<xsl:text>&#xa;          required: true</xsl:text>
-								<xsl:text>&#xa;          schema:</xsl:text>
-								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:for-each>
-					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name) != 'EXPAND' and (empty(@path) or @path = 'false')]">
-						<xsl:sort select="ep:name" order="ascending"/>
-						<xsl:if test="$debugging">
-							# ---------Debuglocatie-01000a,  XPath: <xsl:sequence select="imf:xpath-string(.)"/>
-						</xsl:if>
-						<!-- Loop over de query ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a query parameter. -->
-						<xsl:variable name="type-name">
-							<xsl:if test="ep:type-name">
-								<xsl:value-of select="ep:type-name"/>
-							</xsl:if>
-						</xsl:variable>
-						<xsl:choose>
-							<xsl:when test="upper-case(ep:name) = 'PAGESIZE'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'pageSize&quot;')"/>
-							</xsl:when>
-							<xsl:when test="upper-case(ep:name) = 'FIELDS'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'fields&quot;')"/>
-							</xsl:when>
-							<xsl:when test="upper-case(ep:name) = 'PEILDATUM'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'peildatum&quot;')"/>
-							</xsl:when>
-							<xsl:when test="upper-case(ep:name) = 'DATUMTOTENMET'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'datumtotenmet&quot;')"/>
-							</xsl:when>
-							<xsl:when test="upper-case(ep:name) = 'DATUMVAN'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'datumvan&quot;')"/>
-							</xsl:when>
-							<xsl:when test="upper-case(ep:name) = 'API-VERSION'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'api-version&quot;')"/>
-							</xsl:when>
-							<xsl:when test="ep:outside-ref='VNGR'">
-								<xsl:variable name="required">
-									<xsl:choose>
-										<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
-										<xsl:otherwise>false</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<xsl:text>&#xa;        - in: query</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
-								<xsl:text>&#xa;          required: </xsl:text><xsl:value-of select="$required"/>
-								<xsl:text>&#xa;          schema:</xsl:text>
-								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
-							</xsl:when>
-							<xsl:when test="ep:data-type">
+							<xsl:when test="@path = 'true'">
+								<!-- Loop over de path ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a path parameter. -->
 								<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
 								<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
 								<xsl:variable name="datatype">
@@ -526,56 +407,174 @@
 										<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
 									</xsl:call-template>
 								</xsl:variable>
-								<xsl:variable name="required">
-									<xsl:choose>
-										<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
-										<xsl:otherwise>false</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<xsl:text>&#xa;        - in: query</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
-								<xsl:text>&#xa;          required: </xsl:text><xsl:value-of select="$required"/>
-								<xsl:text>&#xa;          schema:</xsl:text>
-								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
-								<xsl:variable name="format">
-									<xsl:call-template name="deriveFormat">
-										<xsl:with-param name="incomingType" select="$incomingType"/>
-									</xsl:call-template>
-								</xsl:variable>
-								<xsl:variable name="facets">
-									<xsl:call-template name="deriveFacets">
-										<xsl:with-param name="incomingType" select="$incomingType"/>
-									</xsl:call-template>
-								</xsl:variable>
-								<xsl:value-of select="$format"/>
-								<xsl:value-of select="$facets"/>
-								<xsl:if test="ep:example">
-									<xsl:text>&#xa;            example: </xsl:text><xsl:value-of select="ep:example"/>
+								<xsl:choose>
+									<xsl:when test="ep:outside-ref='VNGR'">
+										<xsl:text>&#xa;        - in: path</xsl:text>
+										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+										<xsl:text>&#xa;          required: true</xsl:text>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
+									</xsl:when>
+									<xsl:when test="ep:data-type">
+										<xsl:text>&#xa;        - in: path</xsl:text>
+										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+										<xsl:text>&#xa;          required: true</xsl:text>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
+										<xsl:variable name="format">
+											<xsl:call-template name="deriveFormat">
+												<xsl:with-param name="incomingType" select="$incomingType"/>
+											</xsl:call-template>
+										</xsl:variable>
+										<xsl:variable name="facets">
+											<xsl:call-template name="deriveFacets">
+												<xsl:with-param name="incomingType" select="$incomingType"/>
+											</xsl:call-template>
+										</xsl:variable>
+										<xsl:value-of select="$format"/>
+										<xsl:value-of select="$facets"/>
+										<xsl:if test="ep:example">
+											<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
+										</xsl:if>
+									</xsl:when>
+									<xsl:when test="ep:type-name">
+										<xsl:text>&#xa;        - in: path</xsl:text>
+										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+										<xsl:text>&#xa;          required: true</xsl:text>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:when test="empty(@path) or @path = 'false'">
+								<xsl:if test="$debugging">
+									# ---------Debuglocatie-01000a,  XPath: <xsl:sequence select="imf:xpath-string(.)"/>
 								</xsl:if>
-							</xsl:when>
-							<xsl:when test="$type-name != '' and $message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']">
-								<!-- Deze when is voor het afhandelen van request parameters die gebruik maken van lokale datatypen. -->
-								<xsl:variable name="required">
-									<xsl:choose>
-										<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
-										<xsl:otherwise>false</xsl:otherwise>
-									</xsl:choose>
+								<!-- Loop over de query ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a query parameter. -->
+								<xsl:variable name="type-name">
+									<xsl:if test="ep:type-name">
+										<xsl:value-of select="ep:type-name"/>
+									</xsl:if>
 								</xsl:variable>
-								<xsl:text>&#xa;        - in: query</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
-								<xsl:text>&#xa;          required: </xsl:text><xsl:value-of select="$required"/>
-								<xsl:text>&#xa;          schema:</xsl:text>
-								<xsl:apply-templates select="$message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']" mode="simpletype-class"/> 
-							</xsl:when>
-							<xsl:when test="ep:type-name">
-								<xsl:text>&#xa;        - in: query</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
-								<xsl:text>&#xa;          required: false</xsl:text>
-								<xsl:text>&#xa;          schema:</xsl:text>
-								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
+								<xsl:choose>
+									<!-- Als de expand parameter toegestaan is en ook voorkomt in de parametersclass wordt een referentie naar het expand component in de common.yaml geplaatst. -->
+									<xsl:when test="$expand = true() and upper-case(ep:name)='EXPAND'">
+										<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'expand&quot;')"/>
+									</xsl:when>
+									<xsl:when test="upper-case(ep:name) = 'PAGESIZE'">
+										<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'pageSize&quot;')"/>
+									</xsl:when>
+									<xsl:when test="upper-case(ep:name) = 'PAGE'">
+										<xsl:text>&#xa;        - in: query</xsl:text><xsl:text></xsl:text>
+										<xsl:text>&#xa;          name: page</xsl:text>
+										<xsl:text>&#xa;          description: "Een pagina binnen de gepagineerde resultatenset."</xsl:text>
+										<xsl:text>&#xa;          required: false</xsl:text>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;            type: integer</xsl:text>
+										<xsl:text>&#xa;            minimum: 1</xsl:text>
+									</xsl:when>
+									<xsl:when test="upper-case(ep:name) = 'SORTEER'">
+										<xsl:text>&#xa;        - in: query</xsl:text>
+										<xsl:text>&#xa;          name: sorteer</xsl:text>
+										<xsl:text>&#xa;          description: "Aangeven van de sorteerrichting van resultaten. Deze query-parameter accepteert een lijst van velden waarop gesorteerd moet worden gescheiden door een komma. Door een minteken (“-”) voor de veldnaam te zetten wordt het veld in aflopende sorteervolgorde gesorteerd."</xsl:text>
+										<xsl:text>&#xa;          required: false</xsl:text>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;            type: string</xsl:text>
+										<xsl:text>&#xa;            example: -prio,aanvraag_datum</xsl:text>
+									</xsl:when>
+									<xsl:when test="upper-case(ep:name) = 'FIELDS'">
+										<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'fields&quot;')"/>
+									</xsl:when>
+									<xsl:when test="upper-case(ep:name) = 'PEILDATUM'">
+										<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'peildatum&quot;')"/>
+									</xsl:when>
+									<xsl:when test="upper-case(ep:name) = 'DATUMTOTENMET'">
+										<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'datumtotenmet&quot;')"/>
+									</xsl:when>
+									<xsl:when test="upper-case(ep:name) = 'DATUMVAN'">
+										<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'datumvan&quot;')"/>
+									</xsl:when>
+									<xsl:when test="upper-case(ep:name) = 'API-VERSION'">
+										<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'api-version&quot;')"/>
+									</xsl:when>
+									<xsl:when test="ep:outside-ref='VNGR'">
+										<xsl:variable name="required">
+											<xsl:choose>
+												<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
+												<xsl:otherwise>false</xsl:otherwise>
+											</xsl:choose>
+										</xsl:variable>
+										<xsl:text>&#xa;        - in: query</xsl:text>
+										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
+										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+										<xsl:text>&#xa;          required: </xsl:text><xsl:value-of select="$required"/>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
+									</xsl:when>
+									<xsl:when test="ep:data-type">
+										<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
+										<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
+										<xsl:variable name="datatype">
+											<xsl:call-template name="deriveDataType">
+												<xsl:with-param name="incomingType" select="$incomingType"/>
+												<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
+											</xsl:call-template>
+										</xsl:variable>
+										<xsl:variable name="required">
+											<xsl:choose>
+												<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
+												<xsl:otherwise>false</xsl:otherwise>
+											</xsl:choose>
+										</xsl:variable>
+										<xsl:text>&#xa;        - in: query</xsl:text>
+										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
+										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+										<xsl:text>&#xa;          required: </xsl:text><xsl:value-of select="$required"/>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
+										<xsl:variable name="format">
+											<xsl:call-template name="deriveFormat">
+												<xsl:with-param name="incomingType" select="$incomingType"/>
+											</xsl:call-template>
+										</xsl:variable>
+										<xsl:variable name="facets">
+											<xsl:call-template name="deriveFacets">
+												<xsl:with-param name="incomingType" select="$incomingType"/>
+											</xsl:call-template>
+										</xsl:variable>
+										<xsl:value-of select="$format"/>
+										<xsl:value-of select="$facets"/>
+										<xsl:if test="ep:example">
+											<xsl:text>&#xa;            example: </xsl:text><xsl:value-of select="ep:example"/>
+										</xsl:if>
+									</xsl:when>
+									<xsl:when test="$type-name != '' and $message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']">
+										<!-- Deze when is voor het afhandelen van request parameters die gebruik maken van lokale datatypen. -->
+										<xsl:variable name="required">
+											<xsl:choose>
+												<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
+												<xsl:otherwise>false</xsl:otherwise>
+											</xsl:choose>
+										</xsl:variable>
+										<xsl:text>&#xa;        - in: query</xsl:text>
+										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
+										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+										<xsl:text>&#xa;          required: </xsl:text><xsl:value-of select="$required"/>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:apply-templates select="$message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']" mode="simpletype-class"/> 
+									</xsl:when>
+									<xsl:when test="ep:type-name">
+										<xsl:text>&#xa;        - in: query</xsl:text>
+										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
+										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+										<xsl:text>&#xa;          required: false</xsl:text>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
+									</xsl:when>
+								</xsl:choose>
 							</xsl:when>
 						</xsl:choose>
 					</xsl:for-each>
@@ -629,30 +628,7 @@
 					<xsl:sequence select="//ep:message[ep:name = $rawMessageName and ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response'and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]]"/>
 				</xsl:variable>
 				<xsl:variable name="responseConstruct" select="$relatedResponseMessage/ep:message/ep:seq/ep:construct/ep:type-name"/>
-
-
-
-
-
-
-
-				<!-- De uitwerking in de uitbecommentarieerde variabele kreeg alleen een waarde als de betreffende responseConstruct ook een parameter met de naam 'berichtcode' had die gelijk was aan de in bewerking zijnde 
-					 berichttype (Pa01, Pu01, Po01, etc...).
-				     Aangezien een responseConstruct die in meerdere berichten gebruikt wordt in het EP formaat maar voor 1 van die berichten wordt uitgewerkt kan het voorkomen dat voor de andere berichten geen meervoudige 
-				     naam kan worden gevonden wat in de yaml code resulteert in een fout. Vandaar dat de tweede vorm van deze variabele is uitgewerkt.
-					 De kans is echter dat deze uitwerking weer tot andere fouten leidt. -->
 				<xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode' and contains(ep:value,$berichttype)]]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
-				<!--xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/-->
-				<!--xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response']/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/-->
-
-
-
-
-
-
-
-
-
 				<xsl:variable name="requestbodyConstructName" select="$requestbodymessage//ep:type-name"/>
 				<xsl:variable name="responseConstructName" select="$relatedResponseMessage//ep:type-name"/>
 
@@ -814,11 +790,52 @@
 					</xsl:result-document>
 				</xsl:if>					
 
-				<xsl:variable name="queryParamsPresent" select="false()"/>
+				<xsl:variable name="queryParamsPresent" select="boolean($checkedUriStructure//ep:uriPart/ep:param[@path = 'false'] or empty($checkedUriStructure//ep:uriPart/ep:param/@path))"/>
 				<xsl:variable name="pathParamsPresent" select="false()"/>
 				<xsl:variable name="contentCrsParamPresent" select="boolean($analyzedRequestbodyStructure//ep:hasGMtype)"/>
 				<xsl:variable name="acceptCrsParamPresent" select="boolean($analyzedResponseStructure//ep:hasGMtype)"/>
-					
+
+				<!-- Een expand parameter is niet van toepassing op een PATCH, POST en PUT bericht. -->
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND']">
+					<xsl:sequence select="imf:msg(.,'ERROR','An expand parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />		
+				</xsl:if>
+				
+				<!-- Aangezien het uitgangspunt is dat in de parameters class expliciet een 'page' en 'pagesize' attribute (dus parameter) wordt gedefinieerd
+					 wordt gecheckt of pagination van toepassing is als deze gedefiniëerd zijn. 
+					 Wel mag er natuurlijk voor worden gekozen een page attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is.
+					 Daarnaast wordt ook gecheckt of er wel een 'page' parameter is gedefinieerd als er een 'pagesize' parameter is gedefinieerd. -->
+				<xsl:choose>
+					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE'] and not(contains(upper-case($berichttype),'PO'))">
+						<xsl:sequence select="imf:msg(.,'ERROR','A page parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
+					</xsl:when>
+					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and not(contains(upper-case($berichttype),'PO'))">
+						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
+					</xsl:when>
+					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and empty($checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE'])">
+						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for [1] message [2] since no page parameter has been created, remove it or create a page parameter.', ($method, $messageName))" />			
+					</xsl:when>
+				</xsl:choose>
+				
+				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sort' attribute (dus parameter) wordt gedefinieerd
+					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. 
+					 Wel mag er natuurlijk voor worden gekozen een sort attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is. -->
+				<xsl:choose>
+					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='SORTEER'] and not(contains(upper-case($berichttype),'PO'))">
+						<xsl:sequence select="imf:msg(.,'ERROR','A sorteer parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
+					</xsl:when>
+				</xsl:choose>
+				
+				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sort' attribute (dus parameter) wordt gedefinieerd
+					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. 
+					 Wel mag er natuurlijk voor worden gekozen een sort attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is. -->
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='FIELDS'] and not(contains(upper-case($berichttype),'PO'))">
+					<xsl:sequence select="imf:msg(.,'ERROR','A fields parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
+				</xsl:if>
+				
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[(empty(@path) or @path = 'false') and (not(@position) or @position='')]">
+					<xsl:sequence select="imf:msg(.,'WARNING','On one or more query parameters on the [1] message [2] no tagged value Positie has been defined. These parameters will be sorted alphabetically!', ($method, $messageName))" />			
+				</xsl:if>
+								
 				<!-- For each message the next structure is generated. -->
 				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;      operationId: </xsl:text><xsl:value-of select="$operationId" />
@@ -833,117 +850,146 @@
 						<!-- If content-Crs-parameter applies that parameter is generated. -->
 						<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$geonovum-yaml-parameters-url,'contentCrs&quot;')"/>
 					</xsl:if>
-					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[@path = 'true']">
-						<xsl:sort select="ep:name" order="ascending"/>
-						<!-- Loop over de path ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a path parameter. -->
-						<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
-						<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
-						<xsl:variable name="datatype">
-							<xsl:call-template name="deriveDataType">
-								<xsl:with-param name="incomingType" select="$incomingType"/>
-								<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
-							</xsl:call-template>
-						</xsl:variable>
+					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param">
+						<xsl:sort order="ascending" select="@position" data-type="number"/>
+						<xsl:sort order="ascending" select="ep:name"/>
+						<!-- Loop over the ep:param elements within the checkeduristructure and generate for each of them a path or a query parameter. -->
 						<xsl:choose>
-							<xsl:when test="ep:outside-ref='VNGR'">
-								<xsl:text>&#xa;        - in: path</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
-								<xsl:text>&#xa;          required: true</xsl:text>
-								<xsl:text>&#xa;          schema:</xsl:text>
-								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
+							<xsl:when test="@path = 'true'">
+								<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
+								<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
+								<xsl:variable name="datatype">
+									<xsl:call-template name="deriveDataType">
+										<xsl:with-param name="incomingType" select="$incomingType"/>
+										<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
+									</xsl:call-template>
+								</xsl:variable>
+								<xsl:choose>
+									<xsl:when test="ep:outside-ref='VNGR'">
+										<xsl:text>&#xa;        - in: path</xsl:text>
+										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+										<xsl:text>&#xa;          required: true</xsl:text>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
+									</xsl:when>
+									<xsl:when test="ep:data-type">
+										<xsl:text>&#xa;        - in: path</xsl:text>
+										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+										<xsl:text>&#xa;          required: true</xsl:text>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
+										<xsl:variable name="format">
+											<xsl:call-template name="deriveFormat">
+												<xsl:with-param name="incomingType" select="$incomingType"/>
+											</xsl:call-template>
+										</xsl:variable>
+										<xsl:variable name="facets">
+											<xsl:call-template name="deriveFacets">
+												<xsl:with-param name="incomingType" select="$incomingType"/>
+											</xsl:call-template>
+										</xsl:variable>
+										<xsl:value-of select="$format"/>
+										<xsl:value-of select="$facets"/>
+										<xsl:if test="ep:example">
+											<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
+										</xsl:if>
+									</xsl:when>
+									<xsl:when test="ep:type-name">
+										<xsl:text>&#xa;        - in: path</xsl:text>
+										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
+										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+										<xsl:text>&#xa;          required: true</xsl:text>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
+									</xsl:when>
+								</xsl:choose>
 							</xsl:when>
-<?x							<xsl:when test="upper-case(ep:name) = 'UUID'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
-							</xsl:when> ?>
-							<xsl:when test="ep:data-type">
-								<xsl:text>&#xa;        - in: path</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
-								<xsl:text>&#xa;          required: true</xsl:text>
-								<xsl:text>&#xa;          schema:</xsl:text>
-								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
-								<xsl:variable name="format">
-									<xsl:call-template name="deriveFormat">
+							<xsl:when test="empty(@path) or @path = 'false'">
+								<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
+								<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
+								<xsl:variable name="datatype">
+									<xsl:call-template name="deriveDataType">
 										<xsl:with-param name="incomingType" select="$incomingType"/>
+										<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
 									</xsl:call-template>
 								</xsl:variable>
-								<xsl:variable name="facets">
-									<xsl:call-template name="deriveFacets">
-										<xsl:with-param name="incomingType" select="$incomingType"/>
-									</xsl:call-template>
+								<xsl:variable name="type-name">
+									<xsl:if test="ep:type-name">
+										<xsl:value-of select="ep:type-name"/>
+									</xsl:if>
 								</xsl:variable>
-								<xsl:value-of select="$format"/>
-								<xsl:value-of select="$facets"/>
-								<xsl:if test="ep:example">
-									<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
+								<xsl:if test="$debugging">
+									# ---------Debuglocatie-01000b,  XPath: <xsl:sequence select="imf:xpath-string(.)"/>
 								</xsl:if>
-							</xsl:when>
-							<xsl:when test="ep:type-name">
-								<xsl:text>&#xa;        - in: path</xsl:text>
-								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
-								<xsl:text>&#xa;          required: true</xsl:text>
-								<xsl:text>&#xa;          schema:</xsl:text>
-								<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
+								<xsl:choose>
+									<xsl:when test="upper-case(ep:name) = 'PAGESIZE'">
+										<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'pageSize&quot;')"/>
+									</xsl:when>
+									<xsl:when test="upper-case(ep:name) = 'PAGE'">
+										<xsl:text>&#xa;        - in: query</xsl:text><xsl:text></xsl:text>
+										<xsl:text>&#xa;          name: page</xsl:text>
+										<xsl:text>&#xa;          description: "Een pagina binnen de gepagineerde resultatenset."</xsl:text>
+										<xsl:text>&#xa;          required: false</xsl:text>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;            type: integer</xsl:text>
+										<xsl:text>&#xa;            minimum: 1</xsl:text>
+									</xsl:when>
+									<xsl:when test="upper-case(ep:name) = 'SORTEER'">
+										<xsl:text>&#xa;        - in: query</xsl:text>
+										<xsl:text>&#xa;          name: sorteer</xsl:text>
+										<xsl:text>&#xa;          description: "Aangeven van de sorteerrichting van resultaten. Deze query-parameter accepteert een lijst van velden waarop gesorteerd moet worden gescheiden door een komma. Door een minteken (“-”) voor de veldnaam te zetten wordt het veld in aflopende sorteervolgorde gesorteerd."</xsl:text>
+										<xsl:text>&#xa;          required: false</xsl:text>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:text>&#xa;            type: string</xsl:text>
+										<xsl:text>&#xa;            example: -prio,aanvraag_datum</xsl:text>
+									</xsl:when>
+									<xsl:when test="upper-case(ep:name) = 'FIELDS'">
+										<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'fields&quot;')"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>&#xa;        - in: query</xsl:text>
+										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
+										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
+										<xsl:text>&#xa;          required: false</xsl:text>
+										<xsl:text>&#xa;          schema:</xsl:text>
+										<xsl:choose>
+											<xsl:when test="ep:outside-ref='VNGR'">
+												<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
+											</xsl:when>
+											<xsl:when test="ep:data-type">
+												<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
+												<xsl:variable name="format">
+													<xsl:call-template name="deriveFormat">
+														<xsl:with-param name="incomingType" select="$incomingType"/>
+													</xsl:call-template>
+												</xsl:variable>
+												<xsl:variable name="facets">
+													<xsl:call-template name="deriveFacets">
+														<xsl:with-param name="incomingType" select="$incomingType"/>
+													</xsl:call-template>
+												</xsl:variable>
+												<xsl:value-of select="$format"/>
+												<xsl:value-of select="$facets"/>
+												<xsl:if test="ep:example">
+													<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
+												</xsl:if>
+											</xsl:when>
+											<xsl:when test="$type-name != '' and $message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']">
+												<!-- Deze when is voor het afhandelen van request parameters die gebruik maken van lokale datatypen. -->
+												<xsl:apply-templates select="$message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']" mode="simpletype-class"/> 
+											</xsl:when>
+											<xsl:when test="ep:type-name">
+												<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
+											</xsl:when>
+										</xsl:choose>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:when>
 						</xsl:choose>
-					</xsl:for-each>
-					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
-						<xsl:sort select="ep:name" order="ascending"/>
-						<!-- Loop over de query ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a query parameter. -->
-						<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
-						<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
-						<xsl:variable name="datatype">
-							<xsl:call-template name="deriveDataType">
-								<xsl:with-param name="incomingType" select="$incomingType"/>
-								<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
-							</xsl:call-template>
-						</xsl:variable>
-						<xsl:variable name="type-name">
-							<xsl:if test="ep:type-name">
-								<xsl:value-of select="ep:type-name"/>
-							</xsl:if>
-						</xsl:variable>
-						<xsl:if test="$debugging">
-							# ---------Debuglocatie-01000b,  XPath: <xsl:sequence select="imf:xpath-string(.)"/>
-						</xsl:if>
-						<xsl:text>&#xa;        - in: query</xsl:text>
-						<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="translate(ep:name/@original,'.','_')" />
-						<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
-						<xsl:text>&#xa;          required: false</xsl:text>
-						<xsl:text>&#xa;          schema:</xsl:text>
-						<xsl:choose>
-							<xsl:when test="ep:outside-ref='VNGR'">
-								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
-							</xsl:when>
-							<xsl:when test="ep:data-type">
-								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
-								<xsl:variable name="format">
-									<xsl:call-template name="deriveFormat">
-										<xsl:with-param name="incomingType" select="$incomingType"/>
-									</xsl:call-template>
-								</xsl:variable>
-								<xsl:variable name="facets">
-									<xsl:call-template name="deriveFacets">
-										<xsl:with-param name="incomingType" select="$incomingType"/>
-									</xsl:call-template>
-								</xsl:variable>
-								<xsl:value-of select="$format"/>
-								<xsl:value-of select="$facets"/>
-								<xsl:if test="ep:example">
-									<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
-								</xsl:if>
-							</xsl:when>
-							<xsl:when test="$type-name != '' and $message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']">
-								<!-- Deze when is voor het afhandelen van request parameters die gebruik maken van lokale datatypen. -->
-								<xsl:apply-templates select="$message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']" mode="simpletype-class"/> 
-							</xsl:when>
-							<xsl:when test="ep:type-name">
-								<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:for-each>
+					</xsl:for-each>	
+						
 				</xsl:if>
 				<xsl:text>&#xa;      requestBody:</xsl:text>
 				<xsl:text>&#xa;        content:</xsl:text>
@@ -995,6 +1041,8 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+				<xsl:variable name="method">delete</xsl:variable>
+
 				<xsl:if test="count(//ep:message[ep:parameters[ep:parameter[ep:name='messagetype' and ep:value='request'] and ep:parameter[ep:name='operationId' and ep:value = $operationId]]]) > 1 
 							 or count(//ep:message/ep:tech-name = $operationId) > 1">
 					<xsl:sequence select="imf:msg(.,'ERROR','There is more than one message having the operationId [1].', ($operationId))" />								
@@ -1118,7 +1166,7 @@
 				</xsl:if>
 
 				
-				<!-- If desired we could also generate a warning which states the message name as derived from the calculated urstructure.
+				<!-- If desired we could also generate a warning which states the message name as derived from the calculated uristructure.
 					 For now this has been disabled. -->
 <?x				<xsl:variable name="calculatedMessageName">
 					<xsl:for-each select="$calculatedUriStructure//ep:uriPart">
@@ -1134,8 +1182,38 @@
 					<xsl:sequence select="imf:msg(.,'WARNING','The messagename ([1]) is not correct, according to the request tree in the model it should be [2].', ($messageName,$calculatedMessageName))" />			
 				</xsl:if> ?>
 				
-				<xsl:variable name="method">delete</xsl:variable>
+				<!-- At the moment query parameters become applicable for DELETE massage the following Error messages can be enabled. -->
+				<?x				<!-- Een expand parameter is niet van toepassing op een DELETE bericht. -->
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND']">
+					<xsl:sequence select="imf:msg(.,'ERROR','An expand parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
+				</xsl:if>
+				
+				<!-- Een page en pagesize parameter zijn niet van toepassing op een DELETE bericht. -->
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE']">
+					<xsl:sequence select="imf:msg(.,'ERROR','A page parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
+				</xsl:if>
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE']">
+					<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for [1] messages, remove it from the [2 message.', ($method, $messageName))" />			
+				</xsl:if>
+				
+				<!-- Een sorteer parameter is niet van toepassing op een DELETE bericht. -->
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='SORTEER']">
+					<xsl:sequence select="imf:msg(.,'ERROR','A sorteer parameter is not applicable for [1] messages, rremove it from the [2] message.', ($method, $messageName))" />			
+				</xsl:if>
+				
+				<!-- Een fields parameter is niet van toepassing op een DELETE bericht. -->
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='FIELDS']">
+					<xsl:sequence select="imf:msg(.,'ERROR','A fields parameter is not applicable for [1] messages, remove it from the [2 message.', ($method, $messageName))" />			
+				</xsl:if>
 	
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[not(@position) or @position='']">
+					<xsl:sequence select="imf:msg(.,'WARNING','On one or more parameters on the [1] message [2] no tagged value Positie has been defined. These parameters will be sorted alphabetically!', ($method, $messageName))" />			
+				</xsl:if> ?>
+				
+				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
+					<xsl:sequence select="imf:msg(.,'ERROR','Query parameters are not allowed on [1] messages, remove them on the [2] message.', ($method, $messageName))" />			
+				</xsl:if>
+				
 				<!-- For each message the next structure is generated. -->
 				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;      operationId: </xsl:text><xsl:value-of select="$operationId" />
@@ -1144,8 +1222,9 @@
 					<!-- If parameters apply the parameters section is generated. -->
 					<xsl:text>&#xa;      parameters: </xsl:text>
 					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[@path = 'true']">
-						<xsl:sort select="ep:name" order="ascending"/>
-						<!-- Loop over de path ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a path parameter. -->
+						<xsl:sort order="ascending" select="@position" data-type="number"/>
+						<xsl:sort order="ascending" select="ep:name"/>
+						<!-- Loop over the path ep:param elements within the checkeduristructure and generate for each of them a path parameter. -->
 						<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
 						<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
 						<xsl:variable name="datatype">
@@ -1163,9 +1242,6 @@
 								<xsl:text>&#xa;          schema:</xsl:text>
 								<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
 							</xsl:when>
-<?x							<xsl:when test="upper-case(ep:name) = 'UUID'">
-								<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
-							</xsl:when> ?>
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;        - in: path</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
@@ -1290,6 +1366,9 @@
 						<xsl:text>&#xa;                type: array</xsl:text>
 						<xsl:text>&#xa;                items:</xsl:text>
 						<xsl:text>&#xa;                  $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
+					</xsl:when>
+					<xsl:when test="$serialisation = 'json' and (contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu'))">
+						<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
 					</xsl:when>
 					<xsl:when test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
 						<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" />Hal<xsl:text>'</xsl:text>
@@ -1443,7 +1522,7 @@
 
 	<xsl:template match="ep:construct" mode="getParameters">
 		<xsl:for-each select="ep:seq/ep:construct[empty(ep:parameters/ep:parameter[ep:name='type'])]">
-			<ep:param>
+			<ep:param position="{ep:parameters/ep:parameter[ep:name='position']/ep:value}">
 				<xsl:if test="ep:parameters/ep:parameter[ep:name='is-id']/ep:value = 'true'">
 					<xsl:attribute name="is-id" select="'true'"/>
 				</xsl:if>
@@ -1616,7 +1695,7 @@
 						<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName and $is-id = 'true'">
 							<!-- If the param is part of the path and it's an id-type it's reproduced as a path parameter with all necessary 
 								 properties. -->
-							<ep:param path="true">
+							<ep:param path="true" position="{@position}">
 								<ep:name original="{$originalParamName}"><xsl:value-of select="$paramName"/></ep:name>
 								<xsl:choose>
 									<xsl:when test="string-length($data-type)">
@@ -1647,11 +1726,6 @@
 								<xsl:if test="$outside-ref != ''">
 									<ep:outside-ref><xsl:value-of select="$outside-ref"/></ep:outside-ref>
 								</xsl:if>
-	<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
-								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
-								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:when>
 						<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName and $is-id = 'false'">
@@ -1659,7 +1733,7 @@
 								 an indcator stating there's an error. There's also a warning generated since all path parameters must be of 
 								 id-type. -->
 							<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not an id attribute.', ($paramName,$rawMessageName))" />			
-							<ep:param path="false">
+							<ep:param path="false" position="{@position}">
 								<ep:name original="{$originalParamName}"><xsl:value-of select="$paramName"/></ep:name>
 								<xsl:choose>
 									<xsl:when test="string-length($data-type)">
@@ -1690,16 +1764,11 @@
 								<xsl:if test="$outside-ref != ''">
 									<ep:outside-ref><xsl:value-of select="$outside-ref"/></ep:outside-ref>
 								</xsl:if>
-								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
-								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
-								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:when>
 						<xsl:otherwise>
 							<!-- In all other cases the parameter is reproduced with all necessary properties. -->
-							<ep:param>
+							<ep:param position="{@position}">
 								<ep:name original="{$originalParamName}"><xsl:value-of select="$paramName"/></ep:name>
 								<xsl:choose>
 									<xsl:when test="string-length($data-type)">
@@ -1730,11 +1799,6 @@
 								<xsl:if test="$outside-ref != ''">
 									<ep:outside-ref><xsl:value-of select="$outside-ref"/></ep:outside-ref>
 								</xsl:if>
-								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
-								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
-								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -1748,7 +1812,7 @@
 								 determined uripart it is reproduced with all necessary properties and with an indcator stating there's an error.
 								 Also a warning is generated. -->
 							<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not avalable as query parameter.', ($paramName,$rawMessageName))" />			
-							<ep:param path="false">
+							<ep:param path="false" position="{@position}">
 								<ep:name original="{$originalParamName}"><xsl:value-of select="$paramName"/></ep:name>
 								<xsl:choose>
 									<xsl:when test="string-length($data-type)">
@@ -1779,11 +1843,6 @@
 								<xsl:if test="$outside-ref != ''">
 									<ep:outside-ref><xsl:value-of select="$outside-ref"/></ep:outside-ref>
 								</xsl:if>
-								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
-								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
-								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:if>
 					</xsl:for-each>

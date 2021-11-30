@@ -2109,6 +2109,14 @@
 				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
+		<xsl:if
+			test="imf:get-tagged-value(.,'##CFG-TV-POSITION')">
+			<ep:parameter>
+				<xsl:sequence select="imf:create-output-element('ep:name', 'position')" />
+				<xsl:sequence select="imf:create-output-element('ep:value', imvert:position)" />
+			</ep:parameter>
+		</xsl:if>
+		
 	</xsl:template>
 	
 	<xsl:template match="imvert:attribute" mode="onlyFacets">
