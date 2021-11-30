@@ -34,8 +34,6 @@
   
   <xsl:output indent="yes"/>
   
-  <xsl:include href="../external/functx.xsl"/>
-  
   <xsl:mode on-no-match="shallow-skip"/>
   <xsl:mode name="metagegeven" on-no-match="shallow-skip"/>
   

@@ -38,7 +38,7 @@
       </xs:element>
       <xs:element name="informatiemodeltype" type="xs:string"/>
       <xs:element name="informatiedomein" type="xs:string"/>
-      <xs:element name="relatiemodelleringstype" type="mim:relatiemodelleringstype"/>
+      <xs:element name="relatiemodelleringtype" type="mim:relatiemodelleringtype"/>
       <xs:element name="MIMVersie" type="xs:string"/>
       <xs:element name="MIMExtensie" type="xs:string" minOccurs="0"/>
       <xs:element name="MIMTaal" type="xs:string" minOccurs="0"/>
@@ -565,7 +565,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="uniDirectioneel" type="xs:string"/>
+      <xs:element name="unidirectioneel" type="xs:string"/>
       <xs:element name="doel">
         <xs:complexType>
           <xs:choice>
@@ -1662,7 +1662,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De datum waarop de externe koppeling is opgenomen in het informatiemodel.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="uniDirectioneel" type="xs:string"/>
+      <xs:element name="unidirectioneel" type="xs:string"/>
       <xs:element name="doel">
         <xs:complexType>
           <xs:choice>
@@ -1740,7 +1740,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="relatiemodelleringstype">
+  <xs:simpleType name="relatiemodelleringtype">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Relatiesoort leidend"/>
       <xs:enumeration value="Relatierol leidend"/>
