@@ -125,7 +125,9 @@
             <derive>yes</derive>
             <desc lang="nl">Een referentie naar een begrip in een begrippenlijst/kennismodel middels een URI, of de naam van een begrip, welke kan worden afgebeeld op een URI.</desc>
             <stereotypes>
-                <stereo minmax="0..*">stereotype-name-objecttype</stereo>
+                <?x doublure, verwijderen 
+                    <stereo minmax="0..*">stereotype-name-objecttype</stereo>
+                x?>
                 <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
                 <stereo minmax="0..*">stereotype-name-meervoudige-relatieklasse</stereo>
             </stereotypes>
