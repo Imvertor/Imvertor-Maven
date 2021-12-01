@@ -23,7 +23,7 @@
 	<xsl:variable name="standard-yaml-parameters-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-yaml-parameters-path'))"/>
 	<xsl:variable name="standard-yaml-responses-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-yaml-responses-path'))"/>
 	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
-	<xsl:variable name="standard-json-gemeente-components-url" select="concat(imf:get-config-parameter('standaard-gemeente-components-url'),imf:get-config-parameter('standard-gemeente-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
+	<xsl:variable name="standard-json-gemeente-components-url" select="concat(imf:get-config-parameter('standaard-organisatie-components-url'),imf:get-config-parameter('standard-organisatie-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
 	<xsl:variable name="geonovum-yaml-parameters-url" select="concat(imf:get-config-parameter('geonovum-components-url'),imf:get-config-parameter('geonovum-yaml-parameters-file'))"/>
 
 	<xsl:variable name="Response406Required" select="boolean(//ep:construct/ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external')"/>
