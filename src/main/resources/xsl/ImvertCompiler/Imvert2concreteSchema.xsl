@@ -155,15 +155,14 @@
     
     <xsl:template match="imvert:class/imvert:name" mode="conceptual">
         <xsl:param name="map" as="element(cs:Map)"/>
-        <xsl:sequence select="dlogger:save('name',.)"></xsl:sequence>
         <xsl:variable name="mapped-construct" select="$map//cs:Construct[cs:name = current()/@original]"/>
-        <xsl:sequence select="dlogger:save('map',$mapped-construct)"></xsl:sequence>
+        <xsl:sequence select="dlogger:save(concat('map: ',.),$mapped-construct)"></xsl:sequence>
         <xsl:choose>
             <xsl:when test="$mapped-construct">
                 <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-class-name',.)"/>
-                <imvert:name>
+                <imvert:name> <!-- TODO eigenlijk moet deze imvert:name weg. Altijd de juiste construct oplossen als je betreffende schema aan het maken bent, via conceptual schema... -->
                     <xsl:copy-of select="@*"/>
-                    <xsl:value-of select="$mapped-construct/cs:oasTypes/cs:OasType/cs:name"/>
+                    <xsl:value-of select="$mapped-construct/cs:xsdTypes/cs:XsdType/cs:name"/>
                 </imvert:name>
             </xsl:when>
             <xsl:otherwise>
