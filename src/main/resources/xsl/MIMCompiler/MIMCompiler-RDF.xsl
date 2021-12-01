@@ -34,8 +34,6 @@
   
   <xsl:output indent="yes"/>
   
-  <xsl:include href="../external/functx.xsl"/>
-  
   <xsl:mode on-no-match="shallow-skip"/>
   <xsl:mode name="metagegeven" on-no-match="shallow-skip"/>
   
@@ -223,16 +221,20 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   
   <xsl:template match="(mim-in:definitie|mim-in:toelichting)[.//text()[normalize-space()]]" mode="metagegeven">
     <xsl:variable name="html">
-      <xsl:apply-templates select="./*" mode="xhtml"/>
+      <xsl:apply-templates mode="xhtml"/>
     </xsl:variable>
     <xsl:element name="mim:{local-name()}" namespace="http://www.geostandaarden.nl/mim/informatiemodel/v1#">{serialize($html, $output-parameters)}</xsl:element>
   </xsl:template>
   
-  <xsl:template match="xhtml:*" mode="xhtml">
+  <xsl:template match="xhtml:*" mode="xhtml" priority="10">
     <xsl:element name="{local-name()}">
       <xsl:apply-templates select="@*"/>
       <xsl:apply-templates mode="#current"/>
     </xsl:element>
+  </xsl:template>
+  
+  <xsl:template match="*" mode="xhtml">
+    <xsl:apply-templates/>
   </xsl:template>
   
   <xsl:template match="text()[not(normalize-space())]" mode="xhtml"/>

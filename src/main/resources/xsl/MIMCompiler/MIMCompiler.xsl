@@ -120,7 +120,7 @@
   <xsl:variable name="attributes" select="$preprocessed-xml//imvert:attribute" as="element(imvert:attribute)*"/>
   <xsl:variable name="associations" select="$preprocessed-xml//imvert:association" as="element(imvert:association)*"/>
   <xsl:variable name="specified-relatiemodelleringstype" select="imf:tagged-values-not-traced($preprocessed-xml/imvert:packages, 'CFG-TV-IMRELATIONMODELINGTYPE')" as="xs:string?"/>
-  <xsl:variable name="relatiemodelleringstype" select="if ($specified-relatiemodelleringstype) then $specified-relatiemodelleringstype else 'Relatiesoort leidend'" as="xs:string"/>
+  <xsl:variable name="relatiemodelleringtype" select="if ($specified-relatiemodelleringstype) then $specified-relatiemodelleringstype else 'Relatiesoort leidend'" as="xs:string"/>
   
   <xsl:variable name="mim11-primitive-datatypes-lc-names" select="for $n in $mim11-package/imvert:class/imvert:name/@original return lower-case($n)" as="xs:string+"/>
   
@@ -332,7 +332,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
     </mim:Gegevensgroep>
   </xsl:template>
   
-  <xsl:template match="imvert:association[(empty($relatiemodelleringstype) or lower-case($relatiemodelleringstype) = 'relatiesoort leidend') and 
+  <xsl:template match="imvert:association[(empty($relatiemodelleringtype) or lower-case($relatiemodelleringtype) = 'relatiesoort leidend') and 
     (imvert:stereotype = $stereotype-name-relatiesoort or imvert:stereotype/@id = $stereotype-id-union-association) and not(imf:association-is-keuze-attributes(.))]">
     <mim:RelatiesoortRelatiesoortLeidend>
       <xsl:call-template name="generate-relatiesoort">
@@ -342,7 +342,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
     </mim:RelatiesoortRelatiesoortLeidend>
   </xsl:template>
   
-  <xsl:template match="imvert:association[(lower-case($relatiemodelleringstype) = 'relatierol leidend') and 
+  <xsl:template match="imvert:association[(lower-case($relatiemodelleringtype) = 'relatierol leidend') and 
     (imvert:stereotype = $stereotype-name-relatiesoort or imvert:stereotype/@id = $stereotype-id-union-association) and not(imf:association-is-keuze-attributes(.))]">
     <mim:RelatiesoortRelatierolLeidend>
       <xsl:call-template name="generate-relatiesoort">
@@ -847,7 +847,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   
   <xsl:template match="metagegeven[. = 'Relatiemodelleringtype']">
     <xsl:param name="context" as="element()"/>
-    <mim:relatiemodelleringstype>{$relatiemodelleringstype}</mim:relatiemodelleringstype>
+    <mim:relatiemodelleringtype>{$relatiemodelleringtype}</mim:relatiemodelleringtype>
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Specificatie formeel']">
@@ -938,7 +938,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   
   <xsl:template match="metagegeven[. = 'Unidirectioneel']">
     <xsl:param name="context" as="element()"/>
-    <mim:uniDirectioneel>{imf:mim-boolean(xs:string($context/imvert:source/imvert:navigable = 'false'))}</mim:uniDirectioneel>
+    <mim:unidirectioneel>{imf:mim-boolean(xs:string($context/imvert:source/imvert:navigable = 'false'))}</mim:unidirectioneel>
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Unieke aanduiding']">
