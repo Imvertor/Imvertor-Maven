@@ -124,7 +124,7 @@
     <!--parameter name="standard-components-url">https://github.com/VNG-Realisatie/Haal-Centraal-BRP-bevragen/blob/master/api-specificatie/</parameter-->
     <parameter name="standard-components-url">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/</parameter>
     <parameter name="standaard-organisatie-components-url">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/</parameter>
-    <parameter name="geonovum-components-url">https://cdn.jsdelivr.net/gh/geonovum/kp-api-guidelines@1.0.0/components/</parameter>
+    <parameter name="geonovum-components-url">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/</parameter>
 
     <parameter name="standard-components-file">common.yaml</parameter>
     <parameter name="standard-organisatie-components-file">Generieke-Datatypen-Gemeenten.yaml</parameter>
