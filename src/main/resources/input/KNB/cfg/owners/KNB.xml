@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
  * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
- * 
+ *
  * This file is part of Imvertor.
  *
  * Imvertor is free software: you can redistribute it and/or modify
@@ -18,33 +18,51 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <project-owner type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-  
+
     <xi:include href="../../../KING/cfg/owners/KING.xml"/>
-  
+
     <!-- override klant-specifiek -->
-    
+
     <name>KNB</name>
-    
-    <!-- 
-        enter a list of CSS, JS, anything to be copied to the output file, separate with ";" 
+
+    <!--
+        enter a list of CSS, JS, anything to be copied to the output file, separate with ";"
     -->
     <parameter name="web-css">
         ../web/css/report.css;
         ../web/themes/purple/style.css;
-    </parameter> 
-    
-    <parameter name="web-logo">../web/img/logo-KNB-medium.png</parameter> 
-    <parameter name="web-logo-big">../web/img/logo-KNB-large.png</parameter> 
-    
-    <!-- 
-        insert a break in HTML office documents when a wordt becomes too long and is camelcased. 
+    </parameter>
+
+    <parameter name="web-logo">../web/img/logo-KNB-medium.png</parameter>
+    <parameter name="web-logo-big">../web/img/logo-KNB-large.png</parameter>
+
+    <!--
+        insert a break in HTML office documents when a wordt becomes too long and is camelcased.
     -->
     <parameter name="insert-html-wordbreaks">yes</parameter>
-    
-    <!-- 
-        Add a TV in profile when a notes field that is linked to that tagged value exists? 
-        Applied in: EA toolbox. 
+
+    <!--
+        Add a TV in profile when a notes field that is linked to that tagged value exists?
+        Applied in: EA toolbox.
     -->
     <parameter name="ea-omit-tv-when-notes-field-exists">no</parameter>
-    
-</project-owner>    
+
+    <!-- URL of the standard JSON components are available -->
+    <parameter name="standard-components-url">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/</parameter>
+    <parameter name="standaard-organisatie-components-url">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/</parameter>
+    <parameter name="geonovum-components-url">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/</parameter>
+
+    <parameter name="standard-components-file">common.yaml</parameter>
+    <parameter name="standard-organisatie-components-file">Generieke-Datatypen-Gemeenten.yaml</parameter>
+    <parameter name="geonovum-yaml-parameters-file">parameters.yaml#/</parameter>
+    <parameter name="standard-geojson-components-file">geojson.yaml#/</parameter>
+
+    <parameter name="standard-json-components-path">#/components/schemas/</parameter>
+    <parameter name="standard-yaml-headers-path">#/components/headers/</parameter>
+    <parameter name="standard-yaml-parameters-path">#/components/parameters/</parameter>
+    <parameter name="standard-yaml-responses-path">#/components/responses/</parameter>
+
+    <parameter name="yamlCompiler-stylesheets-version">20211130</parameter>
+
+
+</project-owner>
