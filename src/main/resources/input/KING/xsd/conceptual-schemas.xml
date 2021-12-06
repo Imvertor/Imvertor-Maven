@@ -345,24 +345,6 @@
                   </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
-                  <cs:name>GM_MultiPolygon</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-                  <cs:xsdTypes>
-                     <cs:XsdType>
-                        <cs:name>MultiPolygon</cs:name>
-                        <cs:asAttribute>MultiPolygonPropertyType</cs:asAttribute>
-                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:XsdType>
-                  </cs:xsdTypes>
-                  <cs:oasTypes>
-                     <cs:OasType>
-                        <cs:name>multipolygonGeoJSON.yaml</cs:name>
-                        <cs:primitive>false</cs:primitive>
-                     </cs:OasType>
-                  </cs:oasTypes>
-               </cs:Construct>
-               <cs:Construct>
                   <cs:name>GM_Geometry</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
