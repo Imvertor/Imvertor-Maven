@@ -98,7 +98,6 @@
             <derive>yes</derive><!-- UGM mag op supplier terugvallen, maar SIM is niet een supplier voor deze config, dus expliciet de naam opnemen.-->
             <desc lang="nl">De indicatie of te bevragen is dat er twijfel is of is geweest aan de juistheid van de attribuutwaarde en dat een onderzoek wordt of is uitgevoerd naar de juistheid van de attribuutwaarde. </desc>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-composite</stereo>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
