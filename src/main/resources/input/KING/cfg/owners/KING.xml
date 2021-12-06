@@ -120,7 +120,7 @@
     <!-- URL of the standard JSON components are available -->
     <parameter name="standard-components-url">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/</parameter>
     <parameter name="standaard-organisatie-components-url">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/</parameter>
-    <parameter name="geonovum-components-url">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/</parameter>
+    <parameter name="geonovum-components-url">http://schemas.opengis.net/ogcapi/features/part1/1.0/openapi/schemas/</parameter>
 
     <parameter name="standard-components-file">common.yaml</parameter>
     <parameter name="standard-organisatie-components-file">Generieke-Datatypen-Gemeenten.yaml</parameter>
