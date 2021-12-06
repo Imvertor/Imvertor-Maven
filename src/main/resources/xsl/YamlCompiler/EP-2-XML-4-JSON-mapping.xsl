@@ -19,7 +19,7 @@
 	
 	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
 	<xsl:variable name="standard-json-gemeente-components-url" select="concat(imf:get-config-parameter('standaard-organisatie-components-url'),imf:get-config-parameter('standard-organisatie-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
-	<xsl:variable name="standard-geojson-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-geojson-components-file'))"/>
+	<xsl:variable name="standard-geojson-components-url" select="imf:get-config-parameter('geonovum-components-url')"/>
 	<!--<xsl:variable name="standard-json-components-url" select="'http://www.test.nl/'"/>	
 	<xsl:variable name="standard-geojson-components-url" select="'http://www.test.nl/'"/>-->
 	

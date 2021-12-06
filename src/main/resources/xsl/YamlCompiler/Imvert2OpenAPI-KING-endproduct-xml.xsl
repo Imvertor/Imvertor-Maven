@@ -2150,6 +2150,9 @@
 				<xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" />
 				
 				<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+				<xsl:if test="imvert:type-name-oas">
+					<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name-oas)" />
+				</xsl:if>
 			</xsl:when>
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]/imvert:id"/>
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]/imvert:id"/>

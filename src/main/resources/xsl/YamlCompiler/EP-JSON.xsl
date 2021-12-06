@@ -19,7 +19,7 @@
 	
 	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
 	<xsl:variable name="standard-json-gemeente-components-url" select="concat(imf:get-config-parameter('standaard-organisatie-components-url'),imf:get-config-parameter('standard-organisatie-components-file'),imf:get-config-parameter('standard-json-components-path'))"/>
-	<xsl:variable name="standard-geojson-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-geojson-components-file'))"/>
+	<xsl:variable name="standard-geojson-components-url" select="imf:get-config-parameter('geonovum-components-url')"/>
 	<!--<xsl:variable name="standard-json-components-url" select="'http://www.test.nl/'"/>	
 	<xsl:variable name="standard-geojson-components-url" select="'http://www.test.nl/'"/>-->
 	
@@ -2188,10 +2188,15 @@
 		<xsl:param name="typeName"/>
 		<xsl:param name="typePrefix"/>
 		<xsl:choose>
-			<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external'">
+			<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external' and not(ep:data-type)">
 				<!-- If the property is a gml type this when applies. In all these case a standard content (except the documentation)
 					 is generated. -->
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-geojson-components-url,'GeoJSONGeometry&quot;')"/>
+			</xsl:when>
+			<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external'">
+				<!-- If the property is a gml type this when applies. In all these case a standard content (except the documentation)
+					 is generated. -->
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-geojson-components-url,ep:data-type,'&quot;')"/>
 			</xsl:when>
 			<xsl:when test="ep:type-name = 'Datum_onvolledig'">
 				<!-- If the property is a Datum_onvolledig type this when applies. In all these case a standard content (except the documentation)
