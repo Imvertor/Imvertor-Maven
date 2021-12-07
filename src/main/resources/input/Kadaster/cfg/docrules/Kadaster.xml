@@ -309,8 +309,8 @@
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-KWALITEITSBEGRIP" order="110">
-        <name lang="nl">Indicatie kwaliteit</name>
-        <name lang="en">Indication quality</name>
+        <name lang="nl">Kwaliteit</name>
+        <name lang="en">Quality</name>
         <levels>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
             
