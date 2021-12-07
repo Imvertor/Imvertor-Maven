@@ -66,7 +66,7 @@
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort-->
-                <stereo minmax="1..1">stereotype-name-composite</stereo><!--SIM Gegevensgroeptype-->
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo><!--SIM Gegevensgroep-->
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo><!--SIM Relatiesoort-->
             </stereotypes>
             <declared-values lang="nl">
@@ -83,7 +83,7 @@
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort-->
-                <stereo minmax="1..1">stereotype-name-composite</stereo><!--SIM Gegevensgroeptype-->
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo><!--SIM Gegevensgroep-->
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo><!--SIM Relatiesoort-->
             </stereotypes>
             <declared-values lang="nl">
@@ -99,7 +99,7 @@
             <desc lang="nl">De indicatie of te bevragen is dat er twijfel is of is geweest aan de juistheid van de attribuutwaarde en dat een onderzoek wordt of is uitgevoerd naar de juistheid van de attribuutwaarde. </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
@@ -166,6 +166,7 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
         </tv>
 
@@ -177,6 +178,7 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
         </tv>
 
