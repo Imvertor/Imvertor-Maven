@@ -408,7 +408,7 @@
                           <cs:name>Linestring</cs:name>
                           <cs:primitive>false</cs:primitive>
                       </cs:OasType>
-                  </cs:oasTypes>S
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_Polygon</cs:name>
