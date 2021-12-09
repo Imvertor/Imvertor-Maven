@@ -405,10 +405,10 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                       <cs:OasType>
-                          <cs:name>Linestring.yaml</cs:name>
+                          <cs:name>Linestring</cs:name>
                           <cs:primitive>false</cs:primitive>
                       </cs:OasType>
-                  </cs:oasTypes>
+                  </cs:oasTypes>S
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_Polygon</cs:name>
