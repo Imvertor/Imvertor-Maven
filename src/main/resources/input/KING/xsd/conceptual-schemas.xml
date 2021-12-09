@@ -243,7 +243,7 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                       <cs:OasType>
-                          <cs:name>pointGeoJSON.yaml</cs:name>
+                          <cs:name>Point</cs:name>
                           <cs:primitive>false</cs:primitive>
                       </cs:OasType>
                   </cs:oasTypes>
@@ -273,7 +273,7 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                       <cs:OasType>
-                          <cs:name>polygonGeoJSON.yaml</cs:name>
+                          <cs:name>Polygon</cs:name>
                           <cs:primitive>false</cs:primitive>
                       </cs:OasType>
                   </cs:oasTypes>
@@ -291,7 +291,7 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                       <cs:OasType>
-                          <cs:name>multipointGeoJSON.yaml</cs:name>
+                          <cs:name>Multipoint</cs:name>
                           <cs:primitive>false</cs:primitive>
                       </cs:OasType>
                   </cs:oasTypes>
@@ -309,7 +309,7 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                       <cs:OasType>
-                          <cs:name>multipolygonGeoJSON.yaml</cs:name>
+                          <cs:name>Multipolygon</cs:name>
                           <cs:primitive>false</cs:primitive>
                       </cs:OasType>
                   </cs:oasTypes>
@@ -339,7 +339,7 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                      <cs:OasType>
-                        <cs:name>multilinestringGeoJSON.yaml</cs:name>
+                        <cs:name>Multilinestring</cs:name>
                         <cs:primitive>false</cs:primitive>
                      </cs:OasType>
                   </cs:oasTypes>
@@ -357,7 +357,7 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                       <cs:OasType>
-                          <cs:name>geometryGeoJSON.yaml</cs:name>
+                          <cs:name>GeoJSONGeometry</cs:name>
                           <cs:primitive>false</cs:primitive>
                       </cs:OasType>
                   </cs:oasTypes>
@@ -375,7 +375,7 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                       <cs:OasType>
-                          <cs:name>geometrycollectionGeoJSON.yaml</cs:name>
+                          <cs:name>GeometryCollection</cs:name>
                           <cs:primitive>false</cs:primitive>
                       </cs:OasType>
                   </cs:oasTypes>
@@ -405,7 +405,7 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                       <cs:OasType>
-                          <cs:name>linestringGeoJSON.yaml</cs:name>
+                          <cs:name>Linestring.yaml</cs:name>
                           <cs:primitive>false</cs:primitive>
                       </cs:OasType>
                   </cs:oasTypes>
@@ -423,7 +423,7 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                       <cs:OasType>
-                          <cs:name>polygonGeoJSON.yaml</cs:name>
+                          <cs:name>Polygon</cs:name>
                           <cs:primitive>false</cs:primitive>
                       </cs:OasType>
                   </cs:oasTypes>
