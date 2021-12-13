@@ -522,7 +522,6 @@
                                     <xs:element ref="{imf:get-reference-class-name($defining-class)}"/>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:sequence select="dlogger:save('$defining-class',$defining-class)"/>
                                     <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice member')"/>
                                     <xsl:variable name="minOccurs" select="if (imvert:min-occurs) then imvert:min-occurs else '1'"/>
                                     <xsl:variable name="maxOccurs" select="if (imvert:max-occurs) then imvert:max-occurs else '1'"/>
