@@ -756,7 +756,10 @@
         <xsl:variable name="name" select="imvert:name"/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
         <xsl:variable name="is-enumeration" select="$class/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')"/>
-        <xsl:variable name="baretype" select="imvert:baretype"/>
+        <xsl:variable name="baretype" select="imvert:baretype"/><!-- INTEGER  of AN1000 -->
+        <xsl:variable name="type-name" select="imvert:type-name"/><!-- scalar-integer of Integer; scalar when imvert:type-id is not specified--> 
+        <xsl:variable name="is-known-baretype" select="empty(imvert:type-id) and $type-name"/><!-- scalar-integer of Integer; scalar when imvert:type-id is not specified--> 
+        
         <xsl:variable name="superclasses" select="imf:get-superclasses($class)"/>
         <xsl:variable name="is-abstract" select="imvert:abstract = 'true'"/>
         <xsl:variable name="stereos" select="('stereotype-name-objecttype','stereotype-name-referentielijst')"/>
@@ -767,7 +770,7 @@
        
         <xsl:variable name="assert-attribute-not-specified" select="(not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-name))"/>
         
-        <xsl:variable name="is-known-scalar" select="upper-case($baretype) = $all-scalars/name"/>
+        <xsl:variable name="is-known-scalar" select="$is-known-baretype or upper-case($baretype) = $all-scalars/name"/>
         
         <!--<xsl:sequence select="dlogger:save(imf:get-display-name(.),concat($exists-native-scalars,' ', $accept-native-scalars,' ', exists($defining-class),' ', $is-known-scalar))"></xsl:sequence>-->
         
