@@ -270,7 +270,6 @@
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
                 
                 <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
