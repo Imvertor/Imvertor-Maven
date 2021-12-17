@@ -2394,7 +2394,7 @@
 					   Voor het geval daarop wordt teruggekomen is de XSLT-code voor het opnemen van de code hieronder bewaard. -->
 			<xsl:choose>
 				<xsl:when test="empty($SIM-alias)">
-					<xsl:variable name="chars2bTranslated" select="translate($SIM-name,'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_','')">
+					<xsl:variable name="chars2bTranslated" select="translate($SIM-name,'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_1234567890','')">
 						<!-- Contains all characters which need to be translated which are all characters execept the a to z and A to Z and the space. -->
 					</xsl:variable>
 					<xsl:variable name="normalizedName">
