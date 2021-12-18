@@ -291,7 +291,7 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                       <cs:OasType>
-                          <cs:name>Multipoint</cs:name>
+                          <cs:name>MultiPoint</cs:name>
                           <cs:primitive>false</cs:primitive>
                       </cs:OasType>
                   </cs:oasTypes>
@@ -309,7 +309,7 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                       <cs:OasType>
-                          <cs:name>Multipolygon</cs:name>
+                          <cs:name>MultiPolygon</cs:name>
                           <cs:primitive>false</cs:primitive>
                       </cs:OasType>
                   </cs:oasTypes>
@@ -339,7 +339,7 @@
                   </cs:xsdTypes>
                   <cs:oasTypes>
                      <cs:OasType>
-                        <cs:name>Multilinestring</cs:name>
+                        <cs:name>MultiLineString</cs:name>
                         <cs:primitive>false</cs:primitive>
                      </cs:OasType>
                   </cs:oasTypes>
