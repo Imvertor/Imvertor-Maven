@@ -19,6 +19,10 @@
       - ep:formal-pattern toegevoegd naast ep:pattern.
       - ep:min-length naast ep:max-length opgenomen
       - ep:alias is niet verplicht op een enum.
+      
+   - 20211220
+      - vervang waarde van note fields door ##any
+      
 
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -45,6 +49,7 @@
 			<xs:element ref="documentation" minOccurs="0"/>
 			<xs:element ref="min-occurs" minOccurs="0"/>
 			<xs:element ref="max-occurs" minOccurs="0"/>
+			<xs:element ref="external" minOccurs="0"/>
 			<xs:choice>
 				<xs:choice>
 					<xs:sequence>
@@ -53,7 +58,6 @@
 						<xs:element ref="max-value" minOccurs="0"/>
 						<xs:element ref="min-length" minOccurs="0"/>
 						<xs:element ref="max-length" minOccurs="0"/>
-						<xs:element ref="pattern" minOccurs="0"/>
 						<xs:element ref="formal-pattern" minOccurs="0"/>
 						<xs:element ref="example" minOccurs="0"/>
 						<xs:element ref="enum" minOccurs="0" maxOccurs="unbounded"/>
@@ -78,6 +82,7 @@
 			<xs:element ref="documentation" minOccurs="0"/>
 			<xs:element ref="min-occurs" minOccurs="0"/>
 			<xs:element ref="max-occurs" minOccurs="0"/>
+			<xs:element ref="external" minOccurs="0"/>
 			<xs:choice>
 				<xs:choice>
 					<xs:sequence minOccurs="0">
@@ -86,7 +91,6 @@
 						<xs:element ref="max-value" minOccurs="0"/>
 						<xs:element ref="min-length" minOccurs="0"/>
 						<xs:element ref="max-length" minOccurs="0"/>
-						<xs:element ref="pattern" minOccurs="0"/>
 						<xs:element ref="formal-pattern" minOccurs="0"/>
 						<xs:element ref="example" minOccurs="0"/>
 						<xs:element ref="enum" minOccurs="0" maxOccurs="unbounded"/>
@@ -107,14 +111,14 @@
 	<xs:element name="definition">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="ep:p" maxOccurs="unbounded"/>
+				<xs:any minOccurs="0" processContents="lax" namespace="##any"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="description">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="ep:p" maxOccurs="unbounded"/>
+				<xs:any minOccurs="0" processContents="lax" namespace="##any"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -207,7 +211,7 @@
 	<xs:element name="pattern">
 		<xs:complexType mixed="true">
 			<xs:sequence>
-				<xs:element ref="ep:p" minOccurs="0"/>
+				<xs:any minOccurs="0" processContents="lax" namespace="##any"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -227,4 +231,5 @@
 	<xs:element name="value" type="xs:string"/>
 	<xs:element name="min-value" type="xs:int"/>
 	<xs:element name="max-value" type="xs:int"/>
+	<xs:element name="external" type="xs:boolean"/>
 </xs:schema>
