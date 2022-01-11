@@ -1983,24 +1983,69 @@
 			</xsl:if>
 			<xsl:choose>
 				<!-- If the content of all ep:name elements is equal to their sibbling ep:alias elements no further documentation is generated. -->
-				<xsl:when test="count(ep:enum[ep:name=ep:alias])=count(ep:enum)"/>
+				<xsl:when test="count(ep:enum[ep:name=ep:alias])=count(ep:enum) and empty(ep:enum/ep:documentation)"/>
+				<xsl:when test="count(ep:enum[ep:name=ep:alias])=count(ep:enum) and //ep:p/@format = 'markdown'">
+					<xsl:text>&lt;body&gt;&lt;ul&gt;</xsl:text>
+					<xsl:for-each select="ep:enum">
+						<xsl:text>&lt;li&gt;</xsl:text><xsl:value-of select="concat('`',ep:alias,'` - ',ep:documentation)"/><xsl:text>&lt;/li&gt;</xsl:text>
+						<!--xsl:choose>
+								<xsl:when test="ep:alias/@generated = 'true'">
+									<xsl:text>&lt;li&gt;</xsl:text><xsl:value-of select="concat('`',ep:alias,'` - ',ep:documentation)"/><xsl:text>&lt;/li&gt;</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:text>&lt;li&gt;</xsl:text><xsl:value-of select="concat('`',ep:alias,'` - ',ep:name)"/><xsl:text>&lt;/li&gt;</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose-->
+					</xsl:for-each>
+					<xsl:text>&lt;/ul&gt;&lt;/body&gt;</xsl:text>
+				</xsl:when>
 				<xsl:when test="//ep:p/@format = 'markdown'">
 					<xsl:text>&lt;body&gt;&lt;ul&gt;</xsl:text>
 						<xsl:for-each select="ep:enum">
-							<xsl:text>&lt;li&gt;</xsl:text><xsl:value-of select="concat('`',ep:alias,'` - ',ep:name)"/><xsl:text>&lt;/li&gt;</xsl:text>
+							<xsl:text>&lt;li&gt;</xsl:text><xsl:value-of select="concat('`',ep:alias,'` - ',ep:name,' ',ep:documentation)"/><xsl:text>&lt;/li&gt;</xsl:text>
+							<!--xsl:choose>
+								<xsl:when test="ep:alias/@generated = 'true'">
+									<xsl:text>&lt;li&gt;</xsl:text><xsl:value-of select="concat('`',ep:alias,'` - ',ep:documentation)"/><xsl:text>&lt;/li&gt;</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:text>&lt;li&gt;</xsl:text><xsl:value-of select="concat('`',ep:alias,'` - ',ep:name)"/><xsl:text>&lt;/li&gt;</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose-->
 						</xsl:for-each>
 					<xsl:text>&lt;/ul&gt;&lt;/body&gt;</xsl:text>
+				</xsl:when>
+				<xsl:when test="count(ep:enum[ep:name=ep:alias])=count(ep:enum) and //ep:p/@format != 'markdown'">
+					<!--xsl:text>:</xsl:text-->
+					<xsl:for-each select="ep:enum">
+						<xsl:value-of select="concat('\n* `',ep:alias,'` - ',ep:documentation)"/>
+						<!--xsl:choose>
+							<xsl:when test="ep:alias/@generated = 'true'">
+								<xsl:value-of select="concat('\n* `',ep:alias,'` - ',ep:documentation)"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="concat('\n* `',ep:alias,'` - ',ep:name)"/>
+							</xsl:otherwise>
+						</xsl:choose-->
+					</xsl:for-each>
 				</xsl:when>
 				<xsl:otherwise>
 					<!--xsl:text>:</xsl:text-->
 					<xsl:for-each select="ep:enum">
-						<xsl:value-of select="concat('\n* `',ep:alias,'` - ',ep:name)"/>
+						<xsl:value-of select="concat('\n* `',ep:alias,'` - ',ep:name,' ',ep:documentation)"/>
+						<!--xsl:choose>
+							<xsl:when test="ep:alias/@generated = 'true'">
+								<xsl:value-of select="concat('\n* `',ep:alias,'` - ',ep:documentation)"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="concat('\n* `',ep:alias,'` - ',ep:name)"/>
+							</xsl:otherwise>
+						</xsl:choose-->
 					</xsl:for-each>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:value-of select="'&quot;,'"/>
 		</xsl:variable>
-		<xsl:sequence select="$enumeration-documentation"/>
+		<xsl:sequence select="normalize-space($enumeration-documentation)"/>
 
 		<xsl:value-of select="'&quot;enum&quot;: ['"/>
 		<xsl:for-each select="ep:enum">
@@ -2315,7 +2360,7 @@
 				<xsl:value-of select="'}, {'"/>
 				<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:name,'&quot;,')"/>
 				<xsl:value-of select="concat('&quot;description&quot;: &quot;',$documentation,'&quot;')"/>
-				<xsl:value-of select="'&quot;allOf&quot;: ] }'"/>
+				<xsl:value-of select="'} ]'"/>
 			</xsl:when>
 			<xsl:when test="exists(/ep:message-sets//ep:construct[ep:tech-name = $typeName]/ep:type-name)">
 				<!-- If the current construct [A] refers to an existing other construct [B] by its typename and that construct has a type-name on its turn
@@ -2767,9 +2812,6 @@
 				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
 				<xsl:value-of select="'&quot;,'"/>
 				
-				<xsl:variable name="documentation">
-					<xsl:apply-templates select="ep:documentation"/>
-				</xsl:variable>
 				<xsl:choose>
 					<!-- Depending on the occurence-type and the type of construct content is generated. -->
 					<xsl:when test="$occurence-type = 'array' and (ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')">
@@ -2788,16 +2830,14 @@
 						<xsl:value-of select="concat('&quot;example&quot;: &quot;datapunt.voorbeeldgemeente.nl/api/v1/',$sourceName,'/123456789&quot;')"/>
 					</xsl:when>
 					<xsl:when test="$occurence-type != 'array' and (ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')">
+						<!--RM: Hier klopt iets niet. In regel 2803 wordt al een s"type" property aangemaakt. Hieronder gebeurd dat nogmaals terwijl we nog steeds in hetzelfde object zitten.
+									Ik kan er nog niet helemaal de vinger opleggen welke fout is maar ze mogen niet beide voorkomen. -->
 						<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
 						<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;,'"/>
 						<xsl:value-of select="'&quot;readOnly&quot;: true,'"/>
 						<xsl:value-of select="concat('&quot;example&quot;: &quot;datapunt.voorbeeldgemeente.nl/api/v1/',$sourceName,'/123456789&quot;')"/>
 					</xsl:when>
 <?x					<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
-						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-						<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-						<xsl:value-of select="'&quot;,'"/>
 						<xsl:if test="$maxOccurs != 'unbounded'">
 							<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
 						</xsl:if>
@@ -2809,10 +2849,6 @@
 						<xsl:value-of select="'}'"/>
 					</xsl:when>
 					<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
-						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-						<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-						<xsl:value-of select="'&quot;,'"/>
 						<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
 					</xsl:when> ?>
 				</xsl:choose>
