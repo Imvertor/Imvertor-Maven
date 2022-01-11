@@ -20,6 +20,34 @@
             </stereotypes>
         </tv>
         
+        <tv norm="note" id="CFG-TV-DESCRIPTION"><!-- migratie MIM11 -->
+            <name lang="nl">Toelichting</name>
+            <name lang="en">Description</name>
+            <desc lang="nl">Een inhoudelijke toelichting op de definitie, ter verheldering of nadere duiding.</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
+                <stereo minmax="0..1">stereotype-name-codelist</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo><!-- TODO deprecated -->
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+            </stereotypes>
+        </tv> 
+        
         <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC"><!-- https://geonovum.github.io/MIM-Werkomgeving/#authentieke-gegevens -->
             <declared-values lang="nl">
                 <value default="yes">Authentiek</value>
