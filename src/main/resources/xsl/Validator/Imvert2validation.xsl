@@ -138,7 +138,15 @@
     <xsl:variable name="is-proper-class-tree" select="imf:boolean-and(for $class in $application-package//imvert:class[imvert:supertype] return imf:check-proper-class-tree($class,string($class/imvert:id)))"/>
     
     <xsl:variable name="allow-multiple-tv" select="imf:boolean(imf:get-config-string('cli','allowduplicatetv','no'))"/>
+    
+    <!--mogen native scalars worden gebruikt?-->
     <xsl:variable name="allow-native-scalars" select="imf:boolean(imf:get-config-string('cli','nativescalars','yes'))"/>
+    <!--wat zijn de native scalars die zijn aangetroffen?-->
+    <xsl:variable name="native-scalars" select="$document-packages//*[upper-case(imvert:baretype) = $all-scalars/name and empty(imvert:type-id)]"/><!-- alle bekende scalaire typen in dit model -->
+    <!--Komen native scalars voor?-->
+    <xsl:variable name="exists-native-scalars" select="exists($native-scalars)"/>
+    <!--Zijn native scalars toegestaan?-->
+    <xsl:variable name="accept-native-scalars" select="$exists-native-scalars and $allow-native-scalars"/>
     
     <xsl:variable name="signal-dead-urls" select="imf:boolean(imf:get-config-string('cli','signaldeadurls','no'))"/>
   
@@ -161,6 +169,7 @@
     
     <!-- all display names of all properties -->
     <xsl:variable name="property-display-names" select="for $p in ($domain-package//imvert:attribute,$domain-package/imvert:association) return imf:get-display-name($p)"/>
+    
     
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
@@ -188,6 +197,18 @@
             <!-- determine of all stereotypes may be combined -->
             
             <xsl:sequence select="for $construct in .//imvert:*[imvert:stereotype] return imf:check-primary-stereotypes($construct)"/>
+           
+            <!-- check of native scalars voorkomen terwijl die niet zijn toegestaan -->
+            <xsl:sequence select="imf:report-error(., 
+                $exists-native-scalars and not($allow-native-scalars), 
+                'Native scalars [1] used but native scalars not allowed', 
+                imf:string-group(distinct-values($native-scalars/imvert:baretype)))"/>
+            
+            <!-- check of er feitelijk géén native scalars voorkomen terwijl native scalars expliciet wel zijn toegestaan -->
+            <xsl:sequence select="imf:report-warning(., 
+                not($exists-native-scalars) and $allow-native-scalars, 
+                'No native scalars used', 
+                ())"/>
             
             <!-- process the application package -->
             <xsl:apply-templates select="imvert:package"/>
@@ -735,7 +756,10 @@
         <xsl:variable name="name" select="imvert:name"/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
         <xsl:variable name="is-enumeration" select="$class/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')"/>
-        <xsl:variable name="baretype" select="imvert:baretype"/>
+        <xsl:variable name="baretype" select="imvert:baretype"/><!-- INTEGER  of AN1000 -->
+        <xsl:variable name="type-name" select="imvert:type-name"/><!-- scalar-integer of Integer; scalar when imvert:type-id is not specified--> 
+        <xsl:variable name="is-known-baretype" select="empty(imvert:type-id) and $type-name"/><!-- scalar-integer of Integer; scalar when imvert:type-id is not specified--> 
+        
         <xsl:variable name="superclasses" select="imf:get-superclasses($class)"/>
         <xsl:variable name="is-abstract" select="imvert:abstract = 'true'"/>
         <xsl:variable name="stereos" select="('stereotype-name-objecttype','stereotype-name-referentielijst')"/>
@@ -745,6 +769,10 @@
             $is-designated-referentielijst"/>
        
         <xsl:variable name="assert-attribute-not-specified" select="(not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-name))"/>
+        
+        <xsl:variable name="is-known-scalar" select="$is-known-baretype or upper-case($baretype) = $all-scalars/name"/>
+        
+        <!--<xsl:sequence select="dlogger:save(imf:get-display-name(.),concat($exists-native-scalars,' ', $accept-native-scalars,' ', exists($defining-class),' ', $is-known-scalar))"></xsl:sequence>-->
         
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 
@@ -808,6 +836,21 @@
             and normalize-space(imf:get-tagged-value(.,'##CFG-TV-DATALOCATION'))
             and normalize-space(imf:get-tagged-value($defining-class,'##CFG-TV-DATALOCATION')), 
             '[1] has been specified on attribute as well as on [2]', ('Data location',$defining-class))"/>
+        
+        <!-- Het is niet toegestaan te verwijzen naar een UML type als dat type ook als scalair type ("native scalar") bekend staat. Je hebt Imvertor gevraagd native scalaire typen te herkennen (nativescalars = yes). -->
+        <xsl:sequence select="imf:report-warning(.,
+            not($is-enumeration) and $baretype and $accept-native-scalars and ($defining-class and $is-known-scalar), 
+            'Reference to scalar [1] that is not native', ($baretype))"/>
+        
+        <!-- Een type dat niet in het model terug te vinden is wordt opgevat als een scalair type. Als dat type niet bekend is (niet in de configuratie is opgenomen) wordt dit gemeld. Dit geldt alleen als de herkenning van zulke "native scalars" gewenst is (property nativescalars = yes)-->
+        <xsl:sequence select="imf:report-error(.,
+            not($is-enumeration) and $baretype and $accept-native-scalars and (empty($defining-class) and not($is-known-scalar)),
+            'Native scalar [1] is not known', ($baretype))"/>
+        
+        <!-- Een type dat niet in het model terug te vinden is wordt opgevat als een scalair type. Als aangegeven is dat zulke "native scalars" niet worden gebruikt (property nativescalars = no) wordt dit gemeld. -->
+        <xsl:sequence select="imf:report-error(.,
+            not($is-enumeration) and $baretype and not($accept-native-scalars) and empty($defining-class),
+            'Native scalar [1] not allowed', ($baretype))"/>
         
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
         <xsl:sequence select="imf:check-tagged-value-multi(.)"/>

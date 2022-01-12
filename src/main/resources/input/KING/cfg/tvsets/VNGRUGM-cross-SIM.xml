@@ -26,7 +26,14 @@
             <name lang="nl">Herkomst</name>
             <derive>yes</derive>
             <stereotypes>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
                 <stereo minmax="1..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="1..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="1..1">stereotype-name-complextype</stereo>
             </stereotypes>
         </tv>
         

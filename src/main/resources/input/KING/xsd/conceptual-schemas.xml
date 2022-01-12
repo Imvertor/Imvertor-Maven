@@ -241,6 +241,12 @@
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
+                  <cs:oasTypes>
+                      <cs:OasType>
+                          <cs:name>Point</cs:name>
+                          <cs:primitive>false</cs:primitive>
+                      </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_Curve</cs:name>
@@ -265,6 +271,12 @@
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
+                  <cs:oasTypes>
+                      <cs:OasType>
+                          <cs:name>Polygon</cs:name>
+                          <cs:primitive>false</cs:primitive>
+                      </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_MultiPoint</cs:name>
@@ -277,6 +289,12 @@
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
+                  <cs:oasTypes>
+                      <cs:OasType>
+                          <cs:name>MultiPoint</cs:name>
+                          <cs:primitive>false</cs:primitive>
+                      </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_MultiSurface</cs:name>
@@ -289,6 +307,12 @@
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
+                  <cs:oasTypes>
+                      <cs:OasType>
+                          <cs:name>MultiPolygon</cs:name>
+                          <cs:primitive>false</cs:primitive>
+                      </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_MultiCurve</cs:name>
@@ -303,6 +327,24 @@
                   </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
+                  <cs:name>GM_MultiLineString</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiLineString</cs:name>
+                        <cs:asAttribute>MultiLineStringPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+                  <cs:oasTypes>
+                     <cs:OasType>
+                        <cs:name>MultiLineString</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:OasType>
+                  </cs:oasTypes>
+               </cs:Construct>
+               <cs:Construct>
                   <cs:name>GM_Geometry</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
@@ -313,6 +355,12 @@
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
+                  <cs:oasTypes>
+                      <cs:OasType>
+                          <cs:name>GeoJSONGeometry</cs:name>
+                          <cs:primitive>false</cs:primitive>
+                      </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_MultiGeometry</cs:name>
@@ -325,6 +373,12 @@
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
+                  <cs:oasTypes>
+                      <cs:OasType>
+                          <cs:name>GeometryCollection</cs:name>
+                          <cs:primitive>false</cs:primitive>
+                      </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_ArcString</cs:name>
@@ -349,6 +403,12 @@
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
+                  <cs:oasTypes>
+                      <cs:OasType>
+                          <cs:name>Linestring</cs:name>
+                          <cs:primitive>false</cs:primitive>
+                      </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_Polygon</cs:name>
@@ -361,6 +421,12 @@
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
+                  <cs:oasTypes>
+                      <cs:OasType>
+                          <cs:name>Polygon</cs:name>
+                          <cs:primitive>false</cs:primitive>
+                      </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_Object</cs:name>

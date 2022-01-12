@@ -1790,6 +1790,27 @@
 				</ep:pattern>
 			</xsl:if>
 		</xsl:variable>
+
+		<xsl:if test="$debugging">
+			<xsl:if test="not(empty($construct))">
+				<xsl:result-document href="{concat('file:/c:/temp/message/Attribute-',$tech-name,'-',generate-id(),'.xml')}">
+					<vals>
+						<xsl:if
+							test="not(empty(imf:get-specific-compiled-tagged-values-up-to-level-debug($construct,'CFG-TV-DEFINITION',$description-level)))">
+							<definition>
+								<xsl:sequence select="imf:get-specific-compiled-tagged-values-up-to-level-debug($construct,'CFG-TV-DEFINITION',$description-level)" />
+							</definition>
+						</xsl:if>
+						<xsl:if
+							test="not(empty(imf:get-specific-compiled-tagged-values-up-to-level-debug($construct,'CFG-TV-DESCRIPTION',$description-level)))">
+							<description>
+								<xsl:sequence select="imf:get-specific-compiled-tagged-values-up-to-level-debug($construct,'CFG-TV-DESCRIPTION',$description-level)" />
+							</description>
+						</xsl:if>
+					</vals>
+				</xsl:result-document>
+			</xsl:if>
+		</xsl:if>
 		
 		
 		<!-- ROME: T.b.v. foutdetectie. -->
@@ -2150,6 +2171,9 @@
 				<xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" />
 				
 				<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+				<xsl:if test="imvert:type-name-oas">
+					<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name-oas)" />
+				</xsl:if>
 			</xsl:when>
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]/imvert:id"/>
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]/imvert:id"/>
@@ -2383,31 +2407,82 @@
 
 		<xsl:variable name="supplier" select="imf:get-trace-suppliers-for-construct(.,1)[@project='SIM'][1]" />
 		<xsl:variable name="construct" select="if ($supplier) then imf:get-trace-construct-by-supplier($supplier,$imvert-document) else ()" />
-		<xsl:variable name="SIM-name" select="($construct/imvert:name, imvert:name)[1]" />
-		<xsl:variable name="SIM-alias" select="($construct/imvert:alias, imvert:alias)[1]" />
+		<!--xsl:variable name="name" select="($construct/imvert:name, imvert:name)[1]" />
+		<xsl:variable name="alias" select="($construct/imvert:alias, imvert:alias)[1]" /-->
+		<xsl:variable name="name" select="imvert:name" />
+		<xsl:variable name="alias" select="imvert:alias" />
+		<xsl:variable name="doc">
+			<xsl:if test="not(empty($construct))">
+				<xsl:if
+					test="not(empty(imf:merge-documentation-up-to-level($construct,'CFG-TV-DEFINITION',$description-level)))">
+					<ep:definition>
+						<xsl:sequence select="imf:merge-documentation-up-to-level($construct,'CFG-TV-DEFINITION',$description-level)" />
+						<!--xsl:sequence select="imf:merge-documentation-up-to-level($construct,'CFG-TV-DEFINITION','BSM')" /-->
+					</ep:definition>
+				</xsl:if>
+				<xsl:if
+					test="not(empty(imf:merge-documentation-up-to-level($construct,'CFG-TV-DESCRIPTION',$description-level)))">
+					<ep:description>
+						<xsl:if test="$debugging">
+							<xsl:attribute name="level" select="$description-level"/>
+						</xsl:if>
+						<xsl:sequence select="imf:merge-documentation-up-to-level($construct,'CFG-TV-DESCRIPTION',$description-level)" />
+						<!--xsl:sequence select="imf:merge-documentation-up-to-level($construct,'CFG-TV-DESCRIPTION','BSM')" /-->
+					</ep:description>
+				</xsl:if>
+			</xsl:if>
+		</xsl:variable>
+
+		<xsl:if test="$debugging">
+			<xsl:if test="not(empty($construct))">
+				<xsl:result-document href="{concat('file:/c:/temp/message/Enumeration-',$name,'-',generate-id(),'.xml')}">
+					<xsl:variable name="id" select="imvert:id"/>
+					<xsl:variable name="construct2" select="imf:get-construct-by-id($id,$packages)" />
+					<vals>
+						<xsl:if test="not(empty($supplier))">
+							<construct>
+								<xsl:sequence select="$construct2"/>
+							</construct>
+						</xsl:if>
+						<xsl:if
+							test="not(empty(imf:get-specific-compiled-tagged-values-up-to-level-debug($construct2,'CFG-TV-DEFINITION',$description-level)))">
+							<definition>
+								<xsl:sequence select="imf:get-specific-compiled-tagged-values-up-to-level-debug($construct2,'CFG-TV-DEFINITION',$description-level)" />
+							</definition>
+						</xsl:if>
+						<xsl:if
+							test="not(empty(imf:get-specific-compiled-tagged-values-up-to-level-debug($construct2,'CFG-TV-DESCRIPTION',$description-level)))">
+							<description>
+								<xsl:sequence select="imf:get-specific-compiled-tagged-values-up-to-level-debug($construct2,'CFG-TV-DESCRIPTION',$description-level)" />
+							</description>
+						</xsl:if>
+					</vals>
+				</xsl:result-document>
+			</xsl:if>
+		</xsl:if>
+		
 
 		<ep:enum>
-			<!-- ROME: I.v.m. het project Zaak- Document Services is besloten om de waarde in een enumeration te plaatsen en niet de codes.
-					   Voor het geval daarop wordt teruggekomen is de XSLT-code voor het opnemen van de code hieronder bewaard. -->
 			<xsl:choose>
-				<xsl:when test="empty($SIM-alias)">
-					<xsl:variable name="chars2bTranslated" select="translate($SIM-name,'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_','')">
-						<!-- Contains all characters which need to be translated which are all characters execept the a to z and A to Z and the space. -->
+				<xsl:when test="empty($alias)">
+					<xsl:variable name="strippedFromAccents-name" select="replace(normalize-unicode($name,'NFKD'),'\P{IsBasicLatin}','')"/>
+					<xsl:variable name="chars2bTranslated" select="translate(normalize-space($strippedFromAccents-name),'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_1234567890%','')">
+						<!-- Contains all characters which need to be translated which are all characters except the a to z, the A to Z, 0 to 9, the underscore and the %. -->
+					</xsl:variable>
+					<xsl:variable name="chars2bTranslated2">
+						<!-- Within the translate function for each char to be translated there has to be an underscore. Since the amount of special 
+								 chars is variable we have to determine the amount of underscores to be used within the translate function. -->
+						<xsl:variable name="lengthChars2bTranslated" select="string-length($chars2bTranslated)" as="xs:integer"/>
+						<xsl:sequence select="imf:determineAmountOfUnderscores($lengthChars2bTranslated)"/>
 					</xsl:variable>
 					<xsl:variable name="normalizedName">
-						<!-- The normalized name of the interface is equal the the name of the interface except that all characters other 
-							 than a to z and A to Z are translated to underscores. -->
-						<xsl:variable name="chars2bTranslated2">
-							<!-- Within the translate function for each char to be translated there has to be an underscore. Since the amount of special 
-								 chars is variable we have to determine the amount of underscores to be used within the translate function. -->
-							<xsl:variable name="lengthChars2bTranslated" select="string-length($chars2bTranslated)" as="xs:integer"/>
-							<xsl:sequence select="imf:determineAmountOfSpaces($lengthChars2bTranslated)"/>
-						</xsl:variable>
+						<!-- The normalized name of the interface is equal to the name of the interface except that all characters other 
+							 than a to z, the A to Z, 0 to 9 and the % are translated to underscores. -->
 						<!-- Finally the string is actually translated using the variable. -->
-						<xsl:value-of select="normalize-space(translate($SIM-name,$chars2bTranslated,$chars2bTranslated2))"/>
+						<xsl:value-of select="translate(normalize-space($strippedFromAccents-name),$chars2bTranslated,$chars2bTranslated2)"/>
 					</xsl:variable>
 					<xsl:choose>
-						<xsl:when test="$SIM-name != $normalizedName">
+						<xsl:when test="$name != $normalizedName">
 							<!-- If the normalized-name isn't equal to the SIM-name a warning has to be generated. The goal of this warning is to point the attention of the messagedeveloper only to the enumeration and ask him to check it. -->
 							<xsl:sequence select="imf:msg($construct,'WARNING','No alias defined for enumeration value [1] in the enumeration [2], it has been generated from its description. Check if the resulting description is as desired and correct it if not.',(imvert:name,../../imvert:name))"/>						
 						</xsl:when>
@@ -2416,12 +2491,14 @@
 							<xsl:sequence select="imf:msg($construct,'WARNING','No alias defined for enumeration value [1] in the enumeration [2], it has been generated from its description.',(imvert:name,../../imvert:name))"/>						
 						</xsl:otherwise>
 					</xsl:choose>
-					<ep:name><xsl:value-of select="$SIM-name" /></ep:name>
-					<ep:alias><xsl:value-of select="$normalizedName" /></ep:alias>
+					<ep:name><xsl:value-of select="$name" /></ep:name>
+					<ep:alias generated="true"><xsl:value-of select="$normalizedName" /></ep:alias>
+					<xsl:sequence select="imf:create-output-element('ep:documentation', normalize-space($doc),'',false(),false())" />
 				</xsl:when>
 				<xsl:otherwise>
-					<ep:name><xsl:value-of select="$SIM-name" /></ep:name>
-					<ep:alias><xsl:value-of select="$SIM-alias" /></ep:alias>
+					<ep:name><xsl:value-of select="$name" /></ep:name>
+					<ep:alias><xsl:value-of select="$alias" /></ep:alias>
+					<xsl:sequence select="imf:create-output-element('ep:documentation', normalize-space($doc),'',false(),false())" />
 				</xsl:otherwise>
 			</xsl:choose>
 		</ep:enum>
@@ -2511,6 +2588,18 @@
 		</xsl:copy>
 	</xsl:template>
 
+	<xsl:function name="imf:get-specific-compiled-tagged-values-up-to-level-debug">
+		<xsl:param name="this" />
+		<xsl:param name="tv-id" />
+		<xsl:param name="level"/>
+
+		<xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,true())" />
+		<xsl:variable name="vals" select="$all-tv[@id = $tv-id]" />
+
+		<xsl:sequence select="$vals" />
+
+	</xsl:function>
+
 	<!-- This function merges all documentation from the provided layer up to the current layer. -->
 	<xsl:function name="imf:merge-documentation-up-to-level">
 		<xsl:param name="this" />
@@ -2526,7 +2615,8 @@
 						<xsl:apply-templates select="html:*"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))"/>
+						<xsl:text></xsl:text><xsl:value-of select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))"/><xsl:text></xsl:text>
+						<!--xsl:text></xsl:text><xsl:value-of select="normalize-space(imf:get-clean-documentation-string(.))"/><xsl:text></xsl:text-->
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
@@ -2687,11 +2777,11 @@
 		</xsl:choose>
 	</xsl:function>
 	
-	<xsl:function name="imf:determineAmountOfSpaces">
+	<xsl:function name="imf:determineAmountOfUnderscores">
 		<xsl:param name="length"/>
 		<xsl:if test="$length > 0">
-			<xsl:value-of select="' '"/>
-			<xsl:sequence select="imf:determineAmountOfSpaces($length - 1)"/>
+			<xsl:value-of select="'_'"/>
+			<xsl:sequence select="imf:determineAmountOfUnderscores($length - 1)"/>
 		</xsl:if>
 	</xsl:function>
 	

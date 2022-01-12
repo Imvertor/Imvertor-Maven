@@ -603,17 +603,7 @@
                 <stereo minmax="0..1">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-EXAMPLE">
-            <name lang="nl">Example</name>
-            <name lang="en">Example</name>
-            <desc lang="nl">Voorbeeldwaarde van een property.</desc>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-attribute</stereo>
-            </stereotypes>
-        </tv>
-        
-        
+
         <tv norm="space" id="CFG-TV-CUSTOMPATHFACET">
             <name lang="nl">custom_path_facet</name>
             <name lang="en">custom_path_facet</name>

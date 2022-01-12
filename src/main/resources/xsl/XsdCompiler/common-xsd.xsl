@@ -27,8 +27,6 @@
         <xsl:variable name="min-v" select="imf:get-facet-min-value($this)"/>
         <xsl:variable name="max-v" select="imf:get-facet-max-value($this)"/>
         
-        <xsl:sequence select="dlogger:save(imf:get-display-name($this),($min-v,'|',$max-v,'|',$length,'|',$total))"/>
-        
         <xsl:variable name="is-integer" select="$primitive-type = ('xs:integer')"/>
         <xsl:variable name="is-decimal" select="$primitive-type = ('xs:decimal')"/>
         <xsl:variable name="is-real"    select="$primitive-type = ('xs:real','xs:float')"/>

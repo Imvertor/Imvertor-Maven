@@ -437,7 +437,7 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>LineStringSegment</cs:name>
+                        <cs:name>LineString</cs:name>
                         <cs:asAttribute>LineStringPropertyType</cs:asAttribute>
                         <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                         <cs:primitive>false</cs:primitive>
@@ -1078,7 +1078,7 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>LineStringSegment</cs:name>
+                        <cs:name>LineString</cs:name>
                         <cs:asAttribute>LineStringPropertyType</cs:asAttribute>
                         <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                         <cs:primitive>false</cs:primitive>
