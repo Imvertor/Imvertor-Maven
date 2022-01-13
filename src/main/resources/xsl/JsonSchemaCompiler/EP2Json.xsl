@@ -63,7 +63,13 @@
             </j:map>
             <j:map key="components">
                 <j:map key="schemas">
-                    <xsl:apply-templates select="ep:seq/ep:construct/ep:seq/ep:construct[not(imf:boolean(ep:external))]"/>
+                    <xsl:variable name="constructs" as="element(j:map)*">
+                        <xsl:apply-templates select="ep:seq/ep:construct/ep:seq/ep:construct[not(imf:boolean(ep:external))]"/>
+                    </xsl:variable>
+                    <!-- ontdubbel -->
+                    <xsl:for-each-group select="$constructs" group-by="@key"><!-- van iedere construct de eerste; het XSL proces genereert veel dubbelen (bij choices). -->
+                        <xsl:sequence select="current-group()[1]"/>
+                    </xsl:for-each-group>
                     <xsl:if test="$references-geoJSON-collection">
                         <xsl:sequence select="$geoJSONfiles[@construct = 'geometryGeoJSON']/j:map/*"/>
                         <xsl:sequence select="$geoJSONfiles[@construct = 'geometrycollectionGeoJSON']/j:map/*"/>

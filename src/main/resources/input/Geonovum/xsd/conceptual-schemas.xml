@@ -185,6 +185,12 @@
                         <cs:name>rdfs:Datatype</cs:name>
                      </cs:RdfType>
                   </cs:rdfTypes>
+                  <cs:oasTypes>
+                     <cs:OasType>
+                        <cs:name>pointGeoJSON</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_Curve</cs:name>
@@ -207,6 +213,12 @@
                         <cs:name>rdfs:Datatype</cs:name>
                      </cs:RdfType>
                   </cs:rdfTypes>
+                  <cs:oasTypes>
+                     <cs:OasType>
+                        <cs:name>linestringGeoJSON</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_Surface</cs:name>
@@ -229,6 +241,13 @@
                         <cs:name>rdfs:Datatype</cs:name>
                      </cs:RdfType>
                   </cs:rdfTypes>
+                  <cs:oasTypes>
+                     <cs:OasType>
+                        <cs:name>polygonGeoJSON</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:OasType>
+                  </cs:oasTypes>
+                  
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_MultiPoint</cs:name>
@@ -246,6 +265,12 @@
                         <cs:name>rdfs:Datatype</cs:name>
                      </cs:RdfType>
                   </cs:rdfTypes>
+                  <cs:oasTypes>
+                     <cs:OasType>
+                        <cs:name>multipointGeoJSON</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_MultiSurface</cs:name>
@@ -263,6 +288,12 @@
                         <cs:name>rdfs:Datatype</cs:name>
                      </cs:RdfType>
                   </cs:rdfTypes>
+                  <cs:oasTypes>
+                     <cs:OasType>
+                        <cs:name>multipolygonGeoJSON</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_MultiCurve</cs:name>
@@ -280,6 +311,12 @@
                         <cs:name>rdfs:Datatype</cs:name>
                      </cs:RdfType>
                   </cs:rdfTypes>
+                  <cs:oasTypes>
+                     <cs:OasType>
+                        <cs:name>multilinestringGeoJSON</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:OasType>
+                  </cs:oasTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_Geometry</cs:name>
