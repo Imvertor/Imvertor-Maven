@@ -32,77 +32,86 @@
         <xsl:variable name="is-real"    select="$primitive-type = ('xs:real','xs:float')"/>
         <xsl:variable name="is-numeric" select="$is-integer or $is-decimal or $is-real"/>
         
+        <?x 
+        <xsl:sequence select="dlogger:save(imf:get-display-name($this) || ' $is-numeric',$is-numeric)"/>
+        <xsl:sequence select="dlogger:save(imf:get-display-name($this) || ' $is-integer',$is-integer)"/>
+        <xsl:sequence select="dlogger:save(imf:get-display-name($this) || ' $min-l',$min-l)"/>
+        <xsl:sequence select="dlogger:save(imf:get-display-name($this) || ' $max-l',$max-l)"/>
+        <xsl:sequence select="dlogger:save(imf:get-display-name($this) || ' $min-v',$min-v)"/>
+        <xsl:sequence select="dlogger:save(imf:get-display-name($this) || ' $max-v',$max-v)"/>
+        x?>
+        
         <!-- validaties --> <!-- zie 2.8.2.23 Metagegeven: Lengte (domein van een waarde van een gegeven) -->
         <xsl:sequence select="imf:report-error($this,
-            ($length and $is-real),
+            (exists($length) and $is-real),
             'Length [1] not allowed for XML schema type [2]',($length,$primitive-type))"/> 
         
         <xsl:sequence select="imf:report-error($this,
-            ($pre-l or $post-l) and not($is-decimal),
+            (exists($pre-l) or exists($post-l)) and not($is-decimal),
             'Length with decimal positions [1] not allowed for XML schema type [2]',($length,$primitive-type))"/>  
         
         <?x
         <xsl:sequence select="imf:report-error($this,
-            ($min-l or $max-l) and $is-real,
+            (exists($min-l) or exists($max-l)) and $is-real,
             'Length range [1] not allowed for XML schema type [2]',($length,$primitive-type))"/> 
         x?>
         
         <!-- genereren van de facetten --> 
         <xsl:choose>
-            <xsl:when test="$min-v and $min-l and $is-numeric">
+            <xsl:when test="exists($min-v) and exists($min-l) and $is-numeric">
                 <xs:minInclusive value="{$min-v}"/>
                 <xs:minLength value="{$min-l}"/>
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, minimum value and length, for [1]',$primitive-type)"/>
             </xsl:when>
-            <xsl:when test="$min-v and $is-numeric">
+            <xsl:when test="exists($min-v) and $is-numeric">
                 <xs:minInclusive value="{$min-v}"/>
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, minimum value, for [1]',$primitive-type)"/>
             </xsl:when>
-            <xsl:when test="$min-l and $is-integer">
+            <xsl:when test="exists($min-l) and $is-integer">
                 <?x <xs:minInclusive value="{math:pow(10,$min-l - 1)}"/> x?>
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on integer, minimum, for [1] (ignored)',$primitive-type)"/>
             </xsl:when>
-            <xsl:when test="$min-l">
+            <xsl:when test="exists($min-l)">
                 <xs:minLength value="{$min-l}"/>
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on non-integer, minimum, for [1]',$primitive-type)"/>
             </xsl:when>
         </xsl:choose> 
         <xsl:choose>
-            <xsl:when test="$max-v and $max-l and $is-numeric">
+            <xsl:when test="exists($max-v) and exists($max-l) and $is-numeric">
                 <xs:maxInclusive value="{$max-v}"/>
                 <xs:maxLength value="{$max-l}"/>
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, maximum value and length, for [1]',$primitive-type)"/>
             </xsl:when>
-            <xsl:when test="$max-v and $is-numeric">
+            <xsl:when test="exists($max-v) and $is-numeric">
                 <xs:maxInclusive value="{$max-v}"/>
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, maximum value, for [1]',$primitive-type)"/>
             </xsl:when>
-            <xsl:when test="$max-l and $is-integer">
+            <xsl:when test="exists($max-l) and $is-integer">
                 <xs:totalDigits value="{$max-l}"/>
                 <!--<xs:maxInclusive value="{math:pow(10,$max-l) - 1}"/>-->
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on integer, maximum, for [1]',$primitive-type)"/>
             </xsl:when>
-            <xsl:when test="$max-l">
+            <xsl:when test="exists($max-l)">
                 <xs:maxLength value="{$max-l}"/>
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on non-integer, maximum, for [1]',$primitive-type)"/>
             </xsl:when>
         </xsl:choose>
-        <xsl:if test="$length and not($min-l) and not($pre-l) and not($is-numeric)">
+        <xsl:if test="exists($length) and empty($min-l) and empty($pre-l) and not($is-numeric)">
             <xs:length value="{$length}"/>
         </xsl:if>
-        <xsl:if test="$post-l">
+        <xsl:if test="exists($post-l)">
             <xs:fractionDigits value="{$post-l}"/>
         </xsl:if>
-        <xsl:if test="$length and not($max-l) and $is-integer">
+        <xsl:if test="exists($length )and empty($max-l) and $is-integer">
             <xs:totalDigits value="{$length}"/>
         </xsl:if>
-        <xsl:if test="$pre-l">
+        <xsl:if test="exists($pre-l)">
             <xs:totalDigits value="{$pre-l + $post-l}"/>
         </xsl:if>
-        <xsl:if test="$fraction and not($min-l) and not($pre-l)">
+        <xsl:if test="exists($fraction) and empty($min-l) and empty($pre-l)">
             <xs:fractionDigits value="{$fraction}"/>
         </xsl:if>
-        <xsl:if test="$total and not($min-l) and not($pre-l) and not($length)"><!-- bij native scalars wordt ook een imvert:total-digits gezet. Hier dubbeling tegengaan. -->
+        <xsl:if test="exists($total) and empty($min-l) and empty($pre-l) and empty($length)"><!-- bij native scalars wordt ook een imvert:total-digits gezet. Hier dubbeling tegengaan. -->
             <xs:totalDigits value="{$total}"/>
         </xsl:if>
         
