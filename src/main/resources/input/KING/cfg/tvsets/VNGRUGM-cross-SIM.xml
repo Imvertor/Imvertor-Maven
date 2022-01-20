@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
  * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
- * 
+ *
  * This file is part of Imvertor.
  *
  * Imvertor is free software: you can redistribute it and/or modify
@@ -21,23 +21,23 @@
     <name>KINGUGM CROSS SIM</name>
     <tagged-values>
         <!-- this is the cross-meta specification for SIM tagged values used in UGM systems -->
-        
+
         <tv id="CFG-TV-SOURCE" cross-meta="SIM">
             <name lang="nl">Herkomst</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-base-package</stereo>
-                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
-                <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
-                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
-                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
-                <stereo minmax="1..1">stereotype-name-simpletype</stereo>
-                <stereo minmax="1..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
             </stereotypes>
         </tv>
-        
-        <!-- 
+
+        <!--
            Definition
         -->
         <tv id="CFG-TV-DEFINITION" cross-meta="SIM">
@@ -61,7 +61,7 @@
                 <stereo minmax="1..1">stereotype-name-data-element</stereo>
                 <stereo minmax="1..1">stereotype-name-union-element</stereo>
                 <stereo minmax="0..1">stereotype-name-enum</stereo>
-                
+
                 <stereo minmax="1..1">stereotype-name-external-package</stereo>
                 <stereo minmax="1..1">stereotype-name-view-package</stereo>
             </stereotypes>

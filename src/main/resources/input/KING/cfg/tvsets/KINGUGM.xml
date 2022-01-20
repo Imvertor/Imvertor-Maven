@@ -49,6 +49,8 @@
             </declared-values>
         </tv>
 
+
+
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONAUTHENTIC">
             <name lang="nl">Indicatie authentiek</name>
             <derive>yes</derive>
@@ -334,6 +336,6 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
-        
+
     </tagged-values>
 </tagset>
