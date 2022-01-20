@@ -32,7 +32,7 @@ public class SkosCompiler extends Step {
 
 	protected static final Logger logger = Logger.getLogger(SkosCompiler.class);
 	
-	public static final String STEP_NAME = "SKOSCompiler";
+	public static final String STEP_NAME = "SkosCompiler";
 	public static final String VC_IDENTIFIER = "$Id: XsdCompiler.java 7509 2016-04-25 13:30:29Z arjan $";
 
 	/**

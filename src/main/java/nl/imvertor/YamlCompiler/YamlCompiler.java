@@ -37,7 +37,7 @@ public class YamlCompiler extends Step {
 
 	protected static final Logger logger = Logger.getLogger(YamlCompiler.class);
 	
-	public static final String STEP_NAME = "YAMLCompiler";
+	public static final String STEP_NAME = "YamlCompiler";
 	public static final String VC_IDENTIFIER = "$Id: YamlCompiler.java 7509 2016-04-25 13:30:29Z arjan $";
 
 	/**

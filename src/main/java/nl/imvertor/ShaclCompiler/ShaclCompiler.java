@@ -35,7 +35,7 @@ public class ShaclCompiler extends Step {
 
 	protected static final Logger logger = Logger.getLogger(ShaclCompiler.class);
 	
-	public static final String STEP_NAME = "SHACLCompiler";
+	public static final String STEP_NAME = "ShaclCompiler";
 	public static final String VC_IDENTIFIER = "$Id: XsdCompiler.java 7509 2016-04-25 13:30:29Z arjan $";
 
 	/**
