@@ -153,6 +153,7 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort -->
                 <stereo minmax="0..1">stereotype-name-composite</stereo><!-- SIM: Gegevensgroeptype -->
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo><!-- SIM: Relatiesoort  -->
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -347,6 +348,8 @@
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
             </stereotypes>
         </tv>
 
@@ -354,8 +357,8 @@
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
-            </stereotypes>            
+            </stereotypes>
         </tv>
-        
+
     </tagged-values>
 </tagset>
