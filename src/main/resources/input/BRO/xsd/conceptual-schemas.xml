@@ -3,11 +3,9 @@
                       xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
                       xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
-                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-                    <!--
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                       xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210
-                      ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd"
-                    -->
+                      ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
    <cs:mappings>
       <cs:Mapping>
          <cs:name>BRO_GITHUB</cs:name>
