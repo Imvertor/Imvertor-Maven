@@ -20,6 +20,7 @@
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:fn="http://www.w3.org/2005/xpath-functions"
     xmlns:uml="http://schema.omg.org/spec/UML/2.1"
     xmlns:UML="VERVALLEN"
     xmlns:thecustomprofile="http://www.sparxsystems.com/profiles/thecustomprofile/1.0"
@@ -919,23 +920,20 @@
     
     <!-- replace file:/ construct by correct local representation -->
     <xsl:function name="imf:url-to-file">
-        <xsl:param name="uripath"/>
-        <xsl:variable name="path-raw" as="xs:string">
-            <xsl:choose>
-                <xsl:when test="starts-with($uripath,'file:///')">
-                    <xsl:variable name="sub" select="substring($uripath,8)"/>
-                    <xsl:value-of select="translate($sub,'\','/')"/>
-                </xsl:when>
-                <xsl:when test="starts-with($uripath,'file:/')">
-                    <xsl:variable name="sub" select="substring($uripath,6)"/>
-                    <xsl:value-of select="translate($sub,'\','/')"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$uripath"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:value-of select="$path-raw"/>
+        <xsl:param name="uripath" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="matches($uripath, '^file:/+(\D:.*)')">
+                <!-- Windows: -->
+                <xsl:value-of select="translate(analyze-string($uripath, '^file:/+(\D:.*)')/fn:match/fn:group[@nr = '1'], '\', '/')"/>
+            </xsl:when>
+            <xsl:when test="matches($uripath, '^file:/+(.*)')">
+                <!-- Unix: -->
+                <xsl:value-of select="translate('/' || analyze-string($uripath, '^file:/+(.*)')/fn:match/fn:group[@nr = '1'], '\', '/')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$uripath"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:function name="imf:replace-inet-references" as="xs:string">
@@ -1369,4 +1367,39 @@
         <xsl:param name="datatype" as="xs:string"/>
         <xsl:sequence select="imf:convert-to-atomic($value,$datatype,false())"/>
     </xsl:function>
+  
+    <xsl:function name="imf:path-equals" as="xs:boolean">
+        <xsl:param name="path-1" as="xs:string?"/>
+        <xsl:param name="path-2" as="xs:string?"/>
+        <xsl:param name="case-sensitive" as="xs:boolean"/>
+  
+        <xsl:variable name="path-1-normalized" select="translate($path-1, '\/', '//')" as="xs:string?"/>
+        <xsl:variable name="path-2-normalized" select="translate($path-2, '\/', '//')" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="$case-sensitive">
+                <xsl:sequence select="$path-1-normalized eq $path-2-normalized"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="lower-case($path-1-normalized) eq lower-case($path-2-normalized)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="imf:path-starts-with" as="xs:boolean">
+        <xsl:param name="path-1" as="xs:string?"/>
+        <xsl:param name="path-2" as="xs:string?"/>
+        <xsl:param name="case-sensitive" as="xs:boolean"/>
+        
+        <xsl:variable name="path-1-normalized" select="translate($path-1, '\/', '//')" as="xs:string?"/>
+        <xsl:variable name="path-2-normalized" select="translate($path-2, '\/', '//')" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="$case-sensitive">
+                <xsl:sequence select="starts-with($path-1-normalized, $path-2-normalized)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="starts-with(lower-case($path-1-normalized), lower-case($path-2-normalized))"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+  
 </xsl:stylesheet>

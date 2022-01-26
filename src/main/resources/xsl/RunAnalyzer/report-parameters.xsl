@@ -116,7 +116,7 @@
     
     <xsl:function name="imf:recognize-file">
         <xsl:param name="value"/>
-        <xsl:value-of select="if (substring($value,2,1) = ':') then concat('(File) ', tokenize($value,'\\')[last()]) else $value"/>
+        <xsl:value-of select="if (substring($value,2,1) = ':') then concat('(File) ', tokenize($value, '[\\/]')[last()]) else $value"/>
     </xsl:function>
          
 </xsl:stylesheet>

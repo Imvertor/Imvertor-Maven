@@ -288,6 +288,7 @@
 				<!--xsl:if test="$debugging and ($checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
 					and empty(following-sibling::ep:uriPart[ep:param])])"-->
 				<xsl:if test="$debugging">
+				        <!-- TODO: *unix: -->
 						<xsl:result-document href="{concat('file:/c:/temp/analyzedResponseStructure/get',generate-id($analyzedResponseStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$analyzedResponseStructure"/>
 					</xsl:result-document>
@@ -300,7 +301,8 @@
 							<xsl:sequence select="$relatedResponseMessage"/>
 						</xsl:element>
 					</xsl:result-document-->
-					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/uriStructure-message-',$messageCategory,'-',ep:tech-name,'-',generate-id(),'.xml')}">
+				    <!-- TODO: *unix: -->
+				    <xsl:result-document method="xml" href="{concat('file:/c:/temp/message/uriStructure-message-',$messageCategory,'-',ep:tech-name,'-',generate-id(),'.xml')}">
 						<uriStructure construct="{$construct}">
 							<determinedUriStructure>
 								<xsl:sequence select="$determinedUriStructure" />
@@ -784,7 +786,8 @@
 				</xsl:if>
 				<xsl:if test="$debugging and ($checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
 					and empty(following-sibling::ep:uriPart[ep:param])])">
-					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/',$messageCategory,'message-',ep:tech-name,'-',generate-id(),'.xml')}">
+				    <!-- TODO: *unix: -->
+				    <xsl:result-document method="xml" href="{concat('file:/c:/temp/message/',$messageCategory,'message-',ep:tech-name,'-',generate-id(),'.xml')}">
 						<xsl:element name="{concat('ep:',$messageCategory,'message')}">
 							<xsl:attribute name="requestbodyConstructName" select="$requestbodyConstructName"/>
 							<xsl:attribute name="responseConstructName" select="$responseConstructName"/>
@@ -792,6 +795,7 @@
 							<xsl:sequence select="$relatedResponseMessage"/>
 						</xsl:element>
 					</xsl:result-document>
+				    <!-- TODO: *unix: -->
 					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/uriStructure-message-',$messageCategory,'-',ep:tech-name,'-',generate-id(),'.xml')}">
 						<uriStructure>
 							<determinedUriStructure>
@@ -824,6 +828,7 @@
 				</xsl:variable>
 								
 				<xsl:if test="$debugging">
+				    <!-- TODO: *unix: -->
 					<xsl:result-document href="{concat('file:/c:/temp/determinedUriStructure/',$messageCategory,generate-id($determinedUriStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$determinedUriStructure"/>
 					</xsl:result-document> 

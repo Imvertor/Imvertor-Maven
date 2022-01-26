@@ -54,7 +54,7 @@
     <xsl:template match="/config">
 
         <xsl:sequence select="dlogger:save('section: Imvertor stop','Erors/warnings: ' || $error-count || '/' || $warning-count)"/>
-        <xsl:sequence select="dlogger:save('report','file:/' || replace(imf:get-xparm('system/work-app-folder-path'),'\\','/') || '/doc/index.html' )"/>
+        <xsl:sequence select="dlogger:save('report', imf:path-to-file-uri(imf:get-xparm('system/work-app-folder-path')) || '/doc/index.html' )"/>
         <xsl:sequence select="dlogger:init(false())"/>
         
         <report>

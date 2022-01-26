@@ -8,11 +8,11 @@
     <xsl:output method="xml" indent="yes"/>
     
     <xsl:variable name="all-shared-strings" as="element()*">
-        <xsl:sequence select="/cw:files/cw:file[@path='xl\sharedStrings.xml']/*:sst/*:si"/>
+        <xsl:sequence select="/cw:files/cw:file[matches(@path, '^xl[\\/]sharedStrings\.xml$', 'i')]/*:sst/*:si"/>
     </xsl:variable>
     
     <xsl:variable name="all-worksheets" as="element()*">
-        <xsl:sequence select="/cw:files/cw:file[starts-with(@path,'xl\worksheets')]"/>
+        <xsl:sequence select="/cw:files/cw:file[matches(@path, '^xl[\\/]worksheets', 'i')]"/>
     </xsl:variable>
     <xsl:variable name="all-sheets" as="element()*">
         <xsl:sequence select="//*:sheet"/>

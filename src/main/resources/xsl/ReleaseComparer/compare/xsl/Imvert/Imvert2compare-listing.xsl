@@ -42,8 +42,8 @@
     
     <xsl:output indent="no"/>
     
-    <xsl:variable name="ctrl-url" select="concat('file:/', replace($ctrl-filepath,'\\','/'))"/>
-    <xsl:variable name="test-url" select="concat('file:/', replace($test-filepath,'\\','/'))"/>
+    <xsl:variable name="ctrl-url" select="imf:path-to-file-uri($ctrl-filepath)"/>
+    <xsl:variable name="test-url" select="imf:path-to-file-uri($test-filepath)"/>
     
     <xsl:variable name="ctrl-doc" select="document($ctrl-url)"/>
     <xsl:variable name="test-doc" select="document($test-url)"/>
