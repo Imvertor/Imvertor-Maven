@@ -92,10 +92,14 @@
                 <xsl:variable name="cn" select="($schema/cs:id)[1]"/>
                 <xsl:variable name="sn" select="($schema/cs:shortName)[1]"/>
                 
+                <xsl:variable name="tv-desc" select="($schema/cs:desc)[1]"/>
+                <xsl:variable name="tv-src" select="($schema/cs:source)[1]"/>
+                <xsl:variable name="tv-data" select="($schema/cs:data-location)[1]"/>
+                
                 <xsl:variable name="ve" select="($map/cs:version)[1]"/>
                 <xsl:variable name="ph" select="($map/cs:phase)[1]"/>
                 
-                <imvert:class origin="system" cs="{$cs}" cn="{$cn}" sn="{$sn}" ve="{$ve}" ph="{$ph}">
+                <imvert:class origin="system" cs="{$cs}" cn="{$cn}" sn="{$sn}" ve="{$ve}" ph="{$ph}" tv-desc="{$tv-desc}" tv-src="{$tv-src}" tv-data="{$tv-data}">
                     <imvert:name original="{$name}">
                         <xsl:value-of select="$name"/>
                     </imvert:name>
@@ -178,6 +182,28 @@
                 <imvert:stereotype id="stereotype-name-external-package">
                     <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-external-package')"/>
                 </imvert:stereotype>
+                <!-- introduceer verplichte tagged values op externe packages -->
+                <imvert:tagged-values>
+                    <xsl:apply-templates select="imvert:tagged-values"/>
+                    <imvert:tagged-value origin="system" id="CFG-TV-SOURCE">
+                        <imvert:name original="Herkomst">Herkomst</imvert:name>
+                        <imvert:value>     
+                            <xsl:value-of select="current-group()[1]/@tv-src"/>
+                        </imvert:value>
+                    </imvert:tagged-value>
+                    <imvert:tagged-value origin="system" id="CFG-TV-DEFINITION">
+                        <imvert:name original="Definitie">Definitie</imvert:name>
+                        <imvert:value>
+                            <xsl:value-of select="current-group()[1]/@tv-desc"/>
+                        </imvert:value>
+                    </imvert:tagged-value>
+                    <imvert:tagged-value origin="system" id="CFG-TV-DATALOCATION">
+                        <imvert:name original="Locatie">Locatie</imvert:name>
+                        <imvert:value>
+                            <xsl:value-of select="current-group()[1]/@tv-data"/>
+                        </imvert:value>
+                    </imvert:tagged-value>
+                </imvert:tagged-values>
                 <!-- and list all classes -->
                 <xsl:sequence select="for $c in current-group() return if ($c/@type = 'sentinel') then () else $c"/>
             </imvert:package>
