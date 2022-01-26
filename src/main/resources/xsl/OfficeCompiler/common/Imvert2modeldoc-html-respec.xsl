@@ -32,7 +32,7 @@
     
     <xsl:variable name="document-ids" select="for $id in //@id return string($id)"/>
 
-    <xsl:variable name="meta-is-role-based" select="imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/><!-- TODO duplicate declaration -->
+    <xsl:variable name="meta-is-role-based" select="imf:boolean(imf:get-xparm('appinfo/meta-is-role-based'))"/>
     
     <xsl:template match="/book">
         <xsl:sequence select="imf:track('Generating HTML',())"/>

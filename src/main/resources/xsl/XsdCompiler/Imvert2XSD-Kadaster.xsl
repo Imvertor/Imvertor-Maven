@@ -68,7 +68,7 @@
     
     <xsl:variable name="allow-scalar-in-union" select="imf:boolean($configuration-metamodel-file//features/feature[@name='allow-scalar-in-union'])"/>
 
-    <xsl:variable name="meta-is-role-based" select="imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/>
+    <xsl:variable name="meta-is-role-based" select="imf:boolean(imf:get-xparm('appinfo/meta-is-role-based'))"/>
     
     <!-- 
         What types result in an attribute in stead of an element? 

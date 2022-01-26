@@ -75,11 +75,12 @@
     </xsl:template>
   
     <xsl:template match="cw:file">
+        <xsl:variable name="path" select="replace(@path, '\\','/')"/>
         <xsl:choose>
             <!--
               no job info is compared. 
             -->
-            <xsl:when test="starts-with(@path, 'job\')">
+            <xsl:when test="starts-with($path, 'job/')">
                 <!-- ignore -->
             </xsl:when>
             <!-- 
@@ -98,13 +99,13 @@
             <!-- 
                 skip this one: this file is passed when you simply copy the zip folder to the ref folder. It should not be checked.
             -->
-            <xsl:when test="@path = 'executor.imvert.xml'">
+            <xsl:when test="$path = 'executor.imvert.xml'">
                 <!-- ignore -->
             </xsl:when>
             <!-- 
                No not Process XML intermediate results. 
             -->
-            <xsl:when test="starts-with(@path,'work\imvert\')">
+            <xsl:when test="starts-with($path,'work/imvert/')">
                 <!-- ignore -->
                 <?x
                 <xsl:copy>
@@ -159,7 +160,7 @@
                         <xsl:when test="@type='xml' and exists(no-output)"/>
                         
                         <xsl:otherwise>
-                            <xsl:value-of select="concat('unexpected intermediate file: ', @path, ' - cannot compare')"/>
+                            <xsl:value-of select="concat('unexpected intermediate file: ', $path, ' - cannot compare')"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:copy>
@@ -168,19 +169,19 @@
             <!-- 
                 reports
             -->
-            <xsl:when test="starts-with(@path,'work\rep')">
+            <xsl:when test="starts-with($path,'work/rep')">
                 <!-- do not check -->
             </xsl:when>
             <!--
                skip etc folder; only holds stuf that is already checked in intermediate steps.
             -->
-            <xsl:when test="starts-with(@path, 'work\app\etc')">
+            <xsl:when test="starts-with($path, 'work/app/etc')">
                 <!-- ignore -->
             </xsl:when>
             <!--
                Check the catalogue
             -->
-            <xsl:when test="starts-with(@path, 'work\app\cat')">
+            <xsl:when test="starts-with($path, 'work/app/cat')">
                 <xsl:copy>
                     <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
                     <xsl:apply-templates/>
@@ -188,7 +189,7 @@
             </xsl:when>
             
             <!-- process the EA profile -->
-            <xsl:when test="starts-with(@path, 'work\app\ea')">
+            <xsl:when test="starts-with($path, 'work/app/ea')">
                 <xsl:copy>
                     <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
                     <xsl:apply-templates/>
@@ -196,36 +197,36 @@
             </xsl:when>
             
             <!-- skip the compare XSL -->
-            <xsl:when test="starts-with(@path, 'work\compare')">
+            <xsl:when test="starts-with($path, 'work/compare')">
                 <!-- ignore -->
             </xsl:when>
             
             <!-- skip the profile info -->
-            <xsl:when test="starts-with(@path, 'work\profile')">
+            <xsl:when test="starts-with($path, 'work/profile')">
                 <!-- ignore -->
             </xsl:when>
             
             <!-- process the compliancy info -->
-            <xsl:when test="starts-with(@path, 'work\compare')">
+            <xsl:when test="starts-with($path, 'work/TODO')"><!-- TODO speelt dit nog? -->
                 <!-- ignore -->
             </xsl:when>
             
             <!--
               documentation is not compared 
             -->
-            <xsl:when test="starts-with(@path, 'work\app\doc')">
+            <xsl:when test="starts-with($path, 'work/app/doc')">
                 <!-- ignore -->
             </xsl:when>
             <!--
               work xsd (supporting stuff) is not compared 
             -->
-            <xsl:when test="starts-with(@path, 'work\app\etc\xsd')">
+            <xsl:when test="starts-with($path, 'work/app/etc/xsd')">
                 <!-- ignore -->
             </xsl:when>
             <!--
               generated XSD is compared 
             -->
-            <xsl:when test="starts-with(@path, 'work\app\xsd')">
+            <xsl:when test="starts-with($path, 'work/app/xsd')">
                 <xsl:copy>
                     <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
                     <xsl:apply-templates mode="mode-intermediate-xsd"/>
@@ -234,7 +235,7 @@
             <!--
               parms.xml is compared 
             -->
-            <xsl:when test="starts-with(@path, 'work\parms.xml')">
+            <xsl:when test="starts-with($path, 'work/parms.xml')">
                 <xsl:copy>
                     <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
                     <xsl:apply-templates mode="mode-intermediate-parms"/>
@@ -249,7 +250,7 @@
             
             <xsl:otherwise>
                 <error>
-                    <xsl:value-of select="concat('Unexpected output file: ', @path, ' - cannot compare this resource')"/>
+                    <xsl:value-of select="concat('Unexpected output file: ', $path, ' - cannot compare this resource')"/>
                 </error>   
             </xsl:otherwise>
         </xsl:choose>
