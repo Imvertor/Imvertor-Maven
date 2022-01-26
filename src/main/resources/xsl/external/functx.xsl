@@ -149,5 +149,15 @@
 			"/>
 		
 	</xsl:function>
+  
+  <xsl:function name="functx:escape-for-regex" as="xs:string">
+    <xsl:param name="arg" as="xs:string?"/> 
+    
+    <xsl:sequence select=" 
+      replace($arg,
+      '(\.|\[|\]|\\|\||\-|\^|\$|\?|\*|\+|\{|\}|\(|\))','\\$1')
+      "/>
+    
+  </xsl:function>
 	
 </xsl:stylesheet>

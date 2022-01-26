@@ -26,7 +26,7 @@
         
         The DLogger code references :get and :put functions, implemented here.
     -->
-    <xsl:import href="DLogger.xsl"/>
+    <xsl:import href="dlogger.xsl"/>
     
     <!-- 
         Implement a dlogger put. Pass key and value, return empty sequence. 

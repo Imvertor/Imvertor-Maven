@@ -40,8 +40,8 @@
   -->
   <xsl:variable name="basepath" select="/bootstrap/data-folder"/>
   
-  <xsl:variable name="temp-files-path" select="concat($basepath,'\work\files.xml')"/>
-  <xsl:variable name="c" select="imf:serializeFolder(concat($basepath,'\input'),$temp-files-path,'')"/>
+  <xsl:variable name="temp-files-path" select="concat($basepath,'/work/files.xml')"/>
+  <xsl:variable name="c" select="imf:serializeFolder(concat($basepath,'/input'),$temp-files-path,'')"/>
   <xsl:variable name="files" select="if (exists($c)) then imf:document($temp-files-path) else ()"/><!-- force the file listing -->
   <xsl:variable name="selected-files" select="$files/*/cw:file[not(contains(@fullpath,'Buitenblok'))]"/>
   
@@ -56,8 +56,8 @@
     <xsl:variable name="file-id" select="generate-id(.)"/>
     
     <xsl:variable name="excel-path" select="@fullpath"/>
-    <xsl:variable name="xml-path" select="concat($basepath,'\output\',@name,'.xml')"/>
-    <xsl:variable name="work-path" select="concat($basepath,'\work\',@name,'.xml')"/>
+    <xsl:variable name="xml-path" select="concat($basepath,'/output/',@name,'.xml')"/>
+    <xsl:variable name="work-path" select="concat($basepath,'/work/',@name,'.xml')"/>
   
     <xsl:message select="concat('SERIALIZING: ', position(), ' of ', $cnt, ' ', $excel-path)"></xsl:message>
 

@@ -59,6 +59,7 @@
          /executor.imvert.xml
       -->
     
+    <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:include href="RegressionExtractor-imvert.xsl"/>
     <xsl:include href="RegressionExtractor-imvert-schema.xsl"/>
     <xsl:include href="RegressionExtractor-config.xsl"/>
@@ -79,7 +80,7 @@
             <!--
               no job info is compared. 
             -->
-            <xsl:when test="starts-with(@path, 'job\')">
+            <xsl:when test="imf:path-starts-with(@path, 'job\', false())">
                 <!-- ignore -->
             </xsl:when>
             <!-- 
@@ -104,7 +105,7 @@
             <!-- 
                No not Process XML intermediate results. 
             -->
-            <xsl:when test="starts-with(@path,'work\imvert\')">
+            <xsl:when test="imf:path-starts-with(@path,'work\imvert\', false())">
                 <!-- ignore -->
                 <?x
                 <xsl:copy>
@@ -168,19 +169,19 @@
             <!-- 
                 reports
             -->
-            <xsl:when test="starts-with(@path,'work\rep')">
+            <xsl:when test="imf:path-starts-with(@path,'work\rep', false())">
                 <!-- do not check -->
             </xsl:when>
             <!--
                skip etc folder; only holds stuf that is already checked in intermediate steps.
             -->
-            <xsl:when test="starts-with(@path, 'work\app\etc')">
+            <xsl:when test="imf:path-starts-with(@path, 'work\app\etc', false())">
                 <!-- ignore -->
             </xsl:when>
             <!--
                Check the catalogue
             -->
-            <xsl:when test="starts-with(@path, 'work\app\cat')">
+            <xsl:when test="imf:path-starts-with(@path, 'work\app\cat', false())">
                 <xsl:copy>
                     <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
                     <xsl:apply-templates/>
@@ -188,7 +189,7 @@
             </xsl:when>
             
             <!-- process the EA profile -->
-            <xsl:when test="starts-with(@path, 'work\app\ea')">
+            <xsl:when test="imf:path-starts-with(@path, 'work\app\ea', false())">
                 <xsl:copy>
                     <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
                     <xsl:apply-templates/>
@@ -196,36 +197,36 @@
             </xsl:when>
             
             <!-- skip the compare XSL -->
-            <xsl:when test="starts-with(@path, 'work\compare')">
+            <xsl:when test="imf:path-starts-with(@path, 'work\compare', false())">
                 <!-- ignore -->
             </xsl:when>
             
             <!-- skip the profile info -->
-            <xsl:when test="starts-with(@path, 'work\profile')">
+            <xsl:when test="imf:path-starts-with(@path, 'work\profile', false())">
                 <!-- ignore -->
             </xsl:when>
             
             <!-- process the compliancy info -->
-            <xsl:when test="starts-with(@path, 'work\compare')">
+            <xsl:when test="imf:path-starts-with(@path, 'work\compare', false())">
                 <!-- ignore -->
             </xsl:when>
             
             <!--
               documentation is not compared 
             -->
-            <xsl:when test="starts-with(@path, 'work\app\doc')">
+            <xsl:when test="imf:path-starts-with(@path, 'work\app\doc', false())">
                 <!-- ignore -->
             </xsl:when>
             <!--
               work xsd (supporting stuff) is not compared 
             -->
-            <xsl:when test="starts-with(@path, 'work\app\etc\xsd')">
+            <xsl:when test="imf:path-starts-with(@path, 'work\app\etc\xsd', false())">
                 <!-- ignore -->
             </xsl:when>
             <!--
               generated XSD is compared 
             -->
-            <xsl:when test="starts-with(@path, 'work\app\xsd')">
+            <xsl:when test="imf:path-starts-with(@path, 'work\app\xsd', false())">
                 <xsl:copy>
                     <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
                     <xsl:apply-templates mode="mode-intermediate-xsd"/>
@@ -234,7 +235,7 @@
             <!--
               parms.xml is compared 
             -->
-            <xsl:when test="starts-with(@path, 'work\parms.xml')">
+            <xsl:when test="imf:path-starts-with(@path, 'work\parms.xml', false())">
                 <xsl:copy>
                     <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
                     <xsl:apply-templates mode="mode-intermediate-parms"/>

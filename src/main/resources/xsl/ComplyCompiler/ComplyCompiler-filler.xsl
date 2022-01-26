@@ -79,17 +79,17 @@
         get the sheets from template 
     -->
     <xsl:variable name="__content" select="/"/>
-    <xsl:variable name="sheet1" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet1.xml']/worksheet"/>
-    <xsl:variable name="sheet2" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet2.xml']/worksheet"/>
-    <xsl:variable name="sheet3" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet3.xml']/worksheet"/>
-    <xsl:variable name="sheet4" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet4.xml']/worksheet"/> <!-- store namespaces there -->
-    <xsl:variable name="sheet5" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet5.xml']/worksheet"/> <!-- store metadata there -->
+    <xsl:variable name="sheet1" select="$__content/cw:files/cw:file[imf:path-equals(@path, 'xl\worksheets\sheet1.xml', false())]/worksheet"/>
+    <xsl:variable name="sheet2" select="$__content/cw:files/cw:file[imf:path-equals(@path, 'xl\worksheets\sheet2.xml', false())]/worksheet"/>
+    <xsl:variable name="sheet3" select="$__content/cw:files/cw:file[imf:path-equals(@path, 'xl\worksheets\sheet3.xml', false())]/worksheet"/>
+    <xsl:variable name="sheet4" select="$__content/cw:files/cw:file[imf:path-equals(@path, 'xl\worksheets\sheet4.xml', false())]/worksheet"/> <!-- store namespaces there -->
+    <xsl:variable name="sheet5" select="$__content/cw:files/cw:file[imf:path-equals(@path, 'xl\worksheets\sheet5.xml', false())]/worksheet"/> <!-- store metadata there -->
     
-    <xsl:variable name="comments1" select="$__content/cw:files/cw:file[@path = 'xl\comments1.xml']/comments"/>
-    <xsl:variable name="comments2" select="$__content/cw:files/cw:file[@path = 'xl\comments2.xml']/comments"/>
+    <xsl:variable name="comments1" select="$__content/cw:files/cw:file[imf:path-equals(@path, 'xl\comments1.xml', false())]/comments"/>
+    <xsl:variable name="comments2" select="$__content/cw:files/cw:file[imf:path-equals(@path, 'xl\comments2.xml', false())]/comments"/>
 
-    <xsl:variable name="drawings1" select="$__content/cw:files/cw:file[@path = 'xl\drawings\vmlDrawing1.vml']/*:xml"/>
-    <xsl:variable name="drawings2" select="$__content/cw:files/cw:file[@path = 'xl\drawings\vmlDrawing2.vml']/*:xml"/>
+    <xsl:variable name="drawings1" select="$__content/cw:files/cw:file[imf:path-equals(@path, 'xl\drawings\vmlDrawing1.vml', false())]/*:xml"/>
+    <xsl:variable name="drawings2" select="$__content/cw:files/cw:file[imf:path-equals(@path, 'xl\drawings\vmlDrawing2.vml', false())]/*:xml"/>
     
     <xsl:variable name="namespaces" select="$message-set-flat/cp:sheet[3]/cp:ns"/> <!-- <ns prefix="prefix">namespace</ns> -->
     
