@@ -126,6 +126,7 @@
 		<xsl:sequence select="imf:set-config-string('appinfo','OpenAPI-schema-name',concat($kv-prefix,$version))"/>
 
 		<xsl:if test="$debugging">
+		    <!-- TODO: *unix: -->
 			<xsl:result-document href="file:/c:/temp/message/expandconfiguration.xml">
 				<xsl:copy-of select="$expandconfigurations" />
 			</xsl:result-document>
@@ -1793,6 +1794,7 @@
 
 		<xsl:if test="$debugging">
 			<xsl:if test="not(empty($construct))">
+			    <!-- TODO: *unix: -->
 				<xsl:result-document href="{concat('file:/c:/temp/message/Attribute-',$tech-name,'-',generate-id(),'.xml')}">
 					<vals>
 						<xsl:if
@@ -2435,6 +2437,7 @@
 
 		<xsl:if test="$debugging">
 			<xsl:if test="not(empty($construct))">
+			    <!-- TODO: *unix -->
 				<xsl:result-document href="{concat('file:/c:/temp/message/Enumeration-',$name,'-',generate-id(),'.xml')}">
 					<xsl:variable name="id" select="imvert:id"/>
 					<xsl:variable name="construct2" select="imf:get-construct-by-id($id,$packages)" />

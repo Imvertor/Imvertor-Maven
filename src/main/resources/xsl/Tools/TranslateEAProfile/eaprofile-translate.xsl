@@ -5,15 +5,18 @@
     
     xmlns:config="http://www.armatiek.com/xslweb/configuration"
     xmlns:imf="http://www.armatiek.nl/functions" 
+    xmlns:imf2="http://www.imvertor.org/xsl/functions"
     
     version="2.0">
+    
+    <xsl:import href="../../common/Imvert-common.xsl"/>
   
     <xsl:param name="workfolder"/>
     <xsl:param name="source-language"/>
     <xsl:param name="target-language"/>
     
     <xsl:variable name="profile-doc" select="root()"/>
-    <xsl:variable name="config-doc" select="document(concat('file:/',replace(concat($workfolder,'/__content.config.xml'),'\\','/')))"/>
+    <xsl:variable name="config-doc" select="document(imf2:path-to-file-uri(concat($workfolder,'/__content.config.xml')))"/>
     
     <xsl:template match="/">
         <xsl:apply-templates select="*" mode="translate"/>

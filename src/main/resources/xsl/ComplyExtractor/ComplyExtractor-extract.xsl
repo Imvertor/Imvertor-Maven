@@ -51,7 +51,7 @@
     </xsl:template>
     
     <xsl:variable name="all-shared-strings" as="element()*">
-        <xsl:sequence select="/cw:files/cw:file[@path='xl\sharedStrings.xml']/*:sst/*:si"/>
+        <xsl:sequence select="/cw:files/cw:file[imf:path-equals(@path, 'xl\sharedStrings.xml', false())]/*:sst/*:si"/>
     </xsl:variable>
     
     <!-- 
@@ -64,32 +64,32 @@
         <xsl:variable name="testset" as="element(testset)">
             <testset>
                 <xsl:attribute name="generated" select="current-dateTime()"/>
-                <xsl:attribute name="excel-creator" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:creator"/>
-                <xsl:attribute name="excel-lastModifiedBy" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:lastModifiedBy"/>
-                <xsl:attribute name="excel-created" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:created"/>
-                <xsl:attribute name="excel-modified" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:modified"/>
-                <xsl:attribute name="excel-app-version" select="cw:file[@path='docProps\app.xml']/*:Properties/*:AppVersion"/>
+                <xsl:attribute name="excel-creator" select="cw:file[imf:path-equals(@path, 'docProps\core.xml', false())]/*:coreProperties/*:creator"/>
+                <xsl:attribute name="excel-lastModifiedBy" select="cw:file[imf:path-equals(@path, 'docProps\core.xml', false())]/*:coreProperties/*:lastModifiedBy"/>
+                <xsl:attribute name="excel-created" select="cw:file[imf:path-equals(@path, 'docProps\core.xml', false())]/*:coreProperties/*:created"/>
+                <xsl:attribute name="excel-modified" select="cw:file[imf:path-equals(@path, 'docProps\core.xml', false())]/*:coreProperties/*:modified"/>
+                <xsl:attribute name="excel-app-version" select="cw:file[imf:path-equals(@path, 'docProps\app.xml', false())]/*:Properties/*:AppVersion"/>
                 <groups part="1">
-                    <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet1.xml']" mode="create-group">
+                    <xsl:apply-templates select="cw:file[imf:path-equals(@path, 'xl\worksheets\sheet1.xml', false())]" mode="create-group">
                         <xsl:with-param name="sheet-nr" select="1"/>
                     </xsl:apply-templates>
                 </groups>
                 <groups part="2">
-                    <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet2.xml']" mode="create-group">
+                    <xsl:apply-templates select="cw:file[imf:path-equals(@path, 'xl\worksheets\sheet2.xml', false())]" mode="create-group">
                         <xsl:with-param name="sheet-nr" select="2"/>
                     </xsl:apply-templates>
                 </groups>
                 <variables>
-                    <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet3.xml']" mode="create-vars"/>
+                    <xsl:apply-templates select="cw:file[imf:path-equals(@path, 'xl\worksheets\sheet3.xml', false())]" mode="create-vars"/>
                 </variables>
                 <namespaces>
-                    <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet4.xml']" mode="create-namespaces"/>
+                    <xsl:apply-templates select="cw:file[imf:path-equals(@path, 'xl\worksheets\sheet4.xml', false())]" mode="create-namespaces"/>
                 </namespaces>
                 <parameters>
-                    <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet5.xml']" mode="create-info"/>
+                    <xsl:apply-templates select="cw:file[imf:path-equals(@path, 'xl\worksheets\sheet5.xml', false())]" mode="create-info"/>
                 </parameters>
                 <import-messages>
-                    <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet6.xml']" mode="create-scenario"/>
+                    <xsl:apply-templates select="cw:file[imf:path-equals(@path, 'xl\worksheets\sheet6.xml', false())]" mode="create-scenario"/>
                 </import-messages>
             </testset>
         </xsl:variable>
