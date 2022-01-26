@@ -113,6 +113,10 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-complextype</stereo><!-- TODO moet eigenlijk verwijderd worden, ook in 1.0 en misschien zelfs in SBR? -->
                 <stereo minmax="0..1">stereotype-name-relation-role</stereo><!--TODO uitwerken in aparte validatiestap; relatiesoort/relatierol leidend -->
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-view-package</stereo>
+                <stereo minmax="1..1">stereotype-name-external-package</stereo>
             </stereotypes>
         </tv>
 
