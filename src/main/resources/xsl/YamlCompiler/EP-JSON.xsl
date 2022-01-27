@@ -93,7 +93,7 @@
 
 
 		
-		<xsl:result-document href="{concat('file:/c:/temp/SubtypeConstruct/',generate-id(),'.xml')}" method="xml">
+	    <xsl:result-document href="{concat('file:/c:/temp/SubtypeConstruct/',generate-id(),'.xml')}" method="xml"> <!-- TODO: *unix -->
 			<xsl:copy-of select="$message-sets"/>
 		</xsl:result-document>
 		

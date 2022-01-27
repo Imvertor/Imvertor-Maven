@@ -129,7 +129,7 @@ public class MsWordTransformer extends Step {
 		
 		OsExecutorResultHandler osExecutorResult = null;
 		
-		CommandLine commandLine = new CommandLine(toolloc + "\\respec.bat");
+		CommandLine commandLine = new CommandLine(toolloc + "\\respec.bat"); // TODO: *nix
 		commandLine.addArgument(mswordFile.getNameNoExtension()); // the docx file
 		commandLine.addArgument(configurator.getRunner().getDebug() ? "true" : "false"); // debug 
 		commandLine.addArgument(toolloc); // the tool folder

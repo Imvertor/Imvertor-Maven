@@ -34,12 +34,13 @@
         Process the results of XMLdiff.
     -->
    
+    <xsl:import href="../../../../common/Imvert-common.xsl"/>
     <xsl:import href="Imvert2compare-common.xsl"/>
     
     <xsl:output indent="yes" method="xml"/>
     
-    <xsl:variable name="ctrl-url" select="concat('file:/', replace($ctrl-filepath,'\\','/'))"/>
-    <xsl:variable name="test-url" select="concat('file:/', replace($test-filepath,'\\','/'))"/>
+    <xsl:variable name="ctrl-url" select="imf:path-to-file-uri($ctrl-filepath)"/>
+    <xsl:variable name="test-url" select="imf:path-to-file-uri($test-filepath)"/>
 
     <!-- context document is difference result xml -->
     <xsl:template match="/root-of-compare">
