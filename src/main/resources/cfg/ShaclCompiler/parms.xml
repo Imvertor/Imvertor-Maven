@@ -53,7 +53,7 @@
       
       <RESULT_SHACL_APPLICATION_FOLDER>${system/work-shacl-folder-path}</RESULT_SHACL_APPLICATION_FOLDER>
       
-      <IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH>Imvert2SHACL-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH>
+      <IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH>Imvert2Shacl-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH>
       
    </properties>
    

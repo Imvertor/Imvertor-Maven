@@ -143,7 +143,7 @@
       <!-- 
          stylesheet to process the __content.xml, extracted from the deserialized template
       -->
-      <WORK_REGRESSION_EXTRACT_XSLPATH>REGRESSIONExtractor-extract.xsl</WORK_REGRESSION_EXTRACT_XSLPATH>
+      <WORK_REGRESSION_EXTRACT_XSLPATH>RegressionExtractor-extract.xsl</WORK_REGRESSION_EXTRACT_XSLPATH>
       <!-- 
          path to temporary output of transforming __content.xml; this is not compressed back into the result Excel.
       -->
