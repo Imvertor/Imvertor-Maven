@@ -843,6 +843,7 @@
         <xsl:variable name="domain-value" select="imf:get-tagged-value($this,'##CFG-TV-DOMAIN')"/>
         
         <mark nillable="{$is-nillable}" nilreason="{$has-nilreason}">
+            <xsl:sequence select="imf:create-xml-debug-comment($this,concat('$Type ', $type,' $this/imvert:type-name ' , $this/imvert:type-name))"/>
             <xsl:choose>
             <!-- any type, i.e. #any -->
             <xsl:when test="$is-any">
@@ -990,6 +991,21 @@
                     <xs:simpleType>
                         <xs:restriction base="{$this/imvert:type-name}">
                             <xsl:sequence select="imf:create-datatype-property($this,$this/imvert:primitive)"/> 
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="$is-primitive and $this/imvert:type-name = 'xs:string'"> 
+                <!-- als het feitelijk een string betreft, dan ook de facet dat deze niet leeg mag zijn --> 
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A string, after mapping')"/>
+                    <xsl:sequence select="imf:get-annotation($this)"/>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="\S.*"/>
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>

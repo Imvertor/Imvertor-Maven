@@ -1087,7 +1087,7 @@
                     </xsl:choose>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$type=('xs:string') and not($this/imvert:baretype='TXT')"> 
+            <xsl:when test="($type=('xs:string') and not($this/imvert:baretype='TXT')) or ($is-primitive and $this/imvert:type-name = 'xs:string')"> 
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
