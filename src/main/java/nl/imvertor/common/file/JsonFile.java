@@ -170,8 +170,8 @@ public class JsonFile extends AnyFile {
 	        // save it as YAML
 	        YAMLMapper m = new YAMLMapper();
 	        m.disable(Feature.WRITE_DOC_START_MARKER);
-	        m.disable(Feature.ALWAYS_QUOTE_NUMBERS_AS_STRINGS);
-	        m.enable(Feature.MINIMIZE_QUOTES);
+	        m.enable(Feature.ALWAYS_QUOTE_NUMBERS_AS_STRINGS); // #issues/244
+	        m.disable(Feature.MINIMIZE_QUOTES); // #244
 	        String jsonAsYaml = m.writeValueAsString(jsonNodeTree);
 	        resultYamlFile.setContent(jsonAsYaml);
         } catch (Exception e) {
