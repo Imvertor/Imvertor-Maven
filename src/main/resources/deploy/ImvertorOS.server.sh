@@ -12,7 +12,6 @@ JVMPARAMS="-Xms512m -Xmx1024m"
 
 echo Imvertor bin install folder: "$PRGDIR"
 
-export JAVA_HOME=$PRGDIR/bin/java/jdk8u312-b07-jreXX
 if [ -f "$JAVA_HOME/bin/java" ]; then
   JAVA=$JAVA_HOME/bin/java
 else
