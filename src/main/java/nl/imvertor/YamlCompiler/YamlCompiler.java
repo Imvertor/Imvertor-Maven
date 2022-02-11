@@ -20,6 +20,8 @@
 
 package nl.imvertor.YamlCompiler;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
@@ -112,6 +114,7 @@ public class YamlCompiler extends Step {
 
 		transformer.setXslParm("json-version","2.0");
 		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLBODY_FILE_PATH2", "properties/IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH");
+		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_XML4JSONMAPPING_FILE_PATH2", "properties/IMVERTOR_METAMODEL_KING_XML4JSONMAPPING_XSLPATH");
 		
 		if (succeeds) {
 			// concatenate
@@ -121,7 +124,7 @@ public class YamlCompiler extends Step {
 			YamlFile yamlFile = new YamlFile(configurator.getXParm("properties/RESULT_YAML_FILE_PATH"));
 			JsonFile bodyFile2 = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH2"));
 				 	 //bodyFile2.prettyPrint();
-			
+	
 			// validate
 			String hc = headerFile.getContent();
 			succeeds = succeeds && YamlFile.validate(hc);
@@ -141,6 +144,41 @@ public class YamlCompiler extends Step {
 			bodyFile.copyFile(appJsonFile);
 			bodyFile2.copyFile(appJson2File);
 		} 
+		// pretty print and store to json folder
+		if (succeeds) {
+	
+			// convert the json xml to Json.
+			XmlFile jsonXmlMappingFile = new XmlFile(configurator.getXParm("properties/RESULT_XML4JSONMAPPING_FILE_PATH"));
+			JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/RESULT_JSON_FROM_XML4JSON_FILE_PATH"));
+			YamlFile yamlFile2 = new YamlFile(configurator.getXParm("properties/RESULT_YAML_FROM_XML4JSON_FILE_PATH"));
+
+			jsonXmlMappingFile.toJson(jsonFile);
+			jsonFile.toYaml(yamlFile2);
+
+			XmlFile jsonXmlMappingFile2 = new XmlFile(configurator.getXParm("properties/RESULT_XML4JSONMAPPING_FILE_PATH2"));
+			JsonFile jsonFile2 = new JsonFile(configurator.getXParm("properties/RESULT_JSON_FROM_XML4JSON_FILE_PATH2"));
+			jsonXmlMappingFile2.toJson(jsonFile2);
+			
+			XmlFile jsonXmlMappingFile3 = new XmlFile(configurator.getXParm("properties/RESULT_XML4JSONMAPPING_FILE_PATH3"));
+			JsonFile bodyFile = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
+			JsonFile bodyFile2 = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH2"));
+
+			bodyFile.toXml(jsonXmlMappingFile3);
+
+			// copy to the app folder
+//			String schemaName = configurator.mergeParms(configurator.getXParm("cli/jsonschemaname"));
+			
+			// Create the folder; it is not expected to exist yet.
+//			AnyFolder jsonFolder = new AnyFolder(configurator.getXParm("system/work-json-folder-path"));
+			
+//			JsonFile appJsonFile = new JsonFile(new File(jsonFolder,schemaName + ".json"));
+//			YamlFile appYamlFile = new YamlFile(new File(jsonFolder,schemaName + ".yaml"));
+			
+//			jsonFolder.mkdirs();
+//			jsonFile.copyFile(appJsonFile);
+//			yamlFile.copyFile(appYamlFile);
+			
+		}
 		configurator.setXParm("system/yaml-created",succeeds);
 		
 		return succeeds;

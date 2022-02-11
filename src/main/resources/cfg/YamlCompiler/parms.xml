@@ -48,6 +48,11 @@
       <RESULT_YAMLBODY_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.3.yaml-body.json</RESULT_YAMLBODY_FILE_PATH2>
       <RESULT_YAML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.4.yaml.yml</RESULT_YAML_FILE_PATH>   
       <RESULT_XML4JSONMAPPING_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.5.xml4jsonmapping.xml</RESULT_XML4JSONMAPPING_FILE_PATH>
+      <RESULT_XML4JSONMAPPING_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.6.xml4jsonmapping.xml</RESULT_XML4JSONMAPPING_FILE_PATH2>
+      <RESULT_JSON_FROM_XML4JSON_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.7.xml4jsonmapping.json</RESULT_JSON_FROM_XML4JSON_FILE_PATH>
+      <RESULT_JSON_FROM_XML4JSON_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.8.xml4jsonmapping.json</RESULT_JSON_FROM_XML4JSON_FILE_PATH2>
+      <RESULT_YAML_FROM_XML4JSON_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.9.xml4jsonmapping.json</RESULT_YAML_FROM_XML4JSON_FILE_PATH>
+      <RESULT_XML4JSONMAPPING_FILE_PATH3>${system/work-imvert-folder-path}/imvertor.80.10.xml4jsonmapping.xml</RESULT_XML4JSONMAPPING_FILE_PATH3>
       
        <!--RESULT_YAMLHEADER2_FILE_PATH>${system/work-imvert-folder-path}/imvertor.36.1.yaml-header.yml</RESULT_YAMLHEADER2_FILE_PATH>   
       <RESULT_YAMLBODY2_FILE_PATH>${system/work-imvert-folder-path}/imvertor.36.2.yaml-body.yml</RESULT_YAMLBODY2_FILE_PATH>   
@@ -65,7 +70,7 @@
       
       <IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH>Imvert2Yaml-header.xsl</IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH>
       <IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH>Imvert2Yaml-body.xsl</IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH>
-      <IMVERTOR_METAMODEL_KING_XML4JSONMAPPING_XSLPATH>Imvert2XML-4-JSON-mapping.xsl</IMVERTOR_METAMODEL_KING_XML4JSONMAPPING_XSLPATH>
+      <IMVERTOR_METAMODEL_KING_XML4JSONMAPPING_XSLPATH>Imvert2Xml4JsonMapping-body.xsl</IMVERTOR_METAMODEL_KING_XML4JSONMAPPING_XSLPATH>
 
       <!-- Kadaster -->
       <RESULT_METAMODEL_NEN3610_BSM_MIGRATE>${system/work-imvert-folder-path}/imvertor.25.3.1.nen3610-migrate.xml</RESULT_METAMODEL_NEN3610_BSM_MIGRATE>
