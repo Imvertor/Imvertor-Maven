@@ -288,11 +288,11 @@
 				<!--xsl:if test="$debugging and ($checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
 					and empty(following-sibling::ep:uriPart[ep:param])])"-->
 				<xsl:if test="$debugging">
-						<xsl:result-document href="{concat('file:/c:/temp/analyzedResponseStructure/get',generate-id($analyzedResponseStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+					<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\analyzedResponseStructure\get',generate-id($analyzedResponseStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml">
 						<xsl:sequence select="$analyzedResponseStructure"/>
 					</xsl:result-document>
 
-					<!--xsl:result-document method="xml" href="{concat('file:/c:/temp/message/',$messageCategory,'message-',ep:tech-name,'-',generate-id(),'.xml')}">
+					<!--xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\message\',$messageCategory,'message-',ep:tech-name,'-',generate-id(),'.xml')}" method="xml">
 						<xsl:element name="{concat('ep:',$messageCategory,'message')}">
 							<xsl:attribute name="requestbodyConstructName" select="$requestbodyConstructName"/>
 							<xsl:attribute name="responseConstructName" select="$responseConstructName"/>
@@ -300,7 +300,7 @@
 							<xsl:sequence select="$relatedResponseMessage"/>
 						</xsl:element>
 					</xsl:result-document-->
-					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/uriStructure-message-',$messageCategory,'-',ep:tech-name,'-',generate-id(),'.xml')}">
+					<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\message\uriStructure-message-',$messageCategory,'-',ep:tech-name,'-',generate-id(),'.xml')}" method="xml">
 						<uriStructure construct="{$construct}">
 							<determinedUriStructure>
 								<xsl:sequence select="$determinedUriStructure" />
@@ -784,7 +784,7 @@
 				</xsl:if>
 				<xsl:if test="$debugging and ($checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
 					and empty(following-sibling::ep:uriPart[ep:param])])">
-					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/',$messageCategory,'message-',ep:tech-name,'-',generate-id(),'.xml')}">
+					<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\message\',$messageCategory,'message-',ep:tech-name,'-',generate-id(),'.xml')}" method="xml">
 						<xsl:element name="{concat('ep:',$messageCategory,'message')}">
 							<xsl:attribute name="requestbodyConstructName" select="$requestbodyConstructName"/>
 							<xsl:attribute name="responseConstructName" select="$responseConstructName"/>
@@ -792,7 +792,7 @@
 							<xsl:sequence select="$relatedResponseMessage"/>
 						</xsl:element>
 					</xsl:result-document>
-					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/uriStructure-message-',$messageCategory,'-',ep:tech-name,'-',generate-id(),'.xml')}">
+					<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\message\uriStructure-message-',$messageCategory,'-',ep:tech-name,'-',generate-id(),'.xml')}" method="xml">
 						<uriStructure>
 							<determinedUriStructure>
 								<xsl:sequence select="$determinedUriStructure" />
@@ -824,19 +824,19 @@
 				</xsl:variable>
 								
 				<xsl:if test="$debugging">
-					<xsl:result-document href="{concat('file:/c:/temp/determinedUriStructure/',$messageCategory,generate-id($determinedUriStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+					<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\determinedUriStructure\',$messageCategory,generate-id($determinedUriStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}"  method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$determinedUriStructure"/>
 					</xsl:result-document> 
-					<xsl:result-document href="{concat('file:/c:/temp/calculatedUriStructure/',$messageCategory,generate-id($calculatedUriStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+					<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\calculatedUriStructure\',$messageCategory,generate-id($calculatedUriStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}"  method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$calculatedUriStructure"/>
 					</xsl:result-document>
-					<xsl:result-document href="{concat('file:/c:/temp/checkedUriStructure/',$messageCategory,generate-id($checkedUriStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+					<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\checkedUriStructure\',$messageCategory,generate-id($checkedUriStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}"  method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$checkedUriStructure"/>
 					</xsl:result-document> 
-					<xsl:result-document href="{concat('file:/c:/temp/analyzedRequestbodyStructure/',$messageCategory,generate-id($analyzedRequestbodyStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+					<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\analyzedRequestbodyStructure\',$messageCategory,generate-id($analyzedRequestbodyStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}"  method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$analyzedRequestbodyStructure"/>
 					</xsl:result-document>
-					<xsl:result-document href="{concat('file:/c:/temp/analyzedResponseStructure/',$messageCategory,generate-id($analyzedResponseStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+					<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\analyzedResponseStructure\',$messageCategory,generate-id($analyzedResponseStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}"  method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$analyzedResponseStructure"/>
 					</xsl:result-document>
 				</xsl:if>					

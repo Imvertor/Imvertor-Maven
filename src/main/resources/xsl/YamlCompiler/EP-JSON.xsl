@@ -90,29 +90,31 @@
 		<xsl:for-each select="/ep:message-sets/ep:message-set/ep:construct[ep:parameters/ep:parameter[ep:name='endpointavailable']/ep:value = 'Nee' and ep:tech-name = //ep:message/ep:seq/ep:construct/ep:type-name]">
 			<xsl:sequence select="imf:msg(.,'ERROR','The tv &quot;[1]&quot; has been specified with the value &quot;Nee&quot; on the top level entity [2]. This is not allowed',(./ep:parameters/ep:parameter/ep:name[.='endpointavailable']/@original,./ep:name))" />			
 		</xsl:for-each>
-
-
 		
-		<xsl:result-document href="{concat('file:/c:/temp/SubtypeConstruct/',generate-id(),'.xml')}" method="xml">
-			<xsl:copy-of select="$message-sets"/>
-		</xsl:result-document>
-		
-<?x		<xsl:for-each select="//ep:construct[ep:parameters/ep:parameter[ep:name = 'type' and ep:value = 'association'] and ep:choice]">
-			<xsl:variable name="types">
-				<xsl:for-each select="ep:choice/ep:construct">
-					<xsl:sort select="ep:type-name" order="ascending"/>
-					<xsl:variable name="type" select="ep:type-name"/>
-					<xsl:if test="not(preceding-sibling::ep:construct/ep:type-name = $type)">
-						<ep:type-name><xsl:value-of select="ep:type-name"/></ep:type-name>
-					</xsl:if>
-				</xsl:for-each>
-			</xsl:variable>
-			<xsl:result-document href="{concat('file:/c:/temp/SubtypeConstruct/',generate-id(),'.xml')}">
-				<a>
-					<xsl:copy-of select="$types"/>
-				</a>
+
+		<xsl:if test="$debugging">
+			
+			<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\SubtypeConstruct\',generate-id(),'.xml')}" method="xml">
+				<xsl:copy-of select="$message-sets"/>
 			</xsl:result-document>
-		</xsl:for-each> ?>
+		
+			<?x			<xsl:for-each select="//ep:construct[ep:parameters/ep:parameter[ep:name = 'type' and ep:value = 'association'] and ep:choice]">
+				<xsl:variable name="types">
+					<xsl:for-each select="ep:choice/ep:construct">
+						<xsl:sort select="ep:type-name" order="ascending"/>
+						<xsl:variable name="type" select="ep:type-name"/>
+						<xsl:if test="not(preceding-sibling::ep:construct/ep:type-name = $type)">
+							<ep:type-name><xsl:value-of select="ep:type-name"/></ep:type-name>
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\SubtypeConstruct\',generate-id(),'.xml')}" method="xml">
+					<a>
+						<xsl:copy-of select="$types"/>
+					</a>
+				</xsl:result-document>
+			</xsl:for-each> ?>
+		</xsl:if>
 		
 		
 		
