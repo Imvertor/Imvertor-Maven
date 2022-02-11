@@ -94,7 +94,7 @@
 
 		<xsl:if test="$debugging">
 			
-			<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\SubtypeConstruct\',generate-id(),'.xml')}" method="xml">
+			<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'/../../../imvertor_dev/temp/SubtypeConstruct/',generate-id(),'.xml')}" method="xml">
 				<xsl:copy-of select="$message-sets"/>
 			</xsl:result-document>
 		
@@ -108,7 +108,7 @@
 						</xsl:if>
 					</xsl:for-each>
 				</xsl:variable>
-				<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\SubtypeConstruct\',generate-id(),'.xml')}" method="xml">
+				<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'/../../../imvertor_dev/temp/SubtypeConstruct/',generate-id(),'.xml')}" method="xml">
 					<a>
 						<xsl:copy-of select="$types"/>
 					</a>

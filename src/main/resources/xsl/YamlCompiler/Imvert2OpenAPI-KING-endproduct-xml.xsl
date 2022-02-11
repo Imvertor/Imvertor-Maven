@@ -126,7 +126,7 @@
 		<xsl:sequence select="imf:set-config-string('appinfo','OpenAPI-schema-name',concat($kv-prefix,$version))"/>
 
 		<xsl:if test="$debugging">
-			<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\message\expandconfiguration.xml')}" method="xml">
+			<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'/../../../imvertor_dev/temp/message/expandconfiguration.xml')}" method="xml">
 				<xsl:copy-of select="$expandconfigurations" />
 			</xsl:result-document>
 		</xsl:if>
@@ -1793,7 +1793,7 @@
 
 		<xsl:if test="$debugging">
 			<xsl:if test="not(empty($construct))">
-				<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\message\Attribute-',$tech-name,'-',generate-id(),'.xml')}" method="xml">
+				<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'/../../../imvertor_dev/temp/message/Attribute-',$tech-name,'-',generate-id(),'.xml')}" method="xml">
 					<vals>
 						<xsl:if
 							test="not(empty(imf:get-specific-compiled-tagged-values-up-to-level-debug($construct,'CFG-TV-DEFINITION',$description-level)))">
@@ -2435,7 +2435,7 @@
 
 		<xsl:if test="$debugging">
 			<xsl:if test="not(empty($construct))">
-				<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\message\Enumeration-',$name,'-',generate-id(),'.xml')}" method="xml">
+				<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'/../../../imvertor_dev/temp/message/Enumeration-',$name,'-',generate-id(),'.xml')}" method="xml">
 					<xsl:variable name="id" select="imvert:id"/>
 					<xsl:variable name="construct2" select="imf:get-construct-by-id($id,$packages)" />
 					<vals>

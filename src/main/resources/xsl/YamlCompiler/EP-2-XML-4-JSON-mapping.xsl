@@ -94,7 +94,7 @@
 
 
 		
-		<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'\..\..\..\imvertor_dev\temp\SubtypeConstruct\',generate-id(),'.xml')}"  method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+		<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'/../../../imvertor_dev/temp/SubtypeConstruct/',generate-id(),'.xml')}"  method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 			<xsl:copy-of select="$message-sets"/>
 		</xsl:result-document>
 		
