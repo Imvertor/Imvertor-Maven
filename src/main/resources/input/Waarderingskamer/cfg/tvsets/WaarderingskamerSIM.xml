@@ -20,7 +20,7 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- speciale grouping constructs -->
-    <xi:include href="grouping.xml"/>
+    <xi:include href="Grouping.xml"/>
     
     <!-- Waarderingskamer follows MIM1.1 requirements -->
     <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
