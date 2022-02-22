@@ -21,7 +21,7 @@
     <!-- 
         BIJ12 specific SHACL rules 
     -->
-    <xi:include href="BIJ12MIM10.xml"/>
+    <xi:include href="Bij12MIM10.xml"/>
   
     <name>BIJ12 Shacl rules</name>
   
