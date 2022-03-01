@@ -192,7 +192,7 @@
     <xsl:template match="imvert:version">
         <imvert:version>
             <xsl:choose>
-                <xsl:when test="matches(., '^\d+$')">
+                <xsl:when test="matches(., '^\d+\.\d+$')">
                     <xsl:value-of select="concat(., '.0')"/>
                 </xsl:when>
                 <xsl:otherwise>
