@@ -191,7 +191,14 @@
     
     <xsl:template match="imvert:version">
         <imvert:version>
-            <xsl:value-of select="if (tokenize(.,'\.')[3]) then . else concat(.,'.0')"/>
+            <xsl:choose>
+                <xsl:when test="matches(., '^\d+$')">
+                    <xsl:value-of select="concat(., '.0')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="."/>        
+                </xsl:otherwise>
+            </xsl:choose>
         </imvert:version>
     </xsl:template>
     
