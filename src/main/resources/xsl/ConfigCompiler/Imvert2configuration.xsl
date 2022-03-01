@@ -124,14 +124,22 @@
         </xsl:result-document>
         x?>
         
-        <!-- signal if not using the latest release of imvertor -->
+        <!-- signal if not using the latest release or a nightly build (or other feature branch build) of imvertor -->
         <xsl:variable name="crx" select="imf:get-config-string('run','version')"/>
         <xsl:variable name="lrx" select="imf:get-config-string('system','latest-imvertor-release')"/>
-        <xsl:variable name="cr" select="string-join(for $m in subsequence(tokenize($crx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
-        <xsl:variable name="lr" select="string-join(for $m in subsequence(tokenize($lrx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
-        <xsl:if test="$cr lt $lr">
-            <xsl:sequence select="imf:msg(.,'WARNING','You are using Imvertor version [1], however a more recent version [2] is available.',($crx,$lrx))"></xsl:sequence>
-        </xsl:if>
+        <xsl:choose>
+            <xsl:when test="matches($crx, '^\d+\.\d+$')"> <!-- regular major-minor version? -->
+                <xsl:variable name="cr" select="string-join(for $m in subsequence(tokenize($crx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
+                <xsl:variable name="lr" select="string-join(for $m in subsequence(tokenize($lrx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
+                <xsl:if test="$cr lt $lr">
+                    <xsl:sequence select="imf:msg(.,'WARNING','You are using Imvertor version [1], however a more recent version [2] is available.',($crx,$lrx))"></xsl:sequence>
+                </xsl:if>        
+            </xsl:when>
+            <xsl:otherwise> <!-- nightly or other feature branch "non-stable" build: -->
+                <xsl:sequence select="imf:msg(.,'WARNING',' You are using Imvertor version [1] which is not considered a stable version. The most recent stable version is [2].',($crx,$lrx))"/>                 
+            </xsl:otherwise>
+        </xsl:choose>
+        
     </xsl:template>
     
     <!-- name normalization on all configuration files -->
