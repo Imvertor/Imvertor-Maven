@@ -136,7 +136,7 @@
                 </xsl:if>        
             </xsl:when>
             <xsl:otherwise> <!-- nightly or other feature branch "non-stable" build: -->
-                <xsl:sequence select="imf:msg(.,'WARNING',' You are using Imvertor version [1] which is not considered a stable version. The most recent stable version is [2].',($crx,$lrx))"/>                 
+                <xsl:sequence select="imf:msg(.,'WARNING','You are using Imvertor version [1] which is not considered a stable version. The most recent stable version is [2].',($crx,$lrx))"/>                 
             </xsl:otherwise>
         </xsl:choose>
         
