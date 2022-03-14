@@ -147,7 +147,7 @@ public class YamlCompiler extends Step {
 		// pretty print and store to json folder
 		if (succeeds) {
 	
-			// convert the json xml to Json.
+			// convert the json xml to Json without schema reference.
 			XmlFile jsonXmlMappingFile = new XmlFile(configurator.getXParm("properties/RESULT_XML4JSONMAPPING_FILE_PATH"));
 			JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/RESULT_JSON_FROM_XML4JSON_FILE_PATH"));
 			YamlFile yamlFile2 = new YamlFile(configurator.getXParm("properties/RESULT_YAML_FROM_XML4JSON_FILE_PATH"));
@@ -155,10 +155,13 @@ public class YamlCompiler extends Step {
 			jsonXmlMappingFile.toJson(jsonFile);
 			jsonFile.toYaml(yamlFile2);
 
+			// convert the json xml to Json with schema reference.
 			XmlFile jsonXmlMappingFile2 = new XmlFile(configurator.getXParm("properties/RESULT_XML4JSONMAPPING_FILE_PATH2"));
 			JsonFile jsonFile2 = new JsonFile(configurator.getXParm("properties/RESULT_JSON_FROM_XML4JSON_FILE_PATH2"));
+
 			jsonXmlMappingFile2.toJson(jsonFile2);
 			
+			// convert for debug purposes the Json file generated in line 112 to a Json-mapping file.
 			XmlFile jsonXmlMappingFile3 = new XmlFile(configurator.getXParm("properties/RESULT_XML4JSONMAPPING_FILE_PATH3"));
 			JsonFile bodyFile = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
 			JsonFile bodyFile2 = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH2"));
