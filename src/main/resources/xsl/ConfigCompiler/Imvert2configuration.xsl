@@ -411,6 +411,7 @@
                 <xsl:apply-templates select="($doc-rules//include-overview-sections-by-type)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//include-detail-sections-by-type)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//show-properties)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//respec-config)[last()]" mode="#current"/>
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="@order" order="ascending"/>
