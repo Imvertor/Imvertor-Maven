@@ -37,6 +37,7 @@
     -->
    
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-validation.xsl"/>
     <xsl:import href="Imvert2configuration-speed-analyzer.xsl"/>
     
     <xsl:variable name="configuration-owner-doc" select="imf:document($configuration-owner-name,true())"/>
@@ -131,12 +132,10 @@
             <xsl:when test="matches($crx, '^\d+\.\d+\.\d+$')"> <!-- regular major-minor version? -->
                 <xsl:variable name="cr" select="string-join(for $m in subsequence(tokenize($crx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
                 <xsl:variable name="lr" select="string-join(for $m in subsequence(tokenize($lrx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
-                <xsl:if test="$cr lt $lr">
-                    <xsl:sequence select="imf:msg(.,'WARNING','You are using Imvertor version [1], however a more recent version [2] is available.',($crx,$lrx))"></xsl:sequence>
-                </xsl:if>        
+                <xsl:sequence select="imf:report-warning(.,$cr lt $lr,'You are using Imvertor version [1], however a more recent version [2] is available.',($crx,$lrx))"/>
             </xsl:when>
             <xsl:otherwise> <!-- nightly or other feature branch "non-stable" build: -->
-                <xsl:sequence select="imf:msg(.,'WARNING','You are using Imvertor version [1] which is not considered a stable version. The most recent stable version is [2].',($crx,$lrx))"/>                 
+                <xsl:sequence select="imf:report-warning(.,true(),'You are using Imvertor version [1] which is not considered a stable version. The most recent stable version is [2].',($crx,$lrx))"/>                 
             </xsl:otherwise>
         </xsl:choose>
         
