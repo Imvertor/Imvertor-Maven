@@ -1026,8 +1026,7 @@
   </xsl:template>
   
   <xsl:template name="indicatieAfleidbaar">
-    <!-- TODO: klopt default waarde 'false'? -->
-    <mim:indicatieAfleidbaar>{imf:mim-boolean(imf:tagged-values(., 'CFG-TV-INDICATIONDERIVABLE'))}</mim:indicatieAfleidbaar>
+    <mim:indicatieAfleidbaar>{imf:mim-boolean(imvert:is-value-derived)}</mim:indicatieAfleidbaar>
   </xsl:template>
   
   <xsl:template name="indicatieClassificerend">

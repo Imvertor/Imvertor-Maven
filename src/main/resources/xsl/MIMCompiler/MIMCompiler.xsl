@@ -734,7 +734,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   
   <xsl:template match="metagegeven[. = 'Indicatie afleidbaar']">
     <xsl:param name="context" as="element()"/>
-    <mim:indicatieAfleidbaar>{imf:mim-boolean(imf:tagged-values($context, 'CFG-TV-INDICATIONDERIVABLE'))}</mim:indicatieAfleidbaar>
+    <mim:indicatieAfleidbaar>{imf:mim-boolean($context/imvert:is-value-derived)}</mim:indicatieAfleidbaar>
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Indicatie classificerend']">
