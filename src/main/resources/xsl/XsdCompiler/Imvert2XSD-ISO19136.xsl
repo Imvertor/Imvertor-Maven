@@ -1105,7 +1105,7 @@
                             </xs:simpleType>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:attribute name="type" select="$type"/>
+                            <xsl:attribute name="type" select="'xs:string'"/>
                             <xsl:sequence select="imf:create-xml-debug-comment($this,'A string, mode 2')"/>
                             <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                         </xsl:otherwise>
