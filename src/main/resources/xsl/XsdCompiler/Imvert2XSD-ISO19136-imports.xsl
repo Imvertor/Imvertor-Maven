@@ -84,6 +84,8 @@
     <xsl:template match="xs:schema">
         <xsl:sequence select="imf:track('Processing imports',())"/>
         
+        <xsl:variable name="schema" select="."/>
+        
         <xsl:variable name="my-qualifier" select="../imvert:prefix"/>
         <xsl:variable name="my-subpath" select="../imvert:result-file-subpath"/>
         <xsl:variable name="my-fullpath" select="../imvert:result-file-fullpath"/>
@@ -114,7 +116,7 @@
         <xsl:variable name="imports" as="node()*">
             <xsl:for-each select="distinct-values($qualifiers)[not(. = $my-qualifier)]">
                
-                <xsl:sequence select="imf:create-xml-debug-comment(.,'qualifier at subpath [1]', ($my-subpath))"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($schema,'qualifier at subpath [1]', ($my-subpath))"/>
 
                 <!-- determine for this prefix which schema is created -->
                 <xsl:variable name="prefix" select="."/>
