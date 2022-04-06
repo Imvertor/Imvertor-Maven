@@ -49,6 +49,7 @@
         http://www.geonovum.nl/conceptual-schemas/
         http://www.kinggemeenten.nl/conceptual-schemas/
         http://www.kadaster.nl/conceptual-schemas/
+        http://www.bro.nl/conceptual-schemas/
     </parameter>
     <parameter name="url-prefix-schema-waardelijsten">http://www.kinggemeenten.nl/schemas/waardelijsten/</parameter>
     <parameter name="class-name-waardelijst">Waardelijst</parameter>
