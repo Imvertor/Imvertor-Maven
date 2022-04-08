@@ -120,6 +120,10 @@ public class XsdCompiler extends Step {
 				generateXsdISO19136();
 				supplyExternalSchemas();
 				done = true;
+			} else if (xmlschemarules.equals("XML-Kadaster")) {
+				generateXsdKadaster();
+				supplyExternalSchemas();
+				done = true;
 			} else if (xmlschemarules.equals("XML-IHWUGM")) {
 				generateUgmXsdKING();
 				done = true;

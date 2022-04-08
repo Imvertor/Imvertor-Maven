@@ -25,6 +25,18 @@
     <name>IHW SIM tvsets</name>
     
     <tagged-values>
-        <!-- geen eigen tagged values -->    
+        
+        <tv norm="space" id="CFG-TV-FEATURECOLLECTION">
+            <name lang="en">Feature collection</name>
+            <name lang="nl">Objectverzameling</name>
+            <desc lang="nl">Een verzameling van objecttypen. 
+                Zo'n verzameling wordt alleen gebruikt in toepassingen waarin objecttypen moeten worden uitgewisseld conform GML "featurecollections".
+            </desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
 </tagset>
