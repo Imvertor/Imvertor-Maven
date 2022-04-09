@@ -73,6 +73,8 @@ public class Transformer {
 	
 	protected static boolean MAYPROFILE = false; // profiling required? then explicitly switch on in the chain!
 	
+	private HashMap<String,XsltExecutable> xslCache = new HashMap<String,XsltExecutable>(); // keep compiled XSL executables; key is the XSL path 
+	
 	private ErrorListener errorListener; // vooralsnog null. work in progress?
 	private Messenger messageEmitter;
 
@@ -209,9 +211,13 @@ public class Transformer {
 		StreamSource source = new StreamSource(infile);
 		StreamSource xslt = new StreamSource(xslfile);
 
-		XsltExecutable exec = null;
+		// Create or fetch Xslt Executor from cache
+		XsltExecutable exec = xslCache.get(xslfile.getCanonicalPath());
 		try {
-			exec = compiler.compile(xslt);
+			if (exec == null) {
+				exec = compiler.compile(xslt);
+				xslCache.put(xslfile.getCanonicalPath(), exec);
+			}
 		} catch (Throwable t) {
 			Exception e = new Exception(t.getMessage() + t.getClass().getName() + ExceptionUtils.getFullStackTrace(t));
 			configurator.getRunner().fatal(logger,"Fout",e,"","");
