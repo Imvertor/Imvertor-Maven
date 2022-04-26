@@ -163,6 +163,13 @@
          <tip>Version of the GML profile XSD file. You may use [...] parameters. Defaults to "1.0.0-3.2.2".</tip>
          <required>false</required>
       </cli-parm>  
+      <cli-parm>
+         <name>assocbyreference</name>
+         <arg>yes|no</arg>
+         <tip>Associations to an objecttype/featuretype must be realized "by reference" in ISO 19136 XML instances</tip>
+         <required>false</required>
+         <context>XSD compiler for ISO 19136 schemas</context>
+      </cli-parm>  
    </cli-parms>
   
    <properties>
