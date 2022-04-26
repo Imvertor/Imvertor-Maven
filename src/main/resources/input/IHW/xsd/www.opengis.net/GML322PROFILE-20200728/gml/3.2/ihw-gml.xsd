@@ -837,4 +837,15 @@ patches encapsulates the patches of the surface.</documentation>
       <sequence/>
       <attributeGroup ref="gml:OwnershipAttributeGroup"/>
    </complexType>
+   <complexType name="GeometryPropertyType">
+      <annotation>
+         <documentation>A geometric property may either be any geometry element encapsulated in an element of this type or an XLink reference to a remote geometry element (where remote includes geometry elements located elsewhere in the same or another document). Note that either the reference or the contained element shall be given, but not both or none.
+            If a feature has a property that takes a geometry element as its value, this is called a geometry property. A generic type for such a geometry property is GeometryPropertyType.</documentation>
+      </annotation>
+      <sequence minOccurs="0">
+         <element ref="gml:AbstractGeometry"/>
+      </sequence>
+      <attributeGroup ref="gml:AssociationAttributeGroup"/>
+      <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+   </complexType>
 </schema>
