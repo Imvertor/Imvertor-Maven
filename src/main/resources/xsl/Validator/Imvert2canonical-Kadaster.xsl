@@ -26,7 +26,9 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
     exclude-result-prefixes="#all" 
-    version="2.0">
+    expand-text="yes"
+    version="3.0"
+    >
 
     <!-- 
           Transform BP UML constructs to canonical UML constructs.
