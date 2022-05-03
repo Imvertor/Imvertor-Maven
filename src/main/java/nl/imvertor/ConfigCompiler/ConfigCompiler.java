@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFolder;
+import nl.imvertor.common.file.ShaclFile;
 import nl.imvertor.common.file.XmlFile;
 
 /**
@@ -57,6 +58,13 @@ public class ConfigCompiler  extends Step {
 		
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_CONFIG_FILE", "properties/IMVERTOR_CONFIG_XSLPATH") : false ;
 		
+		// Save cfg file to etc folder
+		AnyFolder etcFolder = new AnyFolder(configurator.getXParm("system/work-etc-folder-path"));
+		XmlFile cfgFile = new XmlFile(configurator.getXParm("properties/WORK_CONFIG_FILE"));
+		XmlFile appCfgFile = new XmlFile(etcFolder,"config.xml");
+		cfgFile.copyFile(appCfgFile);
+					
+		// create the EA profile/toolbox when requested
 		Boolean p = configurator.isTrue(configurator.getXParm("cli/createeaprofile",false));
 		Boolean q = configurator.isTrue(configurator.getXParm("cli/createeatoolbox",false));
 		
