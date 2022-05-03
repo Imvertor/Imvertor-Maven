@@ -21,7 +21,6 @@
 package nl.imvertor.common;
 
 import java.io.File;
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -256,11 +255,14 @@ public class Transformer {
 		transformer.setSource(source);
 		transformer.setDestination(processor.newSerializer(outfile));
 
-		PrintStream stream = null;
-		
 		configurator.save(); // may throw exception when config file not avail
 		long starttime = System.currentTimeMillis();
-		transformer.transform();
+		
+		try {
+			transformer.transform();
+		} catch (Exception e) {
+			throw new Exception("Transformation causes a fatal error: " + e.getMessage());
+		}
 		
 		if (!outfile.isFile())
 			throw new Exception("Transformation did not produce the expected file result " + outfile.getCanonicalPath());

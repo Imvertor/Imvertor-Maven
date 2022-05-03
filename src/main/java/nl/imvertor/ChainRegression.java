@@ -64,11 +64,13 @@ public class ChainRegression {
 		
 		    configurator.save();
 		   
-		    configurator.getRunner().info(logger,"Processing " + configurator.getXParm("cli/tstfolder"));
+		    String owners = configurator.getXParm("cli/regowner");
+		    configurator.getRunner().info(logger,"Testing for owners: " +  (owners == null ? "(all available)" : owners));
+		    configurator.getRunner().setDebug();
 		    
 		    boolean succeeds = true;
-		    		    
-			// compile regression test xml
+		    		  
+		   // compile regression test xml
 		    succeeds = succeeds && (new RegressionExtractor()).run();
 		   
 			// analyze this run. 

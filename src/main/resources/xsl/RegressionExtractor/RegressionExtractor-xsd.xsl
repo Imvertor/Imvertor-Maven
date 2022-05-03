@@ -36,7 +36,7 @@
          Stylesheet to filter xsd result file.
     -->
     
-    <xsl:template match="cw:file/xs:schema" mode="mode-intermediate-xsd">
+    <xsl:template match="xs:schema" mode="mode-intermediate-xsd">
         <xsl:apply-templates mode="#current"/>
     </xsl:template>
     
