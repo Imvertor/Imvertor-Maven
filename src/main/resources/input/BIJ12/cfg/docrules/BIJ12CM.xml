@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../Geonovum/cfg/docrules/MIMCM.xml"/>
+    
+    <name>BIJ12 Conceptual model documentation rules</name>
+    
+    <desc>BIJ12 SIM specific requirements on documentation. Follows Geonovum.</desc>
+ 
+</doc-rules>

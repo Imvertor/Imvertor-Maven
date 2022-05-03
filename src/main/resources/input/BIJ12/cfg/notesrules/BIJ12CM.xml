@@ -4,8 +4,8 @@
 -->
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../MIM/cfg/notesrules/MIM10-ISO.xml"/>
+    <xi:include href="../../../Geonovum/cfg/notesrules/MIMCM.xml"/>
     
-    <name>BIJ12 SIM notesrules</name>
+    <name>BIJ12 Conceptual model notesrules</name>
     
 </notes-rules>

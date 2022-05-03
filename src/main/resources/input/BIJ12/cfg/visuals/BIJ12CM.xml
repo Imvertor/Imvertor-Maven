@@ -4,7 +4,7 @@
 -->
 <visuals type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <xi:include href="../../../MIM/cfg/visuals/MIM11.xml"/>
+    <xi:include href="../../../Geonovum/cfg/visuals/MIMCM.xml"/>
 
     <!-- 
         these visuals specify the basic visual aspects of the UML profile  
