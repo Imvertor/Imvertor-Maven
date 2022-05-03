@@ -29,7 +29,7 @@
     <!-- 
         some constructs in UML have a fixed value
     -->
-    <parameter name="fixed-identification-attribute-name">identificatie</parameter>
+    <parameter name="fixed-identification-attribute-name"/><!--name may be anything-->
     <parameter name="url-prefix-conceptual-schema">http://www.rws.nl/conceptual-schemas/</parameter>
     <parameter name="url-prefix-schema-waardelijsten">http://www.rws.nl/schemas/waardelijsten/</parameter>
     <parameter name="class-name-waardelijst">Waardelijst</parameter>

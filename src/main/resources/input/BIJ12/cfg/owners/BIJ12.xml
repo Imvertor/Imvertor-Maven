@@ -43,7 +43,7 @@
     <!-- 
         some constructs in UML have a fixed value
     -->
-    <parameter name="fixed-identification-attribute-name">identificatie</parameter>
+    <parameter name="fixed-identification-attribute-name"/><!--name may be anything-->
     <parameter name="url-prefix-conceptual-schema">
         <!-- space separated list of conceptual schema URL domains/paths -->
         http://www.geonovum.nl/conceptual-schemas/
