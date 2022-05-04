@@ -136,6 +136,9 @@ public class RegressionExtractor  extends Step {
 		    AnyFolder tstFolder = new AnyFolder(regFolder,"tst");
 		    AnyFolder wrkFolder = new AnyFolder(tstFolder,"work");
 			AnyFolder outFolder = new AnyFolder(regFolder,"out");
+			// Maak de test folder leeg en maak een workfolder
+			tstFolder.deleteDirectory(); 
+			wrkFolder.mkdirs();
 			// copy the chain results to tst folder
 			String ownerName = configurator.getXParm("cli/owner");
 			AnyFolder appFolder = new AnyFolder(workFolder,ownerName + "/app");
