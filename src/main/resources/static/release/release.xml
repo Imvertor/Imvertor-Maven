@@ -1,7 +1,7 @@
 <release-info>
     <release>
         <artifact>Imvertor</artifact>
-        <major-minor>1.66</major-minor>
+        <major-minor>Nightly-build</major-minor>
         <bugfix>0</bugfix>
         
         <notice>Copyright (C) 2016-2022 Dienst voor het Kadaster en de openbare registers.
