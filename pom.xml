@@ -227,6 +227,13 @@
       <version>1.3</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+	<dependency>
+	  <groupId>com.fasterxml.jackson.core</groupId>
+	  <artifactId>jackson-databind</artifactId>
+	  <version>[2.9.10.1,)</version>
+	</dependency>
+
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml -->
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId> 
@@ -234,14 +241,7 @@
       <version>2.9.9</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.10.0.pr1</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-core -->
+     <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-core -->
     <dependency>
       <groupId>org.apache.jena</groupId>
       <artifactId>jena-core</artifactId>
