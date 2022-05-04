@@ -80,7 +80,8 @@ public class RegressionExtractor  extends Step {
 		
 		String identifier = configurator.getXParm("cli/identifier",false);
 		String compareMethod = configurator.getXParm("cli/regressionmethod",false);
-		
+		       compareMethod = compareMethod == null ? "raw" : compareMethod;
+				
 		if (identifier == null) {
 		    // Bulk test: in regression chain
 			
@@ -207,7 +208,7 @@ public class RegressionExtractor  extends Step {
 			transformer.setXslParm("ctrl-filepath", refContentXML.getCanonicalPath());
 			transformer.setXslParm("test-filepath", tstContentXML.getCanonicalPath());
 			transformer.setXslParm("diff-filepath", compareXML.getCanonicalPath());
-			transformer.setXslParm("max-difference-reported", configurator.getXParm("cli/maxreport"));
+			transformer.setXslParm("max-difference-reported", configurator.getXParm("cli/maxreport") == null ? "100" : configurator.getXParm("cli/maxreport"));
 			
 			//3 create includable stylesheet generated.xsl
 			valid = valid && transformer.transform(refContentXML, tempXsl, compareXsl,null);
@@ -239,10 +240,10 @@ public class RegressionExtractor  extends Step {
 	 * Return the number of recorded differences.
 	 * 
 	 * @param configurator
-	 * @param reffolder
-	 * @param tstfolder
-	 * @param outfolder
-	 * @param identifier
+	 * @param reffolder Folder holding the reference files
+	 * @param tstfolder Folder holding the test files, i.e. to be compared to the reference files.
+	 * @param outfolder Output of the comparison.
+	 * @param identifier The identifier can be any string. When "DEVELOPMENT" this indicated regression test in development mode, i.e. on a single run.
 	 * @return
 	 * @throws Exception
 	 */
@@ -270,6 +271,15 @@ public class RegressionExtractor  extends Step {
 	    return diffsfound;
 	}
 	
+	/**
+	 * Create a folder based on the folder passed which holds all files in canonized form.
+	 * 
+	 * @param folder Folder to canonize
+	 * @param xslFilterFile File that transforms the contents of the XML file such taht it is canonized: removing all non-essential info from the file.
+	 * @param compare True when comparison with corresponding tst folder is required.
+	 * @return
+	 * @throws Exception
+	 */
 	private Integer canonizeFolder(AnyFolder folder,XslFile xslFilterFile, boolean compare) throws Exception {
 		runner.debug(logger,"CHAIN","Serializing folder: " + folder);
 		Integer diffsfound = 0;
@@ -287,7 +297,7 @@ public class RegressionExtractor  extends Step {
 			String canonPath = folderPath + "-canon" + relPath;
 			AnyFile fileOrFolder = new AnyFile(origPath);
 			if (fileOrFolder.isFile()) {
-				if (type.equals("xml") || type.equals("xsd")) { 
+				if (type.equals("xml") || type.equals("xsd") || type.equals("xhtml")) { 
 					// Compare XML contents
 					xslFilterFile.setParm("file-path", relPath);
 					xslFilterFile.setParm("file-type", type);
@@ -305,6 +315,14 @@ public class RegressionExtractor  extends Step {
 		return diffsfound;
 	}
 
+	/**
+	 * Compare a reference file with the corresponding test file, both canonized. Pass the ref path, the tst path is calculated by replacing "ref-canon" by "tst-canon". When differences found, signal a warning.
+	 * 
+	 * @param canonPath The pas to the ref folder.
+	 * @return Integer 1 when differences found
+	 * @throws IOException
+	 * @throws ConfiguratorException
+	 */
 	private Integer compare(String canonPath) throws IOException, ConfiguratorException {
 		String refPath = StringUtils.replace(canonPath,"tst-canon","ref-canon");
 		AnyFile refFile = new AnyFile(refPath);
@@ -312,8 +330,8 @@ public class RegressionExtractor  extends Step {
 		if (tstFile.length() == 0) {
 			return 0; // this file has not be processed and therefore may be disregarded
 		} else if (!refFile.isFile()) {
-				runner.warn(logger, "Reference file not found: " + canonPath); 
-				return 1;
+			runner.warn(logger, "Reference file not found: " + canonPath); 
+			return 1;
 		} else if (!refFile.compareContent(tstFile)) {
 			runner.warn(logger, "Difference(s) found in file: " + canonPath); 
 			return 1;
