@@ -360,9 +360,10 @@
         <xsl:variable name="files" select="if (ext:imvertorFolderSerializer($path,$tempfile,'')) then imf:document($tempfile) else ()"/>
         <xsl:variable name="geoJSONfiles" as="element(geoJSONfile)*">
             <xsl:for-each select="$files/cw:files/cw:file[@ext = 'yaml']">
+                <xsl:variable name="fullpath" select="$path || '/' || replace(@path,'\\','/')"/>
                 <!-- transform to Saxon JsonXML -->
                 <geoJSONfile construct="{substring-before(@path,'.')}">
-                    <xsl:sequence select="parse-xml(ext:imvertorParseYaml(string(@fullpath)))"/>
+                    <xsl:sequence select="parse-xml(ext:imvertorParseYaml(string($fullpath)))"/>
                 </geoJSONfile>
             </xsl:for-each>
         </xsl:variable>

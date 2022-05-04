@@ -21,7 +21,6 @@
 package nl.imvertor.common;
 
 import java.io.File;
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -72,6 +71,8 @@ public class Transformer {
 	public static final String VC_IDENTIFIER = "$Id: Transformer.java 7487 2016-04-02 07:27:03Z arjan $";
 	
 	protected static boolean MAYPROFILE = false; // profiling required? then explicitly switch on in the chain!
+	
+	private HashMap<String,XsltExecutable> xslCache = new HashMap<String,XsltExecutable>(); // keep compiled XSL executables; key is the XSL path 
 	
 	private ErrorListener errorListener; // vooralsnog null. work in progress?
 	private Messenger messageEmitter;
@@ -209,9 +210,13 @@ public class Transformer {
 		StreamSource source = new StreamSource(infile);
 		StreamSource xslt = new StreamSource(xslfile);
 
-		XsltExecutable exec = null;
+		// Create or fetch Xslt Executor from cache
+		XsltExecutable exec = xslCache.get(xslfile.getCanonicalPath());
 		try {
-			exec = compiler.compile(xslt);
+			if (exec == null) {
+				exec = compiler.compile(xslt);
+				xslCache.put(xslfile.getCanonicalPath(), exec);
+			}
 		} catch (Throwable t) {
 			Exception e = new Exception(t.getMessage() + t.getClass().getName() + ExceptionUtils.getFullStackTrace(t));
 			configurator.getRunner().fatal(logger,"Fout",e,"","");
@@ -250,11 +255,14 @@ public class Transformer {
 		transformer.setSource(source);
 		transformer.setDestination(processor.newSerializer(outfile));
 
-		PrintStream stream = null;
-		
 		configurator.save(); // may throw exception when config file not avail
 		long starttime = System.currentTimeMillis();
-		transformer.transform();
+		
+		try {
+			transformer.transform();
+		} catch (Exception e) {
+			throw new Exception("Transformation causes a fatal error: " + e.getMessage());
+		}
 		
 		if (!outfile.isFile())
 			throw new Exception("Transformation did not produce the expected file result " + outfile.getCanonicalPath());

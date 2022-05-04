@@ -162,7 +162,7 @@
             <imvert:name original="featureMember">featureMember</imvert:name>
             <imvert:id>FM_<xsl:value-of select="generate-id(.)"/></imvert:id>
             <imvert:type-name original="{imvert:name/@original}"><xsl:value-of select="imvert:name"/></imvert:type-name>
-            <imvert:type-id><xsl:value-of select="imvert:id"/>></imvert:type-id>
+            <imvert:type-id><xsl:value-of select="imvert:id"/></imvert:type-id>
             <imvert:type-package><xsl:value-of select="../imvert:name"/></imvert:type-package>
             <imvert:min-occurs>0</imvert:min-occurs>
             <imvert:max-occurs>unbounded</imvert:max-occurs>

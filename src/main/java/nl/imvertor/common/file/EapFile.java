@@ -399,7 +399,14 @@ public class EapFile extends AnyFile {
 	 * @throws Exception
 	 */
 	public String getModelPackageGUID(String projectName, String modelName) throws Exception {
-		Package p = getPackageByName(repo.GetModels().GetAt((short) 0), projectName);
+		Package p = null;
+		for (int i = 0; i < repo.GetModels().GetCount(); i++) {
+			Package r = repo.GetModels().GetAt((short) i);
+			if (p == null) 
+				p = getPackageByName(r, projectName);
+			else
+				throw new Exception("Multiple projects with name \"" + projectName + "\" found");
+			}
 		if (p == null) return "";
 		Package m = getPackageByName(p, modelName);
 		return (m != null) ? m.GetPackageGUID() : ""; 

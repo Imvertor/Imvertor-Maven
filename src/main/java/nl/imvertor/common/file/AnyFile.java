@@ -25,8 +25,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -43,6 +45,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -484,6 +487,7 @@ public class AnyFile extends File  {
 		if (getExtension().equals("xsl")) return true;
 		if (getExtension().equals("xslt")) return true;
 		if (getExtension().equals("xmi")) return true;
+		if (getExtension().equals("xsd")) return true;
 		
 		byte[] head = getHeadBytes(5);
 		if ((new String(Arrays.copyOfRange(head,0,5), "UTF-8")).equals("<?xml")) return true;
@@ -628,6 +632,14 @@ public class AnyFile extends File  {
 						this.getFileInfo() + this.getContent();
 		
 		return String.valueOf(DigestUtils.md5(content));
+	}
+	
+	public Boolean compareContent(File testFile) throws IOException {
+	
+	    Reader reader1 = new BufferedReader(new FileReader(this));
+	    Reader reader2 = new BufferedReader(new FileReader(testFile));
+
+	    return IOUtils.contentEqualsIgnoreEOL(reader1, reader2);
 	}
 }
 

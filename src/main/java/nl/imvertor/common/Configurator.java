@@ -23,6 +23,7 @@ package nl.imvertor.common;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -1068,6 +1069,9 @@ public class Configurator {
 		
 		String owner = System.getProperty("owner.name");
 		File commonStoreFile = new File(inputFolder,"props/" + owner + ".xlsx");
+		if (!commonStoreFile.isFile()) {
+			throw new FileNotFoundException("Excel configuration file not found: \"" + commonStoreFile.getAbsolutePath() + "\"");
+		}
 		
 		// get the column names
 		String[] cols = StringUtils.split(processingmode,":");

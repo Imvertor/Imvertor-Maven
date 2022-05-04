@@ -43,12 +43,13 @@
     <!--
         some constructs in UML have a fixed value
     -->
-    <parameter name="fixed-identification-attribute-name">identificatie</parameter>
+    <parameter name="fixed-identification-attribute-name"/><!--name may be anything-->
     <parameter name="url-prefix-conceptual-schema">
         <!-- space separated list of conceptual schema URL domains/paths -->
         http://www.geonovum.nl/conceptual-schemas/
         http://www.kinggemeenten.nl/conceptual-schemas/
         http://www.kadaster.nl/conceptual-schemas/
+        http://www.bro.nl/conceptual-schemas/
     </parameter>
     <parameter name="url-prefix-schema-waardelijsten">http://www.kinggemeenten.nl/schemas/waardelijsten/</parameter>
     <parameter name="class-name-waardelijst">Waardelijst</parameter>

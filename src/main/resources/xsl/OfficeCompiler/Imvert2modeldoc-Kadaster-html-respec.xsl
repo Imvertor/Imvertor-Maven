@@ -30,7 +30,7 @@
                         <title>
                             <xsl:value-of select="concat('Catalogus conceptueel model: ',@name)"/>
                         </title>
-                        <script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"/>
+                        <script src="{$configuration-docrules-file/respec-config}" class="remove"/>
                         <script class="remove">
                             var respecConfig = {
                                 specStatus: "ED",

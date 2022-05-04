@@ -15,6 +15,9 @@
         <section title="Bron" tagged-value="CFG-TV-SOURCE">
             <!-- geen labels -->
         </section>
+        <section title="Herkomst" tagged-value="CFG-TV-SOURCE">
+            <!-- geen labels -->
+        </section>
     </notes-rule>
     
     <notes-rule lang="en">

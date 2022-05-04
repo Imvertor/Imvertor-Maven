@@ -21,17 +21,32 @@
 package nl.imvertor.RegressionExtractor;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Vector;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.jena.util.FileUtils;
 import org.apache.log4j.Logger;
 
+import nl.armatiek.saxon.extensions.http.SendRequest;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.XslFile;
 import nl.imvertor.common.xsl.extensions.ImvertorCompareXML;
+import nl.imvertor.common.xsl.extensions.ImvertorFileSpec;
+import nl.imvertor.common.xsl.extensions.ImvertorMergeParms;
+import nl.imvertor.common.xsl.extensions.ImvertorParameterFile;
+import nl.imvertor.common.xsl.extensions.ImvertorStripAccents;
+import nl.imvertor.common.xsl.extensions.ImvertorTrack;
 
 public class RegressionExtractor  extends Step {
 
@@ -40,6 +55,8 @@ public class RegressionExtractor  extends Step {
 	public static final String STEP_NAME = "RegressionExtractor";
 	public static final String VC_IDENTIFIER = "$Id: ReleaseCompiler.java 7473 2016-03-22 07:30:03Z arjan $";
 	
+	public static Transformer transformer;
+
 	/**
 	 *  run the step
 	 */
@@ -55,16 +72,119 @@ public class RegressionExtractor  extends Step {
 				"http://www.imvertor.org/imvertor/1.0/xslt/compare/compare-generated.xsl", 
 				url);
 		
-		//1 serialize the tst folder
-		AnyFolder reffolder = new AnyFolder(configurator.getXParm("cli/reffolder"));
-		AnyFolder tstfolder = new AnyFolder(configurator.getXParm("cli/tstfolder"));
-		AnyFolder outfolder = new AnyFolder(configurator.getXParm("cli/outfolder"));
-		String identifier = configurator.getXParm("cli/identifier");
+		transformer = new Transformer(); // Transformer created on basis of current Configurator
+		transformer.setExtensionFunction(new ImvertorCompareXML());
+		transformer.setExtensionFunction(new ImvertorStripAccents());
 		
+		AnyFolder workFolder = new AnyFolder(configurator.getServerProperty("work.dir"));
+		
+		String identifier = configurator.getXParm("cli/identifier",false);
+		String compareMethod = configurator.getXParm("cli/regressionmethod",false);
+		       compareMethod = compareMethod == null ? "raw" : compareMethod;
+				
+		if (identifier == null) {
+		    // Bulk test: in regression chain
+			
+			String r = Configurator.getInstance().getXParm("cli/regowner",false);
+			String[] regOwners = StringUtils.split(r.replace(" ", ""),';');
+			
+			AnyFolder regfolder = new AnyFolder(configurator.getXParm("cli/regfolder"));
+			configurator.getRunner().info(logger,"Regression testing bulk mode: " + configurator.getXParm("cli/regfolder"));
+		    Iterator<File> owners = Arrays.asList(regfolder.listFiles()).iterator();
+			while (owners.hasNext()) {
+				AnyFile owner = new AnyFile(owners.next());
+				String ownerName = owner.getParentFile().getName();
+				if (regOwners.length == 0 || ArrayUtils.contains(regOwners, ownerName)) {
+					Iterator<File> projects = Arrays.asList(owner.listFiles()).iterator();
+					while (projects.hasNext()) {
+						AnyFile project = new AnyFile(projects.next());
+						Iterator<File> models = Arrays.asList(project.listFiles()).iterator();
+						while (models.hasNext()) {
+							AnyFile model = new AnyFile(models.next());
+							Iterator<File> releases = Arrays.asList(model.listFiles()).iterator();
+							while (releases.hasNext()) {
+								AnyFile release = new AnyFile(releases.next());
+								String subpath = project.getName() + "_" + model.getName() + "_" + release.getName(); // used as identifier
+								
+								AnyFolder refFolder = new AnyFolder(release,"ref");
+								AnyFolder tstFolder = new AnyFolder(release,"tst");
+								AnyFolder outFolder = new AnyFolder(release,"out");
+								
+								// Maak de test folder leeg en maak een workfolder
+								tstFolder.deleteDirectory();
+								
+								AnyFolder wrkfolder = new AnyFolder(tstFolder,"work");
+								wrkfolder.mkdirs();
+								
+								// kopieer alle files uit de workfolder, als die er is, naar de tst folder
+								AnyFolder appFolder = new AnyFolder(workFolder,ownerName + "/app");
+								appFolder.copy(wrkfolder);
+								
+								Integer diffsfound = test(configurator,refFolder,tstFolder,outFolder,subpath,compareMethod);
+								if (diffsfound != 0) 
+									logger.warn("Regression: " + (compareMethod.equals("raw") ? "some" : diffsfound) + " differences in " + tstFolder);
+							}
+						}
+					}
+				} 
+			}
+		} else if (identifier.equals("DEVELOPMENT")) {
+			// Single test: in TranslateAndReport chain
+			configurator.getRunner().info(logger,"Regression testing this model");
+			String subpath = configurator.getXParm("cli/owner") + "/" + configurator.getXParm("appinfo/subpath");
+			AnyFolder regFolder = new AnyFolder(configurator.getXParm("cli/regfolder"));
+		    AnyFolder refFolder = new AnyFolder(regFolder,"ref/" + subpath);
+		    AnyFolder tstFolder = new AnyFolder(regFolder,"tst/" + subpath);
+			AnyFolder outFolder = new AnyFolder(regFolder,"out/" + subpath);
+			// Maak de test folder leeg en maak een workfolder
+			tstFolder.deleteDirectory(); 
+			tstFolder.mkdirs();
+			// copy the chain results to tst folder
+			String ownerName = configurator.getXParm("cli/owner");
+			AnyFolder appFolder = new AnyFolder(workFolder,ownerName + "/app");
+			appFolder.copy(tstFolder);
+			//  Run the test
+			Integer diffsfound = testFileByFile(configurator,refFolder,tstFolder,outFolder,identifier,compareMethod);
+			if (diffsfound != 0) 
+				logger.warn("Regression: " + (compareMethod.equals("raw") ? "some" : diffsfound) + " differences in " + tstFolder);
+		} else {
+			// Single test: in regression chain (identifier is usually the owner name)
+			configurator.getRunner().info(logger,"Regression testing single model: " + configurator.getXParm("cli/tstfolder"));
+		    AnyFolder refFolder = new AnyFolder(configurator.getXParm("cli/reffolder"));
+			AnyFolder tstFolder = new AnyFolder(configurator.getXParm("cli/tstfolder"));
+			AnyFolder outFolder = new AnyFolder(configurator.getXParm("cli/outfolder"));
+			Integer diffsfound = test(configurator,refFolder,tstFolder,outFolder,identifier,compareMethod);
+			if (diffsfound != 0) 
+				logger.warn("Regression: " + (compareMethod.equals("raw") ? "some" : diffsfound) + " differences in " + tstFolder);
+		}
+			    
+	    report();
+		    
+		return runner.succeeds();
+		
+	}
+	
+	/**
+	 * Test the differences between ref and tst folders.
+	 * Return the number of recorded differences.
+	 * 
+	 * @param configurator
+	 * @param reffolder
+	 * @param tstfolder
+	 * @param outfolder
+	 * @param identifier
+	 * @return
+	 * @throws Exception
+	 */
+	private Integer test(Configurator configurator, AnyFolder reffolder, AnyFolder tstfolder, AnyFolder outfolder, String identifier, String compareMethod) throws Exception {
+		
+		Integer diffsfound = 0;
+		
+		//1 serialize the tst folder
 		XslFile xslFilterFile = new XslFile(configurator.getXslPath(configurator.getXParm("properties/REGRESSION_EXTRACT_XSLPATH")));
 		
 		runner.debug(logger,"CHAIN","Serializing test folder: " + tstfolder);
-		tstfolder.serializeToXml(xslFilterFile,"test");
+		tstfolder.serializeToXml(transformer,xslFilterFile,"test",true);
 		
 		//2 serialize the ref folder
 		// determine the __content.xml locations in tst and ref
@@ -76,46 +196,149 @@ public class RegressionExtractor  extends Step {
 		// when developing, always replace.
 		if (!refContentXML.isFile() || configurator.getRunMode() == Configurator.RUN_MODE_DEVELOPMENT || configurator.isTrue("cli","rebuildref")) {
 			runner.debug(logger,"CHAIN","Serializing reference folder; " + reffolder);
-			reffolder.serializeToXml(xslFilterFile,"ctrl");
+			reffolder.serializeToXml(transformer,xslFilterFile,"ctrl",true);
 		}
 		
 		// now compare the two __content.xml files.
 		
-		XslFile tempXsl = new XslFile(configurator.getXParm("properties/COMPARE_GENERATED_XSLPATH")); // ...Imvertor-OS-work\default\compare\generated.xsl
-		XslFile compareXsl = new XslFile(configurator.getXParm("properties/COMPARE_GENERATOR_XSLPATH")); // ...RegressionExtractor\compare\xsl\compare.generator.xsl
-		XmlFile listingXml = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_LISTING_FILE")); // ...Imvertor-OS-work\default\imvert\compare.2.listing.xml
+		if (compareMethod == null || compareMethod.equals("xmlunit")) {
+			XslFile tempXsl = new XslFile(configurator.getXParm("properties/COMPARE_GENERATED_XSLPATH")); // ...Imvertor-OS-work\default\compare\generated.xsl
+			XslFile compareXsl = new XslFile(configurator.getXParm("properties/COMPARE_GENERATOR_XSLPATH")); // ...RegressionExtractor\compare\xsl\compare.generator.xsl
+			XmlFile listingXml = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_LISTING_FILE")); // ...Imvertor-OS-work\default\imvert\compare.2.listing.xml
+			
+			Boolean valid = true;
+			
+			transformer.setXslParm("ctrl-filepath", refContentXML.getCanonicalPath());
+			transformer.setXslParm("test-filepath", tstContentXML.getCanonicalPath());
+			transformer.setXslParm("diff-filepath", compareXML.getCanonicalPath());
+			transformer.setXslParm("max-difference-reported", configurator.getXParm("cli/maxreport") == null ? "100" : configurator.getXParm("cli/maxreport"));
+			
+			//3 create includable stylesheet generated.xsl
+			valid = valid && transformer.transform(refContentXML, tempXsl, compareXsl,null);
+			
+			//4 create listing, while including the generated.xsl
+			XslFile listingXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPARE_LISTING_XSLPATH"));
+			valid = valid && transformer.transform(refContentXML,listingXml,listingXsl,null);
+			// copy the listing to the outfolder. 
+			AnyFile outfile = new AnyFile(outfolder,identifier + ".report.xml");
+			listingXml.copyFile(outfile);
+			
+			diffsfound = Integer.parseInt(configurator.getXParm("application/differencesfound"));
+		} else if (compareMethod.equals("raw")) {
+			// compare contents
+			diffsfound = refContentXML.compareContent(tstContentXML) ? 0 : 1;
+			
+		} else {
+			// TODO comparemode is definitediff, roep definitediff aan
+		}
+	
+		configurator.setStepDone(STEP_NAME);
+		 
+		// save any changes to the work configuration for report and future steps
+	    configurator.save();
+	    return diffsfound;
+	}
+	/**
+	 * Test the differences between ref and tst folders.
+	 * Return the number of recorded differences.
+	 * 
+	 * @param configurator
+	 * @param reffolder Folder holding the reference files
+	 * @param tstfolder Folder holding the test files, i.e. to be compared to the reference files.
+	 * @param outfolder Output of the comparison.
+	 * @param identifier The identifier can be any string. When "DEVELOPMENT" this indicated regression test in development mode, i.e. on a single run.
+	 * @return
+	 * @throws Exception
+	 */
+	private Integer testFileByFile(Configurator configurator, AnyFolder reffolder, AnyFolder tstfolder, AnyFolder outfolder, String identifier, String compareMethod) throws Exception {
 		
-		Boolean valid = true;
+		//1 serialize the tst folder
+		XslFile xslFilterFile = new XslFile(configurator.getXslPath(configurator.getXParm("properties/REGRESSION_EXTRACT_CANON_XSLPATH")));
+		xslFilterFile.setExtensionFunction(new ImvertorFileSpec());
+		xslFilterFile.setExtensionFunction(new ImvertorParameterFile());
+		xslFilterFile.setExtensionFunction(new ImvertorMergeParms());
+		xslFilterFile.setExtensionFunction(new ImvertorTrack());
+		xslFilterFile.setExtensionFunction(new ImvertorStripAccents());
+		xslFilterFile.setExtensionFunction(new SendRequest());
 		
-		Transformer transformer = new Transformer();
-		transformer.setExtensionFunction(new ImvertorCompareXML());
-		
-		transformer.setXslParm("ctrl-filepath", refContentXML.getCanonicalPath());
-		transformer.setXslParm("test-filepath", tstContentXML.getCanonicalPath());
-		transformer.setXslParm("diff-filepath", compareXML.getCanonicalPath());
-		transformer.setXslParm("max-difference-reported", configurator.getXParm("cli/maxreport"));
-		
-		//3 create includable stylesheet generated.xsl
-		valid = valid && transformer.transform(refContentXML, tempXsl, compareXsl,null);
-		
-		//4 create listing, while including the generated.xsl
-		XslFile listingXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPARE_LISTING_XSLPATH"));
-		valid = valid && transformer.transform(refContentXML,listingXml,listingXsl,null);
-		
-		// copy the listing to the outfolder. 
-		// This is picked up by the xslweb regression framework
-		
-		AnyFile outfile = new AnyFile(outfolder,identifier + ".report.xml");
-		listingXml.copyFile(outfile);
+		// when developing, always replace the ref-canon.
+		if (configurator.getRunMode() == Configurator.RUN_MODE_DEVELOPMENT || configurator.isTrue("cli","rebuildref")) {
+			canonizeFolder(reffolder,xslFilterFile,false);
+		}
+		Integer diffsfound = canonizeFolder(tstfolder,xslFilterFile,true);
 		
 		configurator.setStepDone(STEP_NAME);
 		 
 		// save any changes to the work configuration for report and future steps
 	    configurator.save();
-	    
-	    report();
-		    
-		return runner.succeeds();
+	    return diffsfound;
+	}
+	
+	/**
+	 * Create a folder based on the folder passed which holds all files in canonized form.
+	 * 
+	 * @param folder Folder to canonize
+	 * @param xslFilterFile File that transforms the contents of the XML file such taht it is canonized: removing all non-essential info from the file.
+	 * @param compare True when comparison with corresponding tst folder is required.
+	 * @return
+	 * @throws Exception
+	 */
+	private Integer canonizeFolder(AnyFolder folder,XslFile xslFilterFile, boolean compare) throws Exception {
+		runner.debug(logger,"CHAIN","Serializing folder: " + folder);
+		Integer diffsfound = 0;
 		
+		String folderPath = folder.getCanonicalPath();
+		String canonFolderPath = folderPath + "-canon";
+		// remove the canonical folder when exists
+		(new AnyFolder(canonFolderPath)).deleteDirectory();
+		Vector<String> files = folder.listFilesToVector(true); // returns list of canonical paths
+		for (int i = 0; i < files.size(); i++) {
+			// "canonize" the file, replace existing file by the canonized form
+			String origPath = files.get(i);
+			String type = FileUtils.getFilenameExt(origPath).toLowerCase();
+			String relPath = StringUtils.substringAfter(origPath, folderPath);
+			String canonPath = folderPath + "-canon" + relPath;
+			AnyFile fileOrFolder = new AnyFile(origPath);
+			if (fileOrFolder.isFile()) {
+				if (type.equals("xml") || type.equals("xsd") || type.equals("xhtml")) { 
+					// Compare XML contents
+					xslFilterFile.setParm("file-path", relPath);
+					xslFilterFile.setParm("file-type", type);
+					xslFilterFile.transform(origPath, canonPath);
+					if (compare) diffsfound += compare(canonPath);
+				} else if (type.equals("xmi") || type.equals("png") || type.equals("html")) {
+					// skip these files
+				} else { 
+					// compare raw, unprocessed contents
+					fileOrFolder.copyFile(canonPath);
+					if (compare) diffsfound += compare(canonPath);
+				}
+			}
+ 		}
+		return diffsfound;
+	}
+
+	/**
+	 * Compare a reference file with the corresponding test file, both canonized. Pass the ref path, the tst path is calculated by replacing "ref-canon" by "tst-canon". When differences found, signal a warning.
+	 * 
+	 * @param canonPath The pas to the ref folder.
+	 * @return Integer 1 when differences found
+	 * @throws IOException
+	 * @throws ConfiguratorException
+	 */
+	private Integer compare(String canonPath) throws IOException, ConfiguratorException {
+		String refPath = StringUtils.replace(canonPath,"tst-canon","ref-canon");
+		AnyFile refFile = new AnyFile(refPath);
+		AnyFile tstFile = new AnyFile(canonPath);
+		if (tstFile.length() == 0) {
+			return 0; // this file has not be processed and therefore may be disregarded
+		} else if (!refFile.isFile()) {
+			runner.warn(logger, "Reference file not found: " + canonPath); 
+			return 1;
+		} else if (!refFile.compareContent(tstFile)) {
+			runner.warn(logger, "Difference(s) found in file: " + canonPath); 
+			return 1;
+		} else 
+			return 0;
 	}
 }

@@ -26,7 +26,9 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
     exclude-result-prefixes="#all" 
-    version="2.0">
+    expand-text="yes"
+    version="3.0"
+    >
 
     <!-- 
           Transform BP UML constructs to canonical UML constructs.
@@ -84,6 +86,16 @@
                 <xsl:value-of select="concat('generated-name-',generate-id())"/>
             </imvert:name>
         </xsl:copy>
+    </xsl:template>
+    
+    <!-- 
+        Union en union element moet nu expliciet worden doorgegeven als specifiek stereotype.
+        Keuze tussen datatypen is enige keuze die CDMKAD modellen kennen.
+    -->
+    <xsl:template match="imvert:class/imvert:stereotype[@id = 'stereotype-name-union']">
+        <xsl:variable name="attributes" select="../imvert:attributes/imvert:attribute"/>
+        <xsl:sequence select="."/>
+        <imvert:stereotype id="stereotype-name-union-datatypes" origin="system">{imf:get-config-name-by-id('stereotype-name-union-datatypes')}</imvert:stereotype>
     </xsl:template>
     
     <!-- 

@@ -37,6 +37,7 @@
     -->
    
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-validation.xsl"/>
     <xsl:import href="Imvert2configuration-speed-analyzer.xsl"/>
     
     <xsl:variable name="configuration-owner-doc" select="imf:document($configuration-owner-name,true())"/>
@@ -124,14 +125,20 @@
         </xsl:result-document>
         x?>
         
-        <!-- signal if not using the latest release of imvertor -->
+        <!-- signal if not using the latest release or a nightly build (or other feature branch build) of imvertor -->
         <xsl:variable name="crx" select="imf:get-config-string('run','version')"/>
         <xsl:variable name="lrx" select="imf:get-config-string('system','latest-imvertor-release')"/>
-        <xsl:variable name="cr" select="string-join(for $m in subsequence(tokenize($crx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
-        <xsl:variable name="lr" select="string-join(for $m in subsequence(tokenize($lrx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
-        <xsl:if test="$cr lt $lr">
-            <xsl:sequence select="imf:msg(.,'WARNING','You are using Imvertor version [1], however a more recent version [2] is available.',($crx,$lrx))"></xsl:sequence>
-        </xsl:if>
+        <xsl:choose>
+            <xsl:when test="matches($crx, '^\d+\.\d+\.\d+$')"> <!-- regular major-minor version? -->
+                <xsl:variable name="cr" select="string-join(for $m in subsequence(tokenize($crx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
+                <xsl:variable name="lr" select="string-join(for $m in subsequence(tokenize($lrx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
+                <xsl:sequence select="imf:report-warning(.,$cr lt $lr,'You are using Imvertor version [1], however a more recent version [2] is available.',($crx,$lrx))"/>
+            </xsl:when>
+            <xsl:otherwise> <!-- nightly or other feature branch "non-stable" build: -->
+                <xsl:sequence select="imf:report-warning(.,true(),'You are using Imvertor version [1] which is not considered a stable version. The most recent stable version is [2].',($crx,$lrx))"/>                 
+            </xsl:otherwise>
+        </xsl:choose>
+        
     </xsl:template>
     
     <!-- name normalization on all configuration files -->
@@ -403,6 +410,7 @@
                 <xsl:apply-templates select="($doc-rules//include-overview-sections-by-type)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//include-detail-sections-by-type)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//show-properties)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//respec-config)[last()]" mode="#current"/>
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="@order" order="ascending"/>

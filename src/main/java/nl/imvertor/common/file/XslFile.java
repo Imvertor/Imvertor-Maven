@@ -180,8 +180,11 @@ public class XslFile extends XmlFile {
 		}
 		transformer.setSource(source);
 		transformer.setDestination(processor.newSerializer(outfile));
-		
-		transformer.transform();
+		try {
+			transformer.transform();
+		} catch (Exception e) {
+			logger.error("Cannot transform " + infile.getCanonicalPath() + " using " + this.getName() + ": " + e.getMessage());
+		}
 	}
     
     /**
@@ -206,4 +209,15 @@ public class XslFile extends XmlFile {
      	transform(infile, outfile, null, null);
      }	
 	
+     /**
+      * Set XSLT Parameter
+      * 
+      * The parameter is added to the set of previously defined parameter on this XSLfile, and may overwrite existing parameters.
+      * 
+      * @param name The name
+      * @param value The value, may overwrite existing value.
+      */
+     public void setParm(String name, String value) {
+    	 this.parms.put(name, value);
+     }
 }

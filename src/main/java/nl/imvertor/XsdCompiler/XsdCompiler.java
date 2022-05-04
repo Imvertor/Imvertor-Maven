@@ -116,7 +116,15 @@ public class XsdCompiler extends Step {
 				done = true;
 			}  
 		} else if (owner.equals("IHW")) {
-			if (xmlschemarules.equals("XML-IHWUGM")) {
+			if (xmlschemarules.equals("XML-ISO19136")) {
+				generateXsdISO19136();
+				supplyExternalSchemas();
+				done = true;
+			} else if (xmlschemarules.equals("XML-Kadaster")) {
+				generateXsdKadaster();
+				supplyExternalSchemas();
+				done = true;
+			} else if (xmlschemarules.equals("XML-IHWUGM")) {
 				generateUgmXsdKING();
 				done = true;
 			} else if (xmlschemarules.equals("XML-IHWBSM")) {

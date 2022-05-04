@@ -32,6 +32,7 @@
     version="2.0">
     
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="common-postform.xsl"/>
     
     <!-- 
         This stylesheet post-processes the XML schema collection created, 
@@ -42,6 +43,7 @@
         1/ remove @minOccurs=1 and @maxOccurs=1 when specify-xsd-occurrence=default
         2/ remove @abstract=false
         3/ redirect NE3610IDPropertyType to NEN3610ID type. This is a patch for non conforming NEN3610 schema.
+        4/ remove all non-Name characters from names
    
     -->
     <xsl:variable name="specify-xsd-occurrence-always" select="imf:get-config-xmlschemarules()/parameter[@name='specify-xsd-occurrence'] = 'always'"/>
@@ -68,12 +70,15 @@
         </xsl:if>
     </xsl:template>    
     
-    <xsl:template match="@type[.='NEN3610:NEN3610IDPropertyType']">
+    <xsl:template match="@type[.='NEN3610:NEN3610IDPropertyType']" priority="2">
         <xsl:attribute name="type" select="'NEN3610:NEN3610ID'"/>
     </xsl:template>    
     
-    
     <!-- =========== common ================== -->
+    
+    <xsl:template match="@name | @type | @ref">
+        <xsl:attribute name="{name(.)}" select="imf:normalize-xsd-name(.)"/>
+    </xsl:template>
     
     <xsl:template match="node()|@*" mode="#all">
         <xsl:copy>
@@ -81,6 +86,5 @@
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
-    
     
 </xsl:stylesheet>

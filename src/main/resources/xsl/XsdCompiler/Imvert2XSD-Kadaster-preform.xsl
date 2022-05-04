@@ -26,6 +26,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     xmlns:ekf="http://EliotKimber/functions"
 
     exclude-result-prefixes="#all"

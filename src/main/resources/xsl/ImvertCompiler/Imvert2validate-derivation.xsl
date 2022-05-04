@@ -69,7 +69,10 @@
         <xsl:variable name="client-package" select="."/>
         
         <!-- GIT#22 -->
-        <!-- check if any supplier is generated using an older version of the Imvertor software -->
+        <!-- 
+            Check if any supplier is generated using an older version of the Imvertor software 
+            Client version must be "greater" than supplier
+        -->
         <xsl:variable name="client-generator" select="$client-package/imvert:generator"/>
         <xsl:variable name="supplier-generators" select="imf:get-supplier-models($client-package)"/>
         <xsl:variable name="newer-supplier-generators" select="for $g in $supplier-generators return if (imf:mm($g/imvert:generator) gt imf:mm($client-generator)) then $g else ()"/>
@@ -408,10 +411,12 @@
         
     </xsl:function>
   
-    <xsl:function name="imf:mm">
-        <xsl:param name="mmb"/>
+    <xsl:function name="imf:mm" as="xs:integer">
+        <xsl:param name="mmb" as="xs:string"/>
         <xsl:variable name="toks" select="tokenize($mmb,'\.')"/>
-        <xsl:value-of select="xs:integer($toks[1]) * 100 + xs:integer($toks[2])"/>
+        <xsl:variable name="major" select="if (matches($toks[1],'^\d+$')) then xs:integer($toks[1]) else 100"/><!-- may be "Nightly-build" which is the most recent -->
+        <xsl:variable name="minor" select="if (matches($toks[2],'^\d+$')) then xs:integer($toks[2]) else 0"/><!-- may be anything between 0 and 99 -->
+        <xsl:sequence select="$major * 100 + $minor"/>
     </xsl:function>
   
     <!-- https://github.com/Imvertor/Imvertor-Maven/issues/60 -->

@@ -71,7 +71,7 @@
     </xsl:function>
     
     <xsl:function name="imf:create-xml-debug-comment" as="comment()?">
-        <xsl:param name="info-node" as="item()?"/>
+        <xsl:param name="info-node" as="node()?"/>
         <xsl:param name="text" as="xs:string"/>
         <xsl:param name="parms" as="item()*"/>
         <xsl:if test="$debugging">
@@ -80,7 +80,7 @@
     </xsl:function>
     
     <xsl:function name="imf:create-xml-debug-comment" as="comment()?">
-        <xsl:param name="info-node" as="item()?"/>
+        <xsl:param name="info-node" as="node()?"/>
         <xsl:param name="text" as="xs:string"/>
         <xsl:sequence select="imf:create-xml-debug-comment($info-node,$text,())"/>
     </xsl:function>

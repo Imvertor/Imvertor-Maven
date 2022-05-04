@@ -23,7 +23,9 @@
          Adaptations of the generated version:
          - 2020-10-22 Added references to the xml:base attribute. Needed to allow xi:inclusions to appear on instances (producing xml:base attributes).
          - ? manually added unique key constraint on element ConceptualSchemasComponents
-         - 2021-03-04 New construct aosTypes added. 
+         - 2021-03-04 New construct aosTypes added.
+         - 2022-01-26 added version, phase
+         - 2022-01-26 added definition, source and data-location
          
       </xs:documentation>
       
@@ -145,7 +147,47 @@
                </xs:restriction>
             </xs:simpleType>
          </xs:element>
+         <xs:element name="version" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The version of the schema.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="phase" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The phase of the schema, usually "final".</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
          <xs:element name="desc" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="source" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The bron van de specificatie, veelal een organisatie naam.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="data-location" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The locatie waar informatie over dit schema kan worden gevonden. Veelal een URL.</xs:documentation>
+            </xs:annotation>
             <xs:simpleType>
                <xs:restriction base="xs:string">
                   <xs:pattern value="\S.*"/>

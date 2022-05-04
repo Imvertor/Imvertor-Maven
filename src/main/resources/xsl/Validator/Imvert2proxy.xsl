@@ -80,17 +80,22 @@
                 <xsl:variable name="proxied-outside-classes" select="$proxied-content//imvert:*[imvert:proxy-to-outside]"/>
                 
                 <xsl:for-each-group select="$proxied-outside-classes" group-by="imvert:proxy-to-outside">
-                    <xsl:if test="not($known-outside-classes/imvert:type-name = current-grouping-key())">
-                        <imvert:class origin="stub" umltype="Class">
-                            <xsl:comment>REQUIRED BY PROXY</xsl:comment>
-                            <imvert:name original="{current-grouping-key()}">
-                                <xsl:value-of select="current-grouping-key()"/>
-                            </imvert:name>
-                            <imvert:id>
-                                <xsl:value-of select="current-group()[1]/imvert:type-id"/>
-                            </imvert:id>
-                        </imvert:class>
-                    </xsl:if>
+                    <xsl:choose>
+                        <xsl:when test="$outside-package/imvert:class/imvert:id = current-group()[1]/imvert:type-id">
+                            <!-- deze was al opgenomen in de client, skip -->
+                        </xsl:when>
+                        <xsl:when test="not($known-outside-classes/imvert:type-name = current-grouping-key())">
+                            <imvert:class origin="stub" umltype="Class">
+                                <xsl:comment>REQUIRED BY PROXY</xsl:comment>
+                                <imvert:name original="{current-grouping-key()}">
+                                    <xsl:value-of select="current-grouping-key()"/>
+                                </imvert:name>
+                                <imvert:id>
+                                    <xsl:value-of select="current-group()[1]/imvert:type-id"/>
+                                </imvert:id>
+                            </imvert:class>
+                        </xsl:when>
+                    </xsl:choose>
                 </xsl:for-each-group>
                 
             </imvert:package>

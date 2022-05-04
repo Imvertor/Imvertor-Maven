@@ -129,7 +129,7 @@
          there are no assciations that has this class as the target (lonely), and
          no supertype is linkable (sad).
          
-         Also, we assume that a class is not linkable when it has no identifier (anonymous)
+         Also, we assume that a class is not linkable when it has no "identifier" attribute (UML is-id) (anonymous)
          or when the identifier is nillable/voidable (id-voidable).
     -->
     <xsl:function name="imf:is-linkable" as="xs:boolean">
@@ -147,6 +147,15 @@
         <xsl:variable name="is-not-anonymous" select="exists(($id-attribute-inherited,$id-attribute-inheriting))"/>
         <xsl:variable name="is-not-id-voidable" select="not($id-attribute-inherited/imvert:stereotype/@id = ('stereotype-name-voidable'))"/>
         <xsl:variable name="is-not-id-tv-voidable" select="if ($id-attribute-inherited) then not(imf:boolean(imf:get-tagged-value($id-attribute-inherited,'##CFG-TV-VOIDABLE'))) else true()"/>
+        
+        <?debug
+        <xsl:sequence select="dlogger:save('$L ' || imf:get-display-name($class),
+            imf:insert-fragments-by-index(
+                '$is-objecttype [1] and ($is-not-static [2] or $is-not-lonely [3] or $is-not-sad [4]) and $is-not-anonymous [5] and ($is-not-id-voidable [6] and $is-not-id-tv-voidable [7])',
+                ($is-objecttype,$is-not-static,$is-not-lonely,$is-not-sad,$is-not-anonymous,$is-not-id-voidable,$is-not-id-tv-voidable)
+             )
+         )"/>
+        debug?>
         
         <xsl:sequence select="$is-objecttype and ($is-not-static or $is-not-lonely or $is-not-sad) and $is-not-anonymous and ($is-not-id-voidable and $is-not-id-tv-voidable)"/>
     </xsl:function>

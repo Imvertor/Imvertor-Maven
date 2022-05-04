@@ -23,6 +23,7 @@ package nl.imvertor.common.file;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
@@ -154,6 +155,8 @@ public class AnyFolder extends AnyFile {
 	 * @returns Number of files selected
 	 */
 	
+	// TODO deze code moet worden uitgefaseerd: beter is het meegeven van een transformer, en, nog beter, een gecompileerd stylesheet ipv. een stylesheet file.
+	// Zie hieronder: serializeToXml(Transformer transformer, XslFile filterXslFile, String roleInfo, boolean includeContents)
 	public int serializeToXml(XslFile filterXslFile, String roleInfo, boolean includeContents) throws Exception {
 		// create a content file. If local name, the relative, else assume absolute.
 		XmlFile content = (serializedFilePath == SERIALIZED_CONTENT_XML_FILENAME) ? new XmlFile(this,serializedFilePath) : new XmlFile(serializedFilePath);
@@ -176,14 +179,16 @@ public class AnyFolder extends AnyFile {
     			XmlFile wrapperInputFile = new XmlFile(File.createTempFile("serializeToXml_", "_input.xml"));
 				wrapperInputFile.deleteOnExit();
 
-    			String type;
+				String type;
     			String contentString;
     			
     			if (f.isXml()) {
     				type = "xml";
     				if (includeContents) {
 	    				XmlFile fx = new XmlFile(f);
-	        			if (fx.isWellFormed()) 
+	    				if (f.getName().endsWith(".ea-profile.xml") || f.getName().endsWith(".ea-toolbox.xml"))
+	    	    			fx.setEncoding(StandardCharsets.UTF_16.displayName());
+	    	    		if (fx.isWellFormed()) 
 	         	    		contentString = cleanXmlPI(fx.getContent());
 	        			else
 	        				contentString = "<!--not wellformed-->";
@@ -203,19 +208,18 @@ public class AnyFolder extends AnyFile {
      				
     			wrapperInputFile.setContent(startWrapperString + contentString + endWrapperString);
     				
-				if (type.equals("xml"))
-	    			if (filterXslFile != null)
-	 					if (filterXslFile.isFile()) {
-	 						XmlFile wrapperOutputFile = new XmlFile(File.createTempFile("serializeToXml_", "_output.xml"));
-	 						wrapperOutputFile.deleteOnExit();
-	 	    				// do a filter transformation
-	 	    				filterXslFile.transform(wrapperInputFile,wrapperOutputFile);
-	     					// place that result in the content XML.
-	     					wrapperInputFile = wrapperOutputFile;
-	     					selected += 1;
-	     				}
-	 					else
-	 						throw new IOException("No such XSL file: " + filterXslFile.getCanonicalPath());
+				if (filterXslFile != null)
+ 					if (filterXslFile.isFile()) {
+ 						XmlFile wrapperOutputFile = new XmlFile(File.createTempFile("serializeToXml_", "_output.xml"));
+ 						wrapperOutputFile.deleteOnExit();
+ 	    				// do a filter transformation
+ 	    				filterXslFile.transform(wrapperInputFile,wrapperOutputFile);
+     					// place that result in the content XML.
+     					wrapperInputFile = wrapperOutputFile;
+     					selected += 1;
+     				}
+ 					else
+ 						throw new IOException("No such XSL file: " + filterXslFile.getCanonicalPath());
  			
  				contentWriter.append(wrapperInputFile.getContent());
 			}
@@ -223,6 +227,99 @@ public class AnyFolder extends AnyFile {
     	}
     	contentWriter.append("</cw:files>");
     	contentWriter.close();
+    	return selected;
+	}
+	
+	/**
+	 * Serialize the entire folder to a content xml file.
+	 * For each XML file found, transform the file using the XSL provided.
+	 * This XSL must therefore cater for various XML files expected in the folder. 
+	 * The result of the transformation is insert in the content XML file.
+	 * The XSL file is provided with the local file URL for the file at hand. 
+	 * This takes the form of a &lt;file path="c:\myfile.xml"/&gt; context document (a single element). 
+	 * As such, any huge or unimportant XML files may be dismissed immediately without having to read and process it.
+	 * The result of the transformation however is inserted in the __content.xml file as returned by the XSLT.
+	 * 
+	 * @param filterXslFile Pass XSL file to filter search file found, operating on the cw:file root element.
+	 * @param roleInfo Pass roleInfo when the result should be typed for further processing. This role info will appear on the @role attribute of the cw:files root element. 
+	 * @param includeContents Include the contents of the XML (possibly after transform)?
+	 * @throws Exception
+	 * @returns Number of files selected
+	 */
+	
+	public int serializeToXml(Transformer transformer, XslFile filterXslFile, String roleInfo, boolean includeContents) throws Exception {
+		// create a content file. If local name, the relative, else assume absolute.
+		XmlFile content = (serializedFilePath == SERIALIZED_CONTENT_XML_FILENAME) ? new XmlFile(this,serializedFilePath) : new XmlFile(serializedFilePath);
+    	// If from a previous run, remove
+    	if (content.isFile()) content.delete();
+    	// Build a writer
+    	FileWriterWithEncoding contentWriter = content.getWriter(false);
+    	contentWriter.append(
+    			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+    			+ "<cw:files xmlns:cw=\"" + FOLDER_CONTENT_WRAPPER_NAMESPACE + "\">");
+    	// now go through all files in the folder. Based in the XML or binary type of the file, add to XML stream.
+    	Vector<String> files = this.listFilesToVector(true);
+    	int selected = 0;
+    	for (int i = 0; i < files.size(); i++) {
+    		AnyFile f = new AnyFile(files.get(i));
+    		String relpath = f.getRelativePath(this);  // i.e. skip the "work1/" part
+    		
+    		if (f.isFile() && !f.getName().equals(serializedFilePath)) {
+    			
+    			XmlFile wrapperInputFile = new XmlFile(File.createTempFile("serializeToXml_", "_input.xml"));
+				wrapperInputFile.deleteOnExit();
+
+				String type;
+    			String contentString;
+    			
+    			if (f.isXml()) {
+    				type = "xml";
+    				if (includeContents) {
+	    				XmlFile fx = new XmlFile(f);
+	    	   			fx.setEncoding(f.guessEncoding());  // UTF-16BE etc wordt later teruggezet als UTF-8 bij serialisatie
+    		    	 	if (fx.isWellFormed()) 
+	         	    		contentString = cleanXmlPI(fx.getContent());
+	        			else
+	        				contentString = "<!--not wellformed-->";
+    				} else
+    					contentString = "<!--see xml-->";
+	      		} else {
+					type = "bin";
+					contentString = "<!--see binary-->";
+				}
+				
+				String startWrapperString = 
+						"<cw:file"
+						+ " xmlns:cw=\"" + FOLDER_CONTENT_WRAPPER_NAMESPACE + "\""
+						+ " type=\"" + type + "\" path=\"" + XmlFile.xmlescape(relpath) + "\"" + getSpecs(f) + ">";
+				String endWrapperString = 
+						"</cw:file>";
+     				
+    			wrapperInputFile.setContent(startWrapperString + contentString + endWrapperString);
+    				
+				if (filterXslFile != null)
+ 					if (filterXslFile.isFile()) {
+ 						XmlFile wrapperOutputFile = new XmlFile(File.createTempFile("serializeToXml_", "_output.xml"));
+ 						wrapperOutputFile.deleteOnExit();
+ 	    				// do a filter transformation
+ 	    				transformer.transform(wrapperInputFile,wrapperOutputFile,filterXslFile,"filtered");
+     					// place that result in the content XML.
+     					wrapperInputFile = wrapperOutputFile;
+     					selected += 1;
+     				}
+ 					else
+ 						throw new IOException("No such XSL file: " + filterXslFile.getCanonicalPath());
+ 			
+ 				contentWriter.append(wrapperInputFile.getContent());
+			}
+			
+    	}
+    	contentWriter.append("</cw:files>");
+    	contentWriter.close();
+    	
+    	// nu beide files indenteren en canoniseren, zodat je het goed kunt vergelijken
+    	content.prettyPrintXml(true);
+    	
     	return selected;
 	}
 	
@@ -248,7 +345,7 @@ public class AnyFolder extends AnyFile {
 			+ " ishidden = \"" + file.isHidden() + "\""
 			+ " isreadonly = \"" + file.canRead() + "\""
 			+ " ext = \"" + XmlFile.xmlescape(file.getExtensionCS()) + "\""
-			+ " fullpath = \"" + XmlFile.xmlescape(file.getCanonicalPath()) + "\"";
+			;
 	}
 	
 	private String cleanXmlPI(String xmlString) {

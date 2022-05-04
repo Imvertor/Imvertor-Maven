@@ -25,6 +25,16 @@
     <desc lang="en">Rule for processing SIM models to XML schemas</desc>
     <desc lang="nl">Regels voor het verwerken van SIM modellen tot XML schema's</desc>
     
-    <!-- IHW produces no schemas based in SIM directly (yet) -->
+    <!-- 
+        IHW specific rules 
+    -->
+    <!-- specify if strings must be non-empty -->
+    <parameter name="strings-nonempty">true</parameter>
+    
+    <!-- specify if the schema location must be absolute or relative. When absolute, XML schema location must be specified as a tagged value. -->
+    <parameter name="xml-schemalocation-approach">relative</parameter>
+    
+    <!-- specify if version or release or none must be inserted into the XSD namespaces -->
+    <parameter name="namespace-composition">release</parameter>
     
 </xmlschema-rules>

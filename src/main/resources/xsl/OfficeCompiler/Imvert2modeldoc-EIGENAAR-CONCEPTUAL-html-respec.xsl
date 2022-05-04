@@ -22,16 +22,17 @@
                 <title>
                     <xsl:value-of select="concat('Catalogus: ',@name)"/>
                 </title>
-                <script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"/>
+                <script src="{$configuration-docrules-file/respec-config}" class="remove"/>
                 <script class="remove">
                     var respecConfig = {
                         specStatus: "ED",
                         editors: [{
-                            name: "Arjan Loeffen, Armatiek Solutions BV",
-                            url: "http://www.armatiek.nl/imvertor-web.html",
+                            name: "<xsl:value-of select="imf:get-xparm('cli/userid')"/>, <xsl:value-of select="imf:get-xparm('cli/owner')"/>",
+                            url: "http://your.site/",
                         }],
                         edDraftURI: "http://some.place",
-                        shortName: "msgdoc"
+                        shortName: "msgdoc",
+                        maxTocLevel: 4
                     };
                 </script>
                 <style type="text/css">

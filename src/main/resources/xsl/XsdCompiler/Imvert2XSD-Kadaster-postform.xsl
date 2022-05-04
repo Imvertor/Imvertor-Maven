@@ -32,6 +32,7 @@
     version="2.0">
     
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="common-postform.xsl"/>
     
     <!-- 
         This stylesheet postprocesses the complete set of schema's basis on particular settings.
@@ -39,7 +40,7 @@
         This is:
           
         1/ apply the nilreason
-          
+        2/ remove all non-Name characters from names
     -->
     
     <xsl:template match="/">
@@ -67,7 +68,12 @@
         </xsl:if>
     </xsl:template>
         
+        
     <!-- =========== common ================== -->
+    
+    <xsl:template match="@name | @type | @ref">
+        <xsl:attribute name="{name(.)}" select="imf:normalize-xsd-name(.)"/>
+    </xsl:template>
     
     <xsl:template match="node()|@*">
         <xsl:copy>
@@ -75,6 +81,5 @@
             <xsl:apply-templates select="node()"/>
         </xsl:copy>
     </xsl:template>
-    
-    
+   
 </xsl:stylesheet>

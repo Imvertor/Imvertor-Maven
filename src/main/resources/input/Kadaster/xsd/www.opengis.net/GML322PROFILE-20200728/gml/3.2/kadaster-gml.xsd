@@ -829,4 +829,12 @@ patches encapsulates the patches of the surface.</documentation>
          <documentation>This property element contains a list of surfaces. The order of the elements is significant and shall be preserved when processing the array.</documentation>
       </annotation>
    </element>
+   <complexType name="AbstractFeatureMemberType" abstract="true">
+      <annotation>
+         <documentation>To create a collection of GML features, a property type shall be derived by extension from gml:AbstractFeatureMemberType.
+            By default, this abstract property type does not imply any ownership of the features in the collection. The owns attribute of gml:OwnershipAttributeGroup may be used on a property element instance to assert ownership of a feature in the collection. A collection shall not own a feature already owned by another object.</documentation>
+      </annotation>
+      <sequence/>
+      <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+   </complexType>
 </schema>

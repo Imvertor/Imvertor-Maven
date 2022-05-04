@@ -37,6 +37,7 @@ import nl.imvertor.StcCompiler.StcCompiler;
 import nl.imvertor.ModelHistoryAnalyzer.ModelHistoryAnalyzer;
 import nl.imvertor.OfficeCompiler.OfficeCompiler;
 import nl.imvertor.ReadmeCompiler.ReadmeCompiler;
+import nl.imvertor.RegressionExtractor.RegressionExtractor;
 import nl.imvertor.ReleaseComparer.ReleaseComparer;
 import nl.imvertor.ReleaseCompiler.ReleaseCompiler;
 import nl.imvertor.Reporter.Reporter;
@@ -228,7 +229,12 @@ public class ChainTranslateAndReport {
 		
 				    if (configurator.isTrue("cli","createyaml",false)) 
 			    		succeeds = succeeds && (new YamlCompiler()).run();
-						
+
+				    // finally, a regression test if requested
+				    if (configurator.isTrue("cli","regression",false)) {
+				    	configurator.setXParm("cli/identifier","DEVELOPMENT");
+				    	succeeds = succeeds && (new RegressionExtractor()).run();
+				    }
 			    }
 			} catch (Exception e) {
 				configurator.getRunner().error(logger,"Step-level system error - Please notify your system administrator: " + e.getMessage(),e);

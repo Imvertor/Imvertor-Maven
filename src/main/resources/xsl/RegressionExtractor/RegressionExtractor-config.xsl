@@ -36,7 +36,7 @@
          Stylesheet to filter intermediate config file.
     -->
     
-    <xsl:template match="cw:file/config" mode="mode-intermediate-config">
+    <xsl:template match="config" mode="mode-intermediate-config">
         <xsl:apply-templates mode="#current"/>
     </xsl:template>
     
@@ -44,11 +44,21 @@
         ignore the following alltogether 
     -->
     <xsl:template match="
-        desc | 
-        appinfo/previous-date
+        desc 
         " 
         mode="mode-intermediate-config">
         <xsl:call-template name="ignore"/>
+    </xsl:template>
+    
+    <!-- 
+        ignore the following alltogether (attributes)
+    -->
+    <xsl:template match="
+        @srcbase |
+        @src
+        " 
+        mode="mode-intermediate-config">
+        <!-- ignore -->
     </xsl:template>
     
 </xsl:stylesheet>
