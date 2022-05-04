@@ -92,7 +92,7 @@ public class RegressionExtractor  extends Step {
 			configurator.getRunner().info(logger,"Regression testing bulk mode: " + configurator.getXParm("cli/regfolder"));
 		    Iterator<File> owners = Arrays.asList(regfolder.listFiles()).iterator();
 			while (owners.hasNext()) {
-				AnyFile owner = new AnyFile(owners.next(),"applications");
+				AnyFile owner = new AnyFile(owners.next());
 				String ownerName = owner.getParentFile().getName();
 				if (regOwners.length == 0 || ArrayUtils.contains(regOwners, ownerName)) {
 					Iterator<File> projects = Arrays.asList(owner.listFiles()).iterator();
@@ -131,18 +131,18 @@ public class RegressionExtractor  extends Step {
 		} else if (identifier.equals("DEVELOPMENT")) {
 			// Single test: in TranslateAndReport chain
 			configurator.getRunner().info(logger,"Regression testing this model");
-			AnyFolder regFolder = new AnyFolder(configurator.getXParm("cli/regfolder") + "/" + configurator.getXParm("cli/owner") + "/applications/" + configurator.getXParm("appinfo/subpath"));
-		    AnyFolder refFolder = new AnyFolder(regFolder,"ref");
-		    AnyFolder tstFolder = new AnyFolder(regFolder,"tst");
-		    AnyFolder wrkFolder = new AnyFolder(tstFolder,"work");
-			AnyFolder outFolder = new AnyFolder(regFolder,"out");
+			String subpath = configurator.getXParm("cli/owner") + "/" + configurator.getXParm("appinfo/subpath");
+			AnyFolder regFolder = new AnyFolder(configurator.getXParm("cli/regfolder"));
+		    AnyFolder refFolder = new AnyFolder(regFolder,"ref/" + subpath);
+		    AnyFolder tstFolder = new AnyFolder(regFolder,"tst/" + subpath);
+			AnyFolder outFolder = new AnyFolder(regFolder,"out/" + subpath);
 			// Maak de test folder leeg en maak een workfolder
 			tstFolder.deleteDirectory(); 
-			wrkFolder.mkdirs();
+			tstFolder.mkdirs();
 			// copy the chain results to tst folder
 			String ownerName = configurator.getXParm("cli/owner");
 			AnyFolder appFolder = new AnyFolder(workFolder,ownerName + "/app");
-			appFolder.copy(wrkFolder);
+			appFolder.copy(tstFolder);
 			//  Run the test
 			Integer diffsfound = testFileByFile(configurator,refFolder,tstFolder,outFolder,identifier,compareMethod);
 			if (diffsfound != 0) 
