@@ -36,6 +36,7 @@
             <cs-ref:MapRef xlink:href="#BRO-COMMON"/>
             <cs-ref:MapRef xlink:href="#BRO-SFR"/>
             <cs-ref:MapRef xlink:href="#BRO-GUF"/>
+            <cs-ref:MapRef xlink:href="#BRO-GMW"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
@@ -113,6 +114,13 @@
             <cs:url>http://www.bro.nl/conceptual-schemas/bro/1.0/GPD/</cs:url>
             <cs:catalogUrl>https://broprogramma.github.io/GPD/[entry]</cs:catalogUrl>
          </cs:ConceptualSchema>
+	 <cs:ConceptualSchema>
+            <cs:id>RO-BRO-GMW</cs:id>
+            <cs:shortName>bro-gmw</cs:shortName>
+            <cs:desc>GMW object aspects that can be referenced between models</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/bro/1.0/GMW/</cs:url>
+            <cs:catalogUrl>https://broprogramma.github.io/GMW/[entry]</cs:catalogUrl>
+         </cs:ConceptualSchema>
          <cs:ConceptualSchema>
             <cs:id>INSPIRE</cs:id>
             <cs:shortName>INSPIRE</cs:shortName>
@@ -135,8 +143,8 @@
             <cs:namespace>http://www.broservices.nl/SampleExternalModelA</cs:namespace>
             <cs:location>http://www.broservices.nl/schemas/1.0.0/SampleExternalModelA.xsd</cs:location>
             <cs:phase>1</cs:phase>
-            <cs:version>1.0.0</cs:version>
-            <cs:release>20170302</cs:release>
+            <cs:version>1.1.0</cs:version>
+            <cs:release>20220516</cs:release>
             <cs:forSchema>
                <cs-ref:ConceptualSchemaRef xlink:href="#Sample1"/>
             </cs:forSchema>
@@ -1440,7 +1448,42 @@
                </cs:Construct>
             </cs:constructs>
          </cs:Map>
-         
+         <cs:Map>
+            <cs:id>BRO-GMW</cs:id>
+            <cs:namespace>http://www.broservices.nl/xsd/gmwcommon/1.0</cs:namespace>
+            <cs:desc>common definitions for BRO GMW</cs:desc>
+            <cs:location>https://schema.broservices.nl/xsd/gmwcommon/1.0/gmwcommon.xsd</cs:location>
+            <cs:phase>0</cs:phase>
+            <cs:version>1.0.0</cs:version>
+            <!--Onbekend of de release aangepast moet worden-->
+            <cs:release>20210201</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#RO-BRO-GMW"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>NITGCode</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:string</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Putcode</cs:name>
+                  <cs:name>wellCode</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:string</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>         
          <cs:Map>
             <cs:id>INSPIRE</cs:id>
             <cs:namespace>http://inspire.ec.europa.eu/</cs:namespace>
