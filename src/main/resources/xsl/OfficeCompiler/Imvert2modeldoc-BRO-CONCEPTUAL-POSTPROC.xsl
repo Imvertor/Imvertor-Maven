@@ -7,8 +7,6 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:bro="http://www.geostandaarden.nl/bro"
     
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
-    
     exclude-result-prefixes="#all" 
     version="2.0">
     

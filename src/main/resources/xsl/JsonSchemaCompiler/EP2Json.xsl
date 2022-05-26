@@ -7,8 +7,7 @@
     xmlns:j="http://www.w3.org/2005/xpath-functions"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:cw="http://www.armatiek.nl/namespace/folder-content-wrapper"
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
-
+   
     exclude-result-prefixes="#all"
     
     expand-text="yes"

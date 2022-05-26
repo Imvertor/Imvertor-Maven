@@ -37,8 +37,6 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
-    
     xmlns:ekf="http://EliotKimber/functions"
 
     exclude-result-prefixes="#all"

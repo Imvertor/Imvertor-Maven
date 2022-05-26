@@ -27,8 +27,6 @@
     
     xmlns:functx="http://www.functx.com"
     
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
-    
     exclude-result-prefixes="#all"
     version="2.0">
     

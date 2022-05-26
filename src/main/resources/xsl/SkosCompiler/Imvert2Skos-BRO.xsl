@@ -30,8 +30,6 @@
 
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
-    
     exclude-result-prefixes="#all"
     version="3.0">
 

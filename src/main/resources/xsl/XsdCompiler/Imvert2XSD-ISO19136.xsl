@@ -34,8 +34,6 @@
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
-    
     exclude-result-prefixes="#all"
     version="2.0">
 
