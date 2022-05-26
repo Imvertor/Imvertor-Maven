@@ -36,10 +36,6 @@
          Stylesheet to filter eaprofiles
     -->
     
-    <xsl:template match="MDG.Technology" mode="mode-intermediate-eaprofile">
-        <xsl:apply-templates mode="#current"/>
-    </xsl:template>
-    
     <!-- 
         ignore the following alltogether 
     -->

@@ -36,10 +36,6 @@
          Stylesheet to filter xsd result file.
     -->
     
-    <xsl:template match="xs:schema" mode="mode-intermediate-xsd">
-        <xsl:apply-templates mode="#current"/>
-    </xsl:template>
-    
     <!-- 
         normalize space of documentation 
     -->
