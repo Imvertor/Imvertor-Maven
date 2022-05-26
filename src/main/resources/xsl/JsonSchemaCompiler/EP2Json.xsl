@@ -244,7 +244,6 @@
     <xsl:template match="ep:construct" mode="external">
         <xsl:variable name="tech-name" select="ep:tech-name"/>
         <xsl:variable name="oas-name" select="imf:get-ep-parameter(.,'oas-name')"/>
-        <xsl:sequence select="dlogger:save('external',.)"/>
         <xsl:choose>
             <xsl:when test="not($references-geoJSON-collection) and $oas-name = $geoJSONnames">
                 <j:map key="{$oas-name}">
@@ -367,7 +366,6 @@
                 </geoJSONfile>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:sequence select="dlogger:save('geoJSONfiles',$geoJSONfiles)"/>
         <xsl:sequence select="$geoJSONfiles"/>
     </xsl:function>
 

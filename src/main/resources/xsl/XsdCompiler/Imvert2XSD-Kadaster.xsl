@@ -1032,7 +1032,6 @@
                             We do not consider composite relations to be treated specially 
                             (and do not place a reference to X).
                         -->
-                        <xsl:sequence select="dlogger:save('$buildcollection',$buildcollection)"></xsl:sequence>
                         <xsl:for-each select="$ref-classes">
                             <!-- IM-110 alle elementen hier zijn linkable -->
                             <xsl:choose>
@@ -1106,7 +1105,6 @@
             </xsl:when>
             <xsl:otherwise>
                 <!-- TODO IM-83 STALLED, NOT IMPLEMENTED YET FOR THIS CASE -->
-                <xsl:sequence select="dlogger:save('$defining-class',$defining-class)"></xsl:sequence>
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
