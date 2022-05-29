@@ -40,7 +40,8 @@
         ignore the following alltogether 
     -->
     <xsl:template match="
-        desc 
+        desc | 
+        prologue
         " 
         mode="mode-intermediate-config">
         <xsl:call-template name="ignore"/>
