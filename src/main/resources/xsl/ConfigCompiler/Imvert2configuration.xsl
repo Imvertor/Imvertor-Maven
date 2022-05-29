@@ -255,6 +255,7 @@
                 
                 <scalars>
                     <xsl:for-each-group select="$metamodel//scalars/scalar" group-by="@id">
+                        <xsl:sort select="current-grouping-key()"/>
                         <scalar id="{current-grouping-key()}">
                             <xsl:variable name="scalar-group" select="current-group()"/>
                             <xsl:sequence select="imf:fetch-applicable-name($scalar-group/name)"/>
@@ -272,23 +273,27 @@
                 
                 <naming>
                     <xsl:for-each-group select="$metamodel//naming/*" group-by="local-name()">
+                        <xsl:sort select="current-grouping-key()"/>
                         <xsl:apply-templates select="(current-group())[last()]" mode="#current"/>
                     </xsl:for-each-group>
                 </naming>
                 
                 <features>
                     <xsl:for-each-group select="$metamodel//features/feature" group-by="@name">
+                        <xsl:sort select="current-grouping-key()"/>
                         <xsl:apply-templates select="(current-group())[last()]" mode="#current"/>
                     </xsl:for-each-group>
                 </features>
                 
                 <stereotypes>
                     <xsl:for-each-group select="$metamodel//stereotypes/stereo" group-by="@id">
+                        <xsl:sort select="current-grouping-key()"/>
                         <stereo id="{current-grouping-key()}" primary="{(current-group()/@primary)[last()]}">
                             <xsl:variable name="stereo-group" select="current-group()"/>
                             <xsl:sequence select="imf:fetch-applicable-name($stereo-group/name)"/>
                             <xsl:apply-templates select="($stereo-group/desc[@lang=($language,'#all')])[last()]" mode="#current"/>
                             <xsl:for-each-group select="$stereo-group/construct" group-by=".">
+                                <xsl:sort select="current-grouping-key()"/>
                                 <xsl:variable name="construct-group" select="current-group()"/>
                                 <xsl:apply-templates select="$construct-group[last()]" mode="#current"/>
                             </xsl:for-each-group>
@@ -304,12 +309,15 @@
                 <xsl:variable name="visuals" select="visuals"/>
                 <xsl:sequence select="imf:fetch-applicable-name($visuals/name)"/>
                 <xsl:for-each-group select="$visuals//categories/category" group-by="@id">
+                    <xsl:sort select="current-grouping-key()"/>
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>   
                 <xsl:for-each-group select="$visuals//measures/measure" group-by="@id">
+                    <xsl:sort select="current-grouping-key()"/>
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>   
                 <xsl:for-each-group select="$visuals//stereos/stereo" group-by="@id">
+                    <xsl:sort select="current-grouping-key()"/>
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>   
             </visuals>
@@ -320,6 +328,7 @@
                 
                 <name-value-mapping>
                     <xsl:for-each-group select="$xmlschema-rules//tagged-values/tv" group-by="@id">
+                        <xsl:sort select="current-grouping-key()"/>
                         <tv id="{current-grouping-key()}">
                             <xsl:variable name="tv-group" select="current-group()"/>
                             <xsl:apply-templates select="imf:distinct($tv-group/name[@lang=($language,'#all')])" mode="#current"/>
@@ -330,6 +339,7 @@
                 </name-value-mapping>
           
                 <xsl:for-each-group select="$xmlschema-rules//parameter" group-by="@name">
+                    <xsl:sort select="current-grouping-key()"/>
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>
           
@@ -341,6 +351,7 @@
                 <xsl:apply-templates select="imf:distinct($jsonschema-rules/name[@lang=($language,'#all')])" mode="#current"/>
                 
                 <xsl:for-each-group select="$jsonschema-rules//parameter" group-by="@name">
+                    <xsl:sort select="current-grouping-key()"/>
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>
                 
@@ -353,6 +364,7 @@
                 
                 <tagged-values>
                     <xsl:for-each-group select="$tagset//tagged-values/tv" group-by="@id">
+                        <xsl:sort select="current-grouping-key()"/>
                         <tv id="{current-grouping-key()}">
                             <xsl:variable name="tv-group" select="current-group()"/>
                             <xsl:apply-templates select="($tv-group/@norm)[last()]" mode="#current"/>
@@ -367,12 +379,14 @@
                             <xsl:apply-templates select="($tv-group/inherit)[last()]" mode="#current"/>
                             <stereotypes>
                                 <xsl:for-each-group select="$tv-group/stereotypes/stereo" group-by=".">
+                                    <xsl:sort select="current-grouping-key()"/>
                                     <xsl:variable name="stereo-group" select="current-group()"/>
                                     <xsl:apply-templates select="$stereo-group[last()]" mode="#current"/>
                                 </xsl:for-each-group>
                             </stereotypes>                                
                             <declared-values> <!-- TODO must also take @lang in to account -->
                                 <xsl:for-each-group select="$tv-group/declared-values[@lang=($language,'#all')]/value" group-by=".">
+                                    <xsl:sort select="current-grouping-key()"/>
                                     <xsl:variable name="dec-group" select="current-group()"/>
                                     <xsl:apply-templates select="$dec-group[last()]" mode="#current"/>
                                 </xsl:for-each-group>
@@ -411,10 +425,12 @@
                 <xsl:apply-templates select="($doc-rules//respec-config)[last()]" mode="#current"/>
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
+                    <xsl:sort select="current-grouping-key()"/>
                     <xsl:sort select="@order" order="ascending"/>
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>
                 <xsl:for-each-group select="$doc-rules//image-purpose[name/@lang=($language,'#all')]" group-by="@id">
+                    <xsl:sort select="current-grouping-key()"/>
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>
             </doc-rules>
