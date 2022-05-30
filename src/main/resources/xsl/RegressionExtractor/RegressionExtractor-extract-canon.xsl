@@ -55,6 +55,7 @@
     <xsl:include href="RegressionExtractor-xsd.xsl"/>
     <xsl:include href="RegressionExtractor-eaprofile.xsl"/>
     <xsl:include href="RegressionExtractor-config.xsl"/>
+    <xsl:include href="RegressionExtractor-metamodel.xsl"/>
     <?assume-not-relevant
     <xsl:include href="RegressionExtractor-schemas.xsl"/>
     <xsl:include href="RegressionExtractor-parms.xsl"/>
@@ -83,6 +84,12 @@
             <xsl:when test="$path = '/etc/config.xml'">
                 <xsl:sequence select="dlogger:save('Config test',$path)"/>
                 <xsl:apply-templates mode="mode-intermediate-config"/>
+            </xsl:when>
+            
+            <!-- process the metamodel -->
+            <xsl:when test="$path = '/etc/metamodel.xml'">
+                <xsl:sequence select="dlogger:save('Metamodel test',$path)"/>
+                <xsl:apply-templates mode="mode-intermediate-metamodel"/>
             </xsl:when>
             
             <!-- skip all others -->
