@@ -70,6 +70,10 @@
 
       <WORK_EAPROFILE_FILE>${system/work-imvert-folder-path}/imvertor.00.eaprofile.xml</WORK_EAPROFILE_FILE>
       <IMVERTOR_EAPROFILE_XSLPATH debug="ICO">Imvert2ea-profile.xsl</IMVERTOR_EAPROFILE_XSLPATH>
+
+      <WORK_METAMODEL_FILE>${system/work-imvert-folder-path}/imvertor.00.metamodel.xml</WORK_METAMODEL_FILE>
+      <IMVERTOR_METAMODEL_XSLPATH debug="ICO">Imvert2metamodel.xsl</IMVERTOR_METAMODEL_XSLPATH>
+   
    </properties>
    
    <system>
