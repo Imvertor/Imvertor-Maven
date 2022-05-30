@@ -229,14 +229,15 @@ public class ChainTranslateAndReport {
 		
 				    if (configurator.isTrue("cli","createyaml",false)) 
 			    		succeeds = succeeds && (new YamlCompiler()).run();
-
-				    // finally, a regression test if requested
-				    if (configurator.isTrue("cli","regression",false)) {
-				    	configurator.setXParm("cli/identifier","DEVELOPMENT");
-				    	succeeds = succeeds && (new RegressionExtractor()).run();
-				    }
+				  
 			    }
-			} catch (Exception e) {
+			    // finally, a regression test if requested, independent of success/failure of the chain
+			    if (configurator.isTrue("cli","regression",false)) {
+			    	configurator.setXParm("cli/identifier","DEVELOPMENT");
+			    	(new RegressionExtractor()).run();
+			    }
+		    
+		    } catch (Exception e) {
 				configurator.getRunner().error(logger,"Step-level system error - Please notify your system administrator: " + e.getMessage(),e);
 			}   
 		    
