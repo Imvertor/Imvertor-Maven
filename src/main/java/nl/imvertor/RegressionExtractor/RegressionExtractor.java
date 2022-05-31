@@ -287,37 +287,42 @@ public class RegressionExtractor  extends Step {
 		runner.debug(logger,"CHAIN","Serializing folder: " + folder);
 		Integer diffsfound = 0;
 		
-		String folderPath = folder.getCanonicalPath();
-		String canonFolderPath = folderPath + "-canon";
-		// remove the canonical folder when exists
-		(new AnyFolder(canonFolderPath)).deleteDirectory();
-		Vector<String> files = folder.listFilesToVector(true); // returns list of canonical paths
-		for (int i = 0; i < files.size(); i++) {
-			// "canonize" the file, replace existing file by the canonized form
-			String origPath = files.get(i);
-			String type = FilenameUtils.getExtension(origPath).toLowerCase();
-			String relPath = StringUtils.substringAfter(origPath, folderPath);
-			String canonPath = folderPath + "-canon" + relPath;
-			AnyFile fileOrFolder = new AnyFile(origPath);
-			if (fileOrFolder.isFile()) {
-				if (type.equals("xml") || type.equals("xsd") || type.equals("xhtml")) { 
-					// Compare XML contents
-					xslFilterFile.setParm("file-path", relPath);
-					xslFilterFile.setParm("file-type", type);
-					xslFilterFile.transform(origPath, canonPath);
-					// canoniseer, vervang het resultaat
-					canonicalize(new XmlFile(canonPath));
-					if (compare) diffsfound += compare(canonPath);
-				} else if (type.equals("xmi") || type.equals("png") || type.equals("html")) {
-					// skip these files
-				} else { 
-					// compare raw, unprocessed contents
-					fileOrFolder.copyFile(canonPath);
-					if (compare) diffsfound += compare(canonPath);
+		if (folder.isDirectory()) {
+			String folderPath = folder.getCanonicalPath();
+			String canonFolderPath = folderPath + "-canon";
+			// remove the canonical folder when exists
+			(new AnyFolder(canonFolderPath)).deleteDirectory();
+			Vector<String> files = folder.listFilesToVector(true); // returns list of canonical paths
+			for (int i = 0; i < files.size(); i++) {
+				// "canonize" the file, replace existing file by the canonized form
+				String origPath = files.get(i);
+				String type = FilenameUtils.getExtension(origPath).toLowerCase();
+				String relPath = StringUtils.substringAfter(origPath, folderPath);
+				String canonPath = folderPath + "-canon" + relPath;
+				AnyFile fileOrFolder = new AnyFile(origPath);
+				if (fileOrFolder.isFile()) {
+					if (type.equals("xml") || type.equals("xsd") || type.equals("xhtml")) { 
+						// Compare XML contents
+						xslFilterFile.setParm("file-path", relPath);
+						xslFilterFile.setParm("file-type", type);
+						xslFilterFile.transform(origPath, canonPath);
+						// canoniseer, vervang het resultaat
+						canonicalize(new XmlFile(canonPath));
+						if (compare) diffsfound += compare(canonPath);
+					} else if (type.equals("xmi") || type.equals("png") || type.equals("html")) {
+						// skip these files
+					} else { 
+						// compare raw, unprocessed contents
+						fileOrFolder.copyFile(canonPath);
+						if (compare) diffsfound += compare(canonPath);
+					}
 				}
-			}
- 		}
-		return diffsfound;
+	 		}
+			return diffsfound;
+		} else {
+			runner.error(logger,"Regression folder not found: " + folder + ", please complete regression setup");
+			return 1;
+		}
 	}
 
 	/**
