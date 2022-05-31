@@ -1294,12 +1294,17 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
         </xsl:otherwise>
       </xsl:choose>   
     </xsl:variable>
-    <xsl:if test="$element-name">
-      <xsl:element name="mim-ref:{$element-name}" namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1">
-        <xsl:attribute name="xlink:href" namespace="http://www.w3.org/1999/xlink">#{$ref-id}</xsl:attribute>
-        <xsl:value-of select="imf:name($target-element)"/>
-      </xsl:element>  
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="empty($target-element)">
+        <xsl:sequence select="imf:message(., 'ERROR', 'Invalid reference', ())"/>
+      </xsl:when>
+      <xsl:when test="$element-name">
+        <xsl:element name="mim-ref:{$element-name}" namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1">
+          <xsl:attribute name="xlink:href" namespace="http://www.w3.org/1999/xlink">#{$ref-id}</xsl:attribute>
+          <xsl:value-of select="imf:name($target-element)"/>
+        </xsl:element>  
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template name="extensieKenmerken">
