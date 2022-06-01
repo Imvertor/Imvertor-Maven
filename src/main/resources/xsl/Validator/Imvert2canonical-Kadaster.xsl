@@ -88,6 +88,7 @@
         </xsl:copy>
     </xsl:template>
     
+    <?remove see #GH-254    
     <!-- 
         Union en union element moet nu expliciet worden doorgegeven als specifiek stereotype.
         Keuze tussen datatypen is enige keuze die CDMKAD modellen kennen.
@@ -97,6 +98,7 @@
         <xsl:sequence select="."/>
         <imvert:stereotype id="stereotype-name-union-datatypes" origin="system">{imf:get-config-name-by-id('stereotype-name-union-datatypes')}</imvert:stereotype>
     </xsl:template>
+    remove?>
     
     <!-- 
        identity transform
