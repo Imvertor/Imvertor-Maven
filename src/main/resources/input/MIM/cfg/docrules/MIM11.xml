@@ -460,6 +460,7 @@
         <name lang="en">Identifying</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
         </levels>
     </doc-rule>
     
