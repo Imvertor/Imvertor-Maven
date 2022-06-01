@@ -5,7 +5,7 @@
     
     <name>Waarderingskamer</name>
     
-    <xi:include href="../../../MIM/cfg/docrules/MIM11.xml"/>
+    <xi:include href="../../../MIM/cfg/docrules/MIM11-extended.xml"/>
     
     <!--
         Where to show the explanation?
