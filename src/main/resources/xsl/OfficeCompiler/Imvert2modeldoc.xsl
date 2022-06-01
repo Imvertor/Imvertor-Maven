@@ -27,6 +27,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
 
@@ -112,6 +114,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:package"><!-- only domain or view packs -->
+        <xsl:sequence select="dlogger:save(concat('package ', imvert:name),.)"></xsl:sequence>
         <section type="DOMAIN" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.,'global')}">
             
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
@@ -713,9 +716,11 @@
                         <item>
                             <ol>
                                 <xsl:for-each select="imvert:attributes/imvert:attribute">
+                                    <xsl:variable name="is-id-text" select="if (imf:boolean(imvert:is-id)) then imf:plugin-translate-i3n('REFERENCEELEMENT-IS-ID',true()) else ''"/>
                                     <xsl:variable name="def" select="imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION')"/>
                                     <li>
                                         <b><xsl:value-of select="imvert:name/@original"/></b>
+                                        <xsl:value-of select="$is-id-text"/>
                                         <xsl:text>: </xsl:text>
                                         <xsl:for-each select="$def"><!-- opgebouwd uit paragrafen -->
                                             <xsl:sequence select="node()"/>

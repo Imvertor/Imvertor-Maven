@@ -681,6 +681,13 @@
         <trans lang="nl">Card</trans>
         <trans lang="en">Card</trans>
     </item>
+
+    <item>
+        <key>REFERENCEELEMENT-IS-ID</key>
+        <trans lang="nl"> (identificerend)</trans>
+        <trans lang="en"> (identifying)</trans>
+        
+    </item>
     
     <!-- intermediate text -->
     
