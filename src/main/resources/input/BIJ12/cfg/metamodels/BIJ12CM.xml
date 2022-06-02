@@ -18,10 +18,10 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-
+   
    <!-- BIJ12 follows MIM requirements -->
    <xi:include href="../../../Geonovum/cfg/metamodels/Geonovum-MIMCM.xml"/>
-
+   
    <name>BIJ12 SIM</name>
    
    <desc lang="en">BIJ12 Conceptual model metamodel</desc>

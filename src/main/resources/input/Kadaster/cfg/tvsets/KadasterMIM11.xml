@@ -3,13 +3,14 @@
  * Copyright (C) 
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-  
-    <!-- 
-        Kadaster MIM follows MIM11
-    --> 
+    
     <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
     
-    <name>Kadaster MIM 1.1</name>
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM11.xml"/>
+    
+    <!-- #GH-256 refactored -->
+    
+    <name>Kadaster MIM 1.1.1 tagged values</name>
     
     <tagged-values>
         <tv norm="space" id="CFG-TV-DOMAIN">
@@ -24,7 +25,7 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
-            
+        
         <!-- 
              Explanation / Klare taal
             -->
@@ -202,5 +203,10 @@
             </declared-values>
         </tv>
         
+        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo><!--TODO dit moet eigenlijk naar grouping voor MIM111 -->
+            </stereotypes>
+        </tv>
     </tagged-values>
 </tagset>

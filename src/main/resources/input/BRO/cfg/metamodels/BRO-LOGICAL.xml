@@ -3,12 +3,10 @@
  * Copyright (C) 2016 
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <!-- 
-        BRO follows NEN3610
-        
-        Including scalars.
-    --> 
-    <xi:include href="../../../Geonovum/cfg/metamodels/Geonovum-NEN3610.xml"/>
+    
+    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM11.xml"/>
     
     <name>BRO LOGICAL</name>
     
@@ -40,9 +38,10 @@
         <feature name="allow-multiple-supertypes">false</feature>
         <feature name="allow-scalar-in-union">true</feature>
         <feature name="unique-normalized-class-names">domain</feature>
+        <feature name="role-based">true</feature>
     </features>
     
-   <!-- <stereotypes>
+    <!-- <stereotypes>
         <stereo id="stereotype-name-IMBRO/A">
             <name lang="en">IMBRO/A</name>
             <name lang="nl">IMBRO/A</name>

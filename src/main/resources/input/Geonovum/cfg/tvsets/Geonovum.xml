@@ -5,12 +5,8 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- 
-        Geonovum NEN3610 follows MIM11-ISO
-    --> 
-    <xi:include href="../../../MIM/cfg/tvsets/MIM11-ISO.xml"/>
-    
-    <name>Geonovum</name>
-    <desc lang="nl">Tags voor MIM vereiste MIM11-ISO uitbreidingen</desc>
+        uitbreidingen door Geonovum, hebben betrekking op CM en LM 
+    -->
     
     <tagged-values>
         <tv id="CFG-TV-UNITOFMEASURE">

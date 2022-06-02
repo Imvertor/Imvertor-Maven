@@ -21,9 +21,12 @@
     
     <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
     
-    <xi:include href="KadasterMIM11-scalar.xml"/>
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM11.xml"/>
+    
+    <!-- #GH-256 refactored -->
     
     <name>Kadaster MIM 1.1</name>
+    
     <desc lang="en">Metamodel for Kadaster specific MIM 1.1 extensions</desc>
     <desc lang="nl">Metamodel voor Kadaster specifieke MIM 1.1 uitbreidingen</desc>
     
@@ -52,8 +55,30 @@
         <feature name="role-based">false</feature>
         <feature name="allow-multiple-supertypes">false</feature>
         <feature name="allow-scalar-in-union">true</feature>
+        <feature name="unique-normalized-class-names">domain</feature>
         <feature name="supports-baretype-transformation">true</feature>
     </features>
+    
+    <scalars xml:id="scalars">
+        
+        <scalar id="scalar-time">
+            <name lang="nl">TIME</name>
+            <name lang="en">TIME</name>
+            <type-map formal-lang="xs">time</type-map>
+        </scalar>   
+        
+        <scalar id="scalar-yearmonth">
+            <name lang="nl">YEARMONTH</name>
+            <name lang="en">YEARMONTH</name>
+            <type-map formal-lang="xs">gYearMonth</type-map>
+        </scalar>
+        
+        <scalar id="scalar-any">
+            <name lang="nl">ANY</name>
+            <type-map formal-lang="xs">#any</type-map>
+        </scalar>
+        
+    </scalars>
     
     <stereotypes xml:id="stereotypes">
         

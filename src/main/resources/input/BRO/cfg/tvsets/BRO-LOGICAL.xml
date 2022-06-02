@@ -3,11 +3,11 @@
  * Copyright (C) 
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-  
-    <!-- 
-        BRO follows NEN3610
-    --> 
-    <xi:include href="../../../Geonovum/cfg/tvsets/NEN3610.xml"/>
+    
+    <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM11.xml"/>
+    
     <xi:include href="BRO.xml"/>
     
     <name>BRO LOGICAL</name>

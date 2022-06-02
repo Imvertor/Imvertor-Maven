@@ -18,10 +18,10 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-
+   
    <!-- IHW follows MIM requirements -->
    <xi:include href="../../../KING/cfg/metamodels/VNGRSIM.xml"/>
-
+   
    <name>IHW SIM</name>
    
    <desc lang="en">Metamodel for IHW information models: semantisch informatiemodel. Gebaseerd op VNG Realisatie SIM.</desc>

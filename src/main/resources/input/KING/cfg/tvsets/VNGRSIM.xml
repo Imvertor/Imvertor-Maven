@@ -18,11 +18,15 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <!-- VNGR follows MIM1.1 requirements -->
+    
     <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM11.xml"/>
 
+    <?x
     <xi:include href="VNGRBSM-cross-SIM-and-UGM.xml"/>
-
+    x?>
+    
     <name>VNGRSIM</name>
     <tagged-values>
 

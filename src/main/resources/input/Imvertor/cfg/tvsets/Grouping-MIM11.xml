@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <name>Grouping for MIM 1.1</name>
+    
+    <desc lang="en">Deviations and additions to generic grouping for Kadaster metamodel.</desc>  
+    
+    <tagged-values>
+        
+        <tv norm="space" id="CFG-TV-IMVERTOR">
+            <name lang="nl">Imvertor</name>
+            <name lang="en">Imvertor</name>
+            <derive>no</derive>
+            <desc lang="nl">
+                Deze waarde geeft aan dat het pakket een volledig model is dat kan worden verwerkt door de Imvertor-software.
+                Deze waarde is vereist door de Imvertor add-in op Enterprise Architect.
+            </desc>
+            <desc lang="en">
+                This specifies that the package is a full model that can be processed by to the Imvertor software. 
+                This tagged value is required by the Imvertor add-in on Enterprise Architect.
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="#all">
+                <value default="yes">model</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="compact" id="CFG-TV-LEVEL">
+            <name lang="nl">Niveau</name>
+            <name lang="en">Level</name>
+            <derive>no</derive>
+            <desc lang="nl">
+                Het niveau is een waarde uit een beperkte set:
+                "algemeen" betekent dat het model een fundament is van een ander model en moet worden opgenomen.
+                Het modelleert generieke constructies die deel uitmaken van de echte wereld. Dit omvat meestal abstracte object typen. Het kan andere constructen bevatten.
+                "specifiek" betekent dat het model een bepaald domein beschrijft of een samenhangend deel ervan .
+            </desc>
+            <desc lang="en">
+                The level is a value taken froma restricted set: 
+                "general" means that the model is a fundament of any other model and should be included. 
+                It models generic constructs that are part of the real world. This typically includes abstract featureTypes. It may include any other constructs.
+                "specific" means that the model is a particular to a domain and models that domain or a conherent part of it.  
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="no">generiek</value>
+                <value default="yes">specifiek</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value default="no">general</value>
+                <value default="yes">specific</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-ADMINISTRATOR">
+            <name lang="nl">Beheerder</name>
+            <name lang="en">Administrator</name>
+            <derive>yes</derive>
+            <desc lang="nl">Naam van de beheerder van het model.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-ABBREV">
+            <name lang="nl">Afkorting</name>
+            <name lang="en">Abbreviation</name>
+            <desc lang="nl">Afkorting van dit model. Deze afkorting wordt o.a. gebruikt waar informatie over het model wordt gepubliceerd.</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-RELEASE">
+            <name lang="nl">Release</name>
+            <name lang="en">Release</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="1..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="1..1">stereotype-name-internal-package</stereo>
+                <!-- release van kadaster externe schema's wordt ingegenereerd binnen Imvert2concreteSchema.xsl -->
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-REFRELEASE">
+            <name lang="nl">Ref-release</name>
+            <name lang="en">Ref-release</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-REFVERSION">
+            <name lang="nl">Ref-version</name>
+            <name lang="en">Ref-version</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-SUPPLIERPROJECT">
+            <name lang="nl">Supplier-project</name>
+            <name lang="en">Supplier-project</name>
+            <desc lang="nl">De naam van het supplier project. Alleen opnemen wanneer van afleiding sprake is.</desc>
+            <desc lang="en">The name of the supplier project. Include only when models is derived.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SUPPLIERNAME">
+            <name lang="nl">Supplier-name</name>
+            <name lang="en">Supplier-name</name>
+            <!--<name lang="nl">Supplier name</name>-->
+            <desc lang="nl">De naam van het supplier model. Alleen opnemen wanneer van afleiding sprake is.</desc>
+            <desc lang="en">The name of the supplier model. Include only when models is derived.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SUPPLIERPACKAGENAME">
+            <name lang="nl">Supplier-package-name</name>
+            <name lang="en">Supplier-package-name</name>
+            <desc lang="nl">De naam van de supplier (domein of view) package. Deze naam wordt opgegeven als deze niet gelijk is aan de naam van het package waar de tagged value op geplaatst is.</desc>
+            <!--<name lang="nl">Supplier package name</name>-->
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SUPPLIERRELEASE">
+            <name lang="nl">Supplier-release</name>
+            <name lang="en">Supplier-release</name>
+            <!--<name lang="nl">Supplier release</name>-->
+            <desc lang="nl">De release van het supplier model. Alleen opnemen wanneer van afleiding sprake is.</desc>
+            <desc lang="en">The release of the supplier model. Include only when models is derived.</desc>
+            
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-VERSIONID">
+            <name lang="nl">Versie ID</name>
+            <name lang="en">Version ID</name>
+            <desc lang="nl">De identificatie van de versie/revisie van dit model of model-element in het gehanteerde versiebeheersysteem.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" validate="url" id="CFG-TV-WEBLOCATION">
+            <name lang="nl">Web locatie</name>
+            <name lang="en">Web-location</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-INTERNALPROJECT">
+            <name lang="nl">Intern project</name>
+            <name lang="en">Internal project</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-internal-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-INTERNALNAME">
+            <name lang="nl">Interne naam</name>
+            <name lang="en">Internal name</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-internal-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-INTERNALRELEASE">
+            <name lang="nl">Interne release</name>
+            <name lang="en">Internal release</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-internal-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-ISDERIVED">
+            <name lang="nl">Is afgeleid</name>
+            <name lang="en">Is derived</name>
+            <desc lang="nl">Deze constructie is al dan niet afgeleid van een "supplier model". 
+                Wanneer je niks opgeeft wordt afleiding vastgesteld op basis van het package waarin het voorkomt.</desc>
+            <desc lang="en">This construction may or may not be derived from a "supplier model".
+                When you give up nothing, distraction is determined on the basis of the package in which it occurs.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <!-- packages -->
+                <stereo minmax="0..1">stereotype-name-project-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
+                
+                <!-- constructs -->
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-codelist</stereo>
+               
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-interface</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="no">Nee</value>
+                <value default="no">Ja</value>
+                <value default="yes">Zie package</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value default="no">No</value>
+                <value default="no">Yes</value>
+                <value default="yes">See package</value>
+            </declared-values>
+            
+        </tv>
+    
+        <tv id="CFG-TV-DESCRIPTION">
+            <name lang="nl">Toelichting</name>
+            <name lang="en">Description</name>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-project-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
+            </stereotypes>
+        </tv>  
+
+        <tv norm="space" id="CFG-TV-NAME">
+            <name lang="nl">Alternatieve naam</name>
+            <name lang="en">Alternative name</name>
+            <desc lang="nl">De naam in natuurlijke of formele taal; afhankelijk van gekozen aanpak. Een alternatieve naam.</desc>
+            <desc lang="en">The name in natural or formal language; depends on the chosen approach. An alternative name.</desc>
+            <derive>yes</derive>
+            <extract-from-notes>yes</extract-from-notes><!-- value may be read from notes field usig MIM10-ISO scheme -->
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo> 
+                <stereo minmax="0..1">stereotype-name-composite</stereo><!-- TODO remove? -->
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-codelist</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-project-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
+            </stereotypes>
+        </tv> 
+        
+        <tv id="CFG-TV-DEFINITION" origin="system">
+            <name lang="nl">Definitie</name>
+            <name lang="en">Definition</name>
+            <!-- definitie kan ook worden geplaatst op package stereo's die door Grouping zijn geïntroduceerd -->
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-project-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
+            </stereotypes>
+        </tv>  
+        
+        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
+            <name lang="nl">Positie</name>
+            <name lang="en">Position</name>
+            <desc lang="nl">De positie van de construct binnen producten waarin deze opeenvolging een rol speelt. </desc>
+            <desc lang="en">The position of the construct in products in which sequences play a role.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <!-- packages -->
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
+                
+                <!-- constructs -->
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo>
+
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-interface</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-INCLUDABLE">
+            <derive>yes</derive>
+            <name lang="nl">Is includeerbaar</name>
+            <name lang="en">Is includable</name>
+            <desc lang="nl">
+                Deze constructie kan via xi:include worden geincludeerd in het document. 
+                De equivalente constructie in het XML schema, of constructies daarbinnen, krijgt hierdoor dan een optioneel attribuut xml:base bijgevoegd.
+            </desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-product</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+        </tv>
+       
+    </tagged-values>
+    
+</tagset>
