@@ -6,6 +6,8 @@
     
     <!-- #GH-256 refactored -->
     
+    <xi:include href="MIM11-extension.xml"/><!-- enkele typische gemeenschappelijke aanvullingen; voorlopend op 111 -->
+
     <name>MIM 1.1</name>
     <desc lang="en">Metamodel for common constructs in MIM 1.1 models</desc>
     <desc lang="nl">Metamodel voor gemeenschappelijkheden in MIM 1.1 modellen</desc>
@@ -53,50 +55,50 @@
         
         <scalar id="scalar-boolean">
             <name lang="nl">BOOLEAN</name>
-            <desc lang="nl">Indicatie met mogelijke waarden True, false, 1 of 0. True en 1 hebben een identieke betekenis: Ja. False en 0 hebben een identieke betekenis: Nee. Opmerking: t.a.v. Ja of Nee. Wanneer u de Ja of Nee wilt gebruiken, gebruik dan bv. een Enumeratie genaamd Indicatie, of gebruik AN met een lengte en een (formeel) patroon.</desc>
+            <desc lang="nl">MIM11: Indicatie met mogelijke waarden True, false, 1 of 0. True en 1 hebben een identieke betekenis: Ja. False en 0 hebben een identieke betekenis: Nee. Opmerking: t.a.v. Ja of Nee. Wanneer u de Ja of Nee wilt gebruiken, gebruik dan bv. een Enumeratie genaamd Indicatie, of gebruik AN met een lengte en een (formeel) patroon.</desc>
             <name lang="en">BOOLEAN</name>
             <type-map formal-lang="xs">boolean</type-map>
         </scalar>
         <scalar id="scalar-day">
             <name lang="nl">DAY</name>
-            <desc lang="nl">2-cijferige dag uitgedrukt in dd conform https://en.wikipedia.org/wiki/ISO_8601</desc>
+            <desc lang="nl">MIM11: 2-cijferige dag uitgedrukt in dd conform https://en.wikipedia.org/wiki/ISO_8601</desc>
             <name lang="en">DAY</name>
             <type-map formal-lang="xs">gDay</type-map>
         </scalar>
         <scalar id="scalar-integer">
             <name lang="nl">INTEGER</name>
-            <desc lang="nl">Zie [iso-19103] (subtype van ISO Number). Vrij vertaald: geheel getal, lengte is minimaal 1 en maximale lengte is onbepaald, zonder voorloopnullen. Opmerking: t.a.v. positieve en negatieve getalen en + en – tekens: bijvoorbeeld -2,0 Het (formeel) patroon geeft aan of een + en/of - teken gebruikt mag worden in het gegeven.</desc>
+            <desc lang="nl">MIM11: Zie [iso-19103] (subtype van ISO Number). Vrij vertaald: geheel getal, lengte is minimaal 1 en maximale lengte is onbepaald, zonder voorloopnullen. Opmerking: t.a.v. positieve en negatieve getalen en + en – tekens: bijvoorbeeld -2,0 Het (formeel) patroon geeft aan of een + en/of - teken gebruikt mag worden in het gegeven.</desc>
             <name lang="en">INTEGER</name>
             <type-map formal-lang="xs">integer</type-map>
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-date">
             <name lang="nl">DATE</name>
-            <desc lang="nl"> 4-cijferig jaar, 2-cijferig maand, 2-cijferig dag uitgedrukt in yyyy-mm-dd conform https://en.wikipedia.org/wiki/ISO_8601</desc>
+            <desc lang="nl">MIM11:  4-cijferig jaar, 2-cijferig maand, 2-cijferig dag uitgedrukt in yyyy-mm-dd conform https://en.wikipedia.org/wiki/ISO_8601</desc>
             <name lang="en">DATE</name>
             <type-map formal-lang="xs">date</type-map>
         </scalar>    
         <scalar id="scalar-datetime">
             <name lang="nl">DATETIME</name>
-            <desc lang="nl">yyyy-mm-ddThh:mm:ss conform https://en.wikipedia.org/wiki/ISO_8601</desc>
+            <desc lang="nl">MIM11: yyyy-mm-ddThh:mm:ss conform https://en.wikipedia.org/wiki/ISO_8601</desc>
             <name lang="en">DATETIME</name>
             <type-map formal-lang="xs">dateTime</type-map>
         </scalar>
         <scalar id="scalar-decimal">
             <name lang="nl">DECIMAL</name>
-            <desc lang="nl">Zie [iso-19103] (subtype van ISO Number). Vrij vertaald: een decimal is een gegevenstype waarin het getal een exacte waarde vertegenwoordigt, als een eindige weergave van een decimaal getal. Aangezien veel valuta's decimaal zijn, hebben deze weergaven de voorkeur bij het omgaan met dergelijke waarden. Opmerking 1: Dit verschilt van real, want real is een geschatte waarde en Decimal is exact. Opmerking 2: t.a.v. positieve en negatieve getalen en + en – tekens: zie Integer.</desc>
+            <desc lang="nl">MIM11: Zie [iso-19103] (subtype van ISO Number). Vrij vertaald: een decimal is een gegevenstype waarin het getal een exacte waarde vertegenwoordigt, als een eindige weergave van een decimaal getal. Aangezien veel valuta's decimaal zijn, hebben deze weergaven de voorkeur bij het omgaan met dergelijke waarden. Opmerking 1: Dit verschilt van real, want real is een geschatte waarde en Decimal is exact. Opmerking 2: t.a.v. positieve en negatieve getalen en + en – tekens: zie Integer.</desc>
             <name lang="en">DECIMAL</name>
             <type-map formal-lang="xs">decimal</type-map>
         </scalar>
         <scalar id="scalar-month">
             <name lang="nl">MONTH</name>
-            <desc lang="nl">2-cijferige maand uitgedrukt in mm conform https://en.wikipedia.org/wiki/ISO_8601</desc>
+            <desc lang="nl">MIM11: 2-cijferige maand uitgedrukt in mm conform https://en.wikipedia.org/wiki/ISO_8601</desc>
             <name lang="en">MONTH</name>
             <type-map formal-lang="xs">gMonth</type-map>
         </scalar>
         <scalar id="scalar-real">
             <name lang="nl">REAL</name>
-            <desc lang="nl">Zie [iso-19103] (subtype van ISO Number). Vrij vertaald: een real is een zwevendekommagetal, waarbij de precisie bepaald wordt door het aantal getoonde cijfers. Het getoonde getal is een schatting en geeft niet noodzakelijk de exacte waarde weer. Opmerking 1: Dit verschilt van decimal, want decimal is een exacte waarde en real is geschat. Opmerking 2: t.a.v. positieve en negatieve getalen en + en – tekens: zie Integer.</desc>
+            <desc lang="nl">MIM11: Zie [iso-19103] (subtype van ISO Number). Vrij vertaald: een real is een zwevendekommagetal, waarbij de precisie bepaald wordt door het aantal getoonde cijfers. Het getoonde getal is een schatting en geeft niet noodzakelijk de exacte waarde weer. Opmerking 1: Dit verschilt van decimal, want decimal is een exacte waarde en real is geschat. Opmerking 2: t.a.v. positieve en negatieve getalen en + en – tekens: zie Integer.</desc>
             <name lang="en">REAL</name>
             <type>string</type>
             <type-map formal-lang="xs">decimal</type-map>
@@ -105,7 +107,7 @@
         </scalar>
         <scalar id="scalar-string">
             <name lang="nl">CHARACTERSTRING</name>
-            <desc lang="nl">Zie [iso-19103]. Vrij vertaald: alle alfanumerieke tekens en speciale tekens die horen bij de gekozen characterset (standaard UTF-8), dus met diakrieten, white spaces, \-teken en newlines of HTML opmaak e.d. Mag starten met spatie. De maximale lengte is onbepaald. Opmerking: getallen (ISO Numbers) met voorloopnullen worden opgenomen als CharacterString, met een patroon of formeel patroon. Bij het metagegeven Waardenverzameling attribuutsoort wordt dit dan (ook) gespecificeerd.</desc>
+            <desc lang="nl">MIM11: Zie [iso-19103]. Vrij vertaald: alle alfanumerieke tekens en speciale tekens die horen bij de gekozen characterset (standaard UTF-8), dus met diakrieten, white spaces, \-teken en newlines of HTML opmaak e.d. Mag starten met spatie. De maximale lengte is onbepaald. Opmerking: getallen (ISO Numbers) met voorloopnullen worden opgenomen als CharacterString, met een patroon of formeel patroon. Bij het metagegeven Waardenverzameling attribuutsoort wordt dit dan (ook) gespecificeerd.</desc>
             <name lang="en">CHARACTERSTRING</name>
             <desc lang="en">A CharacterString is an arbitrary-length sequence of characters including accents and special characters from
                 repertoire of one of the adopted character sets (ISO 19103, Draft Technical Specification 19103, Geographic information - Conceptual
@@ -115,13 +117,13 @@
         </scalar>
         <scalar id="scalar-uri">
             <name lang="nl">URI</name>
-            <desc lang="nl">Unieke identificatie op internet conform RFC3986 en de URI-strategie Linked Open Data. Gestandaardiseerde manier om op het internet dingen (pagina's met informatie, objecten, datasets) uniek te identificeren.</desc>
+            <desc lang="nl">MIM11: Unieke identificatie op internet conform RFC3986 en de URI-strategie Linked Open Data. Gestandaardiseerde manier om op het internet dingen (pagina's met informatie, objecten, datasets) uniek te identificeren.</desc>
             <name lang="en">URI</name>
             <type-map formal-lang="xs">anyURI</type-map>
         </scalar>
         <scalar id="scalar-year">
             <name lang="nl">YEAR</name>
-            <desc lang="nl">4-cijferig jaar uitgedrukt in yyyy conform https://en.wikipedia.org/wiki/ISO_8601</desc>
+            <desc lang="nl">MIM11: 4-cijferig jaar uitgedrukt in yyyy conform https://en.wikipedia.org/wiki/ISO_8601</desc>
             <name lang="en">YEAR</name>
             <type-map formal-lang="xs">gYear</type-map>
         </scalar>
@@ -134,7 +136,7 @@
             <name lang="nl">Attribuutsoort</name>
             <name lang="en">AttributeType</name>
             <desc lang="en">The type to which an attribute may belong.</desc>
-            <desc lang="nl">De soort waartoe een attribuut kan behoren.</desc>
+            <desc lang="nl">MIM11: De typering van gelijksoortige gegevens die voor een objecttype van toepassing is.</desc>
             <construct>attribute</construct>
         </stereo>
         
@@ -143,15 +145,13 @@
             <name lang="en">AttributeGroup</name>
             <desc lang="en">
                 An more precise form of an UML attribute where the type is an AttributeGroupType.</desc>
-            <desc lang="nl">
-                Een verbijzondering van een UML attribuut waarbij het type een Gegevensgroeptype is.
-            </desc>
+            <desc lang="nl">MIM11: Een typering van een groep van gelijksoortige gegevens die voor een objecttype van toepassing is.</desc>
             <construct>attribute</construct>
         </stereo>
         
-        <stereo id="stereotype-name-base-package" primary="yes"><!-- TODO hoe omgaaan met toepassingsmodellen in MIM context? -->
-            <name lang="nl">Basismodel</name><!-- TODO dit moet informatiemodel worden -->
-            <name lang="en">Base model</name>
+        <stereo id="stereotype-name-informatiemodel-package" primary="yes">
+            <name lang="nl">Informatiemodel</name>
+            <name lang="en">Information model</name>
             <construct>package</construct>
         </stereo>
         
@@ -159,17 +159,7 @@
             <name lang="nl">Codelijst</name>
             <name lang="en">Codelist</name>
             <desc lang="en">TODO</desc>
-            <desc lang="nl">
-                Een enkele waarde onttrokken aan een externe lijst van waarden.
-                
-                Zowel referentielijsten als codelijsten zijn in feite waardelijsten. In tegenstelling echter tot de referentielijst wordt een 
-                codelijst niet in het informatiemodel beschreven, omdat de definitie en semantiek geheel in de externe waardelijst staat en niet 
-                (nader) geduid hoeft te worden in het informatiemodel zelf. Een codelijst heeft in het informatiemodel daarom geen definitie en 
-                geen attributen. De externe waardelijst zelf bevat, naast gewone attributen, ook altijd één specifiek attribuut, met daarin 
-                de domeinwaarden die gebruikt mogen/moeten worden in de registratie. In het gebruik is een codelijst daarom analoog aan een 
-                Enumeratie. Welk specifiek attribuut dit is en wat de betekenis daarvan is staat in de codelist zelf gedefinieerd.
-                
-            </desc>
+            <desc lang="nl">MIM11: De representatie van een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort, die buiten het model in een externe waardenlijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast, uitgebreid, of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie). De representatie bevat geen kenmerken, voor alle kenmerken wordt verwezen naar de specificatie van de externe waardelijst.</desc>
             <construct>datatype</construct>
             <construct>enumeration</construct>
         </stereo>
@@ -177,17 +167,14 @@
         <stereo id="stereotype-name-domain-package" primary="yes">
             <name lang="en">Domain</name>
             <name lang="nl">Domein</name>
-            <desc lang="nl">Een package waarvan de daarin opgenomen constructies als één geheel worden beheerd, en waarvan dus een gezamenlijke versie wordt onderhouden</desc>
+            <desc lang="nl">MIM11: Een groepering van constructies die een semantisch samenhangend gedeelte van een informatiemodel beschrijven.</desc>
             <construct>package</construct>
         </stereo>
         
         <stereo id="stereotype-name-external-package" primary="yes">
             <name lang="en">External</name>
             <name lang="nl">Extern</name>
-            <desc lang="nl">
-                Een groepering van constructies die een externe instantie beheert en beschikbaar stelt aan een informatiemodel 
-                Voorbeeld: het external package NEN3610 met datatype NEN3610ID. Het datatype van attribuutsoort Identificatie wegdeel in RSGB verwijst naar het 
-                datatype NEN3610ID zoals opgenomen in de external package.</desc>
+            <desc lang="nl">MIM11: Een groepering van constructies die een externe instantie beheert en beschikbaar stelt aan een informatiemodel en die in het informatiemodel ongewijzigd gebruikt worden.</desc>
             <construct>package</construct>
         </stereo>
         
@@ -197,31 +184,15 @@
             <desc lang="en">
                 The collection of data from an object of a type that is mutually mutated and maintained.
             </desc>
-            <desc lang="nl">
-                De verzameling van gegevens van een object van een type die gelijktijdig muteren en onderhouden worden.
-                Voorbeeld: gegevensgroeptype Geboorte bij INGESCHREVEN NATUURLIJK PERSOON, 	gegevensgroeptype Koopsom bij KADASTRALE ONROERENDE ZAAK
-            </desc>
+            <desc lang="nl">MIM11: Een groep van met elkaar samenhangende attribuutsoorten. Een gegevensgroeptype is altijd een type van een gegevensgroep.</desc>
             <construct>class</construct>
-        </stereo>
-        
-        <stereo id="stereotype-name-composite-id">
-            <name lang="en">Isid</name>
-            <name lang="nl">Isid</name>
-            <desc lang="en">TODO</desc>
-            <desc lang="nl">Aanduiding dat een relatiesoort onderdeel uitmaakt van de unieke aanduiding van een object.</desc>
-            <construct>association</construct>
         </stereo>
         
         <stereo id="stereotype-name-complextype" primary="yes">
             <name lang="nl">Gestructureerd datatype</name>
             <name lang="en">StructuredDatatype</name>
             <desc lang="en">TODO</desc>
-            <desc lang="nl">
-                Gestructureerd datatype zonder identiteit samengesteld uit minimaal twee onderdelen.
-                Voorbeeld: Bedrag bestaat uit de data elementen som en valuta.
-                De eigenschappen tezamen vormen de identiteit (een complex datatype “identificeert zichzelf” zoals er maar één “4 liter” bestaat, 
-                in tegenstelling tot een persoon met voornaam Piet, want zo kunnen meerdere mensen heten, zonder dezelfde persoon te zijn)
-            </desc>
+            <desc lang="nl">MIM11: Specifiek benoemd datatype dat de structuur van een gegeven beschrijft, samengesteld uit minimaal twee elementen die in samenhang betekenisvol zijn.</desc>
             <construct>datatype</construct>
         </stereo>
         
@@ -230,7 +201,7 @@
             <name lang="en">DataElement</name>
             <desc lang="en">
                 A component of a Complex data type expressed in a class property (attribute).</desc>
-            <desc lang="nl">Een onderdeel van een Complex datatype uitgedrukt in een eigenschap van een class (attribute).</desc>
+            <desc lang="nl">MIM11: Een onderdeel/element van een Gestructureerd datatype die als type een datatype heeft.</desc>
             <construct>attribute</construct>
         </stereo>
         
@@ -238,7 +209,7 @@
             <name lang="nl">Enumeratiewaarde</name>
             <name lang="en">Enum</name>
             <desc lang="en">A single element in an enumeration</desc>
-            <desc lang="nl">Één element in een enumeratie.</desc>
+            <desc lang="nl">MIM11: Een gedefinieerde waarde, in de vorm van een eenmalig vastgesteld constant gegeven.</desc>
             <construct>attribute</construct>
         </stereo>
         
@@ -247,10 +218,7 @@
             <name lang="en">Enumeration</name>
             <desc lang="en">
                 A list of the possible domain values ​​or constants of a attribute type that is unchangeable.</desc>
-            <desc lang="nl">
-                Een lijst met een opsomming van de mogelijke domeinwaarden oftewel constanten van een 
-                attribuutsoort die onveranderlijk is.
-            </desc>
+            <desc lang="nl">MIM11: Een datatype waarvan de mogelijke waarden limitatief zijn opgesomd in een statische lijst.</desc>
             <construct>datatype</construct>
             <construct>enumeration</construct>
         </stereo>
@@ -260,14 +228,14 @@
             <name lang="en">ExternalLink</name>
             <desc lang="en">An association that allows an object type of an external information model from the perspective of its own information model to be 
                 linked to an object type from the "own" information model.</desc>
-            <desc lang="nl">Een associatie waarmee vanuit het perspectief van het eigen informatiemodel een objecttype van een extern informatiemodel 
-                gekoppeld wordt aan een objecttype uit het ‘eigen’ informatiemodel. </desc>
+            <desc lang="nl">MIM11: Een associatie waarmee vanuit het perspectief van het eigen informatiemodel een objecttype uit het ‘eigen’ informatiemodel gekoppeld wordt aan een objecttype van een extern informatiemodel. De relatie zelf hoort bij het ‘eigen’ objecttype.</desc>
             <construct>association</construct>
         </stereo>
         
         <stereo id="stereotype-name-generalization" primary="yes">
             <name lang="nl">Generalisatie</name>
             <name lang="en">InheritanceRelation</name>
+            <desc lang="nl">MIM11: De typering van het hiërarchische verband tussen een meer generiek en een meer specifiek modelelement van hetzelfde soort, waarbij het meer specifieke modelelement eigenschappen van het meer generieke modelelement overerft. Dit verband is alleen gedefinieerd voor objecttypen en datatypen.</desc>
             <construct>generalization</construct>
         </stereo>
         
@@ -275,33 +243,7 @@
             <name lang="nl">Objecttype</name>
             <name lang="en">FeatureType</name>
             <desc lang="en">TODO</desc>
-            <desc lang="nl">
-                De soort waartoe een object kan behoren.
-                Toelichting:
-                Een soort is ondubbelzinnig gedefinieerd als met behulp van de definitie van elk 	aangeboden object ondubbelzinnigheid bepaald 
-                kan worden of het wel of niet tot de 	betreffende soort behoort.
-                Objecten zijn dingen waarvan de eigenschappen in de vorm van gegevens worden 	vastgelegd. 
-                Toelichting:
-                Objecten zijn vaak:
-                -	Fysiek van aard, zoals natuurlijke personen, panden e.d.
-                -	Abstract van aard zoals kadastraal percelen, maatschappelijke activiteiten
-            </desc>
-            <construct>class</construct>
-        </stereo>
-        
-        <stereo id="stereotype-name-reference">
-            <name lang="en">Reference</name>
-            <name lang="nl">Referentie</name>
-            <desc lang="en">TODO</desc>
-            <desc lang="nl">Een complex datatype met de naam *AltRef die door de gebruiker is geïntroduceerd als referentie klasse. Zie IM-137. 
-                Het betreft een referentie naar een objecttype uit een ander informatiemodel. 
-                De referentie naar dit object zit in scope van het eigen model, maar het gerefereerde object niet. 
-                Voorbeeld: de referentie naar een Persoon uit de BRP, in de vorm van alleen de identificatie die de BRP aan dit objecttype heeft toegekend. 
-                Expliciet dus niet de BRP-Persoon zelf, noch een representatie hiervan in het eigen model.
-                Toelichting: dit stereotype is analoog aan het stereotype «Externe koppeling» met het verschil dat bij deze laatste het gerefereerde object met 
-                attributen is overgenomen naar het eigen model (in een package met stereotype «view»). Bij het stereotype «Referentie» wordt overname niet 
-                nodig geacht, omdat alleen de relatie naar het object voldoende is (aanvullend op de identificatie van het object geen verdere attributen). 
-            </desc>
+            <desc lang="nl">MIM11: De typering van een groep objecten die binnen een domein relevant zijn en als gelijksoortig worden beschouwd.</desc>
             <construct>class</construct>
         </stereo>
         
@@ -309,30 +251,21 @@
             <name lang="nl">Referentielijst</name>
             <name lang="en">Referencelist</name>
             <desc lang="en">TODO</desc>
-            <desc lang="nl">
-                Een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort die in de loop van de tijd kan veranderen.
-                Voorbeeld: referentielijst LAND, referentielijst NATIONALITEIT
-               (Een "rij" in de "tabel".)
-            </desc>
+            <desc lang="nl">MIM11: De representatie van een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort, die buiten het model in een externe waardenlijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast, uitgebreid, of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie). De representatie bevat een aantal kenmerken, die overgenomen zijn van de specificatie van de externe waardelijst.</desc>
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-referentie-element" primary="yes">
             <name lang="nl">Referentie element</name>
             <name lang="en">ReferenceElement</name>
             <desc lang="en">TODO</desc>
-            <desc lang="nl">
-                Een eigenschap van een referentielijst in de vorm van een gegeven.
-                Voorbeeld: referentie element Landcode ISO bij referentielijst LAND, referentie element 	
-                Nationaliteitcode bij referentielijst NATIONALITEIT
-                (Een "cel" in de "rij" van een tabel.)
-            </desc>
+            <desc lang="nl">MIM11: Een eigenschap van een object in een referentielijst in de vorm van een gegeven.</desc>
             <construct>attribute</construct>
         </stereo>
         
         <stereo id="stereotype-name-relatiesoort" primary="yes">
             <name lang="en">AssociationType</name>
             <name lang="nl">Relatiesoort</name>
-            <desc lang="nl">De soort waartoe een relatie kan behoren.</desc>
+            <desc lang="nl">MIM11: De typering van het structurele verband tussen een object van een objecttype en een (ander) object van een ander (of hetzelfde) objecttype.</desc>
             <construct>association</construct>
         </stereo>
         
@@ -342,17 +275,14 @@
             <desc lang="en">
                 A relationship type that records data about the relationship between two types of objects (in the form of a third kind of object).
                 Example: Relationship class PARENT-CHILD RELATIONSHIP, RELATIONSHIP FUNCTIONARY</desc>
-            <desc lang="nl">	
-                Een relatiesoort waarover gegevens over de relatie tussen twee soorten objecten (in de 	vorm van een derde soort object) worden vastgelegd.
-                Voorbeeld: relatieklasse OUDER-KIND RELATIE, relatieklasse FUNCTIONARIS
-            </desc>
+            <desc lang="nl">MIM11: Een relatiesoort met eigenschappen.</desc>
             <construct>class</construct>
         </stereo>
         
         <stereo id="stereotype-name-relation-role" primary="yes">
             <name lang="nl">Relatierol</name>
             <name lang="en">AssociationRole</name>
-            <desc lang="nl">De benaming van de manier waarop een object deelneemt aan een relatie met een ander object.</desc>
+            <desc lang="nl">MIM11: De benaming van de manier waarop een object deelneemt aan een relatie met een ander object.</desc>
             <construct>associationend</construct>
         </stereo>
         
@@ -360,31 +290,8 @@
             <name lang="nl">Primitief datatype</name>
             <name lang="en">PrimitiveDatatype</name>
             <desc lang="en">TODO</desc>
-            <desc lang="nl"></desc>
+            <desc lang="nl">MIM11: Een primitief datatype is een datatype met een eenvoudige basisstructuur, oftewel enkelvoudig en zonder gelaagdheid.</desc>
             <construct>datatype</construct>
-        </stereo>
-        
-        <stereo id="stereotype-name-system-reference-package" primary="yes">
-            <name lang="nl">System-reference-package</name>
-            <name lang="en">System-reference-package</name>
-            <desc lang="en">TODO</desc>
-            <desc lang="nl">Een package dat door het systeem is aangemaakt om referentie-elementen te bevatten.</desc>
-            <construct>package</construct>
-        </stereo>
-        
-        <stereo id="stereotype-name-system-reference-class" primary="yes">
-            <name lang="nl">System-reference-class</name>
-            <name lang="en">System-reference-class</name>
-            <desc lang="en">TODO</desc>
-            <desc lang="nl">Een class welke door het systeem is aangemaakt als referentie-element.</desc>
-            <construct>class</construct>
-        </stereo>
-        
-        <stereo id="stereotype-name-simpletype" primary="yes">
-            <name lang="nl">Primitief datatype</name>
-            <name lang="en">PrimitiveDatatype</name>
-            <desc lang="en">TODO</desc>
-            <desc lang="nl"></desc>
             <construct>primitivetype</construct>
         </stereo>
         
@@ -401,9 +308,14 @@
         <stereo id="stereotype-name-union-element-DEPRECATED" primary="no"><!-- niet primary, want is deprecated en wordt omgezet in canonisering -->
             <name lang="nl">Keuze element</name>
             <name lang="en">UnionElement</name>
-            <desc lang="nl">
-                Dit stereotype is vervallen in de laatste versie van MIM 1.1. Ze blijf vooralsnog gehandhaafd voor "backward compatibility" maar moet worden veranderd in stereotype DATATYPE. 
-            </desc>
+            <desc lang="nl">Dit stereotype is vervallen in de laatste versie van MIM 1.1. Ze blijf vooralsnog gehandhaafd voor "backward compatibility" maar moet worden veranderd in stereotype DATATYPE.</desc>
+            <construct>attribute</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-union-element" primary="yes">
+            <name lang="nl">Datatype</name>
+            <name lang="en">Datatype</name>
+            <desc lang="nl">Een representatie van een datatype in een keuze tussen datatypen. MIM: Use case 1: een keuze tussen datatypen</desc>
             <construct>attribute</construct>
         </stereo>
         
@@ -448,13 +360,6 @@
             <construct>datatype</construct>
         </stereo>
 
-        <stereo id="stereotype-name-union-element" primary="yes">
-            <name lang="nl">Datatype</name>
-            <name lang="en">Datatype</name>
-            <desc lang="nl">Een representatie van een datatype in een keuze tussen datatypen. MIM: Use case 1: een keuze tussen datatypen</desc>
-            <construct>attribute</construct>
-        </stereo>
-
         <stereo id="stereotype-name-union-for-attributes" primary="no">
             <name lang="nl">Keuze zonder betekenis</name>
             <name lang="en">Meaningless choice attribute</name>
@@ -467,8 +372,7 @@
         <stereo id="stereotype-name-view-package" primary="yes">
             <name lang="en">View</name>
             <name lang="nl">View</name>
-            <desc lang="nl">Een groepering van objecttypen die gespecificeerd zijn in een extern informatiemodel en vanuit het perspectief van het 
-                eigen informatiemodel inzicht geeft welke gegevens van deze objecttypen relevant zijn binnen het eigen informatiemodel.</desc>
+            <desc lang="nl">MIM11: Een groepering van objecttypen die gespecificeerd zijn in een extern informatiemodel en vanuit het perspectief van het eigen informatiemodel inzicht geeft welke gegevens van deze objecttypen relevant zijn binnen het eigen informatiemodel.</desc>
             <construct>package</construct>
         </stereo>
         

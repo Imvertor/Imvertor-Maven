@@ -1,0 +1,18 @@
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <!-- #GH-256 refactored -->
+    
+    <name>MIM 1.1 metamodel (common extensions)</name>
+    
+    <stereotypes xml:id="stereotypes">
+
+        <stereo id="stereotype-name-composite-id">
+            <name lang="en">Isid</name>
+            <name lang="nl">Isid</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">Aanduiding dat een relatiesoort onderdeel uitmaakt van de unieke aanduiding van een object.</desc>
+            <construct>association</construct>
+        </stereo>
+        
+    </stereotypes>
+</metamodel>

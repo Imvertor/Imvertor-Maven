@@ -256,7 +256,6 @@
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
                 
                 <stereo minmax="0..1">stereotype-name-union</stereo>
-                <stereo minmax="0..1">stereotype-name-union-element</stereo>
                 
                 <stereo minmax="0..1">stereotype-name-enumeration</stereo>
                 <stereo minmax="0..1">stereotype-name-enum</stereo>
@@ -365,7 +364,6 @@
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
                 
                 <stereo minmax="0..1">stereotype-name-union</stereo>
-                <stereo minmax="0..1">stereotype-name-union-element</stereo>
                 
                 <stereo minmax="0..1">stereotype-name-enumeration</stereo>
                 <stereo minmax="0..1">stereotype-name-enum</stereo>

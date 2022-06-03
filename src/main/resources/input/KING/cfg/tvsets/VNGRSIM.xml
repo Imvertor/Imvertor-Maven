@@ -44,6 +44,7 @@
                 <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
+        
         <tv norm="space" id="CFG-TV-INDICATIEINONDERZOEK">
             <name lang="nl">Indicatie in onderzoek</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
@@ -64,45 +65,24 @@
                 <value>Zie groep</value>
             </declared-values>
         </tv>
+        
         <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
-            <name lang="nl">Herkomst definitie</name>
-            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
-            <desc lang="nl">
-                De basisregistratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die
-                aangeeft uit welke bronnen de defintie is samengesteld.
-            </desc>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
-                <!-- in addition to BP -->
-                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
-                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
-                <stereo minmax="0..1">stereotype-name-union</stereo>
-                <stereo minmax="0..1">stereotype-name-union-element</stereo>
-                <stereo minmax="0..1">stereotype-name-complextype</stereo>
-                <stereo minmax="0..1">stereotype-name-data-element</stereo>
-                <stereo minmax="0..1">stereotype-name-composite</stereo>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
+        
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
-            <name lang="nl">Indicatie materiële historie</name>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-composite</stereo> <!-- overweeg om deze te verwijderen (wel nieuwe profielen dan) -->
-                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
-                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
-            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
-            <desc lang="nl">
-                Indicatie of de materiële historie van de attribuutsoort te bevragen is.
-                Materiële historie geeft aan wanneer een verandering is opgetreden in de
-                werkelijkheid die heeft geleid tot veranderjng van de attribuutwaarde.
-            </desc>
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value default="yes">Nee</value>
@@ -111,24 +91,14 @@
                 <value>N.v.t.</value>
             </declared-values>
         </tv>
+        
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
-            <name lang="nl">Indicatie formele historie</name>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-composite</stereo>
-                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
-                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
-            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
-            <desc lang="nl">
-                Indicatie of de formele historie van de attribuutsoort te bevragen is.
-                Formele historie geeft aan wanneer in de administratie een verandering is
-                verwerkt van de attribuutwaarde (wanneer was de verandering bekend en
-                is deze verwerkt).
-            </desc>
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value default="yes">Nee</value>
@@ -136,52 +106,27 @@
                 <value>N.v.t.</value>
             </declared-values>
         </tv>
+        
         <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC">
-            <name lang="nl">Authentiek</name>
-            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
-            <desc lang="nl">
-                Aanduiding of het een authentiek gegeven (attribuutsoort) betreft.
-            </desc>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
-                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
         <tv norm="compact" rules="NOC" id="CFG-TV-VOIDABLE">
-            <name lang="nl">Mogelijk geen waarde</name>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
-                <stereo minmax="0..1">stereotype-name-composite</stereo>    <!-- Overwegen of deze wel terecht is opgenomen -->
-                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>    <!-- Overwegen of deze wel terecht is opgenomen -->
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
-            <desc lang="nl">
-                Indicatie waarmee wordt aangegeven dat het gegeven ook geen waarde kan hebben.
-            </desc>
-            <declared-values lang="nl">
-                <value>Ja</value>
-                <value default="yes">Nee</value>
-            </declared-values>
         </tv>
 
         <tv norm="space" id="CFG-TV-SOURCE">
-            <name lang="nl">Herkomst</name>
-            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
-            <desc lang="nl">
-                De basisregistratie in wiens catalogus het objecttype is gespecificeerd (oftewel de basisregistratie waar het
-                objecttype deel van uitmaakt). Deze specificatie is toegevoegd omdat het wel duidelijk moet zijn in
-                welke (basis)registratie of informatiemodel het objecttype voorkomt (indien van toepassing).
-            </desc>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
-                <stereo minmax="1..1">stereotype-name-composite</stereo> <!-- verplicht voor SIM -->
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
@@ -189,30 +134,25 @@
             </stereotypes>
         </tv>
 
-        <tv norm="note" id="CFG-TV-POPULATION">   <!-- in aanvulling op SBR -->
-            <derive>yes</derive>
+        <tv norm="note" id="CFG-TV-POPULATION">
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
             </stereotypes>
         </tv>
+        
         <tv norm="space" id="CFG-TV-CONCEPT">   <!-- in aanvulling op MIM11 -->
-            <derive>yes</derive>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
-                <stereo minmax="0..*">stereotype-name-attributegroup</stereo>
                 <stereo minmax="0..*">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..*">stereotype-name-obj-proxy</stereo>
                 <stereo minmax="0..*">stereotype-name-grp-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-INDICATIONDERIVABLE">
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
-            </stereotypes>
-        </tv>
+        
         <tv norm="space" id="CFG-TV-DATERECORDED">
-            <derive>yes</derive>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
@@ -220,27 +160,23 @@
                 <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
-        <tv norm="note" id="CFG-TV-QUALITY">   <!-- in aanvulling op SBR --><!-- Wat voegt dit  dan toe tov SBR? Volgens mij niets en kan het weg. -->
-            <name lang="nl">Kwaliteitsbegrip</name>
-            <derive>yes</derive>
+        <tv norm="note" id="CFG-TV-QUALITY">
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
             </stereotypes>
         </tv>
         <tv norm="note" id="CFG-TV-DEFINITION">
-            <derive>yes</derive>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-composite</stereo> <!-- verplicht voor SIM -->
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
-        <tv norm="note" id="CFG-TV-DESCRIPTION">   <!-- in aanvulling op SBR -->
-            <name lang="nl">Toelichting</name>
-            <derive>yes</derive>
-            <desc lang="nl">Aanvullende beschrijving van het construct met de bedoeling dat te verduidelijken.</desc>
+        <tv norm="note" id="CFG-TV-DESCRIPTION">
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
@@ -248,66 +184,39 @@
                 <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
-        <?x TODO remove: KOMT IN HET MIM NIET MEER VOOR. ?>
-        <tv norm="note" id="CFG-TV-RULES">   <!-- in aanvulling op SBR -->
-            <derive>yes</derive>
-            <desc lang="nl">
-                Optionaliteitsregels of waardebeperkende regels.
-            </desc>
+        <tv norm="note" id="CFG-TV-RULES">
+            <!-- in aanvulling op extensie op MIM11 -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-CODE">
-            <name lang="nl">Code</name>
-            <name lang="en">Code</name>
-            <derive>yes</derive>
-            <desc lang="nl">
-                De in een registratie of informatiemodel aan de enumeratiewaarde toegekend unieke code.
-            </desc>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-enum</stereo>
-            </stereotypes>
-        </tv>
-
         <tv norm="space" id="CFG-TV-PATTERN">
-            <name lang="nl">Patroon</name>
-            <name lang="en">Pattern</name>
-            <derive>yes</derive>
-            <desc lang="nl">
-                Beschrijving van het gegevenspatroon van dit element. Dit kan de basis zijn voor een reguliere expressie.
-            </desc>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
-                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
-                <stereo minmax="0..1">stereotype-name-complextype</stereo>
-                <stereo minmax="0..1">stereotype-name-data-element</stereo>
-                <stereo minmax="0..1">stereotype-name-union-element</stereo>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-FORMALPATTERN">
-            <derive>no</derive>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-LENGTH">
-            <derive>yes</derive>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-DATALOCATION">
-            <derive>yes</derive>
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OWNER">
-            <derive>yes</derive>
+            <!-- in aanvulling op extensie op MIM11 -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
@@ -315,6 +224,7 @@
             </stereotypes>
         </tv>
         <tv norm="note" id="CFG-TV-NAME">
+            <!-- in aanvulling op MIM11 -->
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
@@ -322,8 +232,8 @@
                 <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
-            <derive>yes</derive>
+        <tv norm="space"  id="CFG-TV-POSITION">
+            <!-- in aanvulling op grouping in MIM11 -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
@@ -331,14 +241,11 @@
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-INDICATIONCLASSIFICATION">
+            <!-- in aanvulling op MIM11 -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
             </stereotypes>
         </tv>
-
-        <!-- REDMINE #487612 -->
-        <!-- Internal packages are propagated to Grouping -->
-
 
     </tagged-values>
 </tagset>

@@ -46,7 +46,6 @@
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
                 <stereo minmax="0..1">stereotype-name-union</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
-                <stereo minmax="0..1">stereotype-name-union-element</stereo>
             </stereotypes>
         </tv>
         

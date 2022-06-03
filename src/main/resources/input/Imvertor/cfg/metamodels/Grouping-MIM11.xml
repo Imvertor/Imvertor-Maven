@@ -58,6 +58,22 @@
             <construct>package</construct>
         </stereo>
         
+        <stereo id="stereotype-name-system-reference-package" primary="yes">
+            <name lang="nl">System-reference-package</name>
+            <name lang="en">System-reference-package</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">Een package dat door het systeem is aangemaakt om referentie-elementen te bevatten.</desc>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-system-reference-class" primary="yes">
+            <name lang="nl">System-reference-class</name>
+            <name lang="en">System-reference-class</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">Een class welke door het systeem is aangemaakt als referentie-element.</desc>
+            <construct>class</construct>
+        </stereo>
+        
         <stereo id="stereotype-name-interface" primary="yes">
             <name lang="en">Interface</name>
             <name lang="nl">Interface</name>
@@ -150,6 +166,22 @@
             <name lang="en">Anonymous</name>
             <construct>attribute</construct>
             <construct>association</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-reference">
+            <name lang="en">Reference</name>
+            <name lang="nl">Referentie</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">Een complex datatype met de naam *AltRef die door de gebruiker is geïntroduceerd als referentie klasse. Zie IM-137. 
+                Het betreft een referentie naar een objecttype uit een ander informatiemodel. 
+                De referentie naar dit object zit in scope van het eigen model, maar het gerefereerde object niet. 
+                Voorbeeld: de referentie naar een Persoon uit de BRP, in de vorm van alleen de identificatie die de BRP aan dit objecttype heeft toegekend. 
+                Expliciet dus niet de BRP-Persoon zelf, noch een representatie hiervan in het eigen model.
+                Toelichting: dit stereotype is analoog aan het stereotype «Externe koppeling» met het verschil dat bij deze laatste het gerefereerde object met 
+                attributen is overgenomen naar het eigen model (in een package met stereotype «view»). Bij het stereotype «Referentie» wordt overname niet 
+                nodig geacht, omdat alleen de relatie naar het object voldoende is (aanvullend op de identificatie van het object geen verdere attributen). 
+            </desc>
+            <construct>class</construct>
         </stereo>
         
     </stereotypes>
