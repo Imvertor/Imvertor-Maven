@@ -73,8 +73,14 @@
                         <xsl:sequence select="$geoJSONfiles[@construct = 'geometryGeoJSON']/j:map/*"/>
                         <xsl:sequence select="$geoJSONfiles[@construct = 'geometrycollectionGeoJSON']/j:map/*"/>
                     </xsl:if>
-                    <xsl:for-each-group select="ep:seq/ep:construct/ep:seq/ep:construct[imf:boolean(ep:external)]" group-by="ep:tech-name"><!-- van iedere geoJson external de eerste -->
-                        <xsl:apply-templates select="current-group()[1]" mode="external"/>
+                    <xsl:variable name="maps" as="element(j:map)*">
+                        <xsl:for-each-group select="ep:seq/ep:construct/ep:seq/ep:construct[imf:boolean(ep:external)]" group-by="ep:tech-name"><!-- van iedere geoJson external de eerste -->
+                            <xsl:apply-templates select="current-group()[1]" mode="external"/>
+                        </xsl:for-each-group>
+                    </xsl:variable>
+                    <!-- Verwijder duplicate keys. Kan gebeuren als twee externals mappen naar hetzelfde oas object -->
+                    <xsl:for-each-group select="$maps" group-adjacent="@key">
+                        <xsl:sequence select="current-group()[1]"/>
                     </xsl:for-each-group>
                 </j:map>
             </j:map>     
