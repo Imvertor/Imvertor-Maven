@@ -152,6 +152,7 @@
         <stereo id="stereotype-name-informatiemodel-package" primary="yes">
             <name lang="nl">Informatiemodel</name>
             <name lang="en">Information model</name>
+            <desc lang="nl">MIM11: De groepering van alle modelelementen waaruit het informatiemodel is opgebouwd. Het informatiemodel als geheel.</desc>
             <construct>package</construct>
         </stereo>
         
