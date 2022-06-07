@@ -27,6 +27,7 @@
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         
@@ -71,6 +72,31 @@
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
             </stereotypes>
         </tv>
+        
+        <tv norm="space" id="CFG-TV-DATERECORDED">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SOURCE">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-CONCEPT">
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
 
     

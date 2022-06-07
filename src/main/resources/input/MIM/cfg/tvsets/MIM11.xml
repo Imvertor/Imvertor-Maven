@@ -6,7 +6,7 @@
   
     <!-- #GH-256 refactored -->
     
-    <xi:include href="MIM11-extension.xml"/><!-- enkele typische gemeenschappelijke aanvullingen; voorlopend op 111 -->
+    <xi:include href="MIM11-extension.xml"/><!-- enkele typische gemeenschappelijke aanvullingen; voorlopend op 111; ook verwerking van harmonisatie -->
     
     <name>MIM 1.1 tagged values</name>
     

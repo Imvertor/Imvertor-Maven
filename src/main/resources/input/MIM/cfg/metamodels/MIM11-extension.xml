@@ -14,5 +14,26 @@
             <construct>association</construct>
         </stereo>
         
+        <stereo id="stereotype-name-koppelklasse" primary="yes"><!-- https://github.com/Geonovum/MIM-Werkomgeving/issues/196 -->
+            <name lang="nl">Koppelklasse</name>
+            <name lang="en">LinkType</name>
+            <desc lang="nl">Een koppelklasse is een verbijzondering van een objecttype en wordt als object beheerd. Dit (koppel)object koppelt twee soorten objecten c.q. klassen aan elkaar, welke zelf geen weet hebben van elkaar. De beheercyclus van deze twee klassen is op zichzelf staand, wijzigingen in een van deze objecten hebben nooit wijzigingen tot gevolg in het andere object (dit geldt beide kanten op). Gegevens over de koppeling tussen twee de soorten objecten (in de vorm van een derde soort object) worden vastgelegd. De combinatie van de identificaties waarnaar de koppelklasse refereert komt in principe maar één keer voor.</desc>
+            <construct>class</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-static-liskov" primary="yes"><!-- https://github.com/Geonovum/MIM-Werkomgeving/issues/132 -->
+            <name lang="nl">Static liskov</name>
+            <name lang="en">StaticLiskov</name>
+            <desc lang="nl">Een generalisatie relatie waarin wordt aangenomen dat het subtype de plek kan innemen daar waar het supertype is gespecificeerd. Daarnaast neemt het structuur-eigenschappen over (attributen, relaties). Voorbeeld: Racefiets is Fiets. </desc>
+            <construct>generalization</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-static-generalization" primary="yes"><!-- https://github.com/Geonovum/MIM-Werkomgeving/issues/132 -->
+            <name lang="nl">Static</name>
+            <name lang="en">Static</name>
+            <desc lang="nl">Een generalisatie relatie waarin wordt aangenomen dat het subtype alléén structuur-eigenschappen overneemt van het supertype. Het subtype kan niet (per definitie) de plaats innemen van het supertype. Voorbeeld: Racefiets is Vervoermiddel-met-twee-wielen. </desc>
+            <construct>generalization</construct>
+        </stereo>
+        
     </stereotypes>
 </metamodel>
