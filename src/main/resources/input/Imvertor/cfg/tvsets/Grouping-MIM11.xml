@@ -60,16 +60,6 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" id="CFG-TV-ADMINISTRATOR">
-            <name lang="nl">Beheerder</name>
-            <name lang="en">Administrator</name>
-            <derive>yes</derive>
-            <desc lang="nl">Naam van de beheerder van het model.</desc>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-external-package</stereo>
-            </stereotypes>
-        </tv>
-        
         <tv norm="space" id="CFG-TV-ABBREV">
             <name lang="nl">Afkorting</name>
             <name lang="en">Abbreviation</name>

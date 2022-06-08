@@ -73,6 +73,12 @@
             </stereotypes>
         </tv>
         
+        <tv norm="space" id="CFG-TV-DEFINITION">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
         <tv norm="space" id="CFG-TV-DATERECORDED">
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
@@ -94,6 +100,40 @@
         <tv norm="space" id="CFG-TV-CONCEPT">
             <stereotypes>
                 <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-QUALITY">
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-POPULATION">
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-DESCRIPTION">
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-ADMINISTRATOR">
+            <name lang="nl">Beheerder</name>
+            <name lang="en">Administrator</name>
+            <derive>yes</derive>
+            <desc lang="nl">Naam van de beheerder van het model of het deel van het model.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
         
