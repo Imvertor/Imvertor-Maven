@@ -115,7 +115,7 @@
                 <stereo minmax="0..1">stereotype-name-attgrp-proxy</stereo>
             </stereotypes>
         </tv>
-        <tv norm="compact" rules="NOC" id="CFG-TV-VOIDABLE">
+        <tv norm="space" rules="NOC" id="CFG-TV-VOIDABLE">
             <!-- in aanvulling op MIM11 -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
