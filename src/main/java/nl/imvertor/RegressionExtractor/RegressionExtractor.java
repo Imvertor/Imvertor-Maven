@@ -88,8 +88,8 @@ public class RegressionExtractor  extends Step {
 			String r = Configurator.getInstance().getXParm("cli/regowner",false);
 			String[] regOwners = StringUtils.split(r.replace(" ", ""),';');
 			
-			AnyFolder regfolder = new AnyFolder(configurator.getXParm("cli/regfolder"));
-			configurator.getRunner().info(logger,"Regression testing bulk mode: " + configurator.getXParm("cli/regfolder"));
+			AnyFolder regfolder = new AnyFolder(configurator.getXParm("system/managedregtestfolder"));
+			configurator.getRunner().info(logger,"Regression testing bulk mode: " + configurator.getXParm("system/managedregtestfolder"));
 		    Iterator<File> owners = Arrays.asList(regfolder.listFiles()).iterator();
 			while (owners.hasNext()) {
 				AnyFile owner = new AnyFile(owners.next());
@@ -132,21 +132,25 @@ public class RegressionExtractor  extends Step {
 			// Single test: in TranslateAndReport chain
 			configurator.getRunner().info(logger,"Regression testing this model");
 			String subpath = configurator.getXParm("cli/owner") + "/" + configurator.getXParm("appinfo/subpath");
-			AnyFolder regFolder = new AnyFolder(configurator.getXParm("cli/regfolder"));
-		    AnyFolder refFolder = new AnyFolder(regFolder,"ref/" + subpath);
-		    AnyFolder tstFolder = new AnyFolder(regFolder,"tst/" + subpath);
-			AnyFolder outFolder = new AnyFolder(regFolder,"out/" + subpath);
-			// Maak de test folder leeg en maak een workfolder
-			tstFolder.deleteDirectory(); 
-			tstFolder.mkdirs();
-			// copy the chain results to tst folder
-			String ownerName = configurator.getXParm("cli/owner");
-			AnyFolder appFolder = new AnyFolder(workFolder,ownerName + "/app");
-			appFolder.copy(tstFolder);
-			//  Run the test
-			Integer diffsfound = testFileByFile(configurator,refFolder,tstFolder,outFolder,identifier,compareMethod);
-			if (diffsfound != 0) 
-				logger.warn("Regression: " + (compareMethod.equals("raw") ? "some" : diffsfound) + " differences in " + tstFolder);
+			AnyFolder regFolder = new AnyFolder(configurator.getXParm("system/managedregtestfolder"));
+			if (regFolder.isDirectory()) {
+			    AnyFolder refFolder = new AnyFolder(regFolder,"ref/" + subpath);
+			    AnyFolder tstFolder = new AnyFolder(regFolder,"tst/" + subpath);
+				AnyFolder outFolder = new AnyFolder(regFolder,"out/" + subpath);
+				// Maak de test folder leeg en maak een workfolder
+				tstFolder.deleteDirectory(); 
+				tstFolder.mkdirs();
+				// copy the chain results to tst folder
+				String ownerName = configurator.getXParm("cli/owner");
+				AnyFolder appFolder = new AnyFolder(workFolder,ownerName + "/app");
+				appFolder.copy(tstFolder);
+				//  Run the test
+				Integer diffsfound = testFileByFile(configurator,refFolder,tstFolder,outFolder,identifier,compareMethod);
+				if (diffsfound != 0) 
+					logger.warn("Regression: " + (compareMethod.equals("raw") ? "some" : diffsfound) + " differences in " + tstFolder);
+			} else {
+				logger.error("Managed regression folder not found: " + regFolder.getName());
+			}
 		} else {
 			// Single test: in regression chain (identifier is usually the owner name)
 			configurator.getRunner().info(logger,"Regression testing single model: " + configurator.getXParm("cli/tstfolder"));
