@@ -9,8 +9,13 @@
     
     <cs:id>NEN3610</cs:id>
     <cs:shortName>nen3610</cs:shortName>
-    <cs:desc>NEN3610 (2011)</cs:desc>
-    <cs:url>http://www.bro.nl/conceptual-schemas/nen3610/1.0/</cs:url>
-    
+    <cs:version>2011</cs:version>
+    <cs:phase>3</cs:phase>
+    <cs:desc>Constructies opgenomen in NEN3610:2011</cs:desc>
+    <cs:source>Geonovum</cs:source>
+    <cs:data-location>https://docs.geostandaarden.nl/mim/</cs:data-location>
+    <cs:url>http://www.geonovum.nl/conceptual-schemas/NEN3610</cs:url>
+    <cs:catalogUrl>[entry]</cs:catalogUrl>
+       
 </cs:ConceptualSchema>
             
