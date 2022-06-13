@@ -27,6 +27,8 @@
     
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
 
@@ -277,8 +279,17 @@
                     </xsl:when>
                     <xsl:when test="normalize-space($body)">
                         <xsl:variable name="lines" as="xs:string*">
-                            <xsl:for-each select="$body/*/*">
-                                <xsl:value-of select="imf:strip-ea-html(.)"/>
+                            <xsl:for-each select="$body/*">
+                                <xsl:choose>
+                                    <xsl:when test="self::text">
+                                        <xsl:for-each select="*">
+                                            <xsl:value-of select="imf:strip-ea-html(.)"/>
+                                        </xsl:for-each>
+                                    </xsl:when>
+                                    <xsl:when test="self::label">
+                                        <xsl:value-of select="imf:strip-ea-html(.)"/>
+                                    </xsl:when>
+                                </xsl:choose>
                             </xsl:for-each>
                         </xsl:variable>
                         <xsl:variable name="b" as="xs:string*">
