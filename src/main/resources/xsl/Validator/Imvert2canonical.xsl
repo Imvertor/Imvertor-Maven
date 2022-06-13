@@ -265,7 +265,7 @@
                 <xsl:variable name="target-tv-id" select="$target-tv/@tagged-value"/>
                 <xsl:variable name="target-tv-process" select="$target-tv/@process"/>
                 
-                <xsl:variable name="current-tv" select="imf:get-tagged-value-by-id($construct,$target-tv-id)/imvert:value"/> <!-- the current tagged value if any -->
+                <xsl:variable name="current-tv" select="imf:get-tagged-value-by-id($construct,$target-tv-id)/imvert:value" as="xs:string*"/> <!-- the current tagged value if any -->
                 
                 <xsl:choose>
                     <xsl:when test="not(normalize-space($title))">
@@ -274,7 +274,7 @@
                     <xsl:when test="empty($target-tv-id)">
                         <xsl:sequence select="imf:msg($construct,'WARNING','Notes field [1] not recognized, and skipped',$title)"/>
                     </xsl:when>
-                    <xsl:when test="normalize-space($body) and normalize-space($current-tv)">
+                    <xsl:when test="normalize-space($body) and exists($current-tv)">
                         <xsl:sequence select="imf:msg($construct,'WARNING','Tagged value [1] in notes field [2] already specified',($norm-title,$title))"/>
                     </xsl:when>
                     <xsl:when test="normalize-space($body)">
