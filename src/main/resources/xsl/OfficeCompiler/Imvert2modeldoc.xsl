@@ -114,7 +114,6 @@
     </xsl:template>
     
     <xsl:template match="imvert:package"><!-- only domain or view packs -->
-        <xsl:sequence select="dlogger:save(concat('package ', imvert:name),.)"></xsl:sequence>
         <section type="DOMAIN" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.,'global')}">
             
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
@@ -897,6 +896,9 @@
             <xsl:when test="$construct/imvert:stereotype/@id = ('stereotype-name-composite')">
                 <xsl:apply-templates select="." mode="detail-gegevensgroeptype"/>
             </xsl:when>
+            <xsl:when test="imvert:stereotype/@id = ('stereotype-name-externekoppeling')">
+                <xsl:apply-templates select="." mode="detail-externekoppeling"/>
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates select="." mode="detail-normal"/>
             </xsl:otherwise>
@@ -933,6 +935,19 @@
                 </part>
                 ?>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-COMPOSITE-ASSOCIATION')"/>
+            </content>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
+        </section>
+        
+    </xsl:template>
+    
+    <xsl:template match="imvert:association" mode="detail-externekoppeling">
+        <xsl:variable name="construct" select="../.."/>
+        <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
+        <section name="{imf:get-name(.,true())}" type="DETAIL-EXTERNEKOPPELING" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
+            <content>
+                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-EXTERNEKOPPELING')"/>
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>

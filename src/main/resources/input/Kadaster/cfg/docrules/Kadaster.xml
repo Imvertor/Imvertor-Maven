@@ -113,6 +113,9 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-EXTERNEKOPPELING</level>
+            
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-ALTERNATIEVENAAM" order="010">
@@ -181,6 +184,8 @@
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-EXTERNEKOPPELING</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-DEFINITIE" order="040">
@@ -506,6 +511,7 @@
         <name lang="en">Associated objecttype</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-EXTERNEKOPPELING</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-INDICATIEAFLEIDBAAR" order="280">
