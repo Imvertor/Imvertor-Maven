@@ -99,8 +99,7 @@
                 <stereo minmax="1..1">stereotype-name-union</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
                 <stereo minmax="0..1">stereotype-name-enum</stereo>
-                <stereo minmax="1..1">stereotype-name-base-package</stereo>
-                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
                 <stereo minmax="0..1">stereotype-name-domain-package</stereo><!-- TODO mim111 wordt deze bug hersteld -->
                 <stereo minmax="1..1">stereotype-name-external-package</stereo>
                 <stereo minmax="1..1">stereotype-name-view-package</stereo>
@@ -147,8 +146,7 @@
             <derive>yes</derive>
             <desc lang="nl">Aanduiding van het functionele domein waartoe het informatiemodel behoort.</desc>
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-base-package</stereo>
-                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         
@@ -158,8 +156,7 @@
             <derive>yes</derive>
             <desc lang="nl">De beschrijving van de aard van het informatiemodel, hoe het geïnterpreteerd moet worden.</desc>
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-base-package</stereo>
-                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value default="yes">Conceptueel</value>
@@ -173,8 +170,7 @@
             <derive>yes</derive>
             <desc lang="nl">Aanduiding van een in MIM gedefinieerd alternatief voor een modelleringswijze, en welke keuze hierbij is gemaakt.</desc>
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-base-package</stereo>
-                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value default="yes">Relatiesoort leidend</value>
@@ -290,8 +286,7 @@
             <derive>yes</derive>
             <desc lang="nl">De aanduiding van een extensie op MIM.</desc>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-base-package</stereo>
-                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         
@@ -301,8 +296,7 @@
             <derive>yes</derive>
             <desc lang="nl">De aanduiding van de taal die gebruikt is voor de modelelementen.</desc>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-base-package</stereo>
-                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value default="yes">NL</value>
@@ -316,8 +310,7 @@
             <derive>yes</derive>
             <desc lang="nl">De versie van de MIM specificatie die gebruikt is om het informatiemodel in uit te drukken.</desc>
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-base-package</stereo>
-                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value default="yes">1.1</value>
@@ -393,8 +386,7 @@
                  <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
                  <stereo minmax="1..1">stereotype-name-union</stereo>
                  <stereo minmax="1..1">stereotype-name-complextype</stereo>
-                 <stereo minmax="1..1">stereotype-name-base-package</stereo>
-                 <stereo minmax="1..1">stereotype-name-application-package</stereo>
+                 <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
                  <stereo minmax="1..1">stereotype-name-view-package</stereo>
                  <stereo minmax="1..1">stereotype-name-external-package</stereo>
             </stereotypes>

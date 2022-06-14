@@ -128,8 +128,6 @@
             <desc lang="nl">Naam van de beheerder van het model of het deel van het model.</desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
-                <stereo minmax="0..1">stereotype-name-application-package</stereo>
-                <stereo minmax="0..1">stereotype-name-base-package</stereo>
                 <stereo minmax="0..1">stereotype-name-domain-package</stereo>
                 <stereo minmax="0..1">stereotype-name-external-package</stereo>
                 <stereo minmax="0..1">stereotype-name-internal-package</stereo>

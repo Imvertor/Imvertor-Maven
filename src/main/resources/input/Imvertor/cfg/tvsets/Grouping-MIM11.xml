@@ -322,9 +322,9 @@
             <name lang="en">Definition</name>
             <!-- definitie kan ook worden geplaatst op package stereo's die door Grouping zijn geïntroduceerd -->
             <stereotypes>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
                 <stereo minmax="0..1">stereotype-name-project-package</stereo>
-                <stereo minmax="0..1">stereotype-name-base-package</stereo>
-                <stereo minmax="0..1">stereotype-name-application-package</stereo>
                 <stereo minmax="0..1">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>  
@@ -384,7 +384,67 @@
                 <value default="yes">Nee</value>
             </declared-values>
         </tv>
-       
+
+        <!-- 
+            base en application package volgen de MIM regels voor "informatiemodel". 
+        -->
+        
+        <tv norm="space" id="CFG-TV-IMDOMAIN">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-IMTYPE">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-IMRELATIONMODELINGTYPE">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-MIMEXTENSION">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-MIMLANGUAGE">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-MIMVERSION">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SOURCE">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-ADMINISTRATOR">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
     
 </tagset>
