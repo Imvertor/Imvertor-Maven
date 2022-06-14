@@ -1447,10 +1447,7 @@ public class Configurator {
 	}
 
 	public String getServerProperty(String key) throws Exception {
-		if (serverProperties == null) getServerProperties();
-		String prop = serverProperties.getProperty(key);
-		if (prop == null) throw new Exception("No such property set for this server: " + key);
-		else return prop;
+		return getServerProperty(key, true);
 	}
 	public String getServerProperty(String key, Boolean required) throws Exception {
 		if (serverProperties == null) getServerProperties();
