@@ -1452,6 +1452,12 @@ public class Configurator {
 		if (prop == null) throw new Exception("No such property set for this server: " + key);
 		else return prop;
 	}
+	public String getServerProperty(String key, Boolean required) throws Exception {
+		if (serverProperties == null) getServerProperties();
+		String prop = serverProperties.getProperty(key);
+		if (prop == null && required) throw new Exception("No such property set for this server: " + key);
+		else return prop;
+	}
 	
 	/*
 	 * Return a list of tokens found in a tokenized string, pass the pattern for each token.
