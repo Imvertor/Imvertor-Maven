@@ -7,8 +7,6 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:bro="http://www.geostandaarden.nl/bro"
     
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
-    
     exclude-result-prefixes="#all" 
     version="2.0">
     
@@ -441,10 +439,10 @@
                     <item><xsl:value-of select="$context/part[@type = 'CFG-DOC-PATROON']/item[2]/text()"/></item>
                 </part>
             </xsl:when>
-            <xsl:when test="$item-text='Bepalingscode'">
+            <xsl:when test="$item-text=('Bepalingscode','NITGCode','Putcode')">
                 <part>
                     <item>&#160;&#160;Naam</item>
-                    <item>Bepalingscode</item>
+                    <item><xsl:value-of select="$item"/></item>
                 </part>
                 <part>
                     <item>&#160;&#160;Type</item>
