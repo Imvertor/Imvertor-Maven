@@ -564,6 +564,13 @@
         <xsl:apply-templates select="item[not(@type = 'SUPPLIER')]" mode="#current"/>
     </xsl:template>
     
+    <!-- when type is traced, show the subpaths of all supplier infos -->
+    <xsl:template match="item[@type='ISIDTEXT']" mode="#all">
+        <div class="isidtext">
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </div>
+    </xsl:template>
+   
     <xsl:template match="item" mode="#all">
         <xsl:sequence select="imf:create-anchors(.)"/>
         <!-- this has been introduced to support the case of listed enumerations, and to support the case of graph links to compositions i.e. gegevensgroeptype -->

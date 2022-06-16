@@ -57,6 +57,11 @@
     -->
     <respec-config>https://armatiek.nl/respec-profiles/w3c/profile/respec-w3c-common.js</respec-config>
     
+    <!--
+        moet een zinnetje worden toegevoegd dat aangeeft dat identificerend attribuut gecombineerd wordt met andere idenrtificerende attributen? cf #263
+    -->
+    <identifying-attribute-with-context>no</identifying-attribute-with-context>
+    
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>

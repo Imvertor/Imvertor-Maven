@@ -1011,6 +1011,65 @@
         <xsl:param name="this"/>
         <xsl:variable name="id-attribute" select="$this/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
         <xsl:sequence select="string-join(for $i in $id-attribute return imf:get-name($i,true()),' + ')"/>
+        <!-- hieronder uitwerking van #263 -->
+        <xsl:if test="imf:boolean($configuration-docrules-file/identifying-attribute-with-context)">
+            <xsl:variable name="subtypes-with-id" select="imf:get-subclasses($this)[imvert:attributes/imvert:attribute/imvert:is-id = 'true']"/>
+            <xsl:variable name="supertypes-with-id" select="imf:get-superclasses($this)[imvert:attributes/imvert:attribute/imvert:is-id = 'true']"/>
+            <xsl:if test="$id-attribute and exists($subtypes-with-id)">
+                <xsl:sequence select="imf:get-tagged-value-unieke-aanduiding-text($subtypes-with-id,'sub')"/>
+            </xsl:if>
+            <xsl:if test="$id-attribute and exists($supertypes-with-id)">
+                <xsl:sequence select="imf:get-tagged-value-unieke-aanduiding-text($supertypes-with-id,'super')"/>
+            </xsl:if>
+        </xsl:if>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-tagged-value-indicatie-identificerend">
+        <xsl:param name="this"/>
+        <!-- hieronder uitwerking van #263 -->
+        <xsl:if test="imf:boolean($configuration-docrules-file/identifying-attribute-with-context)">
+            <xsl:variable name="subtypes-with-id" select="imf:get-subclasses($this)[imvert:attributes/imvert:attribute/imvert:is-id = 'true']"/>
+            <xsl:variable name="supertypes-with-id" select="imf:get-superclasses($this)[imvert:attributes/imvert:attribute/imvert:is-id = 'true']"/>
+            <xsl:if test="exists($subtypes-with-id)">
+                <xsl:sequence select="imf:get-tagged-value-unieke-aanduiding-text($subtypes-with-id,'sub')"/>
+            </xsl:if>
+            <xsl:if test="exists($supertypes-with-id)">
+                <xsl:sequence select="imf:get-tagged-value-unieke-aanduiding-text($supertypes-with-id,'super')"/>
+            </xsl:if>
+        </xsl:if>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-tagged-value-unieke-aanduiding-text">
+        <xsl:param name="types-with-id" as="element()+"/>
+        <xsl:param name="sub-or-super" as="xs:string"/>
+        <item type="ISIDTEXT">
+            <xsl:choose>
+                <xsl:when test="$sub-or-super = 'sub'">
+                    <xsl:text>In combinatie met de unieke aanduiding van de </xsl:text>
+                    <xsl:sequence select="if ($types-with-id[2]) then 'specialisaties' else 'specialisatie'"/>
+                    <xsl:text> </xsl:text>
+                    <xsl:for-each select="$types-with-id">
+                        <item>
+                            <xsl:sequence select="imf:create-idref(.,'global')"/>
+                            <xsl:sequence select="imf:create-content(imvert:name/@original)"/>          
+                        </item>
+                        <xsl:if test="position() ne last()"> en </xsl:if>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                        <xsl:text>In combinatie met de unieke aanduiding van de </xsl:text>
+                        <xsl:sequence select="if ($types-with-id[2]) then 'generalisaties' else 'generalisatie'"/>
+                        <xsl:text> </xsl:text>
+                        <xsl:for-each select="$types-with-id">
+                            <item>
+                                <xsl:sequence select="imf:create-idref(.,'global')"/>
+                                <xsl:sequence select="imf:create-content(imvert:name/@original)"/>          
+                            </item>
+                            <xsl:if test="position() ne last()"> en </xsl:if>
+                        </xsl:for-each>
+                </xsl:otherwise>
+            </xsl:choose>
+        </item>
     </xsl:function>
     
    <xsl:function name="imf:create-part-2" as="element(part)*"> 
@@ -1193,13 +1252,13 @@
                     <xsl:variable name="aanduiding">
                         <xsl:choose>
                             <xsl:when test="exists($rel-aanduiding) and exists($id-aanduiding)">
-                                <xsl:value-of select="concat($id-aanduiding,', ', $con)"/>
+                                <xsl:sequence select="concat($id-aanduiding,', ', $con)"/>
                             </xsl:when>
                             <xsl:when test="exists($rel-aanduiding)">
-                                <xsl:value-of select="$con-aanduiding/imvert:name/@original"/>
+                                <xsl:sequence select="string($con-aanduiding/imvert:name/@original)"/>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:value-of select="$id-aanduiding"/>
+                                <xsl:sequence select="$id-aanduiding"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:variable>
@@ -1259,9 +1318,16 @@
                     <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean($relation/imvert:is-value-derived)) then 'YES' else 'NO'"/>
                     <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($is-afleidbaar-text,false()))"/>
                 </xsl:when>
-                <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEIDENTIFICEREND'">
-                    <xsl:variable name="is-identifying-text" select="if (imf:boolean($this/imvert:is-id)) then 'YES' else 'NO'"/>
-                    <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($is-identifying-text,false()))"/>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEIDENTIFICEREND'"> 
+                    <xsl:choose>
+                        <xsl:when test="imf:boolean($this/imvert:is-id)">
+                            <xsl:variable name="class" select="$this/../.."/>
+                            <xsl:sequence select="imf:create-part-2(.,(imf:plugin-translate-i3n('YES',false()),imf:get-tagged-value-indicatie-identificerend($class)))"/>        
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imf:create-part-2(.,(imf:plugin-translate-i3n('NO',false())))"/>        
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIECLASSIFICATIE'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-INDICATIONCLASSIFICATION'))"/>         
