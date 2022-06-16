@@ -439,11 +439,6 @@
         
     </xsl:function>
     
-    <xsl:function name="imf:get-id-attribute" as="element(imvert:attribute)?">
-        <xsl:param name="class" as="element(imvert:class)"/>
-        <xsl:sequence select="$class/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
-    </xsl:function>
-    
     <!-- 
         Return this class and all classes that are substitutable for this class, that are also linkable (and therefore a reference element must be created). 
         The class passed as rootclass may be abstract and still be linkable; linkable substitution classes must be concrete.

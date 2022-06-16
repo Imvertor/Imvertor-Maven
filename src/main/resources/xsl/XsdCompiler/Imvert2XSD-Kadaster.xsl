@@ -38,7 +38,9 @@
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     
     xmlns:ekf="http://EliotKimber/functions"
-
+    
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
     version="2.0">
 
@@ -323,7 +325,7 @@
         <xsl:variable name="ref-master" select="if (imvert:ref-master) then imf:get-construct-by-id(imvert:ref-master-id) else ()"/>
         <xsl:variable name="ref-masters" select="if ($ref-master) then ($ref-master,imf:get-superclasses($ref-master)) else ()"/>
         <xsl:variable name="ref-master-idatts" select="for $m in $ref-masters return $m/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
-        <xsl:variable name="ref-master-identifiable-subtype-idatts" select="for $s in imf:get-subclasses($ref-master) return imf:get-id-attribute($s)"/>
+        <xsl:variable name="ref-master-identifiable-subtype-idatts" select="for $s in imf:get-subclasses($ref-master) return imf:get-id-attributes($s)"/>
         <xsl:variable name="ref-master-identifiable-subtypes-with-domain" select="for $a in $ref-master-identifiable-subtype-idatts return if (imf:get-tagged-value($a,'##CFG-TV-DOMAIN')) then $a/ancestor::imvert:class else ()"/>
         
         <xsl:variable name="use-identifier-domains" select="imf:boolean(imf:get-xparm('cli/identifierdomains','no'))"/>
@@ -1247,5 +1249,10 @@
             <xs:attribute ref="xml:base" use="optional"/>
         </xsl:if>
     </xsl:function>
-
+    
+    <xsl:function name="imf:get-id-attributes" as="element(imvert:attribute)*">
+        <xsl:param name="class" as="element(imvert:class)"/>
+        <xsl:sequence select="$class/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
+    </xsl:function>
+    
 </xsl:stylesheet>

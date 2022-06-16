@@ -53,7 +53,7 @@
         select="('stereotype-name-simpletype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
   
     <xsl:variable name="use-identifier-domains" select="imf:boolean(imf:get-xparm('cli/identifierdomains','no'))"/>
-    <xsl:variable name="id-domain-values" select="for $a in //imvert:attribute return imf:get-tagged-value($a,'##CFG-TV-DOMAIN')"/>
+    <xsl:variable name="id-domain-values" select="for $a in //imvert:attribute[imf:boolean(imvert:is-id)] return imf:get-tagged-value($a,'##CFG-TV-DOMAIN')"/>
     
     <xsl:variable name="is-basemodel" select="$application-package/imvert:stereotype/@id = 'stereotype-name-base-package'"/>
     
@@ -264,10 +264,13 @@
         
         <xsl:variable name="domain-value" select="imf:get-tagged-value(.,'##CFG-TV-DOMAIN')"/>
         
+        <?x Domein tagged value nu ook toegestaan op attributen die verwijzen naar een class met een ID attribuut, zie #267 
+        
         <!-- Metadata Domein zit altijd en alleen bij een objecttype die een {id} heeft (in EA is dit isID=true) -->
         <xsl:sequence select="imf:report-error(., 
             not(imf:boolean(imvert:is-id)),
             'Tagged value [1] only allowed on ID attributes',(imf:get-config-name-by-id('CFG-TV-DOMAIN')))"/>
+        x?>
         
         <!-- Het is niet toegestaan dat een waarde die is opgenomen in ‘domein’ meer dan 1x voorkomt in het model. 
             Dit blijft vooralsnog beperkt tot basismodellen. -->
