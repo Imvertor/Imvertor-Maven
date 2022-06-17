@@ -33,7 +33,6 @@
                 <stereo minmax="0..*">stereotype-name-complextype</stereo>
                 <stereo minmax="0..*">stereotype-name-union</stereo>
                 <stereo minmax="0..*">stereotype-name-data-element</stereo>
-                <stereo minmax="0..*">stereotype-name-enum</stereo>
                 <stereo minmax="0..*">stereotype-name-generalization</stereo>
                 <stereo minmax="0..*">stereotype-name-externekoppeling</stereo>
             </stereotypes>

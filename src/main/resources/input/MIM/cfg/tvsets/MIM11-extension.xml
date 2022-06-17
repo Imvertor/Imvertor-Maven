@@ -8,15 +8,6 @@
     
     <tagged-values>
     
-        <!-- 
-            mogelijk geen waarde kan ook betrekking hebben op gegevensgroepen 
-        -->
-        <tv norm="space" id="CFG-TV-VOIDABLE">
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
-            </stereotypes>
-        </tv>
-        
         <tv norm="space" id="CFG-TV-OWNER">
             <name lang="nl">Eigenaar</name>
             <name lang="en">Owned by</name>
