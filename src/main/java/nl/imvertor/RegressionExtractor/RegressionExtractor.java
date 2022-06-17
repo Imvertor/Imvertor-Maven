@@ -22,14 +22,14 @@ package nl.imvertor.RegressionExtractor;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.jena.util.FileUtils;
 import org.apache.log4j.Logger;
 
 import nl.armatiek.saxon.extensions.http.SendRequest;
@@ -56,7 +56,7 @@ public class RegressionExtractor  extends Step {
 	public static final String VC_IDENTIFIER = "$Id: ReleaseCompiler.java 7473 2016-03-22 07:30:03Z arjan $";
 	
 	public static Transformer transformer;
-
+	
 	/**
 	 *  run the step
 	 */
@@ -88,8 +88,8 @@ public class RegressionExtractor  extends Step {
 			String r = Configurator.getInstance().getXParm("cli/regowner",false);
 			String[] regOwners = StringUtils.split(r.replace(" ", ""),';');
 			
-			AnyFolder regfolder = new AnyFolder(configurator.getXParm("cli/regfolder"));
-			configurator.getRunner().info(logger,"Regression testing bulk mode: " + configurator.getXParm("cli/regfolder"));
+			AnyFolder regfolder = new AnyFolder(configurator.getXParm("system/managedregtestfolder"));
+			configurator.getRunner().info(logger,"Regression testing bulk mode: " + configurator.getXParm("system/managedregtestfolder"));
 		    Iterator<File> owners = Arrays.asList(regfolder.listFiles()).iterator();
 			while (owners.hasNext()) {
 				AnyFile owner = new AnyFile(owners.next());
@@ -132,21 +132,25 @@ public class RegressionExtractor  extends Step {
 			// Single test: in TranslateAndReport chain
 			configurator.getRunner().info(logger,"Regression testing this model");
 			String subpath = configurator.getXParm("cli/owner") + "/" + configurator.getXParm("appinfo/subpath");
-			AnyFolder regFolder = new AnyFolder(configurator.getXParm("cli/regfolder"));
-		    AnyFolder refFolder = new AnyFolder(regFolder,"ref/" + subpath);
-		    AnyFolder tstFolder = new AnyFolder(regFolder,"tst/" + subpath);
-			AnyFolder outFolder = new AnyFolder(regFolder,"out/" + subpath);
-			// Maak de test folder leeg en maak een workfolder
-			tstFolder.deleteDirectory(); 
-			tstFolder.mkdirs();
-			// copy the chain results to tst folder
-			String ownerName = configurator.getXParm("cli/owner");
-			AnyFolder appFolder = new AnyFolder(workFolder,ownerName + "/app");
-			appFolder.copy(tstFolder);
-			//  Run the test
-			Integer diffsfound = testFileByFile(configurator,refFolder,tstFolder,outFolder,identifier,compareMethod);
-			if (diffsfound != 0) 
-				logger.warn("Regression: " + (compareMethod.equals("raw") ? "some" : diffsfound) + " differences in " + tstFolder);
+			AnyFolder regFolder = new AnyFolder(configurator.getXParm("system/managedregtestfolder"));
+			if (regFolder.isDirectory()) {
+			    AnyFolder refFolder = new AnyFolder(regFolder,"ref/" + subpath);
+			    AnyFolder tstFolder = new AnyFolder(regFolder,"tst/" + subpath);
+				AnyFolder outFolder = new AnyFolder(regFolder,"out/" + subpath);
+				// Maak de test folder leeg en maak een workfolder
+				tstFolder.deleteDirectory(); 
+				tstFolder.mkdirs();
+				// copy the chain results to tst folder
+				String ownerName = configurator.getXParm("cli/owner");
+				AnyFolder appFolder = new AnyFolder(workFolder,ownerName + "/app");
+				appFolder.copy(tstFolder);
+				//  Run the test
+				Integer diffsfound = testFileByFile(configurator,refFolder,tstFolder,outFolder,identifier,compareMethod);
+				if (diffsfound != 0) 
+					logger.warn("Regression: " + (compareMethod.equals("raw") ? "some" : diffsfound) + " differences in " + tstFolder);
+			} else {
+				logger.error("Managed regression folder not found: " + regFolder.getName());
+			}
 		} else {
 			// Single test: in regression chain (identifier is usually the owner name)
 			configurator.getRunner().info(logger,"Regression testing single model: " + configurator.getXParm("cli/tstfolder"));
@@ -287,35 +291,42 @@ public class RegressionExtractor  extends Step {
 		runner.debug(logger,"CHAIN","Serializing folder: " + folder);
 		Integer diffsfound = 0;
 		
-		String folderPath = folder.getCanonicalPath();
-		String canonFolderPath = folderPath + "-canon";
-		// remove the canonical folder when exists
-		(new AnyFolder(canonFolderPath)).deleteDirectory();
-		Vector<String> files = folder.listFilesToVector(true); // returns list of canonical paths
-		for (int i = 0; i < files.size(); i++) {
-			// "canonize" the file, replace existing file by the canonized form
-			String origPath = files.get(i);
-			String type = FileUtils.getFilenameExt(origPath).toLowerCase();
-			String relPath = StringUtils.substringAfter(origPath, folderPath);
-			String canonPath = folderPath + "-canon" + relPath;
-			AnyFile fileOrFolder = new AnyFile(origPath);
-			if (fileOrFolder.isFile()) {
-				if (type.equals("xml") || type.equals("xsd") || type.equals("xhtml")) { 
-					// Compare XML contents
-					xslFilterFile.setParm("file-path", relPath);
-					xslFilterFile.setParm("file-type", type);
-					xslFilterFile.transform(origPath, canonPath);
-					if (compare) diffsfound += compare(canonPath);
-				} else if (type.equals("xmi") || type.equals("png") || type.equals("html")) {
-					// skip these files
-				} else { 
-					// compare raw, unprocessed contents
-					fileOrFolder.copyFile(canonPath);
-					if (compare) diffsfound += compare(canonPath);
+		if (folder.isDirectory()) {
+			String folderPath = folder.getCanonicalPath();
+			String canonFolderPath = folderPath + "-canon";
+			// remove the canonical folder when exists
+			(new AnyFolder(canonFolderPath)).deleteDirectory();
+			Vector<String> files = folder.listFilesToVector(true); // returns list of canonical paths
+			for (int i = 0; i < files.size(); i++) {
+				// "canonize" the file, replace existing file by the canonized form
+				String origPath = files.get(i);
+				String type = FilenameUtils.getExtension(origPath).toLowerCase();
+				String relPath = StringUtils.substringAfter(origPath, folderPath);
+				String canonPath = folderPath + "-canon" + relPath;
+				AnyFile fileOrFolder = new AnyFile(origPath);
+				if (fileOrFolder.isFile()) {
+					if (type.equals("xml") || type.equals("xsd") || type.equals("xhtml")) { 
+						// Compare XML contents
+						xslFilterFile.setParm("file-path", relPath);
+						xslFilterFile.setParm("file-type", type);
+						xslFilterFile.transform(origPath, canonPath);
+						// canoniseer, vervang het resultaat
+						canonicalize(new XmlFile(canonPath));
+						if (compare) diffsfound += compare(canonPath);
+					} else if (type.equals("xmi") || type.equals("png") || type.equals("html")) {
+						// skip these files
+					} else { 
+						// compare raw, unprocessed contents
+						fileOrFolder.copyFile(canonPath);
+						if (compare) diffsfound += compare(canonPath);
+					}
 				}
-			}
- 		}
-		return diffsfound;
+	 		}
+			return diffsfound;
+		} else {
+			runner.error(logger,"Regression folder not found: " + folder + ", please complete regression setup");
+			return 1;
+		}
 	}
 
 	/**
@@ -327,7 +338,7 @@ public class RegressionExtractor  extends Step {
 	 * @throws ConfiguratorException
 	 */
 	private Integer compare(String canonPath) throws IOException, ConfiguratorException {
-		String refPath = StringUtils.replace(canonPath,"tst-canon","ref-canon");
+		String refPath = StringUtils.replacePattern(canonPath,"(\\\\)tst(\\\\)","$1ref$2");
 		AnyFile refFile = new AnyFile(refPath);
 		AnyFile tstFile = new AnyFile(canonPath);
 		if (tstFile.length() == 0) {
@@ -340,5 +351,14 @@ public class RegressionExtractor  extends Step {
 			return 1;
 		} else 
 			return 0;
+	}
+	
+	private void canonicalize(XmlFile xmlFile) throws Exception {
+		if (xmlFile.isWellFormed()) {
+			XmlFile tempFile = new XmlFile(File.createTempFile("canonicalize.", "xml"));
+			xmlFile.canonicalize(tempFile, "http://www.w3.org/2001/10/xml-exc-c14n#");
+			FileUtils.copyFile(tempFile, xmlFile);
+			tempFile.delete();
+		}
 	}
 }

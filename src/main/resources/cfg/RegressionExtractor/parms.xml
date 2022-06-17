@@ -35,12 +35,6 @@
       
       <!-- deze parameter hebben betrekking op de bulk regression test -->
       <cli-parm>
-         <name>regfolder</name>
-         <arg>path</arg>
-         <tip>Full path to the root folder that holds the regression folders of bulk regression</tip>
-         <required>false</required>
-      </cli-parm> 
-      <cli-parm>
          <name>regowner</name>
          <arg>names</arg>
          <tip>Names of the owners for which to perform the regression test. Separate by semicolon.</tip>

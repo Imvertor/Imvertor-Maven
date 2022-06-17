@@ -29,8 +29,6 @@
     xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
-    
     exclude-result-prefixes="#all" 
     version="2.0">
 

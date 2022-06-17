@@ -420,6 +420,11 @@
         <trans lang="en">AssociationType</trans>
     </item>
     <item>
+        <key>DETAIL-EXTERNEKOPPELING</key>
+        <trans lang="nl">Externe koppeling details</trans>
+        <trans lang="en">External link details</trans>
+    </item>
+    <item>
         <key>DETAIL-REFERENCEELEMENT</key>
         <trans lang="nl">Referentie element</trans>
         <trans lang="en">Reference element</trans>
@@ -680,6 +685,13 @@
         <key>REFERENCEELEMENT-CARD</key>
         <trans lang="nl">Card</trans>
         <trans lang="en">Card</trans>
+    </item>
+
+    <item>
+        <key>REFERENCEELEMENT-IS-ID</key>
+        <trans lang="nl"> (identificerend)</trans>
+        <trans lang="en"> (identifying)</trans>
+        
     </item>
     
     <!-- intermediate text -->

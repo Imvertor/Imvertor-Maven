@@ -25,8 +25,6 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
-    
     exclude-result-prefixes="#all" 
     version="2.0">
 
@@ -777,8 +775,6 @@
         <xsl:variable name="assert-attribute-not-specified" select="(not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-name))"/>
         
         <xsl:variable name="is-known-scalar" select="$is-known-baretype or upper-case($baretype) = $all-scalars/name"/>
-        
-        <!--<xsl:sequence select="dlogger:save(imf:get-display-name(.),concat($exists-native-scalars,' ', $accept-native-scalars,' ', exists($defining-class),' ', $is-known-scalar))"></xsl:sequence>-->
         
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 

@@ -57,6 +57,11 @@
     -->
     <respec-config>https://armatiek.nl/respec-profiles/w3c/profile/respec-w3c-common.js</respec-config>
     
+    <!--
+        moet een zinnetje worden toegevoegd dat aangeeft dat identificerend attribuut gecombineerd wordt met andere idenrtificerende attributen? cf #263
+    -->
+    <identifying-attribute-with-context>no</identifying-attribute-with-context>
+    
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>
@@ -103,7 +108,7 @@
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
@@ -117,6 +122,8 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
+    
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-EXTERNEKOPPELING</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-BEGRIP" order="020">
@@ -127,7 +134,7 @@
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
-            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
@@ -140,6 +147,7 @@
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-UNION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-EXTERNEKOPPELING</level>
         </levels>
     </doc-rule>
     <?insert alias ?>
@@ -151,7 +159,7 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
         </levels>
@@ -184,7 +192,7 @@
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
@@ -207,7 +215,7 @@
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-ENUMERATION</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
@@ -231,7 +239,7 @@
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
-            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
@@ -254,7 +262,7 @@
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
@@ -267,6 +275,7 @@
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-EXTERNEKOPPELING</level>
         </levels>
     </doc-rule>
     <?insert domein= ?>
@@ -275,6 +284,7 @@
         <name lang="en">Associated objecttype</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-EXTERNEKOPPELING</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-RELATIESOORT" order="100">
@@ -403,7 +413,7 @@
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ENUMERATION</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
@@ -460,6 +470,7 @@
         <name lang="en">Identifying</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
         </levels>
     </doc-rule>
     

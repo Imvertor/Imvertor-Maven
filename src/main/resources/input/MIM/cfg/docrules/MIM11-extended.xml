@@ -31,7 +31,8 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -76,7 +77,8 @@
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -91,4 +93,24 @@
         </levels>
     </doc-rule>
   
+    <doc-rule id="CFG-DOC-MINVALUEINCLUSIVE" order="145">
+        <name lang="nl">Minimum waarde</name>
+        <name lang="en">Minimum value</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MAXVALUEINCLUSIVE" order="145">
+        <name lang="nl">Maximum waarde</name>
+        <name lang="en">Maximum value</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+        </levels>
+    </doc-rule>
 </doc-rules>

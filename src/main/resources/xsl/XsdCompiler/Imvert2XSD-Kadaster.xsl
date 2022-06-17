@@ -37,10 +37,10 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     
+    xmlns:ekf="http://EliotKimber/functions"
+    
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
-    xmlns:ekf="http://EliotKimber/functions"
-
     exclude-result-prefixes="#all"
     version="2.0">
 
@@ -325,7 +325,7 @@
         <xsl:variable name="ref-master" select="if (imvert:ref-master) then imf:get-construct-by-id(imvert:ref-master-id) else ()"/>
         <xsl:variable name="ref-masters" select="if ($ref-master) then ($ref-master,imf:get-superclasses($ref-master)) else ()"/>
         <xsl:variable name="ref-master-idatts" select="for $m in $ref-masters return $m/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
-        <xsl:variable name="ref-master-identifiable-subtype-idatts" select="for $s in imf:get-subclasses($ref-master) return imf:get-id-attribute($s)"/>
+        <xsl:variable name="ref-master-identifiable-subtype-idatts" select="for $s in imf:get-subclasses($ref-master) return imf:get-id-attributes($s)"/>
         <xsl:variable name="ref-master-identifiable-subtypes-with-domain" select="for $a in $ref-master-identifiable-subtype-idatts return if (imf:get-tagged-value($a,'##CFG-TV-DOMAIN')) then $a/ancestor::imvert:class else ()"/>
         
         <xsl:variable name="use-identifier-domains" select="imf:boolean(imf:get-xparm('cli/identifierdomains','no'))"/>
@@ -1032,7 +1032,6 @@
                             We do not consider composite relations to be treated specially 
                             (and do not place a reference to X).
                         -->
-                        <xsl:sequence select="dlogger:save('$buildcollection',$buildcollection)"></xsl:sequence>
                         <xsl:for-each select="$ref-classes">
                             <!-- IM-110 alle elementen hier zijn linkable -->
                             <xsl:choose>
@@ -1106,7 +1105,6 @@
             </xsl:when>
             <xsl:otherwise>
                 <!-- TODO IM-83 STALLED, NOT IMPLEMENTED YET FOR THIS CASE -->
-                <xsl:sequence select="dlogger:save('$defining-class',$defining-class)"></xsl:sequence>
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
@@ -1251,5 +1249,10 @@
             <xs:attribute ref="xml:base" use="optional"/>
         </xsl:if>
     </xsl:function>
-
+    
+    <xsl:function name="imf:get-id-attributes" as="element(imvert:attribute)*">
+        <xsl:param name="class" as="element(imvert:class)"/>
+        <xsl:sequence select="$class/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
+    </xsl:function>
+    
 </xsl:stylesheet>

@@ -5,7 +5,7 @@
     
     <name>Waarderingskamer</name>
     
-    <xi:include href="../../../MIM/cfg/docrules/MIM11.xml"/>
+    <xi:include href="../../../MIM/cfg/docrules/MIM11-extended.xml"/>
     
     <!--
         Where to show the explanation?
@@ -13,6 +13,8 @@
     <explanation-location>as-row</explanation-location>
     
     <include-overview-section-level>no</include-overview-section-level>
+  
+    <identifying-attribute-with-context>yes</identifying-attribute-with-context>
     
     <doc-rule id="CFG-DOC-INDICATIEINONDERZOEK" order="185">
         <name lang="nl">Indicatie in onderzoek</name>

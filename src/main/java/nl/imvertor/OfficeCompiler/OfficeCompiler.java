@@ -212,7 +212,7 @@ public class OfficeCompiler extends Step {
 		
 		String gitemail     	        = configurator.getServerProperty("git.email" + postfix); // email address
 		String gituser     	            = configurator.getServerProperty("git.user" + postfix); // user name
-		String gitpass     	            = configurator.getServerProperty("git.pass" + postfix); // password
+		String gitpass     	            = configurator.getServerProperty("git.pass" + postfix, false); // password
 		String gittoken     	        = configurator.getServerProperty("git.token" + postfix); // personal access token
 		String gitlocal     	        = configurator.getServerProperty("git.local" + postfix); // location of local git repositories 
 			

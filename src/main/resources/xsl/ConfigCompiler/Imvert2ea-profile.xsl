@@ -23,7 +23,6 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all"
     expand-text="yes"

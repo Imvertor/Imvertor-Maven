@@ -71,7 +71,6 @@
                 <stereo minmax="1..1">stereotype-name-referentielijst</stereo> 
                 <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
                 <stereo minmax="1..1">stereotype-name-union</stereo>
-                <stereo minmax="1..1">stereotype-name-union-element</stereo>
                 <stereo minmax="1..1">stereotype-name-complextype</stereo>
                 <stereo minmax="1..1">stereotype-name-data-element</stereo>
                 <stereo minmax="1..1">stereotype-name-composite</stereo><!-- verplicht voor SIM -->
@@ -214,7 +213,6 @@
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
-                <stereo minmax="0..1">stereotype-name-union-element</stereo>
             </stereotypes>
         </tv>
         

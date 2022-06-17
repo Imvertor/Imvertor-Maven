@@ -20,7 +20,7 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- BIJ12 follows MIM1.1 requirements -->
-    <xi:include href="../../../Geonovum/cfg/tvsets/MIMCM.xml"/>
+    <xi:include href="../../../Geonovum/cfg/tvsets/Geonovum-MIMCM.xml"/>
     
     <name>BIJ12 Conceptual model tagged values</name>
     

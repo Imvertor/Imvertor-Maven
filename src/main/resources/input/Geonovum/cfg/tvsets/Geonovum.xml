@@ -5,12 +5,8 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- 
-        Geonovum NEN3610 follows MIM11-ISO
-    --> 
-    <xi:include href="../../../MIM/cfg/tvsets/MIM11-ISO.xml"/>
-    
-    <name>Geonovum</name>
-    <desc lang="nl">Tags voor MIM vereiste MIM11-ISO uitbreidingen</desc>
+        uitbreidingen door Geonovum, hebben betrekking op CM en LM 
+    -->
     
     <tagged-values>
         <tv id="CFG-TV-UNITOFMEASURE">
@@ -23,40 +19,9 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
-                <stereo minmax="0..1">stereotype-name-union-element</stereo>
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
             </stereotypes>
         </tv>
-        
-        <tv norm="note" id="CFG-TV-RULES">
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
-            </stereotypes>
-        </tv>
-        
-        <tv id="CFG-TV-MINVALUEINCLUSIVE">
-            <name lang="nl">Minimumwaarde</name>
-            <name lang="en">MinInclusive</name>
-            <desc lang="nl">De ondergrens (inclusief) voor de waarde van een getal.</desc>
-            <desc lang="en">Defines lower bounds for numeric values including this number.</desc>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-data-element</stereo>
-            </stereotypes>
-        </tv>
-        <tv id="CFG-TV-MAXVALUEINCLUSIVE">
-            <name lang="nl">Maximumwaarde</name>
-            <name lang="en">MaxInclusive</name>
-            <desc lang="nl">De boven (inclusief) voor de waarde van een getal.</desc>
-            <desc lang="en">Defines upper bounds for numeric values including this number.</desc>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-attribute</stereo>
-                <stereo minmax="0..1">stereotype-name-data-element</stereo>
-            </stereotypes>
-        </tv>
-        
     </tagged-values>
     
 </tagset>

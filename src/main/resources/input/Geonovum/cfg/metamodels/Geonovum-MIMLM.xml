@@ -3,12 +3,10 @@
  * Copyright (C) 2016 
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <!-- 
-        Geonovum follows NEN3610
-        
-        Including scalars.
-    --> 
-    <xi:include href="../../../MIM/cfg/metamodels/MIM11-ISO.xml"/>
+    
+    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM11.xml"/>
     
     <name>Geonovum MIMLM</name>
     
@@ -42,14 +40,7 @@
         <feature name="allow-multiple-supertypes">true</feature>
         <feature name="allow-scalar-in-union">true</feature>
         <feature name="unique-normalized-class-names">domain</feature>
+        <feature name="role-based">true</feature>
     </features>
-    
-    <stereotypes>
-        <stereo id="stereotype-name-static-generalization">
-            <name lang="nl">Static</name>
-            <name lang="en">Static</name>
-            <construct>generalization</construct>
-        </stereo>
-    </stereotypes>
     
 </metamodel>

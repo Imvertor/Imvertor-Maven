@@ -4,7 +4,6 @@
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     >
     
     <xsl:variable name="strings-nonempty" select="imf:get-config-xmlschemarules()/parameter[@name='strings-nonempty']"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/52 -->
@@ -140,15 +139,6 @@
         <xsl:variable name="is-decimal" select="$primitive-type = ('xs:decimal')"/>
         <xsl:variable name="is-real"    select="$primitive-type = ('xs:real','xs:float')"/>
         <xsl:variable name="is-numeric" select="$is-integer or $is-decimal or $is-real"/>
-        
-        <?x 
-        <xsl:sequence select="dlogger:save(imf:get-display-name($this) || ' $is-numeric',$is-numeric)"/>
-        <xsl:sequence select="dlogger:save(imf:get-display-name($this) || ' $is-integer',$is-integer)"/>
-        <xsl:sequence select="dlogger:save(imf:get-display-name($this) || ' $min-l',$min-l)"/>
-        <xsl:sequence select="dlogger:save(imf:get-display-name($this) || ' $max-l',$max-l)"/>
-        <xsl:sequence select="dlogger:save(imf:get-display-name($this) || ' $min-v',$min-v)"/>
-        <xsl:sequence select="dlogger:save(imf:get-display-name($this) || ' $max-v',$max-v)"/>
-        x?>
         
         <!-- validaties --> <!-- zie 2.8.2.23 Metagegeven: Lengte (domein van een waarde van een gegeven) -->
         <xsl:sequence select="imf:report-error($this,
@@ -447,11 +437,6 @@
         --> 
         <xsl:sequence select="$document-classes[imvert:id=$this/imvert:type-id]"/> 
         
-    </xsl:function>
-    
-    <xsl:function name="imf:get-id-attribute" as="element(imvert:attribute)?">
-        <xsl:param name="class" as="element(imvert:class)"/>
-        <xsl:sequence select="$class/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
     </xsl:function>
     
     <!-- 

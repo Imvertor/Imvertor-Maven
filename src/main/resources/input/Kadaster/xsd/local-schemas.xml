@@ -28,10 +28,10 @@
             target-uri-prefix="../../smil20/smil20.xsd"/>
         <local-map 
             source-uri-prefix="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"
-            target-uri-prefix="../../xlink/1.0.0/xlinks.xsd"/>
+            target-uri-prefix="../../xlink/1.0.0/xlink.xsd"/>
         <local-map 
             source-uri-prefix="http://www.w3.org/1999/xlink.xsd"
-            target-uri-prefix="../../xlink/1.0.0/xlinks.xsd"/>
+            target-uri-prefix="../../xlink/1.0.0/xlink.xsd"/>
         
     </local-schema>
     

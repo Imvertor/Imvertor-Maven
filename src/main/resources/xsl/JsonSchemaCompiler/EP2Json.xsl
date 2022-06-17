@@ -7,8 +7,7 @@
     xmlns:j="http://www.w3.org/2005/xpath-functions"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:cw="http://www.armatiek.nl/namespace/folder-content-wrapper"
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
-
+   
     exclude-result-prefixes="#all"
     
     expand-text="yes"
@@ -74,8 +73,14 @@
                         <xsl:sequence select="$geoJSONfiles[@construct = 'geometryGeoJSON']/j:map/*"/>
                         <xsl:sequence select="$geoJSONfiles[@construct = 'geometrycollectionGeoJSON']/j:map/*"/>
                     </xsl:if>
-                    <xsl:for-each-group select="ep:seq/ep:construct/ep:seq/ep:construct[imf:boolean(ep:external)]" group-by="ep:tech-name"><!-- van iedere geoJson external de eerste -->
-                        <xsl:apply-templates select="current-group()[1]" mode="external"/>
+                    <xsl:variable name="maps" as="element(j:map)*">
+                        <xsl:for-each-group select="ep:seq/ep:construct/ep:seq/ep:construct[imf:boolean(ep:external)]" group-by="ep:tech-name"><!-- van iedere geoJson external de eerste -->
+                            <xsl:apply-templates select="current-group()[1]" mode="external"/>
+                        </xsl:for-each-group>
+                    </xsl:variable>
+                    <!-- Verwijder duplicate keys. Kan gebeuren als twee externals mappen naar hetzelfde oas object -->
+                    <xsl:for-each-group select="$maps" group-adjacent="@key">
+                        <xsl:sequence select="current-group()[1]"/>
                     </xsl:for-each-group>
                 </j:map>
             </j:map>     
@@ -244,7 +249,6 @@
     <xsl:template match="ep:construct" mode="external">
         <xsl:variable name="tech-name" select="ep:tech-name"/>
         <xsl:variable name="oas-name" select="imf:get-ep-parameter(.,'oas-name')"/>
-        <xsl:sequence select="dlogger:save('external',.)"/>
         <xsl:choose>
             <xsl:when test="not($references-geoJSON-collection) and $oas-name = $geoJSONnames">
                 <j:map key="{$oas-name}">
@@ -367,7 +371,6 @@
                 </geoJSONfile>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:sequence select="dlogger:save('geoJSONfiles',$geoJSONfiles)"/>
         <xsl:sequence select="$geoJSONfiles"/>
     </xsl:function>
 

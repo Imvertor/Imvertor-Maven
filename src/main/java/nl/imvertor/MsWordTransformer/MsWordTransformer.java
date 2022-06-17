@@ -117,7 +117,7 @@ public class MsWordTransformer extends Step {
 	
 	}
 	
-	private boolean transformDocx(AnyFile mswordFile) throws IOException, ConfiguratorException {
+	private boolean transformDocx(AnyFile mswordFile) throws Exception {
 	
 		OsExecutor osExecutor = new OsExecutor();
 		

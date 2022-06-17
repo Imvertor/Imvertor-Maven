@@ -229,16 +229,18 @@
         
         <xsl:choose>
                 <xsl:when test="@type = 'COMPOSER' and $type='DETAIL-COMPOSITE-ATTRIBUTE'">
-                    <!-- skip, do not show in detail listings -->
+                    <!-- skip, do not show in detail listings (? #GH-257 - lijkt wel nodig) -->
+                    <colgroup width="30%"/>
+                    <colgroup width="70%"/>
                 </xsl:when>
                 <xsl:when test="@type = 'COMPOSER'"> <!-- 30 50 10 10 -->
-                        <colgroup width="30%"/>
-                        <colgroup width="50%"/>
-                        <colgroup width="10%"/>
-                        <colgroup width="10%"/>
+                    <colgroup width="30%"/>
+                    <colgroup width="50%"/>
+                    <colgroup width="10%"/>
+                    <colgroup width="10%"/>
                 </xsl:when>
                 <xsl:when test="$type = 'EXPLANATION'"> <!-- 100 -->
-                        <colgroup width="100%"/>
+                    <colgroup width="100%"/>
                 </xsl:when>
                 <xsl:when test="$type = 'SHORT-ASSOCIATIONS'"> <!-- 50 50 -->
                     <colgroup width="50%"/>
@@ -334,8 +336,8 @@
                 </xsl:when>
                 
                 <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->
-                        <colgroup width="30%"/>
-                        <colgroup width="70%"/>
+                    <colgroup width="30%"/>
+                    <colgroup width="70%"/>
                 </xsl:when>
                 
                 <xsl:otherwise>
@@ -562,6 +564,13 @@
         <xsl:apply-templates select="item[not(@type = 'SUPPLIER')]" mode="#current"/>
     </xsl:template>
     
+    <!-- when type is traced, show the subpaths of all supplier infos -->
+    <xsl:template match="item[@type='ISIDTEXT']" mode="#all">
+        <div class="isidtext">
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </div>
+    </xsl:template>
+   
     <xsl:template match="item" mode="#all">
         <xsl:sequence select="imf:create-anchors(.)"/>
         <!-- this has been introduced to support the case of listed enumerations, and to support the case of graph links to compositions i.e. gegevensgroeptype -->

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <!-- 
+        The grouping metamodel specifies how structural features are defined, excluding functional parts such as classes, attributes and associations 
+    -->
+    
+    <name>Grouping for MIM11</name>
+    
+    <desc lang="nl">Metamodel voor Grouping passend bij MIM 11</desc>
+    <desc lang="en">Metamodel for Grouping under MIM11</desc>
+    
+    <stereotypes xml:id="stereotypes">
+
+        <stereo id="stereotype-name-system-package" primary="yes">
+            <name lang="nl">System</name>
+            <name lang="en">System</name>
+            <desc lang="nl">Een package dat is opgebouwd door de software ten behoeve van verwerking.</desc>
+            <construct>package</construct>
+        </stereo>
+
+        <stereo id="stereotype-name-application-package" primary="yes">
+            <name lang="en">Application</name>
+            <name lang="nl">Toepassing</name>
+            <desc lang="nl">Een package dat een volledige applicatie beschrijft, en dus niet slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-project-package" primary="yes">
+            <name lang="en">Project</name>
+            <name lang="nl">Project</name>
+            <desc lang="nl">Een package dat een project bevat, dwz. een base of application package, eventueel met external packages.</desc>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-base-package" primary="yes">
+            <name lang="en">Basemodel</name>
+            <name lang="nl">Basismodel</name>
+            <desc lang="nl">Een package dat slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-provided-package">
+            <name lang="en">Provided</name>
+            <name lang="nl">Provided</name>
+            <desc lang="nl">test, under development</desc>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-folder-package">
+            <name lang="en">Folder</name>
+            <name lang="nl">Folder</name>
+            <desc lang="nl">Een package dat alléén bedoeld is om andere UML constructies (packagaes, klassen) te groeperen, en geen verdere rol speelt in de interpretatie van het model.
+            Binnen een model worden alle packages die geen stereotype hebben opgevat als een Folder package.</desc>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-system-reference-package" primary="yes">
+            <name lang="nl">System-reference-package</name>
+            <name lang="en">System-reference-package</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">Een package dat door het systeem is aangemaakt om referentie-elementen te bevatten.</desc>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-system-reference-class" primary="yes">
+            <name lang="nl">System-reference-class</name>
+            <name lang="en">System-reference-class</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">Een class welke door het systeem is aangemaakt als referentie-element.</desc>
+            <construct>class</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-interface" primary="yes">
+            <name lang="en">Interface</name>
+            <name lang="nl">Interface</name>
+            <desc lang="nl">Een constructie in een gemeenschappelijk maar niet opgenomen model, welke een compleet modelelement in dat model representeert.</desc>
+            <construct>class</construct>
+            <construct>datatype</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-recyclebin">
+            <name lang="nl">Prullenbak</name>
+            <name lang="en">Recyclebin</name>
+            <desc lang="nl">A package that is to be ignored in all processing. may occur at any position in the package tree.</desc>
+            <construct>package</construct>
+        </stereo>
+
+        <stereo id="stereotype-name-components-package">
+            <name lang="en">Components</name>
+            <name lang="nl">Componenten</name>
+            <desc lang="nl">
+                Dit package bevat klassen, enumeraties of datatypen die gemeenschappelijk zijn tussen berichtmodellen, 
+                en die dus bij het genereren van berichten kunnen worden omgezet naar globale complextypes.
+            </desc>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-trace">
+            <name lang="en">Trace</name>
+            <name lang="nl">Trace</name>
+            <desc lang="nl">Trace relatie tussen twee klassen. Trace relatie wordt niet als associatie opgenomen, maar als eigenschap van de client.</desc>
+            <construct>class</construct>
+            <construct>datatype</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-product" primary="yes">
+            <name lang="en">Product</name>
+            <name lang="nl">Product</name>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+            <toplevel>true</toplevel>
+        </stereo>
+        
+        <stereo id="stereotype-name-service" primary="yes">
+            <name lang="en">Service</name>
+            <name lang="nl">Service</name>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+            <toplevel>true</toplevel>
+        </stereo>
+        
+        <stereo id="stereotype-name-process" primary="yes">
+            <name lang="en">Process</name>
+            <name lang="nl">Process</name>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+            <toplevel>true</toplevel>
+        </stereo>
+
+        <stereo id="stereotype-name-internal-package">
+            <name lang="nl">Intern</name>
+            <name lang="en">Internal</name>
+            <desc lang="nl">A package that references another package that is developed by the owner, and part of the owner's projects.
+                It is therefore assumned to be available in the owners managed output folder.
+                It is also assumed that the metamodels are compatible.</desc>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-att-proxy" primary="yes">
+            <name lang="nl">Attribuutsoort_proxy</name>
+            <name lang="en">AttributeTypeProxy</name>
+            <desc lang="nl">A proxy is TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-obj-proxy" primary="yes">
+            <name lang="nl">Objecttype_proxy</name>
+            <name lang="en">FeatureTypeProxy</name>
+            <desc lang="nl">A proxy is TODO</desc>
+            <construct>class</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-grp-proxy" primary="yes">
+            <name lang="nl">Gegevensgroeptype_proxy</name>
+            <name lang="en">AttributeGroupTypeProxy</name>
+            <desc lang="nl">A proxy is TODO</desc>
+            <construct>class</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-anonymous">
+            <name lang="nl">Anoniem</name>
+            <name lang="en">Anonymous</name>
+            <construct>attribute</construct>
+            <construct>association</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-reference">
+            <name lang="en">Reference</name>
+            <name lang="nl">Referentie</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">Een complex datatype met de naam *AltRef die door de gebruiker is geïntroduceerd als referentie klasse. Zie IM-137. 
+                Het betreft een referentie naar een objecttype uit een ander informatiemodel. 
+                De referentie naar dit object zit in scope van het eigen model, maar het gerefereerde object niet. 
+                Voorbeeld: de referentie naar een Persoon uit de BRP, in de vorm van alleen de identificatie die de BRP aan dit objecttype heeft toegekend. 
+                Expliciet dus niet de BRP-Persoon zelf, noch een representatie hiervan in het eigen model.
+                Toelichting: dit stereotype is analoog aan het stereotype «Externe koppeling» met het verschil dat bij deze laatste het gerefereerde object met 
+                attributen is overgenomen naar het eigen model (in een package met stereotype «view»). Bij het stereotype «Referentie» wordt overname niet 
+                nodig geacht, omdat alleen de relatie naar het object voldoende is (aanvullend op de identificatie van het object geen verdere attributen). 
+            </desc>
+            <construct>class</construct>
+        </stereo>
+        
+    </stereotypes>
+</metamodel>

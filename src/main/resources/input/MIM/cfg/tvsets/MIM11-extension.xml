@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <name>MIM 1.1 tagged values (common extensions)</name>
+    
+    <tagged-values>
+    
+        <tv norm="space" id="CFG-TV-OWNER">
+            <name lang="nl">Eigenaar</name>
+            <name lang="en">Owned by</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="note" id="CFG-TV-RULES">
+            <name lang="nl">Regels</name>
+            <name lang="en">Rules</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-MINVALUEINCLUSIVE">
+            <name lang="nl">Minimumwaarde</name>
+            <name lang="en">MinInclusive</name>
+            <desc lang="nl">De ondergrens (inclusief) voor de waarde.</desc>
+            <desc lang="en">Defines lower bounds for values including this number.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-MAXVALUEINCLUSIVE">
+            <name lang="nl">Maximumwaarde</name>
+            <name lang="en">MaxInclusive</name>
+            <desc lang="nl">De boven (inclusief) voor de waarde.</desc>
+            <desc lang="en">Defines upper bounds for values including this number.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-DEFINITION">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-DATERECORDED">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SOURCE">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-CONCEPT">
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-QUALITY">
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-POPULATION">
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-DESCRIPTION">
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-ADMINISTRATOR">
+            <name lang="nl">Beheerder</name>
+            <name lang="en">Administrator</name>
+            <derive>yes</derive>
+            <desc lang="nl">Naam van de beheerder van het model of het deel van het model.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+            </stereotypes>
+        </tv>
+        
+    </tagged-values>
+
+    
+</tagset>

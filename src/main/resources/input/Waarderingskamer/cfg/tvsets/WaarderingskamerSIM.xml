@@ -19,12 +19,12 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <!-- speciale grouping constructs -->
-    <xi:include href="Grouping.xml"/>
-    
-    <!-- Waarderingskamer follows MIM1.1 requirements -->
     <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
-      
+    
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM11.xml"/>
+    
+    <xi:include href="Grouping-MIM11.xml"/>
+    
     <name>Waarderingskamer SIM</name>
     <tagged-values>
         <tv id="CFG-TV-MINVALUEINCLUSIVE">
@@ -36,6 +36,8 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
             </stereotypes>
         </tv>
         <tv id="CFG-TV-MAXVALUEINCLUSIVE">
@@ -47,15 +49,14 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-INDICATIEINONDERZOEK">
             <name lang="nl">Indicatie in onderzoek</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
-            <desc lang="nl">
-                De indicatie of te bevragen is dat er twijfel is of is geweest aan de juistheid van de attribuutwaarde en dat een onderzoek wordt 
-                of is uitgevoerd naar de juistheid van de attribuutwaarde. 
-            </desc>
+            <desc lang="nl">De indicatie of te bevragen is dat er twijfel is of is geweest aan de juistheid van de attribuutwaarde en dat een onderzoek wordt of is uitgevoerd naar de juistheid van de attribuutwaarde.</desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>

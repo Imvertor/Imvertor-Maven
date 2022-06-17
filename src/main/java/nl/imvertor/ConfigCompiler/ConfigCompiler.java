@@ -22,6 +22,7 @@ package nl.imvertor.ConfigCompiler;
 
 import org.apache.log4j.Logger;
 
+import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFolder;
@@ -83,6 +84,18 @@ public class ConfigCompiler  extends Step {
 				XmlFile profileFile = new XmlFile(eaFolder,configurator.getXParm("appinfo/ea-toolbox-file-name"));
 				tempProfileFile.copyFile(profileFile); 
 			}
+		}
+		
+		// create simple metamodel representation
+		succeeds = succeeds ? transformer.transformStep("properties/WORK_CONFIG_FILE", "properties/WORK_METAMODEL_FILE", "properties/IMVERTOR_METAMODEL_XSLPATH") : false ;
+		if (succeeds) {
+			XmlFile metamodelFile = new XmlFile(configurator.getXParm("properties/WORK_METAMODEL_FILE"));
+			XmlFile appModFile = new XmlFile(etcFolder,"metamodel.xml");
+			metamodelFile.copyFile(appModFile); 
+			// copy the XSD
+			XmlFile managedMetamodelFile = new XmlFile(Configurator.getInstance().getBaseFolder().getCanonicalPath() + "/etc/xsd/metamodel/metamodel.xsd");
+			XmlFile targetMetamodelFile = new XmlFile(etcFolder.getCanonicalPath() + "/xsd/metamodel/metamodel.xsd");
+			managedMetamodelFile.copyFile(targetMetamodelFile);
 		}
 		
 		configurator.setStepDone(STEP_NAME);

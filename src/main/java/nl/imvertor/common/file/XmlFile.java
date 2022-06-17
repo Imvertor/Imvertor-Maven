@@ -40,6 +40,8 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.xml.security.Init;
+import org.apache.xml.security.c14n.Canonicalizer;
 import org.custommonkey.xmlunit.DetailedDiff;
 import org.custommonkey.xmlunit.Difference;
 import org.custommonkey.xmlunit.XMLTestCase;
@@ -118,6 +120,8 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	private String lastError = "";
 	
 	private Vector<String> messages = new Vector<String>();
+	
+	private static Canonicalizer canonicalizer;
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -693,6 +697,25 @@ public class XmlFile extends AnyFile implements ErrorHandler {
         
 		writer.close();
 	}
-	    
+    
+    /**
+     * Canonicalize the XML file. 
+     * 
+     * The algo is any referenced XML Canonicalization document, as referenced by <a href="https://santuario.apache.org/Java/api/org/apache/xml/security/c14n/Canonicalizer.html">Class Canonicalizer statics</a>.
+     * 
+     * @param targetFile
+     * @throws Exception 
+     */
+    public void canonicalize(XmlFile targetFile, String algo) throws Exception {
+		if (isWellFormed()) {
+		    if (canonicalizer == null) {
+				Init.init();
+				canonicalizer = Canonicalizer.getInstance(algo);
+			}
+			FileOutputStream os = new FileOutputStream(targetFile);
+			canonicalizer.canonicalize(getContent().getBytes(),os,false);
+		} else 
+			throw (new Exception("XML file is not well-formed. Cannot canonicalize file " + targetFile.getName())); 
+    }
 
 }

@@ -118,6 +118,7 @@ public class Configurator {
 	private AnyFolder appFolder;   
 	private AnyFolder inputFolder;   
 	private AnyFolder outputFolder;   
+	private AnyFolder regtestFolder;   
 
 	private XMLConfiguration workConfiguration;
 	private XMLConfiguration stepConfiguration;
@@ -192,7 +193,10 @@ public class Configurator {
 			inputFolder  = new AnyFolder(baseFolder, "input" + File.separator + System.getProperty("owner.name"));
 			outputFolder = new AnyFolder(getServerProperty(
 					(regression) ? "output.dir.reg" : "output.dir") + "/" + System.getProperty("owner.name"));
-			
+
+			// save the managed folder for regression tests (ref and tst)
+			regtestFolder = new AnyFolder(getServerProperty("managed.dir.reg"));
+
 			saxonConfig = new Configuration();
 			
 			// possible addition: saxon 9,8: saxonConfig.setConfigurationProperty(FeatureKeys.TRACE_EXTERNAL_FUNCTIONS, true);
@@ -202,6 +206,8 @@ public class Configurator {
 			
 			String ee = getServerProperty("ea.enabled"); // true or false; false typically on server environment; see redmine #487932
 			eaEnabled = (ee == null || !ee.equals("false"));
+			
+			
 			
 		} catch (Exception e) {
 			System.err.println("Invalid configuration: " + e.getMessage());
@@ -422,6 +428,7 @@ public class Configurator {
 				
 		setXParm(workConfiguration,"system/managedoutputfolder", outputFolder.getCanonicalPath(), true);
 		setXParm(workConfiguration,"system/managedinstallfolder", baseFolder.getCanonicalPath(), true);
+		setXParm(workConfiguration,"system/managedregtestfolder", regtestFolder.getCanonicalPath(), true);
 		
 		setXParm(workConfiguration,"system/latest-imvertor-release", getServerProperty("latest.imvertor.release"), true);
 
@@ -1439,9 +1446,14 @@ public class Configurator {
 		serverProperties = getProperties(propsFile);
 	}
 
-	public String getServerProperty(String key) throws IOException {
+	public String getServerProperty(String key) throws Exception {
+		return getServerProperty(key, true);
+	}
+	public String getServerProperty(String key, Boolean required) throws Exception {
 		if (serverProperties == null) getServerProperties();
-		return serverProperties.getProperty(key);
+		String prop = serverProperties.getProperty(key);
+		if (prop == null && required) throw new Exception("No such property set for this server: " + key);
+		else return prop;
 	}
 	
 	/*

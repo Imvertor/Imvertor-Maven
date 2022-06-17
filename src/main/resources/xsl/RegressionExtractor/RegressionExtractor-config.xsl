@@ -36,15 +36,12 @@
          Stylesheet to filter intermediate config file.
     -->
     
-    <xsl:template match="config" mode="mode-intermediate-config">
-        <xsl:apply-templates mode="#current"/>
-    </xsl:template>
-    
-    <!-- 
+   <!-- 
         ignore the following alltogether 
     -->
     <xsl:template match="
-        desc 
+        desc | 
+        prologue
         " 
         mode="mode-intermediate-config">
         <xsl:call-template name="ignore"/>
