@@ -2,8 +2,8 @@
 <xsl:stylesheet 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-	xmlns:imf="http://www.imvertor.org/xsl/functions" 
 	xmlns:ep="http://www.imvertor.org/schema/endproduct" 
+	xmlns:imf="http://www.imvertor.org/xsl/functions" 
 	xmlns:j="http://www.w3.org/2005/xpath-functions"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	version="2.0">
@@ -1933,7 +1933,7 @@
 				<j:string key="format">date</j:string>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'year'">
-				<j:string key="format">date_fullyea</j:string>
+				<j:string key="format">date_fullyear</j:string>
 			</xsl:when>
 <!--			<xsl:when test="$incomingType = 'yearmonth'">
 				<j:string key="format">jaarmaand</j:string>
@@ -2400,28 +2400,73 @@
 		<xsl:param name="definition" select="'yes'"/>
 		<xsl:param name="description" select="'yes'"/>
 		<xsl:param name="pattern" select="'yes'"/>
+		<xsl:variable name="completeDefinition">
+			<xsl:if test="$definition = 'yes'">
+				<xsl:apply-templates select="ep:definition"/>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="completeDescription">
+			<xsl:if test="$description = 'yes'">
+				<xsl:apply-templates select="ep:description"/>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="completePattern">
+			<xsl:if test="$pattern = 'yes'">
+				<xsl:apply-templates select="ep:pattern"/>
+			</xsl:if>
+		</xsl:variable>
 		
-		<xsl:if test="$definition = 'yes'">
-			<xsl:apply-templates select="ep:definition"/>
-		</xsl:if>
-		<xsl:if test="$description = 'yes'">
-			<xsl:apply-templates select="ep:description"/>
-		</xsl:if>
-		<xsl:if test="$pattern = 'yes'">
-			<xsl:apply-templates select="ep:pattern"/>
-		</xsl:if>
+		<xsl:sequence select="$completeDefinition"/>
+		<xsl:if test="not(empty($completeDefinition)) and not(empty($completeDescription))"><xsl:text>
+  </xsl:text><xsl:text>
+</xsl:text></xsl:if>
+  		<xsl:sequence select="$completeDescription"/>
+		<xsl:if test="(not(empty($completeDescription)) and not(empty($completePattern))) or (not(empty($completeDefinition)) and not(empty($completePattern)))"><xsl:text>
+  </xsl:text><xsl:text>
+</xsl:text></xsl:if>
+  		<xsl:sequence select="$completePattern"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:definition">
-		<xsl:apply-templates select="ep:p[@level='SIM']"/>
-		<xsl:apply-templates select="ep:p[@level='UGM']"/>
-		<xsl:apply-templates select="ep:p[@level='BSM']"/>
+		<xsl:variable name="SIM-definition">
+			<xsl:apply-templates select="ep:p[@level='SIM']"/>
+		</xsl:variable>
+		<xsl:variable name="UGM-definition">
+			<xsl:apply-templates select="ep:p[@level='UGM']"/>
+		</xsl:variable>
+		<xsl:variable name="BSM-definition">
+			<xsl:apply-templates select="ep:p[@level='BSM']"/>
+		</xsl:variable>
+		<xsl:sequence select="$SIM-definition"/>
+		<xsl:if test="not(empty($SIM-definition)) and not(empty($UGM-definition))"><xsl:text>
+  </xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$UGM-definition"/>
+		<xsl:if test="(not(empty($UGM-definition)) and not(empty($BSM-definition))) or (not(empty($SIM-definition)) and not(empty($BSM-definition)))"><xsl:text>
+  </xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$BSM-definition"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:description">
-		<xsl:apply-templates select="ep:p[@level='SIM']"/>
-		<xsl:apply-templates select="ep:p[@level='UGM']"/>
-		<xsl:apply-templates select="ep:p[@level='BSM']"/>
+		<xsl:variable name="SIM-description">
+			<xsl:apply-templates select="ep:p[@level='SIM']"/>
+		</xsl:variable>
+		<xsl:variable name="UGM-description">
+			<xsl:apply-templates select="ep:p[@level='UGM']"/>
+		</xsl:variable>
+		<xsl:variable name="BSM-description">
+			<xsl:apply-templates select="ep:p[@level='BSM']"/>
+		</xsl:variable>
+		<xsl:sequence select="$SIM-description"/>
+		<xsl:if test="not(empty($SIM-description)) and not(empty($UGM-description))"><xsl:text>
+  </xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$UGM-description"/>
+		<xsl:if test="(not(empty($UGM-description)) and not(empty($BSM-description))) or (not(empty($SIM-description)) and not(empty($BSM-description)))"><xsl:text>
+  </xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$BSM-description"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:pattern">
