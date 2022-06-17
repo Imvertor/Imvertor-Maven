@@ -188,22 +188,6 @@
             </stereotypes>
         </tv>
         
-        <!-- TODO dit is geen tagged value, maar wat wel? -->
-        <?x
-        <tv norm="space" id="CFG-TV-INDICATIONDERIVABLE(REMOVE)">
-            <name lang="nl">Indicatie afleidbaar</name>
-            <name lang="en">TODO</name>
-            <derive>yes</derive>
-            <desc lang="nl">Aanduiding dat gegeven afleidbaar is uit andere attribuut- en/of relatiesoorten.</desc>
-            <stereotypes>
-                <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
-                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
-                <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
-            </stereotypes>
-        </tv>
-        x?>
-        
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <name lang="nl">Indicatie materiële historie</name>
             <name lang="en">Indication material history</name>
