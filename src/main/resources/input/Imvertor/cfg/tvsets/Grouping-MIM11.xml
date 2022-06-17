@@ -23,6 +23,7 @@
                 This tagged value is required by the Imvertor add-in on Enterprise Architect.
             </desc>
             <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
             </stereotypes>
@@ -48,6 +49,7 @@
                 "specific" means that the model is a particular to a domain and models that domain or a conherent part of it.  
             </desc>
             <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
@@ -67,6 +69,7 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
                 <stereo minmax="0..1">stereotype-name-domain-package</stereo>
@@ -79,6 +82,7 @@
             <name lang="en">Release</name>
             <derive>no</derive>
             <stereotypes>
+                <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
                 <stereo minmax="1..1">stereotype-name-base-package</stereo>
                 <stereo minmax="1..1">stereotype-name-application-package</stereo>
                 <stereo minmax="1..1">stereotype-name-domain-package</stereo>
@@ -118,6 +122,7 @@
             <desc lang="en">The name of the supplier project. Include only when models is derived.</desc>
             <derive>no</derive>
             <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
                 <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
@@ -131,6 +136,7 @@
             <desc lang="en">The name of the supplier model. Include only when models is derived.</desc>
             <derive>no</derive>
             <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
                 <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
@@ -157,6 +163,7 @@
             
             <derive>no</derive>
             <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
                 <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
@@ -168,6 +175,7 @@
             <desc lang="nl">De identificatie van de versie/revisie van dit model of model-element in het gehanteerde versiebeheersysteem.</desc>
             <derive>no</derive>
             <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
                 <stereo minmax="0..1">stereotype-name-domain-package</stereo>
