@@ -184,7 +184,7 @@
             <derive>yes</derive>
             <desc lang="nl">Indicatie dat een attribuutsoort het objecttype waar het bijhoort classificeert in (sub)typen.</desc>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
         
