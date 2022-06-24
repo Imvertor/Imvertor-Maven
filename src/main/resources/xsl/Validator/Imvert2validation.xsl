@@ -956,12 +956,30 @@
         <xsl:variable name="is-combined-identification" select="imf:get-tagged-value($this,'##CFG-TV=GECOMBINEERDEIDENTIFICATIE')"/>
         <xsl:variable name="target-navigable" select="imvert:target/imvert:navigable"/>
         <xsl:variable name="defining-class-is-group" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')"/>
-        <xsl:variable name="meta-is-role-based" select="imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/>
         
         <xsl:variable name="applicable-name" select="if ($meta-is-role-based and not($is-choice)) then imvert:target/imvert:role else imvert:name"/>
             
         <!--validation-->
-        
+        <xsl:choose>
+            <!-- specifiek voor verschil tussen rol- en relatie gebaseerde modellen, zie ook #274-->
+            <xsl:when test="$meta-is-role-based">
+                <!-- nog niks -->
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:report-warning(., 
+                    not($is-collection) and $this/imvert:name and not(imf:test-name-convention($this)), 
+                    'Association name does not obey convention')"/>
+                <xsl:sequence select="imf:report-error(., 
+                    (not($is-collection) and not($is-process) and not($defining-class-is-group) and empty($association-class-id) and empty($applicable-name)), 
+                    'Association without name')"/>
+                <xsl:sequence select="imf:report-error(., 
+                    $superclasses/*/imvert:attribute/imvert:name=$name, 
+                    'Association already defined as attribute on supertype')"/>
+                <xsl:sequence select="imf:report-error(., 
+                    $superclasses/*/imvert:association/imvert:name=$name, 
+                    'Association already defined on supertype')"/>
+            </xsl:otherwise>
+        </xsl:choose>
         <xsl:sequence select="imf:report-error(., 
             ($is-collection and $name and not(imf:boolean($profile-collection-wrappers))), 
             'Class that is a [1] cannot have named association(s)',(imf:get-config-stereotypes('stereotype-name-collection')))"/>
@@ -971,12 +989,6 @@
         <xsl:sequence select="imf:report-error(., 
             ($is-collection and not($name) and imf:boolean($profile-collection-wrappers)), 
             'A collection wrapper name is required')"/>
-        <xsl:sequence select="imf:report-warning(., 
-            not($is-collection) and $this/imvert:name and not(imf:test-name-convention($this)), 
-            'Association name does not obey convention')"/>
-        <xsl:sequence select="imf:report-error(., 
-            (not($is-collection) and not($is-process) and not($defining-class-is-group) and empty($association-class-id) and empty($applicable-name)), 
-            'Association without name')"/>
         <xsl:sequence select="imf:report-error(., 
             not(imf:check-multiplicity(imvert:min-occurs,imvert:max-occurs)), 
             'Invalid target multiplicity')"/>
@@ -984,13 +996,6 @@
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
         <xsl:sequence select="imf:check-tagged-value-multi(.)"/>
         <xsl:sequence select="imf:check-tagged-value-assignment(.)"/>
-        
-        <xsl:sequence select="imf:report-error(., 
-            $superclasses/*/imvert:attribute/imvert:name=$name, 
-            'Association already defined as attribute on supertype')"/>
-        <xsl:sequence select="imf:report-error(., 
-            $superclasses/*/imvert:association/imvert:name=$name, 
-            'Association already defined on supertype')"/>
         
         <xsl:variable name="must-test-on-assoc" select="
             not($is-collection) 
