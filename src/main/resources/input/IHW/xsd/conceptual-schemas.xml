@@ -12,6 +12,7 @@
          <cs:use>
             <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
             <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#IMGEO"/>
             <cs-ref:MapRef xlink:href="#IHW-GENERIEK"/>
          </cs:use>
       </cs:Mapping>
@@ -21,6 +22,7 @@
 
          <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
          <xi:include href="../../ISO/xsd/cs-GML322PROFILE.xml"/><!-- implements ConceptualSchema GML 322 profile -->
+         <xi:include href="../../Geonovum/xsd/cs-IMGEO211.xml"/><!-- implements ConceptualSchema IMGEO -->
          
          <cs:ConceptualSchema>
             <cs:id>IHW</cs:id>
@@ -31,6 +33,7 @@
          
          <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
          <xi:include href="../../ISO/xsd/cm-GML322PROFILE.xml"/><!-- implements Map #GML -->
+         <xi:include href="../../Geonovum/xsd/cm-IMGEO211.xml"/><!-- implements Map #IMGEO -->
          
          <cs:Map>
             <cs:id>IHW-GENERIEK</cs:id>
