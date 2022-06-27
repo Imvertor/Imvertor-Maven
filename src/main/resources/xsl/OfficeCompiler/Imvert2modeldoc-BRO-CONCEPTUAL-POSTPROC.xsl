@@ -610,6 +610,9 @@
             <xsl:when test="$unit-ucum = 'MWh'">MWh (megawattuur)</xsl:when>
             <xsl:when test="$unit-ucum = 'kW'">kW (kilowatt)</xsl:when>
             
+            <xsl:when test="$unit-ucum = 'mm2/mm2'">mm<sup>2</sup>/mm<sup>2</sup> (vierkante millimeter/vierkante millimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'MPa/MPa'">MPa/MPa (megapascal/megapascal)</xsl:when>
+            
             <xsl:otherwise>
                 <xsl:value-of select="$unit-ucum"/>
             </xsl:otherwise>
