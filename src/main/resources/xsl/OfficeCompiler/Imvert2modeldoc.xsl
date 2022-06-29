@@ -1163,6 +1163,9 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-MNEMONIC'">
                     <xsl:sequence select="imf:create-part-2(.,string($relation/imvert:alias))"/>
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-ATTRIBUTEDOMAIN'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DOMAIN'))"/>
+                </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-HERKOMST'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-SOURCE'))"/> 
                 </xsl:when>

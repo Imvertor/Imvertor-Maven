@@ -141,6 +141,13 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-ATTRIBUTEDOMAIN" order="020">
+        <name lang="nl">Domein</name>
+        <name lang="en">Domain</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
     <doc-rule id="CFG-DOC-HERKOMST" order="030">
         <name lang="nl">Herkomst</name>
         <name lang="en">Origin</name>
