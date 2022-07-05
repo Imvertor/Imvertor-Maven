@@ -142,11 +142,13 @@
         <xsl:variable name="is-not-sad" select="exists(for $c in (imf:get-superclasses($class)) return if (imf:is-linkable($c)) then 1 else ())"/>
         
         <!-- IM-432 Relaties niet altijd via ref -->
-        <xsl:variable name="id-attribute-inherited" select="($class, imf:get-superclasses($class))/*/imvert:attribute[imvert:is-id='true']"/>
-        <xsl:variable name="id-attribute-inheriting" select="($class, imf:get-subclasses($class))/*/imvert:attribute[imvert:is-id='true']"/>
+        <xsl:variable name="id-attribute-inherited" select="($class, imf:get-superclasses($class))/*/imvert:attribute[imvert:is-id='true']" as="element(imvert:attribute)*"/>
+        <xsl:variable name="id-attribute-inheriting" select="($class, imf:get-subclasses($class))/*/imvert:attribute[imvert:is-id='true']" as="element(imvert:attribute)*"/>
         <xsl:variable name="is-not-anonymous" select="exists(($id-attribute-inherited,$id-attribute-inheriting))"/>
         <xsl:variable name="is-not-id-voidable" select="not($id-attribute-inherited/imvert:stereotype/@id = ('stereotype-name-voidable'))"/>
-        <xsl:variable name="is-not-id-tv-voidable" select="if ($id-attribute-inherited) then not(imf:boolean(imf:get-tagged-value($id-attribute-inherited,'##CFG-TV-VOIDABLE'))) else true()"/>
+        
+        <xsl:variable name="voidable-attributes" select="for $a in $id-attribute-inherited return imf:get-tagged-value($a,'##CFG-TV-VOIDABLE')" as="xs:string*"/>
+        <xsl:variable name="is-not-id-tv-voidable" select="if ($id-attribute-inherited) then not(imf:boolean($voidable-attributes)) else true()"/>
         
         <?debug
         <xsl:sequence select="dlogger:save('$L ' || imf:get-display-name($class),
