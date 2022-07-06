@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1" xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://www.geostandaarden.nl/mim/informatiemodel/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1">
-
+  
+  <xs:import namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1" schemaLocation="MIMFORMAT_MimRef_v1.xsd"/>
+  <xs:import namespace="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1" schemaLocation="MIMFORMAT_MimExt_v1.xsd"/>
+  
   <xs:annotation>
     <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/mim/informatiemodel/v1</xs:appinfo>
     <xs:appinfo source="http://www.imvertor.org/schema-info/version">1</xs:appinfo>
   </xs:annotation>
-
-  <xs:import namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1" schemaLocation="MIMFORMAT_MimRef_v1.xsd"/>
-  <xs:import namespace="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1" schemaLocation="MIMFORMAT_MimExt_v1.xsd"/>
 
   <!-- Informatiemodel: -->
   <xs:element name="Informatiemodel" type="mim:Informatiemodel">
@@ -275,10 +275,9 @@
       <xs:element ref="mim:gegevensgroepen" minOccurs="0"/>
       <xs:element name="relatiesoorten" minOccurs="0">
         <xs:complexType>
-          <xs:choice maxOccurs="unbounded">
-            <xs:element ref="mim:RelatiesoortRelatiesoortLeidend"/>
-            <xs:element ref="mim:RelatiesoortRelatierolLeidend"/>
-          </xs:choice>
+          <xs:sequence>
+            <xs:element ref="mim:Relatiesoort" maxOccurs="unbounded"/>
+          </xs:sequence>
         </xs:complexType>
       </xs:element>
       <xs:element name="externeKoppelingen" minOccurs="0">
@@ -300,7 +299,7 @@
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
   </xs:complexType>
-
+  
   <!-- Gegevensgroeptype: -->
   <xs:element name="Gegevensgroeptype" type="mim:Gegevensgroeptype">
     <xs:annotation>
@@ -342,6 +341,13 @@
       <xs:element name="datumOpname" type="xs:string"/>
       <xs:element ref="mim:attribuutsoorten" minOccurs="0"/>
       <xs:element ref="mim:gegevensgroepen" minOccurs="0"/>
+      <xs:element name="relatiesoorten" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim:Relatiesoort" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element ref="mim:constraints" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
@@ -540,466 +546,7 @@
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
   </xs:complexType>
-
-  <!-- RelatiesoortRelatiesoortLeidend: -->
-  <xs:element name="RelatiesoortRelatiesoortLeidend" type="mim:RelatiesoortRelatiesoortLeidend">
-    <!-- Relatiesoort leidend (alternatief 1); relatiemodelleringstype == "Relatiesoort leidend" -->
-    <xs:annotation>
-      <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De typering van het structurele verband tussen een object van een objecttype en een (ander) object van een ander (of hetzelfde) objecttype.</xs:documentation>
-    </xs:annotation>
-  </xs:element>
-  <xs:complexType name="RelatiesoortRelatiesoortLeidend">
-    <xs:sequence>
-      <xs:element name="naam" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de relatiesoort. </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="alias" type="xs:string" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="unidirectioneel" type="xs:string"/>
-      <xs:element name="doel">
-        <xs:complexType>
-          <xs:choice>
-            <xs:element ref="mim-ref:ObjecttypeRef"/>
-            <xs:element ref="mim-ref:KeuzeRef"/>
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="aggregatietype" type="mim:aggregatietype">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Standaard betreft het geen aggregatie (None). Het type aggregatie mag ‘composite’ zijn. Dit wordt gedaan als er een afhankelijkheid is dat de target niet kan bestaan zonder de source c.q. de target vervalt als de source vervalt.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="kardinaliteit" type="xs:string"/>
-      <xs:element name="herkomst" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan de relatiesoort ontleend is, dan wel de eigen organisatie. Indien zelf toegevoegd, dan is de herkomst de eigen organisatie. </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="definitie" type="mim:xhtmlText">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de relatiesoort.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="herkomstDefinitie" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die aangeeft uit welke bronnen de defintie is samengesteld.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="datumOpname" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De datum waarop de relatiesoort is opgenomen in het informatiemodel.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="indicatieMaterieleHistorie" type="mim:boolean">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Indicatie of de materiële historie van de relatiesoort te bevragen is. Materiële historie geeft aan wanneer een verandering is opgetreden in de werkelijkheid die heeft geleid tot verandering van de relatie.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="indicatieFormeleHistorie" type="mim:boolean">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Indicatie of de formele historie van de relatiesoort te bevragen is. Formele historie geeft aan wanneer in de administratie een verandering is verwerkt van de relatie (wanneer was de verandering bekend en is deze verwerkt).</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="authentiek" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding of de attribuutsoort waarvan de relatiesoort is afgeleid, een authentiek gegeven (attribuutsoort) betreft.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="indicatieAfleidbaar" type="mim:boolean"/>
-      <xs:element name="mogelijkGeenWaarde" type="mim:boolean">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding dat relatiesoort geen waarde met betekenis kan bevatten.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="relatierolBron" minOccurs="0">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="RelatierolBron" type="mim:RelatierolRelatiesoortLeidend"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="relatierolDoel" minOccurs="0">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="RelatierolDoel" type="mim:RelatierolRelatiesoortLeidend"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="relatieklasse" minOccurs="0">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="mim:Relatieklasse"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
-    </xs:sequence>
-    <xs:attribute name="id" type="xs:string" use="optional"/>
-  </xs:complexType>
-
-  <!-- RelatiesoortRelatierolLeidend: -->
-  <xs:element name="RelatiesoortRelatierolLeidend" type="mim:RelatiesoortRelatierolLeidend">
-    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringstype == "Relatierol leidend" -->
-    <xs:annotation>
-      <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De typering van het structurele verband tussen een object van een objecttype en een (ander) object van een ander (of hetzelfde) objecttype.</xs:documentation>
-    </xs:annotation>
-  </xs:element>
-  <xs:complexType name="RelatiesoortRelatierolLeidend">
-    <xs:sequence>
-      <xs:element name="naam" type="xs:string" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de relatiesoort. </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="alias" type="xs:string" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="relatierolBron" minOccurs="1">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="RelatierolBron" type="mim:RelatierolRelatierolLeidend"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="relatierolDoel" minOccurs="1">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="RelatierolDoel" type="mim:RelatierolRelatierolLeidend"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="relatieklasse" minOccurs="0">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="mim:Relatieklasse"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
-    </xs:sequence>
-    <xs:attribute name="id" type="xs:string" use="optional"/>
-  </xs:complexType>
-
-  <!-- Relatierol: -->
-  <xs:complexType name="RelatierolRelatiesoortLeidend">
-    <!-- Relatiesoort leidend (alternatief 1); relatiemodelleringstype == "Relatiesoort leidend" -->
-    <xs:sequence>
-      <xs:element name="naam" type="xs:string" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de relatierol. </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="alias" type="xs:string" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatierol. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
-    </xs:sequence>
-    <xs:attribute name="id" type="xs:string" use="optional"/>
-  </xs:complexType>
-
-  <xs:complexType name="RelatierolRelatierolLeidend">
-    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringstype == "Relatierol leidend" -->
-    <xs:sequence>
-      <xs:element name="naam" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de relatiesoort. </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="alias" type="xs:string" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="herkomst" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan de relatiesoort ontleend is, dan wel de eigen organisatie. Indien zelf toegevoegd, dan is de herkomst de eigen organisatie. </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="definitie" type="mim:xhtmlText">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="herkomstDefinitie" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die aangeeft uit welke bronnen de defintie is samengesteld.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="datumOpname" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De datum waarop de relatiesoort is opgenomen in het informatiemodel.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="kardinaliteit" type="xs:string"/>
-      <xs:element name="indicatieMaterieleHistorie" type="mim:boolean">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Indicatie of de materiële historie van de relatiesoort te bevragen is. Materiële historie geeft aan wanneer een verandering is opgetreden in de werkelijkheid die heeft geleid tot verandering van de relatie.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="indicatieFormeleHistorie" type="mim:boolean">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Indicatie of de formele historie van de relatiesoort te bevragen is. Formele historie geeft aan wanneer in de administratie een verandering is verwerkt van de relatie (wanneer was de verandering bekend en is deze verwerkt).</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="authentiek" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding of de attribuutsoort waarvan de relatiesoort is afgeleid, een authentiek gegeven (attribuutsoort) betreft.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="mogelijkGeenWaarde" type="mim:boolean">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding dat relatiesoort geen waarde met betekenis kan bevatten.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de relatiesoort.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
-    </xs:sequence>
-    <xs:attribute name="id" type="xs:string" use="optional"/>
-  </xs:complexType>
-
-  <?x <xs:element name="Relatierol" type="mim:Relatierol" abstract="true">
-    <xs:annotation>
-      <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De benaming van de manier waarop een object deelneemt aan een relatie met een ander object.</xs:documentation>
-    </xs:annotation>
-  </xs:element>
-  <xs:complexType name="Relatierol" abstract="true">
-    <xs:choice>
-      <xs:element name="RelatiesoortLeidend">
-        <!-- Relatiesoort leidend (alternatief 1); relatiemodelleringstype == "Relatiesoort leidend" -->
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="naam" type="xs:string" minOccurs="0">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de relatiesoort. </xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="alias" type="xs:string" minOccurs="0">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
-          </xs:sequence>  
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="RelatierolLeidend">
-        <!-- Relatierol is leidend (alternatief 2); relatiemodelleringstype == "Relatierol leidend" -->    
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="naam" type="xs:string">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de relatiesoort. </xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="alias" type="xs:string" minOccurs="0">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="herkomst" type="xs:string">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan de relatiesoort ontleend is, dan wel de eigen organisatie. Indien zelf toegevoegd, dan is de herkomst de eigen organisatie. </xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="definitie" type="mim:xhtmlText">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="herkomstDefinitie" type="xs:string">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die aangeeft uit welke bronnen de defintie is samengesteld.</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="datumOpname" type="xs:string">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De datum waarop de relatiesoort is opgenomen in het informatiemodel.</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="kardinaliteit" type="xs:string"/>
-            <xs:element name="indicatieMaterieleHistorie" type="mim:boolean">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Indicatie of de materiële historie van de relatiesoort te bevragen is. Materiële historie geeft aan wanneer een verandering is opgetreden in de werkelijkheid die heeft geleid tot verandering van de relatie.</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="indicatieFormeleHistorie" type="mim:boolean">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Indicatie of de formele historie van de relatiesoort te bevragen is. Formele historie geeft aan wanneer in de administratie een verandering is verwerkt van de relatie (wanneer was de verandering bekend en is deze verwerkt).</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="authentiek" type="xs:string">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding of de attribuutsoort waarvan de relatiesoort is afgeleid, een authentiek gegeven (attribuutsoort) betreft.</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="mogelijkGeenWaarde" type="mim:boolean">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding dat relatiesoort geen waarde met betekenis kan bevatten.</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
-              <xs:annotation>
-                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de relatiesoort.</xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-    </xs:choice>
-    <xs:attribute name="id" type="xs:string" use="optional"/>
-  </xs:complexType>
-  ?>
-
-  <?x <!-- RelatierolBron: -->
-  <xs:element name="RelatierolBron" type="mim:RelatierolBron">
-    <xs:annotation>
-      <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De relatierol die de rol beschrijft van de bron van de relatie.</xs:documentation>
-    </xs:annotation>
-  </xs:element>
-  <xs:complexType name="RelatierolBron">
-    <xs:complexContent>
-      <xs:extension base="mim:Relatierol"/>
-    </xs:complexContent>
-  </xs:complexType>
   
-  <!-- RelatierolDoel: -->
-  <xs:element name="RelatierolDoel" type="mim:RelatierolDoel">
-    <xs:annotation>
-      <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De relatierol die de rol beschrijft van het doel van de relatie.</xs:documentation>
-    </xs:annotation>
-  </xs:element>
-  <xs:complexType name="RelatierolDoel">
-    <xs:complexContent>
-      <xs:extension base="mim:Relatierol">
-        <xs:sequence>
-          <xs:element name="naam" type="xs:string" minOccurs="0">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de relatierol.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="alias" type="xs:string" minOccurs="0">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De alternatieve weergave van de naam.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="herkomst" type="xs:string">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan de relatierol ontleend is, dan wel de eigen organisatie. Indien zelf toegevoegd, dan is de herkomst de eigen organisatie. </xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Beschrijving van de betekenis van de relatierol.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="herkomstDefintie" type="xs:string"/>
-          <xs:element name="datumOpname" type="xs:string">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De datum waarop de relatierol is opgenomen in het informatiemodel.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="kardinaliteit" type="xs:string"/>
-          <xs:element name="indicatieMaterieleHistorie" type="mim:boolean">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Indicatie of de materiële historie van de relatierol te bevragen is. Materiële historie geeft aan wanneer een verandering is opgetreden in de werkelijkheid die heeft geleid tot verandering van de relatie.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="indicatieFormeleHistorie" type="mim:boolean">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Indicatie of de formele historie van de relatiesrol te bevragen is. Formele historie geeft aan wanneer in de administratie een verandering is verwerkt van de relatie (wanneer was de verandering bekend en is deze verwerkt).</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="authentiek" type="xs:string">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding of de attribuutsoort waarvan de relatierol is afgeleid, een authentiek gegeven (attribuutsoort) betreft.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="mogelijkGeenWaarde" type="mim:boolean">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Aanduiding dat relatierol geen waarde met betekenis kan bevatten.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
-            <xs:annotation>
-              <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een inhoudelijke toelichting op de relatierol.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  ?>
-
   <!-- Datatype: -->
   <xs:element name="Datatype" type="mim:Datatype" abstract="true">
     <xs:annotation>
