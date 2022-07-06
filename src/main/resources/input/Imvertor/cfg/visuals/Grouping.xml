@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<visuals type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <!-- 
+        these visuals specify the basic visual aspects of the UML profile  
+    -->
+    <name>Grouping</name>
+
+    <desc lang="en">Visuals for grouping</desc>
+    <desc lang="nl">Visuele aspecten van grouping constructies</desc>
+    
+    <measures>
+        <!-- geen aanpassingen -->
+    </measures>
+
+    <categories>
+        <category id="GROUPING">
+            <desc lang="nl">Grouping</desc>
+        </category>
+    </categories>
+    
+    <stereos>
+        <!-- skip: stereotype-name-anonymous, stereotype-name-folder-package, stereotype-name-provided-package -->
+        
+        <stereo id="stereotype-name-att-proxy">
+            <toolbox category="GROUPING"/>
+        </stereo>
+        <stereo id="stereotype-name-components-package">
+            <toolbox category="GROUPING"/>
+        </stereo>
+        <stereo id="stereotype-name-grp-proxy">
+            <toolbox category="GROUPING"/>
+        </stereo>
+        <stereo id="stereotype-name-interface">
+            <toolbox category="GROUPING"/>
+        </stereo>
+        <stereo id="stereotype-name-obj-proxy">
+            <toolbox category="GROUPING"/>
+        </stereo>
+        <stereo id="stereotype-name-process">
+            <toolbox category="GROUPING"/>
+        </stereo>
+        <stereo id="stereotype-name-product">
+            <toolbox category="GROUPING"/>
+        </stereo>
+        <stereo id="stereotype-name-project-package">
+            <toolbox category="GROUPING"/>
+        </stereo>
+        <stereo id="stereotype-name-recyclebin">
+            <toolbox category="GROUPING"/>
+        </stereo>
+        <stereo id="stereotype-name-reference">
+            <toolbox category="GROUPING"/>
+        </stereo>
+        <stereo id="stereotype-name-service">
+            <toolbox category="GROUPING"/>
+        </stereo>
+        
+    </stereos>
+ 
+</visuals>
