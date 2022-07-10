@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchema xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+    
+    <cs:id>CITYGML</cs:id>
+    <cs:shortName>CityGML</cs:shortName>
+    <cs:version>2.0</cs:version>
+    <cs:phase>3</cs:phase>
+    <cs:desc>CityGML is an open standardised data model and exchange format to store digital 3D models of cities and landscapes. It defines ways to describe most of the common 3D features and objects found in cities (such as buildings, roads, rivers, bridges, vegetation and city furniture) and the relationships between them. It also defines different standard levels of detail (LODs) for the 3D objects, which allows us to represent objects for different applications and purposes.</cs:desc>
+    <cs:source>Geonovum</cs:source>
+    <cs:data-location>https://www.citygmlwiki.org/</cs:data-location>
+    <cs:url>https://www.citygmlwiki.org/</cs:url>
+    <cs:catalogUrl>https://www.citygmlwiki.org/[entry]</cs:catalogUrl>
+ 
+</cs:ConceptualSchema>
+            

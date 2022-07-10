@@ -35,6 +35,7 @@
         <cs:Construct>
             <cs:name>FunctioneelGebied</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:managedID>EAID_BCD8B465_CFB7_4a32_BF70_B3B997E102CC</cs:managedID><!-- based on IMWA -->
             <cs:catalogEntries>
                 <cs:CatalogEntry>
                     <cs:name>functioneelgebied</cs:name>
