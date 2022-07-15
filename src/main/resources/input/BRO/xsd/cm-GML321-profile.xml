@@ -264,25 +264,7 @@
              </cs:XsdType>
           </cs:xsdTypes>
        </cs:Construct>
-       <!-- verwijderen? duplicaat met regel 311 -->
-       <cs:Construct>
-          <cs:name>GM_Object</cs:name>
-          <cs:sentinel>false</cs:sentinel>
-          <cs:catalogEntries>
-             <cs:CatalogEntry>
-                <cs:name>#Object</cs:name>
-             </cs:CatalogEntry>
-          </cs:catalogEntries>
-          <cs:xsdTypes>
-             <cs:XsdType>
-                <cs:name>AbstractGeometry</cs:name>
-                <cs:asAttribute>GeometryPropertyType</cs:asAttribute>
-                <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                <cs:primitive>false</cs:primitive>
-                <cs:hasNilreason>false</cs:hasNilreason>
-             </cs:XsdType>
-          </cs:xsdTypes>
-       </cs:Construct>
+      
        <cs:Construct>
           <cs:name>GM_Surface</cs:name>
           <cs:sentinel>false</cs:sentinel>
