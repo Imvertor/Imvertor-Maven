@@ -12,7 +12,7 @@
          <cs:use>
             <cs-ref:MapRef xlink:href="#GML321"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
-            <cs-ref:MapRef xlink:href="#IMGEO"/>
+            <cs-ref:MapRef xlink:href="#IMGEO211"/>
             <cs-ref:MapRef xlink:href="#CITYGML"/>
             <cs-ref:MapRef xlink:href="#STUB"/>
          </cs:use>
@@ -24,7 +24,7 @@
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <cs-ref:MapRef xlink:href="#GML321"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
-            <cs-ref:MapRef xlink:href="#IMGEO"/>
+            <cs-ref:MapRef xlink:href="#IMGEO211"/>
             <cs-ref:MapRef xlink:href="#CITYGML"/>
             <cs-ref:MapRef xlink:href="#STUB"/>
          </cs:use>

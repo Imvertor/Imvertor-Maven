@@ -8,8 +8,8 @@
     ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
    
     <cs:id>CITYGML</cs:id>
-    <cs:namespace>http://www.opengis.net/citygml/relief/2.0</cs:namespace>
-    <cs:location>http://schemas.opengis.net/citygml/relief/2.0/relief.xsd</cs:location>
+    <cs:namespace>http://www.opengis.net/citygml</cs:namespace>
+    <cs:location>http://schemas.opengis.net/citygml</cs:location>
     <cs:phase>3</cs:phase>
     <cs:version>2.0</cs:version>
     <cs:release>20120201</cs:release>

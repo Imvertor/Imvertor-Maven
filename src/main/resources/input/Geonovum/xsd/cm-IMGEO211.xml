@@ -7,7 +7,7 @@
     xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
     ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
    
-    <cs:id>IMGEO</cs:id>
+    <cs:id>IMGEO211</cs:id>
     <cs:namespace>http://www.geostandaarden.nl/imgeo/2.1</cs:namespace>
     <cs:location>https://register.geostandaarden.nl/gmlapplicatieschema/imgeo/2.1.1/imgeo.xsd</cs:location>
     <cs:phase>0</cs:phase>

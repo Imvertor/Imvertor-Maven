@@ -39,6 +39,58 @@
             target-uri-prefix="../xlink/1.0.0/xlinks.xsd"/>
     </local-schema>
     
+    <?x
+    <local-schema schemafolder="www.geostandaarden.nl/IMGEO211-20130329">
+        <depends-on schemafolder="www.opengis.net/CityGML-20120201"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/citygml/2.0/cityGMLBase.xsd"
+            target-uri-prefix="../../../citygml/2.0/cityGMLBase.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/citygml/bridge/2.0/bridge.xsd"
+            target-uri-prefix="../../../citygml/bridge/2.0/bridge.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/citygml/building/2.0/building.xsd"
+            target-uri-prefix="../../../citygml/building/2.0/building.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/citygml/cityfurniture/2.0/cityfurniture.xsd"
+            target-uri-prefix="../../../citygml/cityfurniture/2.0/cityfurniture.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/citygml/landuse/2.0/landuse.xsd"
+            target-uri-prefix="../../../citygml/landuse/2.0/landuse.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/citygml/transportation/2.0/transportation.xsd"
+            target-uri-prefix="../../../citygml/transportation/2.0/transportation.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/citygml/tunnel/2.0/tunnel.xsd"
+            target-uri-prefix="../../../citygml/tunnel/2.0/tunnel.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/citygml/vegetation/2.0/vegetation.xsd"
+            target-uri-prefix="../../../citygml/vegetation/2.0/vegetation.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/citygml/waterbody/2.0/waterbody.xsd"
+            target-uri-prefix="../../../citygml/waterbody/2.0/waterbody.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/citygml/relief/2.0/relief.xsd"
+            target-uri-prefix="../../../citygml/relief/2.0/relief.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/citygml/generics/2.0/generics.xsd"
+            target-uri-prefix="../../../citygml/generics/2.0/generics.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"
+            target-uri-prefix="../../../gml/3.2.1/gml.xsd"/><!-- laat verwijzen naar 3.2.1 ipv 3.1.1 -->
+        <local-map 
+            source-uri-prefix="../xlink/xlinks.xsd"
+            target-uri-prefix="../../../xlink/1.0.0/xlinks.xsd"/>
+    </local-schema>
+    
+    <local-schema schemafolder="www.opengis.net/CityGML-20120201">
+        <depends-on schemafolder="www.w3.org/XLINKS-KADPROFILE"/>
+        <local-map 
+            source-uri-prefix="../xlink/xlinks.xsd"
+            target-uri-prefix="../xlink/1.0.0/xlinks.xsd"/>
+    </local-schema>
+    x?>
+    
     <local-schema schemafolder="www.w3.org/XLINKS-20010627">
         <depends-on schemafolder="www.w3.org/XML-1998"/>
         <local-map 
