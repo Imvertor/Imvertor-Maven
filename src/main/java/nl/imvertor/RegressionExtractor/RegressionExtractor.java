@@ -32,6 +32,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import net.sf.saxon.s9api.QName;
+import net.sf.saxon.s9api.XdmAtomicValue;
 import nl.armatiek.saxon.extensions.http.SendRequest;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
@@ -264,6 +266,11 @@ public class RegressionExtractor  extends Step {
 		xslFilterFile.setExtensionFunction(new ImvertorTrack());
 		xslFilterFile.setExtensionFunction(new ImvertorStripAccents());
 		xslFilterFile.setExtensionFunction(new SendRequest());
+		
+		xslFilterFile.setParm("dlogger-mode",configurator.getServerProperty("dlogger.mode"));
+		xslFilterFile.setParm("dlogger-proxy-url",configurator.getServerProperty("dlogger.proxy.url"));
+		xslFilterFile.setParm("dlogger-viewer-url",configurator.getServerProperty("dlogger.viewer.url"));
+		xslFilterFile.setParm("dlogger-client-name",configurator.getServerProperty("dlogger.client.name"));
 		
 		// when developing, always replace the ref-canon.
 		if (configurator.getRunMode() == Configurator.RUN_MODE_DEVELOPMENT || configurator.isTrue("cli","rebuildref")) {
