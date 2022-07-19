@@ -10,9 +10,9 @@
       <cs:Mapping>
          <cs:name>IHW_GEOSTANDAARDEN</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#GML321"/>
+            <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
             <cs-ref:MapRef xlink:href="#MIM11"/>
-            <cs-ref:MapRef xlink:href="#IMGEO"/>
+            <cs-ref:MapRef xlink:href="#IMGEO211"/>
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <cs-ref:MapRef xlink:href="#CITYGML"/>
             <cs-ref:MapRef xlink:href="#IHW-GENERIEK"/>
@@ -23,7 +23,7 @@
       <cs:ConceptualSchemasComponents>
 
          <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
-         <xi:include href="../../BRO/xsd/cs-GML321-profile.xml"/><!-- implements ConceptualSchema GML321 BRO profile -->
+         <xi:include href="../../ISO/xsd/cs-GML322PROFILE.xml"/><!-- implements ConceptualSchema GML322 -->
          <xi:include href="../../Geonovum/xsd/cs-IMGEO211.xml"/><!-- implements ConceptualSchema IMGEO -->
          <xi:include href="../../Geonovum/xsd/cs-NEN3610.xml"/><!-- implements ConceptualSchema NEN3610-->
          <xi:include href="../../Geonovum/xsd/cs-CityGML.xml"/><!-- implements ConceptualSchema CityGML-->
@@ -36,7 +36,7 @@
          </cs:ConceptualSchema>
          
          <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
-         <xi:include href="../../BRO/xsd/cm-GML321-profile.xml"/><!-- implements Map #GML -->
+         <xi:include href="../../ISO/xsd/cm-GML322PROFILE.xml"/><!-- implements Map #GML322PROFILE -->
          <xi:include href="../../Geonovum/xsd/cm-IMGEO211.xml"/><!-- implements Map #IMGEO -->
          <xi:include href="../../Geonovum/xsd/cm-NEN3610.xml"/><!-- implements Map #NEN3610 -->
          <xi:include href="../../Geonovum/xsd/cm-CityGML.xml"/><!-- implements Map #CITYGML -->
