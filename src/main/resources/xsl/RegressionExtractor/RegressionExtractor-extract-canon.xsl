@@ -34,7 +34,9 @@
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all"
-    version="2.0">
+    expand-text="yes"
+    
+    version="3.0">
     
     <!-- 
          Stylesheet to filter ANY xml file found in the tst-canon or ref-canon folder.
@@ -46,52 +48,55 @@
     <xsl:param name="file-path"/>
     <xsl:param name="file-type"/>
     
-    <?assume-not-relevant
-    <xsl:include href="RegressionExtractor-imvert.xsl"/>
-    <xsl:include href="RegressionExtractor-imvert-schema.xsl"/>
-    <xsl:include href="RegressionExtractor-history.xsl"/>
-    <xsl:include href="RegressionExtractor-office-html.xsl"/>
-    ?>
-    <xsl:include href="RegressionExtractor-xsd.xsl"/>
-    <xsl:include href="RegressionExtractor-eaprofile.xsl"/>
-    <xsl:include href="RegressionExtractor-config.xsl"/>
-    <xsl:include href="RegressionExtractor-metamodel.xsl"/>
-    <?assume-not-relevant
-    <xsl:include href="RegressionExtractor-schemas.xsl"/>
-    <xsl:include href="RegressionExtractor-parms.xsl"/>
-    ?>    
+    <!-- configuration and EA profiles -->
+    <xsl:include href="../ConfigCompiler/ConfigCompiler-regtest.xsl"/>
+    <xsl:include href="../ConfigCompiler/Imvert2metamodel-regtest.xsl"/>
+    <xsl:include href="../ConfigCompiler/Imvert2ea-profile-regtest.xsl"/>
+    
+    <!-- Imvertor format -->
+    <xsl:include href="../ImvertCompiler/ImvertCompiler-regtest.xsl"/>
+    
+    <!-- MIM serialization -->
+    <xsl:include href="../MIMCompiler/MIMCompiler-regtest.xsl"/>
+    
+    <!-- XSD -->
+    <xsl:include href="../XsdCompiler/XsdCompiler-regtest.xsl"/>
+    
     <xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="yes" indent="yes"/>
     
     <xsl:template match="/"> <!-- let op! deze extractor wordt aangeroepen op cw:file root elementen! -->
         <xsl:variable name="path" select="replace($file-path, '\\','/')"/>
-        
         <xsl:choose>
-            <!--
-                process the XSD's 
-            -->
-            <xsl:when test="starts-with($path, '/xsd/') and $file-type = 'xsd'">
-                <xsl:sequence select="dlogger:save('XSD test',$path)"/>
-                <xsl:apply-templates mode="mode-intermediate-xsd"/>
-            </xsl:when>
-            
-            <!-- process the EA profile -->
-            <xsl:when test="starts-with($path, '/ea/') and $file-type = 'xml'">
-                <xsl:sequence select="dlogger:save('EA test',$path)"/>
-                <xsl:apply-templates mode="mode-intermediate-eaprofile"/>
-            </xsl:when>
-            
             <!-- process the config profile -->
             <xsl:when test="$path = '/etc/config.xml'">
                 <xsl:sequence select="dlogger:save('Config test',$path)"/>
-                <xsl:apply-templates mode="mode-intermediate-config"/>
+                <xsl:apply-templates mode="mode-regtest-config"/>
             </xsl:when>
-            
             <!-- process the metamodel -->
             <xsl:when test="$path = '/etc/metamodel.xml'">
                 <xsl:sequence select="dlogger:save('Metamodel test',$path)"/>
-                <xsl:apply-templates mode="mode-intermediate-metamodel"/>
+                <xsl:apply-templates mode="mode-regtest-metamodel"/>
             </xsl:when>
-            
+            <!-- process the EA profile -->
+            <xsl:when test="starts-with($path, '/ea/') and $file-type = 'xml'">
+                <xsl:sequence select="dlogger:save('EA test',$path)"/>
+                <xsl:apply-templates mode="mode-regtest-eaprofile"/>
+            </xsl:when>
+            <!-- process the imvertor intermediate format -->
+            <xsl:when test="$path = '/etc/system.imvert.xml'">
+                <xsl:sequence select="dlogger:save('Imvertor format test',$path)"/>
+                <xsl:apply-templates mode="mode-regtest-imvert"/>
+            </xsl:when>
+            <!-- process the MIM serialisation result -->
+            <xsl:when test="starts-with($path, '/mim/') and $file-type = 'xml'">
+                <xsl:sequence select="dlogger:save('MIM serialization test',$path)"/>
+                <xsl:apply-templates mode="mode-regtest-mimser"/>
+            </xsl:when>
+            <!-- process the XSD's -->
+            <xsl:when test="starts-with($path, '/xsd/') and $file-type = 'xsd'">
+                <xsl:sequence select="dlogger:save('XSD test',$path)"/>
+                <xsl:apply-templates mode="mode-regtest-xsd"/>
+            </xsl:when>
             <!-- skip all others -->
         </xsl:choose>
     </xsl:template>
@@ -106,9 +111,7 @@
     <xsl:template match="comment() | processing-instruction()" mode="#all"/>
     
     <xsl:template name="ignore">
-        <xsl:value-of select="'&#10;'"/>
-        <xsl:comment>IGNORED</xsl:comment>
-        <xsl:value-of select="'&#10;'"/>
+        <REGTEST>IGNORED: {name()}</REGTEST>
     </xsl:template>
     
 </xsl:stylesheet>

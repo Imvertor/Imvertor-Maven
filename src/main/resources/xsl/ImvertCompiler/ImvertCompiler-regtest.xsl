@@ -30,16 +30,18 @@
     xmlns:cw="http://www.armatiek.nl/namespace/folder-content-wrapper"
     
     exclude-result-prefixes="#all"
-    version="2.0">
+    expand-text="yes"
+    
+    version="3.0">
     
     <!-- 
          Stylesheet to filter intermediate imvert files.
     -->
     
-    <xsl:template match="cw:file/imvert:packages" mode="mode-intermediate-imvert">
+    <xsl:template match="cw:file/imvert:packages" mode="mode-regtest-imvert">
         <xsl:next-match/>
     </xsl:template>
-    <xsl:template match="cw:file/imvert:packages-dependencies" mode="mode-intermediate-imvert">
+    <xsl:template match="cw:file/imvert:packages-dependencies" mode="mode-regtest-imvert">
         <xsl:next-match/>
     </xsl:template>
     
@@ -56,14 +58,15 @@
         imvert:model-id |
         imvert:resolved-suppliers |
         imvert:resolved-documentation |
-        imvert:resolved-tagged-values" 
-        mode="mode-intermediate-imvert">
+        imvert:resolved-tagged-values |
+        imvert:process" 
+        mode="mode-regtest-imvert">
         <xsl:call-template name="ignore"/>
     </xsl:template>
     
     <xsl:template match="
         imvert:packages/imvert:id" 
-        mode="mode-intermediate-imvert">
+        mode="mode-regtest-imvert">
         <xsl:call-template name="ignore"/>
     </xsl:template>
     

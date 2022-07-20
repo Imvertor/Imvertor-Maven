@@ -27,22 +27,36 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
-    xmlns:cw="http://www.armatiek.nl/namespace/folder-content-wrapper"
+    xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all"
-    version="2.0">
+    expand-text="yes"
+    
+    version="3.0">
     
     <!-- 
-         Stylesheet to filter eaprofiles
+         Stylesheet to filter information not to be included in regression tests (RegressionExtractor).
+         
+         The context document is rooted in element 
+         
+         <mim:Informatiemodel>
     -->
+    
+    <xsl:template match="mim:Informatiemodel" mode="mode-regtest-mimser">
+        <xsl:next-match/>
+    </xsl:template>
     
     <!-- 
         ignore the following alltogether 
     -->
-    <xsl:template match="
-        Documentation/@version |
-        Documentation/@notes"
-        mode="mode-intermediate-eaprofile">
+    <xsl:template match="mim:Informatiemodel/mim:naam" mode="mode-regtest-mimser">
+        <xsl:call-template name="ignore"/>
+    </xsl:template>
+    
+    <xsl:template match="@id | @xlink:href" mode="mode-regtest-mimser">
         <xsl:call-template name="ignore"/>
     </xsl:template>
     
