@@ -35,11 +35,12 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="unidirectioneel" type="xs:string"/>
       <xs:element name="relatierollen">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="RelatierolBron" type="mim:Relatierol" minOccurs="0"/>
-            <xs:element name="RelatierolDoel" type="mim:Relatierol" minOccurs="1"/>
+            <xs:element name="Bron" type="mim:Relatierol" minOccurs="0"/>
+            <xs:element name="Doel" type="mim:Relatierol" minOccurs="1"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>  

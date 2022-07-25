@@ -265,6 +265,8 @@
                             <xsl:apply-templates select="($scalar-group/max-length)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($scalar-group/type-map)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($scalar-group/type-modifier)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($scalar-group/source)" mode="#current"/><!-- retain all sources -->
+                            <xsl:apply-templates select="($scalar-group/catalog)[last()]" mode="#current"/>
                         </scalar>
                     </xsl:for-each-group>
                 </scalars>
@@ -299,6 +301,8 @@
                             </xsl:for-each-group>
                             <xsl:apply-templates select="($stereo-group/toplevel)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($stereo-group/entity-relation-constraint)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($stereo-group/source)" mode="#current"/><!-- retain all sources -->
+                            <xsl:apply-templates select="($stereo-group/catalog)[last()]" mode="#current"/>
                         </stereo>
                     </xsl:for-each-group> 
                 </stereotypes>
@@ -377,6 +381,8 @@
                             <xsl:apply-templates select="($tv-group/derive)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/override)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/inherit)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($tv-group/source)" mode="#current"/><!-- retain all sources -->
+                            <xsl:apply-templates select="($tv-group/catalog)[last()]" mode="#current"/>
                             <stereotypes>
                                 <xsl:for-each-group select="$tv-group/stereotypes/stereo" group-by=".">
                                     <xsl:sort select="current-grouping-key()"/>
@@ -392,6 +398,17 @@
                                 </xsl:for-each-group>
                             </declared-values>
                         </tv>
+                    </xsl:for-each-group>
+                    <xsl:for-each-group select="$tagset//tagged-values/pseudo-tv" group-by="@id">
+                        <xsl:sort select="current-grouping-key()"/>
+                        <pseudo-tv id="{current-grouping-key()}">
+                            <xsl:variable name="tv-group" select="current-group()"/>
+                            <!-- hier: de laatste naam binnen dezelfde taal -->
+                            <xsl:sequence select="imf:fetch-applicable-name($tv-group/name)"/>
+                            <xsl:apply-templates select="($tv-group/desc[@lang=($language,'#all')])[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($tv-group/source)" mode="#current"/><!-- retain all sources -->
+                            <xsl:apply-templates select="($tv-group/catalog)[last()]" mode="#current"/>
+                        </pseudo-tv>
                     </xsl:for-each-group>
                 </tagged-values>
             </tagset>

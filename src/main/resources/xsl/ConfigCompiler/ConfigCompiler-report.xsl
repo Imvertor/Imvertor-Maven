@@ -86,6 +86,7 @@
                         <h1>Metamodel: tagged values</h1>
                         <xsl:apply-templates select="." mode="metamodel-tvs"/>
                         <xsl:apply-templates select="." mode="metamodel-tvs-desc"/>
+                        <xsl:apply-templates select="." mode="metamodel-pseudotvs-desc"/>
                     </div>       
                     <div>
                         <h1>Conceptual schemas</h1>
@@ -344,10 +345,40 @@
                         <td>
                             <xsl:value-of select="desc"/>
                         </td>
+                        <td>
+                            <xsl:for-each select="catalog">
+                                <a href="{.}">link</a>
+                            </xsl:for-each>
+                        </td>
                     </tr>
                 </xsl:for-each>
             </xsl:variable>
-            <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value:20,description:80','table-tvs-desc')"/>
+            <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value:20,description:70,catalog:10','table-tvs-desc')"/>
+        </div>
+    </xsl:template>
+    
+    <xsl:template match="/config" mode="metamodel-pseudotvs-desc">
+        <div>
+            <h2>Pseudo tagged value descriptions</h2>
+            <xsl:variable name="rows" as="element(tr)*">
+                <xsl:for-each select="$configuration-tvset-file//tagged-values/pseudo-tv">
+                    <xsl:sort select="name[1]"/>
+                    <tr>
+                        <td>
+                            <xsl:sequence select="imf:show-name(.,position() != last())"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="desc"/>
+                        </td>
+                        <td>
+                            <xsl:for-each select="catalog">
+                                <a href="{.}">link</a>
+                            </xsl:for-each>
+                        </td>
+                    </tr>
+                </xsl:for-each>
+            </xsl:variable>
+            <xsl:sequence select="imf:create-result-table-by-tr($rows,'pseudo tagged value:20,description:70,catalog:10','table-peudotvs-desc')"/>
         </div>
     </xsl:template>
     

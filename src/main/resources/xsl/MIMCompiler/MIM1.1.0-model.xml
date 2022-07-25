@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mim11>
+<mim>
    <modelelementen>
       <modelelement>
          <naam>Objecttype</naam>
@@ -98,6 +98,7 @@
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
          <metagegeven kardinaliteit="0..1">Alias</metagegeven>
          <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Unidirectioneel</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Relatierol - Relatierol leidend</naam>
@@ -624,6 +625,7 @@
          <naam>Unidirectioneel</naam>
          <modelelement kardinaliteit="1">Externe koppeling</modelelement>
          <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="1">Relatiesoort - Relatierol leidend</modelelement>
       </metagegeven>
    </metagegevens>
-</mim11>
+</mim>

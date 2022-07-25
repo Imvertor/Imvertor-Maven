@@ -1,0 +1,16 @@
+<readme>
+=============================================================================================
+Dit bestand bevat een XML serialisatie van een informatiemodel dat is gemodelleerd volgens de 
+"Metamodel Informatie Modellering (MIM)" standaard versie 1.1.0.
+Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de standaard.
+
+In deze serialisatie komen &lt;mim-ref:xRef&gt; elementen voor, zoals &lt;mim-ref:ObjecttypeRef&gt;. 
+Deze elementen zijn verwijzingen naar een type modelelement X elders in deze serialisatie. 
+Via xlink:href attribuut wordt naar betreffende ID verwezen, voorafgegaan door een # teken.
+Ook kan men de naam van het modelelement zelf gebruiken, zoals deze in de inhoud van het 
+element is opgenomen.
+
+Waar mogelijk is een referentie naar de officiele uitleg (met name de MIM standaard) als 
+commentaar toegevoegd. Dat is alleen bij de éérste opkomst van een contructie gedaan.
+=============================================================================================
+</readme>
