@@ -1282,7 +1282,9 @@
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-FORMAAT'">
                     <xsl:variable name="type" select="imf:get-construct-by-id-for-office($this/imvert:type-id)"/>
-                    <xsl:variable name="formaat-type" select="if ($type) then imf:create-link($type,'detail',imf:get-name($type,true())) else ()"/>
+                    <!-- we hebben geen detailinfo over bepaalde datatypen, dus verwijs in de hyperlink naar globale datatypen --> 
+                    <xsl:variable name="global-or-detail" select="if ($type/imvert:stereotype/@id = ('stereotype-name-simpletype')) then 'global' else 'detail'"/>
+                    <xsl:variable name="formaat-type" select="if ($type) then imf:create-link($type,$global-or-detail,imf:get-name($type,true())) else ()"/>
                     <xsl:variable name="formaat-bare" select="imf:plugin-translate-i3n($relation/imvert:baretype,false())"/>
                     <xsl:sequence select="imf:create-part-2(., ($formaat-type,$formaat-bare)[1])"/>         
                 </xsl:when>
