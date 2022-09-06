@@ -3,13 +3,12 @@
  * Copyright (C) 
 -->
 <compare-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <name>BRO</name>
+    
+    <name>MIM11</name>
 
     <!-- 
-        See Default for explanation. 
+        TODO align with metamodel.
     --> 
     <xi:include href="../../../BP/cfg/comparerules/default.xml"/>
     
-    <!-- for tagged values: -->
-   
 </compare-rules>
