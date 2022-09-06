@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../MIM/cfg/notesrules/MIM10-ISO.xml"/>
+    
+    <name>NEN3610:2022</name> 
+    
+    <notes-rule lang="nl">
+        <section title="Regels" tagged-value="CFG-TV-RULES">
+            <!-- geen labels -->
+        </section>
+        <section title="Bron" tagged-value="CFG-TV-SOURCE">
+            <!-- geen labels -->
+        </section>
+        <section title="Herkomst" tagged-value="CFG-TV-SOURCE">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
+    
+    <notes-rule lang="en">
+        <section title="Rules" tagged-value="CFG-TV-RULES">
+            <!-- geen labels -->
+        </section>
+        <section title="Source" tagged-value="CFG-TV-SOURCE">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
+    
+</notes-rules>

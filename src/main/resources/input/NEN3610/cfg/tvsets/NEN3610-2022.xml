@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <!-- 
+        Geonovum NEN3610:2022 follows MIM11
+    --> 
+    <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
+    
+    <name>Geonovum NEN3610:2022</name>
+    <desc lang="en">Tagset for NEN3610:2022 conformant MIM10-ISO extensions</desc>
+    <desc lang="nl">Tags voor NEN3610:2022 vereiste MIM10-ISO uitbreidingen</desc>
+    
+    <tagged-values>
+        
+        <!-- follows MIM, no change -->
+    
+    </tagged-values>
+    
+</tagset>
