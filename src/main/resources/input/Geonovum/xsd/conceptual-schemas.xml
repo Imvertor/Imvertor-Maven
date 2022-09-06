@@ -29,12 +29,25 @@
             <cs-ref:MapRef xlink:href="#STUB"/>
          </cs:use>
       </cs:Mapping>
+      <cs:Mapping>
+         <cs:name>NEN3610_2022</cs:name>
+         <cs:use>
+            <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
+            <cs-ref:MapRef xlink:href="#GML321"/>
+            <cs-ref:MapRef xlink:href="#GMLSF"/>
+            <cs-ref:MapRef xlink:href="#IMGEO211"/>
+            <cs-ref:MapRef xlink:href="#CITYGML"/>
+            <cs-ref:MapRef xlink:href="#STUB"/>
+         </cs:use>
+      </cs:Mapping>
    </cs:mappings>
    <cs:components>
       <cs:ConceptualSchemasComponents>
          
          <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
          <xi:include href="../../Geonovum/xsd/cs-NEN3610.xml"/><!-- implements ConceptualSchema NEN3610 -->
+         <xi:include href="../../Geonovum/xsd/cs-NEN3610-2022.xml"/><!-- implements ConceptualSchema NEN3610-2022 -->
          <xi:include href="../../Geonovum/xsd/cs-IMGEO211.xml"/><!-- implements ConceptualSchema IMGEO -->
          
          <cs:ConceptualSchema>
@@ -65,6 +78,7 @@
          
          <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
          <xi:include href="../../Geonovum/xsd/cm-NEN3610.xml"/><!-- implements Map #NEN3610 -->
+         <xi:include href="../../Geonovum/xsd/cm-NEN3610-2022.xml"/><!-- implements Map #NEN3610-2022 -->
          <xi:include href="../../Geonovum/xsd/cm-IMGEO211.xml"/><!-- implements Map #IMGEO -->
          
          <cs:Map>
