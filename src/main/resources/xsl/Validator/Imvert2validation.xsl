@@ -25,6 +25,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
 
@@ -290,6 +292,8 @@
         <xsl:variable name="subpackage-releases" select="$domain-packages/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
         <xsl:variable name="collections" select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-collection')]"/>
         <!--validation-->
+
+        <xsl:sequence select="dlogger:save('$this-package',$this-package)"/>
 
         <xsl:sequence select="imf:report-error(., 
             not(imf:test-file-name-convention($this-package/imvert:name)), 
