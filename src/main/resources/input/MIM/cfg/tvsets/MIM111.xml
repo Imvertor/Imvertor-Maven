@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="MIM11.xml"/>
+
+    <name>MIM 1.1.1 tagged values</name>
+    
+    <!-- TODO bepaal de relatie met MIM11 en plaats afwijkingen hier. -->
+    
+</tagset>

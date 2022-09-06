@@ -6,9 +6,8 @@
     
     <name>MIM11</name>
 
-    <!-- 
-        TODO align with metamodel.
-    --> 
-    <xi:include href="MIM10.xml"/>
+    <xi:include href="MIM11.xml"/>
+
+    <!-- TODO bepaal de relatie met MIM11 en plaats afwijkingen hier. -->
     
 </compare-rules>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<visuals type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <xi:include href="MIM11.xml"/>
+    
+    <name>MIM 1.1.1</name>
+
+    <desc lang="en">Visuals for MIM 1.1.1 models</desc>
+    <desc lang="nl">Visuele aspecten van MIM 1.1.1 modellen</desc>
+
+    <!-- TODO bepaal de relatie met MIM11 en plaats afwijkingen hier. -->
+    
+</visuals>
