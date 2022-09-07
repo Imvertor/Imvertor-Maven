@@ -46,8 +46,8 @@
       <cs:ConceptualSchemasComponents>
          
          <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
+         <xi:include href="../../NEN3610/xsd/cs-NEN3610-2022.xml"/><!-- implements ConceptualSchema NEN3610-2022 -->
          <xi:include href="../../Geonovum/xsd/cs-NEN3610.xml"/><!-- implements ConceptualSchema NEN3610 -->
-         <xi:include href="../../Geonovum/xsd/cs-NEN3610-2022.xml"/><!-- implements ConceptualSchema NEN3610-2022 -->
          <xi:include href="../../Geonovum/xsd/cs-IMGEO211.xml"/><!-- implements ConceptualSchema IMGEO -->
          
          <cs:ConceptualSchema>
@@ -77,8 +77,8 @@
          </cs:ConceptualSchema>
          
          <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
+         <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/><!-- implements Map #NEN3610-2022 -->
          <xi:include href="../../Geonovum/xsd/cm-NEN3610.xml"/><!-- implements Map #NEN3610 -->
-         <xi:include href="../../Geonovum/xsd/cm-NEN3610-2022.xml"/><!-- implements Map #NEN3610-2022 -->
          <xi:include href="../../Geonovum/xsd/cm-IMGEO211.xml"/><!-- implements Map #IMGEO -->
          
          <cs:Map>

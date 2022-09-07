@@ -104,6 +104,13 @@
             source-uri-prefix="http://schemas.opengis.net/gml/3.2.1/gml.xsd"
             target-uri-prefix="../../gml/3.2.1/gml.xsd"/>
     </local-schema>
- 
+    
+    <local-schema schemafolder="www.geonovum.nl/NEN3610-2022-20220616">
+        <depends-on schemafolder="www.opengis.net/GML321-20070906"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/gml/3.2.1/gml.xsd"
+            target-uri-prefix="../../gml/3.2.1/gml.xsd"/>
+    </local-schema>
+    
     
 </local-schemas>
