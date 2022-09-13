@@ -47,8 +47,8 @@
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   <xsl:variable name="generate-readable-ids" select="true()" as="xs:boolean" static="yes"/>
 
-  <xsl:import href="../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
-  <xsl:import href="../common/Imvert-common-derivation.xsl" use-when="$runs-in-imvertor-context"/>
+  <xsl:import href="../../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
+  <xsl:import href="../../common/Imvert-common-derivation.xsl" use-when="$runs-in-imvertor-context"/>
   
   <xsl:variable name="stylesheet-code">MIMCOMPILER</xsl:variable>
   <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" use-when="$runs-in-imvertor-context"/>

@@ -42,6 +42,12 @@
          <tip>The type of the MIM format file generated</tip>
          <required>false</required>
       </cli-parm> 
+      <cli-parm>
+         <name>mimformatversion</name>
+         <arg>v1|v2</arg>
+         <tip>The version of the MIM compiler</tip>
+         <required>false</required>
+      </cli-parm> 
    </cli-parms>
    
    <properties>
@@ -49,10 +55,14 @@
       <WORK_MIMFORMAT_XMLPATH>${system/work-imvert-folder-path}/imvertor.27.mimformat.xml</WORK_MIMFORMAT_XMLPATH>   
       <WORK_MIMFORMAT_RDFPATH>${system/work-imvert-folder-path}/imvertor.27.mimformat.rdf</WORK_MIMFORMAT_RDFPATH>
  
-      <IMVERTOR_MIMFORMAT_XSLPATH>MIMCompiler.xsl</IMVERTOR_MIMFORMAT_XSLPATH>
-      <IMVERTOR_MIMFORMAT_LEGACY_XSLPATH>MIMCompiler-legacy.xsl</IMVERTOR_MIMFORMAT_LEGACY_XSLPATH>
-      <IMVERTOR_MIMFORMAT_RDF_XSLPATH>MIMCompiler-RDF.xsl</IMVERTOR_MIMFORMAT_RDF_XSLPATH>
-     
+      <IMVERTOR_MIMFORMAT_v1_XSLPATH>v1/MIMCompiler.xsl</IMVERTOR_MIMFORMAT_v1_XSLPATH>
+      <IMVERTOR_MIMFORMAT_v1_LEGACY_XSLPATH>v1/MIMCompiler-legacy.xsl</IMVERTOR_MIMFORMAT_v1_LEGACY_XSLPATH>
+      <IMVERTOR_MIMFORMAT_v1_RDF_XSLPATH>v1/MIMCompiler-RDF.xsl</IMVERTOR_MIMFORMAT_v1_RDF_XSLPATH>
+
+      <IMVERTOR_MIMFORMAT_v2_XSLPATH>v2/MIMCompiler.xsl</IMVERTOR_MIMFORMAT_v2_XSLPATH>
+      <IMVERTOR_MIMFORMAT_v2_LEGACY_XSLPATH>v2/MIMCompiler-legacy.xsl</IMVERTOR_MIMFORMAT_v2_LEGACY_XSLPATH>
+      <IMVERTOR_MIMFORMAT_v2_RDF_XSLPATH>v2/MIMCompiler-RDF.xsl</IMVERTOR_MIMFORMAT_v2_RDF_XSLPATH>
+      
    </properties>
    
 </config>

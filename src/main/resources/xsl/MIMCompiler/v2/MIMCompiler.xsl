@@ -56,8 +56,8 @@
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   <xsl:variable name="add-xlink-id" select="true()"/>
   
-  <xsl:import href="../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
-  <xsl:import href="../common/Imvert-common-derivation.xsl" use-when="$runs-in-imvertor-context"/>
+  <xsl:import href="../../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
+  <xsl:import href="../../common/Imvert-common-derivation.xsl" use-when="$runs-in-imvertor-context"/>
   
   <xsl:variable name="mim-model" as="document-node(element(mim))">
     <xsl:sequence select="document('MIM' || $mim-version || '-model.xml')"/>  
@@ -190,7 +190,7 @@
           </xsl:call-template>
           
           <xsl:where-populated>
-            <mim:packagesx>
+            <mim:packages>
               <xsl:apply-templates select="$packages[imvert:stereotype/@id = 'stereotype-name-domain-package']">
                 <xsl:sort select="imvert:stereotype"/>
                 <xsl:sort select="imvert:name"/>
@@ -202,7 +202,7 @@
               <xsl:apply-templates select="$packages[imvert:stereotype/@id = 'stereotype-name-external-package']">
                 <xsl:sort select="imvert:name"/>
               </xsl:apply-templates>     
-            </mim:packagesx>
+            </mim:packages>
           </xsl:where-populated>
           <xsl:call-template name="extensieKenmerken"/>
         </mim:Informatiemodel>    
