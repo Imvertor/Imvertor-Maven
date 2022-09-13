@@ -13,4 +13,8 @@
     
     <xsl:import href="Imvert2modeldoc-Geonovum-MIMCM-html-respec.xsl"/>
     
+    <xsl:template match="/">
+        <xsl:next-match/>
+    </xsl:template>
+    
 </xsl:stylesheet>

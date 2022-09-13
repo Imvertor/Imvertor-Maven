@@ -3,4 +3,8 @@
     
     <xsl:import href="Imvert2modeldoc-Geonovum-MIMCM-POSTPROC.xsl"/>
     
+    <xsl:template match="/">
+        <xsl:next-match/>
+    </xsl:template>
+    
 </xsl:stylesheet>

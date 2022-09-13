@@ -22,5 +22,9 @@
     version="2.0">
 
     <xsl:import href="Imvert2modeldoc-Geonovum-MIMCM-PREPROC.xsl"/>
-        
+  
+    <xsl:template match="/">
+        <xsl:next-match/>
+    </xsl:template>
+    
 </xsl:stylesheet>
