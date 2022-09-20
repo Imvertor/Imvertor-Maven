@@ -467,6 +467,18 @@
                   </cs:rdfTypes>
                </cs:Construct>
                <cs:Construct>
+                  <cs:name>GM_Ring</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Ring</cs:name>
+                        <cs:asAttribute>RingType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
                   <cs:name>GM_Object</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
@@ -483,7 +495,7 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>Primitve</cs:name>
+                        <cs:name>Primitive</cs:name>
                         <cs:asAttribute>GeometricPrimtivePropertyType</cs:asAttribute>
                         <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                         <cs:primitive>false</cs:primitive>
@@ -1118,6 +1130,18 @@
                         <cs:primitive>false</cs:primitive>
                      </cs:OasType>
                   </cs:oasTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Ring</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Ring</cs:name>
+                        <cs:asAttribute>RingType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
                   <cs:name>GM_Object</cs:name>
