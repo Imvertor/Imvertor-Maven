@@ -615,5 +615,13 @@
         </xsl:for-each>
     </xsl:function>
     
+    <xsl:function name="imf:is-voidable" as="xs:boolean">
+        <xsl:param name="this" as="element()?"/>
+        <xsl:sequence select="
+            $this/imvert:stereotype/@id = ('stereotype-name-voidable')
+            or
+            imf:boolean(imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-VOIDABLE'))"/>
+    </xsl:function>
+    
 </xsl:stylesheet>
 
