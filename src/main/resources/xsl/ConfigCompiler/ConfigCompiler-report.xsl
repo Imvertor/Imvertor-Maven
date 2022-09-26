@@ -367,7 +367,7 @@
                 <xsl:for-each select="trans">
                     <xsl:sort select="root"/>
                     <xsl:sort select="part"/>
-                    <xsl:sort select="name[@lang = 'nl']"/>
+                    <xsl:sort select="name[@orig-lang = 'nl']"/>
                     <tr>
                         <td>
                             <xsl:value-of select="root"/>
@@ -376,10 +376,10 @@
                             <xsl:value-of select="part"/>
                         </td>
                         <td>
-                            <xsl:value-of select="name[@lang = 'nl']"/>
+                            <xsl:value-of select="name[@orig-lang = 'nl']"/>
                         </td>
                         <td>
-                            <xsl:value-of select="name[@lang = 'en']"/>
+                            <xsl:value-of select="name[@orig-lang = 'en']"/>
                         </td>
                         <td>
                             <xsl:value-of select="paths/path[last()]"/>

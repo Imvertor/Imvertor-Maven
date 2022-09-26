@@ -69,9 +69,9 @@
     <xsl:variable name="metamodel-name" select="imf:get-normalized-name(imf:get-config-string('cli','metamodel'),'system-name')"/>
     <xsl:variable name="tvset-name" select="imf:get-normalized-name(imf:get-config-string('cli','tvset'),'system-name')"/>
    
-    <xsl:variable name="translations">
-        <xsl:sequence select="imf:prepare-translations($configuration-metamodel-doc)" />
-        <xsl:sequence select="imf:prepare-translations($configuration-tvset-doc)" />
+    <xsl:variable name="translations" as="element(trans)*">
+        <xsl:sequence select="imf:prepare-translations($configuration-metamodel-doc)"/>
+        <xsl:sequence select="imf:prepare-translations($configuration-tvset-doc)"/>
     </xsl:variable>
     
     <xsl:template match="/">
@@ -465,7 +465,10 @@
             </skos-rules>
             
             <translations>
-                <xsl:sequence select="$translations"/>
+                <xsl:for-each-group select="$translations" group-by="@orig-id">
+                    <xsl:sort select="current-grouping-key()"/>
+                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                </xsl:for-each-group>
             </translations>
             
         </config>
@@ -537,17 +540,17 @@
         </xsl:for-each-group>
     </xsl:function>
     
-    <xsl:function name="imf:prepare-translations">
+    <xsl:function name="imf:prepare-translations" as="element(trans)*"> 
         <xsl:param name="document" as="document-node()?"/>
         <xsl:apply-templates select="$document" mode="prepare-translations"/>
     </xsl:function>
     
-    <xsl:template match="*[name/@lang]" mode="prepare-translations">
-        <trans>
+    <xsl:template match="*[@id and name/@lang]" mode="prepare-translations">
+        <trans orig-id="{@id}">
             <root><xsl:value-of select="local-name(root(.)/*)"/></root>
             <part><xsl:value-of select="local-name(.)"/></part>
             <xsl:for-each select="name">
-                <name lang="{@lang}"><xsl:value-of select="."/></name>
+                <name orig-lang="{@lang}"><xsl:value-of select="."/></name>
             </xsl:for-each>
             <paths>
                 <xsl:for-each select="ancestor::*[@type='config' and @xml:base]">
