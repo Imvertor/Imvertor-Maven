@@ -15,7 +15,8 @@
         <tv norm="space" id="CFG-TV-CONCEPT">
             <name lang="nl">Begrip</name>
             <name lang="en">Concept</name>
-            <desc lang="nl">Verwijzing naar een begrip, vanuit een modelelement, waarmee wordt aangegeven op welk begrip, of begrippen, het informatiemodel element is gebaseerd. De verwijzing heeft de vorm van een term of een URI.</desc>
+            <desc lang="nl">MIM 1.1: Verwijzing naar een begrip, vanuit een modelelement, waarmee wordt aangegeven op welk begrip, of begrippen, het informatiemodel element is gebaseerd. De verwijzing heeft de vorm van een term of een URI.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-begrip</catalog>
             <derive>yes</derive>
@@ -43,7 +44,8 @@
         <tv norm="space" id="CFG-TV-DATALOCATION">
             <name lang="nl">Locatie</name>
             <name lang="en">Location</name>
-            <desc lang="nl">Als het type van het attribuutsoort een waardenlijst is, dan wordt hier de locatie waar deze te vinden is opgegeven.</desc>
+            <desc lang="nl">MIM 1.1: Als het type van het attribuutsoort een waardenlijst is, dan wordt hier de locatie waar deze te vinden is opgegeven.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-locatie</catalog>
             <derive>yes</derive>
@@ -59,8 +61,8 @@
         <tv norm="space" id="CFG-TV-DATERECORDED">
             <name lang="nl">Datum opname</name>
             <name lang="en">Date recorded</name>
-            <desc lang="nl">De datum waarop de constructie is opgenomen in het informatiemodel.</desc>
-            <desc lang="en">The date on which the construct is added to the information model</desc>
+            <desc lang="nl">MIM 1.1: De datum waarop het modelelement is opgenomen in het informatiemodel.</desc>
+            <desc lang="en">MIM 1.1: The date on which the model element is added to the information model</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-datum-opname</catalog>
             <derive>yes</derive>
@@ -84,8 +86,8 @@
         <tv norm="note" id="CFG-TV-DEFINITION" origin="system">
             <name lang="nl">Definitie</name>
             <name lang="en">Definition</name>
-            <desc lang="nl">De beschrijving van de betekenis van dit modelelement.</desc>
-            <desc lang="en">The description of the meaning of the construct as specified in the catalog of the relevant (base) registration or information model.</desc>
+            <desc lang="nl">MIM 1.1: De beschrijving van de betekenis van dit modelelement.</desc>
+            <desc lang="en">MIM 1.1: The description of the meaning of the construct as specified in the catalog of the relevant (base) registration or information model.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-definitie</catalog>
             <derive>yes</derive>
@@ -116,8 +118,8 @@
         <tv norm="note" id="CFG-TV-DESCRIPTION">
             <name lang="nl">Toelichting</name>
             <name lang="en">Description</name>
-            <desc lang="nl">Een inhoudelijke toelichting op de definitie, ter verheldering of nadere duiding.</desc>
-            <desc lang="en">TODO</desc>
+            <desc lang="nl">MIM 1.1: Een inhoudelijke toelichting op de definitie, ter verheldering of nadere duiding.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-toelichting</catalog>
             <derive>yes</derive>
@@ -137,8 +139,8 @@
         <tv norm="space" id="CFG-TV-FORMALPATTERN">
             <name lang="nl">Formeel patroon</name>
             <name lang="en">Formal pattern</name>
-            <desc lang="nl">Zoals patroon, formeel vastgelegd, uitgedrukt in een formele taal die door de computer wordt herkend.</desc>
-            <desc lang="en">TODO</desc>
+            <desc lang="nl">MIM 1.1: Zoals patroon, formeel vastgelegd, uitgedrukt in een formele taal die door de computer wordt herkend.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-formeel-patroon</catalog>
             <derive>no</derive>
@@ -154,7 +156,8 @@
         <tv norm="space" id="CFG-TV-IMDOMAIN">
             <name lang="nl">Informatiedomein</name>
             <name lang="en">Information domain</name>
-            <desc lang="nl">Aanduiding van het functionele domein waartoe het informatiemodel behoort.</desc>
+            <desc lang="nl">MIM 1.1: Aanduiding van het functionele domein waartoe het informatiemodel behoort.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-informatiedomein</catalog>
             <derive>yes</derive>
@@ -166,7 +169,8 @@
         <tv norm="space" id="CFG-TV-IMTYPE">
             <name lang="nl">Informatiemodel type</name>
             <name lang="en">Information model type</name>
-            <desc lang="nl">De beschrijving van de aard van het informatiemodel, hoe het geïnterpreteerd moet worden.</desc>
+            <desc lang="nl">MIM 1.1: De beschrijving van de aard van het informatiemodel, hoe het geïnterpreteerd moet worden.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-informatiemodel-type</catalog>
             <derive>yes</derive>
@@ -182,7 +186,8 @@
         <tv norm="space" id="CFG-TV-IMRELATIONMODELINGTYPE">
             <name lang="nl">Relatiemodelleringstype</name>
             <name lang="en">Relation modeling type</name>
-            <desc lang="nl">Aanduiding van een in MIM gedefinieerd alternatief voor een modelleringswijze, en welke keuze hierbij is gemaakt.</desc>
+            <desc lang="nl">MIM 1.1: Aanduiding van een in MIM gedefinieerd alternatief voor een modelleringswijze, en welke keuze hierbij is gemaakt.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringstype</catalog>
             <derive>yes</derive>
@@ -198,7 +203,8 @@
         <tv norm="space" id="CFG-TV-INDICATIONCLASSIFICATION">
             <name lang="nl">Indicatie classificerend</name>
             <name lang="en">TODO</name>
-            <desc lang="nl">Indicatie dat een attribuutsoort het objecttype waar het bijhoort classificeert in (sub)typen.</desc>
+            <desc lang="nl">MIM 1.1: Indicatie dat een attribuutsoort het objecttype waar het bijhoort classificeert in (sub)typen.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-classificerend</catalog>
             <derive>yes</derive>
@@ -210,8 +216,8 @@
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <name lang="nl">Indicatie materiële historie</name>
             <name lang="en">Indication material history</name>
-            <desc lang="nl">Indicatie of de materiële historie van het kenmerk van het object te bevragen is.</desc>
-            <desc lang="en">TODO</desc>
+            <desc lang="nl">MIM 1.1: Indicatie of de materiële historie van het kenmerk van het object te bevragen is.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-materiele-historie</catalog>
             <derive>yes</derive>
@@ -236,8 +242,8 @@
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
             <name lang="nl">Indicatie formele historie</name>
             <name lang="en">Indication formal history</name>
-            <desc lang="nl">Indicatie of de formele historie van het kenmerk van het object bijgehouden wordt en te bevragen is.</desc>
-            <desc lang="en">TODO</desc>
+            <desc lang="nl">MIM 1.1: Indicatie of de formele historie van het kenmerk van het object bijgehouden wordt en te bevragen is.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-formele-historie</catalog>
             <derive>yes</derive>
@@ -262,8 +268,8 @@
         <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC">
             <name lang="nl">Authentiek</name>
             <name lang="en">Authentic</name>
-            <desc lang="nl">Aanduiding of het kenmerk een authentiek gegeven betreft.</desc>
-            <desc lang="en">TODO</desc>
+            <desc lang="nl">MIM 1.1: Aanduiding of het kenmerk een authentiek gegeven betreft.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-authentiek</catalog>
             <derive>yes</derive>
@@ -292,7 +298,8 @@
         <tv norm="space" id="CFG-TV-MIMEXTENSION">
             <name lang="nl">MIM extensie</name>
             <name lang="en">MIM extension</name>
-            <desc lang="nl">De aanduiding van een extensie op MIM.</desc>
+            <desc lang="nl">MIM 1.1: De aanduiding van een extensie op MIM.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-mim-extensie</catalog>
             <derive>yes</derive>
@@ -305,6 +312,8 @@
             <name lang="nl">MIM taal</name>
             <name lang="en">MIM language</name>
             <desc lang="nl">De aanduiding van de taal die gebruikt is voor de modelelementen.</desc>
+            <desc lang="nl">MIM 1.1: De aanduiding van de taal die gebruikt is voor de modelelementen.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-mim-taal</catalog>
             <derive>yes</derive>
@@ -320,7 +329,8 @@
         <tv norm="space" id="CFG-TV-MIMVERSION">
             <name lang="nl">MIM versie</name>
             <name lang="en">MIM version</name>
-            <desc lang="nl">De versie van de MIM specificatie die gebruikt is om het informatiemodel in uit te drukken.</desc>
+            <desc lang="nl">MIM 1.1: De versie van de MIM specificatie die gebruikt is om het informatiemodel in uit te drukken.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-mim-versie</catalog>
             <derive>yes</derive>
@@ -336,8 +346,8 @@
         <tv norm="space" id="CFG-TV-LENGTH">
             <name lang="nl">Lengte</name>
             <name lang="en">Length</name>
-            <desc lang="nl">De aanduiding van de lengte van een gegeven.</desc>
-            <desc lang="en">TODO</desc>
+            <desc lang="nl">MIM 1.1: De aanduiding van de lengte van een gegeven.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-lengte</catalog>
             <derive>yes</derive>
@@ -352,8 +362,8 @@
         <tv norm="note" id="CFG-TV-PATTERN">
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
-            <desc lang="nl">De verzameling van waarden die gegevens van deze attribuutsoort kunnen hebben, oftewel het waardenbereik, uitgedrukt in een specifieke structuur.</desc>
-            <desc lang="en">TODO</desc>
+            <desc lang="nl">MIM 1.1: De verzameling van waarden die gegevens van deze attribuutsoort kunnen hebben, oftewel het waardenbereik, uitgedrukt in een specifieke structuur.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-patroon</catalog>
             <derive>yes</derive>
@@ -369,8 +379,8 @@
         <tv norm="note" id="CFG-TV-POPULATION">
             <name lang="nl">Populatie</name>
             <name lang="en">Population</name>
-            <desc lang="nl">Voor objecttypen die deel uitmaken van een (basis)registratie betreft dit de beschrijving van de exemplaren van het gedefinieerde objecttype die in de desbetreffende (basis)­registratie voorhanden zijn.</desc>
-            <desc lang="en">TODO</desc>
+            <desc lang="nl">MIM 1.1: Voor objecttypen die deel uitmaken van een (basis)registratie betreft dit de beschrijving van de exemplaren van het gedefinieerde objecttype die in de desbetreffende (basis)­registratie voorhanden zijn.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-populatie</catalog>
             <derive>yes</derive>
@@ -382,8 +392,8 @@
         <tv norm="space" id="CFG-TV-QUALITY">
             <name lang="nl">Kwaliteit</name>
             <name lang="en">Quality</name>
-            <desc lang="nl">Beschrijving van de mate waarin in de registratie opgenomen objecten van het desbetreffende type volledig, juist, actueel, nauwkeurig en betrouwbaar zijn.</desc>
-            <desc lang="en">TODO</desc>
+            <desc lang="nl">MIM 1.1: Beschrijving van de mate waarin in de registratie opgenomen objecten van het desbetreffende type volledig, juist, actueel, nauwkeurig en betrouwbaar zijn.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-kwaliteit</catalog>
             <derive>yes</derive>
@@ -395,8 +405,8 @@
         <tv norm="note" id="CFG-TV-SOURCE">
             <name lang="nl">Herkomst</name>
             <name lang="en">Source</name>
-            <desc lang="nl">De registratie of het informatiemodel waaraan het modelelement ontleend is dan wel de eigen organisatie indien het door de eigen organisatie toegevoegd is.</desc>
-            <desc lang="en">TODO</desc>
+            <desc lang="nl">MIM 1.1: De registratie of het informatiemodel waaraan het modelelement ontleend is dan wel de eigen organisatie indien het door de eigen organisatie toegevoegd is.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-herkomst</catalog>
             <derive>yes</derive>
@@ -421,8 +431,8 @@
         <tv norm="note" id="CFG-TV-SOURCEOFDEFINITION">
             <name lang="nl">Herkomst definitie</name>
             <name lang="en">Source of definition</name>
-            <desc lang="nl">De registratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die aangeeft uit welke bronnen de definitie is samengesteld.</desc>
-            <desc lang="en">TODO</desc>
+            <desc lang="nl">MIM 1.1: De registratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die aangeeft uit welke bronnen de definitie is samengesteld.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-herkomst-definitie</catalog>
             <derive>yes</derive>
@@ -439,8 +449,8 @@
         <tv norm="space" id="CFG-TV-VOIDABLE">
             <name lang="nl">Mogelijk geen waarde</name>
             <name lang="en">Voidable</name>
-            <desc lang="nl">Aanduiding dat van een aspect geen waarde is geregistreerd, maar dat onduidelijk is of de waarde er werkelijk ook niet is.</desc>
-            <desc lang="en">TODO</desc>
+            <desc lang="nl">MIM 1.1: Aanduiding dat van een aspect geen waarde is geregistreerd, maar dat onduidelijk is of de waarde er werkelijk ook niet is.</desc>
+            <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-mogelijk-geen-waarde</catalog>
             <derive>yes</derive>

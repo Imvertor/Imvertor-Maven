@@ -4,9 +4,9 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+    <xi:include href="../../../Geonovum/cfg/metamodels/Geonovum-NEN3610-2022.xml"/>
     
-    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM11.xml"/>
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-NEN3610-2022.xml"/>
     
     <name>BRO LOGICAL</name>
     

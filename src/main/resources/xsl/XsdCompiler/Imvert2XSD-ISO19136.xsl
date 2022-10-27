@@ -653,7 +653,7 @@
         
         <xsl:variable name="name" select="$this/imvert:name"/>
         <xsl:variable name="target-role-name" select="if ($this/self::imvert:association) then imf:get-ISOrole-info($this)/(imvert:name | imvert:role) else ()"/>
-        <xsl:variable name="found-type" select="imf:get-type($this/imvert:type-name,$this/imvert:type-package)"/>
+        <xsl:variable name="found-type" select="if ($this/imvert:type-name) then imf:get-type($this/imvert:type-name,$this/imvert:type-package) else ()"/><!-- let op, het kan zijn dat er geen type mapping beschikbaar is -->
       
         <xsl:variable name="is-any" select="$found-type = '#any'"/>
         <xsl:variable name="is-mix" select="$found-type = '#mix'"/>

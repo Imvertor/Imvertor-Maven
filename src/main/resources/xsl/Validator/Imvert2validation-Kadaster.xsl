@@ -41,7 +41,8 @@
     
     <!-- All possible application-level top-packages -->
     <xsl:variable name="top-package-stereotypes" select="
-        ('stereotype-name-base-package',
+        ('stereotype-name-informatiemodel-package',
+        'stereotype-name-base-package',
         'stereotype-name-variant-package',
         'stereotype-name-application-package')"/>
     
@@ -55,7 +56,7 @@
     <xsl:variable name="use-identifier-domains" select="imf:boolean(imf:get-xparm('cli/identifierdomains','no'))"/>
     <xsl:variable name="id-domain-values" select="for $a in //imvert:attribute[imf:boolean(imvert:is-id)] return imf:get-tagged-value($a,'##CFG-TV-DOMAIN')"/>
     
-    <xsl:variable name="is-basemodel" select="$application-package/imvert:stereotype/@id = 'stereotype-name-base-package'"/>
+    <xsl:variable name="is-basemodel" select="$application-package/imvert:stereotype/@id = ('stereotype-name-informatiemodel-package','stereotype-name-base-package')"/>
     
     <!-- follow guidelines for Kadaster and KING (KK) -->
     

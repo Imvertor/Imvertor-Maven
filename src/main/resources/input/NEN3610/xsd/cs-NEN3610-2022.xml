@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchema xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+    
+    <cs:id>NEN3610-2022</cs:id>
+    <cs:shortName>NEN3610-2022</cs:shortName>
+    <cs:version>2022</cs:version>
+    <cs:phase>3</cs:phase>
+    <cs:desc>Constructies opgenomen in NEN3610:2022</cs:desc>
+    <cs:source>Geonovum</cs:source>
+    <cs:data-location>https://www.geonovum.nl/geo-standaarden/nen-3610-basismodel-voor-informatiemodellen</cs:data-location>
+    <cs:url>http://www.geonovum.nl/conceptual-schemas/NEN3610</cs:url>
+    <cs:catalogUrl>http://definities.geostandaarden.nl/nen3610-2022/id/begrip/[entry]</cs:catalogUrl>
+       
+</cs:ConceptualSchema>
+            

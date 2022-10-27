@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<compare-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+   
+    <name>NEN3610:2022</name>
+    
+    <xi:include href="../../../MIM/cfg/comparerules/MIM11.xml"/>
+   
+</compare-rules>

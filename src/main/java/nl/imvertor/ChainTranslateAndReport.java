@@ -191,9 +191,10 @@ public class ChainTranslateAndReport {
 						succeeds = succeeds && (new XsdCompiler()).run();
 								
 					// validate the generated XSDs 
-					if (configurator.isTrue("cli","createxmlschema",false))
-						if (configurator.isTrue("cli","validateschema",false) || configurator.getRunner().isFinal())
-							succeeds = succeeds && (new SchemaValidator()).run();
+					if (succeeds)
+						if (configurator.isTrue("cli","createxmlschema",false))
+							if (configurator.isTrue("cli","validateschema",false) || configurator.getRunner().isFinal())
+								(new SchemaValidator()).run(); // XML schema validation does not block further processing
 					
 					// Generate a json schema
 				    if (configurator.isTrue("cli","createjsonschema",false)) {

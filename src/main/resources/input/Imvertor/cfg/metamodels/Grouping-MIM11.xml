@@ -21,6 +21,9 @@
             <desc lang="nl">Een package dat is opgebouwd door de software ten behoeve van verwerking.</desc>
             <source>Grouping</source>
             <construct>package</construct>
+            <context>
+                <!-- door het systeem gegenereerd -->
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-application-package" primary="yes">
@@ -30,6 +33,9 @@
             <source>Grouping</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#informatiemodel</catalog><!-- TODO correcte catalogus link -->
             <construct>package</construct>
+            <context>
+                <!-- top level onder project -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-project-package" primary="yes">
@@ -38,6 +44,9 @@
             <desc lang="nl">Een package dat een project bevat, dwz. een base of application package, eventueel met external packages.</desc>
             <source>Grouping</source>
             <construct>package</construct>
+            <context>
+                <!-- top level; niet verplicht -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-base-package" primary="yes">
@@ -47,6 +56,9 @@
             <source>Grouping</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#informatiemodel</catalog><!-- TODO correcte catalogus link -->
             <construct>package</construct>
+            <context>
+                <!-- top level onder project -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-provided-package">
@@ -64,6 +76,9 @@
             Binnen een model worden alle packages die geen stereotype hebben opgevat als een Folder package.</desc>
             <source>Grouping</source>
             <construct>package</construct>
+            <context>
+                <!-- door het systeem gegenereerd -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-system-reference-package" primary="yes">
@@ -73,6 +88,9 @@
             <desc lang="nl">Een package dat door het systeem is aangemaakt om referentie-elementen te bevatten.</desc>
             <source>Grouping</source>
             <construct>package</construct>
+            <context>
+                <!-- door het systeem gegenereerd -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-system-reference-class" primary="yes">
@@ -82,6 +100,9 @@
             <desc lang="nl">Een class welke door het systeem is aangemaakt als referentie-element.</desc>
             <source>Grouping</source>
             <construct>class</construct>
+            <context>
+                <!-- door het systeem gegenereerd -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-interface" primary="yes">
@@ -91,6 +112,9 @@
             <source>Grouping</source>
             <construct>class</construct>
             <construct>datatype</construct>
+            <context>
+                <parent-stereo>stereotype-name-external-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-recyclebin">
@@ -99,6 +123,9 @@
             <desc lang="nl">A package that is to be ignored in all processing. may occur at any position in the package tree.</desc>
             <source>Grouping</source>
             <construct>package</construct>
+            <context>
+                <!-- Kan overal voorkomen -->
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-components-package">
@@ -119,6 +146,11 @@
             <source>Grouping</source>
             <construct>class</construct>
             <construct>datatype</construct>
+            <context>
+                <parent-stereo>stereotype-name-objecttype</parent-stereo>
+                <parent-stereo>stereotype-name-obj-proxy</parent-stereo>
+                <parent-stereo>stereotype-name-composite</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-product" primary="yes">
@@ -128,6 +160,10 @@
             <source>Grouping</source>
             <construct>class</construct>
             <toplevel>true</toplevel>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-service" primary="yes">
@@ -137,6 +173,10 @@
             <source>Grouping</source>
             <construct>class</construct>
             <toplevel>true</toplevel>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-process" primary="yes">
@@ -146,6 +186,10 @@
             <source>Grouping</source>
             <construct>class</construct>
             <toplevel>true</toplevel>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-internal-package">
@@ -156,6 +200,10 @@
                 It is also assumed that the metamodels are compatible.</desc>
             <source>Grouping</source>
             <construct>package</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-att-proxy" primary="yes">
@@ -205,6 +253,10 @@
             </desc>
             <source>Grouping</source>
             <construct>class</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
     </stereotypes>

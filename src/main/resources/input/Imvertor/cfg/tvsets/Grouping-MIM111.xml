@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <xi:include href="Grouping-MIM11.xml"/>
+    
+    <name>Grouping for MIM 1.1.1</name>
+    
+    <desc lang="en">Deviations and additions to generic grouping for MIM 1.1.1 metamodel.</desc>  
+    
+</tagset>

@@ -26,6 +26,14 @@
    
    <desc lang="en">Metamodel for IHW information models: semantisch informatiemodel. Gebaseerd op VNG Realisatie SIM.</desc>
    
+   <scalars xml:id="scalars">
+      <scalar id="scalar-real">
+         <type-map formal-lang="xs">float</type-map>
+         <fraction-digits>false</fraction-digits>
+         <max-length>false</max-length>
+      </scalar>
+   </scalars>
+   
    <profiles>
       <profile lang="nl"> 
          <id>IHWSIMNL</id>

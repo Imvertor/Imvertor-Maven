@@ -82,13 +82,13 @@
     
     <stereotypes xml:id="stereotypes">
         
-        <stereo id="stereotype-name-base-package" primary="yes"><!-- TODO -->
+        <stereo id="stereotype-name-base-package" primary="yes">
             <name lang="nl">Basismodel</name>
             <name lang="en">Base model</name>
             <construct>package</construct>
         </stereo>
         
-        <stereo id="stereotype-name-application-package" primary="yes"><!-- TODO -->
+        <stereo id="stereotype-name-application-package" primary="yes">
             <name lang="nl">Toepassing</name>
             <name lang="en">Application model</name>
             <construct>package</construct>

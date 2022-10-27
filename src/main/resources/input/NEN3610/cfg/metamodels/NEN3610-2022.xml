@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <!-- Geonovum NEN3610 follows MIM111 requirements -->
+    <xi:include href="../../../MIM/cfg/metamodels/MIM111.xml"/>
+   
+    <name>NEN3610:2022</name>
+    
+    <desc lang="en">
+        Metamodel for NEN3610:2022 extensions to the MIM 1.1.1 metamodel.
+        Standard at https://www.geonovum.nl/geo-standaarden/nen-3610-basismodel-voor-informatiemodellen/basismodel-geo-informatie-nen3610.
+    </desc>
+    
+    <profiles>
+        <profile lang="nl">
+            <id>N22NL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>NEN3610:2022 NL</desc> 
+        </profile>
+        <profile lang="en">
+            <id>N22EN</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>NEN3610:2022 EN</desc>
+        </profile>
+    </profiles>
+    
+    <features>
+        <feature name="role-based">true</feature>
+        <feature name="allow-multiple-supertypes">false</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+        <feature name="unique-normalized-class-names">domain</feature>
+    </features>
+    
+    <stereotypes xml:id="stereotypes">
+        
+        <!-- 
+            For each stereotype, define a formal name, the name(s) in UML, description, the construct(s) to which the stereotype applies, and possible rules.
+        -->
+        
+        <stereo id="stereotype-name-external-objecttype" primary="yes">
+            <name lang="nl">extern</name>
+            <name lang="en">external</name>
+            <desc lang="en">
+            </desc>
+            <desc lang="nl">
+                Objecttype dat als plaatsvervanger optreedt voor een objecttype dat
+                in een ander model, het registratiemodel, wordt beschreven.
+                Zie ook NEN3610 8.6 Verwijzen naar objecten in andere registraties                
+            </desc>
+            <construct>class</construct><!-- only for object types -->
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
+        </stereo>
+
+        <stereo id="stereotype-name-identification">
+            <name lang="nl">identificatie</name>
+            <name lang="en">identification</name>
+            <desc lang="en">
+            </desc>
+            <desc lang="nl">
+                Een klasse met een attribuut met naam ‘identificatie’ en dit stereotype heeft een unieke
+                objectidentificatie binnen het domein van NEN 3610.
+            </desc>
+            <construct>attribute</construct>
+            <context>
+                <!-- dit is een secondary stereo, volgt primary -->
+            </context>
+        </stereo>
+        
+        <stereo id="stereotype-name-voidable">
+            <name lang="en">voidable</name>
+            <name lang="nl">voidable</name>
+            <desc lang="en">
+            </desc>
+            <desc lang="nl">
+                Identificeert een attribuut of associatierol als optioneel. Dat wil
+                zeggen dat de waarde ‘void’ een mogelijke waarde is voor die
+                eigenschap. [ISO/TS 19103:2005]
+            </desc>
+            <construct>attribute</construct>
+            <construct>association</construct>
+            <construct>associationend</construct>
+            <context>
+                <!-- dit is een secondary stereo, volgt primary -->
+            </context>
+        </stereo>
+        
+        <!-- TODO check afhankelijkheid van NEN3610 in de code: wat betreft deze constructs -->
+        <?x
+        <stereo id="stereotype-name-formele-historie">
+            <name lang="nl">formeleHistorie</name>
+            <name lang="en">formalHistory</name>
+            <desc lang="nl">
+                attribuut voor historie van veranderingen van eigenschappen van een
+                object in de registratie
+            </desc>
+            <construct>attribute</construct>
+            <context>
+                <!-- dit is een secondary stereo, volgt primary -->
+            </context>
+        </stereo>
+        <stereo id="stereotype-name-formele-levensduur">
+            <name lang="nl">formeleLevensduur</name>
+            <name lang="en">formalLifecycle</name>
+            <desc lang="nl">
+                Attribuut voor vastleggen van tijdsinterval van geldigheid van het
+                object in de registratie
+            </desc>
+            <construct>attribute</construct>
+            <context>
+                <!-- dit is een secondary stereo, volgt primary -->
+            </context>
+        </stereo>
+        <stereo id="stereotype-name-materiele-historie">
+            <name lang="nl">materieleHistorie</name>
+            <name lang="en">materialHistory</name>
+            <desc lang="nl">
+                Attribuut voor historie van veranderingen van eigenschappen van een
+                object in de werkelijkheid
+            </desc>
+            <construct>attribute</construct>
+            <context>
+                <!-- dit is een secondary stereo, volgt primary -->
+            </context>
+        </stereo>
+        <stereo id="stereotype-name-materiele-levensduur">
+            <name lang="nl">materieleLevensduur</name>
+            <name lang="en">materialLifecycle</name>
+            <desc lang="nl">
+                Attribuut voor vastleggen van tijdsinterval van geldigheid van het
+                object in de werkelijkheid
+            </desc>
+            <construct>attribute</construct>
+            <context>
+                <!-- dit is een secondary stereo, volgt primary -->
+            </context>
+        </stereo>
+        x?>
+        
+        <stereo id="stereotype-name-tijdlijn-geldigheid">
+            <name lang="nl">tijdlijn geldigheid</name>
+            <name lang="en">TODO</name>
+            <desc lang="nl">TODO</desc>
+            <construct>attribute</construct>
+            <context>
+                <!-- dit is een secondary stereo, volgt primary -->
+            </context>
+        </stereo>
+        <stereo id="stereotype-name-tijdlijn-registratie">
+            <name lang="nl">tijdlijn registratie</name>
+            <name lang="en">TODO</name>
+            <desc lang="nl">TODO</desc>
+            <construct>attribute</construct>
+            <context>
+                <!-- dit is een secondary stereo, volgt primary -->
+            </context>
+        </stereo>
+        <stereo id="stereotype-name-levensduur">
+            <name lang="nl">levensduur</name>
+            <name lang="en">TODO</name>
+            <desc lang="nl">TODO</desc>
+            <construct>attribute</construct>
+            <context>
+                <!-- dit is een secondary stereo, volgt primary -->
+            </context>
+        </stereo>
+        
+        <stereo id="stereotype-name-metadata" primary="no">
+            <name lang="nl">metadata</name>
+            <name lang="en">metadata</name>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+            <construct>association</construct>
+            <construct>associationrole</construct>
+            <context>
+                <!-- dit is een secondary stereo, volgt primary -->
+            </context>
+        </stereo>
+        
+        <!-- TODO is dit wel een echte relatie? discussie... -->
+        <?x
+        <stereo id="stereotype-ruimtelijke-relatie" primary="no">
+            <name lang="nl">ruimtelijke relatie</name>
+            <name lang="en">spatial relation</name>
+            <desc lang="nl">Een ruimtelijke relatie....TODO</desc>
+            <construct>association</construct>
+            <construct>associationrole</construct>
+            <context>
+                <!-- dit is een secondary stereo, volgt primary -->
+            </context>
+        </stereo>
+        x?>
+        
+        
+    </stereotypes>
+</metamodel>

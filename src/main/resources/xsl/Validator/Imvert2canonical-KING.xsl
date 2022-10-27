@@ -47,6 +47,7 @@
         <xsl:variable name="parent-package" select=".."/>
         <xsl:choose>
             <!-- skip some types of empty packages -->
+            <xsl:when test="$parent-package/imvert:stereotype/@id = ('stereotype-name-informatiemodel-package')"/>
             <xsl:when test="$parent-package/imvert:stereotype/@id = ('stereotype-name-base-package')"/>
             <xsl:when test="$parent-package/imvert:stereotype/@id = ('stereotype-name-application-package')"/>
             <xsl:when test="$parent-package/imvert:stereotype/@id = ('stereotype-name-project-package')"/>

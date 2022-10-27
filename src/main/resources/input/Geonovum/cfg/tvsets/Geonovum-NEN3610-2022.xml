@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="../../../NEN3610/cfg/tvsets/NEN3610-2022.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM111.xml"/>
+    
+    <name>Geonovum NEN3610:2022</name>
+    
+    <desc lang="en">Tagset for Genovum NEN3610:2022 models</desc>
+    <desc lang="nl">Tags voor Genovum NEN3610:2022 modellen</desc>
+    
+    <tagged-values>
+        
+        <tagged-values>
+            <tv norm="space" id="CFG-TV-DATERECORDED">
+                <derive>yes</derive>
+                <stereotypes>
+                    <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                </stereotypes>
+            </tv>
+            
+            <tv norm="space" validate="url" id="CFG-TV-XSDLOCATION">
+                <name lang="nl">XML Schema locatie</name>
+                <name lang="en">XML Schema location</name>
+                <desc lang="nl">De URL op basis waarvan de locatie van het corresponderende XML schema kan worden bepaald</desc>
+                <desc lang="en">The URL based on which the location of the XML Schema can be determined</desc>
+                <derive>yes</derive>
+                <stereotypes>
+                    <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                </stereotypes>
+            </tv>
+        </tagged-values>
+       
+    </tagged-values>
+    
+</tagset>

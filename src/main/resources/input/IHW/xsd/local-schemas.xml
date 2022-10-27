@@ -10,4 +10,13 @@
             target-uri-prefix="../../1998/namespace/xml.xsd"/>
     </local-schema>
     
+    <local-schema schemafolder="www.opengis.net/GML322PROFILE-20200728">
+        <depends-on schemafolder="www.w3.org/XLINKS-20010627"/>
+        <local-map 
+            source-uri-prefix="../../xlink/1.0.0/xlinks.xsd"
+            target-uri-prefix="../../xlink/1.0.0/xlinks.xsd"/>
+        
+    </local-schema>
+    
+    
 </local-schemas>

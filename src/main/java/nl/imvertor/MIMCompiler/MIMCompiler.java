@@ -148,7 +148,7 @@ public class MIMCompiler extends Step {
 			if (!mimFormatType.equals("legacy")) {
 				/* Copy the MIM XML Schema directory: */
 				File xslDir = new File(configurator.getXslPath(configurator.getParm("properties", "IMVERTOR_MIMFORMAT_" + mimFormatterVersion + "_XSLPATH"))).getParentFile();
-				File xsdSourceFolder = new File(xslDir, "../../../etc/xsd/MIMformat/" + mfv);
+				File xsdSourceFolder = new File(xslDir, "../../../etc/xsd/MIMformat/" + mimFormatterVersion);
 				File xsdTargetFolder = new File(xmlFolder, "xsd");
 				FileUtils.copyDirectory(xsdSourceFolder, xsdTargetFolder);
 			

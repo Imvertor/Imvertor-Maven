@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="Grouping-MIM111.xml"/>
+    
+    <name>Grouping for NEN3610:2022</name>
+    
+    <desc lang="nl">Metamodel voor Grouping passend bij NEN3610:2022</desc>
+    <desc lang="en">Metamodel for Grouping under NEN3610:2022</desc>
+    
+</metamodel>

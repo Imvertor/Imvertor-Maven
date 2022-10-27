@@ -44,12 +44,13 @@
     <xsl:variable name="base-package" select="
         $document-packages[imvert:name=imf:get-normalized-name($application-package-name,'package-name') 
         and 
-        imvert:stereotype/@id = ('stereotype-name-base-package','stereotype-name-application-package')]"/>
+        imvert:stereotype/@id = ('stereotype-name-informatiemodel-package','stereotype-name-base-package','stereotype-name-application-package')]"/>
     
     <xsl:variable name="known-package" select="(
         'stereotype-name-domain-package',
         'stereotype-name-message-package',
         'stereotype-name-view-package',
+        'stereotype-name-informatiemodel-package',
         'stereotype-name-base-package', 
         'stereotype-name-application-package', 
         'stereotype-name-system-package', 

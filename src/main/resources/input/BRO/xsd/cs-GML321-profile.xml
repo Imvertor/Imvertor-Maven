@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchema xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+    
+    <cs:id>GML3</cs:id>
+    <cs:shortName>gml</cs:shortName>
+    <cs:version>3.2.1</cs:version>
+    <cs:phase>3</cs:phase>
+    <cs:desc>ISO19107 Geographic information – Spatial schema (Geography Markup Language 3)</cs:desc>
+    <cs:source>OGC</cs:source>
+    <cs:url>http://www.bro.nl/conceptual-schemas/ISO19107</cs:url>
+    <cs:catalogUrl>http://www.opengeospatial.org/standards/gml[entry]</cs:catalogUrl>
+ 
+</cs:ConceptualSchema>
+            

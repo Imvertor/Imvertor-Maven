@@ -66,8 +66,10 @@
                                 <xsl:comment>Referenced by local path</xsl:comment>
                                 <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($external-package)"/>
                                 <xsl:variable name="file-fullpath" select="imf:get-xsd-filefullpath($external-package)"/>
+                                <xsl:variable name="file-url" select="$external-package/imvert:location"/>
                                 <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
                                 <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$file-fullpath)"/>
+                                <xsl:sequence select="imf:create-info-element('imvert:result-url',$file-url)"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </imvert:schema>
@@ -89,8 +91,10 @@
                             <xsl:comment>Referenced by local path</xsl:comment>
                             <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($external-package)"/>
                             <xsl:variable name="file-fullpath" select="imf:get-xsd-filefullpath($external-package)"/>
+                            <xsl:variable name="file-url" select="$external-package/imvert:location"/>
                             <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
                             <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$file-fullpath)"/>
+                            <xsl:sequence select="imf:create-info-element('imvert:result-url',$file-url)"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </imvert:schema>
