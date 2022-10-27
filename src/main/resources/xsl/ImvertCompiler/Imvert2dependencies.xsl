@@ -35,7 +35,7 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     
     <xsl:template match="/imvert:packages">
-        <xsl:variable name="root-package" select="('stereotype-name-base-package','stereotype-name-variant-package','stereotype-name-application-package')"/>
+        <xsl:variable name="root-package" select="('stereotype-name-informatiemodel-package','stereotype-name-base-package','stereotype-name-variant-package','stereotype-name-application-package')"/>
         <imvert:package-dependencies>
          
             <xsl:apply-templates select="$document-packages[imvert:name/@original=$application-package-name and imvert:stereotype/@id = $root-package]" mode="package-dependencies"/>

@@ -21,4 +21,18 @@
     
     <xsl:import href="Imvert2validation-MIM11.xsl"/>
     
+    <!-- ik neem aan dat constraints alleen mogen voorkomen op 3 benoemde modelelementen -->
+    
+    <xsl:template match="imvert:constraint">
+    
+        <xsl:variable name="parent-stereotypes" select="../../imvert:stereotype"/>
+        
+        <xsl:sequence select="imf:report-error(., 
+            not($parent-stereotypes/@id = ('stereotype-name-objecttype','stereotype-name-composite','stereotype-name-relatieklasse')), 
+            'Constraint must not appear here', ())"/>
+        
+        <xsl:next-match/>
+        
+    </xsl:template>
+    
 </xsl:stylesheet>

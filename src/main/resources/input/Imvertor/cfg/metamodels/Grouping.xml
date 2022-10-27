@@ -22,6 +22,9 @@
             <name lang="en">System</name>
             <desc lang="nl">Een package dat is opgebouwd door de software ten behoeve van verwerking.</desc>
             <construct>package</construct>
+            <context>
+                <!-- systeem gedefinieerd -->
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-domain-package" primary="yes">
@@ -36,18 +39,27 @@
             <name lang="nl">Toepassing</name>
             <desc lang="nl">Een package dat een volledige applicatie beschrijft, en dus niet slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
             <construct>package</construct>
+            <context>
+                <!-- top level onder project; niet verplicht -->
+            </context>
         </stereo>
         <stereo id="stereotype-name-project-package" primary="yes">
             <name lang="en">Project</name>
             <name lang="nl">Project</name>
             <desc lang="nl">Een package dat een project bevat, dwz. een base of application package, eventueel met external packages.</desc>
             <construct>package</construct>
+            <context>
+                <!-- top level -->
+            </context>
         </stereo>
         <stereo id="stereotype-name-base-package" primary="yes">
             <name lang="en">Basemodel</name>
             <name lang="nl">Basismodel</name>
             <desc lang="nl">Een package dat slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
             <construct>package</construct>
+            <context>
+                <!-- top level -->
+            </context>
         </stereo>
         <stereo id="stereotype-name-external-package" primary="yes">
             <name lang="en">External</name>
@@ -57,6 +69,9 @@
                 Voorbeeld: het external package NEN3610 met datatype NEN3610ID. Het datatype van attribuutsoort Identificatie wegdeel in RSGB verwijst naar het 
                 datatype NEN3610ID zoals opgenomen in de external package.</desc>
             <construct>package</construct>
+            <context>
+                <!-- top level -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-provided-package">
@@ -72,6 +87,9 @@
             <desc lang="nl">Een package dat alléén bedoeld is om andere UML constructies (packagaes, klassen) te groeperen, en geen verdere rol speelt in de interpretatie van het model.
             Binnen een model worden alle packages die geen stereotype hebben opgevat als een Folder package.</desc>
             <construct>package</construct>
+            <context>
+                <!-- Kan overal voorkomen -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-interface" primary="yes">
@@ -80,6 +98,9 @@
             <desc lang="nl">Een constructie in een gemeenschappelijk maar niet opgenomen model, welke een compleet modelelement in dat model representeert.</desc>
             <construct>class</construct>
             <construct>datatype</construct>
+            <context>
+                <parent-stereo>stereotype-name-external-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-view-package" primary="yes">
@@ -95,6 +116,9 @@
             <name lang="en">Recyclebin</name>
             <desc lang="nl">A package that is to be ignored in all processing. may occur at any position in the package tree.</desc>
             <construct>package</construct>
+            <context>
+                <!-- Kan overal voorkomen -->
+            </context>
         </stereo>
 
         <?x
@@ -117,6 +141,9 @@
                 <!-- KING REDMINE Task #487814 Verwezenlijking herbruikbare (globale) complexTypes -->
             </desc>
             <construct>package</construct>
+            <context>
+                <!-- TODO -->
+            </context>
         </stereo>
         
         <!-- tracing -->
@@ -126,6 +153,10 @@
             <desc lang="nl">Trace relatie tussen twee klassen. Trace relatie wordt niet als associatie opgenomen, maar als eigenschap van de client.</desc>
             <construct>class</construct>
             <construct>datatype</construct>
+            <context>
+                <parent-stereo>stereotype-name-objecttype</parent-stereo>
+                <parent-stereo>stereotype-name-composite</parent-stereo>
+            </context>
         </stereo>
         
         <!-- generic -->
@@ -136,6 +167,10 @@
             <desc lang="nl">TODO</desc>
             <construct>class</construct>
             <toplevel>true</toplevel>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         <stereo id="stereotype-name-service" primary="yes">
             <name lang="en">Service</name>
@@ -143,6 +178,10 @@
             <desc lang="nl">TODO</desc>
             <construct>class</construct>
             <toplevel>true</toplevel>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         <stereo id="stereotype-name-process" primary="yes">
             <name lang="en">Process</name>
@@ -150,6 +189,10 @@
             <desc lang="nl">TODO</desc>
             <construct>class</construct>
             <toplevel>true</toplevel>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
 
         <!-- KING REDMINE #487612 -->
@@ -160,6 +203,10 @@
                 It is therefore assumned to be available in the owners managed output folder.
                 It is also assumed that the metamodels are compatible.</desc>
             <construct>package</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <!-- REDMINE #487891 -->
@@ -168,18 +215,27 @@
             <name lang="en">AttributeTypeProxy</name>
             <desc lang="nl">A proxy is TODO</desc>
             <construct>attribute</construct>
+            <context>
+                <!-- TODO -->
+            </context>
         </stereo>
         <stereo id="stereotype-name-obj-proxy" primary="yes">
             <name lang="nl">Objecttype_proxy</name>
             <name lang="en">FeatureTypeProxy</name>
             <desc lang="nl">A proxy is TODO</desc>
             <construct>class</construct>
+            <context>
+                <!-- TODO -->
+            </context>
         </stereo>
         <stereo id="stereotype-name-grp-proxy" primary="yes">
             <name lang="nl">Gegevensgroeptype_proxy</name>
             <name lang="en">AttributeGroupTypeProxy</name>
             <desc lang="nl">A proxy is TODO</desc>
             <construct>class</construct>
+            <context>
+                <!-- TODO -->
+            </context>
         </stereo>
         
         <!-- system defined -->
@@ -188,6 +244,9 @@
             <name lang="en">Anonymous</name>
             <construct>attribute</construct>
             <construct>association</construct>
+            <context>
+                <!-- TODO -->
+            </context>
         </stereo>
         
     </stereotypes>

@@ -48,7 +48,7 @@
     <xsl:variable name="known-classes" select="$model-package//UML:Class"/>
     
     <xsl:variable name="ms" select="imf:get-xmi-stereotype($model-package)"/>
-    <xsl:variable name="es" select="imf:get-config-stereotypes(('stereotype-name-base-package','stereotype-name-application-package'))"/>
+    <xsl:variable name="es" select="imf:get-config-stereotypes(('stereotype-name-informatiemodel-package','stereotype-name-base-package','stereotype-name-application-package'))"/>
     
     <xsl:template match="/XMI">
         <xsl:copy>

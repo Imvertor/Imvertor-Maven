@@ -82,7 +82,7 @@
             <cs:sentinel>false</cs:sentinel>
             <cs:catalogEntries>
                 <cs:CatalogEntry>
-                    <cs:name>Gebouw</cs:name>
+                    <cs:name>gebouw</cs:name>
                 </cs:CatalogEntry>
             </cs:catalogEntries>
             <cs:xsdTypes>

@@ -11,20 +11,25 @@
  *
  * Imvertor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
- 
-    <name>MIM 1.1.1 scalar</name>
+    
+    <xi:include href="KadasterMIM11.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM111.xml"/>
+    
+    <name>Kadaster MIM 1.1.1</name>
+    
+    <desc lang="en">Metamodel for Kadaster specific MIM 1.1.1 extensions</desc>
+    <desc lang="nl">Metamodel voor Kadaster specifieke MIM 1.1.1 uitbreidingen</desc>
+    
+    <stereotypes>
+        <!-- none additional -->
+    </stereotypes>        
 
-    <desc lang="nl">Metamodel voor MIM 1.1.1 informatiemodellen: Scalaire typen</desc>
-    
-    <xi:include href="MIM11-scalar.xml"/>
-    
-    <!-- geen extra scalaire typen -->
-    
 </metamodel>

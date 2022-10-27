@@ -4,9 +4,9 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM111.xml"/>
     
-    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM11.xml"/>
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM111.xml"/>
     
     <name>BRO CONCEPTUAL</name>
     
@@ -37,19 +37,23 @@
         <!-- tv conventions as defined elsewhere -->
     </naming>
     
+    <features>
+        <feature name="allow-multiple-supertypes">true</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+        <feature name="role-based">true</feature>
+    </features>
+ 
     <stereotypes>
         <stereo id="stereotype-name-imbroa">
             <name lang="en">IMBRO/A</name>
             <name lang="nl">IMBRO/A</name>
             <construct>attribute</construct><!-- TODO This concerns the ea profile. Constrain to enum values, how? -->
             <toplevel>false</toplevel>
+            <context>
+                <!-- dit is een secondary stereo, volgt primary -->
+            </context>
         </stereo>
     </stereotypes>
     
-    <features>
-        <feature name="allow-multiple-supertypes">true</feature>
-        <feature name="allow-scalar-in-union">true</feature>
-        <feature name="role-based">true</feature>
-    </features>
     
 </metamodel>

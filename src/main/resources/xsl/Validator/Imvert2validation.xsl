@@ -76,7 +76,8 @@
  
     <!-- All possible application-level top-packages -->
     <xsl:variable name="top-package-stereotypes" select="
-        ('stereotype-name-base-package',
+        ('stereotype-name-informatiemodel-package',
+         'stereotype-name-base-package',
          'stereotype-name-variant-package',
          'stereotype-name-application-package')"/>
    

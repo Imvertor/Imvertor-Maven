@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="KadasterMIM11.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM111.xml"/>
+    
+    <!-- #GH-256 refactored -->
+    
+    <name>Kadaster MIM 1.1.1 tagged values</name>
+    
+    <tagged-values>
+        
+        <!-- none additional -->
+        
+    </tagged-values>
+</tagset>

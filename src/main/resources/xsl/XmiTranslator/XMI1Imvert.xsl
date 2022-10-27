@@ -1283,6 +1283,7 @@
         use="UML:Association.connection/UML:AssociationEnd[UML:ModelElement.taggedValue/UML:TaggedValue[@tag='ea_end' and @value='source']]/@type"/>
     
     <xsl:variable name="main-package-stereotypes" select="(
+        imf:get-config-stereotypes('stereotype-name-informatiemodel-package'), 
         imf:get-config-stereotypes('stereotype-name-base-package'), 
         imf:get-config-stereotypes('stereotype-name-variant-package'), 
         imf:get-config-stereotypes('stereotype-name-application-package')

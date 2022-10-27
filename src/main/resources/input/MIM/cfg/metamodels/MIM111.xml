@@ -26,6 +26,11 @@
         </profile>
     </profiles>
     
-    <!-- TODO bepaal de relatie met MIM11 en plaats afwijkingen hier. -->
+    <stereotypes xml:id="stereotypes">
+        
+        <!-- geen aanpassingen tov MIM 1.1 -->
+        
+    </stereotypes>
+    
     
 </metamodel>

@@ -28,6 +28,8 @@
     exclude-result-prefixes="#all" 
     version="2.0">
 
+    <?x OBSOLETE
+        
     <!-- 
           Transform BOM UML constructs to canonical UML constructs.
     -->
@@ -214,4 +216,7 @@
             </xsl:if>        
         </xsl:for-each>
     </xsl:function>
+    
+    X?>
+    
 </xsl:stylesheet>

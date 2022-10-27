@@ -15,7 +15,7 @@
     <cs:source>Geonovum</cs:source>
     <cs:data-location>https://www.geonovum.nl/geo-standaarden/nen-3610-basismodel-voor-informatiemodellen</cs:data-location>
     <cs:url>http://www.geonovum.nl/conceptual-schemas/NEN3610</cs:url>
-    <cs:catalogUrl>https://definities.geostandaarden.nl/nen3610-2011/nl/page/[entry]</cs:catalogUrl>
+    <cs:catalogUrl>http://definities.geostandaarden.nl/nen3610-2022/id/begrip/[entry]</cs:catalogUrl>
        
 </cs:ConceptualSchema>
             

@@ -15,8 +15,17 @@
     
     <tagged-values>
         
-        <!-- follows MIM, no change -->
-    
+        <tv id="CFG-TV-UNITOFMEASURE">
+            <name lang="nl">Meeteenheid</name>/name>
+            <name lang="en">Unit of measure</name>
+            <desc lang="nl">De meeteenheid van de opgegeven waarde volgens de UCUM lijst.</desc>
+            <desc lang="en">The unit of measure of the value specified.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1" default="">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
     
 </tagset>

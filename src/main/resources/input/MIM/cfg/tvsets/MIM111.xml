@@ -8,6 +8,108 @@
 
     <name>MIM 1.1.1 tagged values</name>
     
-    <!-- TODO bepaal de relatie met MIM11 en plaats afwijkingen hier. -->
+    <tagged-values>
+        
+        <tv id="CFG-TV-DATERECORDED">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-generalization</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-data-element</stereo>
+                <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
+                <stereo minmax="1..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="1..1">stereotype-name-external-package</stereo>
+                <stereo minmax="1..1">stereotype-name-view-package</stereo>
+                <stereo minmax="1..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="1..1">stereotype-name-enum</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-DEFINITION" origin="system">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="1..1">stereotype-name-domain-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-DESCRIPTION" origin="system">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-INDICATIONFORMALHISTORY">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-INDICATIONMATERIALHISTORY">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-INDICATIONAUTHENTIC">
+            <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+        </tv>
+        
+        <tv id="CFG-TV-SOURCE">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="1..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="1..1">stereotype-name-union</stereo>
+                <stereo minmax="1..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="1..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-SOURCEOFDEFINITION">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
+                <stereo minmax="1..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="1..1">stereotype-name-external-package</stereo>
+                <stereo minmax="1..1">stereotype-name-view-package</stereo>
+                <stereo minmax="1..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-VOIDABLE">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+            </stereotypes>
+        </tv>    
+    </tagged-values>
     
 </tagset>

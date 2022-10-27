@@ -367,7 +367,7 @@
                 <xsl:for-each select="trans">
                     <xsl:sort select="root"/>
                     <xsl:sort select="part"/>
-                    <xsl:sort select="name[@orig-lang = 'nl']"/>
+                    <xsl:sort select="name[@orig-lang = 'nl'][1]"/><!-- NB het kan voorkomen dat een construct meerdere namen heeft, denk aan DATETIME en DT --> 
                     <tr>
                         <td>
                             <xsl:value-of select="root"/>

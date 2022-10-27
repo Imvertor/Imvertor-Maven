@@ -4,9 +4,10 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <!-- EIGENAAR follows MIM requirements -->
-    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM111.xml"/>
         
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM111.xml"/>
+    
     <name>EIGENAAR CONCEPTUEEL</name>
     
     <profiles>
