@@ -314,6 +314,11 @@
                                     <xsl:variable name="construct-group" select="current-group()"/>
                                     <xsl:apply-templates select="$construct-group[last()]" mode="#current"/>
                                 </xsl:for-each-group>
+                                <xsl:for-each-group select="$stereo-group/context/super-stereo" group-by=".">
+                                    <xsl:sort select="current-grouping-key()"/>
+                                    <xsl:variable name="construct-group" select="current-group()"/>
+                                    <xsl:apply-templates select="$construct-group[last()]" mode="#current"/>
+                                </xsl:for-each-group>
                             </context>
                             <xsl:apply-templates select="($stereo-group/toplevel)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($stereo-group/entity-relation-constraint)[last()]" mode="#current"/>
