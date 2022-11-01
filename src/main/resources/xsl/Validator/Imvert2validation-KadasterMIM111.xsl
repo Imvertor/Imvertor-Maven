@@ -29,10 +29,12 @@
     version="2.0">
 
     <!-- 
-       Canonization of MIM models.
+        Kadaster MIM validation extends Kadaster validation.
+        
+        TODO check or rearrange.
+        
     -->
     
-    <xsl:import href="Imvert2canonical-MIM11.xsl"/>    
-    
-    
+    <xsl:import href="Imvert2validation-KadasterMIM11.xsl"/>
+   
 </xsl:stylesheet>

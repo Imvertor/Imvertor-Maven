@@ -8,31 +8,30 @@
                       ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
    <cs:mappings>
       <cs:Mapping>
-         <cs:name>NEN3610_GML322</cs:name>
+         <cs:name>NEN36102022_GML322</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM11"/>
-            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
+            <cs-ref:MapRef xlink:href="#MIM111"/>
+            <cs-ref:MapRef xlink:href="#MIM111KAD"/>
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <cs-ref:MapRef xlink:href="#GML322"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
          </cs:use>
       </cs:Mapping>
       <cs:Mapping>
-         <cs:name>NEN3610_GML322PROFILE</cs:name>
+         <cs:name>NEN36102022_GML322PROFILE</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM11"/>
-            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
+            <cs-ref:MapRef xlink:href="#MIM111"/>
+            <cs-ref:MapRef xlink:href="#MIM111KAD"/>
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
          </cs:use>
       </cs:Mapping>
       <cs:Mapping>
-         <cs:name>NEN3610_GML322_ENV</cs:name>
+         <cs:name>MIM111_GML322_ENV</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM11"/>
-            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
-            <cs-ref:MapRef xlink:href="#NEN3610"/>
+            <cs-ref:MapRef xlink:href="#MIM111"/>
+            <cs-ref:MapRef xlink:href="#MIM111KAD"/>
             <cs-ref:MapRef xlink:href="#GML322"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
             <cs-ref:MapRef xlink:href="#ENVPROD"/>
@@ -41,11 +40,10 @@
          </cs:use>
       </cs:Mapping>
       <cs:Mapping>
-         <cs:name>NEN3610_GML322PROFILE_ENV</cs:name>
+         <cs:name>MIM111_GML322PROFILE_ENV</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM11"/>
-            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
-            <cs-ref:MapRef xlink:href="#NEN3610"/>
+            <cs-ref:MapRef xlink:href="#MIM111"/>
+            <cs-ref:MapRef xlink:href="#MIM111KAD"/>
             <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
             <cs-ref:MapRef xlink:href="#ENVPROD"/>
@@ -56,7 +54,7 @@
       <cs:Mapping>
          <cs:name>UMLMETA</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM111"/>
             <cs-ref:MapRef xlink:href="#UMLMETA"/>
          </cs:use>
       </cs:Mapping>
@@ -72,14 +70,14 @@
          
          <xi:include href="../../OMG/xsd/cs-UMLMETA.xml"/><!-- implements UML model -->
          
-         <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
+         <xi:include href="../../MIM/xsd/cs-MIM111.xml"/><!-- implements ConceptualSchema MIM111 -->
          
          <cs:ConceptualSchema>
-            <!-- conceptual schema for MIM11: uitbreiding van Kadaster -->
-            <cs:id>MIM11KAD</cs:id>
-            <cs:shortName>mim11kad</cs:shortName>
-            <cs:desc>MIM11KAD schema</cs:desc>
-            <cs:url>http://www.kadaster.nl/conceptual-schemas/MIM11</cs:url>
+            <!-- conceptual schema for MIM111: uitbreiding van Kadaster -->
+            <cs:id>MIM111KAD</cs:id>
+            <cs:shortName>mim111kad</cs:shortName>
+            <cs:desc>MIM111KAD schema</cs:desc>
+            <cs:url>http://www.kadaster.nl/conceptual-schemas/MIM111</cs:url>
             <cs:catalogUrl>https://kadaster.github.io/MIM-Werkomgeving/[entry]</cs:catalogUrl><!-- TODO op welke plek beschreven? -->
          </cs:ConceptualSchema>
          
@@ -128,18 +126,18 @@
          
          <xi:include href="../../OMG/xsd/cm-UMLMETA.xml"/><!-- implements Map #UMLMETA -->
 
-         <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
+         <xi:include href="../../MIM/xsd/cm-MIM111.xml"/><!-- implements Map #MIM111 -->
 
          <!-- toevoeging aan deze MIM map: -->
          <cs:Map>
-            <cs:id>MIM11KAD</cs:id>
-            <cs:namespace>http://www.kadaster.nl/MIM11</cs:namespace>
-            <cs:location>http://schemas.kadaster.nl/mim11.xsd</cs:location><!-- TODO --><!-- bogus not used for schema generator -->
+            <cs:id>MIM111KAD</cs:id>
+            <cs:namespace>http://www.kadaster.nl/MIM111</cs:namespace>
+            <cs:location>http://schemas.kadaster.nl/mim111.xsd</cs:location><!-- TODO --><!-- bogus not used for schema generator -->
             <cs:phase>3</cs:phase>
             <cs:version>1.0.0</cs:version>
-            <cs:release>20210325</cs:release>
+            <cs:release>20221101</cs:release>
             <cs:forSchema>
-               <cs-ref:ConceptualSchemaRef xlink:href="#MIM11KAD"/>
+               <cs-ref:ConceptualSchemaRef xlink:href="#MIM111KAD"/>
             </cs:forSchema>
             <cs:constructs>
                <cs:Construct>

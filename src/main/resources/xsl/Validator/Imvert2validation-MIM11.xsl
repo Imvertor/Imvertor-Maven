@@ -45,14 +45,14 @@
     
     <xsl:template match="imvert:association">
         <!--setup-->
-        <xsl:variable name="stereotype" select="imvert:stereotype"/>
+        <xsl:variable name="stereotypes" select="imvert:stereotype"/>
         <xsl:variable name="parent-stereotypes" select="../../imvert:stereotype"/>
-        <xsl:variable name="allowed-parent-stereotypes" select="$configuration-metamodel-file/stereotypes/stereo[@id = $stereotype/@id]/context/parent-stereo" as="xs:string*"/>
+        <xsl:variable name="allowed-parent-stereotypes" select="$configuration-metamodel-file/stereotypes/stereo[@id = $stereotypes/@id]/context/parent-stereo" as="xs:string*"/>
         
         <xsl:sequence select="imf:report-validation(., 
             exists($allowed-parent-stereotypes) and not($parent-stereotypes/@id = $allowed-parent-stereotypes), 
             $context-signaltype,
-            'Association with stereotype [1] must not appear here, expecting (any of) [2]', (imf:string-group($stereotype),imf:string-group(for $s in $allowed-parent-stereotypes return imf:get-config-name-by-id($s))))"/>
+            'Association with stereotype [1] must not appear here, expecting (any of) [2]', (imf:string-group($stereotypes),imf:string-group(for $s in $allowed-parent-stereotypes return imf:get-config-name-by-id($s))))"/>
         
         <xsl:next-match/>
     </xsl:template>
@@ -62,13 +62,15 @@
     <xsl:template match="imvert:*[imvert:supertype]">
         
         <xsl:variable name="stereotypes" select="imvert:stereotype"/>
-        <xsl:variable name="supertype-stereotypes" select="(for $s in imvert:supertype/imvert:type-id return imf:get-construct-by-id($s))/imvert:stereotype"/>
+        <xsl:variable name="super-stereotypes" select="(for $s in imvert:supertype/imvert:type-id return imf:get-construct-by-id($s))/imvert:stereotype"/>
+        <xsl:variable name="allowed-super-stereotypes" select="$configuration-metamodel-file/stereotypes/stereo[@id = $stereotypes/@id]/context/super-stereo" as="xs:string*"/>
         
-        <xsl:sequence select="imf:report-error(., 
-            not($supertype-stereotypes/@id = 'stereotype-name-interface') 
+        <xsl:sequence select="imf:report-validation(., 
+            not($super-stereotypes/@id = 'stereotype-name-interface') 
             and
-            not($stereotypes/@id = $supertype-stereotypes/@id), 
-            'Unexpected stereotype [1] for supertype. My stereotype is [2]', (imf:string-group($supertype-stereotypes),imf:string-group($stereotypes)))"/>
+            exists($allowed-super-stereotypes) and not($super-stereotypes/@id = $allowed-super-stereotypes), 
+            $context-signaltype,
+            'Unexpected stereotype [1] for supertype. My stereotype is [2]', (imf:string-group($super-stereotypes),imf:string-group($stereotypes)))"/>
          
         <xsl:next-match/>
     </xsl:template>
@@ -79,14 +81,14 @@
         Aan MIM 1.1 validatie toegevoegd bij de implementatie van MIM 1.1.1
     -->
     <xsl:template match="imvert:attribute" priority="10">
-        <xsl:variable name="stereotype" select="imvert:stereotype"/>
+        <xsl:variable name="stereotypes" select="imvert:stereotype"/>
         <xsl:variable name="parent-stereotypes" select="../../imvert:stereotype"/>
-        <xsl:variable name="allowed-parent-stereotypes" select="$configuration-metamodel-file/stereotypes/stereo[@id = $stereotype/@id]/context/parent-stereo" as="xs:string*"/>
+        <xsl:variable name="allowed-parent-stereotypes" select="$configuration-metamodel-file/stereotypes/stereo[@id = $stereotypes/@id]/context/parent-stereo" as="xs:string*"/>
         
         <xsl:sequence select="imf:report-validation(., 
             exists($allowed-parent-stereotypes) and not($parent-stereotypes/@id = $allowed-parent-stereotypes), 
             $context-signaltype,
-            'Attribute with stereotype [1] must not appear here, expecting (any of) [2]', (imf:string-group($stereotype),imf:string-group(for $s in $allowed-parent-stereotypes return imf:get-config-name-by-id($s))))"/>
+            'Attribute with stereotype [1] must not appear here, expecting (any of) [2]', (imf:string-group($stereotypes),imf:string-group(for $s in $allowed-parent-stereotypes return imf:get-config-name-by-id($s))))"/>
         
         <xsl:next-match/>
     </xsl:template>

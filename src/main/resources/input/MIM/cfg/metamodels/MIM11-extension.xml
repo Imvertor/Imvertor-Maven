@@ -26,6 +26,7 @@
             <context>
                 <parent-stereo>stereotype-name-domain-package</parent-stereo>
                 <parent-stereo>stereotype-name-view-package</parent-stereo>
+                <super-stereo>stereotype-name-objecttype</super-stereo>
             </context>
         </stereo>
         

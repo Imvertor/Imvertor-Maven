@@ -26,13 +26,21 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
     exclude-result-prefixes="#all" 
-    version="2.0">
+    version="3.0"
+    
+    expand-text="yes"
+    
+    >
+
+    <xsl:mode on-no-match="shallow-copy"/>
 
     <!-- 
-       Canonization of MIM models.
+        Kadaster MIM 1.1.1 canonization extends Kadaster canonization.
     -->
+    <xsl:import href="Imvert2canonical-KadasterMIM11.xsl"/>
     
-    <xsl:import href="Imvert2canonical-MIM11.xsl"/>    
-    
-    
+    <!--
+        More rules?
+    -->
+        
 </xsl:stylesheet>

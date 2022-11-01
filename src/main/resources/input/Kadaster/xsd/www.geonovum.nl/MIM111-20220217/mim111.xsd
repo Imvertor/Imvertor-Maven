@@ -1,0 +1,11 @@
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:mim111="http://www.geonovum.nl/MIM111"
+    targetNamespace="http://www.geonovum.nl/MIM111"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="1.1.1">
+    
+    <!-- empty -->
+    
+</xs:schema>
