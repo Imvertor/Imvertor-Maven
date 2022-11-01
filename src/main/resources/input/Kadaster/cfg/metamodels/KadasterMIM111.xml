@@ -99,12 +99,20 @@
                 Zo'n verzameling wordt alleen gebruikt in toepassingen waarin objecttypen moeten worden uitgewisseld conform GML "featurecollections".
             </desc>
             <construct>class</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-collection">
             <name lang="en">Collection</name>
             <name lang="nl">Collectie</name>
             <construct>class</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-meervoudige-relatieklasse" primary="yes">
@@ -121,6 +129,11 @@
                 Example: Plot is "filmed" into several other parcels (split and merge).
             </desc>
             <construct>class</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+                <super-stereo>stereotype-name-objecttype</super-stereo>
+            </context>
         </stereo>
         
     </stereotypes>
