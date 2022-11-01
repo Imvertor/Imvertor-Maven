@@ -936,7 +936,7 @@
                 <xsl:sequence select="($mult-tokens[1],$mult-tokens[1])"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="('1','1')"/>
+                <xsl:sequence select="()"/><!-- eventuele default naar 1 wordt afgehandeld in canonisering --> 
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>

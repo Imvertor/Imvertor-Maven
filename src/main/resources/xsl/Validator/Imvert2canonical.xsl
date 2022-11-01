@@ -160,7 +160,10 @@
                 <xsl:comment select="concat('Chopped association: ', imvert:name)"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:next-match/>
+                <imvert:association>
+                    <xsl:apply-templates select="*"/>
+                    <xsl:sequence select="imf:create-occurs(.,true())"/>
+                </imvert:association>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -208,6 +211,7 @@
                         </xsl:otherwise>
                     </xsl:choose>
                     <xsl:apply-templates select="*[not(self::imvert:stereotype or self::imvert:found-name)]"/>
+                    <xsl:sequence select="imf:create-occurs(.,true())"/>
                 </imvert:association>
             </xsl:when>
             <xsl:otherwise>
@@ -381,4 +385,17 @@
         <xsl:sequence select="$construct/imvert:tagged-values/imvert:tagged-value[@id = $tv-id]"/>
     </xsl:function>
     
+    <xsl:function name="imf:create-occurs" as="element()*">
+        <xsl:param name="this" as="element()"/>
+        <xsl:param name="occurs-expected" as="xs:boolean"/><!-- TODO hoe kun je weten dat een occurs nodig is? -->
+        <xsl:if test="empty($this/imvert:min-occurs)">
+            <imvert:min-occurs>1</imvert:min-occurs>
+            <imvert:max-occurs>1</imvert:max-occurs>
+            <xsl:sequence select="if ($occurs-expected) then imf:msg($this,'WARNING','No target multiplicity specified. Assuming 1.',()) else ()"/>
+        </xsl:if>
+        <xsl:if test="empty($this/imvert:min-occurs-source)">
+            <imvert:min-occurs-source>1</imvert:min-occurs-source>
+            <imvert:max-occurs-source>1</imvert:max-occurs-source>
+        </xsl:if>
+    </xsl:function>
 </xsl:stylesheet>
