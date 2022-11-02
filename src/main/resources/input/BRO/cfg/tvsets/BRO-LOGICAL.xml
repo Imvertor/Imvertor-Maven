@@ -4,12 +4,15 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="../../../Geonovum/cfg/tvsets/NEN3610.xml"/>
+    <xi:include href="../../../NEN3610/cfg/tvsets/NEN3610-2022.xml"/>
     
     <xi:include href="../../../Imvertor/cfg/tvsets/Grouping.xml"/>
     
     <xi:include href="BRO.xml"/>
     
     <name>BRO LOGICAL</name>
+    
+    <desc lang="nl">Gebaseerd op NEN3610:2022</desc>
+    <desc lang="en">Based on NEN3610:2022</desc>
     
 </tagset>
