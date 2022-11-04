@@ -51,6 +51,7 @@
         <!-- space separated list of conceptual schema URL domains/paths -->
         http://www.geonovum.nl/conceptual-schemas/
         http://www.kadaster.nl/conceptual-schemas/
+        http://www.opengis.net/conceptual-schemas/
     </parameter>
     <parameter name="url-prefix-schema-waardelijsten">http://www.kadaster.nl/schemas/waardelijsten/</parameter>
     <parameter name="class-name-waardelijst">Waardelijst</parameter>

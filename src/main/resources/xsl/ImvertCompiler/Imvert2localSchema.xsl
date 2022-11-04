@@ -24,9 +24,11 @@
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
+
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all"
-    version="2.0">
+    version="3.0">
     
     <!-- 
         Concrete schema's may depend on other schema's, often passed on by their internet URL location.
@@ -61,6 +63,8 @@
     </xsl:template>
     
     <xsl:template match="imvert:package" mode="schema-dependencies">
+        <xsl:sequence select="dlogger:save('imvert:package ' || imvert:name,.)"/>
+        
         <xsl:choose>
             <xsl:when test="empty(imvert:namespace)">
                 <xsl:sequence select="imf:msg(.,'ERROR','Namespace is missing.',())"/>
@@ -75,11 +79,14 @@
                 <xsl:sequence select="imf:msg(.,'ERROR','Conceptual-schema-name is missing.',())"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:variable name="schemafolder" select="imf:get-schema-foldername(imvert:namespace,imvert:version,imvert:release,imvert:conceptual-schema-name)"/>
+                <xsl:variable name="schemafolder" select="imf:get-schema-foldername(imvert:namespace,imvert:version,imvert:release,imvert:conceptual-schema-name,imvert:owner)"/>
                 <!-- if this is an imported external package, include in the list --> 
                 <xsl:value-of select="$schemafolder"/>
                 <!-- if this requires other external schemas, include them here --> 
-                <xsl:for-each select="$local-schema-mapping/local-schema[@schemafolder=$schemafolder]">
+                
+                <xsl:sequence select="dlogger:save('$local-schema-mapping',$local-schema-mapping)"/>
+                <xsl:sequence select="dlogger:save('$schemafolder',$schemafolder)"/>
+                <xsl:for-each select="$local-schema-mapping/local-schema[@schemafolder = $schemafolder]">
                     <xsl:for-each select="depends-on">
                         <xsl:value-of select="@schemafolder"/>
                     </xsl:for-each>

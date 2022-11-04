@@ -449,7 +449,7 @@ public class XsdCompiler extends Step {
 		NodeList nodes = (NodeList) infoEmbellishFile.xpathToObject("//*:local-schema", null, XPathConstants.NODESET);
 		for (int i = 0; i < nodes.getLength(); i++) {
 			String filepath = nodes.item(i).getTextContent();
-			AnyFolder xsdFolder = new AnyFolder(configurator.getXParm("properties/EXTERNAL_XSD_FOLDER") + "/" + filepath);
+			AnyFolder xsdFolder = new AnyFolder(configurator.getXParm("system/managedinstallfolder") + "/input/" + filepath);
 			AnyFolder targetXsdFolder = new AnyFolder(configurator.getXParm("system/work-xsd-folder-path"));
 			if (xsdFolder.isDirectory()) {
 				runner.debug(logger,"CHAIN","Appending external schema from: " + xsdFolder);

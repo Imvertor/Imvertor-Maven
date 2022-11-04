@@ -70,7 +70,7 @@
       <WORK_VALIDATE_FILE_2>${system/work-imvert-folder-path}/imvertor.13.2.validate.xml</WORK_VALIDATE_FILE_2>
       
       <!-- external stubs require the conceptual schema mapping file to be known -->
-      <CONCEPTUAL_SCHEMA_MAPPING_FILE>${system/inp-folder-path}/xsd/conceptual-schemas.xml</CONCEPTUAL_SCHEMA_MAPPING_FILE>
+      <CONCEPTUAL_SCHEMA_MAPPING_FILE>${system/managedinstallfolder}/input/${cli/owner}/xsd/conceptual-schemas.xml</CONCEPTUAL_SCHEMA_MAPPING_FILE>
       
       <!-- stylesheets for validation of canonical and regulatr imvertor files -->   
       <IMVERTOR_VALIDATE_XSLPATH alias="VAL">Imvert2validation.xsl</IMVERTOR_VALIDATE_XSLPATH>

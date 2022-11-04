@@ -86,11 +86,17 @@
         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-namespace',.)"/>
         <xsl:sequence select="imf:create-output-element('imvert:namespace',$map/cs:namespace)"/>
         <xsl:sequence select="imf:create-output-element('imvert:location',$map/cs:location)"/>
+        <xsl:sequence select="imf:create-output-element('imvert:owner',$map/cs:owner)"/>
         <!--
              when a release is specified, use that, only when known; otherise take the default release as defined in map
         -->
         <xsl:variable name="specified-release" select="../imvert:release"/>
         <xsl:variable name="known-releases" select="$map/cs:release"/> <!-- may be multiple -->
+        
+        <xsl:if test="empty($map/cs:owner)">
+            <xsl:sequence select="imf:msg(..,'ERROR','No owner specified for conceptual map [1]',$map/cs:id)"/>
+        </xsl:if>
+        
         <xsl:choose>
             <xsl:when test="exists($specified-release) and not($specified-release = $known-releases)">
                 <xsl:sequence select="imf:msg(..,'ERROR','No such release [1] configured for external package known as [2]',($specified-release,.))"/>

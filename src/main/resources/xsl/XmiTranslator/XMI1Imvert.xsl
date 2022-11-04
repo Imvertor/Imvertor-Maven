@@ -219,6 +219,7 @@
                                     </imvert:stereotype>
                                     <imvert:location>http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd</imvert:location>
                                     <imvert:release><xsl:value-of select="imf:get-xparm('cli/xlinkversion','20010627')"/></imvert:release>
+                                    <imvert:owner>W3C</imvert:owner>
                                 </imvert:package>
                             </xsl:if>
                             

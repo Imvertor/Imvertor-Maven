@@ -649,16 +649,17 @@
     
     <!-- 
         compile the folder where this external package is found. This is:
-        xsd / [sitename] / [remainder-separated-by-hyphen]([version]-[release])
+        [owner-name] / xsd / [sitename] / [remainder-separated-by-hyphen]([version]-[release])
     -->
     <xsl:function name="imf:get-schema-foldername" as="xs:string">
         <xsl:param name="namespace" as="xs:string"/>
         <xsl:param name="version" as="xs:string"/>
         <xsl:param name="release" as="xs:string?"/><!-- not known for external and system packages -->
         <xsl:param name="map-name" as="xs:string"/>
+        <xsl:param name="owner-name" as="xs:string"/>
         <xsl:variable name="parts" select="imf:get-uri-parts($namespace)"/>
         <!-- <xsl:value-of select="concat($parts/server,'/',replace($parts/path,'/','-'),'(',$version, '-', $release,')')"/> -->
-        <xsl:value-of select="concat($parts/server,'/',$map-name,'-',$release)"/>
+        <xsl:value-of select="concat($owner-name,'/xsd/',$parts/server,'/',$map-name,'-',$release)"/>
     </xsl:function>
     
     <xsl:function name="imf:extract" as="xs:string">

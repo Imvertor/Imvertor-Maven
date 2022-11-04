@@ -131,9 +131,19 @@
     <!-- 
         zet het conceptual schema om naar de vorm waarin alleen de relevante maps zijn opgenomen.
     -->
-    <xsl:function name="imf:prepare-mapping" as="element(cs:ConceptualSchemas)">
+    <xsl:function name="imf:prepare-mapping" as="element(cs:ConceptualSchemas)?">
         <xsl:param name="conceptual-schema-mapping-doc" as="document-node()"/>
-        <xsl:apply-templates select="$conceptual-schema-mapping-doc/*" mode="imf:prepare-mapping"/>
+        <xsl:variable name="mappings" select="$conceptual-schema-mapping-doc/cs:ConceptualSchemas/cs:mappings/cs:Mapping"/>
+        <xsl:variable name="applicable-mapping" select="$mappings/cs:name[. = $conceptual-schema-mapping-name]"/>
+        <xsl:choose>
+            <xsl:when test="count($applicable-mapping) ne 1">
+                <xsl:sequence select="imf:msg((),'FATAL','Found [1] mappings named [2]', (count($applicable-mapping),$conceptual-schema-mapping-name))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates select="$conceptual-schema-mapping-doc/*" mode="imf:prepare-mapping"/>
+            </xsl:otherwise>
+        </xsl:choose>
+      
     </xsl:function>
     
     <xsl:template match="cs:Mapping" mode="imf:prepare-mapping">
