@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:Map xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+   
+   <cs:id>GMLSF</cs:id>
+   <cs:namespace>http://www.opengis.net/gmlsf/2.0</cs:namespace>
+   <cs:desc>TODO</cs:desc>
+   <cs:location>http://schemas.opengis.net/gmlsfProfile/2.0/gmlsfLevels.xsd</cs:location>
+   <cs:phase>3</cs:phase>
+   <cs:version>2.0</cs:version>
+   <cs:release>20110101</cs:release>
+   <cs:forSchema>
+      <cs-ref:ConceptualSchemaRef xlink:href="#GMLSF"/>
+   </cs:forSchema>
+   <cs:owner>OGC</cs:owner>
+   <cs:constructs>
+      <cs:Construct>
+         <cs:name>GMLSF_SENTINEL</cs:name>
+         <cs:sentinel>true</cs:sentinel>
+      </cs:Construct>
+   </cs:constructs>
+   
+</cs:Map>

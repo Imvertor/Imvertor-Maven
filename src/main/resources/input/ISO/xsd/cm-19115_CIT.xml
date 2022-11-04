@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:Map xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+   
+   <cs:id>19115_CIT</cs:id>
+   <cs:namespace>http://standards.iso.org/iso/19115/-3/cit/1.0</cs:namespace>
+   <cs:desc>TODO</cs:desc>
+   <cs:location>http://standards.iso.org/iso/19115/-3/cit/1.0/citation.xsd</cs:location>
+   <cs:phase>3</cs:phase>
+   <cs:version>1.0</cs:version>
+   <cs:release>2006</cs:release>
+   <cs:forSchema>
+      <cs-ref:ConceptualSchemaRef xlink:href="#19115_CIT"/>
+   </cs:forSchema>
+   <cs:owner>ISO</cs:owner>
+   <cs:constructs>
+      <cs:Construct>
+         <cs:name>CI_Citation</cs:name>
+         <cs:sentinel>false</cs:sentinel>
+         <cs:xsdTypes>
+            <cs:XsdType>
+               <cs:name>CI_Citation</cs:name>
+               <cs:primitive>false</cs:primitive>
+            </cs:XsdType>
+         </cs:xsdTypes>
+      </cs:Construct>
+   </cs:constructs>
+</cs:Map>

@@ -16,6 +16,7 @@
     <cs:forSchema>
         <cs-ref:ConceptualSchemaRef xlink:href="#NEN3610-2022"/>
     </cs:forSchema>
+    <cs:owner>NEN3610</cs:owner>
     <cs:constructs>
         <cs:Construct>
             <cs:name>NEN3610ID</cs:name>

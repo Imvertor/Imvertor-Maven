@@ -371,6 +371,13 @@
                </xs:choice>
             </xs:complexType>
          </xs:element>
+         <xs:element name="owner" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
          <xs:element name="constructs" minOccurs="0" maxOccurs="1">
             <xs:complexType>
                <xs:sequence>
