@@ -95,7 +95,8 @@ public class SchemaValidator extends Step {
 		if (vl.size() != 0) 
 			runner.info(logger, vl.size() + " errors/warnings found in generated XSD. This release should not be distributed. Please notify your administrator.");
 		Iterator<ErrorHandlerMessage> it = vl.iterator();
-		while (it.hasNext()) {
+		int i = 1;
+		while (i <= 10 && it.hasNext()) {
 			ErrorHandlerMessage m = it.next();
 			String msg = "XML schema: " +  StringUtils.substringAfter(m.message, m.code + ": ")  + " [" + URLDecoder.decode(StringUtils.substringAfter(m.file,"/xsd/"), StandardCharsets.UTF_8.name()) + ":" + m.line + "]";
 			switch (m.type.toLowerCase()) {
@@ -109,7 +110,10 @@ public class SchemaValidator extends Step {
 					runner.debug(logger,"CHAIN", msg);
 					break;
 			}
+			i++;
 		}
+		if (i < vl.size()) 
+			runner.info(logger, "No showing " + (vl.size() - i) + " additional messages");
 		configurator.setXParm("appinfo/schema-error-count", vl.size());
 		return (vl.size() == 0) ? true : false;
 	}
