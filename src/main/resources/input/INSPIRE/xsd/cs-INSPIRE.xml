@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchema xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+  
+    <cs:id>INSPIRE</cs:id>
+    <cs:shortName>INSPIRE</cs:shortName>
+    <cs:desc>The INSPIRE Feature Concept Dictionary (IFCD) acts as a common feature concept dictionary for all INSPIRE data specifications. The common feature concept dictionary contains terms and definitions required for specifying thematic spatial object types and it is main role is in particular to support the harmonisation effort and to identify conflicts between the specifications of the spatial object types in the different themes.</cs:desc>
+    <cs:url>http://www.bro.nl/conceptual-schemas/INSPIRE</cs:url>
+    <cs:catalogUrl>http://inspire.ec.europa.eu/featureconcept/[entry]</cs:catalogUrl>
+
+</cs:ConceptualSchema>
+            

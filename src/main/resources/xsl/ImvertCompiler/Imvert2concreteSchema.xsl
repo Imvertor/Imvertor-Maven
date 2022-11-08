@@ -246,7 +246,9 @@
                         </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>
+                        <?x er is geen reden om te waarschuwen dat een type mapping niet bestaat, wanneer geen schema's worden gegenereerd. Die melding moet pas op dat moment worden gedaan.  
                         <xsl:sequence select="imf:msg(..,'WARNING','No type mapping found for [1] in namespace [2] when using mapping [3]',($original-name,$pack/imvert:namespace,$conceptual-schema-mapping-name))"/>
+                        x?>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>

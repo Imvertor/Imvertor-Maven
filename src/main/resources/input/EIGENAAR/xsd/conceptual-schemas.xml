@@ -10,7 +10,8 @@
       <cs:Mapping>
          <cs:name>NEN3610_GML322</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM111"/>
+            <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
             <cs-ref:MapRef xlink:href="#GML322"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
          </cs:use>
@@ -20,37 +21,17 @@
    <cs:components>
       <cs:ConceptualSchemasComponents>
          
-         <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
+         <xi:include href="../../MIM/xsd/cs-MIM111.xml"/>
+         <xi:include href="../../NEN3610/xsd/cs-NEN3610-2022.xml"/>
          <xi:include href="../../OGC/xsd/cs-GML322.xml"/>
+         <xi:include href="../../OGC/xsd/cs-GMLSF.xml"/>
          
-         <cs:ConceptualSchema>
-            <cs:id>GMLSF</cs:id>
-            <cs:shortName>gmlsf</cs:shortName>
-            <cs:desc>GML Simple Feature Profile</cs:desc>
-            <cs:url>http://www.eigenaar.nl/conceptual-schemas/GMLSF</cs:url>
-         </cs:ConceptualSchema>
+         <!--maps:-->
          
-         <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
-         <xi:include href="../../OGC/xsd/cm-GML322.xml"/><!-- implements Map #GML322 -->
-         
-         <cs:Map>
-            <cs:id>GMLSF</cs:id>
-            <cs:namespace>http://www.opengis.net/gmlsf/2.0</cs:namespace>
-            <cs:desc>TODO</cs:desc>
-            <cs:location>http://schemas.opengis.net/gmlsfProfile/2.0/gmlsfLevels.xsd</cs:location>
-            <cs:phase>3</cs:phase>
-            <cs:version>2.0</cs:version>
-            <cs:release>20110101</cs:release>
-            <cs:forSchema>
-               <cs-ref:ConceptualSchemaRef xlink:href="#GMLSF"/>
-            </cs:forSchema>
-            <cs:constructs>
-               <cs:Construct>
-                  <cs:name>GMLSF_SENTINEL</cs:name>
-                  <cs:sentinel>true</cs:sentinel>
-               </cs:Construct>
-            </cs:constructs>
-         </cs:Map>
+         <xi:include href="../../MIM/xsd/cm-MIM111.xml"/>
+         <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/>
+         <xi:include href="../../OGC/xsd/cm-GML322.xml"/>
+         <xi:include href="../../OGC/xsd/cm-GMLSF.xml"/>
          
       </cs:ConceptualSchemasComponents>
    </cs:components>

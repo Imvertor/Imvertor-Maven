@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:Map xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+   
+   <cs:id>INSPIRE-GEO</cs:id>
+   <cs:namespace>http://inspire.ec.europa.eu/</cs:namespace>
+   <cs:desc>Links to the INSPIRE Geo core cataloque and schemas.</cs:desc>
+   <cs:location>http://inspire.ec.europa.eu/schemas/ge-core/4.0/GeologyCore.xsd</cs:location>
+   <cs:phase>3</cs:phase>
+   <cs:version>1.0</cs:version>
+   <cs:release>4.0</cs:release>
+   <cs:forSchema>
+      <cs-ref:ConceptualSchemaRef xlink:href="#INSPIRE"/>
+   </cs:forSchema>
+   <cs:owner>INSPIRE</cs:owner>
+   <cs:constructs>
+      <cs:Construct>
+         <cs:name>MappedFeature</cs:name>
+         <cs:sentinel>false</cs:sentinel>
+         <cs:catalogEntries>
+            <cs:CatalogEntry>
+               <cs:name>MappedFeature</cs:name>
+            </cs:CatalogEntry>
+         </cs:catalogEntries>
+         <cs:xsdTypes>
+            <cs:XsdType>
+               <cs:name>MappedFeature</cs:name>
+               <cs:asAttribute>MappedFeatureType</cs:asAttribute>
+               <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+               <cs:primitive>false</cs:primitive>
+               <cs:hasNilreason>false</cs:hasNilreason>
+            </cs:XsdType>
+         </cs:xsdTypes>
+      </cs:Construct>
+   </cs:constructs>
+   
+</cs:Map>

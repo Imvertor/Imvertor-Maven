@@ -1,0 +1,7 @@
+<local-schema schemafolder="NEN3610/xsd/www.geonovum.nl/NEN3610-2022-20220616">
+    <!-- TODO invullen en het schema bijwerken -->
+    <depends-on schemafolder="OGC/xsd/www.opengis.net/GML322-20160101"/>
+    <local-map 
+        source-uri-prefix="http://schemas.opengis.net/gml/3.2.1/gml.xsd"
+        target-uri-prefix="../../gml/3.2.2/gml.xsd"/>
+</local-schema>

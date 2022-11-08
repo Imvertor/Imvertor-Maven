@@ -22,6 +22,7 @@
             <cs:name>CharacterString</cs:name>
             <cs:sentinel>false</cs:sentinel>
             <cs:managedID>EAID_18BFBA8D_E3F4_4d8c_9A8F_4429FA54B041</cs:managedID>
+            <cs:managedID>EAID_B1953163_0287_430c_B5D9_179028F43297</cs:managedID>
             <cs:catalogEntries>
                 <cs:CatalogEntry>
                     <cs:name>#primitive-datatypes</cs:name>
@@ -46,6 +47,7 @@
             <cs:name>Integer</cs:name>
             <cs:sentinel>false</cs:sentinel>
             <cs:managedID>EAID_F38912FB_7856_4a9d_AF96_CB2238371C04</cs:managedID>
+            <cs:managedID>EAID_2BBE4547_2439_4013_9D40_1C2780EFD529</cs:managedID>
             <cs:catalogEntries>
                 <cs:CatalogEntry>
                     <cs:name>#primitive-datatypes</cs:name>
@@ -70,6 +72,7 @@
             <cs:name>Real</cs:name>
             <cs:sentinel>false</cs:sentinel>
             <cs:managedID>EAID_3C4BBF7A_20EC_4a62_A172_F00A6D73FD5E</cs:managedID>
+            <cs:managedID>EAID_16EBF44D_B891_4e4a_A736_DDAACC540C2B</cs:managedID>
             <cs:catalogEntries>
                 <cs:CatalogEntry>
                     <cs:name>#primitive-datatypes</cs:name>
@@ -118,6 +121,7 @@
             <cs:name>Boolean</cs:name>
             <cs:sentinel>false</cs:sentinel>
             <cs:managedID>EAID_70FBDB70_4B81_46ab_97BB_058195812ECB</cs:managedID>
+            <cs:managedID>EAID_CC54BACB_6454_4393_B54D_18A9B1197BE7</cs:managedID>
             <cs:catalogEntries>
                 <cs:CatalogEntry>
                     <cs:name>#primitive-datatypes</cs:name>
@@ -142,6 +146,7 @@
             <cs:name>Date</cs:name>
             <cs:sentinel>false</cs:sentinel>
             <cs:managedID>EAID_3E6F5023_BF71_4da0_8747_0B8D334A8D04</cs:managedID>
+            <cs:managedID>EAID_C9777762_0321_46bc_9966_D5BD6F7826F1</cs:managedID>
             <cs:catalogEntries>
                 <cs:CatalogEntry>
                     <cs:name>#primitive-datatypes</cs:name>
@@ -166,6 +171,7 @@
             <cs:name>DateTime</cs:name>
             <cs:sentinel>false</cs:sentinel>
             <cs:managedID>EAID_366435A3_6E41_4add_A833_21873B97D7C7</cs:managedID>
+            <cs:managedID>EAID_772DBA4B_DD3A_4e12_97A9_E5085B8BD840</cs:managedID>
             <cs:catalogEntries>
                 <cs:CatalogEntry>
                     <cs:name>#primitive-datatypes</cs:name>
@@ -190,6 +196,7 @@
             <cs:name>Year</cs:name>
             <cs:sentinel>false</cs:sentinel>
             <cs:managedID>EAID_4DA242C6_3972_4f1e_86F0_BBB8046F4BC9</cs:managedID>
+            <cs:managedID>EAID_003D6B85_BF53_4e51_ACB3_CD818F987D56</cs:managedID>
             <cs:catalogEntries>
                 <cs:CatalogEntry>
                     <cs:name>#primitive-datatypes</cs:name>
@@ -214,6 +221,7 @@
             <cs:name>Day</cs:name>
             <cs:sentinel>false</cs:sentinel>
             <cs:managedID>EAID_427C0973_E12D_47f8_A326_AACBADEE5AE6</cs:managedID>
+            <cs:managedID>EAID_C52F8099_A9C0_4f31_AB6F_A0B1F6669EFD</cs:managedID>
             <cs:catalogEntries>
                 <cs:CatalogEntry>
                     <cs:name>#primitive-datatypes</cs:name>
@@ -238,6 +246,7 @@
             <cs:name>Month</cs:name>
             <cs:sentinel>false</cs:sentinel>
             <cs:managedID>EAID_FC8CFD1F_45A2_4507_90DA_82453E61834B</cs:managedID>
+            <cs:managedID>EAID_8712C86F_2032_41ff_9D17_992B0ED46AFD</cs:managedID>
             <cs:catalogEntries>
                 <cs:CatalogEntry>
                     <cs:name>#primitive-datatypes</cs:name>
@@ -262,6 +271,7 @@
             <cs:name>URI</cs:name>
             <cs:sentinel>false</cs:sentinel>
             <cs:managedID>EAID_DAB6A78C_1FE9_4ecf_9DB3_45B541679D62</cs:managedID>
+            <cs:managedID>EAID_147BFB75_5103_4cd9_B535_3CE1C023BDA1</cs:managedID>
             <cs:catalogEntries>
                 <cs:CatalogEntry>
                     <cs:name>#primitive-datatypes</cs:name>

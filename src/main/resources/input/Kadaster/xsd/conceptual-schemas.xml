@@ -67,9 +67,9 @@
          <xi:include href="../../MIM/xsd/cs-MIM111.xml"/><!-- implements ConceptualSchema MIM111 -->
          
          <xi:include href="../../OGC/xsd/cs-GML322.xml"/>
-         <xi:include href="../../OGC/xsd/cs-GML322PROFILE.xml"/>
          <xi:include href="../../OGC/xsd/cs-GMLSF.xml"/>
          
+         <xi:include href="../../Kadaster/xsd/cs-GML322PROFILE.xml"/>
          <xi:include href="../../Kadaster/xsd/cs-ENVPROC.xml"/>
          <xi:include href="../../Kadaster/xsd/cs-ENVLOG.xml"/>
          <xi:include href="../../Kadaster/xsd/cs-ENVPROD.xml"/>
@@ -77,16 +77,18 @@
          
          <xi:include href="../../NEN3610//xsd/cs-NEN3610-2022.xml"/>
          
-         <xi:include href="../../ISO/xsd/cs-19115_CIT.xml"/>
+         <xi:include href="../../ISO/xsd/cs-CIT10.xml"/>
+         
+         <!--maps:-->
          
          <xi:include href="../../OMG/xsd/cm-UMLMETA.xml"/><!-- implements Map #UMLMETA -->
 
          <xi:include href="../../MIM/xsd/cm-MIM111.xml"/><!-- implements Map #MIM111 -->
 
          <xi:include href="../../OGC/xsd/cm-GML322.xml"/>
-         <xi:include href="../../OGC/xsd/cm-GML322PROFILE.xml"/>
          <xi:include href="../../OGC/xsd/cm-GMLSF.xml"/>
       
+         <xi:include href="../../Kadaster/xsd/cm-GML322PROFILE.xml"/>
          <xi:include href="../../Kadaster/xsd/cm-ENVPROC.xml"/>
          <xi:include href="../../Kadaster/xsd/cm-ENVLOG.xml"/>
          <xi:include href="../../Kadaster/xsd/cm-ENVPROD.xml"/>
@@ -94,7 +96,7 @@
          
          <xi:include href="../../NEN3610//xsd/cm-NEN3610-2022.xml"/>
       
-         <xi:include href="../../ISO/xsd/cm-19115_CIT.xml"/>
+         <xi:include href="../../ISO/xsd/cm-CIT10.xml"/>
          
       </cs:ConceptualSchemasComponents>
    </cs:components>

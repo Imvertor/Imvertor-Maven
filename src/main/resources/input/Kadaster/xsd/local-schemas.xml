@@ -1,72 +1,15 @@
 <!-- 
     Mappings for local schemas 
-    
-    Changes: 
-    1/ changed www.w3.org/XLINKS-20010627 to www.w3.org/XLINKS-KADPROFILE
-
 -->
-<local-schemas>
-    <svn-id>$Id: local-schemas.xml 7209 2015-08-25 12:28:42Z arjan $</svn-id>
+<local-schemas xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <local-schema schemafolder="OGC/xsd/www.opengis.net/GML322-20160101">
-        <!-- 
-            This schema depends on the local schema folders specified below.
-        -->
-        <depends-on schemafolder="ISO/xsd/www.isotc211.org/GEOMATICS-20050101"/>
-        <depends-on schemafolder="W3C/xsd/www.w3.org/XLINKS-KADPROFILE"/>
-        <depends-on schemafolder="W3C/xsd/www.w3.org/SMIL20-20010731"/>
-        <!-- 
-            Define which local paths will be valid for internet imports and includes 
-            This specifies the source URI prefix, as found in the local copy,
-            and the target URI prefix, that will be valid for the local copy.
-        -->
-        <local-map 
-            source-uri-prefix="http://schemas.opengis.net/iso/19139/20070417"
-            target-uri-prefix="../.."/>
-        <local-map 
-            source-uri-prefix="http://schemas.opengis.net/gml/3.1.1/smil/smil20.xsd"
-            target-uri-prefix="../../smil20/smil20.xsd"/>
-        <local-map 
-            source-uri-prefix="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"
-            target-uri-prefix="../../xlink/1.0.0/xlink.xsd"/>
-        <local-map 
-            source-uri-prefix="http://www.w3.org/1999/xlink.xsd"
-            target-uri-prefix="../../xlink/1.0.0/xlink.xsd"/>
-        
-    </local-schema>
+    <xi:include href="../../OGC/xsd/www.opengis.net/ls-GML322-20160101.xml"/>
     
-    <local-schema schemafolder="OGC/xsd/www.opengis.net/GML322-20160101-KADPROFILE">
-        <depends-on schemafolder="W3C/xsd/www.w3.org/XLINKS-KADPROFILE"/>
-        <local-map 
-            source-uri-prefix="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"
-            target-uri-prefix="../../xlink/1.0.0/xlink.xsd"/>
-        
-    </local-schema>
+    <xi:include href="../../Kadaster/xsd/www.opengis.net/ls-GML322PROFILE-20200728.xml"/>
     
-    <local-schema schemafolder="ISO/xsd/www.isotc211.org/GEOMATICS-20050101">
-        <depends-on schemafolder="OGC/xsd/www.opengis.net/GML322-20160101"/>
-        <depends-on schemafolder="W3C/xsd/www.w3.org/XLINKS-KADPROFILE"/>
-        <local-map 
-            source-uri-prefix="../gml/gml.xsd"
-            target-uri-prefix="../gml/3.2.2/gml.xsd"/>
-        <local-map 
-            source-uri-prefix="../xlink/xlinks.xsd"
-            target-uri-prefix="../xlink/1.0.0/xlink.xsd"/>
-    </local-schema>
-    
-    <local-schema schemafolder="W3C/xsd/www.w3.org/XLINKS-20010627">
-        <depends-on schemafolder="W3C/xsd/www.w3.org/XML-1998"/>
-        <local-map 
-            source-uri-prefix="http://www.w3.org/2001/xml.xsd"
-            target-uri-prefix="../../1998/namespace/xml.xsd"/>
-    </local-schema>
-    
-    <local-schema schemafolder="NEN3610/xsd/www.geonovum.nl/NEN3610-20110301">
-        <depends-on schemafolder="OGC/xsd/www.opengis.net/GML322-20160101"/>
-        <local-map 
-            source-uri-prefix="http://schemas.opengis.net/gml/3.2.1/gml.xsd"
-            target-uri-prefix="../../gml/3.2.2/gml.xsd"/>
-    </local-schema>
+    <xi:include href="../../ISO/xsd/www.isotc211.org/ls-GEOMATICS-20050101.xml"/>
+ 
+    <xi:include href="../../NEN3610/xsd/www.geonovum.nl/ls-NEN3610-2022-20220616.xml"/>
     
     <local-schema schemafolder="Kadaster/xsd/www.kadaster.nl/ENVPROC-20110922"/>
 

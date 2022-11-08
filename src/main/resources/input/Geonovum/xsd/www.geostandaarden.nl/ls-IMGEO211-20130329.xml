@@ -1,0 +1,15 @@
+<local-schema schemafolder="Geonovum/xsd/www.geostandaarden.nl/IMGEO211-20130329">
+ 
+    <!-- TODO invullen -->
+    <depends-on schemafolder="OGC/xsd/www.opengis.net/CityGML-20120201"/>
+    
+    <!-- 
+            Define which local paths will be valid for internet imports and includes 
+            This specifies the source URI prefix, as found in the local copy,
+            and the target URI prefix, that will be valid for the local copy.
+        -->
+    <local-map 
+        source-uri-prefix="http://schemas.opengis.net/citygml"
+        target-uri-prefix="../../citygml"/>
+    
+</local-schema>

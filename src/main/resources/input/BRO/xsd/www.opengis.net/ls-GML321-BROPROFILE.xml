@@ -1,0 +1,14 @@
+<local-schema schemafolder="BRO/xsd/www.opengis.net/GML321-BROPROFILE">
+
+    <!-- no dependencies -->
+    
+    <!-- 
+            Define which local paths will be valid for internet imports and includes 
+            This specifies the source URI prefix, as found in the local copy,
+            and the target URI prefix, that will be valid for the local copy.
+        -->
+    <local-map 
+        source-uri-prefix="https://schema.broservices.nl/profile/xlink/1.0/xlink-profile.xsd"
+        target-uri-prefix="../../xlink/1.0.0/xlink-profile.xsd"/>
+
+</local-schema>

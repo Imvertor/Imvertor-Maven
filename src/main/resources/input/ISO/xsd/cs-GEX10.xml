@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchema xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+  
+    <cs:id>GEX10</cs:id>
+    <cs:shortName>iso19115gex</cs:shortName>
+    <cs:desc>ISO 19115 GEX</cs:desc>
+    <cs:url>http://www.iso.org/conceptual-schemas/GEX10</cs:url>
+    
+</cs:ConceptualSchema>
+            

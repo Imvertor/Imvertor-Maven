@@ -995,9 +995,10 @@
     <xsl:function name="imf:is-conceptual" as="xs:boolean">
         <xsl:param name="construct" as="element()"/>
         <xsl:variable name="pack" select="$construct/ancestor-or-self::imvert:package" as="element()*"/>
-        <xsl:variable name="prefix" select="tokenize(normalize-space(imf:get-config-parameter('url-prefix-conceptual-schema')),'\s+')"/>
+        <?x <xsl:variable name="prefix" select="tokenize(normalize-space(imf:get-config-parameter('url-prefix-conceptual-schema')),'\s+')"/> x?>
         <xsl:variable name="is-external" select="$pack/imvert:stereotype/@id = ('stereotype-name-external-package')"/>
-        <xsl:variable name="is-conceptual" select="exists($pack/imvert:namespace[(for $p in ($prefix) return starts-with(.,$p)) = true()])"/>
+        <?x <xsl:variable name="is-conceptual" select="exists($pack/imvert:namespace[(for $p in ($prefix) return starts-with(.,$p)) = true()])"/> x?>
+        <xsl:variable name="is-conceptual" select="true()"/>
         
        <xsl:choose>
             <xsl:when test="$is-external and $is-conceptual">

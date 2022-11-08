@@ -10,7 +10,7 @@
     <cs:id>GMLSF</cs:id>
     <cs:shortName>gmlsf</cs:shortName>
     <cs:desc>GML Simple Feature Profile</cs:desc>
-    <cs:url>http://www.kadaster.nl/conceptual-schemas/GMLSF</cs:url>
+    <cs:url>http://www.opengis.net/conceptual-schemas/GMLSF</cs:url>
     
 </cs:ConceptualSchema>
             

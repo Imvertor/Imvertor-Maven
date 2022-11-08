@@ -16,6 +16,7 @@
     <cs:forSchema>
         <cs-ref:ConceptualSchemaRef xlink:href="#IMGEO"/>
     </cs:forSchema>
+    <cs:owner>Geonovum</cs:owner>
     <cs:constructs>
         <cs:Construct>
             <cs:name>AuxiliaryTrafficArea</cs:name>

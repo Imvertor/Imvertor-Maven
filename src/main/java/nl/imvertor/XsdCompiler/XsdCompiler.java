@@ -20,7 +20,7 @@
 
 package nl.imvertor.XsdCompiler;
 
-import java.util.Vector;
+import java.io.File;
 
 import javax.xml.xpath.XPathConstants;
 
@@ -479,7 +479,9 @@ public class XsdCompiler extends Step {
 	 * The application has its own folder within the xsd folder.
 	 */
 	private void transformSchemas(AnyFolder xsdFolder, AnyFolder targetXsdFolder) throws Exception {
-		String xsdFolderSubpath = xsdFolder.getParentFile().getName() + "/" + xsdFolder.getName();
+		File wwwFile = xsdFolder.getParentFile(); // for example: www.isotc211.org
+		File ownerFile = wwwFile.getParentFile().getParentFile(); // for example: ISO
+		String xsdFolderSubpath = ownerFile.getName() + "/xsd/" + wwwFile.getName() + "/" + xsdFolder.getName(); // for example: ISO/xsd/www.isotc211.org/GEOMATICS-20050101
 		String xslFilename = configurator.getXParm("properties/LOCALIZE_XSD_XSLPATH");
 		// this is within the step XSL folder; get the full path here.
 		XslFile xslFile = new XslFile(configurator.getXslPath(xslFilename));
