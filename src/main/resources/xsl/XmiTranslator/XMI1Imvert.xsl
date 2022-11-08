@@ -213,7 +213,6 @@
                                     <imvert:version>1.0.0</imvert:version>
                                     <imvert:phase>3</imvert:phase>
                                     <imvert:author>Simon Cox</imvert:author>
-                                    <imvert:svn-string>Id: xlinks.xml 346 2013-05-06 08:34:33Z loeffa </imvert:svn-string>
                                     <imvert:stereotype id="stereotype-name-system-package">
                                         <xsl:value-of select="imf:get-normalized-name('system','stereotype-name')"/>
                                     </imvert:stereotype>

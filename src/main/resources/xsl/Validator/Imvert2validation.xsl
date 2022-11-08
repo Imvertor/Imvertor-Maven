@@ -294,8 +294,6 @@
         <xsl:variable name="collections" select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-collection')]"/>
         <!--validation-->
 
-        <xsl:sequence select="dlogger:save('$this-package',$this-package)"/>
-
         <xsl:sequence select="imf:report-error(., 
             not(imf:test-file-name-convention($this-package/imvert:name)), 
             'Package name holds invalid characters')"/>

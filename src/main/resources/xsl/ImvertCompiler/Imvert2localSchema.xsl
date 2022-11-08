@@ -63,8 +63,6 @@
     </xsl:template>
     
     <xsl:template match="imvert:package" mode="schema-dependencies">
-        <xsl:sequence select="dlogger:save('imvert:package ' || imvert:name,.)"/>
-        
         <xsl:choose>
             <xsl:when test="empty(imvert:namespace)">
                 <xsl:sequence select="imf:msg(.,'ERROR','Namespace is missing.',())"/>
@@ -84,8 +82,6 @@
                 <xsl:value-of select="$schemafolder"/>
                 <!-- if this requires other external schemas, include them here --> 
                 
-                <xsl:sequence select="dlogger:save('$local-schema-mapping',$local-schema-mapping)"/>
-                <xsl:sequence select="dlogger:save('$schemafolder',$schemafolder)"/>
                 <xsl:for-each select="$local-schema-mapping/local-schema[@schemafolder = $schemafolder]">
                     <xsl:for-each select="depends-on">
                         <xsl:value-of select="@schemafolder"/>

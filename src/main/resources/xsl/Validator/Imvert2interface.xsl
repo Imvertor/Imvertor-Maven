@@ -123,11 +123,6 @@
     
     <xsl:template match="/imvert:packages">
 
-        <xsl:sequence select="dlogger:save('$conceptual-schema-mapping-name',$conceptual-schema-mapping-name)"/>
-        <xsl:sequence select="dlogger:save('$conceptual-schema-mapping-file',$conceptual-schema-mapping-file)"/>
-        <xsl:sequence select="dlogger:save('$conceptual-schema-mapping-doc',imf:document($conceptual-schema-mapping-file,true()))"/>
-        <xsl:sequence select="dlogger:save('$conceptual-schema-mapping',$conceptual-schema-mapping)"/>
-        
         <!-- set info on this model here (as early as possible!) -->
         <xsl:variable name="application-package" select=".//imvert:package[imf:boolean(imvert:is-root-package)]"/>
         
