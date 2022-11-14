@@ -47,6 +47,7 @@
         </xs:simpleType>
       </xs:element>
       <xs:element name="MIMExtensie" type="xs:string" minOccurs="0"/>
+      <xs:element name="MIMExtensieVersie" type="xs:string" minOccurs="0"/>
       <xs:element name="MIMTaal" type="xs:string" minOccurs="0"/>
       <xs:element name="packages" minOccurs="0">
         <xs:complexType>
