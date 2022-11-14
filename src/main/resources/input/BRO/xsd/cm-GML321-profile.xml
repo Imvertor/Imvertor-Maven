@@ -117,6 +117,24 @@
              </cs:XsdType>
           </cs:xsdTypes>
        </cs:Construct>
+       <cs:Construct>
+          <cs:name>Code</cs:name>
+          <cs:sentinel>false</cs:sentinel>
+          <cs:catalogEntries>
+             <cs:CatalogEntry>
+                <cs:name>#Code</cs:name>
+             </cs:CatalogEntry>
+          </cs:catalogEntries>
+          <cs:xsdTypes>
+             <cs:XsdType>
+                <cs:name>Code</cs:name>
+                <cs:asAttribute>CodeType</cs:asAttribute>
+                <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                <cs:primitive>false</cs:primitive>
+                <cs:hasNilreason>false</cs:hasNilreason>
+             </cs:XsdType>
+          </cs:xsdTypes>
+       </cs:Construct>
        <!-- aanpassen? -->
        <cs:Construct>
           <cs:name>GM_Envelope</cs:name>

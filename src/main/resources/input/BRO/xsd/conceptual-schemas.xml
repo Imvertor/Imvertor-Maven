@@ -274,6 +274,24 @@
             </cs:forSchema>
             <cs:constructs>
                <cs:Construct>
+                  <cs:name>SF_SamplingFeatureCollection</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#SF_SamplingFeatureCollection</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>SF_SamplingFeatureCollection</cs:name>
+                        <cs:asAttribute>SF_SamplingFeatureCollectionType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
                   <cs:name>SF_SamplingFeature</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:catalogEntries>
