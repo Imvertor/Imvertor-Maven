@@ -312,9 +312,15 @@ public class RegressionExtractor  extends Step {
 						xslFilterFile.setParm("file-path", relPath);
 						xslFilterFile.setParm("file-type", type);
 						xslFilterFile.transform(origPath, canonPath);
-						// canoniseer, vervang het resultaat
-						canonicalize(new XmlFile(canonPath));
-						if (compare) diffsfound += compare(canonPath);
+						XmlFile canonFile = new XmlFile(canonPath);
+						if (FileUtils.sizeOf(canonFile) != 0) {
+							// canoniseer, vervang het resultaat
+							canonicalize(canonFile);
+							if (compare) diffsfound += compare(canonPath);
+						} else {
+							// verwijder het file, XSLT heeft niks gegenereerd en speelt dus geen rol.
+							canonFile.delete();
+						}
 					} else if (type.equals("xmi") || type.equals("png") || type.equals("html")) {
 						// skip these files
 					} else { 
@@ -324,6 +330,8 @@ public class RegressionExtractor  extends Step {
 					}
 				}
 	 		}
+			// Verwijder de lege folders.
+			removeEmptyFolders(new File(canonFolderPath));
 			return diffsfound;
 		} else {
 			runner.error(logger,"Regression folder not found: " + folder + ", please complete regression setup");
@@ -362,5 +370,33 @@ public class RegressionExtractor  extends Step {
 			FileUtils.copyFile(tempFile, xmlFile);
 			tempFile.delete();
 		}
+	}
+	
+	private boolean removeEmptyFolders(File folder) {
+		if(folder.isDirectory()){
+	        File[] files = folder.listFiles();
+	        if (files.length == 0) { //There is no file in this folder - safe to delete
+	        	//System.out.println("1>" + folder);
+	            folder.delete();
+	            return true;
+	        } else {
+	            int totalFolderCount = 0;
+	            int emptyFolderCount = 0;
+	            for (File f : files) {
+	                if (f.isDirectory()) {
+	                    totalFolderCount++;
+	                    if (removeEmptyFolders(f)) { //safe to delete
+	                        emptyFolderCount++;
+	                    }   
+	                }
+	            }
+	            if (totalFolderCount == files.length && emptyFolderCount == totalFolderCount) { //only if all folders are safe to delete then this folder is also safe to delete
+	            	//System.out.println("2>" + folder);
+	                folder.delete();
+	                return true;
+	            }
+	        }
+	    }
+	    return false;
 	}
 }
