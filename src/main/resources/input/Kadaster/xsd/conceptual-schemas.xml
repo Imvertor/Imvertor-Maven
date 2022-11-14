@@ -8,6 +8,19 @@
                       ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
    <cs:mappings>
       <cs:Mapping>
+         <cs:name>NEN3610_GML322PROFILE_ENV</cs:name>
+         <cs:use>
+            <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM111KAD"/><!-- volg 1.1.1 ipv 1.1 -->
+            <cs-ref:MapRef xlink:href="#NEN3610"/>
+            <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
+            <cs-ref:MapRef xlink:href="#GMLSF"/>
+            <cs-ref:MapRef xlink:href="#ENVPROD"/>
+            <cs-ref:MapRef xlink:href="#ENVPROC"/>
+            <cs-ref:MapRef xlink:href="#ENVLOG"/>
+         </cs:use>
+      </cs:Mapping>
+      <cs:Mapping>
          <cs:name>NEN36102022_GML322</cs:name>
          <cs:use>
             <cs-ref:MapRef xlink:href="#MIM111"/>
@@ -64,6 +77,7 @@
          
          <xi:include href="../../OMG/xsd/cs-UMLMETA.xml"/><!-- implements UML model -->
          
+         <xi:include href="../../MIM/xsd/cs-MIM11.xml"/>
          <xi:include href="../../MIM/xsd/cs-MIM111.xml"/><!-- implements ConceptualSchema MIM111 -->
          
          <xi:include href="../../OGC/xsd/cs-GML322.xml"/>
@@ -75,6 +89,7 @@
          <xi:include href="../../Kadaster/xsd/cs-ENVPROD.xml"/>
          <xi:include href="../../Kadaster/xsd/cs-MIM111KAD.xml"/><!-- implements ConceptualSchema MIM111KAD -->
          
+         <xi:include href="../../NEN3610//xsd/cs-NEN3610.xml"/>
          <xi:include href="../../NEN3610//xsd/cs-NEN3610-2022.xml"/>
          
          <xi:include href="../../ISO/xsd/cs-CIT10.xml"/>
@@ -83,8 +98,9 @@
          
          <xi:include href="../../OMG/xsd/cm-UMLMETA.xml"/><!-- implements Map #UMLMETA -->
 
+         <xi:include href="../../MIM/xsd/cm-MIM11.xml"/>
          <xi:include href="../../MIM/xsd/cm-MIM111.xml"/><!-- implements Map #MIM111 -->
-
+         
          <xi:include href="../../OGC/xsd/cm-GML322.xml"/>
          <xi:include href="../../OGC/xsd/cm-GMLSF.xml"/>
       
@@ -94,8 +110,9 @@
          <xi:include href="../../Kadaster/xsd/cm-ENVPROD.xml"/>
          <xi:include href="../../Kadaster/xsd/cm-MIM111KAD.xml"/>
          
-         <xi:include href="../../NEN3610//xsd/cm-NEN3610-2022.xml"/>
-      
+         <xi:include href="../../NEN3610/xsd/cm-NEN3610.xml"/>
+         <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/>
+         
          <xi:include href="../../ISO/xsd/cm-CIT10.xml"/>
          
       </cs:ConceptualSchemasComponents>
