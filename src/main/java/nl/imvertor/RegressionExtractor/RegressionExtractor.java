@@ -142,8 +142,10 @@ public class RegressionExtractor  extends Step {
 				tstFolder.mkdirs();
 				// copy the chain results to tst folder
 				String ownerName = configurator.getXParm("cli/owner");
-				AnyFolder appFolder = new AnyFolder(workFolder,ownerName + "/app");
-				appFolder.copy(tstFolder);
+				String jobID =  System.getProperty("job.id");
+				AnyFolder appFolder = new AnyFolder(workFolder,jobID + "/app");
+				AnyFolder tapFolder = new AnyFolder(tstFolder,"app");
+				appFolder.copy(tapFolder);
 				//  Run the test
 				Integer diffsfound = testFileByFile(configurator,refFolder,tstFolder,outFolder,identifier,compareMethod);
 				if (diffsfound != 0) 
