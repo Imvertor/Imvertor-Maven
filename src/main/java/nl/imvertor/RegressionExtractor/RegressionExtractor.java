@@ -141,7 +141,6 @@ public class RegressionExtractor  extends Step {
 				tstFolder.deleteDirectory(); 
 				tstFolder.mkdirs();
 				// copy the chain results to tst folder
-				String ownerName = configurator.getXParm("cli/owner");
 				String jobID =  System.getProperty("job.id");
 				AnyFolder appFolder = new AnyFolder(workFolder,jobID + "/app");
 				AnyFolder tapFolder = new AnyFolder(tstFolder,"app");
@@ -267,6 +266,11 @@ public class RegressionExtractor  extends Step {
 		xslFilterFile.setExtensionFunction(new ImvertorStripAccents());
 		xslFilterFile.setExtensionFunction(new SendRequest());
 		
+		xslFilterFile.setParm("dlogger-mode",configurator.getServerProperty("dlogger.mode"));
+		xslFilterFile.setParm("dlogger-proxy-url",configurator.getServerProperty("dlogger.proxy.url"));
+		xslFilterFile.setParm("dlogger-viewer-url",configurator.getServerProperty("dlogger.viewer.url"));
+		xslFilterFile.setParm("dlogger-client-name",configurator.getServerProperty("dlogger.client.name"));
+		
 		// when developing, always replace the ref-canon.
 		if (configurator.getRunMode() == Configurator.RUN_MODE_DEVELOPMENT || configurator.isTrue("cli","rebuildref")) {
 			canonizeFolder(reffolder,xslFilterFile,false);
@@ -351,9 +355,7 @@ public class RegressionExtractor  extends Step {
 		String refPath = StringUtils.replacePattern(canonPath,"(\\\\)tst(\\\\)","$1ref$2");
 		AnyFile refFile = new AnyFile(refPath);
 		AnyFile tstFile = new AnyFile(canonPath);
-		if (tstFile.length() == 0) {
-			return 0; // this file has not be processed and therefore may be disregarded
-		} else if (!refFile.isFile()) {
+		if (!refFile.isFile()) {
 			runner.warn(logger, "Reference file not found: " + canonPath); 
 			return 1;
 		} else if (!refFile.compareContent(tstFile)) {
