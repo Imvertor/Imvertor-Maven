@@ -112,7 +112,9 @@ public class ChainTranslateAndReport {
 		
 		    configurator.save();
 		   
-		    configurator.getRunner().info(logger,"Processing application " + configurator.getXParm("cli/project") +"/"+ configurator.getXParm("cli/application"));
+		    String model = configurator.getXParm("cli/project") +"/"+ configurator.getXParm("cli/application");
+		    
+		    configurator.getRunner().info(logger,"Processing application " + model);
 		    configurator.getRunner().setDebug();
 		    
 		    boolean succeeds = true;
@@ -259,7 +261,7 @@ public class ChainTranslateAndReport {
 			configurator.windup();
 			
 			configurator.getRunner().windup();
-			configurator.getRunner().info(logger, "Done, job \"" + System.getProperty("job.id") + "\" " + (succeeds ? "succeeds" : "fails") + " in " + configurator.runtimeForDisplay());
+			configurator.getRunner().info(logger, "Done, job \"" + System.getProperty("job.id") + "\" for model \"" + model + "\" " + (succeeds ? "succeeds" : "fails") + " in " + configurator.runtimeForDisplay());
 		    if (configurator.getSuppressWarnings() && configurator.getRunner().hasWarnings())
 		    	configurator.getRunner().info(logger, "** Warnings have been suppressed");
 		    
