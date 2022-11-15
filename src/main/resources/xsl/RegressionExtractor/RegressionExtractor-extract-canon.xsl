@@ -34,7 +34,8 @@
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all"
-    version="2.0">
+    expand-text="yes"
+    version="3.0">
     
     <!-- 
          Stylesheet to filter ANY xml file found in the tst-canon or ref-canon folder.
@@ -63,7 +64,7 @@
     <xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="yes" indent="yes"/>
     
     <xsl:template match="/"> <!-- let op! deze extractor wordt aangeroepen op cw:file root elementen! -->
-        <xsl:variable name="path" select="replace($file-path, '\\','/')"/>
+        <xsl:variable name="path" select="substring-after(replace($file-path, '\\','/'),'/app')"/>
         
         <xsl:choose>
             <!--
