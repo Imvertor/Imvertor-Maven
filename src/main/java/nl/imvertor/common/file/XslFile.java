@@ -42,6 +42,7 @@ import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
 import net.sf.saxon.trans.XPathException;
+import nl.imvertor.common.Configurator;
 
 /**
  * An XslFile represents an Xsl stylesheet
@@ -66,15 +67,15 @@ public class XslFile extends XmlFile {
 	private XsltExecutable exec;
 	private XsltTransformer transformer;
 	
-	public XslFile(String pathname) throws TransformerConfigurationException, IOException {
+	public XslFile(String pathname) throws Exception {
 		super(pathname);
 		init();
 	}
-	public XslFile(File file) throws TransformerConfigurationException, IOException {
+	public XslFile(File file) throws Exception {
 		super(file.getAbsolutePath());
 		init();
 	}
-	public XslFile(File folder, String filename) throws TransformerConfigurationException, IOException {
+	public XslFile(File folder, String filename) throws Exception {
 		super(folder,filename);
 		init();
 	}
@@ -99,24 +100,29 @@ public class XslFile extends XmlFile {
 	/**
 	 * Initialize the XSL file. 
 	 * This means a base configuration and base transformer.
-	 * 
-	 * @throws TransformerConfigurationException
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	private void init() throws TransformerConfigurationException, IOException {
+	private void init() throws Exception {
 		getInitialParms();
 		getInitialFeatures();
+		
+			
 	}
 	/**
 	 * Return a parms table for XSLT processing holding some initial key/values on the XSLT file.
 	 * 
 	 * @return
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	public HashMap<String, String> getInitialParms() throws IOException {
+	public HashMap<String, String> getInitialParms() throws Exception {
 		parms = new HashMap<String, String>();
 		parms.put("system.xslfile.filepath", this.getCanonicalPath());
 		parms.put("system.xslfile.datetime", this.getIsoDateTime());
+		// pass on dlogger settings 
+		parms.put("dlogger-mode",Configurator.getInstance().getServerProperty("dlogger.mode"));
+		parms.put("dlogger-proxy-url",Configurator.getInstance().getServerProperty("dlogger.proxy.url"));
+		parms.put("dlogger-viewer-url",Configurator.getInstance().getServerProperty("dlogger.viewer.url"));
+		parms.put("dlogger-client-name",Configurator.getInstance().getServerProperty("dlogger.client.name"));
 		return parms;
 	}
 	/**
