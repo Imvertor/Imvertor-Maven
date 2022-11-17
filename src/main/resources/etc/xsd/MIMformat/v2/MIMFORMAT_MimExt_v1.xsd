@@ -10,7 +10,7 @@
 
   <xs:annotation>
     <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/mim-ext/informatiemodel/v1</xs:appinfo>
-    <xs:appinfo source="http://www.imvertor.org/schema-info/version">1</xs:appinfo>
+    <xs:appinfo source="http://www.imvertor.org/schema-info/version">1.0.0</xs:appinfo>
   </xs:annotation>
   
   <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
@@ -46,7 +46,7 @@
       <xs:sequence>
         <xs:element name="constructietype" type="xs:string"/>
         <xs:any 
-          namespace="http://www.geostandaarden.nl/mim/informatiemodel/v1 http://www.geostandaarden.nl/mim-ref/informatiemodel/v1 http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
+          namespace="http://www.geostandaarden.nl/mim/informatiemodel/v2 http://www.geostandaarden.nl/mim-ref/informatiemodel/v2 http://www.geostandaarden.nl/mim-ext/informatiemodel/v2"
           minOccurs="0"
           maxOccurs="unbounded"
           processContents="lax"/>

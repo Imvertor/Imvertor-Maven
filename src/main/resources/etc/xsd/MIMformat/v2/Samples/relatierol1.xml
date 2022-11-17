@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mim:Objecttype xmlns:xlink="http://www.w3.org/1999/xlink"
- xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
+ xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2"
  xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
- xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1"
+ xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v2"
  xmlns:xhtml="http://www.w3.org/1999/xhtml"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.geostandaarden.nl/mim/informatiemodel/v1 ../MIMFORMAT_Mim_relatierol_v1.xsd" id="id1">
+ xsi:schemaLocation="http://www.geostandaarden.nl/mim/informatiemodel/v2 ../MIMFORMAT_Mim_relatierol_v2.xsd" id="id1">
     <mim:naam>naam</mim:naam>
     <mim:herkomst>herkomst</mim:herkomst>
     <mim:definitie>definitie</mim:definitie>
@@ -17,8 +17,9 @@
             <mim:naam>relatiesoort</mim:naam>
             <mim:alias>alias</mim:alias>
             <mim:definitie>definitie</mim:definitie>
+            <mim:unidirectioneel>true</mim:unidirectioneel>
             <mim:relatierollen>
-                <mim:RelatierolDoel>
+                <mim:Doel>
                     <mim:naam>naam</mim:naam>
                     <mim:herkomst>herkomst</mim:herkomst>
                     <mim:definitie>definitie</mim:definitie>
@@ -29,7 +30,7 @@
                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
                     <mim:authentiek>false</mim:authentiek>
                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
-                </mim:RelatierolDoel>
+                </mim:Doel>
             </mim:relatierollen>
         </mim:Relatiesoort>
     </mim:relatiesoorten>

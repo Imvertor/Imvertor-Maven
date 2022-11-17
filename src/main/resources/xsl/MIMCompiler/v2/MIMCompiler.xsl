@@ -24,8 +24,8 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xmlns:imvert="http://www.imvertor.org/schema/system"
-  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
-  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
+  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v2" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2"
   xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
   xmlns:UML="omg.org/UML1.3" 
   xmlns:imf="http://www.imvertor.org/xsl/functions"    
@@ -166,8 +166,8 @@
       <xsl:document>
         <xsl:comment select="document('MIM' || $mim-version || '-readme.xml')/readme"/>
         <mim:Informatiemodel
-          xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
-          xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
+          xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v2" 
+          xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2"
           xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
           xmlns:xlink="http://www.w3.org/1999/xlink"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -176,11 +176,11 @@
           
           <xsl:variable name="schema">
             <xsl:choose>
-              <xsl:when test="$meta-is-role-based">xsd/MIMFORMAT_Mim_relatierol_v1.xsd</xsl:when>
-              <xsl:otherwise>xsd/MIMFORMAT_Mim_relatiesoort_v1.xsd</xsl:otherwise>
+              <xsl:when test="$meta-is-role-based">xsd/MIMFORMAT_Mim_relatierol_v2.xsd</xsl:when>
+              <xsl:otherwise>xsd/MIMFORMAT_Mim_relatiesoort_v2.xsd</xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
-          <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel/v1 {$schema}</xsl:attribute>
+          <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel/v2 {$schema}</xsl:attribute>
           
           <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
           
@@ -1284,7 +1284,7 @@
         </mim:ExternDatatype>
       </xsl:when>
       <xsl:when test="$element-name">
-        <xsl:element name="mim-ref:{$element-name}" namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1">
+        <xsl:element name="mim-ref:{$element-name}" namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2">
           <xsl:if test="$add-xlink-id">
             <xsl:attribute name="xlink:href" namespace="http://www.w3.org/1999/xlink">#{$ref-id}</xsl:attribute>
           </xsl:if>

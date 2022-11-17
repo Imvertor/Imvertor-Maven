@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1" xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://www.geostandaarden.nl/mim/informatiemodel/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1">
+<xs:schema 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v2" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2" 
+  xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1" 
+  xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+  targetNamespace="http://www.geostandaarden.nl/mim/informatiemodel/v2" 
+  elementFormDefault="qualified" 
+  attributeFormDefault="unqualified" 
+  version="2.0.0">
 
-  <xs:import namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1" schemaLocation="MIMFORMAT_MimRef_v1.xsd"/>
+  <xs:import namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2" schemaLocation="MIMFORMAT_MimRef_v2.xsd"/>
   <xs:import namespace="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1" schemaLocation="MIMFORMAT_MimExt_v1.xsd"/>
 
   <xs:annotation>
-    <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/mim/informatiemodel/v1</xs:appinfo>
-    <xs:appinfo source="http://www.imvertor.org/schema-info/version">1</xs:appinfo>
+    <xs:appinfo source="http://www.imvertor.org/metamodel/uri">https://docs.geostandaarden.nl/mim/vv-st-mim-20200225/</xs:appinfo>
+    <xs:appinfo source="http://www.imvertor.org/metamodel/version">1.1.0</xs:appinfo>
+    <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/mim/informatiemodel/v2</xs:appinfo>
+    <xs:appinfo source="http://www.imvertor.org/schema-info/version">2.0.0</xs:appinfo>
   </xs:annotation>
 
   <!-- Informatiemodel: -->
