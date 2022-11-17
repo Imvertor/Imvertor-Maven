@@ -32,6 +32,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import net.sf.saxon.s9api.QName;
+import net.sf.saxon.s9api.XdmAtomicValue;
 import nl.armatiek.saxon.extensions.http.SendRequest;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
@@ -134,17 +136,16 @@ public class RegressionExtractor  extends Step {
 			String subpath = configurator.getXParm("cli/owner") + "/" + configurator.getXParm("appinfo/subpath");
 			AnyFolder regFolder = new AnyFolder(configurator.getXParm("system/managedregtestfolder"));
 			if (regFolder.isDirectory()) {
-			    AnyFolder refFolder = new AnyFolder(regFolder,"ref/" + subpath);
-			    AnyFolder tstFolder = new AnyFolder(regFolder,"tst/" + subpath);
+			    AnyFolder refFolder = new AnyFolder(regFolder,"ref/" + subpath + "/app");
+			    AnyFolder tstFolder = new AnyFolder(regFolder,"tst/" + subpath + "/app");
 				AnyFolder outFolder = new AnyFolder(regFolder,"out/" + subpath);
 				// Maak de test folder leeg en maak een workfolder
 				tstFolder.deleteDirectory(); 
 				tstFolder.mkdirs();
 				// copy the chain results to tst folder
-				String jobID =  System.getProperty("job.id");
+				String jobID = System.getProperty("job.id");
 				AnyFolder appFolder = new AnyFolder(workFolder,jobID + "/app");
-				AnyFolder tapFolder = new AnyFolder(tstFolder,"app");
-				appFolder.copy(tapFolder);
+				appFolder.copy(tstFolder);
 				//  Run the test
 				Integer diffsfound = testFileByFile(configurator,refFolder,tstFolder,outFolder,identifier,compareMethod);
 				if (diffsfound != 0) 
@@ -266,11 +267,6 @@ public class RegressionExtractor  extends Step {
 		xslFilterFile.setExtensionFunction(new ImvertorStripAccents());
 		xslFilterFile.setExtensionFunction(new SendRequest());
 		
-		xslFilterFile.setParm("dlogger-mode",configurator.getServerProperty("dlogger.mode"));
-		xslFilterFile.setParm("dlogger-proxy-url",configurator.getServerProperty("dlogger.proxy.url"));
-		xslFilterFile.setParm("dlogger-viewer-url",configurator.getServerProperty("dlogger.viewer.url"));
-		xslFilterFile.setParm("dlogger-client-name",configurator.getServerProperty("dlogger.client.name"));
-		
 		// when developing, always replace the ref-canon.
 		if (configurator.getRunMode() == Configurator.RUN_MODE_DEVELOPMENT || configurator.isTrue("cli","rebuildref")) {
 			canonizeFolder(reffolder,xslFilterFile,false);
@@ -300,8 +296,9 @@ public class RegressionExtractor  extends Step {
 		if (folder.isDirectory()) {
 			String folderPath = folder.getCanonicalPath();
 			String canonFolderPath = folderPath + "-canon";
+			AnyFolder canonFolder = new AnyFolder(canonFolderPath);
 			// remove the canonical folder when exists
-			(new AnyFolder(canonFolderPath)).deleteDirectory();
+			canonFolder.deleteDirectory();
 			Vector<String> files = folder.listFilesToVector(true); // returns list of canonical paths
 			for (int i = 0; i < files.size(); i++) {
 				// "canonize" the file, replace existing file by the canonized form
@@ -316,15 +313,9 @@ public class RegressionExtractor  extends Step {
 						xslFilterFile.setParm("file-path", relPath);
 						xslFilterFile.setParm("file-type", type);
 						xslFilterFile.transform(origPath, canonPath);
-						XmlFile canonFile = new XmlFile(canonPath);
-						if (FileUtils.sizeOf(canonFile) != 0) {
-							// canoniseer, vervang het resultaat
-							canonicalize(canonFile);
-							if (compare) diffsfound += compare(canonPath);
-						} else {
-							// verwijder het file, XSLT heeft niks gegenereerd en speelt dus geen rol.
-							canonFile.delete();
-						}
+						// canoniseer, vervang het resultaat
+						canonicalize(new XmlFile(canonPath));
+						if (compare) diffsfound += compare(canonPath);
 					} else if (type.equals("xmi") || type.equals("png") || type.equals("html")) {
 						// skip these files
 					} else { 
@@ -334,13 +325,16 @@ public class RegressionExtractor  extends Step {
 					}
 				}
 	 		}
-			// Verwijder de lege folders.
-			removeEmptyFolders(new File(canonFolderPath));
+			// remove empty files and folders
+			canonFolder.removeEmptyFiles();
+			canonFolder.removeEmptyFolders();
+
 			return diffsfound;
 		} else {
 			runner.error(logger,"Regression folder not found: " + folder + ", please complete regression setup");
 			return 1;
 		}
+		
 	}
 
 	/**
@@ -355,8 +349,10 @@ public class RegressionExtractor  extends Step {
 		String refPath = StringUtils.replacePattern(canonPath,"(\\\\)tst(\\\\)","$1ref$2");
 		AnyFile refFile = new AnyFile(refPath);
 		AnyFile tstFile = new AnyFile(canonPath);
-		if (!refFile.isFile()) {
-			runner.warn(logger, "Reference file not found: " + canonPath); 
+		if (tstFile.length() == 0) {
+			return 0; // this file has not be processed and therefore may be disregarded
+		} else if (!refFile.isFile()) {
+			runner.warn(logger, "Reference file not found: " + refPath); 
 			return 1;
 		} else if (!refFile.compareContent(tstFile)) {
 			runner.warn(logger, "Difference(s) found in file: " + canonPath); 
@@ -372,33 +368,5 @@ public class RegressionExtractor  extends Step {
 			FileUtils.copyFile(tempFile, xmlFile);
 			tempFile.delete();
 		}
-	}
-	
-	private boolean removeEmptyFolders(File folder) {
-		if(folder.isDirectory()){
-	        File[] files = folder.listFiles();
-	        if (files.length == 0) { //There is no file in this folder - safe to delete
-	        	//System.out.println("1>" + folder);
-	            folder.delete();
-	            return true;
-	        } else {
-	            int totalFolderCount = 0;
-	            int emptyFolderCount = 0;
-	            for (File f : files) {
-	                if (f.isDirectory()) {
-	                    totalFolderCount++;
-	                    if (removeEmptyFolders(f)) { //safe to delete
-	                        emptyFolderCount++;
-	                    }   
-	                }
-	            }
-	            if (totalFolderCount == files.length && emptyFolderCount == totalFolderCount) { //only if all folders are safe to delete then this folder is also safe to delete
-	            	//System.out.println("2>" + folder);
-	                folder.delete();
-	                return true;
-	            }
-	        }
-	    }
-	    return false;
 	}
 }
