@@ -20,16 +20,10 @@
   version="3.0" 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-  xmlns:xlink="http://www.w3.org/1999/xlink" 
-  xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xmlns:imvert="http://www.imvertor.org/schema/system"
-  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
-  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
-  xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
-  xmlns:UML="omg.org/UML1.3" 
   xmlns:imf="http://www.imvertor.org/xsl/functions"    
   expand-text="yes" 
-  exclude-result-prefixes="imvert imf fn UML">
+  exclude-result-prefixes="imvert imf">
   
   <!--
     This stylesheet generates a CSV for Stelselcatalogus: tab Gegevenselementen     
