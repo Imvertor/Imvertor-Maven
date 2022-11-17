@@ -269,7 +269,9 @@
                         <td>
                             <xsl:for-each select="$configuration-tvset-file//tv[stereotypes/stereo/@id = $stereo-id]">
                                 <xsl:sort select="name"/>
-                                <xsl:sequence select="imf:show-name(.,position() != last())"/>
+                                <xsl:sequence select="imf:show-name(.,false())"/>
+                                (<xsl:value-of select="stereotypes/stereo[@id = $stereo-id]/@minmax"/>)
+                                <br/>
                             </xsl:for-each>    
                         </td>
                     </tr>
