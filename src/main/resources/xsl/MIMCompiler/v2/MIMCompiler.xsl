@@ -29,6 +29,7 @@
   xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
   xmlns:UML="omg.org/UML1.3" 
   xmlns:imf="http://www.imvertor.org/xsl/functions"    
+  xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
   
   xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
   
@@ -102,7 +103,13 @@
     $configuration-tvset-file/tagged-values/pseudo-tv[source = ('MIM-' || $mim-version)]
     )"/>
   
+  <xsl:variable name="inp-folder" select="imf:get-config-string('system','inp-folder-path')"/>
+  <xsl:variable name="xsd-folder" select="concat($inp-folder,'/xsd')"/>
+  <xsl:variable name="configuration-cs-file" select="imf:document(concat($xsd-folder,'/conceptual-schemas.xml'),true())"/>
+  <xsl:variable name="MIM-scalars" select="for $c in $configuration-cs-file//cs:Map[cs:id = ('MIM11')]/cs:constructs/cs:Construct/cs:name return upper-case($c)" as="xs:string*"/>
+  
   <xsl:template match="/">
+    <xsl:sequence select="dlogger:save('$MIM-scalars',$MIM-scalars)"></xsl:sequence>
     <xsl:choose>
       <xsl:when test="empty($mim-version)">
         <xsl:sequence select="imf:message(., 'ERROR', 'MIM serialisation requested on an model is not MIM compliant. No [1] found.', (imf:get-config-name-by-id('CFG-TV-MIMVERSION')))"/>
@@ -1247,7 +1254,11 @@
     <xsl:param name="restrict-datatypes" as="xs:boolean?"/>
     <xsl:variable name="target-element" select="key('key-imvert-construct-by-id', $ref-id)" as="element()?"/>
     <xsl:variable name="target-stereotype-id" select="$target-element/imvert:stereotype/@id" as="xs:string*"/>
-    <xsl:variable name="is-mim-datatype" select="upper-case($target-element/imvert:name/@original) = $configuration-metamodel-file/scalars/scalar[imf:boolean-or(for $s in source return starts-with($s,'MIM-'))]/name"/>
+    <xsl:variable name="is-mim-datatype" select="
+      upper-case($target-element/imvert:name/@original) = (
+        $MIM-scalars,
+        $configuration-metamodel-file/scalars/scalar[imf:boolean-or(for $s in source return starts-with($s,'MIM-'))]/name
+      )"/>
     <xsl:variable name="element-name" as="xs:string?">
       <xsl:choose>
         <xsl:when test="$target-stereotype-id = 
