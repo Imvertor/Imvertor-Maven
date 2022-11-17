@@ -21,6 +21,8 @@
                 <stereo minmax="1..1">stereotype-name-view-package</stereo>
                 <stereo minmax="1..1">stereotype-name-enumeration</stereo>
                 <stereo minmax="1..1">stereotype-name-enum</stereo>
+                <stereo minmax="1..1">stereotype-name-generalization</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
             </stereotypes>
         </tv>
         
@@ -80,6 +82,7 @@
                 <stereo minmax="1..1">stereotype-name-domain-package</stereo>
                 <stereo minmax="1..1">stereotype-name-enumeration</stereo>
                 <stereo minmax="0..1">stereotype-name-enum</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo><!-- verplicht in 1.1.1 -->
             </stereotypes>
         </tv>
         
@@ -102,6 +105,9 @@
                 <stereo minmax="1..1">stereotype-name-view-package</stereo>
                 <stereo minmax="1..1">stereotype-name-enumeration</stereo>
                 <stereo minmax="0..1">stereotype-name-enum</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-relation-role</stereo>
             </stereotypes>
         </tv>
         
@@ -110,6 +116,13 @@
                 <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
             </stereotypes>
         </tv>    
+        
+        <tv id="CFG-TV-INDICATIONAUTHENTIC">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+            </stereotypes>
+        </tv>    
+        
     </tagged-values>
     
 </tagset>
