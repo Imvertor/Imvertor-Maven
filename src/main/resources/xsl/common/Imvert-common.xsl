@@ -289,7 +289,7 @@
                 <xsl:variable name="alias" select="$this/imvert:alias"/>
                 <xsl:choose>
                     <xsl:when test="$this/self::imvert:packages">
-                        <xsl:sequence select="imf:compile-construct-name('(Model)',(),(),(),$alias,())"/>
+                        <xsl:sequence select="imf:compile-construct-name('(Model: ' || $this/imvert:application || ')',(),(),(),$alias,())"/>
                     </xsl:when>
                     <xsl:when test="$this/self::imvert:package">
                         <xsl:sequence select="imf:compile-construct-name($name,(),(),(),$alias,())"/>

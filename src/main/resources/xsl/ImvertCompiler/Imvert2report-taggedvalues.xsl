@@ -92,7 +92,7 @@
                     </div>           
                     <table class="tablesorter"> 
                         <xsl:variable name="rows" as="element(tr)*">
-                            <xsl:for-each select=".//*[imvert:tagged-values/* and exists(@display-name)]">
+                            <xsl:for-each select="descendant-or-self::*[imvert:tagged-values/* and exists(@display-name)]">
                                 <xsl:sort select="@display-name"/>
                                 <xsl:variable name="display-name" select="@display-name"/>
                                 <xsl:for-each select="imvert:tagged-values/imvert:tagged-value[node() and not(imvert:name = $system-defined-tagged-value-names)]">
