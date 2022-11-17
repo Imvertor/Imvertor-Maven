@@ -23,9 +23,9 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-  xmlns:mim-in="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
-  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1#" 
-  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
+  xmlns:mim-in="http://www.geostandaarden.nl/mim/informatiemodel/v2" 
+  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v2#" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2"
   xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
   xmlns:local="urn:local"
   exclude-result-prefixes="xsl xs xlink mim-in mim-ref mim-ext local"
@@ -71,7 +71,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   <xsl:template match="mim-in:Informatiemodel|mim-in:Domein|mim-in:View|mim-in:Extern|mim-in:Attribuutsoort|mim-in:Objecttype|mim-in:Gegevensgroep|mim-in:Gegevensgroeptype|
     mim-in:PrimitiefDatatype|mim-in:GestructureerdDatatype|mim-in:Enumeratie|mim-in:Referentielijst|mim-in:Codelijst|mim-in:DataElement|mim-in:Enumeratiewaarde|
     mim-in:ReferentieElement|mim-in:Constraint|mim-in:Keuze|mim-in:ExterneKoppeling|mim-in:Interface"> <!-- mim-in:Relatieklasse mim-in:Relatiesoort -->
-    <xsl:element name="mim:{local-name()}" namespace="http://www.geostandaarden.nl/mim/informatiemodel/v1#">
+    <xsl:element name="mim:{local-name()}" namespace="http://www.geostandaarden.nl/mim/informatiemodel/v2#">
       <xsl:attribute name="rdf:about" namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" select="local:get-id(.)"/>  
       <xsl:apply-templates select="mim-in:*[xhtml:* or (not(*) and normalize-space())]" mode="metagegeven"/>
       <xsl:apply-templates select="(mim-in:packages|mim-in:datatypen|mim-in:objecttypen|mim-in:gegevensgroeptypen|mim-in:keuzen|mim-in:interfaces|mim-in:attribuutsoorten|
@@ -223,7 +223,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
     <xsl:variable name="html">
       <xsl:apply-templates mode="xhtml"/>
     </xsl:variable>
-    <xsl:element name="mim:{local-name()}" namespace="http://www.geostandaarden.nl/mim/informatiemodel/v1#">{serialize($html, $output-parameters)}</xsl:element>
+    <xsl:element name="mim:{local-name()}" namespace="http://www.geostandaarden.nl/mim/informatiemodel/v2#">{serialize($html, $output-parameters)}</xsl:element>
   </xsl:template>
   
   <xsl:template match="xhtml:*" mode="xhtml" priority="10">
@@ -240,7 +240,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   <xsl:template match="text()[not(normalize-space())]" mode="xhtml"/>
     
   <xsl:template match="mim-in:*[not(*) and normalize-space()]" mode="metagegeven" priority="0.1">
-    <xsl:element name="mim:{local-name()}" namespace="http://www.geostandaarden.nl/mim/informatiemodel/v1#">
+    <xsl:element name="mim:{local-name()}" namespace="http://www.geostandaarden.nl/mim/informatiemodel/v2#">
       <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>
