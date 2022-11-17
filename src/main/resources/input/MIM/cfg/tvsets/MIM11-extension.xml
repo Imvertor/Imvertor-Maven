@@ -125,6 +125,20 @@
             </stereotypes>
         </tv>
         
+        <tv norm="space" id="CFG-TV-MIMEXTENSIONVERSION">
+            <name lang="nl">MIM extensie versie</name>
+            <name lang="en">MIM extension version</name>
+            <desc lang="nl">De versie van de extensie op MIM.</desc>
+            <desc lang="en">TODO</desc>
+            <source></source>
+            <catalog></catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        
     </tagged-values>
 
     

@@ -234,6 +234,7 @@
          <metagegeven kardinaliteit="1">Relatiemodelleringtype</metagegeven>
          <metagegeven kardinaliteit="1">MIM versie</metagegeven>
          <metagegeven kardinaliteit="0..1">MIM extensie</metagegeven>
+         <metagegeven kardinaliteit="0..1">MIM extensie versie</metagegeven>
          <metagegeven kardinaliteit="0..1">MIM taal</metagegeven>
       </modelelement>
       <modelelement>
@@ -297,6 +298,7 @@
          <metagegeven kardinaliteit="0..*">Lengte</metagegeven>
          <metagegeven kardinaliteit="0..*">Locatie</metagegeven>
          <metagegeven kardinaliteit="0..*">MIM extensie</metagegeven>
+         <metagegeven kardinaliteit="0..*">MIM extensie versie</metagegeven>
          <metagegeven kardinaliteit="0..*">MIM taal</metagegeven>
          <metagegeven kardinaliteit="0..*">MIM versie</metagegeven>
          <metagegeven kardinaliteit="0..*">Mogelijk geen waarde</metagegeven>
@@ -515,6 +517,10 @@
       </metagegeven>
       <metagegeven>
          <naam>MIM extensie</naam>
+         <modelelement kardinaliteit="0..1">Informatiemodel</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>MIM extensie versie</naam>
          <modelelement kardinaliteit="0..1">Informatiemodel</modelelement>
       </metagegeven>
       <metagegeven>

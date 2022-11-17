@@ -764,6 +764,11 @@
     <mim:MIMExtensie source-id="CFG-TV-MIMEXTENSION">{imf:tagged-values-not-traced($context, 'CFG-TV-MIMEXTENSION')}</mim:MIMExtensie>  
   </xsl:template>
   
+  <xsl:template match="metagegeven[. = 'MIM extensie versie']">
+    <xsl:param name="context" as="element()"/>
+    <mim:MIMExtensieVersie source-id="CFG-TV-MIMEXTENSIONVERSION">{imf:tagged-values-not-traced($context, 'CFG-TV-MIMEXTENSIONVERSION')}</mim:MIMExtensieVersie>  
+  </xsl:template>
+  
   <xsl:template match="metagegeven[. = 'MIM taal']">
     <xsl:param name="context" as="element()"/>
     <mim:MIMTaal source-id="CFG-TV-MIMLANGUAGE">{imf:tagged-values-not-traced($context, 'CFG-TV-MIMLANGUAGE')}</mim:MIMTaal> 
@@ -934,31 +939,39 @@
     <xsl:param name="modelelement-type" select="imvert:stereotype" as="xs:string*"/>
     <xsl:param name="modelelement-name" select="imvert:name" as="xs:string?"/>
     <xsl:param name="metagegevens-to-skip" select="()" as="xs:string*"/>
-    <xsl:variable name="modelelement" select="key('key-metagegeven-by-name', for $a in $modelelement-type return lower-case($a), $mim-model)" as="element(modelelement)"/>
+    <xsl:variable name="modelelement" select="key('key-metagegeven-by-name', for $a in $modelelement-type return lower-case($a), $mim-model)" as="element(modelelement)?"/>
     <xsl:variable name="context" select="." as="element()"/>
-    <xsl:for-each select="$modelelement/metagegeven[not(. = $metagegevens-to-skip)]">
-      <xsl:variable name="metagegeven" as="element()?">
-        <xsl:apply-templates select=".">
-          <xsl:with-param name="context" select="$context" as="element()"/>
-        </xsl:apply-templates>  
-      </xsl:variable>
-      <xsl:variable name="kardinaliteit" select="@kardinaliteit" as="xs:string"/>
-      <xsl:choose>
-        <xsl:when test="empty($metagegeven)"/>
-        <xsl:when test="normalize-space($metagegeven) or $metagegeven/*">
-          <xsl:sequence select="$metagegeven"/>
-        </xsl:when>
-        <xsl:when test="starts-with($kardinaliteit, '1')">
-          <!--
+    <xsl:choose>
+      <xsl:when test="empty($modelelement)">
+        <xsl:sequence select="imf:message(., 'ERROR', 'Modelelement [1] of type [2] is unknown', ($modelelement-name, $modelelement-type, .))"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:for-each select="$modelelement/metagegeven[not(. = $metagegevens-to-skip)]">
+          <xsl:variable name="metagegeven" as="element()?">
+            <xsl:apply-templates select=".">
+              <xsl:with-param name="context" select="$context" as="element()"/>
+            </xsl:apply-templates>  
+          </xsl:variable>
+          <xsl:variable name="kardinaliteit" select="@kardinaliteit" as="xs:string"/>
+          <xsl:choose>
+            <xsl:when test="empty($metagegeven)"/>
+            <xsl:when test="normalize-space($metagegeven) or $metagegeven/*">
+              <xsl:sequence select="$metagegeven"/>
+            </xsl:when>
+            <xsl:when test="starts-with($kardinaliteit, '1')">
+              <!--
           <xsl:sequence select="imf:message(., 'WARNING', 'Modelelement [1] of type [2] is missing required metadata [3]', ($modelelement-name, $modelelement-type, .))"/>
           -->
-          <xsl:apply-templates select="$metagegeven" mode="missing-metadata"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <!-- Skip, optional element -->
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:for-each>
+              <xsl:apply-templates select="$metagegeven" mode="missing-metadata"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <!-- Skip, optional element -->
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
+      </xsl:otherwise>
+    </xsl:choose>
+   
   </xsl:template>
   <!-- EINDE Metagegevens -->
   
