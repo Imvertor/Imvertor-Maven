@@ -517,11 +517,11 @@
           </mim:keuzeAttributen>
         </xsl:when>
         <xsl:when test="imvert:stereotype/@id = 'stereotype-name-union-datatypes'">
-          <mim:keuzeTypen>
+          <mim:keuzeDatatypen>
             <xsl:for-each select="imvert:attributes/imvert:attribute">
               <xsl:call-template name="process-datatype"/>
             </xsl:for-each>
-          </mim:keuzeTypen>
+          </mim:keuzeDatatypen>
         </xsl:when>
         <xsl:when test="imvert:stereotype/@id = 'stereotype-name-union-associations'">
           <mim:keuzeRelatiedoelen>
@@ -553,25 +553,20 @@
     <mim:Extern source-id="{imvert:stereotype/@id}">
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="genereer-metagegevens"/>
-      <xsl:where-populated>
-        <mim:interfaces>
-          <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface' and imvert:id]">
-            <xsl:sort select="imvert:name"/>
-          </xsl:apply-templates>
-        </mim:interfaces>  
-      </xsl:where-populated>
+      <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface' and imvert:id]">
+        <xsl:sort select="imvert:name"/>
+      </xsl:apply-templates>
       <xsl:call-template name="extensieKenmerken"/>
     </mim:Extern>
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface']" priority="1">  <!-- TODO hoe gaan we om met interfaces? Dit zijn geen MIM constructs. Check #242 -->    
-    <mim:Interface source-id="{imvert:stereotype/@id}">
-      <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
+    <xsl:variable name="name">
       <xsl:call-template name="naam">
         <xsl:with-param name="context" select="." as="element()"/>
       </xsl:call-template>
-      <xsl:call-template name="extensieKenmerken"/>
-    </mim:Interface>
+    </xsl:variable>
+    <xsl:comment>Interface: {$name}</xsl:comment>
   </xsl:template>
   
   <xsl:template match="(imvert:class|imvert:attribute|imvert:association)[imf:is-not-mim-construct(.)]">

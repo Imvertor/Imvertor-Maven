@@ -31,7 +31,6 @@
   -->
   <xs:element name="RelatieklasseRef" type="mim-ref:RefType"/>
   <xs:element name="KeuzeRef" type="mim-ref:RefType"/>
-  <xs:element name="InterfaceRef" type="mim-ref:RefType"/>
   
   <xs:complexType name="RefType">
     <xs:simpleContent>
