@@ -1247,7 +1247,7 @@
     <xsl:param name="restrict-datatypes" as="xs:boolean?"/>
     <xsl:variable name="target-element" select="key('key-imvert-construct-by-id', $ref-id)" as="element()?"/>
     <xsl:variable name="target-stereotype-id" select="$target-element/imvert:stereotype/@id" as="xs:string*"/>
-    <xsl:variable name="is-mim-datatype" select="upper-case($target-element/imvert:name/@original) = $configuration-metamodel-file/scalars/scalar[source = ('MIM-' || $mim-version)]/name"/>
+    <xsl:variable name="is-mim-datatype" select="upper-case($target-element/imvert:name/@original) = $configuration-metamodel-file/scalars/scalar[imf:boolean-or(for $s in source return starts-with($s,'MIM-'))]/name"/>
     <xsl:variable name="element-name" as="xs:string?">
       <xsl:choose>
         <xsl:when test="$target-stereotype-id = 

@@ -63,17 +63,20 @@
             <name lang="nl">TIME</name>
             <name lang="en">TIME</name>
             <type-map formal-lang="xs">time</type-map>
+            <source>MIM-1.1.1</source>
         </scalar>   
         
         <scalar id="scalar-yearmonth">
             <name lang="nl">YEARMONTH</name>
             <name lang="en">YEARMONTH</name>
             <type-map formal-lang="xs">gYearMonth</type-map>
+            <source>MIM-1.1.1</source>
         </scalar>
         
         <scalar id="scalar-any">
             <name lang="nl">ANY</name>
             <type-map formal-lang="xs">#any</type-map>
+            <source>MIM-1.1.1</source>
         </scalar>
         
     </scalars>
