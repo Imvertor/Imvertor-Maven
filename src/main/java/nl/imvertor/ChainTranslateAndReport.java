@@ -20,6 +20,8 @@
 
 package nl.imvertor;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 
 import nl.imvertor.ApcModifier.ApcModifier;
@@ -36,6 +38,7 @@ import nl.imvertor.MIMCompiler.MIMCompiler;
 import nl.imvertor.StcCompiler.StcCompiler;
 import nl.imvertor.ModelHistoryAnalyzer.ModelHistoryAnalyzer;
 import nl.imvertor.OfficeCompiler.OfficeCompiler;
+import nl.imvertor.ParmsCopier.ParmsCopier;
 import nl.imvertor.ReadmeCompiler.ReadmeCompiler;
 import nl.imvertor.RegressionExtractor.RegressionExtractor;
 import nl.imvertor.ReleaseComparer.ReleaseComparer;
@@ -54,6 +57,8 @@ import nl.imvertor.YamlCompiler.YamlCompiler;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Release;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.file.XslFile;
 
 public class ChainTranslateAndReport {
 
@@ -234,6 +239,8 @@ public class ChainTranslateAndReport {
 			    		succeeds = succeeds && (new YamlCompiler()).run();
 				  
 			    }
+	    		(new ParmsCopier()).run();
+	    		
 			    // finally, a regression test if requested, independent of success/failure of the chain
 			    if (configurator.isTrue("cli","regression",false)) {
 			    	configurator.setXParm("cli/identifier","DEVELOPMENT");
