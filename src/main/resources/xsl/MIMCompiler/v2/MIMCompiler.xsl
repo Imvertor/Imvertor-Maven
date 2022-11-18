@@ -52,7 +52,7 @@
   <xsl:param name="generate-all-ids" select="'false'" as="xs:string"/>
   <xsl:param name="add-generated-id" select="'false'" as="xs:string"/>
   
-  <xsl:variable name="mim-version" select="for $v in imf:tagged-values-not-traced(/imvert:packages, 'CFG-TV-MIMVERSION') return if ($v = '1.1') then '1.1.1' else '1.1.0'" as="xs:string?"/>
+  <xsl:variable name="mim-version" select="for $v in imf:tagged-values-not-traced(/imvert:packages, 'CFG-TV-MIMVERSION') return if ($v = '1.1') then '1.1.0' else $v" as="xs:string?"/>
   
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   <xsl:variable name="add-xlink-id" select="true()"/>
@@ -1343,7 +1343,6 @@
         <xsl:sequence select="imf:boolean-or(for $s in $construct/source return starts-with($s,'MIM-'))"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:sequence select="imf:message($construct, 'ERROR', 'Construct [1] without a metamodel source.', $construct/@id)"/>
         <xsl:sequence select="false()"/>
       </xsl:otherwise>
     </xsl:choose>
