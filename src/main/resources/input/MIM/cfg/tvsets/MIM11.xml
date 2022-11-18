@@ -184,12 +184,12 @@
         </tv>
         
         <tv norm="space" id="CFG-TV-IMRELATIONMODELINGTYPE">
-            <name lang="nl">Relatiemodelleringstype</name>
+            <name lang="nl">Relatiemodelleringtype</name>
             <name lang="en">Relation modeling type</name>
             <desc lang="nl">MIM 1.1: Aanduiding van een in MIM gedefinieerd alternatief voor een modelleringswijze, en welke keuze hierbij is gemaakt.</desc>
             <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
-            <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringstype</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringtype</catalog>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
@@ -531,10 +531,10 @@
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-doel</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-RELATIONMODELLING">
-            <name lang="nl">Pseudo relatiemodelleringstype</name>
+            <name lang="nl">Pseudo relatiemodelleringtype</name>
             <desc lang="nl">Aanduiding van een in MIM gedefinieerd alternatief voor een modelleringswijze, en welke keuze hierbij is gemaakt.</desc>
             <source>MIM-1.1.0</source>
-            <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringstype</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringtype</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-TYPE">
             <name lang="nl">Pseudo type</name>

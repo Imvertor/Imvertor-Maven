@@ -52,7 +52,7 @@
   <xsl:param name="generate-all-ids" select="'false'" as="xs:string"/>
   <xsl:param name="add-generated-id" select="'false'" as="xs:string"/>
   
-  <xsl:variable name="mim-version" select="for $v in imf:tagged-values-not-traced(/imvert:packages, 'CFG-TV-MIMVERSION') return if ($v = '1.1') then '1.1.0' else $v" as="xs:string?"/>
+  <xsl:variable name="mim-version" select="for $v in imf:tagged-values-not-traced(/imvert:packages, 'CFG-TV-MIMVERSION') return if ($v = '1.1') then '1.1.1' else '1.1.0'" as="xs:string?"/>
   
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   <xsl:variable name="add-xlink-id" select="true()"/>
@@ -60,15 +60,15 @@
   <xsl:import href="../../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
   <xsl:import href="../../common/Imvert-common-derivation.xsl" use-when="$runs-in-imvertor-context"/>
   
-  <xsl:variable name="mim-model" as="document-node(element(mim))">
+  <xsl:variable name="mim-model" as="document-node(element(metamodel))">
     <xsl:sequence select="document('MIM' || $mim-version || '-model.xml')"/>  
   </xsl:variable>
   
   <xsl:variable name="stylesheet-code">MIMCOMPILER</xsl:variable>
   <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" use-when="$runs-in-imvertor-context"/>
   
-  <xsl:variable name="mim-stereotype-ids" select="$configuration-metamodel-file/stereotypes/stereo[source = ('MIM-' || $mim-version)]/@id" as="xs:string+"/>
-  <xsl:variable name="mim-tagged-value-ids" select="$configuration-tvset-file/tagged-values/tv[source = ('MIM-' || $mim-version)]/@id" as="xs:string+"/>
+  <xsl:variable name="mim-stereotype-ids" select="$configuration-metamodel-file/stereotypes/stereo[imf:is-mim-construct(.)]/@id" as="xs:string+"/>
+  <xsl:variable name="mim-tagged-value-ids" select="$configuration-tvset-file/tagged-values/tv[imf:is-mim-construct(.)]/@id" as="xs:string+"/>
 
   <xsl:variable name="waardebereik-authentiek" select="$configuration-tvset-file/tagged-values/tv[@id = 'CFG-TV-INDICATIONAUTHENTIC']/declared-values/value" as="xs:string+"/>
   <xsl:variable name="waardebereik-aggregatietype" select="('Compositie', 'Gedeeld', 'Geen')" as="xs:string+"/> 
@@ -86,7 +86,7 @@
   <xsl:variable name="associations" select="$preprocessed-xml//imvert:association" as="element(imvert:association)*"/>
   <xsl:variable name="relatiemodelleringtype" select="if ($meta-is-role-based) then 'Relatierol leidend' else 'Relatiesoort leidend'" as="xs:string"/>
   
-  <xsl:variable name="mim11-primitive-datatypes-uc-names" select="for $n in $configuration-metamodel-file/scalars/scalar[source = ('MIM-' || $mim-version)]/name return upper-case($n)" as="xs:string+"/>
+  <xsl:variable name="mim11-primitive-datatypes-uc-names" select="for $n in $configuration-metamodel-file/scalars/scalar[imf:is-mim-construct(.)]/name return upper-case($n)" as="xs:string+"/>
   <xsl:variable name="mim11-package-found" select="/imvert:packages/imvert:package/imvert:name = 'MIM11'"/>
   <xsl:variable name="native-scalars" select="imf:boolean-value(imf:get-xparam('cli/nativescalars', 'no'))"/>
   
@@ -98,9 +98,9 @@
   <xsl:key name="key-metagegeven-by-name" match="modelelementen/modelelement" use="lower-case(naam)"/>
   
   <xsl:variable name="mim-catalog-urls" select="(
-    $configuration-metamodel-file/stereotypes/stereo[source = ('MIM-' || $mim-version)],
-    $configuration-tvset-file/tagged-values/tv[source = ('MIM-' || $mim-version)],
-    $configuration-tvset-file/tagged-values/pseudo-tv[source = ('MIM-' || $mim-version)]
+    $configuration-metamodel-file/stereotypes/stereo[imf:is-mim-construct(.)],
+    $configuration-tvset-file/tagged-values/tv[imf:is-mim-construct(.)],
+    $configuration-tvset-file/tagged-values/pseudo-tv[imf:is-mim-construct(.)]
     )"/>
   
   <xsl:variable name="inp-folder" select="imf:get-config-string('system','inp-folder-path')"/>
@@ -109,7 +109,6 @@
   <xsl:variable name="MIM-scalars" select="for $c in $configuration-cs-file//cs:Map[cs:id = ('MIM11')]/cs:constructs/cs:Construct/cs:name return upper-case($c)" as="xs:string*"/>
   
   <xsl:template match="/">
-    <xsl:sequence select="dlogger:save('$MIM-scalars',$MIM-scalars)"></xsl:sequence>
     <xsl:choose>
       <xsl:when test="empty($mim-version)">
         <xsl:sequence select="imf:message(., 'ERROR', 'MIM serialisation requested on an model is not MIM compliant. No [1] found.', (imf:get-config-name-by-id('CFG-TV-MIMVERSION')))"/>
@@ -118,6 +117,9 @@
         <xsl:sequence select="imf:message(., 'ERROR', 'Attempt to use native scalars while MIM package is available. Please set [1] to [2].', ('nativescalars','no'))"/>
       </xsl:when>
       <xsl:otherwise>
+        <xsl:if test="$mim-version eq '1.1.1'">
+          <xsl:sequence select="imf:message(., 'WARNING', 'Implementation of MIM serialisation of MIM 1.1.1 models is work in progress and results may be invalid', ())"/>
+        </xsl:if>
         <xsl:apply-templates select="$preprocessed-xml/imvert:packages"/>
       </xsl:otherwise>
     </xsl:choose>
@@ -183,8 +185,8 @@
           
           <xsl:variable name="schema">
             <xsl:choose>
-              <xsl:when test="$meta-is-role-based">xsd/MIMFORMAT_Mim_relatierol_v2.xsd</xsl:when>
-              <xsl:otherwise>xsd/MIMFORMAT_Mim_relatiesoort_v2.xsd</xsl:otherwise>
+              <xsl:when test="$meta-is-role-based">xsd/{$mim-version}/MIMFORMAT_Mim_relatierol_v2.xsd</xsl:when>
+              <xsl:otherwise>xsd/{$mim-version}/MIMFORMAT_Mim_relatiesoort_v2.xsd</xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
           <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel/v2 {$schema}</xsl:attribute>
@@ -1056,7 +1058,7 @@
       </xsl:when>
       <xsl:when test="$baretype[. = $mim11-primitive-datatypes-uc-names]">
         <!-- MIM standaard datatype herkend dat als baretype is ingevoerd ( en dus geen gebruikmaakt van Kadaster-MIM11.xmi): -->
-        <xsl:variable name="mim11-scalar" select="$configuration-metamodel-file/scalars/scalar[source = ('MIM-' || $mim-version) and name = $baretype]" as="element(scalar)?"/>  
+        <xsl:variable name="mim11-scalar" select="$configuration-metamodel-file/scalars/scalar[imf:is-mim-construct(.) and name = $baretype]" as="element(scalar)?"/>  
         <xsl:choose>
           <xsl:when test="$mim11-scalar">
             <mim:Datatype>{$mim11-scalar/name}</mim:Datatype>
@@ -1257,7 +1259,7 @@
     <xsl:variable name="is-mim-datatype" select="
       upper-case($target-element/imvert:name/@original) = (
         $MIM-scalars,
-        $configuration-metamodel-file/scalars/scalar[imf:boolean-or(for $s in source return starts-with($s,'MIM-'))]/name
+        $configuration-metamodel-file/scalars/scalar[imf:is-mim-construct(.)]/name
       )"/>
     <xsl:variable name="element-name" as="xs:string?">
       <xsl:choose>
@@ -1334,4 +1336,16 @@
     </xsl:where-populated>
   </xsl:template>
 
+  <xsl:function name="imf:is-mim-construct" as="xs:boolean">
+    <xsl:param name="construct" as="element()"/>
+    <xsl:choose>
+      <xsl:when test="$construct/source">
+        <xsl:sequence select="imf:boolean-or(for $s in $construct/source return starts-with($s,'MIM-'))"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="imf:message($construct, 'ERROR', 'Construct [1] without a metamodel source.', $construct/@id)"/>
+        <xsl:sequence select="false()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
 </xsl:stylesheet>

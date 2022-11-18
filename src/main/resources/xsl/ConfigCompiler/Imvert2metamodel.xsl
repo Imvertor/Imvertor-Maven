@@ -34,13 +34,14 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-report.xsl"/>
     
+    <xsl:variable name="relatiesoort-leidend" select="true()"/>
+
     <xsl:template match="/config">
         <xsl:variable name="metamodel" select="metamodel"/>
         <xsl:variable name="visuals" select="visuals"/>
         <xsl:variable name="tagged-values" select="tagset/tagged-values"/>
         
         <metamodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./xsd/metamodel/metamodel.xsd">
-            <!-- TODO -->
             <modelelementen>
                 <xsl:apply-templates select="metamodel/stereotypes/stereo">
                     <xsl:sort select="name"/>
@@ -58,14 +59,21 @@
         <xsl:variable name="id" select="@id"/>
         <modelelement>
             <naam>
-                <xsl:value-of select="name"/>
+                <xsl:variable name="name" select="imf:start-upper-case(name/@original)"/>
+                <xsl:choose>
+                    <xsl:when test="@id = 'stereotype-name-relatiesoort' and $relatiesoort-leidend">{$name} - Relatiesoort leidend</xsl:when>
+                    <xsl:when test="@id = 'stereotype-name-relatiesoort' and not($relatiesoort-leidend)">{$name} - Relatierol leidend</xsl:when>
+                    <xsl:when test="@id = 'stereotype-name-relation-role' and $relatiesoort-leidend">{$name} - Relatiesoort leidend</xsl:when>
+                    <xsl:when test="@id = 'stereotype-name-relation-role' and not($relatiesoort-leidend)">{$name} - Relatierol leidend</xsl:when>
+                    <xsl:otherwise>{$name}</xsl:otherwise>
+                </xsl:choose>
             </naam>
             <xsl:for-each select="/config/tagset/tagged-values/tv">
                 <xsl:sort select="name"/>
                 <xsl:variable name="tv" select="."/>
                 <xsl:for-each select="stereotypes/stereo[@id = $id]">
-                    <metagegeven kardinaliteit="{@minmax}">
-                        <xsl:value-of select="$tv/name"/>
+                    <metagegeven kardinaliteit="{imf:correct-minmax(@minmax)}">
+                        <xsl:value-of select="imf:start-upper-case($tv/name)"/>
                     </metagegeven>
                 </xsl:for-each>
             </xsl:for-each>
@@ -75,15 +83,33 @@
     <xsl:template match="tv">
         <metagegeven>
             <naam>
-                <xsl:value-of select="name"/>
+                <xsl:value-of select="imf:start-upper-case(name)"/>
             </naam>
             <xsl:for-each select="stereotypes/stereo">
                 <xsl:sort select="name"/>
-                <modelelement kardinaliteit="{@minmax}">
-                    <xsl:value-of select="."/>
+                <modelelement kardinaliteit="{imf:correct-minmax(@minmax)}">
+                    <xsl:variable name="id" select="@id"/>
+                    <xsl:variable name="name" select="imf:start-upper-case($configuration-file//*[@id=$id]/name/@original)"/>
+                    <xsl:choose>
+                        <xsl:when test="@id = 'stereotype-name-relatiesoort' and $relatiesoort-leidend">{$name} - Relatiesoort leidend</xsl:when>
+                        <xsl:when test="@id = 'stereotype-name-relatiesoort' and not($relatiesoort-leidend)">{$name} - Relatierol leidend</xsl:when>
+                        <xsl:when test="@id = 'stereotype-name-relation-role' and $relatiesoort-leidend">{$name} - Relatiesoort leidend</xsl:when>
+                        <xsl:when test="@id = 'stereotype-name-relation-role' and not($relatiesoort-leidend)">{$name} - Relatierol leidend</xsl:when>
+                        <xsl:otherwise>{$name}</xsl:otherwise>
+                    </xsl:choose>
                 </modelelement>
             </xsl:for-each>
         </metagegeven>
     </xsl:template> 
+    
+    <xsl:function name="imf:start-upper-case">
+        <xsl:param name="name"/>
+        <xsl:value-of select="upper-case(substring($name,1,1)) || substring($name,2)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:correct-minmax">
+        <xsl:param name="minmax"/>
+        <xsl:value-of select="if ($minmax = '1..1') then '1' else $minmax"/>
+    </xsl:function>
     
 </xsl:stylesheet>

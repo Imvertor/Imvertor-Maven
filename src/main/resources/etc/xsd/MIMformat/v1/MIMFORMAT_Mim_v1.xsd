@@ -543,7 +543,7 @@
 
   <!-- RelatiesoortRelatiesoortLeidend: -->
   <xs:element name="RelatiesoortRelatiesoortLeidend" type="mim:RelatiesoortRelatiesoortLeidend">
-    <!-- Relatiesoort leidend (alternatief 1); relatiemodelleringstype == "Relatiesoort leidend" -->
+    <!-- Relatiesoort leidend (alternatief 1); relatiemodelleringtype == "Relatiesoort leidend" -->
     <xs:annotation>
       <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De typering van het structurele verband tussen een object van een objecttype en een (ander) object van een ander (of hetzelfde) objecttype.</xs:documentation>
     </xs:annotation>
@@ -654,7 +654,7 @@
 
   <!-- RelatiesoortRelatierolLeidend: -->
   <xs:element name="RelatiesoortRelatierolLeidend" type="mim:RelatiesoortRelatierolLeidend">
-    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringstype == "Relatierol leidend" -->
+    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringtype == "Relatierol leidend" -->
     <xs:annotation>
       <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De typering van het structurele verband tussen een object van een objecttype en een (ander) object van een ander (of hetzelfde) objecttype.</xs:documentation>
     </xs:annotation>
@@ -709,7 +709,7 @@
 
   <!-- Relatierol: -->
   <xs:complexType name="RelatierolRelatiesoortLeidend">
-    <!-- Relatiesoort leidend (alternatief 1); relatiemodelleringstype == "Relatiesoort leidend" -->
+    <!-- Relatiesoort leidend (alternatief 1); relatiemodelleringtype == "Relatiesoort leidend" -->
     <xs:sequence>
       <xs:element name="naam" type="xs:string" minOccurs="0">
         <xs:annotation>
@@ -737,7 +737,7 @@
   </xs:complexType>
 
   <xs:complexType name="RelatierolRelatierolLeidend">
-    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringstype == "Relatierol leidend" -->
+    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringtype == "Relatierol leidend" -->
     <xs:sequence>
       <xs:element name="naam" type="xs:string">
         <xs:annotation>
@@ -813,7 +813,7 @@
   <xs:complexType name="Relatierol" abstract="true">
     <xs:choice>
       <xs:element name="RelatiesoortLeidend">
-        <!-- Relatiesoort leidend (alternatief 1); relatiemodelleringstype == "Relatiesoort leidend" -->
+        <!-- Relatiesoort leidend (alternatief 1); relatiemodelleringtype == "Relatiesoort leidend" -->
         <xs:complexType>
           <xs:sequence>
             <xs:element name="naam" type="xs:string" minOccurs="0">
@@ -841,7 +841,7 @@
         </xs:complexType>
       </xs:element>
       <xs:element name="RelatierolLeidend">
-        <!-- Relatierol is leidend (alternatief 2); relatiemodelleringstype == "Relatierol leidend" -->    
+        <!-- Relatierol is leidend (alternatief 2); relatiemodelleringtype == "Relatierol leidend" -->    
         <xs:complexType>
           <xs:sequence>
             <xs:element name="naam" type="xs:string">

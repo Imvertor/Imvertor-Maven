@@ -182,7 +182,7 @@ public class ChainTranslateAndReport {
 				    
 				    // generate the MIM format from Imvertor embellish format
 				    if (configurator.isTrue("cli","createmimformat",false))
-			 			succeeds = succeeds && (new MIMCompiler()).run();
+			 			(new MIMCompiler()).run(); // MIM compiler does not block further processing
 					
 				    // generate the Stelselcatalogus CSV
 				    if (configurator.isTrue("cli","createstccsv",false))
@@ -191,7 +191,8 @@ public class ChainTranslateAndReport {
 					// compare releases. 
 				    // Eg. check if this only concerns a "documentation release". If so, must not be different from existing release.
 				    // also includes other types of release comparisons
-				    succeeds = succeeds && (new ReleaseComparer()).run();
+				    if (configurator.isTrue("cli","compare",false))
+				    	succeeds = succeeds && (new ReleaseComparer()).run();
 				    
 				    // generate the XSD 
 					if (configurator.isTrue("cli","createxmlschema",false))

@@ -161,7 +161,7 @@
           <mim:herkomst>{imf:tagged-values-not-traced(., 'CFG-TV-SOURCE')}</mim:herkomst>
           <mim:informatiedomein>{imf:tagged-values-not-traced(., 'CFG-TV-IMDOMAIN')}</mim:informatiedomein>
           <mim:informatiemodeltype>{imf:tagged-values-not-traced(., 'CFG-TV-IMTYPE')}</mim:informatiemodeltype>
-          <mim:relatiemodelleringstype>{imf:tagged-values-not-traced(., 'CFG-TV-IMRELATIONMODELINGTYPE')}</mim:relatiemodelleringstype>
+          <mim:relatiemodelleringtype>{imf:tagged-values-not-traced(., 'CFG-TV-IMRELATIONMODELINGTYPE')}</mim:relatiemodelleringtype>
           <mim:mIMVersie>{imf:tagged-values-not-traced(., 'CFG-TV-MIMVERSION')}</mim:mIMVersie>
           <xsl:where-populated>
             <mim:mIMExtensie>{imf:tagged-values-not-traced(., 'CFG-TV-MIMEXTENSION')}</mim:mIMExtensie>    

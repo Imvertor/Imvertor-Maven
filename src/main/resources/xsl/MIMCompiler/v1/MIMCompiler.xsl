@@ -119,8 +119,8 @@
   <xsl:variable name="classes" select="$preprocessed-xml//imvert:class" as="element(imvert:class)*"/>
   <xsl:variable name="attributes" select="$preprocessed-xml//imvert:attribute" as="element(imvert:attribute)*"/>
   <xsl:variable name="associations" select="$preprocessed-xml//imvert:association" as="element(imvert:association)*"/>
-  <xsl:variable name="specified-relatiemodelleringstype" select="imf:tagged-values-not-traced($preprocessed-xml/imvert:packages, 'CFG-TV-IMRELATIONMODELINGTYPE')" as="xs:string?"/>
-  <xsl:variable name="relatiemodelleringtype" select="if ($specified-relatiemodelleringstype) then $specified-relatiemodelleringstype else 'Relatiesoort leidend'" as="xs:string"/>
+  <xsl:variable name="specified-relatiemodelleringtype" select="imf:tagged-values-not-traced($preprocessed-xml/imvert:packages, 'CFG-TV-IMRELATIONMODELINGTYPE')" as="xs:string?"/>
+  <xsl:variable name="relatiemodelleringtype" select="if ($specified-relatiemodelleringtype) then $specified-relatiemodelleringtype else 'Relatiesoort leidend'" as="xs:string"/>
   
   <xsl:variable name="mim11-primitive-datatypes-lc-names" select="for $n in $mim11-package/imvert:class/imvert:name/@original return lower-case($n)" as="xs:string+"/>
   
@@ -160,12 +160,16 @@
   
   <xsl:template match="@xlink:href[string-length(.) ge 32]" mode="postprocess">
     <xsl:attribute name="xlink:href" namespace="http://www.w3.org/1999/xlink">
+      <xsl:variable name="elem" select="key('key-mim-construct-by-id', substring(., 2), root())"/>
       <xsl:choose>
+        <xsl:when test="empty($elem)">
+          <xsl:sequence select="imf:message(parent::*, 'ERROR', 'Referencing a MIM construct with unknown ID. Expected MIM UML package with alias [1]', ('http://www.geonovum.nl/conceptual-schemas/MIM11'))"/>
+        </xsl:when>
         <xsl:when test="$generate-readable-ids = 'true'">
-          <xsl:value-of select="'#' || imf:create-id(key('key-mim-construct-by-id', substring(., 2), root()))"/>
+          <xsl:value-of select="'#' || imf:create-id($elem)"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="'#' || imf:clean-id(key('key-mim-construct-by-id', substring(., 2), root())/@id)"/>
+          <xsl:value-of select="'#' || imf:clean-id($elem/@id)"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:attribute>
@@ -191,7 +195,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
           xmlns:xlink="http://www.w3.org/1999/xlink"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           
-          <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel/v1 xsd/MIMFORMAT_Mim_v1.xsd</xsl:attribute>
+          <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel/v1 xsd/1.1.0/MIMFORMAT_Mim_v1.xsd</xsl:attribute>
           
           <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
           

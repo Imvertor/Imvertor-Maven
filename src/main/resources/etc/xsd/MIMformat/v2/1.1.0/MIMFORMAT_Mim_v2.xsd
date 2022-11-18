@@ -52,16 +52,6 @@
       <xs:element name="MIMExtensie" type="xs:string" minOccurs="0"/>
       <xs:element name="MIMExtensieVersie" type="xs:string" minOccurs="0"/>
       <xs:element name="MIMTaal" type="xs:string" minOccurs="0"/>
-      <xs:element name="datumOpname" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De datum waarop het informatiemodel is gemaakt.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="herkomstDefinitie" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation"><!--TODO--></xs:documentation>
-        </xs:annotation>
-      </xs:element>
       <xs:element name="packages" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
@@ -126,12 +116,6 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De naam van de domein package. </xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="datumOpname" type="xs:string">
-        <xs:annotation>
-          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation"><!--TODO--></xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      
       <xs:element name="datatypen" type="mim:DomeinViewDatatypen" minOccurs="0"/>
       <xs:element name="objecttypen" type="mim:DomeinViewObjectTypen" minOccurs="0"/>
       <xs:element name="gegevensgroeptypen" type="mim:DomeinViewGegevensgroepTypen" minOccurs="0"/>
