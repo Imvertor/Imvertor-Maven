@@ -261,4 +261,21 @@
             <abbrev>WDM</abbrev>
         </registratieobject>
     </domein>
+    
+    <domein>
+        <name lang="nl">Milieukwaliteit</name>
+        <name lang="en">Environmental quality</name>
+        <abbrev>EQ</abbrev>
+        <registratieobject>
+            <name lang="nl">Milieuhygiënisch Bodemonderzoek</name>
+            <name lang="en">Site Assessment Data</name>
+            <abbrev>SAD</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Overheidsbesluit bodemverontreiniging</name>
+            <name lang="en">Site Legal Decisions</name>
+            <abbrev>SLD</abbrev>
+        </registratieobject>
+    </domein>
+    
 </domeinen>
