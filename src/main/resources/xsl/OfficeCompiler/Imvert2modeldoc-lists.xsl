@@ -167,7 +167,7 @@
     <!-- when reading from BRO XML listing -->
   
     <!-- BRO lists -->
-    <xsl:template match="/domeintabel" mode="codelist reflist">
+    <xsl:template match="/(domeintabel | Waardelijst)" mode="codelist reflist">
         <xsl:param name="construct" as="element()"/>
         <imvert:attributes>
             <xsl:variable name="values" as="element()*"> <!-- imvert:attribute or imvert:refelement -->
@@ -185,12 +185,6 @@
         </imvert:attributes>
     </xsl:template>
   
-    <!-- BRO lists -->
-    
-    <xsl:template match="/domeintabel/*" mode="codelist reflist" priority="-1">
-        <!-- return nothing; unknown type of domeintabel -->
-    </xsl:template>
-    
     <!-- BRO codelists -->
  
     <xsl:template match="
@@ -266,8 +260,8 @@
         </imvert:attribute>
     </xsl:template>
     
-    <!-- BRO reference lists; vrije kolommen, zoals /domeintabel/GeologischeGrondsoort/* -->
-    <xsl:template match="/domeintabel/*" mode="reflist">
+    <!-- BRO reference lists; vrije kolommen, zoals /Waardelijst/GeologischeGrondsoort/* -->
+    <xsl:template match="/(domeintabel | Waardelijst)/*" mode="reflist">
         <imvert:refelement>
             <xsl:for-each select="*">
                 <imvert:element>
@@ -276,5 +270,11 @@
             </xsl:for-each>
         </imvert:refelement>
     </xsl:template>
-        
+
+    <!-- any list that has unsupported root element -->
+    <xsl:template match="/*" mode="codelijst reflist" priority="-1">
+        <xsl:param name="construct" as="element()"/>
+        <xsl:sequence select="imf:msg($construct,'ERROR','No strategy for reading value list rooted in: [1]',name(.))"/>
+    </xsl:template>
+    
 </xsl:stylesheet>

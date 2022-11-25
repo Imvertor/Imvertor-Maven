@@ -30,7 +30,7 @@
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all" 
-    version="2.0">
+    version="3.0">
 
     <!-- 
           Transform the embellishg file to a standard simplied documentation format, to be processed for display by separate metamodel/owner based modules.
@@ -97,17 +97,25 @@
             <xsl:if test="$lists-to-listing">
                 <xsl:variable name="domain-packages" select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
 
-                <chapter title="CHAPTER-LISTS" type="lis">
-                    <section type="CONTENTS-REFERENCELIST">
-                        <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="content"/>
-                    </section>
-                    <section type="CONTENTS-CODELIST">
-                        <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="content"/>
-                    </section>
-                    <section type="CONTENTS-ENUMERATION">
-                        <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="content"/>
-                    </section>
-                </chapter>
+                <xsl:where-populated>
+                    <chapter title="CHAPTER-LISTS" type="lis">
+                        <xsl:where-populated>
+                            <section type="CONTENTS-REFERENCELIST">
+                                <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="content"/>
+                            </section>
+                        </xsl:where-populated>
+                        <xsl:where-populated>
+                            <section type="CONTENTS-CODELIST">
+                                <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="content"/>
+                            </section>
+                        </xsl:where-populated>
+                        <xsl:where-populated>
+                            <section type="CONTENTS-ENUMERATION">
+                                <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="content"/>
+                            </section>
+                        </xsl:where-populated>
+                    </chapter>
+                </xsl:where-populated>
             </xsl:if>
             
         </book>

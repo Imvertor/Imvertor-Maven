@@ -8,6 +8,11 @@
     <!-- add or override translations here: -->
     
     <item>
+        <key>CHAPTER-CATALOG</key>
+        <trans lang="nl">Objectencatalogus</trans>
+        <trans lang="en">Catalog of objects</trans>
+    </item>
+    <item>
         <key>OBJECTTYPE</key>
         <trans lang="nl">Objecttype</trans>
         <trans lang="en">Objecttype</trans>

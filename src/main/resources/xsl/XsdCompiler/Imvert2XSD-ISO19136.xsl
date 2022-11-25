@@ -185,7 +185,7 @@
                 
                 <!-- simple type attributes for attributes types that restrict a simple type; needed to set nilReason attribute -->
                 <xsl:apply-templates 
-                    select="imvert:class/imvert:attributes/imvert:attribute[(imvert:stereotype/@id = ('stereotype-name-voidable') or $is-forced-nillable) and imf:is-restriction(.)]"
+                    select="imvert:class/imvert:attributes/imvert:attribute[(imf:is-voidable(.) or $is-forced-nillable) and imf:is-restriction(.)]"
                     mode="nil-reason">
                     <xsl:with-param name="package-name" select="$this-package/imvert:name"/>
                 </xsl:apply-templates>
@@ -639,11 +639,7 @@
         <!-- nilllable may be forced for specific circumstances. This only applies to attributes of a true class or associations -->
         <xsl:variable name="is-property" select="exists(($this/self::imvert:attribute,$this/self::imvert:association))"/>
         <xsl:variable name="force-nillable" select="$is-property and $is-forced-nillable"/>
-        
-        <xsl:variable name="is-voidable" select="
-            $this/imvert:stereotype/@id = ('stereotype-name-voidable')
-            or
-            imf:boolean(imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-VOIDABLE'))"/>
+        <xsl:variable name="is-voidable" select="imf:is-voidable($this)"/>
         <xsl:variable name="is-nillable" select="$is-voidable or $force-nillable"/>
         
         <xsl:variable name="is-restriction" select="imf:is-restriction($this)"/>
@@ -1371,7 +1367,5 @@
         <xsl:param name="association" as="element()*"/>
         <xsl:sequence select="for $a in $association return ($a/imvert:target,$a)[1]"/>
     </xsl:function>
-    
-
     
 </xsl:stylesheet>
