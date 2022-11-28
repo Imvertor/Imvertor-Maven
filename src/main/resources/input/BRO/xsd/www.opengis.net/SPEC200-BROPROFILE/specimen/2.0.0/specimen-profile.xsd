@@ -44,7 +44,7 @@
     </annotation>
     <!-- ====================================================================== -->
     <!-- bring in other schemas -->
-    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="https://schema.broservices.nl/profile/xlink/1.0/xlink-profile.xsd"/>
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd"/>
     <import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="https://schema.broservices.nl/profile/gmd/1.0/gmd-profile.xsd"/>
     <import namespace="http://www.opengis.net/sampling/2.0" schemaLocation="https://schema.broservices.nl/profile/sa/1.0/sa-profile.xsd"/>
     <import namespace="http://www.opengis.net/om/2.0" schemaLocation="https://schema.broservices.nl/profile/om/1.0/om-profile.xsd"/>
