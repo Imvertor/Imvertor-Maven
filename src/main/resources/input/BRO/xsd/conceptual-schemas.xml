@@ -22,6 +22,7 @@
                 <cs-ref:MapRef xlink:href="#CIT10"/>
                 <cs-ref:MapRef xlink:href="#GEX10"/>
                 <cs-ref:MapRef xlink:href="#SAM202"/>
+                <cs-ref:MapRef xlink:href="#SAMS200"/>
                 <cs-ref:MapRef xlink:href="#SPEC200"/>
                 <cs-ref:MapRef xlink:href="#INSPIRE"/>
                 <cs-ref:MapRef xlink:href="#INSPIRE-GEO"/>
@@ -71,6 +72,13 @@
                 <cs:desc>SamplingFeature profile for BRO.</cs:desc>
                 <cs:url>http://www.bro.nl/conceptual-schemas/SAM</cs:url>
                 <cs:catalogUrl>http://www.opengeospatial.org/standards/sam[entry]</cs:catalogUrl>
+            </cs:ConceptualSchema>
+            <cs:ConceptualSchema>
+                <cs:id>SAMS-CP-BRO</cs:id>
+                <cs:shortName>sams</cs:shortName>
+                <cs:desc>Spatial SamplingFeature profile for BRO.</cs:desc>
+                <cs:url>http://www.bro.nl/conceptual-schemas/SAMS</cs:url>
+                <cs:catalogUrl>http://www.opengeospatial.org/standards/sams[entry]</cs:catalogUrl>
             </cs:ConceptualSchema>
             <cs:ConceptualSchema>
                 <cs:id>SPEC-CP-BRO</cs:id>
@@ -271,7 +279,6 @@
                     </cs:Construct>
                 </cs:constructs>
             </cs:Map>
-
             <cs:Map>
                 <cs:id>SAM202</cs:id>
                 <cs:namespace>http://www.opengis.net/sampling/2.0</cs:namespace>
@@ -321,7 +328,37 @@
                     </cs:Construct>
                 </cs:constructs>
             </cs:Map>
-
+            <cs:Map>
+                <cs:id>SAMS200</cs:id>
+                <cs:namespace>http://www.opengis.net/samplingSpatial/2.0</cs:namespace>
+                <cs:location>https://schema.broservices.nl/profile/sams/2.0/sams-profile.xsd</cs:location>
+                <cs:phase>3</cs:phase>
+                <cs:version>2.0.0</cs:version>
+                <cs:release>BROPROFILE</cs:release>
+                <cs:forSchema>
+                    <cs-ref:ConceptualSchemaRef xlink:href="#SAMS-CP-BRO"/>
+                </cs:forSchema>
+                <cs:constructs>
+                    <cs:Construct>
+                        <cs:name>SF_SpatialSamplingFeature</cs:name>
+                        <cs:sentinel>false</cs:sentinel>
+                        <cs:catalogEntries>
+                            <cs:CatalogEntry>
+                                <cs:name>#SF_SpatialSamplingFeature</cs:name>
+                            </cs:CatalogEntry>
+                        </cs:catalogEntries>
+                        <cs:xsdTypes>
+                            <cs:XsdType>
+                                <cs:name>SF_SpatialSamplingFeature</cs:name>
+                                <cs:asAttribute>SF_SpatialSamplingFeatureType</cs:asAttribute>
+                                <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                                <cs:primitive>false</cs:primitive>
+                                <cs:hasNilreason>false</cs:hasNilreason>
+                            </cs:XsdType>
+                        </cs:xsdTypes>
+                    </cs:Construct>
+                </cs:constructs>
+            </cs:Map>
             <cs:Map>
                 <cs:id>SPEC200</cs:id>
                 <cs:namespace>http://www.opengis.net/samplingSpecimen/2.0</cs:namespace>
@@ -939,7 +976,6 @@
                     </cs:Construct>
                 </cs:constructs>
             </cs:Map>
-
             <cs:Map>
                 <cs:id>BRO-GUF</cs:id>
                 <cs:namespace>http://www.broservices.nl/xsd/gufcommon/1.0</cs:namespace>
