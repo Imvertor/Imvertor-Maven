@@ -10,7 +10,7 @@
       <cs:Mapping>
          <cs:name>BIJ12_GEOSTANDAARDEN</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM111"/>
             <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
             <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
          </cs:use>
@@ -20,7 +20,7 @@
    <cs:components>
       <cs:ConceptualSchemasComponents>
          
-         <xi:include href="../../MIM/xsd/cs-MIM111.xml"/><!-- implements ConceptualSchema MIM11 -->
+         <xi:include href="../../MIM/xsd/cs-MIM111.xml"/><!-- implements ConceptualSchema MIM111 -->
     
          <xi:include href="../../NEN3610/xsd/cs-NEN3610-2022.xml"/><!-- implements ConceptualSchema NEN3610-2022 -->
          
@@ -28,7 +28,7 @@
          
          <!--maps:-->
          
-         <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
+         <xi:include href="../../MIM/xsd/cm-MIM111.xml"/><!-- implements Map #MIM111 -->
          
          <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/><!-- implements Map #NEN3610-2022 -->
          
