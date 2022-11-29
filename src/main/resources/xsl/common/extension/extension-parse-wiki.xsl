@@ -27,6 +27,7 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     version="2.0">
   
@@ -38,9 +39,11 @@
         <xsl:param name="wiki-string" as="xs:string"/>
         <xsl:param name="wiki-language" as="xs:string"/>
 
-        <xsl:variable name="raw" select="ext:imvertorParseWiki($wiki-string,$wiki-language)"/>
+        <xsl:variable name="wiki-string-corrected" select="replace($wiki-string,'\n','&#10;&#10;')"/>
+        <xsl:variable name="raw" select="ext:imvertorParseWiki($wiki-string-corrected,$wiki-language)"/>
         <xsl:variable name="xml" select="imf:parse-html((),$raw,false())"/>
         <xsl:sequence select="$xml/xhtml:body"/>
+  
     </xsl:function>
     
 </xsl:stylesheet>

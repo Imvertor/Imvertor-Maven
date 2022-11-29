@@ -70,6 +70,8 @@
     
     <xsl:variable name="has-imbroa" select="//imvert:attribute/imvert:stereotype/@id = 'stereotype-name-imbroa'"/>
     
+    <xsl:variable name="derived-props-order" select="$configuration-docrules-file/derived-props-order"/>
+    
     <xsl:template match="/imvert:packages">
         <xsl:sequence select="imf:track('Generating modeldoc',())"/>
         
@@ -997,7 +999,21 @@
                     </xsl:for-each-group>
                 </xsl:variable>
                 
-                <xsl:for-each select="$vals-single">
+                <xsl:variable name="vals-single-ordered" as="element(tv)*">
+                    <xsl:choose>
+                        <xsl:when test="$derived-props-order eq 'current-model'">
+                            <xsl:sequence select="$vals-single[1]"/>
+                        </xsl:when>
+                        <xsl:when test="$derived-props-order eq 'supplier-client'">
+                            <xsl:sequence select="reverse($vals-single)"/>
+                        </xsl:when>
+                        <xsl:otherwise><!-- client-supplier -->
+                            <xsl:sequence select="$vals-single"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                
+                <xsl:for-each select="$vals-single-ordered">
                     <item type="TRACED">
                         <item type="SUPPLIER">
                             <xsl:value-of select="imf:get-subpath(@project,@application,@release)"/>

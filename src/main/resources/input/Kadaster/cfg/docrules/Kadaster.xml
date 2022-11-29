@@ -54,6 +54,12 @@
     
     <show-properties>config</show-properties> <!-- config, all, compact -->
     
+    <!-- 
+        wat moet worden getoond in de documentatie: eerst client dan supplier, andersom, of alleen de documentatie van met model zelf? 
+        Dit betreft alle efleidbare waarden zoals definitie, patroon etc. 
+    -->
+    <derived-props-order>supplier-client</derived-props-order><!-- opties: client-suppplier, supplier-client, current-model -->
+    
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>
