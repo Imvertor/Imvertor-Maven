@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright TNO Geologische Dienst Nederland
+
+    Alle rechten voorbehouden.
+    Niets uit deze software mag worden vermenigvuldigd en/of openbaar gemaakt door middel van druk, fotokopie,
+    microfilm of op welke andere wijze dan ook, zonder voorafgaande toestemming van TNO.
+
+    Indien deze software in opdracht werd uitgebracht, wordt voor de rechten en verplichtingen van opdrachtgever
+    en opdrachtnemer verwezen naar de Algemene Voorwaarden voor opdrachten aan TNO, dan wel de betreffende
+    terzake tussen de partijen gesloten overeenkomst.
+-->
+<schema targetNamespace="http://www.opengis.net/samplingSpatial/2.0"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified"
+        version="2.0.0">
+    <!--
+    This schema is provided by BRO as a local copy, as a convenience to the user.
+    This schema may itself reference a local copy of the schema originally referenced by URI. The local reference takes the form of a relative path, and is introduced by BRO.
+    -->
+    <annotation>
+        <documentation>
+            spatialSamplingFeature.xsd 
+            Observations and Measurements - XML Implementation is an OGC Standard. 
+            Copyright (c) [2010] Open Geospatial Consortium. 
+            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+        </documentation>
+        <documentation>sampling spatial 2.0.0 profile for BRO.
+        24-11-2022: Based on http://schemas.opengis.net/samplingSpatial/2.0/spatialSamplingFeature.xsd
+                    Schemalocations of imported schema redirected to BRO profiles.
+        </documentation>
+    </annotation>
+    <!-- ====================================================================== -->
+    <!-- bring in other schemas -->
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd"/>
+    <import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="https://schema.broservices.nl/profile/gmd/1.0/gmd-profile.xsd"/>
+    <import namespace="http://www.opengis.net/sampling/2.0" schemaLocation="https://schema.broservices.nl/profile/sa/1.0/sa-profile.xsd"/>
+    <import namespace="http://www.opengis.net/om/2.0" schemaLocation="https://schema.broservices.nl/profile/om/1.0/om-profile.xsd"/>
+    <!-- ====================================================================== -->
+    <!-- ====================================================================== -->
+    <!-- Common properties of spatial sampling features -->
+    <!-- ====================================================================== -->
+    <group name="SF_SpatialCommonProperties">
+        <annotation>
+            <documentation>
+When observations are made to estimate properties of a geospatial feature, in particular where the value of a property varies within the scope of the feature, a spatial sampling feature is used. Depending on accessibility and on the nature of the expected property variation, the sampling feature may be extensive in one, two or three spatial dimensions. Processing and visualization methods are often dependent on the topological dimension of the sampling manifold, so this provides a natural classification system for sampling features. This classification follows common practice in focussing on conventional spatial dimensions. Properties observed on sampling features may be time-dependent, but the temporal axis does not generally contribute to the classification of sampling feature classes. Sampling feature identity is usually less time-dependent than is the property value.
+            </documentation>
+        </annotation>
+        <sequence>
+            <element name="hostedProcedure"
+                     type="om:OM_ProcessPropertyType"
+                     minOccurs="0"
+                     maxOccurs="unbounded">
+                <annotation>
+                    <documentation>
+A common role for a spatial sampling feature is to host instruments or procedures deployed repetitively or permanently. If present, the association Platform shall link the SF_SpatialSamplingFeature to an OM_Process deployed at it. The OM_Process has the role hostedProcedure with respect to the sampling feature.
+                    </documentation>
+                </annotation>
+            </element>
+            <element name="positionalAccuracy"
+                     type="gmd:DQ_PositionalAccuracy_PropertyType"
+                     minOccurs="0"
+                     maxOccurs="2">
+                <annotation>
+                    <documentation>
+Positioning metadata is commonly associated with sampling features defined in the context of field surveys. If present, positionalAccuracy:DQ_PositionalAccuracy shall describe the accuracy of the positioning of the sampling feature. Up to two instances of the attribute support the independent description of horizontal and vertical accuracy.
+                    </documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </group>
+    <!-- ====================================================================== -->
+    <!-- ====================================================================== -->
+    <!-- Generic shape -->
+    <!-- ====================================================================== -->
+    <complexType name="shapeType">
+        <sequence minOccurs="0">
+            <element ref="gml:AbstractGeometry"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    </complexType>
+    <element name="shape" type="sams:shapeType"/>
+    <!-- ====================================================================== -->
+    <!-- ====================================================================== -->
+    <!-- Spatial sampling feature -->
+    <!-- ====================================================================== -->
+    <complexType name="SF_SpatialSamplingFeatureType">
+        <annotation>
+            <documentation>
+When observations are made to estimate properties of a geospatial feature, in particular where the value of a property varies within the scope of the feature, a spatial sampling feature is used. Depending on accessibility and on the nature of the expected property variation, the sampling feature may be extensive in one, two or three spatial dimensions. Processing and visualization methods are often dependent on the topological dimension of the sampling manifold, so this provides a natural classification system for sampling features. This classification follows common practice in focussing on conventional spatial dimensions. Properties observed on sampling features may be time-dependent, but the temporal axis does not generally contribute to the classification of sampling feature classes. Sampling feature identity is usually less time-dependent than is the property value.
+            </documentation>
+        </annotation>
+        <complexContent>
+            <extension base="sam:SF_SamplingFeatureType">
+                <sequence>
+                    <group ref="sams:SF_SpatialCommonProperties"/>
+                    <element ref="sams:shape">
+                        <annotation>
+                            <documentation>
+The association Geometry shall link a SF_SpatialSamplingFeature to a GM_Object that describes its shape.
+                            </documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <!-- .................. -->
+    <element name="SF_SpatialSamplingFeature"
+             type="sams:SF_SpatialSamplingFeatureType"
+             substitutionGroup="sam:SF_SamplingFeature"/>
+    <!-- .................. -->
+    <complexType name="SF_SpatialSamplingFeaturePropertyType">
+        <sequence minOccurs="0">
+            <element ref="sams:SF_SpatialSamplingFeature"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ====================================================================== -->
+    <!-- ====================================================================== -->
+</schema>
