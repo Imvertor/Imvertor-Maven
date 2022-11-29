@@ -568,17 +568,31 @@
   </xs:complexType>
 
   <!-- Datatype element: -->
-  <xs:element name="Datatype" type="xs:string">
+  <xs:element name="Datatype">
     <xs:annotation>
       <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Referentie naar een datatype zoals benoemd in de MIM standaard.</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="label" type="xs:string" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
   </xs:element>
 
   <!-- ExternDatatype: -->
-  <xs:element name="ExternDatatype" type="xs:string">
+  <xs:element name="ExternDatatype">
     <xs:annotation>
       <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Referentie naar een modelelement in een extern package.</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="label" type="xs:string" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
   </xs:element>
 
   <!-- Datatype type: -->

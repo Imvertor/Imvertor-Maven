@@ -528,7 +528,9 @@
         <xsl:when test="imvert:stereotype/@id = 'stereotype-name-union-datatypes'">
           <mim:keuzeDatatypen>
             <xsl:for-each select="imvert:attributes/imvert:attribute">
-              <xsl:call-template name="process-datatype"/>
+              <xsl:call-template name="process-datatype">
+                <xsl:with-param name="label" select="imvert:name" as="xs:string"/>
+              </xsl:call-template>
             </xsl:for-each>
           </mim:keuzeDatatypen>
         </xsl:when>
@@ -537,8 +539,8 @@
             <xsl:for-each select="imvert:associations/imvert:association">
               <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
               <mim:Relatiedoel>
-                <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
-                <xsl:call-template name="create-ref-element">
+                <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>                <xsl:call-template name="create-ref-element">
+                  <xsl:with-param name="label" select="imvert:name" as="xs:string"/>
                   <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
                 </xsl:call-template> 
               </mim:Relatiedoel>
@@ -1039,6 +1041,7 @@
       <mim:keuzen>
         <xsl:for-each select="imvert:attributes/imvert:attribute[imvert:stereotype/@id = 'stereotype-name-union-for-attributes']">
           <xsl:call-template name="create-ref-element">
+            <xsl:with-param name="label" select="imvert:name" as="xs:string"/>
             <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
           </xsl:call-template>
         </xsl:for-each>
@@ -1047,11 +1050,15 @@
   </xsl:template>
   
   <xsl:template name="process-datatype">
+    <xsl:param name="label" as="xs:string?"/>
+    
     <xsl:variable name="baretype" select="imvert:baretype" as="xs:string?"/>
     <xsl:variable name="is-extensie"/>
+    
     <xsl:choose>
       <xsl:when test="imvert:type-id">
         <xsl:call-template name="create-ref-element">
+          <xsl:with-param name="label" select="$label" as="xs:string?"/>
           <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
           <xsl:with-param name="restrict-datatypes" select="false()" as="xs:boolean"/>
         </xsl:call-template>  
@@ -1061,7 +1068,12 @@
         <xsl:variable name="mim11-scalar" select="$configuration-metamodel-file/scalars/scalar[imf:is-mim-construct(.) and name = $baretype]" as="element(scalar)?"/>  
         <xsl:choose>
           <xsl:when test="$mim11-scalar">
-            <mim:Datatype>{$mim11-scalar/name}</mim:Datatype>
+            <mim:Datatype>
+              <xsl:if test="$label">
+                <xsl:attribute name="label">{$label}</xsl:attribute>
+              </xsl:if>
+              <xsl:text>{$mim11-scalar/name}</xsl:text>
+            </mim:Datatype>
           </xsl:when>
           <xsl:otherwise>
             <xsl:sequence select="imf:message(., 'WARNING', 'The MIM modelelement for baretype [1] could not be found in the MIM11 package', ($baretype))"/>
@@ -1252,6 +1264,7 @@
   </xsl:function>
   
   <xsl:template name="create-ref-element" as="element()?">
+    <xsl:param name="label" as="xs:string?"/>
     <xsl:param name="ref-id" as="xs:string"/>
     <xsl:param name="restrict-datatypes" as="xs:boolean?"/>
     <xsl:variable name="target-element" select="key('key-imvert-construct-by-id', $ref-id)" as="element()?"/>
@@ -1296,16 +1309,25 @@
       <!-- nieuwe constructies obv. #242 -->
       <xsl:when test="$target-stereotype-id = 'stereotype-name-interface' and $is-mim-datatype">
         <mim:Datatype>
+          <xsl:if test="$label">
+            <xsl:attribute name="label">{$label}</xsl:attribute>
+          </xsl:if>
           <xsl:value-of select="imf:name($target-element)"/>
         </mim:Datatype>
       </xsl:when>
       <xsl:when test="$target-stereotype-id = 'stereotype-name-interface'">
         <mim:ExternDatatype>
+          <xsl:if test="$label">
+            <xsl:attribute name="label">{$label}</xsl:attribute>
+          </xsl:if>
           <xsl:value-of select="imf:name($target-element)"/>
         </mim:ExternDatatype>
       </xsl:when>
       <xsl:when test="$element-name">
         <xsl:element name="mim-ref:{$element-name}" namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2">
+          <xsl:if test="$label">
+            <xsl:attribute name="label">{$label}</xsl:attribute>
+          </xsl:if>
           <xsl:if test="$add-xlink-id">
             <xsl:attribute name="xlink:href" namespace="http://www.w3.org/1999/xlink">#{$ref-id}</xsl:attribute>
           </xsl:if>
