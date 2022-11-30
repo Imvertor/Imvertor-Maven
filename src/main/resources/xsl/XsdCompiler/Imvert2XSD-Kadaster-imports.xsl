@@ -30,6 +30,8 @@
     
     xmlns:ekf="http://EliotKimber/functions"
 
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -56,6 +58,8 @@
         
         <!-- eerst profile naam instellen -->
         <xsl:sequence select="imf:set-xparm('appinfo/gml-profile-name-encoded',encode-for-uri(imf:get-xparm('appinfo/gml-profile-name')))"/>
+        
+        <xsl:sequence select="dlogger:save('$schemas',.)"/>
         
         <imvert:schemas>
             <xsl:apply-templates select="imvert:schema"/>
@@ -152,6 +156,9 @@
                         <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] is not associated with a single namespace: [2]',($prefix,imf:string-group(distinct-values($schema-def/imvert:namespace))))"/>
                     </xsl:when>
                     <xsl:when test="exists($schema-subpath)">
+                        <xsl:sequence select="dlogger:save('$schema-def ' || $prefix,$schema-def)"/>
+                        <xsl:sequence select="dlogger:save('$schema-subpath',$schema-subpath)"/>
+                        
                         <!-- schema found. This is a generated schema. -->
                         <xs:import namespace="{$schema-namespace}" schemaLocation="{$steps-back}{imf:merge-parms($schema-subpath)}"/>
                         <namespace prefix="{$prefix}" uri="{$schema-namespace}"/> 
@@ -164,7 +171,7 @@
             </xsl:for-each>
           
         </xsl:variable>
-        
+        <xsl:sequence select="dlogger:save('$imports',$imports)"/>
         <xsl:result-document href="{$my-fullpath}" method="xml" indent="yes" encoding="UTF-8">
             <xsl:variable name="doc">
                 <xsl:copy>

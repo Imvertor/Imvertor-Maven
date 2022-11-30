@@ -453,7 +453,7 @@ public class XsdCompiler extends Step {
 			AnyFolder targetXsdFolder = new AnyFolder(configurator.getXParm("system/work-xsd-folder-path"));
 			if (xsdFolder.isDirectory()) {
 				runner.debug(logger,"CHAIN","Appending external schema from: " + xsdFolder);
-				if (configurator.isTrue("cli", "creategmlprofile", false) && StringUtils.startsWith(filepath,"www.opengis.net/GML322")) {
+				if (configurator.isTrue("cli", "creategmlprofile", false) && StringUtils.contains(filepath,"www.opengis.net/GML322")) {
 					runner.debug(logger,"CHAIN","Profiling external schema from: " + xsdFolder);
 					String profileVersion = configurator.mergeParms(configurator.getXParm("cli/gmlprofileversion"));
 					String profileName = configurator.getXParm("appinfo/gml-profile-name");
