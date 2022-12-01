@@ -56,11 +56,6 @@
         </imvert:schema>
         -->
         
-        <!-- eerst profile naam instellen -->
-        <xsl:sequence select="imf:set-xparm('appinfo/gml-profile-name-encoded',encode-for-uri(imf:get-xparm('appinfo/gml-profile-name')))"/>
-        
-        <xsl:sequence select="dlogger:save('$schemas',.)"/>
-        
         <imvert:schemas>
             <xsl:apply-templates select="imvert:schema"/>
         </imvert:schemas>  
