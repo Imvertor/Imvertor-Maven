@@ -63,12 +63,6 @@ public class XsdCompiler extends Step {
 		String owner = configurator.getXParm("cli/owner");
 		String xmlschemarules = configurator.getXmlSchemarules();
 		
-		// profile name is when createprofile, use profilename, else use owner name.
-		// the profile name is required when XSD is created and when imports are resolved, so set this xparm here,.
-		String pName = configurator.isTrue("cli","creategmlprofile", false) ? configurator.getXParm("cli/gmlprofilename") : configurator.getXParm("cli/owner").toLowerCase();;
-		pName = configurator.mergeParms(pName) + "-gml";
-		configurator.setXParm("appinfo/gml-profile-name",pName); // nodig in de stylesheet voor imports
-		
 		Boolean done = false;
 		 if (owner.equals("EIGENAAR")) {
 				if (xmlschemarules.equals("XML-ISO19136")) {
@@ -453,7 +447,7 @@ public class XsdCompiler extends Step {
 			AnyFolder targetXsdFolder = new AnyFolder(configurator.getXParm("system/work-xsd-folder-path"));
 			if (xsdFolder.isDirectory()) {
 				runner.debug(logger,"CHAIN","Appending external schema from: " + xsdFolder);
-				if (configurator.isTrue("cli", "creategmlprofile", false) && StringUtils.startsWith(filepath,"www.opengis.net/GML322")) {
+				if (configurator.isTrue("cli", "creategmlprofile", false) && StringUtils.contains(filepath,"www.opengis.net/GML322")) {
 					runner.debug(logger,"CHAIN","Profiling external schema from: " + xsdFolder);
 					String profileVersion = configurator.mergeParms(configurator.getXParm("cli/gmlprofileversion"));
 					String profileName = configurator.getXParm("appinfo/gml-profile-name");
