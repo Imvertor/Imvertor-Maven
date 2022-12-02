@@ -28,7 +28,7 @@
     <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
     <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
     
-    <xsl:variable name="has-multiple-domains" select="count(/book/chapter/section[@type='DOMAIN']) gt 1"/>
+    <xsl:variable name="has-multiple-domains" select="count(/book/chapter/section[@type=('DOMAIN','VIEW')]) gt 1"/>
     
     <xsl:variable name="document-ids" select="for $id in //@id return string($id)"/>
 

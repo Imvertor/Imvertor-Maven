@@ -8,7 +8,13 @@
         <trans lang="nl">Domein</trans>
         <trans lang="en">Domain</trans>
     </item>
-
+    
+    <item>
+        <key>VIEW</key>
+        <trans lang="nl">View</trans>
+        <trans lang="en">View</trans>
+    </item>
+    
     <item>
         <key>MODEL</key>
         <trans lang="nl">Model</trans>
