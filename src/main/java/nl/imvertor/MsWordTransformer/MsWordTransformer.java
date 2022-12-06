@@ -20,14 +20,12 @@
 
 package nl.imvertor.MsWordTransformer;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
-import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.ZipFile;
