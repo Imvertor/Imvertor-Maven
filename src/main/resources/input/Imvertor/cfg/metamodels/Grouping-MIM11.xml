@@ -259,5 +259,23 @@
             </context>
         </stereo>
         
+        <!-- deze constructies kunnen gewone modelelementen bevatten, dit hier verder aanvullen: -->
+        
+        <stereo id="stereotype-name-attribute">
+            <context>
+                <parent-stereo>stereotype-name-product</parent-stereo>
+                <parent-stereo>stereotype-name-service</parent-stereo>
+                <parent-stereo>stereotype-name-process</parent-stereo>
+            </context>
+        </stereo>
+        
+        <stereo id="stereotype-name-attributegroup">
+            <context>
+                <parent-stereo>stereotype-name-product</parent-stereo>
+                <parent-stereo>stereotype-name-service</parent-stereo>
+                <parent-stereo>stereotype-name-process</parent-stereo>
+            </context>
+        </stereo>
+        
     </stereotypes>
 </metamodel>
