@@ -32,8 +32,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import net.sf.saxon.s9api.QName;
-import net.sf.saxon.s9api.XdmAtomicValue;
 import nl.armatiek.saxon.extensions.http.SendRequest;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;

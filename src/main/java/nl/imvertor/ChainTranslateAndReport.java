@@ -20,8 +20,6 @@
 
 package nl.imvertor;
 
-import java.io.File;
-
 import org.apache.log4j.Logger;
 
 import nl.imvertor.ApcModifier.ApcModifier;
@@ -35,7 +33,6 @@ import nl.imvertor.ImvertCompiler.ImvertCompiler;
 import nl.imvertor.JsonConceptsCompiler.JsonConceptsCompiler;
 import nl.imvertor.JsonSchemaCompiler.JsonSchemaCompiler;
 import nl.imvertor.MIMCompiler.MIMCompiler;
-import nl.imvertor.StcCompiler.StcCompiler;
 import nl.imvertor.ModelHistoryAnalyzer.ModelHistoryAnalyzer;
 import nl.imvertor.OfficeCompiler.OfficeCompiler;
 import nl.imvertor.ParmsCopier.ParmsCopier;
@@ -49,6 +46,7 @@ import nl.imvertor.RunInitializer.RunInitializer;
 import nl.imvertor.SchemaValidator.SchemaValidator;
 import nl.imvertor.ShaclCompiler.ShaclCompiler;
 import nl.imvertor.SkosCompiler.SkosCompiler;
+import nl.imvertor.StcCompiler.StcCompiler;
 import nl.imvertor.Validator.Validator;
 import nl.imvertor.XmiCompiler.XmiCompiler;
 import nl.imvertor.XmiTranslator.XmiTranslator;
@@ -57,8 +55,6 @@ import nl.imvertor.YamlCompiler.YamlCompiler;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Release;
 import nl.imvertor.common.Transformer;
-import nl.imvertor.common.file.XmlFile;
-import nl.imvertor.common.file.XslFile;
 
 public class ChainTranslateAndReport {
 

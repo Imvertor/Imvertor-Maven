@@ -11,7 +11,6 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Runner;
-import nl.imvertor.common.file.AnyFile;
 
 /**
  * Pushes all files from a local directory to a remote git repository

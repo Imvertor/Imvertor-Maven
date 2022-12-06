@@ -20,8 +20,6 @@
 
 package nl.imvertor.YamlCompiler;
 
-import java.io.File;
-
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
@@ -159,7 +157,6 @@ public class YamlCompiler extends Step {
 		// pretty print and store to json folder
 		if (succeeds) {
 	
-			AnyFolder imvertFolder = new AnyFolder(configurator.getXParm("system/work-imvert-folder-path"));
 			AnyFolder appFolder = new AnyFolder(configurator.getXParm("system/work-app-folder-path"));
 
 			// convert the json xml to Json without schema reference and than to yaml.

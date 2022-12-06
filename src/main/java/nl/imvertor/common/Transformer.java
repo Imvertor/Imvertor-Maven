@@ -92,8 +92,6 @@ public class Transformer {
 	private File outfile;
 	private File xslfile;
 	
-	private boolean profiled = false; // this is set irrespective of the MAYPROFILE setting. Both must be true in order for the transformer to profile.
-	
 	public Transformer() throws Exception {
 		super();
 		configurator = Configurator.getInstance();
@@ -145,10 +143,6 @@ public class Transformer {
 		MAYPROFILE = may;
 	}
 
-	public void setProfiled(Boolean profiled) {
-		this.profiled = profiled;
-	}
-	
 	/**
 	 * Set an XML parameter. This is passed in each call. 
 	 * 
