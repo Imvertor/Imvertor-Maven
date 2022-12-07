@@ -18,6 +18,7 @@
     </cs:forSchema>
     <cs:owner>NEN3610</cs:owner>
     <cs:constructs>
+        <?x
         <cs:Construct>
             <cs:name>NEN3610ID</cs:name>
             <cs:sentinel>false</cs:sentinel>
@@ -30,9 +31,15 @@
                 </cs:XsdType>
             </cs:xsdTypes>
         </cs:Construct>
+        x?>
         <cs:Construct>
             <cs:name>GeoObject</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>geo-object</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>GeoObject</cs:name>
@@ -45,6 +52,11 @@
         <cs:Construct>
             <cs:name>Begroeiing</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>begroeiing</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Begroeiing</cs:name>
@@ -57,6 +69,11 @@
         <cs:Construct>
             <cs:name>Constructie</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>constructie</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Constructie</cs:name>
@@ -69,6 +86,11 @@
         <cs:Construct>
             <cs:name>FunctioneleRuimte</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>functionele_ruimte</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>FunctioneleRuimte</cs:name>
@@ -98,6 +120,11 @@
         <cs:Construct>
             <cs:name>GeografischeRuimte</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>geografische_ruimte</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>GeografischeRuimte</cs:name>
@@ -110,6 +137,11 @@
         <cs:Construct>
             <cs:name>Oppervlaktewater</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>oppervlaktewater</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Oppervlaktewater</cs:name>
@@ -122,6 +154,11 @@
         <cs:Construct>
             <cs:name>JuridischeRuimte</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>juridische_ruimte</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>JuridischeRuimte</cs:name>
@@ -134,6 +171,11 @@
         <cs:Construct>
             <cs:name>Kunstwerk</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>kunstwerk</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Kunstwerk</cs:name>
@@ -146,6 +188,11 @@
         <cs:Construct>
             <cs:name>Leiding</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>leiding</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Leiding</cs:name>
@@ -158,6 +205,11 @@
         <cs:Construct>
             <cs:name>Verkeerruimte</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>verkeerruimte</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Verkeerruimte</cs:name>
@@ -170,6 +222,11 @@
         <cs:Construct>
             <cs:name>Bodem</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>bodem</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Bodem</cs:name>
@@ -182,6 +239,11 @@
         <cs:Construct>
             <cs:name>ReeelObject</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>reeel_object</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>ReeelObject</cs:name>
@@ -194,6 +256,11 @@
         <cs:Construct>
             <cs:name>RegistratieveRuimte</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>registratieve_ruimte</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>RegistratieveRuimte</cs:name>
@@ -206,6 +273,11 @@
         <cs:Construct>
             <cs:name>Spoorverkeerruimte</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>spoorverkeerruimte</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Spoorverkeerruimte</cs:name>
@@ -218,6 +290,11 @@
         <cs:Construct>
             <cs:name>Luchtvaartruimte</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>luchtvaartruimte</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Luchtvaartruimte</cs:name>
@@ -230,6 +307,11 @@
         <cs:Construct>
             <cs:name>Transportruimte</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>transportruimte</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Transportruimte</cs:name>
@@ -242,6 +324,11 @@
         <cs:Construct>
             <cs:name>Scheepvaartruimte</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>scheepvaartruimte</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Scheepvaartruimte</cs:name>
@@ -254,6 +341,11 @@
         <cs:Construct>
             <cs:name>Verharding</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>verharding</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Verharding</cs:name>
@@ -266,6 +358,11 @@
         <cs:Construct>
             <cs:name>VirtueleRuimte</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>virtuele_ruimte</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>VirtueleRuimte</cs:name>
@@ -278,6 +375,11 @@
         <cs:Construct>
             <cs:name>Waterverplaatsingsruimte</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>waterverplaatsingsruimte</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Waterverplaatsingsruimte</cs:name>
@@ -290,6 +392,11 @@
         <cs:Construct>
             <cs:name>Wegverkeerruimte</cs:name>
             <cs:sentinel>false</cs:sentinel>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>wegverkeerruimte</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
             <cs:xsdTypes>
                 <cs:XsdType>
                     <cs:name>Wegverkeerruimte</cs:name>
