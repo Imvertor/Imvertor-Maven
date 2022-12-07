@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:NEN3610="http://www.geonovum.nl/NEN3610/schemas/v2022"
+           xmlns:GML3="http://www.opengis.net/gml/3.2"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.geonovum.nl/NEN3610/schemas/v2022"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0.0-3">
+   <xs:annotation>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/uri">http://www.geonovum.nl/NEN3610/schemas</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/version">1.0.0</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/phase">3</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/release">20110301</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/svn">$Id$</xs:appinfo>
+      <xs:documentation source="http://www.kadaster.nl/schema-info/file-location">/v20110301/NEN3610_NEN3610_v1_0_0.xsd</xs:documentation>
+      <xs:documentation source="http://www.kadaster.nl/schema-info/conversion">
+        Dit schema is samengesteld in overeenstemming met de codeerregels vastgelegd in  
+        "ISO 19118: Text of 19118 Geographic information - Encoding, as sent to the ISO Central 
+        Secretariat for publication"
+    </xs:documentation>
+      <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Dit package bevat de volledige NEN3610-2011 UML. 
+Basis voor dit package is het door Geonovum gedistribueerde nen3610-2011-profile. Dit is uitgebreid met klassen Historie en Levensduur.  Daarnaast zijn stereotypes conform het Basisregistraties Metamodel opgenomen.
+Nb. GML constructies zijn als apart package gedefinieerd. </xs:documentation>
+   </xs:annotation>
+   <xs:import namespace="http://www.opengis.net/gml/3.2"
+      schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+   <xs:element name="FunctioneelGebied" type="NEN3610:FunctioneelGebied" abstract="true"
+               substitutionGroup="NEN3610:GeoObject"/>
+   <xs:complexType name="FunctioneelGebied" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+begrensd en benoemd gebied dat door een functionele eenheid wordt beschreven
+-- Description --
+Voorbeelden zijn: bedrijventerrein, bungalowpark, plantsoen, begraafplaats, jachthaven, windmolenpark, recreatiegebied.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="NEN3610:GeoObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Gebouw" type="NEN3610:Gebouw" abstract="true"
+               substitutionGroup="NEN3610:GeoObject"/>
+   <xs:complexType name="Gebouw" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+vrijstaande, overdekte en geheel of gedeeltelijke met wanden omsloten toegankelijke ruimte, die direct of indirect met de grond is verbonden.
+-- Description --
+Voorbeelden zijn: huis, schuur, flatgebouw, huizenblok, fabriek.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="NEN3610:GeoObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="GeoObject" type="NEN3610:GeoObject" abstract="true"/>
+   <xs:complexType name="GeoObject" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+            abstractie van een fenomeen in de werkelijkheid, dat direct of indirect is geassocieerd met een locatie relatief ten opzichte van de aarde
+            -- Description --
+            Van deze klasse worden geen instanties gemaakt. Indien een object een geo-object is, is het altijd een instantie van een subklasse van GeoObject.
+            Alle subklassen van GeoObject hebben conform NEN-EN-ISO 19109:2005 het stereotype «featureType».
+            -- Source --
+            NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+     <xs:sequence/>
+     <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="GeografischGebied" type="NEN3610:GeografischGebied" abstract="true"
+               substitutionGroup="NEN3610:GeoObject"/>
+   <xs:complexType name="GeografischGebied" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+geografisch benoemd of aangeduid gebied
+-- Description --
+De grenzen zijn niet altijd exact vastgesteld. Voorbeelden zijn: Noordoostpolder, Midden-Nederland, rivierengebied, Veluwe, Zuid-Limburg, kustgebied.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="NEN3610:GeoObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Historie" type="NEN3610:Historie" abstract="false"/>
+   <xs:complexType name="Historie" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Gegevens waarmee historie vastgelegd wordt. Historie betreft alleen voorkomens van objecten, dus het object op een bepaald moment. De historie is materieel (object in de werkelijkheid) en formeel (object in de registratie).
+
+De opbouw van Historie is gebaseerd op NEN3610:2011.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="beginGeldigheid" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+start van de periode waarop deze instantie van het object geldig is in de werkelijkheid.
+-- Description --
+Er zijn verschillende datatypes voor de represenstatie van een tijdstip: Afhankelijk van de gebruikerswensen m.b.t. granulariteit kan o.a. worden gekozen uit types TM_Instant, Date of DateTime.
+-- Source --
+NEN 3610:2011 en StUF 03.01</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="eindGeldigheid" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+eind van de periode waarop deze instantie van het object geldig is in de werkelijkheid. Wanneer deze waarde niet is ingevuld is de instantie nog geldig
+-- Description --
+Er zijn verschillende datatypes voor de representatie van een tijdstip: Afhankelijk van de gebruikerswensen m.b.t. granulariteit kan o.a. worden gekozen uit types TM_Instant, Date of DateTime.
+-- Source --
+NEN 3610:2011 en StUF 03.01</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="tijdstipRegistratie" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+tijdstip waarop deze instantie van het object is opgenomen in de registratie
+-- Description --
+Er zijn verschillende datatypes voor de representatie van een tijdstip: Afhankelijk van de gebruikerswensen m.b.t. granulariteit kan o.a. worden gekozen uit types TM_Instant, Date of DateTime. Voor formele historie zal DateTime in vrijwel alle gevallen de beste keuze zijn.
+-- Source --
+NEN 3610:2011 en StUF 03.01</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="eindRegistratie" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+eind van de periode waarop deze instantie van het object geldig is in de registratie. Wanneer deze waarde niet is ingevuld is de instantie nog geldig
+-- Description --
+Er zijn verschillende datatypes voor de representatie van een tijdstip: Afhankelijk van de gebruikerswensen m.b.t. granulariteit kan o,a, gekozen worden uit types TM_Instant, Date of DateTime. Voor formele historie zal DateTime in vrijwel alle gevallen de beste keuze zijn.
+-- Source --
+NEN 3610:2011 and StUF 03.01</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Inrichtingselement" type="NEN3610:Inrichtingselement" abstract="true"
+               substitutionGroup="NEN3610:GeoObject"/>
+   <xs:complexType name="Inrichtingselement" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+ruimtelijk object al dan niet ter detaillering dan wel ter inrichting van de overige benoemde ruimtelijke objecten of een ander inrichtingselement
+-- Description --
+Inrichtingselementen vormen een diverse klasse. Het zijn objecten die niet zozeer op basis van fysiek voorkomen of hun gebruiksfunctie bij elkaar horen, maar op basis van hun eigenschap dat ze andere objecten inrichten. Het zijn objecten die hierdoor een relatief kleine geometrie hebben. Voorbeelden zijn: stadsbankje, reclamebord, verkeerslicht, verkeersheuvel, fontein, grondwaterput.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="NEN3610:GeoObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Kunstwerk" type="NEN3610:Kunstwerk" abstract="true"
+               substitutionGroup="NEN3610:GeoObject"/>
+   <xs:complexType name="Kunstwerk" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+civiel-technisch werk voor de infrastructuur van wegen, water, spoorbanen, waterkeringen en/of leidingen en niet bedoeld voor permanent menselijk verblijf
+-- Description --
+Hieronder vallen overbruggingen, waterstaatkundige werken en waterkerende constructies. Overbruggingen kunnen zijn: brug, viaduct, aquaduct enz. Een voorbeeld van een waterstaatkundig werk is een sluis. Voorbeelden van waterkerende constructies zijn stuw en vaste dam.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="NEN3610:GeoObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Leiding" type="NEN3610:Leiding" abstract="true"
+               substitutionGroup="NEN3610:GeoObject"/>
+   <xs:complexType name="Leiding" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+buis of kabel bestemd voor de voortgeleiding van energie of materie
+-- Description --
+Hoogspanningsleiding, riool, waterleiding, glasvezelkabel, gasleiding.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="NEN3610:GeoObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Levensduur" type="NEN3610:Levensduur" abstract="false"/>
+   <xs:complexType name="Levensduur" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Gegevens waarmee levensduur vastgelegd wordt. Levensduur betreft alleen het laatste voorkomen van een object in de registratie. De levensduur is materieel (object in de werkelijkheid) en formeel (object in de registratie).
+
+De opbouw van Historie is gebaseerd op NEN3610:2011.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="beginTijd" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+tijdstip waarop het object in de werkelijkheid is ontstaan
+-- Source --
+NEN 3611:2011</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="eindTijd" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+tijdstip waarop het object in de werkelijk niet meer geldig is
+-- Source --
+NEN 3610:2011
+
+</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="objectBeginTijd" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+tijdstip waarop het object in de registratie is ontstaan
+-- Description --
+Dit tijdstip moet altijd gelijk zijn aan het tijdstipregistratie van het eerste voorkomen van het object.
+Er zijn verschillende datatypes voor de representatie van een tijdstip: Afhankelijk van de gebruikerswensen m.b.t. granulariteit kan o.a. worden gekozen uit types TM_Instant, Date of DateTime.
+-- Source --
+NEN 3610:2011</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="objectEindTijd" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+tijdstip waarop het object in de registratie niet meer geldig is
+-- Description --
+Er zijn verschillende datatypes voor de representatie van een tijdstip: Afhankelijk van de gebruikerswensen m.b.t. granulariteit kan o.a. worden gekozen uit types TM_Instant, Date of DateTime.
+-- Source --
+NEN 3610:2011</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="NEN3610ID" type="NEN3610:NEN3610ID" abstract="false"/>
+   <xs:complexType name="NEN3610ID" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+identificatiegegevens voor de universeel unieke identificatie van een object
+-- Description --
+De combinatie van &amp;lsquo;namespace&amp;rsquo; van een registratie, lokale identificatie en versie informatie maken een object uniek identificeerbaar. Met de informatie van deze klasse kan daardoor met zekerheid worden verwezen naar het geïdentificeerde object.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="namespace" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+unieke verwijzing naar een registratie van objecten
+-- Description --
+Het attribuut &amp;lsquo;namespace&amp;rsquo; is een unieke verwijzing naar de registratie die de identificatie uitdeelt. Deze lijst van registraties wordt beheerd binnen de context van NEN 3610. Binnen Nederland zal deze namespace vrijwel altijd met &amp;lsquo;NL.&amp;rsquo; beginnen.
+De volgende karakters mogen in een namespace aanduiding voorkomen: {&amp;rdquo;A&amp;rdquo;&amp;hellip;&amp;rdquo;Z&amp;rdquo;, &amp;ldquo;a&amp;rdquo;&amp;hellip;&amp;rdquo;z&amp;rdquo;,    &amp;rdquo;0&amp;rdquo;&amp;hellip;&amp;rdquo;9&amp;rdquo;, &amp;ldquo;_&amp;rdquo;,    &amp;ldquo;- &amp;ldquo;,   &amp;ldquo;,&amp;rdquo;,    &amp;rdquo;.&amp;rdquo;}
+-- Source --
+NEN 3610:2011</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="([A-Za-z0-9_\-,\.])+"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="lokaalID" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+unieke identificatiecode binnen een registratie
+-- Description --
+&amp;lsquo;LokaalId&amp;rsquo; is de identificatiecode die een object heeft binnen een (lokale) registratie.
+De volgende karakters mogen in een lokaalID voorkomen: {&amp;rdquo;A&amp;rdquo;&amp;hellip;&amp;rdquo;Z&amp;rdquo;,   &amp;ldquo;a&amp;rdquo;&amp;hellip;&amp;rdquo;z&amp;rdquo;, &amp;rdquo;0&amp;rdquo;&amp;hellip;&amp;rdquo;9&amp;rdquo;,    &amp;ldquo;_&amp;rdquo;,    &amp;ldquo;-&amp;ldquo;, &amp;ldquo;,&amp;rdquo;,    &amp;rdquo;.&amp;rdquo;}.
+-- Source --
+NEN 3610:2011</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="([A-Za-z0-9_\-,\.])+"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="versie" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+versie-aanduiding van een object
+-- Description --
+Het attribuut &amp;lsquo;versie&amp;rsquo; maakt geen deel uit van de identificatie van het object maar kan worden gebruikt om verschillende versies van hetzelfde object te identificeren.
+-- Source --
+NEN 3610:2011</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="PlanologischGebied" type="NEN3610:PlanologischGebied" abstract="true"
+               substitutionGroup="NEN3610:GeoObject"/>
+   <xs:complexType name="PlanologischGebied" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+niet-tastbaar begrensd gebied waaraan een bepaalde (toekomstige) bestemming, functionele en/of bestuurlijke ruimtelijke ontwikkeling is gekoppeld
+-- Description --
+Planologische gebieden vormen de geo-objecten die worden gebruikt om het beleid van de ruimtelijke ordening weer te geven. In de regel zijn het objecten die zijn gekoppeld aan beleidsinformatie die aangeeft wat waar krachtens de wet op de ruimtelijke ordening aan beleid is geformuleerd.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="NEN3610:GeoObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="RegistratiefGebied" type="NEN3610:RegistratiefGebied" abstract="true"
+               substitutionGroup="NEN3610:GeoObject"/>
+   <xs:complexType name="RegistratiefGebied" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+op basis van wet- of regelgeving afgebakend gebied dat als eenheid geldt van politiek/bestuurlijke verantwoordelijkheid of voor bedrijfsvoering
+-- Description --
+Registratieve gebieden vormen een diverse klasse en omvatten gebieden die onder de wet- of regelgeving vallen of die voor bedrijfsvoering administratief van belang zijn. In veel gevallen zal een dergelijk gebied ook een registratieve aanduiding of registratief nummer hebben. Er is geen algemeen attribuut gedefinieerd om deze informatie uit te wisselen omdat registraties hiervoor registratie-eigen attributen hebben. Voorbeelden zijn: gemeente Delft, postcodegebied 2345, politieregio Haaglanden, veiligheidsregio Gelderland Midden, Habitatrichtlijn, Nationaal Park De Hoge Veluwe.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="NEN3610:GeoObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Spoorbaan" type="NEN3610:Spoorbaan" abstract="true"
+               substitutionGroup="NEN3610:GeoObject"/>
+   <xs:complexType name="Spoorbaan" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+gebaand gedeelte voor het verkeer over rails
+-- Description --
+Voorbeelden zijn: spoorbaan, metrobaan, trambaan.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="NEN3610:GeoObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Terrein" type="NEN3610:Terrein" abstract="true"
+               substitutionGroup="NEN3610:GeoObject"/>
+   <xs:complexType name="Terrein" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+door een fysiek voorkomen gekarakteriseerd zichtbaar begrensd stuk grond
+-- Description --
+Terrein wordt gebruikt om een zichtbaar (tastbaar) begrensd stuk grond aan te geven waarvoor een bepaald fysiek voorkomen typerend is. Voorbeelden zijn: bos, landschap, bebouwing, landbouwgebied. Belangrijk is dat het stuk grond een zichtbare grens heeft met aangrenzende geo-objecten.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="NEN3610:GeoObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Water" type="NEN3610:Water" abstract="true"
+               substitutionGroup="NEN3610:GeoObject"/>
+   <xs:complexType name="Water" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+grondoppervlak in principe bedekt met water
+-- Description --
+Voorbeelden zijn: rivier, kanaal, beek, zee, meer, oppervlaktewater in algemene zin. Objecten die in het kader van de waterhuishouding periodiek met water zijn bedekt, vallen hier ook onder.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="NEN3610:GeoObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Weg" type="NEN3610:Weg" abstract="true"
+               substitutionGroup="NEN3610:GeoObject"/>
+   <xs:complexType name="Weg" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+gebaand gedeelte voor het wegverkeer en vliegverkeer te land
+-- Description --
+Onder de klasse Weg vallen ook start- en landingsbanen voor vliegverkeer.
+-- Source --
+NEN 3610:2011</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="NEN3610:GeoObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:simpleType name="VoidReasonValue">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
+reden waarom een &amp;rsquo;void-waarde&amp;rsquo; is ingevuld
+-- Source --
+NEN 3610:2011
+</xs:documentation>
+      </xs:annotation>
+      <xs:restriction base="xs:string"/>
+   </xs:simpleType>
+</xs:schema>

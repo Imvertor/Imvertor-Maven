@@ -32,37 +32,6 @@
     exclude-result-prefixes="#all"
     version="2.0">
     
-    <!-- 
-         Stylesheet to filter parameter file.
-    -->
-    
-    <xsl:template match="cw:file/config" mode="mode-intermediate-parms">
-        <xsl:copy>
-            <xsl:apply-templates mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <!-- ignore almost all: -->
-    <xsl:template match="config/*" mode="mode-intermediate-parms">
-        <xsl:call-template name="ignore"/>
-    </xsl:template>
- 
-    <!-- but do look at messages: -->
-    <xsl:template match="config/messages" mode="mode-intermediate-parms" priority="1">
-        <xsl:apply-templates mode="#current"/>
-    </xsl:template>
-    
-    <!-- avoid warnings on different IDs in:
-        
-         <message>
-            ...
-            <steptext>The supplier "regression/SampleBase/20130318" is in phase "2". Are you sure you want to derive from that model?</steptext>
-            <id>regression-SampleBase-1.0.0-2-20130318-20170520-132141</id>
-         
-         This is a brute force approach.
-     -->
-    <xsl:template match="config/messages/message/id" mode="mode-intermediate-parms">
-        <xsl:call-template name="ignore"/>
-    </xsl:template>
+   <!-- no filters -->
     
 </xsl:stylesheet>

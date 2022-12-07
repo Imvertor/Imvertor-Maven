@@ -27,6 +27,8 @@
     
     xmlns:functx="http://www.functx.com"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -66,10 +68,18 @@
     
     <xsl:variable name="metamodel-name" select="imf:get-normalized-name(imf:get-config-string('cli','metamodel'),'system-name')"/>
     <xsl:variable name="tvset-name" select="imf:get-normalized-name(imf:get-config-string('cli','tvset'),'system-name')"/>
+   
+    <xsl:variable name="translations" as="element(trans)*">
+        <xsl:sequence select="imf:prepare-translations($configuration-metamodel-doc)"/>
+        <xsl:sequence select="imf:prepare-translations($configuration-tvset-doc)"/>
+    </xsl:variable>
     
     <xsl:template match="/">
         <!--<xsl:apply-templates select="/" mode="speed-analyzer"/>-->
        
+        <xsl:sequence select="dlogger:save('metamodel doc',$configuration-metamodel-doc)"></xsl:sequence>
+        <xsl:sequence select="dlogger:save('tvset doc',$configuration-tvset-doc)"></xsl:sequence>
+        <xsl:sequence select="dlogger:save('translations',$translations)"></xsl:sequence>
         <xsl:variable name="config-raw">
             <config>
                 <xsl:sequence select="$configuration-owner-file"/>
@@ -83,8 +93,7 @@
                 <xsl:sequence select="$configuration-visuals-file"/>
                 <xsl:sequence select="$configuration-shaclrules-file"/>
                 <xsl:sequence select="$configuration-skosrules-file"/>
-            </config>
-        </xsl:variable>
+            </config>        </xsl:variable>
         
         <!-- create a short tre-like representation of this config for referecing purposes; this will reappear in the documentation -->
         <xsl:variable name="tree-includes">
@@ -265,6 +274,8 @@
                             <xsl:apply-templates select="($scalar-group/max-length)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($scalar-group/type-map)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($scalar-group/type-modifier)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($scalar-group/source)" mode="#current"/><!-- retain all sources -->
+                            <xsl:apply-templates select="($scalar-group/catalog)[last()]" mode="#current"/>
                         </scalar>
                     </xsl:for-each-group>
                 </scalars>
@@ -297,8 +308,22 @@
                                 <xsl:variable name="construct-group" select="current-group()"/>
                                 <xsl:apply-templates select="$construct-group[last()]" mode="#current"/>
                             </xsl:for-each-group>
+                            <context>
+                                <xsl:for-each-group select="$stereo-group/context/parent-stereo" group-by=".">
+                                    <xsl:sort select="current-grouping-key()"/>
+                                    <xsl:variable name="construct-group" select="current-group()"/>
+                                    <xsl:apply-templates select="$construct-group[last()]" mode="#current"/>
+                                </xsl:for-each-group>
+                                <xsl:for-each-group select="$stereo-group/context/super-stereo" group-by=".">
+                                    <xsl:sort select="current-grouping-key()"/>
+                                    <xsl:variable name="construct-group" select="current-group()"/>
+                                    <xsl:apply-templates select="$construct-group[last()]" mode="#current"/>
+                                </xsl:for-each-group>
+                            </context>
                             <xsl:apply-templates select="($stereo-group/toplevel)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($stereo-group/entity-relation-constraint)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($stereo-group/source)" mode="#current"/><!-- retain all sources -->
+                            <xsl:apply-templates select="($stereo-group/catalog)[last()]" mode="#current"/>
                         </stereo>
                     </xsl:for-each-group> 
                 </stereotypes>
@@ -377,6 +402,8 @@
                             <xsl:apply-templates select="($tv-group/derive)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/override)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/inherit)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($tv-group/source)" mode="#current"/><!-- retain all sources -->
+                            <xsl:apply-templates select="($tv-group/catalog)[last()]" mode="#current"/>
                             <stereotypes>
                                 <xsl:for-each-group select="$tv-group/stereotypes/stereo" group-by=".">
                                     <xsl:sort select="current-grouping-key()"/>
@@ -392,6 +419,17 @@
                                 </xsl:for-each-group>
                             </declared-values>
                         </tv>
+                    </xsl:for-each-group>
+                    <xsl:for-each-group select="$tagset//tagged-values/pseudo-tv" group-by="@id">
+                        <xsl:sort select="current-grouping-key()"/>
+                        <pseudo-tv id="{current-grouping-key()}">
+                            <xsl:variable name="tv-group" select="current-group()"/>
+                            <!-- hier: de laatste naam binnen dezelfde taal -->
+                            <xsl:sequence select="imf:fetch-applicable-name($tv-group/name)"/>
+                            <xsl:apply-templates select="($tv-group/desc[@lang=($language,'#all')])[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($tv-group/source)" mode="#current"/><!-- retain all sources -->
+                            <xsl:apply-templates select="($tv-group/catalog)[last()]" mode="#current"/>
+                        </pseudo-tv>
                     </xsl:for-each-group>
                 </tagged-values>
             </tagset>
@@ -454,6 +492,13 @@
                     <xsl:apply-templates select="." mode="#current"/>
                 </xsl:for-each>
             </skos-rules>
+            
+            <translations>
+                <xsl:for-each-group select="$translations" group-by="@orig-id">
+                    <xsl:sort select="current-grouping-key()"/>
+                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                </xsl:for-each-group>
+            </translations>
             
         </config>
     </xsl:template>
@@ -523,4 +568,30 @@
             <xsl:apply-templates select="current-group()[last()]" mode="finish-config"/>
         </xsl:for-each-group>
     </xsl:function>
+    
+    <xsl:function name="imf:prepare-translations" as="element(trans)*"> 
+        <xsl:param name="document" as="document-node()?"/>
+        <xsl:apply-templates select="$document" mode="prepare-translations"/>
+    </xsl:function>
+    
+    <xsl:template match="*[@id and name/@lang]" mode="prepare-translations">
+        <trans orig-id="{@id}">
+            <root><xsl:value-of select="local-name(root(.)/*)"/></root>
+            <part><xsl:value-of select="local-name(.)"/></part>
+            <xsl:for-each select="name">
+                <name orig-lang="{@lang}"><xsl:value-of select="."/></name>
+            </xsl:for-each>
+            <paths>
+                <xsl:for-each select="ancestor::*[@type='config' and @xml:base]">
+                    <path loc="{@xml:base}"><xsl:value-of select="name"/></path>
+                </xsl:for-each>
+            </paths>
+        </trans>
+        <xsl:apply-templates mode="#current"/>
+    </xsl:template>
+    
+    <xsl:template match="node()" mode="prepare-translations">
+        <xsl:apply-templates mode="#current"/>
+    </xsl:template>
+    
 </xsl:stylesheet>

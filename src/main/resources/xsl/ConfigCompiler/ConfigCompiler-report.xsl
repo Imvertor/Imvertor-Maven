@@ -24,6 +24,8 @@
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -39,6 +41,7 @@
     <xsl:variable name="configuration-metamodel-files" select="string-join($configuration-metamodel-file//name[parent::metamodel],', ')"/>
     <xsl:variable name="configuration-tagset-files" select="string-join($configuration-tvset-file//name[parent::tagset],', ')"/>
     <xsl:variable name="configuration-xmlschemarules-files" select="string-join($configuration-xmlschemarules-file//name[parent::xmlschema-rules],', ')"/>
+    <xsl:variable name="configuration-translations" select="$configuration-file/config/translations"/>
     
     <xsl:variable name="configuration-tree-file" select="imf:document(imf:get-xparm('properties/WORK_CONFIG_TREE_FILE'))"/>
     
@@ -86,6 +89,7 @@
                         <h1>Metamodel: tagged values</h1>
                         <xsl:apply-templates select="." mode="metamodel-tvs"/>
                         <xsl:apply-templates select="." mode="metamodel-tvs-desc"/>
+                        <xsl:apply-templates select="." mode="metamodel-pseudotvs-desc"/>
                     </div>       
                     <div>
                         <h1>Conceptual schemas</h1>
@@ -94,6 +98,10 @@
                     <div>
                         <h1>Visuals</h1>
                         <xsl:apply-templates select="." mode="metamodel-visuals"/>
+                    </div>
+                    <div>
+                        <h1>Translations</h1>
+                        <xsl:apply-templates select="$configuration-translations" mode="translations"/>
                     </div>
                 </content>
             </page>
@@ -261,7 +269,9 @@
                         <td>
                             <xsl:for-each select="$configuration-tvset-file//tv[stereotypes/stereo/@id = $stereo-id]">
                                 <xsl:sort select="name"/>
-                                <xsl:sequence select="imf:show-name(.,position() != last())"/>
+                                <xsl:sequence select="imf:show-name(.,false())"/>
+                                (<xsl:value-of select="stereotypes/stereo[@id = $stereo-id]/@minmax"/>)
+                                <br/>
                             </xsl:for-each>    
                         </td>
                     </tr>
@@ -344,12 +354,76 @@
                         <td>
                             <xsl:value-of select="desc"/>
                         </td>
+                        <td>
+                            <xsl:for-each select="catalog">
+                                <a href="{.}">link</a>
+                            </xsl:for-each>
+                        </td>
                     </tr>
                 </xsl:for-each>
             </xsl:variable>
-            <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value:20,description:80','table-tvs-desc')"/>
+            <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value:20,description:70,catalog:10','table-tvs-desc')"/>
         </div>
     </xsl:template>
+    
+    <xsl:template match="/config" mode="metamodel-pseudotvs-desc">
+        <div>
+            <h2>Pseudo tagged value descriptions</h2>
+            <xsl:variable name="rows" as="element(tr)*">
+                <xsl:for-each select="$configuration-tvset-file//tagged-values/pseudo-tv">
+                    <xsl:sort select="name[1]"/>
+                    <tr>
+                        <td>
+                            <xsl:sequence select="imf:show-name(.,position() != last())"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="desc"/>
+                        </td>
+                        <td>
+                            <xsl:for-each select="catalog">
+                                <a href="{.}">link</a>
+                            </xsl:for-each>
+                        </td>
+                    </tr>
+                </xsl:for-each>
+            </xsl:variable>
+            <xsl:sequence select="imf:create-result-table-by-tr($rows,'pseudo tagged value:20,description:70,catalog:10','table-peudotvs-desc')"/>
+        </div>
+    </xsl:template>
+    
+    <xsl:template match="/config/translations" mode="translations">
+
+        <xsl:sequence select="dlogger:save('translations template',.)"></xsl:sequence>
+        <div>
+            <h2>Translations of included constructs</h2>
+            <xsl:variable name="rows" as="element(tr)*">
+                <xsl:for-each select="trans">
+                    <xsl:sort select="root"/>
+                    <xsl:sort select="part"/>
+                    <xsl:sort select="name[@orig-lang = 'nl'][1]"/><!-- NB het kan voorkomen dat een construct meerdere namen heeft, denk aan DATETIME en DT --> 
+                    <tr>
+                        <td>
+                            <xsl:value-of select="root"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="part"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="name[@orig-lang = 'nl']"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="name[@orig-lang = 'en']"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="paths/path[last()]"/>
+                        </td>
+                    </tr>
+                </xsl:for-each>
+            </xsl:variable>
+            <xsl:sequence select="imf:create-result-table-by-tr($rows,'root:15,part:15,NL:20,EN:20,config:30','table-translations-desc')"/>
+        </div>
+    </xsl:template>
+    
     
     <xsl:function name="imf:show-name">
         <xsl:param name="element"/>

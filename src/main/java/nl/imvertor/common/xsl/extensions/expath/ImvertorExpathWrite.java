@@ -152,7 +152,9 @@ public class ImvertorExpathWrite extends ExtensionFunctionDefinition {
 		        if (item instanceof NodeInfo) {
 		          serialize((NodeInfo) item, new StreamResult(os), outputProperties);
 		        } else {
-		          new OutputStreamWriter(os, encoding).append(item.getStringValue());
+		        	OutputStreamWriter osw = new OutputStreamWriter(os, encoding);
+		        	osw.append(item.getStringValue());
+		        	osw.close();
 		        }
 		      }
 		    } catch (Exception e) {

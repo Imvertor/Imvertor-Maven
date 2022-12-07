@@ -6,12 +6,14 @@
     
     <!-- #GH-256 refactored -->
     
-    <xi:include href="MIM11-extension.xml"/><!-- enkele typische gemeenschappelijke aanvullingen; voorlopend op 111 -->
+    <xi:include href="MIM11-scalar.xml"/><!-- scalaire typen -->
 
+    <xi:include href="MIM11-extension.xml"/><!-- enkele typische gemeenschappelijke aanvullingen; voorlopend op 111 -->
+    
     <name>MIM 1.1</name>
     <desc lang="en">Metamodel for common constructs in MIM 1.1 models</desc>
     <desc lang="nl">Metamodel voor gemeenschappelijkheden in MIM 1.1 modellen</desc>
-        
+    
     <profiles>
         <profile lang="nl">
             <id>MIM11NL</id>
@@ -51,85 +53,6 @@
         <feature name="supports-baretype-transformation">false<!-- specify in concrete metamodel: true|false --></feature><!-- transformation of AN2 to string, length 2 -->
     </features>
     
-    <scalars xml:id="scalars">
-        
-        <scalar id="scalar-boolean">
-            <name lang="nl">BOOLEAN</name>
-            <desc lang="nl">MIM11: Indicatie met mogelijke waarden True, false, 1 of 0. True en 1 hebben een identieke betekenis: Ja. False en 0 hebben een identieke betekenis: Nee. Opmerking: t.a.v. Ja of Nee. Wanneer u de Ja of Nee wilt gebruiken, gebruik dan bv. een Enumeratie genaamd Indicatie, of gebruik AN met een lengte en een (formeel) patroon.</desc>
-            <name lang="en">BOOLEAN</name>
-            <type-map formal-lang="xs">boolean</type-map>
-        </scalar>
-        <scalar id="scalar-day">
-            <name lang="nl">DAY</name>
-            <desc lang="nl">MIM11: 2-cijferige dag uitgedrukt in dd conform https://en.wikipedia.org/wiki/ISO_8601</desc>
-            <name lang="en">DAY</name>
-            <type-map formal-lang="xs">gDay</type-map>
-        </scalar>
-        <scalar id="scalar-integer">
-            <name lang="nl">INTEGER</name>
-            <desc lang="nl">MIM11: Zie [iso-19103] (subtype van ISO Number). Vrij vertaald: geheel getal, lengte is minimaal 1 en maximale lengte is onbepaald, zonder voorloopnullen. Opmerking: t.a.v. positieve en negatieve getalen en + en – tekens: bijvoorbeeld -2,0 Het (formeel) patroon geeft aan of een + en/of - teken gebruikt mag worden in het gegeven.</desc>
-            <name lang="en">INTEGER</name>
-            <type-map formal-lang="xs">integer</type-map>
-            <max-length>true</max-length>
-        </scalar>
-        <scalar id="scalar-date">
-            <name lang="nl">DATE</name>
-            <desc lang="nl">MIM11:  4-cijferig jaar, 2-cijferig maand, 2-cijferig dag uitgedrukt in yyyy-mm-dd conform https://en.wikipedia.org/wiki/ISO_8601</desc>
-            <name lang="en">DATE</name>
-            <type-map formal-lang="xs">date</type-map>
-        </scalar>    
-        <scalar id="scalar-datetime">
-            <name lang="nl">DATETIME</name>
-            <desc lang="nl">MIM11: yyyy-mm-ddThh:mm:ss conform https://en.wikipedia.org/wiki/ISO_8601</desc>
-            <name lang="en">DATETIME</name>
-            <type-map formal-lang="xs">dateTime</type-map>
-        </scalar>
-        <scalar id="scalar-decimal">
-            <name lang="nl">DECIMAL</name>
-            <desc lang="nl">MIM11: Zie [iso-19103] (subtype van ISO Number). Vrij vertaald: een decimal is een gegevenstype waarin het getal een exacte waarde vertegenwoordigt, als een eindige weergave van een decimaal getal. Aangezien veel valuta's decimaal zijn, hebben deze weergaven de voorkeur bij het omgaan met dergelijke waarden. Opmerking 1: Dit verschilt van real, want real is een geschatte waarde en Decimal is exact. Opmerking 2: t.a.v. positieve en negatieve getalen en + en – tekens: zie Integer.</desc>
-            <name lang="en">DECIMAL</name>
-            <type-map formal-lang="xs">decimal</type-map>
-        </scalar>
-        <scalar id="scalar-month">
-            <name lang="nl">MONTH</name>
-            <desc lang="nl">MIM11: 2-cijferige maand uitgedrukt in mm conform https://en.wikipedia.org/wiki/ISO_8601</desc>
-            <name lang="en">MONTH</name>
-            <type-map formal-lang="xs">gMonth</type-map>
-        </scalar>
-        <scalar id="scalar-real">
-            <name lang="nl">REAL</name>
-            <desc lang="nl">MIM11: Zie [iso-19103] (subtype van ISO Number). Vrij vertaald: een real is een zwevendekommagetal, waarbij de precisie bepaald wordt door het aantal getoonde cijfers. Het getoonde getal is een schatting en geeft niet noodzakelijk de exacte waarde weer. Opmerking 1: Dit verschilt van decimal, want decimal is een exacte waarde en real is geschat. Opmerking 2: t.a.v. positieve en negatieve getalen en + en – tekens: zie Integer.</desc>
-            <name lang="en">REAL</name>
-            <type>string</type>
-            <type-map formal-lang="xs">decimal</type-map>
-            <fraction-digits>true</fraction-digits>
-            <max-length>true</max-length>
-        </scalar>
-        <scalar id="scalar-string">
-            <name lang="nl">CHARACTERSTRING</name>
-            <desc lang="nl">MIM11: Zie [iso-19103]. Vrij vertaald: alle alfanumerieke tekens en speciale tekens die horen bij de gekozen characterset (standaard UTF-8), dus met diakrieten, white spaces, \-teken en newlines of HTML opmaak e.d. Mag starten met spatie. De maximale lengte is onbepaald. Opmerking: getallen (ISO Numbers) met voorloopnullen worden opgenomen als CharacterString, met een patroon of formeel patroon. Bij het metagegeven Waardenverzameling attribuutsoort wordt dit dan (ook) gespecificeerd.</desc>
-            <name lang="en">CHARACTERSTRING</name>
-            <desc lang="en">A CharacterString is an arbitrary-length sequence of characters including accents and special characters from
-                repertoire of one of the adopted character sets (ISO 19103, Draft Technical Specification 19103, Geographic information - Conceptual
-                schema language)</desc>
-            <type-map formal-lang="xs">string</type-map>
-            <max-length>true</max-length>
-        </scalar>
-        <scalar id="scalar-uri">
-            <name lang="nl">URI</name>
-            <desc lang="nl">MIM11: Unieke identificatie op internet conform RFC3986 en de URI-strategie Linked Open Data. Gestandaardiseerde manier om op het internet dingen (pagina's met informatie, objecten, datasets) uniek te identificeren.</desc>
-            <name lang="en">URI</name>
-            <type-map formal-lang="xs">anyURI</type-map>
-        </scalar>
-        <scalar id="scalar-year">
-            <name lang="nl">YEAR</name>
-            <desc lang="nl">MIM11: 4-cijferig jaar uitgedrukt in yyyy conform https://en.wikipedia.org/wiki/ISO_8601</desc>
-            <name lang="en">YEAR</name>
-            <type-map formal-lang="xs">gYear</type-map>
-        </scalar>
-        
-    </scalars>
-    
     <stereotypes xml:id="stereotypes">
     
         <stereo id="stereotype-name-attribute" primary="yes">
@@ -137,7 +60,14 @@
             <name lang="en">AttributeType</name>
             <desc lang="en">The type to which an attribute may belong.</desc>
             <desc lang="nl">MIM11: De typering van gelijksoortige gegevens die voor een objecttype van toepassing is.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#attribuutsoort</catalog>
             <construct>attribute</construct>
+            <context>
+                <parent-stereo>stereotype-name-objecttype</parent-stereo>
+                <parent-stereo>stereotype-name-composite</parent-stereo>
+                <parent-stereo>stereotype-name-relatieklasse</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-attributegroup" primary="yes">
@@ -146,14 +76,26 @@
             <desc lang="en">
                 An more precise form of an UML attribute where the type is an AttributeGroupType.</desc>
             <desc lang="nl">MIM11: Een typering van een groep van gelijksoortige gegevens die voor een objecttype van toepassing is.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#gegevensgroep</catalog>
             <construct>attribute</construct>
+            <context>
+                <parent-stereo>stereotype-name-objecttype</parent-stereo>
+                <parent-stereo>stereotype-name-composite</parent-stereo>
+                <parent-stereo>stereotype-name-relatieklasse</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-informatiemodel-package" primary="yes">
             <name lang="nl">Informatiemodel</name>
             <name lang="en">Information model</name>
             <desc lang="nl">MIM11: De groepering van alle modelelementen waaruit het informatiemodel is opgebouwd. Het informatiemodel als geheel.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#informatiemodel</catalog>
             <construct>package</construct>
+            <context>
+                <!-- top level -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-codelist" primary="yes">
@@ -161,21 +103,34 @@
             <name lang="en">Codelist</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">MIM11: De representatie van een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort, die buiten het model in een externe waardenlijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast, uitgebreid, of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie). De representatie bevat geen kenmerken, voor alle kenmerken wordt verwezen naar de specificatie van de externe waardelijst.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#codelijst</catalog>
             <construct>datatype</construct>
             <construct>enumeration</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-domain-package" primary="yes">
             <name lang="en">Domain</name>
             <name lang="nl">Domein</name>
             <desc lang="nl">MIM11: Een groepering van constructies die een semantisch samenhangend gedeelte van een informatiemodel beschrijven.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#domein</catalog>
             <construct>package</construct>
+            <context>
+                <parent-stereo>stereotype-name-informatiemodel-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-external-package" primary="yes">
             <name lang="en">External</name>
             <name lang="nl">Extern</name>
             <desc lang="nl">MIM11: Een groepering van constructies die een externe instantie beheert en beschikbaar stelt aan een informatiemodel en die in het informatiemodel ongewijzigd gebruikt worden.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#extern</catalog>
             <construct>package</construct>
         </stereo>
         
@@ -186,7 +141,13 @@
                 The collection of data from an object of a type that is mutually mutated and maintained.
             </desc>
             <desc lang="nl">MIM11: Een groep van met elkaar samenhangende attribuutsoorten. Een gegevensgroeptype is altijd een type van een gegevensgroep.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#gegevensgroeptype</catalog>
             <construct>class</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>            
         </stereo>
         
         <stereo id="stereotype-name-complextype" primary="yes">
@@ -194,7 +155,13 @@
             <name lang="en">StructuredDatatype</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">MIM11: Specifiek benoemd datatype dat de structuur van een gegeven beschrijft, samengesteld uit minimaal twee elementen die in samenhang betekenisvol zijn.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#gestructureerd-datatype</catalog>
             <construct>datatype</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-data-element" primary="yes">
@@ -203,7 +170,12 @@
             <desc lang="en">
                 A component of a Complex data type expressed in a class property (attribute).</desc>
             <desc lang="nl">MIM11: Een onderdeel/element van een Gestructureerd datatype die als type een datatype heeft.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#data-element</catalog>
             <construct>attribute</construct>
+            <context>
+                <parent-stereo>stereotype-name-complextype</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-enum" primary="yes">
@@ -211,7 +183,12 @@
             <name lang="en">Enum</name>
             <desc lang="en">A single element in an enumeration</desc>
             <desc lang="nl">MIM11: Een gedefinieerde waarde, in de vorm van een eenmalig vastgesteld constant gegeven.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#enumeratiewaarde</catalog>
             <construct>attribute</construct>
+            <context>
+                <parent-stereo>stereotype-name-enumeration</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-enumeration" primary="yes">
@@ -220,8 +197,14 @@
             <desc lang="en">
                 A list of the possible domain values ​​or constants of a attribute type that is unchangeable.</desc>
             <desc lang="nl">MIM11: Een datatype waarvan de mogelijke waarden limitatief zijn opgesomd in een statische lijst.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#enumeratie</catalog>
             <construct>datatype</construct>
             <construct>enumeration</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-externekoppeling" primary="yes">
@@ -230,14 +213,31 @@
             <desc lang="en">An association that allows an object type of an external information model from the perspective of its own information model to be 
                 linked to an object type from the "own" information model.</desc>
             <desc lang="nl">MIM11: Een associatie waarmee vanuit het perspectief van het eigen informatiemodel een objecttype uit het ‘eigen’ informatiemodel gekoppeld wordt aan een objecttype van een extern informatiemodel. De relatie zelf hoort bij het ‘eigen’ objecttype.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#externe-koppeling</catalog>
             <construct>association</construct>
+            <context>
+                <parent-stereo>stereotype-name-objecttype</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-generalization" primary="yes">
             <name lang="nl">Generalisatie</name>
             <name lang="en">InheritanceRelation</name>
             <desc lang="nl">MIM11: De typering van het hiërarchische verband tussen een meer generiek en een meer specifiek modelelement van hetzelfde soort, waarbij het meer specifieke modelelement eigenschappen van het meer generieke modelelement overerft. Dit verband is alleen gedefinieerd voor objecttypen en datatypen.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#generalisatie</catalog>
             <construct>generalization</construct>
+            <context>
+                <parent-stereo>stereotype-name-objecttype</parent-stereo>
+                <parent-stereo>stereotype-name-composite</parent-stereo>
+                <parent-stereo>stereotype-name-relatieklasse</parent-stereo>
+                <parent-stereo>stereotype-name-complextype</parent-stereo>
+                <parent-stereo>stereotype-name-simpletype</parent-stereo>
+                <parent-stereo>stereotype-name-enumeration</parent-stereo>
+                <parent-stereo>stereotype-name-referentielijst</parent-stereo>
+                <parent-stereo>stereotype-name-codelist</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-objecttype" primary="yes">
@@ -245,7 +245,13 @@
             <name lang="en">FeatureType</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">MIM11: De typering van een groep objecten die binnen een domein relevant zijn en als gelijksoortig worden beschouwd.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#objecttype</catalog>
             <construct>class</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-referentielijst" primary="yes">
@@ -253,21 +259,40 @@
             <name lang="en">Referencelist</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">MIM11: De representatie van een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort, die buiten het model in een externe waardenlijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast, uitgebreid, of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie). De representatie bevat een aantal kenmerken, die overgenomen zijn van de specificatie van de externe waardelijst.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#referentielijst</catalog>
             <construct>datatype</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         <stereo id="stereotype-name-referentie-element" primary="yes">
             <name lang="nl">Referentie element</name>
             <name lang="en">ReferenceElement</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">MIM11: Een eigenschap van een object in een referentielijst in de vorm van een gegeven.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#referentie-element</catalog>
             <construct>attribute</construct>
+            <context>
+                <parent-stereo>stereotype-name-referentielijst</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-relatiesoort" primary="yes">
             <name lang="en">AssociationType</name>
             <name lang="nl">Relatiesoort</name>
             <desc lang="nl">MIM11: De typering van het structurele verband tussen een object van een objecttype en een (ander) object van een ander (of hetzelfde) objecttype.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#relatiesoort</catalog>
             <construct>association</construct>
+            <context>
+                <parent-stereo>stereotype-name-objecttype</parent-stereo>
+                <parent-stereo>stereotype-name-composite</parent-stereo>
+                <parent-stereo>stereotype-name-relatieklasse</parent-stereo>
+                <parent-stereo>stereotype-name-union</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-relatieklasse" primary="yes">
@@ -277,13 +302,20 @@
                 A relationship type that records data about the relationship between two types of objects (in the form of a third kind of object).
                 Example: Relationship class PARENT-CHILD RELATIONSHIP, RELATIONSHIP FUNCTIONARY</desc>
             <desc lang="nl">MIM11: Een relatiesoort met eigenschappen.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#relatieklasse</catalog>
             <construct>class</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-relation-role" primary="yes">
             <name lang="nl">Relatierol</name>
             <name lang="en">AssociationRole</name>
             <desc lang="nl">MIM11: De benaming van de manier waarop een object deelneemt aan een relatie met een ander object.</desc>
+            <source>MIM-1.1.0</source>
             <construct>associationend</construct>
         </stereo>
         
@@ -292,24 +324,36 @@
             <name lang="en">PrimitiveDatatype</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">MIM11: Een primitief datatype is een datatype met een eenvoudige basisstructuur, oftewel enkelvoudig en zonder gelaagdheid.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#primitief-datatype</catalog>
             <construct>datatype</construct>
             <construct>primitivetype</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-union" primary="yes">
             <name lang="nl">Keuze</name>
             <name lang="en">Union</name><!-- TODO moet dit niet choice worden? (overal union -> choice) -->
             <desc lang="nl">Het stereotype Keuze is een catch-all naam voor alle mogelijke keuze gerelateerde onderdelen van de MIM standaard. Imvertor voegt (bij canonisering) een stereotype toe dat meer exact aangeeft welk type keuze bedoeld is.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#keuze</catalog>
             <construct>class</construct>
             <construct>datatype</construct>
             <construct>attribute</construct>
             <construct>association</construct>
+            <context>
+                <!-- allerlei contexten, niet nodig om dat hier verder te specificeren -->
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-union-element-DEPRECATED" primary="no"><!-- niet primary, want is deprecated en wordt omgezet in canonisering -->
             <name lang="nl">Keuze element</name>
             <name lang="en">UnionElement</name>
             <desc lang="nl">Dit stereotype is vervallen in de laatste versie van MIM 1.1. Ze blijf vooralsnog gehandhaafd voor "backward compatibility" maar moet worden veranderd in stereotype DATATYPE.</desc>
+            <source>MIM-1.1.0</source>
             <construct>attribute</construct>
         </stereo>
         
@@ -317,7 +361,12 @@
             <name lang="nl">Datatype</name>
             <name lang="en">Datatype</name>
             <desc lang="nl">Een representatie van een datatype in een keuze tussen datatypen. MIM: Use case 1: een keuze tussen datatypen</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#keuze</catalog>
             <construct>attribute</construct>
+            <context>
+                <parent-stereo>stereotype-name-union-datatypes</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-union-attributes" primary="no">
@@ -325,7 +374,13 @@
             <name lang="en">Union attributes</name>
             <desc lang="nl">Keuze klasse waarbij keuze tussen attribuutsoorten is bedoeld. MIM: Use case 2 en 3.
                 <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#keuze</catalog>
             <construct>class</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-union-attribute" primary="no">
@@ -333,7 +388,12 @@
             <name lang="en">Union attribute</name>
             <desc lang="nl">Attribuutsoort binnen Keuze klasse.  MIM: Use case 2 en 3.
                 <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#keuze</catalog>
             <construct>attribute</construct>
+            <context>
+                <parent-stereo>stereotype-name-union</parent-stereo>
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-union-associations" primary="no">
@@ -341,7 +401,13 @@
             <name lang="en">Union associations</name>
             <desc lang="nl">Keuze klasse waarbij keuze tussen relatiesoorten is bedoeld.  MIM: Use case 4.
                 <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#keuze</catalog>
             <construct>class</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-union-association" primary="no">
@@ -349,7 +415,12 @@
             <name lang="en">Union association</name>
             <desc lang="nl">Relatiesoort binnen Keuze klasse. MIM: Use case 4.
                 <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#keuze</catalog>
             <construct>association</construct>
+            <context>
+                <parent-stereo>stereotype-name-union</parent-stereo>
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-union-datatypes" primary="no">
@@ -357,8 +428,14 @@
             <name lang="en">Union datatypes</name>
             <desc lang="nl">Keuze klasse waarbij keuze tussen datatypen is bedoeld. MIM: Use case 1.
                 <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#keuze</catalog>
             <construct>class</construct>
             <construct>datatype</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-union-for-attributes" primary="no">
@@ -367,14 +444,26 @@
             <desc lang="nl">De keuze betreft attributen, waarbij het keuze attribuut zelf geen betekenis heeft. MIM: Use case 2: een keuze tussen attribuutsoorten. 
                 NB. Er is géén door Imvertor toegevoegd stereotype voor attribuurtsoort van type Keuze in use case 3.
             <i>Dit datatype wordt automatisch ingevoegd door Imvertor.</i></desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#keuze</catalog>
             <construct>attribute</construct>
+            <context>
+                <parent-stereo>stereotype-name-objecttype</parent-stereo>
+                <parent-stereo>stereotype-name-composite</parent-stereo>
+                <parent-stereo>stereotype-name-relatieklasse</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-view-package" primary="yes">
             <name lang="en">View</name>
             <name lang="nl">View</name>
             <desc lang="nl">MIM11: Een groepering van objecttypen die gespecificeerd zijn in een extern informatiemodel en vanuit het perspectief van het eigen informatiemodel inzicht geeft welke gegevens van deze objecttypen relevant zijn binnen het eigen informatiemodel.</desc>
+            <source>MIM-1.1.0</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#view</catalog>
             <construct>package</construct>
+            <context>
+                <parent-stereo>stereotype-name-informatiemodel-package</parent-stereo>
+            </context>
         </stereo>
         
     </stereotypes>   

@@ -1,0 +1,25 @@
+<local-schema schemafolder="OGC/xsd/www.opengis.net/GML322-20160101">
+    <!-- 
+            This schema depends on the local schema folders specified below.
+        -->
+    <depends-on schemafolder="ISO/xsd/www.isotc211.org/GEOMATICS-20050101"/>
+    <depends-on schemafolder="W3C/xsd/www.w3.org/SMIL20-20010731"/>
+    <!-- 
+            Define which local paths will be valid for internet imports and includes 
+            This specifies the source URI prefix, as found in the local copy,
+            and the target URI prefix, that will be valid for the local copy.
+        -->
+    <local-map 
+        source-uri-prefix="http://schemas.opengis.net/iso/19139/20070417"
+        target-uri-prefix="../.."/>
+    <local-map 
+        source-uri-prefix="http://schemas.opengis.net/gml/3.1.1/smil/smil20.xsd"
+        target-uri-prefix="../../smil20/smil20.xsd"/>
+    <local-map 
+        source-uri-prefix="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"
+        target-uri-prefix="../../xlink/1.0.0/xlink.xsd"/>
+    <local-map 
+        source-uri-prefix="http://www.w3.org/1999/xlink.xsd"
+        target-uri-prefix="../../xlink/1.0.0/xlink.xsd"/>
+    
+</local-schema>

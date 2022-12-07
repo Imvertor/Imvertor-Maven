@@ -21,7 +21,6 @@
 package nl.imvertor.XmiCompiler;
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.xml.xpath.XPathConstants;
 
@@ -31,7 +30,6 @@ import org.w3c.dom.NodeList;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
-import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.exceptions.EnvironmentException;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;

@@ -1,22 +1,8 @@
 <!-- 
     Mappings for local schemas 
 -->
-<local-schemas>
+<local-schemas xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <local-schema schemafolder="www.w3.org/XLINKS-20010627">
-        <depends-on schemafolder="www.w3.org/XML-1998"/>
-        <local-map 
-            source-uri-prefix="http://www.w3.org/2001/xml.xsd"
-            target-uri-prefix="../../1998/namespace/xml.xsd"/>
-    </local-schema>
-    
-    <local-schema schemafolder="www.opengis.net/GML322PROFILE-20200728">
-        <depends-on schemafolder="www.w3.org/XLINKS-20010627"/>
-        <local-map 
-            source-uri-prefix="../../xlink/1.0.0/xlinks.xsd"
-            target-uri-prefix="../../xlink/1.0.0/xlinks.xsd"/>
-        
-    </local-schema>
-    
+    <xi:include href="../../Kadaster/xsd/www.opengis.net/ls-GML322PROFILE-20200728.xml"/>
     
 </local-schemas>

@@ -65,30 +65,33 @@
             <name lang="nl">TIME</name>
             <name lang="en">TIME</name>
             <type-map formal-lang="xs">time</type-map>
+            <source>KadasterMIM-1.0.0</source>            
         </scalar>   
         
         <scalar id="scalar-yearmonth">
             <name lang="nl">YEARMONTH</name>
             <name lang="en">YEARMONTH</name>
             <type-map formal-lang="xs">gYearMonth</type-map>
+            <source>KadasterMIM-1.0.0</source>            
         </scalar>
         
         <scalar id="scalar-any">
             <name lang="nl">ANY</name>
             <type-map formal-lang="xs">#any</type-map>
+            <source>KadasterMIM-1.0.0</source>            
         </scalar>
         
     </scalars>
     
     <stereotypes xml:id="stereotypes">
         
-        <stereo id="stereotype-name-base-package" primary="yes"><!-- TODO -->
+        <stereo id="stereotype-name-base-package" primary="yes">
             <name lang="nl">Basismodel</name>
             <name lang="en">Base model</name>
             <construct>package</construct>
         </stereo>
         
-        <stereo id="stereotype-name-application-package" primary="yes"><!-- TODO -->
+        <stereo id="stereotype-name-application-package" primary="yes">
             <name lang="nl">Toepassing</name>
             <name lang="en">Application model</name>
             <construct>package</construct>

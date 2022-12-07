@@ -175,7 +175,7 @@
    <properties>
    
       <LOCALIZE_XSD_XSLPATH>localize-xsd.xsl</LOCALIZE_XSD_XSLPATH>
-      <LOCAL_SCHEMA_MAPPING_FILE>${system/inp-folder-path}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>
+      <LOCAL_SCHEMA_MAPPING_FILE>${system/managedinstallfolder}/input/${cli/owner}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>
     
       <PROFILE_XSD_XSLPATH>profile-xsd.xsl</PROFILE_XSD_XSLPATH>
       <WORK_PROFILE_XSD_FILE>${system/work-imvert-folder-path}/imvertor.31.profile.xsd</WORK_PROFILE_XSD_FILE>
@@ -200,7 +200,7 @@
       <IMVERTOR_FLATTEN_XSLPATH>flatten-xsd.xsl</IMVERTOR_FLATTEN_XSLPATH>
       <WORK_FLATTEN_FILE>${system/work-imvert-folder-path}/imvertor.26.flatten.xml</WORK_FLATTEN_FILE>
       <!-- copy schemas -->
-      <EXTERNAL_XSD_FOLDER>${system/inp-folder-path}/xsd</EXTERNAL_XSD_FOLDER>
+      <EXTERNAL_XSD_FOLDER>${system/managedinstallfolder}/input/${cli/owner}/xsd</EXTERNAL_XSD_FOLDER>
       
       <!-- 
          KING Koppelvlakken StUF schema's (BSM)
@@ -235,8 +235,8 @@
       
       
       <!-- locatie van de stuf onderlaag -->
-      <KINGBSM_STUF_ONDERLAAG_0302>${system/inp-folder-path}/xsd/other/KING-BSM/onderlaag-0302</KINGBSM_STUF_ONDERLAAG_0302>
-      <KINGUGM_STUF_ONDERLAAG_0302>${system/inp-folder-path}/xsd/other/KING-UGM/onderlaag-0302</KINGUGM_STUF_ONDERLAAG_0302>
+      <KINGBSM_STUF_ONDERLAAG_0302>${system/managedinstallfolder}/input/${cli/owner}/xsd/other/KING-BSM/onderlaag-0302</KINGBSM_STUF_ONDERLAAG_0302>
+      <KINGUGM_STUF_ONDERLAAG_0302>${system/managedinstallfolder}/input/${cli/owner}/xsd/other/KING-UGM/onderlaag-0302</KINGUGM_STUF_ONDERLAAG_0302>
      
       <!-- 
          Where to find the standaard "EP formaat voor onderlaag"
@@ -301,8 +301,8 @@
       <?X      OVERNEMEN VAN KING, hard gecodeerd in de stylesheets/java
      
       <!-- locatie van de stuf onderlaag -->
-      <KINGBSM_STUF_ONDERLAAG_0302>${system/inp-folder-path}/xsd/other/KING-BSM/onderlaag-0302</KINGBSM_STUF_ONDERLAAG_0302>
-      <KINGUGM_STUF_ONDERLAAG_0302>${system/inp-folder-path}/xsd/other/KING-UGM/onderlaag-0302</KINGUGM_STUF_ONDERLAAG_0302>
+      <KINGBSM_STUF_ONDERLAAG_0302>${system/managedinstallfolder}/input/${cli/owner}/xsd/other/KING-BSM/onderlaag-0302</KINGBSM_STUF_ONDERLAAG_0302>
+      <KINGUGM_STUF_ONDERLAAG_0302>${system/managedinstallfolder}/input/${cli/owner}/xsd/other/KING-UGM/onderlaag-0302</KINGUGM_STUF_ONDERLAAG_0302>
      
       <!-- 
          Where to find the standaard "EP formaat voor onderlaag"

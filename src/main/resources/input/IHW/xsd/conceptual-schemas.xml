@@ -11,10 +11,10 @@
          <cs:name>IHW_GEOSTANDAARDEN</cs:name>
          <cs:use>
             <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
-            <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM111"/>
             <cs-ref:MapRef xlink:href="#IMGEO211"/>
-            <cs-ref:MapRef xlink:href="#NEN3610"/>
-            <cs-ref:MapRef xlink:href="#CITYGML"/>
+            <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
+            <?x <cs-ref:MapRef xlink:href="#CITYGML"/> x?>
             <cs-ref:MapRef xlink:href="#IHW-GENERIEK"/>
          </cs:use>
       </cs:Mapping>
@@ -22,11 +22,11 @@
    <cs:components>
       <cs:ConceptualSchemasComponents>
 
-         <xi:include href="../../MIM/xsd/cs-MIM11.xml"/><!-- implements ConceptualSchema MIM11 -->
-         <xi:include href="../../ISO/xsd/cs-GML322PROFILE.xml"/><!-- implements ConceptualSchema GML322 -->
+         <xi:include href="../../MIM/xsd/cs-MIM111.xml"/><!-- implements ConceptualSchema MIM11 -->
+         <xi:include href="../../Kadaster/xsd/cs-GML322PROFILE.xml"/><!-- implements ConceptualSchema GML322 -->
          <xi:include href="../../Geonovum/xsd/cs-IMGEO211.xml"/><!-- implements ConceptualSchema IMGEO -->
-         <xi:include href="../../Geonovum/xsd/cs-NEN3610.xml"/><!-- implements ConceptualSchema NEN3610-->
-         <xi:include href="../../Geonovum/xsd/cs-CityGML.xml"/><!-- implements ConceptualSchema CityGML-->
+         <xi:include href="../../NEN3610/xsd/cs-NEN3610-2022.xml"/><!-- implements ConceptualSchema NEN3610-->
+         <?x <xi:include href="../../OGC/xsd/cs-CityGML.xml"/><!-- implements ConceptualSchema CityGML--> x?>
          
          <cs:ConceptualSchema>
             <cs:id>IHW</cs:id>
@@ -35,11 +35,13 @@
             <cs:url>http://www.ihw.nl/</cs:url>
          </cs:ConceptualSchema>
          
-         <xi:include href="../../MIM/xsd/cm-MIM11.xml"/><!-- implements Map #MIM11 -->
-         <xi:include href="../../ISO/xsd/cm-GML322PROFILE.xml"/><!-- implements Map #GML322PROFILE -->
+         <!--maps:-->
+         
+         <xi:include href="../../MIM/xsd/cm-MIM111.xml"/><!-- implements Map #MIM11 -->
+         <xi:include href="../../Kadaster/xsd/cm-GML322PROFILE.xml"/><!-- implements Map #GML322PROFILE -->
          <xi:include href="../../Geonovum/xsd/cm-IMGEO211.xml"/><!-- implements Map #IMGEO -->
-         <xi:include href="../../Geonovum/xsd/cm-NEN3610.xml"/><!-- implements Map #NEN3610 -->
-         <xi:include href="../../Geonovum/xsd/cm-CityGML.xml"/><!-- implements Map #CITYGML -->
+         <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/><!-- implements Map #NEN3610 -->
+         <?x <xi:include href="../../OGC/xsd/cm-CityGML.xml"/><!-- implements Map #CITYGML --> x?>
          
          <cs:Map>
             <cs:id>IHW-GENERIEK</cs:id>
@@ -51,6 +53,7 @@
             <cs:forSchema>
                <cs-ref:ConceptualSchemaRef xlink:href="#IHW"/>
             </cs:forSchema>
+            <cs:owner>IHW</cs:owner>
             <cs:constructs>
                <cs:Construct>
                   <cs:name>OIN</cs:name>

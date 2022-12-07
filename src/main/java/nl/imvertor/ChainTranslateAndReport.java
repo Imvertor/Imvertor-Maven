@@ -33,9 +33,9 @@ import nl.imvertor.ImvertCompiler.ImvertCompiler;
 import nl.imvertor.JsonConceptsCompiler.JsonConceptsCompiler;
 import nl.imvertor.JsonSchemaCompiler.JsonSchemaCompiler;
 import nl.imvertor.MIMCompiler.MIMCompiler;
-import nl.imvertor.StcCompiler.StcCompiler;
 import nl.imvertor.ModelHistoryAnalyzer.ModelHistoryAnalyzer;
 import nl.imvertor.OfficeCompiler.OfficeCompiler;
+import nl.imvertor.ParmsCopier.ParmsCopier;
 import nl.imvertor.ReadmeCompiler.ReadmeCompiler;
 import nl.imvertor.RegressionExtractor.RegressionExtractor;
 import nl.imvertor.ReleaseComparer.ReleaseComparer;
@@ -46,6 +46,7 @@ import nl.imvertor.RunInitializer.RunInitializer;
 import nl.imvertor.SchemaValidator.SchemaValidator;
 import nl.imvertor.ShaclCompiler.ShaclCompiler;
 import nl.imvertor.SkosCompiler.SkosCompiler;
+import nl.imvertor.StcCompiler.StcCompiler;
 import nl.imvertor.Validator.Validator;
 import nl.imvertor.XmiCompiler.XmiCompiler;
 import nl.imvertor.XmiTranslator.XmiTranslator;
@@ -112,7 +113,9 @@ public class ChainTranslateAndReport {
 		
 		    configurator.save();
 		   
-		    configurator.getRunner().info(logger,"Processing application " + configurator.getXParm("cli/project") +"/"+ configurator.getXParm("cli/application"));
+		    String model = configurator.getXParm("cli/project") +"/"+ configurator.getXParm("cli/application");
+		    
+		    configurator.getRunner().info(logger,"Processing application " + model);
 		    configurator.getRunner().setDebug();
 		    
 		    boolean succeeds = true;
@@ -175,7 +178,7 @@ public class ChainTranslateAndReport {
 				    
 				    // generate the MIM format from Imvertor embellish format
 				    if (configurator.isTrue("cli","createmimformat",false))
-			 			succeeds = succeeds && (new MIMCompiler()).run();
+			 			(new MIMCompiler()).run(); // MIM compiler does not block further processing
 					
 				    // generate the Stelselcatalogus CSV
 				    if (configurator.isTrue("cli","createstccsv",false))
@@ -184,16 +187,18 @@ public class ChainTranslateAndReport {
 					// compare releases. 
 				    // Eg. check if this only concerns a "documentation release". If so, must not be different from existing release.
 				    // also includes other types of release comparisons
-				    succeeds = succeeds && (new ReleaseComparer()).run();
+				    if (configurator.isTrue("cli","compare",false))
+				    	succeeds = succeeds && (new ReleaseComparer()).run();
 				    
 				    // generate the XSD 
 					if (configurator.isTrue("cli","createxmlschema",false))
 						succeeds = succeeds && (new XsdCompiler()).run();
 								
 					// validate the generated XSDs 
-					if (configurator.isTrue("cli","createxmlschema",false))
-						if (configurator.isTrue("cli","validateschema",false) || configurator.getRunner().isFinal())
-							(new SchemaValidator()).run(); // XML schema validation does not block further processing
+					if (succeeds)
+						if (configurator.isTrue("cli","createxmlschema",false))
+							if (configurator.isTrue("cli","validateschema",false) || configurator.getRunner().isFinal())
+								(new SchemaValidator()).run(); // XML schema validation does not block further processing
 					
 					// Generate a json schema
 				    if (configurator.isTrue("cli","createjsonschema",false)) {
@@ -231,6 +236,8 @@ public class ChainTranslateAndReport {
 			    		succeeds = succeeds && (new YamlCompiler()).run();
 				  
 			    }
+	    		(new ParmsCopier()).run();
+	    		
 			    // finally, a regression test if requested, independent of success/failure of the chain
 			    if (configurator.isTrue("cli","regression",false)) {
 			    	configurator.setXParm("cli/identifier","DEVELOPMENT");
@@ -258,7 +265,7 @@ public class ChainTranslateAndReport {
 			configurator.windup();
 			
 			configurator.getRunner().windup();
-			configurator.getRunner().info(logger, "Done, job \"" + System.getProperty("job.id") + "\" " + (succeeds ? "succeeds" : "fails") + " in " + configurator.runtimeForDisplay());
+			configurator.getRunner().info(logger, "Done, job \"" + System.getProperty("job.id") + "\" for model \"" + model + "\" " + (succeeds ? "succeeds" : "fails") + " in " + configurator.runtimeForDisplay());
 		    if (configurator.getSuppressWarnings() && configurator.getRunner().hasWarnings())
 		    	configurator.getRunner().info(logger, "** Warnings have been suppressed");
 		    

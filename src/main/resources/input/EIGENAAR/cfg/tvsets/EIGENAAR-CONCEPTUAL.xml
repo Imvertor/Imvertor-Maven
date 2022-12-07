@@ -4,8 +4,9 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <!-- EIGENAAR follows MIM1.1 requirements -->
-    <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
+    <!-- EIGENAAR follows MIM 1.1.1 requirements -->
+    
+    <xi:include href="../../../MIM/cfg/tvsets/MIM111.xml"/>
     
     <name>EIGENAAR CONCEPTUEEL</name>
     

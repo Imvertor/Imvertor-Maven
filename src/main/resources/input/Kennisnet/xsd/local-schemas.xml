@@ -1,6 +1,6 @@
 <!-- 
     Mappings for local schemas 
 -->
-<local-schemas>
+<local-schemas xmlns:xi="http://www.w3.org/2001/XInclude">
     
 </local-schemas>

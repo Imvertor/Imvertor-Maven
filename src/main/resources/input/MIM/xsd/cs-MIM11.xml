@@ -17,7 +17,7 @@
     <cs:data-location>https://docs.geostandaarden.nl/mim/</cs:data-location>
     <!-- all including conceptual schemas should include the prefix http://www.geonovum.nl/conceptual-schemas/ in their configuration! -->
     <cs:url>http://www.geonovum.nl/conceptual-schemas/MIM11</cs:url>
-    <cs:catalogUrl>https://geonovum.github.io/MIM-Werkomgeving/[entry]</cs:catalogUrl>
+    <cs:catalogUrl>https://docs.geostandaarden.nl/mim/vv-st-mim-20200225/[entry]</cs:catalogUrl>
     
 </cs:ConceptualSchema>
             

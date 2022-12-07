@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
@@ -48,9 +49,8 @@ public class AnyFolder extends AnyFile {
 	
 	
 	public static void main(String[] args) throws Exception {
-		AnyFolder a1 = new AnyFolder("c:/Temp/a1");
-		AnyFolder a2 = new AnyFolder("c:/Temp/a2");
-		a1.copy(a2,false);
+		AnyFolder a1 = new AnyFolder("c:/Temp/app-canon");
+		a1.removeEmptyFolders();
 	}
 	
 	public AnyFolder(File file) {
@@ -360,5 +360,47 @@ public class AnyFolder extends AnyFile {
 		Transformer transformer = new Transformer();
 		transformer.setXslParm("xml-mixed-content",(hasMixedContent) ? "true" : "false");
 		transformer.transformFolder(this, targetXmlFolder, ".*\\.xml", prettyPrinter);
+	}
+	
+	/* 
+	 * Remove all files that have a 0 size
+	 */
+	public void removeEmptyFiles() {
+	    File[] listofFiles = this.listFiles();
+        for (int j = 0; j < listofFiles.length; j++) {
+            File file = listofFiles[j];
+            if (file.isDirectory()) 
+                (new AnyFolder(file)).removeEmptyFiles();
+            else if (file.isFile() && file.length() == 0) 
+                file.delete();
+        }
+	}
+	
+	/* 
+	 * Remove all folders that are empty
+	 */
+	public void removeEmptyFolders() {
+		Vector<AnyFolder> list = new Vector<AnyFolder>();
+		listFoldersDepthFirst(list);
+	    Iterator<AnyFolder> listIt = list.iterator();
+		while (listIt.hasNext()) {
+			AnyFolder folder = listIt.next();
+			if (folder.list().length == 0)
+				folder.delete();
+		}
+	}
+	
+	/*
+	 * List all subfolders depth-first, adding each AnyFolder found to the list passed.
+	 */
+	public void listFoldersDepthFirst(Vector<AnyFolder> list) {
+	    File[] listofFiles = this.listFiles();
+	    for (int j = 0; j < listofFiles.length; j++) {
+            File file = listofFiles[j];
+            if (file.isDirectory())
+            	(new AnyFolder(file)).listFoldersDepthFirst(list);
+	    }
+	    if (isDirectory())
+	    	list.add(this);
 	}
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<compare-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <name>MIM11</name>
+
+    <!-- 
+        TODO align with metamodel.
+    --> 
+    <xi:include href="MIM10.xml"/>
+    
+</compare-rules>

@@ -213,12 +213,12 @@
                                     <imvert:version>1.0.0</imvert:version>
                                     <imvert:phase>3</imvert:phase>
                                     <imvert:author>Simon Cox</imvert:author>
-                                    <imvert:svn-string>Id: xlinks.xml 346 2013-05-06 08:34:33Z loeffa </imvert:svn-string>
                                     <imvert:stereotype id="stereotype-name-system-package">
                                         <xsl:value-of select="imf:get-normalized-name('system','stereotype-name')"/>
                                     </imvert:stereotype>
                                     <imvert:location>http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd</imvert:location>
                                     <imvert:release><xsl:value-of select="imf:get-xparm('cli/xlinkversion','20010627')"/></imvert:release>
+                                    <imvert:owner>W3C</imvert:owner>
                                 </imvert:package>
                             </xsl:if>
                             
@@ -936,7 +936,7 @@
                 <xsl:sequence select="($mult-tokens[1],$mult-tokens[1])"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="('1','1')"/>
+                <xsl:sequence select="()"/><!-- eventuele default naar 1 wordt afgehandeld in canonisering --> 
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>

@@ -29,6 +29,8 @@
     xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
 
@@ -120,7 +122,7 @@
     </xsl:variable>    
     
     <xsl:template match="/imvert:packages">
-     
+
         <!-- set info on this model here (as early as possible!) -->
         <xsl:variable name="application-package" select=".//imvert:package[imf:boolean(imvert:is-root-package)]"/>
         

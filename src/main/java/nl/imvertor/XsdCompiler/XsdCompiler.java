@@ -20,7 +20,7 @@
 
 package nl.imvertor.XsdCompiler;
 
-import java.util.Vector;
+import java.io.File;
 
 import javax.xml.xpath.XPathConstants;
 
@@ -62,12 +62,6 @@ public class XsdCompiler extends Step {
 		
 		String owner = configurator.getXParm("cli/owner");
 		String xmlschemarules = configurator.getXmlSchemarules();
-		
-		// profile name is when createprofile, use profilename, else use owner name.
-		// the profile name is required when XSD is created and when imports are resolved, so set this xparm here,.
-		String pName = configurator.isTrue("cli","creategmlprofile", false) ? configurator.getXParm("cli/gmlprofilename") : configurator.getXParm("cli/owner").toLowerCase();;
-		pName = configurator.mergeParms(pName) + "-gml";
-		configurator.setXParm("appinfo/gml-profile-name",pName); // nodig in de stylesheet voor imports
 		
 		Boolean done = false;
 		 if (owner.equals("EIGENAAR")) {
@@ -449,11 +443,11 @@ public class XsdCompiler extends Step {
 		NodeList nodes = (NodeList) infoEmbellishFile.xpathToObject("//*:local-schema", null, XPathConstants.NODESET);
 		for (int i = 0; i < nodes.getLength(); i++) {
 			String filepath = nodes.item(i).getTextContent();
-			AnyFolder xsdFolder = new AnyFolder(configurator.getXParm("properties/EXTERNAL_XSD_FOLDER") + "/" + filepath);
+			AnyFolder xsdFolder = new AnyFolder(configurator.getXParm("system/managedinstallfolder") + "/input/" + filepath);
 			AnyFolder targetXsdFolder = new AnyFolder(configurator.getXParm("system/work-xsd-folder-path"));
 			if (xsdFolder.isDirectory()) {
 				runner.debug(logger,"CHAIN","Appending external schema from: " + xsdFolder);
-				if (configurator.isTrue("cli", "creategmlprofile", false) && StringUtils.startsWith(filepath,"www.opengis.net/GML322")) {
+				if (configurator.isTrue("cli", "creategmlprofile", false) && StringUtils.contains(filepath,"www.opengis.net/GML322")) {
 					runner.debug(logger,"CHAIN","Profiling external schema from: " + xsdFolder);
 					String profileVersion = configurator.mergeParms(configurator.getXParm("cli/gmlprofileversion"));
 					String profileName = configurator.getXParm("appinfo/gml-profile-name");
@@ -479,7 +473,9 @@ public class XsdCompiler extends Step {
 	 * The application has its own folder within the xsd folder.
 	 */
 	private void transformSchemas(AnyFolder xsdFolder, AnyFolder targetXsdFolder) throws Exception {
-		String xsdFolderSubpath = xsdFolder.getParentFile().getName() + "/" + xsdFolder.getName();
+		File wwwFile = xsdFolder.getParentFile(); // for example: www.isotc211.org
+		File ownerFile = wwwFile.getParentFile().getParentFile(); // for example: ISO
+		String xsdFolderSubpath = ownerFile.getName() + "/xsd/" + wwwFile.getName() + "/" + xsdFolder.getName(); // for example: ISO/xsd/www.isotc211.org/GEOMATICS-20050101
 		String xslFilename = configurator.getXParm("properties/LOCALIZE_XSD_XSLPATH");
 		// this is within the step XSL folder; get the full path here.
 		XslFile xslFile = new XslFile(configurator.getXslPath(xslFilename));

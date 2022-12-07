@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="../../../MIM/cfg/tvsets/MIM111.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM111.xml"/>
+    
+    <!-- #GH-256 refactored -->
+    
+    <name>Kadaster MIM 1.1.1 tagged values</name>
+    
+    <tagged-values>
+        <tv norm="space" id="CFG-TV-DOMAIN">
+            <name lang="nl">Domein</name>
+            <name lang="en">Domain</name>
+            <desc lang="nl">Het domein van een attribuut, dwz. de beperking van de opgegeven waarde tot een bepaalde "naamruimte". 
+                Voorbeeld is "NL.IMKAD.KadastraalObject" als naamruimte voor ID's van percelen en appartementsrechten in de kadastrale registratie.</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <override>no</override><!-- any value specified must be the same as the supplier value -->
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+        
+        <!-- 
+             Explanation / Klare taal
+            -->
+        <tv norm="note" id="CFG-TV-EXPLANATION">
+            <name lang="nl">Uitleg</name>
+            <name lang="en">Explanation</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-DATERECORDED">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-meervoudige-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-OWNER">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-CONDITIONSOFUSE">
+            <name lang="nl">Gebruiksvoorwaarden</name>
+            <name lang="en">Conditions of use</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SOURCE">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-meervoudige-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-meervoudige-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-LEGISLATION">
+            <name lang="nl">Wetgeving</name>
+            <name lang="en">Legislation</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-ACCESSIBILITY">
+            <name lang="nl">Toegankelijkheid</name>
+            <name lang="en">Accessibility</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-CONCEPT">
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-meervoudige-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-REASONNOVALUE">
+            <name lang="nl">Reden geen waarde</name>
+            <name lang="en">Reason no value</name>
+            <desc lang="nl">Moet de reden waarom een gegeven géén waarde heeft (nillable) worden opgegeven?
+                Als 'ja' dan altijd opgegeven (als aan de orde), of 'default' dan zie documentatie voor de default reden. 
+                <!--Implementatie: bij 'ja' wordt de al bedachte constructie toegevoegd. Als je er twee wilt op kunnen geven, is het altijd 
+                   nodig om te kiezen voor 'ja', maar 'ja' mag ook gebruikt worden als er alleen sprake kan zijn van maar 1 reden. --> 
+            </desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value>Yes</value>
+                <value default="yes">No</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-FEATURECOLLECTION">
+            <name lang="en">Feature collection</name>
+            <name lang="nl">Objectverzameling</name>
+            <desc lang="nl">Een verzameling van objecttypen. 
+                Zo'n verzameling wordt alleen gebruikt in toepassingen waarin objecttypen moeten worden uitgewisseld conform GML "featurecollections".
+            </desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="note" id="CFG-TV-EXAMPLE">
+            <name lang="nl">Voorbeeld</name>
+            <name lang="en">Example</name>
+            <desc lang="nl">Een of meerdere voorbeelden van het gebruik van deze constructie.</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+            </stereotypes>
+        </tv> 
+        
+        <tv norm="space" id="CFG-TV-IDENTIFYING">
+            <name lang="nl">Identificerend</name>
+            <name lang="en">Identifying</name>
+            <desc lang="nl">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value>Yes</value>
+                <value default="yes">No</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo><!--TODO dit moet eigenlijk naar grouping voor MIM111 -->
+            </stereotypes>
+        </tv>
+    </tagged-values>
+
+</tagset>

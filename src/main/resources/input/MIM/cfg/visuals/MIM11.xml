@@ -23,7 +23,25 @@
     </categories>
     
     <stereos>
-        <!-- none additional -->
+        <!-- relevant obv common extensions -->
+        
+        <stereo id="stereotype-name-composite-id">
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        
+        <stereo id="stereotype-name-static-generalization">
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        
+        <stereo id="stereotype-name-static-liskov">
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        
+        <stereo id="stereotype-name-koppelklasse">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="OBJECTS"/>
+        </stereo>
+        
     </stereos>
 
 </visuals>

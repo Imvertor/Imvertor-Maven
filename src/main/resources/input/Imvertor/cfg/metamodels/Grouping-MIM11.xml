@@ -19,34 +19,53 @@
             <name lang="nl">System</name>
             <name lang="en">System</name>
             <desc lang="nl">Een package dat is opgebouwd door de software ten behoeve van verwerking.</desc>
+            <source>Grouping</source>
             <construct>package</construct>
+            <context>
+                <!-- door het systeem gegenereerd -->
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-application-package" primary="yes">
             <name lang="en">Application</name>
             <name lang="nl">Toepassing</name>
             <desc lang="nl">Een package dat een volledige applicatie beschrijft, en dus niet slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
+            <source>Grouping</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#informatiemodel</catalog><!-- TODO correcte catalogus link -->
             <construct>package</construct>
+            <context>
+                <!-- top level onder project -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-project-package" primary="yes">
             <name lang="en">Project</name>
             <name lang="nl">Project</name>
             <desc lang="nl">Een package dat een project bevat, dwz. een base of application package, eventueel met external packages.</desc>
+            <source>Grouping</source>
             <construct>package</construct>
+            <context>
+                <!-- top level; niet verplicht -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-base-package" primary="yes">
             <name lang="en">Basemodel</name>
             <name lang="nl">Basismodel</name>
             <desc lang="nl">Een package dat slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
+            <source>Grouping</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#informatiemodel</catalog><!-- TODO correcte catalogus link -->
             <construct>package</construct>
+            <context>
+                <!-- top level onder project -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-provided-package">
             <name lang="en">Provided</name>
             <name lang="nl">Provided</name>
             <desc lang="nl">test, under development</desc>
+            <source>Grouping</source>
             <construct>package</construct>
         </stereo>
         
@@ -55,7 +74,11 @@
             <name lang="nl">Folder</name>
             <desc lang="nl">Een package dat alléén bedoeld is om andere UML constructies (packagaes, klassen) te groeperen, en geen verdere rol speelt in de interpretatie van het model.
             Binnen een model worden alle packages die geen stereotype hebben opgevat als een Folder package.</desc>
+            <source>Grouping</source>
             <construct>package</construct>
+            <context>
+                <!-- door het systeem gegenereerd -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-system-reference-package" primary="yes">
@@ -63,7 +86,11 @@
             <name lang="en">System-reference-package</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">Een package dat door het systeem is aangemaakt om referentie-elementen te bevatten.</desc>
+            <source>Grouping</source>
             <construct>package</construct>
+            <context>
+                <!-- door het systeem gegenereerd -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-system-reference-class" primary="yes">
@@ -71,22 +98,34 @@
             <name lang="en">System-reference-class</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">Een class welke door het systeem is aangemaakt als referentie-element.</desc>
+            <source>Grouping</source>
             <construct>class</construct>
+            <context>
+                <!-- door het systeem gegenereerd -->
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-interface" primary="yes">
             <name lang="en">Interface</name>
             <name lang="nl">Interface</name>
             <desc lang="nl">Een constructie in een gemeenschappelijk maar niet opgenomen model, welke een compleet modelelement in dat model representeert.</desc>
+            <source>Grouping</source>
             <construct>class</construct>
             <construct>datatype</construct>
+            <context>
+                <parent-stereo>stereotype-name-external-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-recyclebin">
             <name lang="nl">Prullenbak</name>
             <name lang="en">Recyclebin</name>
             <desc lang="nl">A package that is to be ignored in all processing. may occur at any position in the package tree.</desc>
+            <source>Grouping</source>
             <construct>package</construct>
+            <context>
+                <!-- Kan overal voorkomen -->
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-components-package">
@@ -96,6 +135,7 @@
                 Dit package bevat klassen, enumeraties of datatypen die gemeenschappelijk zijn tussen berichtmodellen, 
                 en die dus bij het genereren van berichten kunnen worden omgezet naar globale complextypes.
             </desc>
+            <source>Grouping</source>
             <construct>package</construct>
         </stereo>
         
@@ -103,32 +143,53 @@
             <name lang="en">Trace</name>
             <name lang="nl">Trace</name>
             <desc lang="nl">Trace relatie tussen twee klassen. Trace relatie wordt niet als associatie opgenomen, maar als eigenschap van de client.</desc>
+            <source>Grouping</source>
             <construct>class</construct>
             <construct>datatype</construct>
+            <context>
+                <parent-stereo>stereotype-name-objecttype</parent-stereo>
+                <parent-stereo>stereotype-name-obj-proxy</parent-stereo>
+                <parent-stereo>stereotype-name-composite</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-product" primary="yes">
             <name lang="en">Product</name>
             <name lang="nl">Product</name>
             <desc lang="nl">TODO</desc>
+            <source>Grouping</source>
             <construct>class</construct>
             <toplevel>true</toplevel>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-service" primary="yes">
             <name lang="en">Service</name>
             <name lang="nl">Service</name>
             <desc lang="nl">TODO</desc>
+            <source>Grouping</source>
             <construct>class</construct>
             <toplevel>true</toplevel>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-process" primary="yes">
             <name lang="en">Process</name>
             <name lang="nl">Process</name>
             <desc lang="nl">TODO</desc>
+            <source>Grouping</source>
             <construct>class</construct>
             <toplevel>true</toplevel>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
 
         <stereo id="stereotype-name-internal-package">
@@ -137,13 +198,19 @@
             <desc lang="nl">A package that references another package that is developed by the owner, and part of the owner's projects.
                 It is therefore assumned to be available in the owners managed output folder.
                 It is also assumed that the metamodels are compatible.</desc>
+            <source>Grouping</source>
             <construct>package</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-att-proxy" primary="yes">
             <name lang="nl">Attribuutsoort_proxy</name>
             <name lang="en">AttributeTypeProxy</name>
             <desc lang="nl">A proxy is TODO</desc>
+            <source>Grouping</source>
             <construct>attribute</construct>
         </stereo>
         
@@ -151,6 +218,7 @@
             <name lang="nl">Objecttype_proxy</name>
             <name lang="en">FeatureTypeProxy</name>
             <desc lang="nl">A proxy is TODO</desc>
+            <source>Grouping</source>
             <construct>class</construct>
         </stereo>
         
@@ -158,12 +226,14 @@
             <name lang="nl">Gegevensgroeptype_proxy</name>
             <name lang="en">AttributeGroupTypeProxy</name>
             <desc lang="nl">A proxy is TODO</desc>
+            <source>Grouping</source>
             <construct>class</construct>
         </stereo>
         
         <stereo id="stereotype-name-anonymous">
             <name lang="nl">Anoniem</name>
             <name lang="en">Anonymous</name>
+            <source>Grouping</source>
             <construct>attribute</construct>
             <construct>association</construct>
         </stereo>
@@ -181,7 +251,30 @@
                 attributen is overgenomen naar het eigen model (in een package met stereotype «view»). Bij het stereotype «Referentie» wordt overname niet 
                 nodig geacht, omdat alleen de relatie naar het object voldoende is (aanvullend op de identificatie van het object geen verdere attributen). 
             </desc>
+            <source>Grouping</source>
             <construct>class</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+            </context>
+        </stereo>
+        
+        <!-- deze constructies kunnen gewone modelelementen bevatten, dit hier verder aanvullen: -->
+        
+        <stereo id="stereotype-name-attribute">
+            <context>
+                <parent-stereo>stereotype-name-product</parent-stereo>
+                <parent-stereo>stereotype-name-service</parent-stereo>
+                <parent-stereo>stereotype-name-process</parent-stereo>
+            </context>
+        </stereo>
+        
+        <stereo id="stereotype-name-attributegroup">
+            <context>
+                <parent-stereo>stereotype-name-product</parent-stereo>
+                <parent-stereo>stereotype-name-service</parent-stereo>
+                <parent-stereo>stereotype-name-process</parent-stereo>
+            </context>
         </stereo>
         
     </stereotypes>

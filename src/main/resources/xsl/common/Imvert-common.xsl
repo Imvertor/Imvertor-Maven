@@ -289,7 +289,7 @@
                 <xsl:variable name="alias" select="$this/imvert:alias"/>
                 <xsl:choose>
                     <xsl:when test="$this/self::imvert:packages">
-                        <xsl:sequence select="imf:compile-construct-name('(Model)',(),(),(),$alias,())"/>
+                        <xsl:sequence select="imf:compile-construct-name('(Model: ' || $this/imvert:application || ')',(),(),(),$alias,())"/>
                     </xsl:when>
                     <xsl:when test="$this/self::imvert:package">
                         <xsl:sequence select="imf:compile-construct-name($name,(),(),(),$alias,())"/>
@@ -649,16 +649,17 @@
     
     <!-- 
         compile the folder where this external package is found. This is:
-        xsd / [sitename] / [remainder-separated-by-hyphen]([version]-[release])
+        [owner-name] / xsd / [sitename] / [remainder-separated-by-hyphen]([version]-[release])
     -->
     <xsl:function name="imf:get-schema-foldername" as="xs:string">
         <xsl:param name="namespace" as="xs:string"/>
         <xsl:param name="version" as="xs:string"/>
         <xsl:param name="release" as="xs:string?"/><!-- not known for external and system packages -->
         <xsl:param name="map-name" as="xs:string"/>
+        <xsl:param name="owner-name" as="xs:string"/>
         <xsl:variable name="parts" select="imf:get-uri-parts($namespace)"/>
         <!-- <xsl:value-of select="concat($parts/server,'/',replace($parts/path,'/','-'),'(',$version, '-', $release,')')"/> -->
-        <xsl:value-of select="concat($parts/server,'/',$map-name,'-',$release)"/>
+        <xsl:value-of select="concat($owner-name,'/xsd/',$parts/server,'/',$map-name,'-',$release)"/>
     </xsl:function>
     
     <xsl:function name="imf:extract" as="xs:string">
@@ -994,9 +995,10 @@
     <xsl:function name="imf:is-conceptual" as="xs:boolean">
         <xsl:param name="construct" as="element()"/>
         <xsl:variable name="pack" select="$construct/ancestor-or-self::imvert:package" as="element()*"/>
-        <xsl:variable name="prefix" select="tokenize(normalize-space(imf:get-config-parameter('url-prefix-conceptual-schema')),'\s+')"/>
+        <?x <xsl:variable name="prefix" select="tokenize(normalize-space(imf:get-config-parameter('url-prefix-conceptual-schema')),'\s+')"/> x?>
         <xsl:variable name="is-external" select="$pack/imvert:stereotype/@id = ('stereotype-name-external-package')"/>
-        <xsl:variable name="is-conceptual" select="exists($pack/imvert:namespace[(for $p in ($prefix) return starts-with(.,$p)) = true()])"/>
+        <?x <xsl:variable name="is-conceptual" select="exists($pack/imvert:namespace[(for $p in ($prefix) return starts-with(.,$p)) = true()])"/> x?>
+        <xsl:variable name="is-conceptual" select="true()"/>
         
        <xsl:choose>
             <xsl:when test="$is-external and $is-conceptual">

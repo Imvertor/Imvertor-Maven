@@ -28,8 +28,12 @@
     xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
     xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
-    version="2.0">
+    
+    expand-text="yes"
+    version="3.0">
     
     <!-- 
         There may be conceptual schema's referenced within the UML. 
@@ -44,12 +48,24 @@
     <xsl:variable name="stylesheet-code">CSCH</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
+    <xsl:variable name="n" select="if (imf:boolean(imf:get-xparm('cli/creategmlprofile'))) then imf:get-xparm('cli/gmlprofilename') else lower-case(imf:get-xparm('cli/owner'))"/>
+    <xsl:variable name="pn" select="imf:merge-parms($n) || '-gml'"/>
+    
     <xsl:template match="/imvert:packages">
+    
+        <!--
+            profile name is when createprofile, use profilename, else use owner name.
+            the profile name is required when XSD is created and when imports are resolved, so set this xparm here,.
+        -->
+        <xsl:sequence select="imf:set-xparm('appinfo/gml-profile-name',$pn)"/><!-- #300 fix -->
+        <xsl:sequence select="imf:set-xparm('appinfo/gml-profile-name-encoded',encode-for-uri($pn))"/>
+    
         <imvert:packages>
             <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-svn-id',$conceptual-schema-mapping/svn-id)"/>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
             <xsl:apply-templates select="imvert:package"/>
         </imvert:packages>
+        
     </xsl:template>
     
     <xsl:template match="imvert:package">
@@ -82,15 +98,34 @@
  
     <xsl:template match="imvert:package/imvert:namespace" mode="conceptual">
         <xsl:param name="map" as="element(cs:Map)+"/>
+        
+        <!-- #300 Location moet de locatie zijn van het GML profiel als dat voor dit specifieke model is gegenereerd -->
+        <xsl:variable name="location" as="xs:string">
+            <xsl:choose>
+                <xsl:when test="$map/cs:namespace = 'http://www.opengis.net/gml/3.2' and imf:boolean(imf:get-xparm('cli/creategmlprofile'))">
+                    <xsl:value-of select="'gml/3.2/' || $pn || '.xsd'"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$map/cs:location"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-name',$map/cs:id)"/>
         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-namespace',.)"/>
         <xsl:sequence select="imf:create-output-element('imvert:namespace',$map/cs:namespace)"/>
-        <xsl:sequence select="imf:create-output-element('imvert:location',$map/cs:location)"/>
+        <xsl:sequence select="imf:create-output-element('imvert:location',$location)"/>
+        <xsl:sequence select="imf:create-output-element('imvert:owner',$map/cs:owner)"/>
         <!--
              when a release is specified, use that, only when known; otherise take the default release as defined in map
         -->
         <xsl:variable name="specified-release" select="../imvert:release"/>
         <xsl:variable name="known-releases" select="$map/cs:release"/> <!-- may be multiple -->
+        
+        <xsl:if test="empty($map/cs:owner)">
+            <xsl:sequence select="imf:msg(..,'ERROR','No owner specified for conceptual map [1]',$map/cs:id)"/>
+        </xsl:if>
+        
         <xsl:choose>
             <xsl:when test="exists($specified-release) and not($specified-release = $known-releases)">
                 <xsl:sequence select="imf:msg(..,'ERROR','No such release [1] configured for external package known as [2]',($specified-release,.))"/>
@@ -240,7 +275,9 @@
                         </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>
+                        <?x er is geen reden om te waarschuwen dat een type mapping niet bestaat, wanneer geen schema's worden gegenereerd. Die melding moet pas op dat moment worden gedaan.  
                         <xsl:sequence select="imf:msg(..,'WARNING','No type mapping found for [1] in namespace [2] when using mapping [3]',($original-name,$pack/imvert:namespace,$conceptual-schema-mapping-name))"/>
+                        x?>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>

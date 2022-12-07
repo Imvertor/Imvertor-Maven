@@ -134,15 +134,15 @@ public class RegressionExtractor  extends Step {
 			String subpath = configurator.getXParm("cli/owner") + "/" + configurator.getXParm("appinfo/subpath");
 			AnyFolder regFolder = new AnyFolder(configurator.getXParm("system/managedregtestfolder"));
 			if (regFolder.isDirectory()) {
-			    AnyFolder refFolder = new AnyFolder(regFolder,"ref/" + subpath);
-			    AnyFolder tstFolder = new AnyFolder(regFolder,"tst/" + subpath);
+			    AnyFolder refFolder = new AnyFolder(regFolder,"ref/" + subpath + "/app");
+			    AnyFolder tstFolder = new AnyFolder(regFolder,"tst/" + subpath + "/app");
 				AnyFolder outFolder = new AnyFolder(regFolder,"out/" + subpath);
 				// Maak de test folder leeg en maak een workfolder
 				tstFolder.deleteDirectory(); 
 				tstFolder.mkdirs();
 				// copy the chain results to tst folder
-				String ownerName = configurator.getXParm("cli/owner");
-				AnyFolder appFolder = new AnyFolder(workFolder,ownerName + "/app");
+				String jobID = System.getProperty("job.id");
+				AnyFolder appFolder = new AnyFolder(workFolder,jobID + "/app");
 				appFolder.copy(tstFolder);
 				//  Run the test
 				Integer diffsfound = testFileByFile(configurator,refFolder,tstFolder,outFolder,identifier,compareMethod);
@@ -294,8 +294,9 @@ public class RegressionExtractor  extends Step {
 		if (folder.isDirectory()) {
 			String folderPath = folder.getCanonicalPath();
 			String canonFolderPath = folderPath + "-canon";
+			AnyFolder canonFolder = new AnyFolder(canonFolderPath);
 			// remove the canonical folder when exists
-			(new AnyFolder(canonFolderPath)).deleteDirectory();
+			canonFolder.deleteDirectory();
 			Vector<String> files = folder.listFilesToVector(true); // returns list of canonical paths
 			for (int i = 0; i < files.size(); i++) {
 				// "canonize" the file, replace existing file by the canonized form
@@ -322,11 +323,16 @@ public class RegressionExtractor  extends Step {
 					}
 				}
 	 		}
+			// remove empty files and folders
+			canonFolder.removeEmptyFiles();
+			canonFolder.removeEmptyFolders();
+
 			return diffsfound;
 		} else {
 			runner.error(logger,"Regression folder not found: " + folder + ", please complete regression setup");
 			return 1;
 		}
+		
 	}
 
 	/**
@@ -344,7 +350,7 @@ public class RegressionExtractor  extends Step {
 		if (tstFile.length() == 0) {
 			return 0; // this file has not be processed and therefore may be disregarded
 		} else if (!refFile.isFile()) {
-			runner.warn(logger, "Reference file not found: " + canonPath); 
+			runner.warn(logger, "Reference file not found: " + refPath); 
 			return 1;
 		} else if (!refFile.compareContent(tstFile)) {
 			runner.warn(logger, "Difference(s) found in file: " + canonPath); 

@@ -39,7 +39,10 @@
             <status/>
             <summary>
                 <info label="Status">
-                    <xsl:sequence select="imf:report-key-label('MIM compiler format created','system','mim-compiler-format-created')"/>
+                    <xsl:sequence select="imf:report-key-label('Format created succesfully','system','mim-compiler-format-created')"/>
+                    <xsl:sequence select="imf:report-key-label('MIM version','system','mim-compiler-mim-version')"/>
+                    <xsl:sequence select="imf:report-key-label('Formattype','system','mim-compiler-format-type')"/>
+                    <xsl:sequence select="imf:report-key-label('Formatter version','system','mim-compiler-format-version')"/>
                 </info>
             </summary>
        </report>

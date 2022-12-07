@@ -79,8 +79,6 @@ public class ImvertorExpathReadText extends ExtensionFunctionDefinition {
   
   private static class ImvertorExpathReadTextCall extends ExtensionFunctionCall {
     
-	  private boolean append;
-	  
 	  @Override
 	  public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
 	    try {

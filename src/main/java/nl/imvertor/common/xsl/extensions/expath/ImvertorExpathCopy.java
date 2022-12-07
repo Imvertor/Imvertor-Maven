@@ -82,8 +82,6 @@ public class ImvertorExpathCopy extends ExtensionFunctionDefinition {
   
   private static class ImvertorExpathCopyCall extends ExtensionFunctionCall {
     
-	  private boolean append;
-	  
 	  @Override
 	  public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
 	    try {

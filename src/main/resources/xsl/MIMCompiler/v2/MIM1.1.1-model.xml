@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metamodel 
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+   xsi:noNamespaceSchemaLocation="../../../etc/xsd/metamodel/metamodel.xsd">
+   <modelelementen>
+      <modelelement>
+         <naam>Attribuutsoort</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Type</metagegeven>
+         <metagegeven kardinaliteit="0..1">Lengte</metagegeven>
+         <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
+         <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
+         <metagegeven kardinaliteit="1">Indicatie materiële historie</metagegeven>
+         <metagegeven kardinaliteit="1">Indicatie formele historie</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
+         <metagegeven kardinaliteit="1">Authentiek</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="1">Indicatie afleidbaar</metagegeven>
+         <metagegeven kardinaliteit="1">Indicatie classificerend</metagegeven>
+         <metagegeven kardinaliteit="1">Mogelijk geen waarde</metagegeven>
+         <metagegeven kardinaliteit="0..1">Identificerend</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="0..1">Locatie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven>
+         <metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven>
+         <metagegeven kardinaliteit="0..1">Regels</metagegeven>
+         <!-- ext -->         
+         <metagegeven kardinaliteit="0..1">Eigenaar</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Codelijst</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="0..1">Locatie</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Constraint</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..1">Specificatie tekst</metagegeven>
+         <metagegeven kardinaliteit="0..1">Specificatie formeel</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Data element</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Type</metagegeven>
+         <metagegeven kardinaliteit="0..1">Lengte</metagegeven>
+         <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
+         <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven>
+         <metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Datatype</naam>
+      </modelelement>
+      <modelelement>
+         <naam>Domein</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <!-- ext -->
+         <metagegeven kardinaliteit="0..1">Beheerder</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Enumeratie</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Enumeratiewaarde</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Code</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Extensie</naam>
+         <metagegeven kardinaliteit="0..*">Aggregatietype</metagegeven>
+         <metagegeven kardinaliteit="0..*">Alias</metagegeven>
+         <metagegeven kardinaliteit="0..*">Authentiek</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..*">Code</metagegeven>
+         <metagegeven kardinaliteit="0..*">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="0..*">Definitie</metagegeven>
+         <metagegeven kardinaliteit="0..*">Formeel patroon</metagegeven>
+         <metagegeven kardinaliteit="0..*">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="0..*">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..*">Identificerend</metagegeven>
+         <metagegeven kardinaliteit="0..*">Indicatie abstract object</metagegeven>
+         <metagegeven kardinaliteit="0..*">Indicatie afleidbaar</metagegeven>
+         <metagegeven kardinaliteit="0..*">Indicatie classificerend</metagegeven>
+         <metagegeven kardinaliteit="0..*">Indicatie formele historie</metagegeven>
+         <metagegeven kardinaliteit="0..*">Indicatie materiële historie</metagegeven>
+         <metagegeven kardinaliteit="0..*">Informatiedomein</metagegeven>
+         <metagegeven kardinaliteit="0..*">Informatiemodel type</metagegeven>
+         <metagegeven kardinaliteit="0..*">Kardinaliteit</metagegeven>
+         <metagegeven kardinaliteit="0..*">Kwaliteit</metagegeven>
+         <metagegeven kardinaliteit="0..*">Lengte</metagegeven>
+         <metagegeven kardinaliteit="0..*">Locatie</metagegeven>
+         <metagegeven kardinaliteit="0..*">MIM extensie</metagegeven>
+         <metagegeven kardinaliteit="0..*">MIM extensie versie</metagegeven>
+         <metagegeven kardinaliteit="0..*">MIM taal</metagegeven>
+         <metagegeven kardinaliteit="0..*">MIM versie</metagegeven>
+         <metagegeven kardinaliteit="0..*">Mogelijk geen waarde</metagegeven>
+         <metagegeven kardinaliteit="0..*">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Patroon</metagegeven>
+         <metagegeven kardinaliteit="0..*">Populatie</metagegeven>
+         <metagegeven kardinaliteit="0..*">Relatie eigenaar</metagegeven>
+         <metagegeven kardinaliteit="0..*">Relatiemodelleringtype</metagegeven>
+         <metagegeven kardinaliteit="0..*">Specificatie formeel</metagegeven>
+         <metagegeven kardinaliteit="0..*">Specificatie tekst</metagegeven>
+         <metagegeven kardinaliteit="0..*">Subtype</metagegeven>
+         <metagegeven kardinaliteit="0..*">Supertype</metagegeven>
+         <metagegeven kardinaliteit="0..*">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="0..*">Unidirectioneel</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Extern</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="1">Locatie</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <!-- ext -->
+         <metagegeven kardinaliteit="0..1">Beheerder</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Externe koppeling</naam>
+         <metagegeven kardinaliteit="0..1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Unidirectioneel</metagegeven>
+         <metagegeven kardinaliteit="1">Relatie doel</metagegeven>
+         <metagegeven kardinaliteit="1">Aggregatietype</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Relatie eigenaar</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Gegevensgroep</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="1">Gegevensgroeptype</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="0..1">Indicatie materiële historie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Indicatie formele historie</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
+         <metagegeven kardinaliteit="1">Authentiek</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Gegevensgroeptype</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="0..1">Regels</metagegeven>
+         <!-- ext -->
+         <metagegeven kardinaliteit="0..1">Eigenaar</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Generalisatie Datatypes</naam>
+         <metagegeven kardinaliteit="0..1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Supertype</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Subtype</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Generalisatie Objecttypes</naam>
+         <metagegeven kardinaliteit="1">Supertype</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Subtype</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Gestructureerd datatype</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
+         <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <!-- add -->         
+         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven>
+         <metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Informatiemodel</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Informatiemodel type</metagegeven>
+         <metagegeven kardinaliteit="1">Informatiedomein</metagegeven>
+         <metagegeven kardinaliteit="1">Relatiemodelleringtype</metagegeven>
+         <metagegeven kardinaliteit="1">MIM versie</metagegeven>
+         <metagegeven kardinaliteit="0..1">MIM extensie</metagegeven>
+         <metagegeven kardinaliteit="0..1">MIM extensie versie</metagegeven>
+         <metagegeven kardinaliteit="0..1">MIM taal</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <!-- ext -->
+         <metagegeven kardinaliteit="0..1">Beheerder</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Isid</naam>
+      </modelelement>
+      <modelelement>
+         <naam>Keuze</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Keuze attributen</naam>
+      </modelelement>
+      <modelelement>
+         <naam>Keuze attribuut</naam>
+      </modelelement>
+      <modelelement>
+         <naam>Keuze datatypen</naam>
+      </modelelement>
+      <modelelement>
+         <naam>Keuze element</naam>
+      </modelelement>
+      <modelelement>
+         <naam>Keuze relatie</naam>
+      </modelelement>
+      <modelelement>
+         <naam>Keuze relaties</naam>
+      </modelelement>
+      <modelelement>
+         <naam>Keuze zonder betekenis</naam>
+      </modelelement>
+      <modelelement>
+         <naam>Koppelklasse</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="0..*">Kwaliteit</metagegeven>
+         <metagegeven kardinaliteit="0..*">Populatie</metagegeven>
+         <metagegeven kardinaliteit="0..*">Toelichting</metagegeven>
+         <!-- ext -->
+         <metagegeven kardinaliteit="0..1">Eigenaar</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Objecttype</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="0..1">Populatie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Kwaliteit</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="1">Indicatie abstract object</metagegeven>
+         <!-- ext -->
+         <metagegeven kardinaliteit="0..1">Eigenaar</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Primitief datatype</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Lengte</metagegeven>
+         <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
+         <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
+         <metagegeven kardinaliteit="0..1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven>
+         <metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Referentie element</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Type</metagegeven>
+         <metagegeven kardinaliteit="0..1">Lengte</metagegeven>
+         <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
+         <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
+         <metagegeven kardinaliteit="0..1">Identificerend</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Referentielijst</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="0..1">Locatie</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Relatieklasse</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Authentiek</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Indicatie formele historie</metagegeven>
+         <metagegeven kardinaliteit="1">Indicatie materiële historie</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
+         <metagegeven kardinaliteit="1">Mogelijk geen waarde</metagegeven>
+         <metagegeven kardinaliteit="1">Toelichting</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Relatierol - Relatierol leidend</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
+         <metagegeven kardinaliteit="1">Indicatie materiële historie</metagegeven>
+         <metagegeven kardinaliteit="1">Indicatie formele historie</metagegeven>
+         <metagegeven kardinaliteit="1">Authentiek</metagegeven>
+         <metagegeven kardinaliteit="1">Mogelijk geen waarde</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Relatierol - Relatiesoort leidend</naam>
+         <metagegeven kardinaliteit="0..1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="0..1">Authentiek</metagegeven>
+         <metagegeven kardinaliteit="0..1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="0..1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Indicatie formele historie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Indicatie materiële historie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Mogelijk geen waarde</metagegeven>
+         <metagegeven kardinaliteit="0..1">Regels</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Relatiesoort - Relatierol leidend</naam>
+         <metagegeven kardinaliteit="0..1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Unidirectioneel</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Aggregatietype</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Relatie doel</metagegeven>
+         <metagegeven kardinaliteit="1">Relatie eigenaar</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Relatiesoort - Relatiesoort leidend</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Unidirectioneel</metagegeven>
+         <metagegeven kardinaliteit="1">Relatie doel</metagegeven>
+         <metagegeven kardinaliteit="1">Aggregatietype</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Indicatie materiële historie</metagegeven>
+         <metagegeven kardinaliteit="1">Indicatie formele historie</metagegeven>
+         <metagegeven kardinaliteit="1">Authentiek</metagegeven>
+         <metagegeven kardinaliteit="1">Indicatie afleidbaar</metagegeven>
+         <metagegeven kardinaliteit="1">Mogelijk geen waarde</metagegeven>
+         <!-- ext -->        
+         <metagegeven kardinaliteit="1">Relatie eigenaar</metagegeven>
+      </modelelement>
+      <modelelement>
+         <naam>Static liskov</naam>
+      </modelelement>
+      <modelelement>
+         <naam>View</naam>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
+         <metagegeven kardinaliteit="1">Locatie</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <!-- add -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <!-- ext -->
+         <metagegeven kardinaliteit="0..1">Beheerder</metagegeven>
+      </modelelement>
+   </modelelementen>
+   <metagegevens>
+      <metagegeven>
+         <naam>Aggregatietype</naam>
+         <modelelement kardinaliteit="1">Externe koppeling</modelelement>
+         <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Alias</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Codelijst</modelelement>
+         <modelelement kardinaliteit="0..1">Externe koppeling</modelelement>
+         <modelelement kardinaliteit="0..1">Gegevensgroep</modelelement>
+         <modelelement kardinaliteit="0..1">Gegevensgroeptype</modelelement>
+         <modelelement kardinaliteit="0..1">Generalisatie Datatypes</modelelement>
+         <modelelement kardinaliteit="0..1">Objecttype</modelelement>
+         <modelelement kardinaliteit="0..1">Referentie element</modelelement>
+         <modelelement kardinaliteit="0..1">Referentielijst</modelelement>
+         <modelelement kardinaliteit="0..1">Relatieklasse</modelelement>
+         <modelelement kardinaliteit="0..1">Relatierol - Relatierol leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatierol leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Authentiek</naam>
+         <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="1">Gegevensgroep</modelelement>
+         <modelelement kardinaliteit="1">Relatieklasse</modelelement>
+         <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Begrip</naam>
+         <modelelement kardinaliteit="0..*">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..*">Codelijst</modelelement>
+         <modelelement kardinaliteit="0..*">Data element</modelelement>
+         <modelelement kardinaliteit="0..*">Enumeratie</modelelement>
+         <modelelement kardinaliteit="0..*">Externe koppeling</modelelement>
+         <modelelement kardinaliteit="0..*">Gegevensgroep</modelelement>
+         <modelelement kardinaliteit="0..*">Gegevensgroeptype</modelelement>
+         <modelelement kardinaliteit="0..*">Generalisatie Datatypes</modelelement>
+         <modelelement kardinaliteit="0..*">Gestructureerd datatype</modelelement>
+         <modelelement kardinaliteit="0..*">Keuze</modelelement>
+         <modelelement kardinaliteit="0..*">Koppelklasse</modelelement>
+         <modelelement kardinaliteit="0..*">Objecttype</modelelement>
+         <modelelement kardinaliteit="0..*">Primitief datatype</modelelement>
+         <modelelement kardinaliteit="0..*">Referentie element</modelelement>
+         <modelelement kardinaliteit="0..*">Referentielijst</modelelement>
+         <modelelement kardinaliteit="0..*">Relatieklasse</modelelement>
+         <modelelement kardinaliteit="0..*">Relatierol - Relatierol leidend</modelelement>
+         <modelelement kardinaliteit="0..*">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..*">Relatiesoort - Relatierol leidend</modelelement>
+         <modelelement kardinaliteit="0..*">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Beheerder</naam>
+         <modelelement kardinaliteit="0..1">Domein</modelelement>
+         <modelelement kardinaliteit="0..1">Extern</modelelement>
+         <modelelement kardinaliteit="0..1">Informatiemodel</modelelement>
+         <modelelement kardinaliteit="0..1">View</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Code</naam>
+         <modelelement kardinaliteit="0..1">Enumeratiewaarde</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Datum opname</naam>
+         <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="1">Codelijst</modelelement>
+         <modelelement kardinaliteit="1">Data element</modelelement>
+         <modelelement kardinaliteit="1">Domein</modelelement>
+         <modelelement kardinaliteit="1">Enumeratie</modelelement>
+         <modelelement kardinaliteit="1">Enumeratiewaarde</modelelement>
+         <modelelement kardinaliteit="1">Extern</modelelement>
+         <modelelement kardinaliteit="1">Externe koppeling</modelelement>
+         <modelelement kardinaliteit="1">Gegevensgroep</modelelement>
+         <modelelement kardinaliteit="1">Gegevensgroeptype</modelelement>
+         <modelelement kardinaliteit="1">Generalisatie</modelelement>
+         <modelelement kardinaliteit="1">Gestructureerd datatype</modelelement>
+         <modelelement kardinaliteit="1">Informatiemodel</modelelement>
+         <modelelement kardinaliteit="1">Keuze</modelelement>
+         <modelelement kardinaliteit="1">Koppelklasse</modelelement>
+         <modelelement kardinaliteit="1">Objecttype</modelelement>
+         <modelelement kardinaliteit="1">Primitief datatype</modelelement>
+         <modelelement kardinaliteit="1">Referentie element</modelelement>
+         <modelelement kardinaliteit="1">Referentielijst</modelelement>
+         <modelelement kardinaliteit="1">Relatieklasse</modelelement>
+         <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="1">View</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Definitie</naam>
+         <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="1">Codelijst</modelelement>
+         <modelelement kardinaliteit="0..1">Data element</modelelement>
+         <modelelement kardinaliteit="1">Domein</modelelement>
+         <modelelement kardinaliteit="1">Enumeratie</modelelement>
+         <modelelement kardinaliteit="0..1">Enumeratiewaarde</modelelement>
+         <modelelement kardinaliteit="1">Extern</modelelement>
+         <modelelement kardinaliteit="1">Gegevensgroep</modelelement>
+         <modelelement kardinaliteit="1">Gegevensgroeptype</modelelement>
+         <modelelement kardinaliteit="0..1">Gestructureerd datatype</modelelement>
+         <modelelement kardinaliteit="1">Informatiemodel</modelelement>
+         <modelelement kardinaliteit="0..1">Keuze</modelelement>
+         <modelelement kardinaliteit="1">Koppelklasse</modelelement>
+         <modelelement kardinaliteit="1">Objecttype</modelelement>
+         <modelelement kardinaliteit="0..1">Primitief datatype</modelelement>
+         <modelelement kardinaliteit="1">Referentie element</modelelement>
+         <modelelement kardinaliteit="1">Referentielijst</modelelement>
+         <modelelement kardinaliteit="1">Relatieklasse</modelelement>
+         <modelelement kardinaliteit="1">Relatierol - Relatierol leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatierol leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="1">View</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Eigenaar</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Gegevensgroeptype</modelelement>
+         <modelelement kardinaliteit="0..1">Koppelklasse</modelelement>
+         <modelelement kardinaliteit="0..1">Objecttype</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Formeel patroon</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Data element</modelelement>
+         <modelelement kardinaliteit="0..1">Gestructureerd datatype</modelelement>
+         <modelelement kardinaliteit="0..1">Primitief datatype</modelelement>
+         <modelelement kardinaliteit="0..1">Referentie element</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Gegevensgroeptype</naam>
+         <modelelement kardinaliteit="1">Gegevensgroep</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Herkomst</naam>
+         <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="1">Codelijst</modelelement>
+         <modelelement kardinaliteit="1">Data element</modelelement>
+         <modelelement kardinaliteit="1">Domein</modelelement>
+         <modelelement kardinaliteit="1">Enumeratie</modelelement>
+         <modelelement kardinaliteit="0..1">Enumeratiewaarde</modelelement>
+         <modelelement kardinaliteit="1">Extern</modelelement>
+         <modelelement kardinaliteit="1">Gegevensgroep</modelelement>
+         <modelelement kardinaliteit="1">Gegevensgroeptype</modelelement>
+         <modelelement kardinaliteit="0..1">Gestructureerd datatype</modelelement>
+         <modelelement kardinaliteit="1">Informatiemodel</modelelement>
+         <modelelement kardinaliteit="1">Keuze</modelelement>
+         <modelelement kardinaliteit="1">Koppelklasse</modelelement>
+         <modelelement kardinaliteit="1">Objecttype</modelelement>
+         <modelelement kardinaliteit="0..1">Primitief datatype</modelelement>
+         <modelelement kardinaliteit="1">Referentie element</modelelement>
+         <modelelement kardinaliteit="1">Referentielijst</modelelement>
+         <modelelement kardinaliteit="1">Relatieklasse</modelelement>
+         <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="1">View</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Herkomst definitie</naam>
+         <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="1">Codelijst</modelelement>
+         <modelelement kardinaliteit="0..1">Data element</modelelement>
+         <modelelement kardinaliteit="1">Domein</modelelement>
+         <modelelement kardinaliteit="1">Enumeratie</modelelement>
+         <modelelement kardinaliteit="0..1">Enumeratiewaarde</modelelement>
+         <modelelement kardinaliteit="1">Extern</modelelement>
+         <modelelement kardinaliteit="1">Gegevensgroep</modelelement>
+         <modelelement kardinaliteit="1">Gegevensgroeptype</modelelement>
+         <modelelement kardinaliteit="0..1">Gestructureerd datatype</modelelement>
+         <modelelement kardinaliteit="1">Informatiemodel</modelelement>
+         <modelelement kardinaliteit="0..1">Keuze</modelelement>
+         <modelelement kardinaliteit="1">Koppelklasse</modelelement>
+         <modelelement kardinaliteit="1">Objecttype</modelelement>
+         <modelelement kardinaliteit="0..1">Primitief datatype</modelelement>
+         <modelelement kardinaliteit="1">Referentie element</modelelement>
+         <modelelement kardinaliteit="1">Referentielijst</modelelement>
+         <modelelement kardinaliteit="1">Relatieklasse</modelelement>
+         <modelelement kardinaliteit="1">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="1">View</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Identificerend</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Referentie element</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Indicatie abstract object</naam>
+         <modelelement kardinaliteit="1">Objecttype</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Indicatie classificerend</naam>
+         <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Indicatie formele historie</naam>
+         <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Gegevensgroep</modelelement>
+         <modelelement kardinaliteit="1">Relatieklasse</modelelement>
+         <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Indicatie materiële historie</naam>
+         <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Gegevensgroep</modelelement>
+         <modelelement kardinaliteit="1">Relatieklasse</modelelement>
+         <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Informatiedomein</naam>
+         <modelelement kardinaliteit="1">Informatiemodel</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Informatiemodel type</naam>
+         <modelelement kardinaliteit="1">Informatiemodel</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Kardinaliteit</naam>
+         <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="1">Data element</modelelement>
+         <modelelement kardinaliteit="1">Gegevensgroep</modelelement>
+         <modelelement kardinaliteit="1">Referentie element</modelelement>
+         <modelelement kardinaliteit="1">Relatierol - Relatierol leidend</modelelement>
+         <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Kwaliteit</naam>
+         <modelelement kardinaliteit="0..*">Koppelklasse</modelelement>
+         <modelelement kardinaliteit="0..1">Objecttype</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Lengte</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Data element</modelelement>
+         <modelelement kardinaliteit="0..1">Primitief datatype</modelelement>
+         <modelelement kardinaliteit="0..1">Referentie element</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Locatie</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Codelijst</modelelement>
+         <modelelement kardinaliteit="1">Extern</modelelement>
+         <modelelement kardinaliteit="0..1">Referentielijst</modelelement>
+         <modelelement kardinaliteit="1">View</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Maximumwaarde</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Data element</modelelement>
+         <modelelement kardinaliteit="0..1">Gestructureerd datatype</modelelement>
+         <modelelement kardinaliteit="0..1">Primitief datatype</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>MIM extensie</naam>
+         <modelelement kardinaliteit="0..1">Informatiemodel</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>MIM extensie versie</naam>
+         <modelelement kardinaliteit="0..1">Informatiemodel</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>MIM taal</naam>
+         <modelelement kardinaliteit="0..1">Informatiemodel</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>MIM versie</naam>
+         <modelelement kardinaliteit="1">Informatiemodel</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Minimumwaarde</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Data element</modelelement>
+         <modelelement kardinaliteit="0..1">Gestructureerd datatype</modelelement>
+         <modelelement kardinaliteit="0..1">Primitief datatype</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Mogelijk geen waarde</naam>
+         <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="1">Relatieklasse</modelelement>
+         <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Naam</naam>
+         <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="1">Codelijst</modelelement>
+         <modelelement kardinaliteit="1">Constraint</modelelement>
+         <modelelement kardinaliteit="1">Data element</modelelement>
+         <modelelement kardinaliteit="1">Domein</modelelement>
+         <modelelement kardinaliteit="1">Enumeratie</modelelement>
+         <modelelement kardinaliteit="1">Enumeratiewaarde</modelelement>
+         <modelelement kardinaliteit="1">Extern</modelelement>
+         <modelelement kardinaliteit="0..1">Externe koppeling</modelelement>
+         <modelelement kardinaliteit="1">Gegevensgroep</modelelement>
+         <modelelement kardinaliteit="1">Gegevensgroeptype</modelelement>
+         <modelelement kardinaliteit="0..1">Generalisatie Datatypes</modelelement>
+         <modelelement kardinaliteit="1">Gestructureerd datatype</modelelement>
+         <modelelement kardinaliteit="1">Informatiemodel</modelelement>
+         <modelelement kardinaliteit="1">Keuze</modelelement>
+         <modelelement kardinaliteit="1">Objecttype</modelelement>
+         <modelelement kardinaliteit="1">Primitief datatype</modelelement>
+         <modelelement kardinaliteit="1">Referentie element</modelelement>
+         <modelelement kardinaliteit="1">Referentielijst</modelelement>
+         <modelelement kardinaliteit="1">Relatieklasse</modelelement>
+         <modelelement kardinaliteit="1">Relatierol - Relatierol leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatierol leidend</modelelement>
+         <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="1">View</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Patroon</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Data element</modelelement>
+         <modelelement kardinaliteit="0..1">Gestructureerd datatype</modelelement>
+         <modelelement kardinaliteit="0..1">Primitief datatype</modelelement>
+         <modelelement kardinaliteit="0..1">Referentie element</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Populatie</naam>
+         <modelelement kardinaliteit="0..*">Koppelklasse</modelelement>
+         <modelelement kardinaliteit="0..1">Objecttype</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Relatie doel</naam>
+         <modelelement kardinaliteit="1">Externe koppeling</modelelement>
+         <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Relatie eigenaar</naam>
+         <modelelement kardinaliteit="1">Externe koppeling</modelelement>
+         <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+
+         <naam>Regels</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Gegevensgroeptype</modelelement>
+         <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Relatiemodelleringtype</naam>
+         <modelelement kardinaliteit="1">Informatiemodel</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Specificatie formeel</naam>
+         <modelelement kardinaliteit="0..1">Constraint</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Specificatie tekst</naam>
+         <modelelement kardinaliteit="0..1">Constraint</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Subtype</naam>
+         <modelelement kardinaliteit="1">Generalisatie Datatypes</modelelement>
+         <modelelement kardinaliteit="1">Generalisatie Objecttypes</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Supertype</naam>
+         <modelelement kardinaliteit="1">Generalisatie Datatypes</modelelement>
+         <modelelement kardinaliteit="1">Generalisatie Objecttypes</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Toelichting</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Codelijst</modelelement>
+         <modelelement kardinaliteit="0..1">Data element</modelelement>
+         <modelelement kardinaliteit="0..1">Domein</modelelement>
+         <modelelement kardinaliteit="0..1">Enumeratie</modelelement>
+         <modelelement kardinaliteit="0..1">Enumeratiewaarde</modelelement>
+         <modelelement kardinaliteit="0..1">Extern</modelelement>
+         <modelelement kardinaliteit="0..1">Gegevensgroep</modelelement>
+         <modelelement kardinaliteit="0..1">Gegevensgroeptype</modelelement>
+         <modelelement kardinaliteit="0..1">Gestructureerd datatype</modelelement>
+         <modelelement kardinaliteit="0..1">Informatiemodel</modelelement>
+         <modelelement kardinaliteit="0..1">Keuze</modelelement>
+         <modelelement kardinaliteit="0..*">Koppelklasse</modelelement>
+         <modelelement kardinaliteit="0..1">Objecttype</modelelement>
+         <modelelement kardinaliteit="0..1">Primitief datatype</modelelement>
+         <modelelement kardinaliteit="0..1">Referentie element</modelelement>
+         <modelelement kardinaliteit="0..1">Referentielijst</modelelement>
+         <modelelement kardinaliteit="1">Relatieklasse</modelelement>
+         <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="0..1">View</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Type</naam>
+         <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="1">Data element</modelelement>
+         <modelelement kardinaliteit="1">Referentie element</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Unidirectioneel</naam>
+         <modelelement kardinaliteit="1">Externe koppeling</modelelement>
+         <modelelement kardinaliteit="1">Relatiesoort - Relatierol leidend</modelelement>
+         <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+   </metagegevens>
+</metamodel>

@@ -34,7 +34,8 @@
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all"
-    version="2.0">
+    expand-text="yes"
+    version="3.0">
     
     <!-- 
          Stylesheet to filter ANY xml file found in the tst-canon or ref-canon folder.
@@ -56,14 +57,16 @@
     <xsl:include href="RegressionExtractor-eaprofile.xsl"/>
     <xsl:include href="RegressionExtractor-config.xsl"/>
     <xsl:include href="RegressionExtractor-metamodel.xsl"/>
+    <xsl:include href="RegressionExtractor-parms.xsl"/>
     <?assume-not-relevant
     <xsl:include href="RegressionExtractor-schemas.xsl"/>
-    <xsl:include href="RegressionExtractor-parms.xsl"/>
     ?>    
     <xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="yes" indent="yes"/>
     
     <xsl:template match="/"> <!-- let op! deze extractor wordt aangeroepen op cw:file root elementen! -->
         <xsl:variable name="path" select="replace($file-path, '\\','/')"/>
+        
+        <xsl:sequence select="dlogger:save('Path ' || $file-type,$path)"></xsl:sequence>
         
         <xsl:choose>
             <!--
@@ -90,6 +93,12 @@
             <xsl:when test="$path = '/etc/metamodel.xml'">
                 <xsl:sequence select="dlogger:save('Metamodel test',$path)"/>
                 <xsl:apply-templates mode="mode-intermediate-metamodel"/>
+            </xsl:when>
+            
+            <!-- process the parms -->
+            <xsl:when test="$path = '/etc/parms.xml'">
+                <xsl:sequence select="dlogger:save('Parms test',$path)"/>
+                <xsl:apply-templates mode="mode-intermediate-parms"/>
             </xsl:when>
             
             <!-- skip all others -->

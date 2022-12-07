@@ -6,7 +6,7 @@
     
     <name>Grouping for MIM 1.1</name>
     
-    <desc lang="en">Deviations and additions to generic grouping for Kadaster metamodel.</desc>  
+    <desc lang="en">Deviations and additions to generic grouping for MIM 1.1 metamodel.</desc>  
     
     <tagged-values>
         
@@ -419,6 +419,13 @@
         </tv>
         
         <tv norm="space" id="CFG-TV-MIMEXTENSION">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-MIMEXTENSIONVERSION">
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>

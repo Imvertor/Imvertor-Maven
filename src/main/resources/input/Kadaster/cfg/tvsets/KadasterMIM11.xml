@@ -10,7 +10,7 @@
     
     <!-- #GH-256 refactored -->
     
-    <name>Kadaster MIM 1.1.1 tagged values</name>
+    <name>Kadaster MIM 1.1 tagged values</name>
     
     <tagged-values>
         <tv norm="space" id="CFG-TV-DOMAIN">

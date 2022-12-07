@@ -92,7 +92,7 @@
       <IMVERTOR_LOCALSCHEMA_XSLPATH>Imvert2localSchema.xsl</IMVERTOR_LOCALSCHEMA_XSLPATH>
       
       <WORK_LOCALSCHEMA_FILE>${system/work-imvert-folder-path}/imvertor.09.local.xml</WORK_LOCALSCHEMA_FILE> 
-      <LOCAL_SCHEMA_MAPPING_FILE>${system/inp-folder-path}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>
+      <LOCAL_SCHEMA_MAPPING_FILE>${system/managedinstallfolder}/input/${cli/owner}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>
       
       <IMVERTOR_EXPANDDOC_XSLPATH>Imvert2expanddoc.xsl</IMVERTOR_EXPANDDOC_XSLPATH>
       <WORK_EXPANDDOC_FILE>${system/work-imvert-folder-path}/imvertor.10.expanddoc.xml</WORK_EXPANDDOC_FILE>

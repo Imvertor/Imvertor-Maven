@@ -16,6 +16,7 @@
     <cs:forSchema>
         <cs-ref:ConceptualSchemaRef xlink:href="#MIM11"/>
     </cs:forSchema>
+    <cs:owner>MIM</cs:owner>
     <cs:constructs>
         <cs:Construct>
             <cs:name>CharacterString</cs:name>

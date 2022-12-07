@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="MIM11.xml"/>
+
+    <xi:include href="MIM111-scalar.xml"/>
+    
+    <name>MIM 1.1.1</name>
+    
+    <desc lang="en">Metamodel for common constructs in MIM 1.1.1 models</desc>
+    <desc lang="nl">Metamodel voor gemeenschappelijkheden in MIM 1.1.1 modellen</desc>
+        
+    <profiles>
+        <profile lang="nl">
+            <id>MIM111NL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1.1.1 NL</desc> 
+        </profile>
+        <profile lang="en">
+            <id>MIM111EN</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1.1.1 EN</desc>
+        </profile>
+    </profiles>
+    
+    <stereotypes xml:id="stereotypes">
+        
+        <!-- geen aanpassingen tov MIM 1.1 -->
+        
+    </stereotypes>
+    
+    
+</metamodel>

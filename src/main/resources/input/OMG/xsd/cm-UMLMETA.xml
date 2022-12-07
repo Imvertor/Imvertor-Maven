@@ -16,6 +16,7 @@
     <cs:forSchema>
         <cs-ref:ConceptualSchemaRef xlink:href="#UMLMETA"/>
     </cs:forSchema>
+    <cs:owner>OMG</cs:owner>
     <cs:constructs>
         <cs:Construct>
             <cs:name>UMLAssociation</cs:name>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:Map xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+   
+   <cs:id>ENVPROD</cs:id>
+   <cs:namespace>http://www.kadaster.nl/schemas/kik-inzage/verzoektotinformatieantwoord/productgegevens/v20170101</cs:namespace>
+   <cs:desc>TODO</cs:desc>
+   <cs:location>http://www.kadaster.nl/schemas/kik-inzage/verzoektotinformatieantwoord/productgegevens/v20170101/ProductGegevens.xsd</cs:location>
+   <cs:phase>3</cs:phase>
+   <cs:version>1.0.0</cs:version>
+   <cs:release>20170101</cs:release>
+   <cs:forSchema>
+      <cs-ref:ConceptualSchemaRef xlink:href="#Productgegevens"/>
+   </cs:forSchema>
+   <cs:owner>Kadaster</cs:owner>
+   <cs:constructs>
+      <cs:Construct>
+         <cs:name>ProductGegevens</cs:name>
+         <cs:sentinel>false</cs:sentinel>
+         <cs:xsdTypes>
+            <cs:XsdType>
+               <cs:name>ProductGegevens</cs:name>
+               <cs:primitive>false</cs:primitive>
+            </cs:XsdType>
+         </cs:xsdTypes>
+      </cs:Construct>
+   </cs:constructs>
+</cs:Map>

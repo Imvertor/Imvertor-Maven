@@ -33,23 +33,15 @@
     version="2.0">
     
     <!-- 
-         Stylesheet to filter intermediate schemas file.
+         Stylesheet to filter schemas file.
     -->
-    
-    <xsl:template match="cw:file/imvert:schemas" mode="mode-intermediate-schemas">
-        <xsl:apply-templates mode="#current"/>
-    </xsl:template>
     
     <!-- 
         ignore the following alltogether 
     -->
     <xsl:template match="
-        imvert:schema/imvert:exporter |
-        imvert:schema/imvert:schema-exported |
-        imvert:schema/imvert:latest-svn-revision |
-        xs:appinfo |
-        imvert:schema/imvert:latest-svn-revision |
-        imvert:xsd-path" 
+        none-yet
+        " 
         mode="mode-intermediate-schemas">
         <xsl:call-template name="ignore"/>
     </xsl:template>

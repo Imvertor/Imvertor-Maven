@@ -20,6 +20,7 @@
                 <stereo minmax="0..1">stereotype-name-composite</stereo>
                 <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
             </stereotypes>
+            <source>MIMEXT-1.1.0</source>
         </tv>
         
         <tv norm="note" id="CFG-TV-RULES">
@@ -34,6 +35,7 @@
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
                 <stereo minmax="0..1">stereotype-name-relation-role</stereo>
             </stereotypes>
+            <source>MIMEXT-1.1.0</source>
         </tv>
         
         <tv id="CFG-TV-MINVALUEINCLUSIVE">
@@ -48,6 +50,7 @@
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
             </stereotypes>
+            <source>MIMEXT-1.1.0</source>
         </tv>
         
         <tv id="CFG-TV-MAXVALUEINCLUSIVE">
@@ -62,6 +65,7 @@
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
             </stereotypes>
+            <source>MIMEXT-1.1.0</source>
         </tv>
         
         <tv norm="space" id="CFG-TV-DEFINITION">
@@ -121,10 +125,25 @@
                 <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
                 <stereo minmax="0..1">stereotype-name-domain-package</stereo>
                 <stereo minmax="0..1">stereotype-name-external-package</stereo>
-                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
                 <stereo minmax="0..1">stereotype-name-view-package</stereo>
             </stereotypes>
+            <source>MIMEXT-1.0.0</source>
         </tv>
+        
+        <tv norm="space" id="CFG-TV-MIMEXTENSIONVERSION">
+            <name lang="nl">MIM extensie versie</name>
+            <name lang="en">MIM extension version</name>
+            <desc lang="nl">De versie van de extensie op MIM.</desc>
+            <desc lang="en">TODO</desc>
+            <source></source>
+            <catalog></catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
+            </stereotypes>
+            <source>MIMEXT-1.1.0</source>
+        </tv>
+        
         
     </tagged-values>
 

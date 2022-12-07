@@ -12,6 +12,11 @@
             <desc lang="en">TODO</desc>
             <desc lang="nl">Aanduiding dat een relatiesoort onderdeel uitmaakt van de unieke aanduiding van een object.</desc>
             <construct>association</construct>
+            <context>
+                <parent-stereo>stereotype-name-objecttype</parent-stereo>
+                <parent-stereo>stereotype-name-composite</parent-stereo>
+            </context>
+            <source>MIMEXT-1.0.0</source>
         </stereo>
         
         <stereo id="stereotype-name-koppelklasse" primary="yes"><!-- https://github.com/Geonovum/MIM-Werkomgeving/issues/196 -->
@@ -19,6 +24,13 @@
             <name lang="en">LinkType</name>
             <desc lang="nl">Een koppelklasse is een verbijzondering van een objecttype en wordt als object beheerd. Dit (koppel)object koppelt twee soorten objecten c.q. klassen aan elkaar, welke zelf geen weet hebben van elkaar. De beheercyclus van deze twee klassen is op zichzelf staand, wijzigingen in een van deze objecten hebben nooit wijzigingen tot gevolg in het andere object (dit geldt beide kanten op). Gegevens over de koppeling tussen twee de soorten objecten (in de vorm van een derde soort object) worden vastgelegd. De combinatie van de identificaties waarnaar de koppelklasse refereert komt in principe maar één keer voor.</desc>
             <construct>class</construct>
+            <context>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
+                <super-stereo>stereotype-name-objecttype</super-stereo>
+            </context>
+            <source>MIMEXT-1.0.0</source>
+            
         </stereo>
         
         <stereo id="stereotype-name-static-liskov" primary="yes"><!-- https://github.com/Geonovum/MIM-Werkomgeving/issues/132 -->
@@ -26,6 +38,10 @@
             <name lang="en">StaticLiskov</name>
             <desc lang="nl">Een generalisatie relatie waarin wordt aangenomen dat het subtype de plek kan innemen daar waar het supertype is gespecificeerd. Daarnaast neemt het structuur-eigenschappen over (attributen, relaties). Voorbeeld: Racefiets is Fiets. </desc>
             <construct>generalization</construct>
+            <context>
+                <!-- dezelfde parent stereo's als de generalisatie van MIM -->
+            </context>
+            <source>MIMEXT-1.0.0</source>
         </stereo>
         
         <stereo id="stereotype-name-static-generalization" primary="yes"><!-- https://github.com/Geonovum/MIM-Werkomgeving/issues/132 -->
@@ -33,6 +49,36 @@
             <name lang="en">Static</name>
             <desc lang="nl">Een generalisatie relatie waarin wordt aangenomen dat het subtype alléén structuur-eigenschappen overneemt van het supertype. Het subtype kan niet (per definitie) de plaats innemen van het supertype. Voorbeeld: Racefiets is Vervoermiddel-met-twee-wielen. </desc>
             <construct>generalization</construct>
+            <context>
+                <!-- dezelfde parent stereo's als de generalisatie van MIM -->
+            </context>
+            <source>MIMEXT-1.0.0</source>
+        </stereo>
+    
+        <!-- de introductie van koppelklasse vraagt om nieuwe parent stereo's. Het volg feitelijk de context van objectttypen. -->
+        
+        <stereo id="stereotype-name-attribute">
+            <context>
+                <parent-stereo>stereotype-name-koppelklasse</parent-stereo>
+            </context>
+        </stereo>
+        
+        <stereo id="stereotype-name-attributegroup">
+            <context>
+                <parent-stereo>stereotype-name-koppelklasse</parent-stereo>
+            </context>
+        </stereo>
+        
+        <stereo id="stereotype-name-generalization">
+            <context>
+                <parent-stereo>stereotype-name-koppelklasse</parent-stereo>
+            </context>
+        </stereo>
+        
+        <stereo id="stereotype-name-relatiesoort">
+            <context>
+                <parent-stereo>stereotype-name-koppelklasse</parent-stereo>
+            </context>
         </stereo>
         
     </stereotypes>
