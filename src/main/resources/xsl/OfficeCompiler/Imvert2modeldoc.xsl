@@ -122,7 +122,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:package"><!-- only domain or view packs -->
-        <section type="DOMAIN" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.,'global')}">
+        <section type="{if (imvert:stereotype/@id = 'stereotype-name-domain-package') then 'DOMAIN' else 'VIEW'}" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.,'global')}">
             
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             
