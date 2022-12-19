@@ -109,7 +109,7 @@
                     <!-- ignore -->
                 </xsl:when>
                 <xsl:when test="empty($doclist-xml-url)">
-                    <xsl:sequence select="imf:msg(.,'FATAL','Owner parameter doclist-xml-url not defined',())"/>
+                    <xsl:sequence select="imf:msg(.,'ERROR','Owner parameter doclist-xml-url not defined',())"/>
                 </xsl:when>
                 <xsl:when test="normalize-space($loc)">
                     <!-- Wanneer het een URL met xmlk extensie betreft, dan integraal overnemen. Anders oplossen op basis van de doclist-xml-url. -->
