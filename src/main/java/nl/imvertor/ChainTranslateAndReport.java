@@ -147,7 +147,9 @@ public class ChainTranslateAndReport {
 			    // read the current application phase
 			    configurator.getRunner().getAppPhase(); 
 			    
-			    if (succeeds || forced) {
+			    //if (1 == 1) throw new Exception("hellup step");
+		    	 
+		    	if (succeeds || forced) {
 			    
 			    	if (forced) { 
 				    	configurator.getRunner().warn(logger,"Ignoring metamodel errors found (forced compilation)");
@@ -245,10 +247,12 @@ public class ChainTranslateAndReport {
 			    }
 		    
 		    } catch (Exception e) {
-				configurator.getRunner().error(logger,"Step-level system error - Please notify your system administrator: " + e.getMessage(),e);
+				configurator.getRunner().error(logger,"Step-level system error: " + e.getMessage(),e,null,"SLSEPNYSA");
 			}   
 		    
 		    Transformer.setMayProfile(false);
+	    	
+		    //if (1 == 1) throw new Exception("hellup chain");
 	    	
 			// analyze this run. 
 		    (new RunAnalyzer()).run();
@@ -270,8 +274,13 @@ public class ChainTranslateAndReport {
 		    	configurator.getRunner().info(logger, "** Warnings have been suppressed");
 		    
 		} catch (Exception e) {
-			configurator.getRunner().fatal(logger,"Chain-level system error - Please notify your administrator: " + e.getMessage(),e,"PNYSA");
+			try {
+				configurator.getRunner().fatal(logger,"Chain-level system error: " + e.getMessage(),e,"CLSEPNYSA");
+			} catch (Exception f) {
+				System.err.println("Error reporting chain-level system error: " + f + " (" + e + ")" );
+			}
 		}
+		
 		System.exit(0); // should be 1 , "okay"
 	}
 }
