@@ -232,9 +232,7 @@
                 </item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
-            <xsl:if test="$association-type = 'Associatie'"><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147  -->
-                <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/>
-            </xsl:if>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 correctie -->
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEMATERIELEHISTORIE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-MOGELIJKGEENWAARDE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-EXPLAINNOVALUE']"/>
