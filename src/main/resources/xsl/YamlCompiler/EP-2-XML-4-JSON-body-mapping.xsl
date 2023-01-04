@@ -92,16 +92,8 @@
 			<xsl:sequence select="imf:msg(.,'ERROR','The tv &quot;[1]&quot; has been specified with the value &quot;Nee&quot; on the top level entity [2]. This is not allowed',(./ep:parameters/ep:parameter/ep:name[.='endpointavailable']/@original,./ep:name))" />			
 		</xsl:for-each>
 
-
-		
-		<xsl:result-document href="{concat('file:/',imf:get-xparm('system/work-imvert-folder-path'),'/../../../imvertor_dev/temp/SubtypeConstruct/',generate-id(),'.xml')}"  method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
-			<xsl:copy-of select="$message-sets"/>
-		</xsl:result-document>
-		
-		<!--xsl:variable name="json-components" as="node()"-->
 		<xsl:variable name="json-components">
 			<!-- For each global construct a component is generated. -->
-			<!--j:map-->
 				<xsl:choose>
 					<xsl:when test="$serialisation = 'hal+json'">
 						<!-- Only if hal+json applies this when is relevant -->
@@ -505,10 +497,9 @@
 					</xsl:when>
 				</xsl:choose>
 				
-				
-			<xsl:sequence select="imf:generateDebugInfo('Debuglocatie-01900',.)"/>
+				<xsl:sequence select="imf:generateDebugInfo('Debuglocatie-01900',.)"/>
 			
-			<!-- Loop over global superclass constructs which are refered to from constructs within the messages. -->
+				<!-- Loop over global superclass constructs which are refered to from constructs within the messages. -->
 				<xsl:for-each select="ep:message-set/ep:construct
 					[
 					ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
@@ -973,7 +964,6 @@
 					<!-- An simpletype component is generated. -->
 					<xsl:call-template name="simpletype-class"/>
 				</xsl:for-each>
-			<!--/j:map-->		
 		</xsl:variable>
 
 		<!-- First the JSON top-level structure is generated. -->
