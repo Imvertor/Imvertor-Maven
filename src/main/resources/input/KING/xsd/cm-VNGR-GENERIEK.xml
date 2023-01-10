@@ -249,6 +249,29 @@
          </cs:oasTypes>
       </cs:Construct>
       <cs:Construct>
+         <cs:name>TypeBedrag</cs:name>
+         <cs:sentinel>false</cs:sentinel>
+         <cs:xsdTypes>
+            <cs:XsdType>
+               <cs:name>TypeBedrag</cs:name>
+               <cs:asAttribute>TypeBedrag</cs:asAttribute>
+               <cs:asAttributeDesignation>Unknown</cs:asAttributeDesignation>
+               <cs:primitive>false</cs:primitive>
+            </cs:XsdType>
+         </cs:xsdTypes>
+         <cs:rdfTypes>
+            <cs:RdfType>
+               <cs:name>Unknown</cs:name>
+            </cs:RdfType>
+         </cs:rdfTypes>
+         <cs:oasTypes>
+            <cs:OasType>
+               <cs:name>TypeBedrag</cs:name>
+               <cs:primitive>false</cs:primitive>
+            </cs:OasType>
+         </cs:oasTypes>
+      </cs:Construct>
+      <cs:Construct>
          <cs:name>CompositeID</cs:name>
          <cs:sentinel>false</cs:sentinel>
       </cs:Construct>
