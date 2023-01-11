@@ -25,7 +25,7 @@
     <xsl:output method="xml" indent="yes"/>
     
     <!-- all constructs that should be made part of the profile -->
-    <xsl:variable name="config-types" select="distinct-values(//*[imvert:type-package = 'GML']/imvert:type-name)" as="xs:string*"/>
+    <xsl:variable name="config-types" select="distinct-values(//*[imvert:type-package = ('GML','GMLPROFILE')]/imvert:type-name)" as="xs:string*"/><!-- #306 fix -->
     <!-- add the attribute types configured in the conceptual schema mapping -->
     <xsl:variable name="config-attributes" select="for $n in $config-types return $conceptual-schema-mapping//cs:XsdType[cs:name = $n]/cs:asAttribute" as="xs:string*"/>
     
