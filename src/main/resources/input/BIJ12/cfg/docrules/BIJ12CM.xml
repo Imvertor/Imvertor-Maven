@@ -3,11 +3,16 @@
  * Copyright (C) 
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-  
+    
     <xi:include href="../../../Geonovum/cfg/docrules/MIMCM.xml"/>
     
     <name>BIJ12 Conceptual model documentation rules</name>
     
     <desc>BIJ12 SIM specific requirements on documentation. Follows Geonovum.</desc>
- 
+    
+    <!-- 
+        collect the codelist and enumeration contents in a separate section?
+    -->
+    <lists-to-listing>false</lists-to-listing>
+    
 </doc-rules>
