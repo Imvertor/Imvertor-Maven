@@ -587,6 +587,7 @@
              </cs:XsdType>
           </cs:xsdTypes>
        </cs:Construct>
+       <?x
        <cs:Construct>
           <cs:name>Boolean</cs:name>
           <cs:sentinel>false</cs:sentinel>
@@ -647,6 +648,7 @@
              </cs:XsdType>
           </cs:xsdTypes>
        </cs:Construct>
+       x?>
        <cs:Construct>
           <cs:name>Time</cs:name>
           <cs:sentinel>false</cs:sentinel>
@@ -657,6 +659,7 @@
              </cs:XsdType>
           </cs:xsdTypes>
        </cs:Construct>
+       <?x
        <cs:Construct>
           <cs:name>URI</cs:name>
           <cs:sentinel>false</cs:sentinel>
@@ -667,5 +670,6 @@
              </cs:XsdType>
           </cs:xsdTypes>
        </cs:Construct>
+       x?>
     </cs:constructs>
 </cs:Map>
