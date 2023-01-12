@@ -14,7 +14,7 @@
    <cs:version>1.0.0</cs:version>
    <cs:release>20210115</cs:release>
    <cs:forSchema>
-      <cs-ref:ConceptualSchemaRef xlink:href="#VNGR"/>
+      <cs-ref:ConceptualSchemaRef xlink:href="#VNGR-GENERIEK"/>
    </cs:forSchema>
    <cs:owner>KING</cs:owner>
    <cs:constructs>
