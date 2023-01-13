@@ -34,10 +34,6 @@
          <cs:name>NietNegatiefInteger</cs:name>
          <cs:sentinel>false</cs:sentinel>
       </cs:Construct>
-      <cs:Construct>
-         <cs:name>POSTCODE</cs:name>
-         <cs:sentinel>false</cs:sentinel>
-      </cs:Construct>
       <!--cs:Construct>
          <cs:name>Year</cs:name>
          <cs:sentinel>false</cs:sentinel>
