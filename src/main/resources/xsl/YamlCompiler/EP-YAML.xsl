@@ -433,7 +433,7 @@
 									</xsl:call-template>
 								</xsl:variable>
 								<xsl:choose>
-									<xsl:when test="ep:outside-ref='VNGR'">
+									<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
 										<xsl:text>&#xa;        - in: path</xsl:text>
 										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
 										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
@@ -528,7 +528,7 @@
 									<xsl:when test="upper-case(ep:name) = 'API-VERSION'">
 										<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'api-version&quot;')"/>
 									</xsl:when>
-									<xsl:when test="ep:outside-ref='VNGR'">
+									<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
 										<xsl:variable name="required">
 											<xsl:choose>
 												<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
@@ -946,7 +946,7 @@
 									</xsl:call-template>
 								</xsl:variable>
 								<xsl:choose>
-									<xsl:when test="ep:outside-ref='VNGR'">
+									<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
 										<xsl:text>&#xa;        - in: path</xsl:text>
 										<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
 										<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>
@@ -1039,7 +1039,7 @@
 										<xsl:text>&#xa;          required: false</xsl:text>
 										<xsl:text>&#xa;          schema:</xsl:text>
 										<xsl:choose>
-											<xsl:when test="ep:outside-ref='VNGR'">
+											<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
 												<xsl:text>&#xa;            $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
 											</xsl:when>
 											<xsl:when test="ep:data-type">
@@ -1318,7 +1318,7 @@
 							</xsl:call-template>
 						</xsl:variable>
 						<xsl:choose>
-							<xsl:when test="ep:outside-ref='VNGR'">
+							<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
 								<xsl:text>&#xa;        - in: path</xsl:text>
 								<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
 								<xsl:text>&#xa;          description: "</xsl:text><xsl:apply-templates select="ep:documentation"/><xsl:text>"</xsl:text>

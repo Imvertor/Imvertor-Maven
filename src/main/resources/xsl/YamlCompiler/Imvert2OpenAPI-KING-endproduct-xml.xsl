@@ -1833,14 +1833,15 @@
 		</xsl:variable-->
 
 		<xsl:choose>
-			<xsl:when test="imvert:type-package = 'VNGR'">
+			<xsl:when test="imvert:type-package = ('VNGR','VNG-GENERIEK')">
 				<ep:construct>
 					<ep:parameters>
 						<xsl:call-template name="attributeParameters"/>
 					</ep:parameters>
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
-					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name,'type-name'))" />
+					<xsl:sequence select="imf:msg($construct,'WARNING','Processing attribute [1] with baretype.',(@display-name,imvert:baretype))"/>						
+					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name-oas,'type-name'))" />
 					<xsl:sequence select="imf:create-output-element('ep:outside-ref', imvert:type-package)" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
