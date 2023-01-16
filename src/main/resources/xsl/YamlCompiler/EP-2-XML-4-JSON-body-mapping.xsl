@@ -1543,7 +1543,7 @@
 		<xsl:sequence select="imf:generateDebugInfo('Debuglocatie-03430',.)"/>
 		
 		<j:map key="{$elementName}">
-			<xsl:value-of select="$derivedPropertyContent"/>		
+			<xsl:sequence select="$derivedPropertyContent"/>		
 		</j:map>
 		
 		<xsl:sequence select="imf:generateDebugInfo('Einde-Debuglocatie-03430',.)"/>
@@ -1650,7 +1650,7 @@
 			 To be able to do that it uses the derivePropertyContent template which on its turn uses the deriveDataType, deriveFormat and deriveFacets 
 			 templates. -->
 		<xsl:choose>
-			<xsl:when test="ep:outside-ref='VNGR'">
+			<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
 				
 				<xsl:sequence select="imf:generateDebugInfo('Debuglocatie-03700',.)"/>
 				
