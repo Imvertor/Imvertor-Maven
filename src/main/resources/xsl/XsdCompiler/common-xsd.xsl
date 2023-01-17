@@ -376,7 +376,7 @@
 
     <xsl:function name="imf:create-nonempty-constraint" as="item()*">
         <xsl:param name="type" as="xs:string?"/>
-        <xsl:if test="$type=('scalar-string', 'scalar-uri') or not($type) and imf:boolean($strings-nonempty)">
+        <xsl:if test="($type=('scalar-string', 'scalar-uri') or not($type)) and imf:boolean($strings-nonempty)">
             <xs:pattern value="\S.*"/> <!-- Note: do not use xs:minLength as this allows for a single space -->
         </xsl:if>
     </xsl:function>
