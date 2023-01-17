@@ -14,7 +14,7 @@
    <cs:version>1.0.0</cs:version>
    <cs:release>20210115</cs:release>
    <cs:forSchema>
-      <cs-ref:ConceptualSchemaRef xlink:href="#VNGR"/>
+      <cs-ref:ConceptualSchemaRef xlink:href="#VNGR-GENERIEK"/>
    </cs:forSchema>
    <cs:owner>KING</cs:owner>
    <cs:constructs>
@@ -267,6 +267,29 @@
          <cs:oasTypes>
             <cs:OasType>
                <cs:name>TypeBedrag</cs:name>
+               <cs:primitive>false</cs:primitive>
+            </cs:OasType>
+         </cs:oasTypes>
+      </cs:Construct>
+      <cs:Construct>
+         <cs:name>POSTCODE</cs:name>
+         <cs:sentinel>false</cs:sentinel>
+         <cs:xsdTypes>
+            <cs:XsdType>
+               <cs:name>POSTCODE</cs:name>
+               <cs:asAttribute>POSTCODE</cs:asAttribute>
+               <cs:asAttributeDesignation>Unknown</cs:asAttributeDesignation>
+               <cs:primitive>false</cs:primitive>
+            </cs:XsdType>
+         </cs:xsdTypes>
+         <cs:rdfTypes>
+            <cs:RdfType>
+               <cs:name>Unknown</cs:name>
+            </cs:RdfType>
+         </cs:rdfTypes>
+         <cs:oasTypes>
+            <cs:OasType>
+               <cs:name>POSTCODE</cs:name>
                <cs:primitive>false</cs:primitive>
             </cs:OasType>
          </cs:oasTypes>

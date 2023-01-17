@@ -447,7 +447,7 @@
 											</xsl:call-template>
 										</xsl:variable>
 										<xsl:choose>
-											<xsl:when test="ep:outside-ref='VNGR'">
+											<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
 												<j:map>
 													<j:string key="in">path</j:string>
 													<j:string key="name"><xsl:value-of select="ep:name" /></j:string>
@@ -583,7 +583,7 @@
 													<xsl:sequence select="imf:generateRef(concat($standard-yaml-parameters-url,'api-version'))"/>
 												</j:map>
 											</xsl:when>
-											<xsl:when test="ep:outside-ref='VNGR'">
+											<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
 												<xsl:variable name="required">
 													<xsl:choose>
 														<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
@@ -674,6 +674,12 @@
 												</j:map>
 											</xsl:when>
 											<xsl:when test="ep:type-name">
+												<xsl:variable name="required">
+													<xsl:choose>
+														<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
+														<xsl:otherwise>false</xsl:otherwise>
+													</xsl:choose>
+												</xsl:variable>
 												<j:map>
 													<j:string key="in">query</j:string>
 													<j:string key="name"><xsl:value-of select="translate(ep:name/@original,'.','_')" /></j:string>
@@ -683,7 +689,7 @@
 													<xsl:if test="$documentation!=''">
 														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
 													</xsl:if>
-													<j:boolean key="required">false</j:boolean>
+													<j:boolean key="required"><xsl:value-of select="$required"/></j:boolean>
 													<j:map key="schema">
 														<xsl:sequence select="imf:generateRef(concat('#/components/schemas/',ep:type-name))"/>
 													</j:map>
@@ -989,7 +995,7 @@
 											</xsl:call-template>
 										</xsl:variable>
 										<xsl:choose>
-											<xsl:when test="ep:outside-ref='VNGR'">
+											<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
 												<j:map>
 													<j:string key="in">path</j:string>
 													<j:string key="name"><xsl:value-of select="ep:name" /></j:string>
@@ -1110,6 +1116,12 @@
 												</j:map>
 											</xsl:when>
 											<xsl:otherwise>
+												<xsl:variable name="required">
+													<xsl:choose>
+														<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
+														<xsl:otherwise>false</xsl:otherwise>
+													</xsl:choose>
+												</xsl:variable>
 												<j:map>
 													<j:string key="in">query</j:string>
 													<j:string key="name"><xsl:value-of select="translate(ep:name/@original,'.','_')" /></j:string>
@@ -1119,10 +1131,10 @@
 													<xsl:if test="$documentation!=''">
 														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
 													</xsl:if>
-													<j:boolean key="required">false</j:boolean>
+													<j:boolean key="required"><xsl:value-of select="$required"/></j:boolean>
 													<j:map key="schema">
 														<xsl:choose>
-															<xsl:when test="ep:outside-ref='VNGR'">
+															<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
 																<xsl:sequence select="imf:generateRef(concat($standard-json-gemeente-components-url,ep:type-name))"/>
 															</xsl:when>
 															<xsl:when test="ep:data-type">
@@ -1396,7 +1408,7 @@
 									</xsl:call-template>
 								</xsl:variable>
 								<xsl:choose>
-									<xsl:when test="ep:outside-ref='VNGR'">
+									<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
 										<j:map>
 											<j:string key="in">path</j:string>
 											<j:string key="name"><xsl:value-of select="ep:name" /></j:string>

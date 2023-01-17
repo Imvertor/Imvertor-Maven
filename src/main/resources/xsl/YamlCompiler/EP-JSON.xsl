@@ -2208,7 +2208,7 @@
 			 To be able to do that it uses the derivePropertyContent template which on its turn uses the deriveDataType, deriveFormat and deriveFacets 
 			 templates. -->
 		<xsl:choose>
-			<xsl:when test="ep:outside-ref='VNGR'">
+			<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
 				<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'&quot;: {' )"/>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-gemeente-components-url,ep:type-name,'&quot;')"/>
 				<xsl:value-of select="'}'"/>
