@@ -46,6 +46,10 @@
     <include-overview-sections-by-type>yes</include-overview-sections-by-type>
     <include-detail-sections-by-type>yes</include-detail-sections-by-type>
     
+    <!-- visibility of properties: show in accordance with configuration (@show) or compact: only the specified parts -->
+    
+    <show-properties>compact</show-properties> <!-- config, all, compact -->
+    
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>

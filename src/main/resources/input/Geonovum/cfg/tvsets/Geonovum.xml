@@ -8,6 +8,11 @@
         uitbreidingen door Geonovum, hebben betrekking op CM en LM 
     -->
     
+    <name>Geonovum</name>
+    
+    <desc lang="en">Tagset for Geonovum models</desc>
+    <desc lang="nl">Tags voor Geonovum modellen</desc>
+    
     <tagged-values>
         <tv id="CFG-TV-UNITOFMEASURE">
             <name lang="nl">Meeteenheid</name>
@@ -22,6 +27,47 @@
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
             </stereotypes>
         </tv>
+        
+        <tv norm="space" id="CFG-TV-ACTUALITEIT">
+            <name lang="nl">Actualiteit</name>
+            <desc lang="nl">Beschrijving van eisen aan de update frequentie.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-INWINNINGVERPLICHT">
+            <name lang="nl">Inwinning verplicht</name>
+            <desc lang="nl">Geeft de mate van compleetheid van het objecttype aan.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="note" id="CFG-TV-INWINNINGSREGELS">
+            <name lang="nl">Inwinningsregels</name>
+            <desc lang="nl">Hyperlink naar inwinningsregels voor het objecttype.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-POSITIONELEJUISTHEID"><!-- TODO valideer op integer -->
+            <name lang="nl">Positionele juistheid</name>
+            <desc lang="nl">De nauwkeurigheid van de geometrie.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+  
     </tagged-values>
     
 </tagset>

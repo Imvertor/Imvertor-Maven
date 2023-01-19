@@ -1361,6 +1361,19 @@
                     </xsl:variable>
                     <xsl:sequence select="imf:create-part-2(.,$list)"/>
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-ACTUALITEIT'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-ACTUALITEIT'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-INWINNINGVERPLICHT'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-INWINNINGVERPLICHT'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-INWINNINGSREGELS'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-INWINNINGSREGELS'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-POSITIONELEJUISTHEID'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-POSITIONELEJUISTHEID'))"/>   
+                </xsl:when>
+                
                 <xsl:otherwise>
                     <xsl:sequence select="imf:msg($this,'FATAL','No such document rule: [1]',$doc-rule-id)"/>
                 </xsl:otherwise>
