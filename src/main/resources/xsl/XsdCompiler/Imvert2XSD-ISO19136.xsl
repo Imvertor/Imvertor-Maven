@@ -1000,7 +1000,11 @@
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:restriction base="gml:MeasureType">
-                                <xs:attribute name="uom" type="gml:UomIdentifier" use="required" fixed="{$uom}" />
+                                <xs:attribute name="uom" type="gml:UomIdentifier" use="required">
+                                    <xsl:if test="$uom">
+                                        <xsl:attribute name="fixed" select="$uom"/>
+                                    </xsl:if>
+                                </xs:attribute>
                             </xs:restriction>
                         </xs:simpleContent>
                     </xs:complexType>
