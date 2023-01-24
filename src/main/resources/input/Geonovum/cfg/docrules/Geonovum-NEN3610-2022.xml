@@ -10,6 +10,9 @@
     
     <xi:include href="../../../NEN3610/cfg/docrules/NEN3610-2022.xml"/>
    
+    <!-- Only display when tagged value fields are completed -->
+    <show-properties>compact</show-properties> <!-- config, all, compact -->
+
     <!-- no specific rules yet -->
     
 </doc-rules>
