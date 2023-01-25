@@ -150,7 +150,7 @@
                             <xsl:variable name="category" select="current-grouping-key()"/>
                            
                             <xsl:variable name="name" select="$category"/>
-                            <xsl:variable name="alias" select="$categories[@id = $category]/desc"/>
+                            <xsl:variable name="alias" select="($categories[@id = $category]/desc,'(No category)')[1]"/>
                             <xsl:variable name="notes" select="'Selecteer en klik ergens op het diagram om te plaatsen'"/>
                             <Stereotype name="{$prefix}: {$alias}" alias="{$prefix} {$alias}" notes="{$notes}" cx="0" cy="0" bgcolor="-1" fontcolor="-1" bordercolor="-1" borderwidth="-1" hideicon="0">
                                 <AppliesTo>

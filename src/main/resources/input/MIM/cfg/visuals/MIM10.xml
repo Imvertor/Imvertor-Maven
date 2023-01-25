@@ -22,24 +22,31 @@
     <categories>
         <category id="OBJECTS">
             <desc lang="nl">Objecten en attributen</desc>
+            <desc lang="en">Objects and attributes</desc>
         </category>
         <category id="RELATIONS">
             <desc lang="nl">Relaties</desc>
+            <desc lang="en">Relations</desc>
         </category>
         <category id="DATATYPES">
             <desc lang="nl">Datatypen</desc>
+            <desc lang="en">Datatypes</desc>
         </category>
         <category id="LISTS">
             <desc lang="nl">Lijsten</desc>
+            <desc lang="en">Lists</desc>
         </category>
         <category id="MISCELLANEOUS">
             <desc lang="nl">Andere constructies</desc>
+            <desc lang="en">Other constructs</desc>
         </category>
         <category id="HISTORY">
             <desc lang="nl">Historie</desc>
+            <desc lang="en">History</desc>
         </category>
         <category id="PACKAGES">
             <desc lang="nl">Packages</desc>
+            <desc lang="en">Packages</desc>
         </category>
     </categories>
     

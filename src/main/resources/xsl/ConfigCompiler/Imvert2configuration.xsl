@@ -100,12 +100,6 @@
             <xsl:apply-templates select="$config-raw" mode="tree-includes"/>
         </xsl:variable>
         
-        <?x
-            <xsl:result-document href="file:/c:/temp/xml.xml">
-                <xsl:sequence select="$config-raw"/>
-            </xsl:result-document>
-        x?>
-        
         <xsl:result-document href="{imf:file-to-url(imf:get-xparm('properties/WORK_CONFIG_TREE_FILE'))}">
             <xsl:sequence select="$tree-includes"/>
         </xsl:result-document>
