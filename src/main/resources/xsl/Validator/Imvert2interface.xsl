@@ -18,7 +18,8 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
+    
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 
     xmlns:imvert="http://www.imvertor.org/schema/system"
@@ -31,8 +32,9 @@
     
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
-    exclude-result-prefixes="#all" 
-    version="2.0">
+    exclude-result-prefixes="#all"
+    expand-text="yes"
+    >
 
     <!-- 
         Pick up any stubs and translate these to the external or internal packages they are defined in.
@@ -186,19 +188,22 @@
                 <imvert:tagged-values>
                     <xsl:apply-templates select="imvert:tagged-values"/>
                     <imvert:tagged-value origin="system" id="CFG-TV-SOURCE">
-                        <imvert:name original="Herkomst">Herkomst</imvert:name>
+                        <xsl:variable name="trans" select="$configuration-tvset-file//tv[@id = 'CFG-TV-SOURCE']/name"/>
+                        <imvert:name original="{$trans}">{$trans}</imvert:name>
                         <imvert:value>     
                             <xsl:value-of select="current-group()[1]/@tv-src"/>
                         </imvert:value>
                     </imvert:tagged-value>
                     <imvert:tagged-value origin="system" id="CFG-TV-DEFINITION">
-                        <imvert:name original="Definitie">Definitie</imvert:name>
+                        <xsl:variable name="trans" select="$configuration-tvset-file//tv[@id = 'CFG-TV-DEFINITION']/name"/>
+                        <imvert:name original="{$trans}">{$trans}</imvert:name>
                         <imvert:value>
                             <xsl:value-of select="current-group()[1]/@tv-desc"/>
                         </imvert:value>
                     </imvert:tagged-value>
                     <imvert:tagged-value origin="system" id="CFG-TV-DATALOCATION">
-                        <imvert:name original="Locatie">Locatie</imvert:name>
+                        <xsl:variable name="trans" select="$configuration-tvset-file//tv[@id = 'CFG-TV-DATALOCATION']/name"/>
+                        <imvert:name original="{$trans}">{$trans}</imvert:name>
                         <imvert:value>
                             <xsl:value-of select="current-group()[1]/@tv-data"/>
                         </imvert:value>

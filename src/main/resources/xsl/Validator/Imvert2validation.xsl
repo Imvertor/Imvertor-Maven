@@ -1392,6 +1392,9 @@
                         <xsl:when test="@origin='notes'"><!-- reading notes field may result in a tagged value, that is therefore system generated. It does not have to be part of the metamodel tagged value set. -->
                             <!-- ignore -->
                         </xsl:when>
+                        <xsl:when test="@origin='system'"><!-- Dit geldt voor external packages (OUTSIDE-#). Niet valideren. -->
+                            <!-- ignore -->
+                        </xsl:when>
                         <xsl:when test="$is-first-in-group and empty($declared)">
                             <!-- an unknown tagged value, not configured anywhere -->
                             <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value not expected or unknown: [1]',$name/@original)"/>
