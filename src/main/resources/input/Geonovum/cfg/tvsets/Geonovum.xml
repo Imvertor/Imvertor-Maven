@@ -33,7 +33,7 @@
             <desc lang="nl">Beschrijving van eisen aan de update frequentie.</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
             </stereotypes>
         </tv>
         
@@ -42,7 +42,7 @@
             <desc lang="nl">Geeft de mate van compleetheid van het objecttype aan.</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value default="yes">Ja</value>
