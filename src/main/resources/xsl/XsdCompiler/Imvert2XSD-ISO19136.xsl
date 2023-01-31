@@ -696,8 +696,9 @@
             </xs:appinfo>
         </xsl:variable>
         
-        <xsl:if test="$this/imvert:conceptual-schema-type = ('Measure','Meetwaarde') and not($this/imvert:type-package = ('GML3','RO-BRO'))">
-            <xsl:sequence select="imf:msg('WARNING', 'Measure type [1] occurs in unexpected package [2]', ($this/imvert:conceptual-schema-type,$this/imvert:type-package))"/>
+        <xsl:variable name="allow" select="('GML3','RO-BRO')"/>
+        <xsl:if test="$this/imvert:conceptual-schema-type = ('Measure','Meetwaarde') and not($this/imvert:type-package = $allow)">
+            <xsl:sequence select="imf:msg('WARNING', 'Measure type [1] occurs in package [2] unexpectedly, expected any of packages [3]', ($this/imvert:conceptual-schema-type,$this/imvert:type-package, imf:string-group($allow)))"/>
         </xsl:if> 
         
         <xsl:variable name="is-gml-measure" select="
