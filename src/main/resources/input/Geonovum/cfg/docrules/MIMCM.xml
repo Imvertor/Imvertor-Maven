@@ -4,6 +4,8 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
+    <xi:include href="../../../MIM/cfg/docrules/MIM11-extended.xml"/>
+    
     <xi:include href="Geonovum.xml"/>
     
     <name>Geonovum MIM10 CM</name>
