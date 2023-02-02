@@ -96,7 +96,7 @@
 					</xsl:apply-templates>
 				</xsl:variable>
 				<xsl:if test="$documentation!=''">
-					<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+					<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 				</xsl:if>
 				<j:string key="version"><xsl:value-of select="ep:patch-number"/></j:string>
 				<j:string key="x-imvertor-generator-version"><xsl:value-of select="../ep:imvertor-generator-version"/></j:string>
@@ -417,7 +417,7 @@
 				<j:map key="{$method}">
 					<j:string key="operationId"><xsl:value-of select="$operationId" /></j:string>
 					<xsl:if test="$documentation!=''">
-						<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+						<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 					</xsl:if>
 					<xsl:if test="$acceptCrsParamPresent or
 									$checkedUriStructure//ep:uriPart/ep:param[@path = 'true'] or 
@@ -455,7 +455,7 @@
 														<xsl:apply-templates select="ep:documentation"/>
 													</xsl:variable>
 													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 													</xsl:if>
 													<j:boolean key="required">true</j:boolean>
 													<j:map key="schema">
@@ -471,7 +471,7 @@
 														<xsl:apply-templates select="ep:documentation"/>
 													</xsl:variable>
 													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 													</xsl:if>
 													<j:boolean key="required">true</j:boolean>
 													<j:map key="schema">
@@ -502,7 +502,7 @@
 														<xsl:apply-templates select="ep:documentation"/>
 													</xsl:variable>
 													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 													</xsl:if>
 													<j:boolean key="required">true</j:boolean>
 													<j:map key="schema">
@@ -597,7 +597,7 @@
 														<xsl:apply-templates select="ep:documentation"/>
 													</xsl:variable>
 													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 													</xsl:if>
 													<j:boolean key="required"><xsl:value-of select="$required"/></j:boolean>
 													<j:map key="schema">
@@ -627,7 +627,7 @@
 														<xsl:apply-templates select="ep:documentation"/>
 													</xsl:variable>
 													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 													</xsl:if>
 													<j:boolean key="required"><xsl:value-of select="$required"/></j:boolean>
 													<j:map key="schema">
@@ -665,7 +665,7 @@
 														<xsl:apply-templates select="ep:documentation"/>
 													</xsl:variable>
 													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 													</xsl:if>
 													<j:boolean key="required"><xsl:value-of select="$required"/></j:boolean>
 													<j:map key="schema">
@@ -687,7 +687,7 @@
 														<xsl:apply-templates select="ep:documentation"/>
 													</xsl:variable>
 													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 													</xsl:if>
 													<j:boolean key="required"><xsl:value-of select="$required"/></j:boolean>
 													<j:map key="schema">
@@ -966,7 +966,7 @@
 				<j:map key="{$method}">
 					<j:string key="operationId"><xsl:value-of select="$operationId" /></j:string>
 					<xsl:if test="$documentation!=''">
-						<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+						<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 					</xsl:if>
 					<xsl:if test="($messageCategory = 'Po' and ($contentCrsParamPresent or 
 								  $acceptCrsParamPresent)) or
@@ -1003,7 +1003,7 @@
 														<xsl:apply-templates select="ep:documentation"/>
 													</xsl:variable>
 													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 													</xsl:if>
 													<j:boolean key="required">true</j:boolean>
 													<j:map key="schema">
@@ -1022,7 +1022,7 @@
 														<xsl:apply-templates select="ep:documentation"/>
 													</xsl:variable>
 													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 													</xsl:if>
 													<j:boolean key="required">true</j:boolean>
 													<j:map key="schema">
@@ -1053,7 +1053,7 @@
 														<xsl:apply-templates select="ep:documentation"/>
 													</xsl:variable>
 													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 													</xsl:if>
 													<j:boolean key="required">true</j:boolean>
 													<j:map key="schema">
@@ -1129,7 +1129,7 @@
 														<xsl:apply-templates select="ep:documentation"/>
 													</xsl:variable>
 													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 													</xsl:if>
 													<j:boolean key="required"><xsl:value-of select="$required"/></j:boolean>
 													<j:map key="schema">
@@ -1390,7 +1390,7 @@
 				<j:map key="{$method}">
 					<j:string key="operationId"><xsl:value-of select="$operationId" /></j:string>
 					<xsl:if test="$documentation!=''">
-						<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+						<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 					</xsl:if>
 					<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[@path = 'true']">
 						<!-- If parameters apply the parameters section is generated. -->
@@ -1416,7 +1416,7 @@
 												<xsl:apply-templates select="ep:documentation"/>
 											</xsl:variable>
 											<xsl:if test="$documentation!=''">
-												<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+												<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 											</xsl:if>
 											<j:boolean key="required">true</j:boolean>
 											<j:map key="schema">
@@ -1435,7 +1435,7 @@
 												<xsl:apply-templates select="ep:documentation"/>
 											</xsl:variable>
 											<xsl:if test="$documentation!=''">
-												<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+												<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 											</xsl:if>
 											<j:boolean key="required">true</j:boolean>
 											<j:map key="schema">
@@ -1466,7 +1466,7 @@
 												<xsl:apply-templates select="ep:documentation"/>
 											</xsl:variable>
 											<xsl:if test="$documentation!=''">
-												<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+												<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 											</xsl:if>
 											<j:boolean key="required">true</j:boolean>
 											<j:map key="schema">
@@ -1714,8 +1714,8 @@
 				<xsl:if test="ep:max-value != ''">
 					<ep:max-value><xsl:value-of select="ep:max-value"/></ep:max-value>
 				</xsl:if>
-				<xsl:if test="ep:patroon != ''">
-					<ep:patroon><xsl:value-of select="ep:patroon"/></ep:patroon>
+				<xsl:if test="ep:pattern != ''">
+					<ep:pattern><xsl:value-of select="ep:pattern"/></ep:pattern>
 				</xsl:if>
 				<xsl:if test="ep:example != ''">
 					<ep:example><xsl:value-of select="ep:example"/></ep:example>
@@ -1852,7 +1852,7 @@
 						<xsl:value-of select="ep:max-value"/>
 					</xsl:variable>
 					<xsl:variable name="patroon">
-						<xsl:value-of select="ep:patroon"/>
+						<xsl:value-of select="ep:pattern"/>
 					</xsl:variable>
 					<xsl:variable name="example">
 						<xsl:value-of select="ep:example"/>
@@ -1887,7 +1887,7 @@
 									<ep:max-value><xsl:value-of select="$max-value"/></ep:max-value>
 								</xsl:if>
 								<xsl:if test="$patroon != ''">
-									<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
+									<ep:pattern><xsl:value-of select="$patroon"/></ep:pattern>
 								</xsl:if>
 								<xsl:if test="$example != ''">
 									<ep:example><xsl:value-of select="$example"/></ep:example>
@@ -1898,7 +1898,7 @@
 	<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
 								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:pattern', $patroon)" />
 								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:when>
@@ -1930,7 +1930,7 @@
 									<ep:max-value><xsl:value-of select="$max-value"/></ep:max-value>
 								</xsl:if>
 								<xsl:if test="$patroon != ''">
-									<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
+									<ep:pattern><xsl:value-of select="$patroon"/></ep:pattern>
 								</xsl:if>
 								<xsl:if test="$example != ''">
 									<ep:example><xsl:value-of select="$example"/></ep:example>
@@ -1941,7 +1941,7 @@
 								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
 								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:pattern', $patroon)" />
 								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:when>
@@ -1970,7 +1970,7 @@
 									<ep:max-value><xsl:value-of select="$max-value"/></ep:max-value>
 								</xsl:if>
 								<xsl:if test="$patroon != ''">
-									<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
+									<ep:pattern><xsl:value-of select="$patroon"/></ep:pattern>
 								</xsl:if>
 								<xsl:if test="$example != ''">
 									<ep:example><xsl:value-of select="$example"/></ep:example>
@@ -1981,7 +1981,7 @@
 								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
 								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:pattern', $patroon)" />
 								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:otherwise>
@@ -2019,7 +2019,7 @@
 									<ep:max-value><xsl:value-of select="$max-value"/></ep:max-value>
 								</xsl:if>
 								<xsl:if test="$patroon != ''">
-									<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
+									<ep:pattern><xsl:value-of select="$patroon"/></ep:pattern>
 								</xsl:if>
 								<xsl:if test="$example != ''">
 									<ep:example><xsl:value-of select="$example"/></ep:example>
@@ -2030,7 +2030,7 @@
 								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
 								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:pattern', $patroon)" />
 								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:if>
@@ -2223,7 +2223,7 @@
 			</xsl:if>
 		</xsl:variable>
 		
-		<xsl:sequence select="$completeDefinition"/>
+<!--		<xsl:sequence select="$completeDefinition"/>
 		<xsl:if test="not(empty($completeDefinition)) and not(empty($completeDescription))"><xsl:text>
   </xsl:text><xsl:text>
 </xsl:text></xsl:if>
@@ -2231,7 +2231,17 @@
 		<xsl:if test="(not(empty($completeDescription)) and not(empty($completePattern))) or (not(empty($completeDefinition)) and not(empty($completePattern)))"><xsl:text>
   </xsl:text><xsl:text>
 </xsl:text></xsl:if>
-  		<xsl:sequence select="$completePattern"/>
+  		<xsl:sequence select="$completePattern"/>-->
+
+		<xsl:sequence select="$completeDefinition"/>
+		<xsl:if test="not($completeDefinition = '') and not($completeDescription = '')"><xsl:text>
+</xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$completeDescription"/>
+		<xsl:if test="(not($completeDescription = '') and not($completePattern = '')) or (not($completeDefinition = '') and not($completePattern = ''))"><xsl:text>
+</xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$completePattern"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:definition">
@@ -2244,13 +2254,24 @@
 		<xsl:variable name="BSM-definition">
 			<xsl:apply-templates select="ep:p[@level='BSM']"/>
 		</xsl:variable>
-		<xsl:sequence select="$SIM-definition"/>
+
+<!--		<xsl:sequence select="$SIM-definition"/>
 		<xsl:if test="not(empty($SIM-definition)) and not(empty($UGM-definition))"><xsl:text>
   </xsl:text><xsl:text>
 </xsl:text></xsl:if>
 		<xsl:sequence select="$UGM-definition"/>
 		<xsl:if test="(not(empty($UGM-definition)) and not(empty($BSM-definition))) or (not(empty($SIM-definition)) and not(empty($BSM-definition)))"><xsl:text>
   </xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$BSM-definition"/>-->
+
+		<xsl:sequence select="$SIM-definition"/>
+		<xsl:if test="not($SIM-definition = '') and not($UGM-definition = '')"><xsl:text>
+</xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$UGM-definition"/>
+		<xsl:if test="(not($UGM-definition = '') and not($BSM-definition = '')) or (not($SIM-definition = '') and not($BSM-definition = ''))"><xsl:text>
+</xsl:text><xsl:text>
 </xsl:text></xsl:if>
 		<xsl:sequence select="$BSM-definition"/>
 	</xsl:template>
@@ -2265,13 +2286,24 @@
 		<xsl:variable name="BSM-description">
 			<xsl:apply-templates select="ep:p[@level='BSM']"/>
 		</xsl:variable>
-		<xsl:sequence select="$SIM-description"/>
+
+<!--		<xsl:sequence select="$SIM-description"/>
 		<xsl:if test="not(empty($SIM-description)) and not(empty($UGM-description))"><xsl:text>
   </xsl:text><xsl:text>
 </xsl:text></xsl:if>
 		<xsl:sequence select="$UGM-description"/>
 		<xsl:if test="(not(empty($UGM-description)) and not(empty($BSM-description))) or (not(empty($SIM-description)) and not(empty($BSM-description)))"><xsl:text>
   </xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$BSM-description"/>-->
+		
+		<xsl:sequence select="$SIM-description"/>
+		<xsl:if test="not($SIM-description = '') and not($UGM-description = '')"><xsl:text>
+</xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$UGM-description"/>
+		<xsl:if test="(not($UGM-description = '') and not($BSM-description = '')) or (not($SIM-description = '') and not($BSM-description = ''))"><xsl:text>
+</xsl:text><xsl:text>
 </xsl:text></xsl:if>
 		<xsl:sequence select="$BSM-description"/>
 	</xsl:template>
