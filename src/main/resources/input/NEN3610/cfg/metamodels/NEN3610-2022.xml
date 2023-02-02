@@ -158,8 +158,8 @@
         x?>
         
         <stereo id="stereotype-name-tijdlijn-geldigheid">
-            <name lang="nl">tijdlijn geldigheid</name>
-            <name lang="en">TODO</name>
+            <name lang="nl">Tijdlijn geldigheid</name>
+            <name lang="en">Timeline validity</name>
             <desc lang="nl">TODO</desc>
             <construct>attribute</construct>
             <context>
@@ -167,8 +167,8 @@
             </context>
         </stereo>
         <stereo id="stereotype-name-tijdlijn-registratie">
-            <name lang="nl">tijdlijn registratie</name>
-            <name lang="en">TODO</name>
+            <name lang="nl">Tijdlijn registratie</name>
+            <name lang="en">Timeline registration</name>
             <desc lang="nl">TODO</desc>
             <construct>attribute</construct>
             <context>
@@ -176,8 +176,8 @@
             </context>
         </stereo>
         <stereo id="stereotype-name-levensduur">
-            <name lang="nl">levensduur</name>
-            <name lang="en">TODO</name>
+            <name lang="nl">Levensduur</name>
+            <name lang="en">Lifespan</name>
             <desc lang="nl">TODO</desc>
             <construct>attribute</construct>
             <context>
@@ -186,8 +186,8 @@
         </stereo>
         
         <stereo id="stereotype-name-metadata" primary="no">
-            <name lang="nl">metadata</name>
-            <name lang="en">metadata</name>
+            <name lang="nl">Metadata</name>
+            <name lang="en">Metadata</name>
             <desc lang="nl">TODO</desc>
             <construct>class</construct>
             <construct>association</construct>

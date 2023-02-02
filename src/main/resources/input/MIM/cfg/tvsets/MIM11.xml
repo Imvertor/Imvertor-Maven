@@ -202,7 +202,7 @@
        
         <tv norm="space" id="CFG-TV-INDICATIONCLASSIFICATION">
             <name lang="nl">Indicatie classificerend</name>
-            <name lang="en">TODO</name>
+            <name lang="en">Indication classifying</name>
             <desc lang="nl">MIM 1.1: Indicatie dat een attribuutsoort het objecttype waar het bijhoort classificeert in (sub)typen.</desc>
             <desc lang="en">MIM 1.1: TODO</desc>
             <source>MIM-1.1.0</source>
