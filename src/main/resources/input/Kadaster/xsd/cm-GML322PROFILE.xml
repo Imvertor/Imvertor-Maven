@@ -253,7 +253,7 @@
           </cs:oasTypes>
        </cs:Construct>
        <cs:Construct>
-          <cs:name>GM_MultiLinestring</cs:name>
+          <cs:name>GM_MultiLineString</cs:name>
           <cs:sentinel>false</cs:sentinel>
           <cs:oasTypes>
              <cs:OasType>
