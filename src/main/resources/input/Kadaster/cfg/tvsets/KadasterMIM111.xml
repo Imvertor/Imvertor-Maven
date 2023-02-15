@@ -195,6 +195,13 @@
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo><!--TODO dit moet eigenlijk naar grouping voor MIM111 -->
             </stereotypes>
         </tv>
+        
+        <tv norm="space" id="CFG-TV-VOIDABLE">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+            </stereotypes>
+        </tv>
     </tagged-values>
 
 </tagset>
