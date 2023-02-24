@@ -1215,7 +1215,17 @@
     <xsl:param name="elem" as="element()"/>
     <xsl:variable name="package" select="imf:valid-id($elem/ancestor-or-self::*[self::mim:Domein|self::mim:View|self::Extern]/mim:naam)" as="xs:string?"/>
     <xsl:variable name="modelelement" select="local-name($elem)" as="xs:string"/>
-    <xsl:variable name="naam" select="imf:valid-id($elem/mim:naam)" as="xs:string"/>
+    <xsl:variable name="naam" select="imf:valid-id($elem/mim:naam)" as="xs:string?"/>
+    <xsl:variable name="naam" as="xs:string">
+      <xsl:choose>
+        <xsl:when test="$naam">
+          <xsl:value-of select="$naam"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="generate-id($elem)"/><!-- #319 -->
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:value-of select="lower-case(string-join(($package, $modelelement, $naam, if ($add-generated-id = 'true') then generate-id($elem) else ()), '-'))"/>
   </xsl:function>
   
