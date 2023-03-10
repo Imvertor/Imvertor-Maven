@@ -20,6 +20,8 @@
 
 package nl.imvertor;
 
+import java.nio.charset.Charset;
+
 import org.apache.log4j.Logger;
 
 import nl.imvertor.ApcModifier.ApcModifier;
@@ -74,6 +76,7 @@ public class ChainTranslateAndReport {
 			configurator.getRunner().info(logger, "Framework version " + Release.getVersionString("Imvertor"));
 			configurator.getRunner().info(logger, "Chain version " + Release.getVersionString("ChainTranslateAndReport"));
 			configurator.getRunner().info(logger, "Job ID \"" + System.getProperty("job.id") + "\"");
+			configurator.getRunner().info(logger, "Default character encoding " + Charset.defaultCharset());
 			
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();

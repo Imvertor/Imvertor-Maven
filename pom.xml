@@ -258,7 +258,7 @@
     <dependency>
       <groupId>org.eclipse.jgit</groupId>
       <artifactId>org.eclipse.jgit</artifactId>
-      <version>4.9.2.201712150930-r</version>
+      <version>6.5.0.202303070854-r</version>
     </dependency>
 
 	  <dependency>

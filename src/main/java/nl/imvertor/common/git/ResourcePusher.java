@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
@@ -129,9 +130,12 @@ public class ResourcePusher {
 	 *          username to login to remote repository
 	 * @param password
 	 *          password to login to remote repository 
+	 * @param removeLocalWorkDir
+	 *          remove existing local work directory first, which means a clone of the
+	 *          repository is forced instead of a pull
 	 * @throws Exception
 	 */
-	public void prepare(String remoteRepositoryURI, File localWorkDir, String username, String password, String token, String email) throws Exception {
+	public void prepare(String remoteRepositoryURI, File localWorkDir, String username, String password, String token, String email, boolean removeLocalWorkDir) throws Exception {
 
 		//Runner runner = Configurator.getInstance().getRunner();
 
@@ -141,6 +145,11 @@ public class ResourcePusher {
 		this.pass = password;
 		this.token = token;
 		this.email = email;
+		
+		/* Optionally remove the local work directory first: */
+		if (removeLocalWorkDir) {
+		  FileUtils.deleteDirectory(localWorkDir);
+		}
 
 		/* Make sure localWorkDir exists: */
 		if (!localWorkDir.isDirectory() && !localWorkDir.mkdirs())
@@ -164,8 +173,16 @@ public class ResourcePusher {
 			
 			runner.debug(logger, "GITHUB", "Pulling latest files to local repository ...");
 			/* Pull latest remote changes: */
-			git.pull()
-				.call();
+			PullResult pullResult = git.pull().call();
+		  if (pullResult.isSuccessful()) {
+		    runner.debug(logger, "GITHUB", "Pull successful");
+		  } else {
+		    if (!FileUtils.deleteQuietly(localWorkDir)) {
+		      runner.warn(logger, String.format("Could not remove directory \"%s\"", localWorkDir.getAbsolutePath()));
+		    }
+		    throw new IOException("Error pulling latest files from repository: " + pullResult.toString());
+		  }
+			
 		}
 		gitopen = true;
 	}
