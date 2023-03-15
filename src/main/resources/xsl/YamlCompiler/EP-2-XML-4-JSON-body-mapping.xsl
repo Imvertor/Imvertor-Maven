@@ -1719,13 +1719,18 @@
 		<xsl:param name="typeName"/>
 		<xsl:param name="typePrefix"/>
 		<xsl:choose>
-			<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external'">
+			<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external' and not(ep:data-type)">
 				<!-- If the property is a gml type this when applies. In all these case a standard content (except the documentation)
 					 is generated. -->
 				
 				<xsl:sequence select="imf:generateDebugInfo('Debuglocatie-03900',.)"/>
 				
 				<xsl:sequence select="imf:generateRef(concat($standard-geojson-components-url,'GeoJSONGeometry'))"/>
+			</xsl:when>
+			<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external'">
+				<!-- If the property is a gml type and it has an ep:data-type element this when applies. In all these case a standard content (except the documentation)
+					 is generated. -->
+				<xsl:sequence select="imf:generateRef(concat($standard-geojson-components-url,ep:data-type))"/>
 			</xsl:when>
 			<xsl:when test="ep:type-name = 'Datum_onvolledig'">
 				<!-- If the property is a Datum_onvolledig type this when applies. In all these case a standard content (except the documentation)
@@ -1874,6 +1879,12 @@
 				<xsl:sequence select="imf:generateDebugInfo('Debuglocatie-04500',.)"/>
 				
 				<j:string key="type">array</j:string>
+				<xsl:if test="ep:min-occurs">
+					<j:number key="minItems"><xsl:value-of select="ep:min-occurs"/></j:number>
+				</xsl:if>
+				<xsl:if test="ep:max-occurs != 'unbounded'">
+					<j:number key="maxItems"><xsl:value-of select="ep:max-occurs"/></j:number>
+				</xsl:if>
 				<j:map key="items">
 					<xsl:sequence select="imf:generateRef(concat($json-topstructure,'/', $typeName))"/>
 				</j:map>
