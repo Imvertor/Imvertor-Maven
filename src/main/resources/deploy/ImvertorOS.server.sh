@@ -8,7 +8,7 @@ OWNER=$5
 REG=$6
 ADORN=$7
 PRGDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-JVMPARAMS="-Xms512m -Xmx1024m" 
+JVMPARAMS="-Xms512m -Xmx1024m -Dfile.encoding=UTF-8" 
 
 echo Imvertor bin install folder: "$PRGDIR"
 
