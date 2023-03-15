@@ -1619,8 +1619,8 @@
 					<j:map key="schema">
 						<j:string key="type">string</j:string>
 						<j:string key="format">uri</j:string>
+						<j:string key="example"><xsl:value-of select="concat($rawMessageName,'/',$exampleSleutelEntiteittype)" /></j:string>
 					</j:map>
-					<j:string key="example"><xsl:value-of select="concat($rawMessageName,'/',$exampleSleutelEntiteittype)" /></j:string>
 				</j:map>
 				<j:map key="api-version">
 					<xsl:sequence select="imf:generateRef(concat($standard-yaml-headers-url,'api_version'))"/>
