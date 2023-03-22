@@ -67,7 +67,7 @@ public class EapCompiler extends Step {
 		
 		AnyFile umlfile = new AnyFile(configurator.getXParm("cli/umlfile"));
 		if (!umlfile.getExtension().equals("")) {
-			boolean iseap = umlfile.getExtension().startsWith("eap");
+			boolean iseap = umlfile.getExtension().startsWith("eap") || umlfile.getExtension().equals("qea");
 			boolean isxmi = umlfile.getExtension().equals("xmi");
 			boolean iszip = umlfile.getExtension().equals("zip");
 			
