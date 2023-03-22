@@ -148,7 +148,7 @@ public class ResourcePusher {
 		
 		/* Optionally remove the local work directory first: */
 		if (removeLocalWorkDir) {
-		  FileUtils.deleteDirectory(localWorkDir);
+			org.eclipse.jgit.util.FileUtils.delete(localWorkDir,org.eclipse.jgit.util.FileUtils.RECURSIVE);
 		}
 
 		/* Make sure localWorkDir exists: */
