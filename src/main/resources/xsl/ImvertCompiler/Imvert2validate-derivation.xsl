@@ -100,7 +100,7 @@
 
         <xsl:variable name="client-package" select="."/>
         
-        <xsl:sequence select="imf:check-tagged-value-occurs($client-package)"/>
+        <xsl:sequence select="if (@origin = 'system') then () else imf:check-tagged-value-occurs($client-package)"/>
         
         <xsl:apply-templates/>
     </xsl:template>
@@ -132,7 +132,7 @@
             </xsl:otherwise>
         </xsl:choose>
         
-        <xsl:sequence select="imf:check-tagged-value-occurs($client-class)"/>
+        <xsl:sequence select="if (@origin = 'system') then () else imf:check-tagged-value-occurs($client-class)"/>
      
         <xsl:apply-templates/>
         
@@ -176,7 +176,7 @@
             </xsl:otherwise>
         </xsl:choose>    
         
-        <xsl:sequence select="imf:check-tagged-value-occurs($client-attribute)"/>
+        <xsl:sequence select="if (@origin = 'system') then () else imf:check-tagged-value-occurs($client-attribute)"/>
         
     </xsl:template>
     
@@ -204,7 +204,7 @@
             </xsl:otherwise>
         </xsl:choose>    
         
-        <xsl:sequence select="imf:check-tagged-value-occurs($client-association)"/>
+        <xsl:sequence select="if (@origin = 'system') then () else imf:check-tagged-value-occurs($client-association)"/>
     </xsl:template>
     
     <xsl:template match="*|text()">

@@ -80,7 +80,7 @@
                     <xsl:when test="exists($map)">
                         <!-- replace this by the concrete package -->
                         <imvert:package>
-                            <xsl:apply-templates mode="conceptual">
+                            <xsl:apply-templates select="node()|@*" mode="conceptual">
                                 <xsl:with-param name="map" select="$map"/>
                             </xsl:apply-templates>
                         </imvert:package>
@@ -287,10 +287,9 @@
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="*" mode="conceptual #default">
+    <xsl:template match="node()|@*" mode="conceptual #default">
         <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:apply-templates mode="#current"/>
+            <xsl:apply-templates select="node()|@*" mode="#current"/>
         </xsl:copy>
     </xsl:template>
     

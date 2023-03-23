@@ -199,7 +199,7 @@
                             
                             <!-- check if xlinks must be included -->
                             <xsl:if test="not(exists($document-packages[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name('xlinks','package-name')]))" >
-                                <imvert:package>
+                                <imvert:package origin="system">
                                     <imvert:found-name>Xlinks</imvert:found-name>
                                     <imvert:short-name>xlinks</imvert:short-name>
                                     <imvert:id>XLINKS</imvert:id>
