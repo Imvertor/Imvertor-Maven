@@ -147,8 +147,9 @@ public class ResourcePusher {
 		this.email = email;
 		
 		/* Optionally remove the local work directory first: */
-		if (removeLocalWorkDir) {
+		if (localWorkDir.exists() && removeLocalWorkDir) {
 			org.eclipse.jgit.util.FileUtils.delete(localWorkDir,org.eclipse.jgit.util.FileUtils.RECURSIVE);
+			runner.debug(logger, "GITHUB", "Local workdir removed? " + (localWorkDir.list() == null));
 		}
 
 		/* Make sure localWorkDir exists: */
