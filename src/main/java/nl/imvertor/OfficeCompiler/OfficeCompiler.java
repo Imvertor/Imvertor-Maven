@@ -244,7 +244,7 @@ public class OfficeCompiler extends Step {
 			
 			configurator.setXParm("properties/giturl-resolved", giturl);
 		} catch (Exception e) {
-			logger.error("Error pushing files to remote repository https://github.com" + gitpath, e);
+			runner.error(logger, "Error pushing files to remote repository https://github.com" + gitpath + ": " + e.getMessage());
 		}
 	}
 }
