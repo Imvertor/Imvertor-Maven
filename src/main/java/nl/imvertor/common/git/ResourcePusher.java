@@ -148,18 +148,6 @@ public class ResourcePusher {
 		this.token = token;
 		this.email = email;
 		
-		try {
-			Map<String, String> env = System.getenv();
-	        for (String envName : env.keySet()) {
-	        	runner.debug(logger, "GITHUB", envName + "=" + env.get(envName));
-	        }
-			File f = new File("één.test"); // https://stackoverflow.com/questions/39770134/java-error-creating-path-from-string-does-linux-limit-filenames-to-8bit-charset
-			runner.debug(logger, "GITHUB", f.toPath().toString());
-		} catch (Exception e) {
-			runner.debug(logger, "GITHUB", e.getMessage());
-			runner.debug(logger, "GITHUB", FileSystems.getDefault().toString());
-		}
-		
 		/* Optionally remove the local work directory first: */
 		if (localWorkDir.exists() && removeLocalWorkDir) {
 			org.eclipse.jgit.util.FileUtils.delete(localWorkDir,org.eclipse.jgit.util.FileUtils.RECURSIVE);
