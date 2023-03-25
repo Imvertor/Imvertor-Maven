@@ -2,6 +2,7 @@ package nl.imvertor.common.git;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -156,6 +157,7 @@ public class ResourcePusher {
 			runner.debug(logger, "GITHUB", f.toPath().toString());
 		} catch (Exception e) {
 			runner.debug(logger, "GITHUB", e.getMessage());
+			runner.debug(logger, "GITHUB", FileSystems.getDefault().toString());
 		}
 		
 		/* Optionally remove the local work directory first: */

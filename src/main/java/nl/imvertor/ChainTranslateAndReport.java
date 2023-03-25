@@ -76,8 +76,9 @@ public class ChainTranslateAndReport {
 			configurator.getRunner().info(logger, "Framework version " + Release.getVersionString("Imvertor"));
 			configurator.getRunner().info(logger, "Chain version " + Release.getVersionString("ChainTranslateAndReport"));
 			configurator.getRunner().info(logger, "Job ID \"" + System.getProperty("job.id") + "\"");
+			configurator.getRunner().info(logger, "JVM " + System.getProperty("java.version") + " on " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
 			configurator.getRunner().info(logger, "Default character encoding " + Charset.defaultCharset());
-			
+					
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();
 			
