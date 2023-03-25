@@ -146,6 +146,9 @@ public class ResourcePusher {
 		this.token = token;
 		this.email = email;
 		
+	    File f = new File("één.test"); // https://stackoverflow.com/questions/39770134/java-error-creating-path-from-string-does-linux-limit-filenames-to-8bit-charset
+	    runner.debug(logger, "GITHUB", f.toPath().toString());
+		
 		/* Optionally remove the local work directory first: */
 		if (localWorkDir.exists() && removeLocalWorkDir) {
 			org.eclipse.jgit.util.FileUtils.delete(localWorkDir,org.eclipse.jgit.util.FileUtils.RECURSIVE);
