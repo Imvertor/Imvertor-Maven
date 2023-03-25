@@ -152,7 +152,7 @@ public class ResourcePusher {
 	        for (String envName : env.keySet()) {
 	        	runner.debug(logger, "GITHUB", envName + "=" + env.get(envName));
 	        }
-			File f = new File("één.test"); // https://stackoverflow.com/questions/39770134/java-error-creating-path-from-string-does-linux-limit-filenames-to-8bit-charset
+			File f = new File("Ã©Ã©n.test"); // https://stackoverflow.com/questions/39770134/java-error-creating-path-from-string-does-linux-limit-filenames-to-8bit-charset
 			runner.debug(logger, "GITHUB", f.toPath().toString());
 		} catch (Exception e) {
 			runner.debug(logger, "GITHUB", e.getMessage());
