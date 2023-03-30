@@ -249,11 +249,15 @@
     <xsl:template match="ep:construct" mode="external">
         <xsl:variable name="tech-name" select="ep:tech-name"/>
         <xsl:variable name="oas-name" select="imf:get-ep-parameter(.,'oas-name')"/>
+        <xsl:variable name="first" select="empty(preceding-sibling::ep:construct[imf:get-ep-parameter(.,'oas-name') eq $oas-name])"/><!-- Meerdere externe constructs kunnen naar dezelfde geojson verwijzen. Één ref is voldoende. --> 
         <xsl:choose>
-            <xsl:when test="not($references-geoJSON-collection) and $oas-name = $geoJSONnames">
+            <xsl:when test="not($references-geoJSON-collection) and $oas-name = $geoJSONnames and $first">
                 <j:map key="{$oas-name}">
                     <xsl:sequence select="$geoJSONfiles[@construct = $oas-name]/j:map/*"/>
                 </j:map>
+            </xsl:when>
+            <xsl:when test="not($references-geoJSON-collection) and $oas-name = $geoJSONnames">
+                <!-- already processed -->
             </xsl:when>
             <xsl:when test="$oas-name = $geoJSONnames">
                 <!-- de naam is een geoJSON naam maar er is al een collectie gegenereerd -->
