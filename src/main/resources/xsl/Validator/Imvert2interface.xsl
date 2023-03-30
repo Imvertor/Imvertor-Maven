@@ -60,6 +60,10 @@
             <xsl:variable name="construct" as="element(cs:Construct)?">
                 <xsl:choose>
                     <!-- er zijn meerdere constructs onder deze naam, dus disambigueren, maar geen van de constructst heeft een ID -->
+                    <xsl:when test="$constructs[2] and empty($identified-construct) and imf:boolean(imf:get-xparm('cli/usefirstmap'))">
+                        <xsl:sequence select="imf:msg(.,'WARNING','Duplicates occur for references to [1] in outside model, using mapping [2]',(imf:string-group($name),$conceptual-schema-mapping-name))"/>
+                        <xsl:sequence select="$constructs[1]"/>
+                    </xsl:when>
                     <xsl:when test="$constructs[2] and empty($identified-construct)">
                         <xsl:for-each select="$referencing-constructs">
                             <xsl:sequence select="imf:msg(.,'ERROR','Reference to [1] in outside model is not identified, but should be, as duplicates occur using mapping [2]',(imf:string-group($name),$conceptual-schema-mapping-name))"/>

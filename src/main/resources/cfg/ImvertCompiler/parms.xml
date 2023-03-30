@@ -54,6 +54,12 @@
          <required>false</required>
       </cli-parm>
       <cli-parm>
+         <name>usefirstmap</name>
+         <arg>yes|no</arg>
+         <tip>In case a construct in a conceptual schema mapping is duplicated, allow the first construct to be selected, if other resolve mechanisms fail.</tip>
+         <required>false</required>
+      </cli-parm>
+      <cli-parm>
          <name>chop</name>
          <arg>yes|no</arg>
          <tip>Yes if all references to classes/datatypes outside the application should be removed</tip>
