@@ -211,6 +211,14 @@
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
             </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value>Yes</value>
+                <value default="yes">No</value>
+            </declared-values>
         </tv>
         
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
