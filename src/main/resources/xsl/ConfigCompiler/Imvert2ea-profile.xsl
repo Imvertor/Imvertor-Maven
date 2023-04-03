@@ -105,8 +105,8 @@
                                         
                                         <xsl:variable name="tv-id" select="@id"/>
                                         <xsl:variable name="tv-name" select="name/@original"/>
-                                        <xsl:variable name="tv-values" select="string-join(declared-values/value/@original,',')"/>
-                                        <xsl:variable name="tv-type" select="if (exists(declared-values/value)) then 'enumeration' else ()"/>
+                                        <xsl:variable name="tv-values" select="if (exists(declared-values/value[2])) then string-join(declared-values/value/@original,',') else ''"/>
+                                        <xsl:variable name="tv-type" select="if (exists(declared-values/value[2])) then 'enumeration' else ''"/>
                                         <xsl:variable name="tv-note" select="normalize-space(desc)"/>
                                         <xsl:variable name="tv-unit" select="''"/>
                                         
