@@ -671,5 +671,37 @@
           </cs:xsdTypes>
        </cs:Construct>
        x?>
+       <cs:Construct>
+          <cs:name>DoubleList</cs:name>
+          <cs:sentinel>false</cs:sentinel>
+          <cs:xsdTypes>
+             <cs:XsdType>
+                <cs:name>gml:doubleList</cs:name>
+                <cs:primitive>true</cs:primitive>
+             </cs:XsdType>
+          </cs:xsdTypes>
+       </cs:Construct>
+       <?x
+       <cs:Construct>
+          <cs:name>GenericName</cs:name><!-- nodig voor IMGEO omzetting -->
+          <cs:sentinel>false</cs:sentinel>
+          <cs:xsdTypes>
+             <cs:XsdType>
+                <cs:name>gml:GenericName</cs:name>
+                <cs:primitive>true</cs:primitive>
+             </cs:XsdType>
+          </cs:xsdTypes>
+       </cs:Construct>
+       <cs:Construct>
+          <cs:name>ScopedName</cs:name><!-- nodig voor IMRO omzetting -->
+          <cs:sentinel>false</cs:sentinel>
+          <cs:xsdTypes>
+             <cs:XsdType>
+                <cs:name>gml:ScopedName</cs:name>
+                <cs:primitive>true</cs:primitive>
+             </cs:XsdType>
+          </cs:xsdTypes>
+       </cs:Construct>
+       x?>
     </cs:constructs>
 </cs:Map>
