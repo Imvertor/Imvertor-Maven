@@ -239,7 +239,7 @@ public class OfficeCompiler extends Step {
 			Iterator<PushResult> result = rp.push(gitcomment).iterator();
 			while (result.hasNext()) {
 				String next = result.next().getMessages();
-				if (!next.equals("")) logger.warn(next); else logger.info("Push succeeds"); 
+				if (next.matches(".*\\S.*")) logger.warn(next); else logger.info("Push succeeds");  
 			}
 			
 			configurator.setXParm("properties/giturl-resolved", giturl);

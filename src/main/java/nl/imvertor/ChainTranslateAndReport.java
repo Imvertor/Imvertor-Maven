@@ -132,12 +132,12 @@ public class ChainTranslateAndReport {
 		    try {
 		    	
 		    	// Build the configuration file
-			    succeeds = (new ConfigCompiler()).run();
+			    succeeds = succeeds && (new ConfigCompiler()).run();
 			 
 			    Transformer.setMayProfile(true);
 			    
 			    // Create the XMI file from EAP or other sources
-			    succeeds = (new XmiCompiler()).run();
+			    succeeds = succeeds && (new XmiCompiler()).run();
 				
 			    // Translate XMI to Imvertor format
 			    succeeds = succeeds && (new XmiTranslator()).run();
@@ -175,72 +175,76 @@ public class ChainTranslateAndReport {
 					// However, this implies a full run and we want to signal this at early stage.
 				    succeeds = configurator.prepareRelease() && succeeds;
 					
-					// get all concept info to be used in validation: URI references must be valid.
-				    if (!configurator.getXParm("cli/refreshconcepts").equals("never")) 
-				    	succeeds = succeeds && (new ConceptCollector()).run();
+				    if (succeeds)
+						// get all concept info to be used in validation: URI references must be valid.
+				    	if (!configurator.getXParm("cli/refreshconcepts").equals("never")) 
+				    		(new ConceptCollector()).run();
 					
 					// compile a final usable representation of the input file for XML schema generation.
 					// TODO determine if this steps must be split into several steps
 				    succeeds = succeeds && (new ImvertCompiler()).run();
 				    
 				    // generate the MIM format from Imvertor embellish format
-				    if (configurator.isTrue("cli","createmimformat",false))
-			 			(new MIMCompiler()).run(); // MIM compiler does not block further processing
+				    if (succeeds)
+				    	if (configurator.isTrue("cli","createmimformat",false))
+				    		succeeds = (new MIMCompiler()).run() && succeeds;
 					
-				    // generate the Stelselcatalogus CSV
-				    if (configurator.isTrue("cli","createstccsv",false))
-			 			succeeds = succeeds && (new StcCompiler()).run();
+				    	// generate the Stelselcatalogus CSV
+				        if (configurator.isTrue("cli","createstccsv",false))
+				        	succeeds = (new StcCompiler()).run() && succeeds;
 					
-					// compare releases. 
-				    // Eg. check if this only concerns a "documentation release". If so, must not be different from existing release.
-				    // also includes other types of release comparisons
-				    if (configurator.isTrue("cli","compare",false))
-				    	succeeds = succeeds && (new ReleaseComparer()).run();
+						// compare releases. 
+					    // Eg. check if this only concerns a "documentation release". If so, must not be different from existing release.
+					    // also includes other types of release comparisons
+				    	if (configurator.isTrue("cli","compare",false))
+				    		succeeds = (new ReleaseComparer()).run() && succeeds;
 				    
-				    // generate the XSD 
-					if (configurator.isTrue("cli","createxmlschema",false))
-						succeeds = succeeds && (new XsdCompiler()).run();
+				    	// generate the XSD 
+				    	if (configurator.isTrue("cli","createxmlschema",false)) {
+				    		succeeds = (new XsdCompiler()).run() && succeeds;
+						    if (succeeds)
+								// validate the generated XSDs 
+								if (configurator.isTrue("cli","validateschema",false) || configurator.getRunner().isFinal())
+									succeeds = (new SchemaValidator()).run() && succeeds;
+				    	}
+				    	
+					    // Generate a json schema
+				    	if (configurator.isTrue("cli","createjsonschema",false)) {
+				    		succeeds = (new EpCompiler()).run() && succeeds;
+				    		if (succeeds)
+				    			succeeds = succeeds && (new JsonSchemaCompiler()).run();
+				    	}
+				    	
+					    // compile the history info 
+						if (configurator.isTrue("cli","createhistory",false))
+							succeeds = (new HistoryCompiler()).run() && succeeds;
 								
-					// validate the generated XSDs 
-					if (succeeds)
-						if (configurator.isTrue("cli","createxmlschema",false))
-							if (configurator.isTrue("cli","validateschema",false) || configurator.getRunner().isFinal())
-								(new SchemaValidator()).run(); // XML schema validation does not block further processing
-					
-					// Generate a json schema
-				    if (configurator.isTrue("cli","createjsonschema",false)) {
-			    		succeeds = succeeds && (new EpCompiler()).run();
-		    			succeeds = succeeds && (new JsonSchemaCompiler()).run();
-					}
-				    // compile the history info 
-					if (configurator.isTrue("cli","createhistory",false))
-						succeeds = succeeds && (new HistoryCompiler()).run();
-								
-					// compile Office documentation 
-					if (!configurator.getXParm("cli/createoffice").equals("none"))
-						succeeds = succeeds && (new OfficeCompiler()).run();
+						// compile Office documentation 
+						if (!configurator.getXParm("cli/createoffice").equals("none"))
+							succeeds = (new OfficeCompiler()).run() && succeeds;
 			
-					// compile templates and reports on UML EAP 
-				    succeeds = succeeds && (new EapCompiler()).run();
+						// compile templates and reports on UML EAP 
+						succeeds = (new EapCompiler()).run() && succeeds;
 			
-					// compile compliancy Excel
-				   	if (configurator.isTrue("cli","createxmlschema",false))
-					    if (configurator.isTrue("cli","createcomplyexcel",false))
-				    		succeeds = succeeds && (new ComplyCompiler()).run();
+						// compile compliancy Excel
+					   	if (configurator.isTrue("cli","createxmlschema",false))
+						    if (configurator.isTrue("cli","createcomplyexcel",false))
+						    	succeeds = (new ComplyCompiler()).run() && succeeds;
 				     
-				    if (configurator.isTrue("cli","createshacl",false)) 
-				    	succeeds = succeeds && (new ShaclCompiler()).run();
-				    if (configurator.isTrue("cli","createld",false)) 
-				    	succeeds = succeeds && (new LDCompiler()).run();
+					    if (configurator.isTrue("cli","createshacl",false)) 
+					    	succeeds = (new ShaclCompiler()).run() && succeeds;
+					    
+					    if (configurator.isTrue("cli","createld",false)) 
+					    	succeeds = (new LDCompiler()).run() && succeeds;
+			
+					    if (configurator.isTrue("cli","createjsonconcepts",false))
+					    	succeeds = (new JsonConceptsCompiler()).run() && succeeds;
+					
+					    if (configurator.isTrue("cli","createskos",false)) 
+					    	succeeds = (new SkosCompiler()).run() && succeeds;
 		
-				    if (configurator.isTrue("cli","createjsonconcepts",false))
-			 			succeeds = succeeds && (new JsonConceptsCompiler()).run();
-				
-				    if (configurator.isTrue("cli","createskos",false)) 
-				    	succeeds = succeeds && (new SkosCompiler()).run();
-		
-				    if (configurator.isTrue("cli","createyaml",false)) 
-			    		succeeds = succeeds && (new YamlCompiler()).run();
+					    if (configurator.isTrue("cli","createyaml",false)) 
+					    	succeeds = (new YamlCompiler()).run() && succeeds;
 				  
 			    }
 	    		(new ParmsCopier()).run();

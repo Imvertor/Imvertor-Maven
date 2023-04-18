@@ -2,8 +2,6 @@ package nl.imvertor.common.git;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -65,7 +63,7 @@ public class ResourcePusher {
 				.addFilepattern(".")
 				.call();
 
-			runner.debug(logger, "GITHUB", "Comitting files to local repository ...");
+			runner.debug(logger, "GITHUB", "Committing files to local repository ...");
 			/* Commit the files to the repository: */
 			git.commit()
 				.setMessage(commitMessage)

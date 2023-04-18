@@ -109,6 +109,8 @@ public class Configurator {
 	public static final Integer RUN_MODE_RUN = 1;
 	public static final Integer RUN_MODE_DEVELOPMENT = 2;
 	
+	public static String currentComponentIdentifier = "";
+	
 	private Configuration saxonConfig;
 	private Runner runner;
 	private Messenger messenger; // TODO should messenger always be accessed through runner?
@@ -1465,5 +1467,9 @@ public class Configurator {
     	for (int i = 0; i < s.length; i++)
     		list.add(s[i]);
      	return list;
+	}
+	
+	public static String getStylesheetIdentifier(File xslFile) throws IOException {
+		return getInstance().getBaseFolder().toURI().relativize(xslFile.toURI()).getPath();
 	}
 }

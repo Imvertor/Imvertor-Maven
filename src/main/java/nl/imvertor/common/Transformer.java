@@ -188,6 +188,8 @@ public class Transformer {
 		
 		configurator.getRunner().debug(logger,"CHAIN",task + " " + infile.getCanonicalPath() + " using " + xslfile.getName());
 		
+		stylesheetIdentifier  = Configurator.getStylesheetIdentifier(xslfile);
+		
 		// first set the profile nature of the compiler
 		compiler.setCompileWithTracing(false);
 		
@@ -240,6 +242,8 @@ public class Transformer {
 		transformer.setParameter(new QName("xml-output-name"),new XdmAtomicValue(outfile.getName()));
 		transformer.setParameter(new QName("xml-stylesheet-name"),new XdmAtomicValue(xslfile.getName()));
 		transformer.setParameter(new QName("xml-stylesheet-alias"),new XdmAtomicValue(alias));
+		transformer.setParameter(new QName("xml-stylesheet-identifier"),new XdmAtomicValue(stylesheetIdentifier));
+		
 		// pass on the value of the dlogger URLs. 
 		transformer.setParameter(new QName("dlogger-mode"),new XdmAtomicValue(configurator.getServerProperty("dlogger.mode")));
 		transformer.setParameter(new QName("dlogger-proxy-url"),new XdmAtomicValue(configurator.getServerProperty("dlogger.proxy.url")));
@@ -252,8 +256,11 @@ public class Transformer {
 		configurator.save(); // may throw exception when config file not avail
 		long starttime = System.currentTimeMillis();
 		
+		String ci = Configurator.currentComponentIdentifier;
 		try {
+			Configurator.currentComponentIdentifier = stylesheetIdentifier;
 			transformer.transform();
+			Configurator.currentComponentIdentifier = ci;
 		} catch (Exception e) {
 			throw new Exception("Transformation causes a fatal error: " + e.getMessage());
 		}

@@ -75,7 +75,7 @@
             <xsl:variable name="wiki" select="if ($type = ('ERROR', 'WARNING', 'FATAL')) then imf:get-wiki-key($text) else ''"/>
             <xsl:message>
                 <!-- note that messages are specially processed by Imvertor -->
-                <xsl:sequence select="imf:create-output-element('imvert-message:src',$xml-stylesheet-name)"/>
+                <xsl:sequence select="imf:create-output-element('imvert-message:src',$xml-stylesheet-identifier)"/>
                 <xsl:sequence select="imf:create-output-element('imvert-message:type',$type)"/>
                 <xsl:sequence select="imf:create-output-element('imvert-message:name',$name)"/>
                 <xsl:sequence select="imf:create-output-element('imvert-message:text',$ctext)"/>

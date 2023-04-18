@@ -43,6 +43,7 @@
     <xsl:param name="xml-input-nme"/>
     <xsl:param name="xml-output-name"/>
     <xsl:param name="xml-stylesheet-name"/>
+    <xsl:param name="xml-stylesheet-identifier"/>
     <xsl:param name="xml-stylesheet-alias"/>
     
     <!-- 
