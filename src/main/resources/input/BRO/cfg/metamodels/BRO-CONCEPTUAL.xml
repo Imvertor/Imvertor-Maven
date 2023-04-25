@@ -10,15 +10,19 @@
     
     <name>BRO CONCEPTUAL</name>
     
+    <!-- 
+        release 0.9.5
+        - aanpassing van EA profile, #332
+    --> 
     <profiles>
         <profile lang="nl"> 
             <id>MBGNL</id>
-            <release>0.9.4</release>
+            <release>0.9.5</release>
             <desc>MIM BRO Grouping NL</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
             <id>MBGEN</id>
-            <release>0.9.4</release>
+            <release>0.9.5</release>
             <desc>MIM BRO Grouping EN</desc>
         </profile>
     </profiles>
