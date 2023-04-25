@@ -2,8 +2,8 @@
 <xs:schema 
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2"   
-  targetNamespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel"   
+  targetNamespace="http://www.geostandaarden.nl/mim-ref/informatiemodel" 
   elementFormDefault="qualified" 
   attributeFormDefault="unqualified" 
   version="2.0.0">
@@ -11,7 +11,7 @@
   <xs:annotation>
     <xs:appinfo source="http://www.imvertor.org/metamodel/uri">https://docs.geostandaarden.nl/mim/vv-st-mim-20200225/</xs:appinfo>
     <xs:appinfo source="http://www.imvertor.org/metamodel/version">1.1.0</xs:appinfo>
-    <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/mim/informatiemodel/v2</xs:appinfo>
+    <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/mim/informatiemodel</xs:appinfo>
     <xs:appinfo source="http://www.imvertor.org/schema-info/version">2.0.0</xs:appinfo>
   </xs:annotation>
   

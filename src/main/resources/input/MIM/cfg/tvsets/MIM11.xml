@@ -348,6 +348,7 @@
             <declared-values lang="nl">
                 <value default="yes">1.1</value>
                 <value default="yes">1.1.0</value>
+                <value default="yes">1.1.1</value>
             </declared-values>
         </tv>
         

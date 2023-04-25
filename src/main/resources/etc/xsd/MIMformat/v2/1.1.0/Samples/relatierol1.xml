@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mim:Objecttype xmlns:xlink="http://www.w3.org/1999/xlink"
- xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2"
- xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
- xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v2"
+ xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel"
+ xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel"
+ xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel"
  xmlns:xhtml="http://www.w3.org/1999/xhtml"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.geostandaarden.nl/mim/informatiemodel/v2 ../MIMFORMAT_Mim_relatierol_v2.xsd" id="id1">
+ xsi:schemaLocation="http://www.geostandaarden.nl/mim/informatiemodel ../MIMFORMAT_Mim_relatierol.xsd" id="id1">
     <mim:naam>naam</mim:naam>
     <mim:herkomst>herkomst</mim:herkomst>
     <mim:definitie>definitie</mim:definitie>

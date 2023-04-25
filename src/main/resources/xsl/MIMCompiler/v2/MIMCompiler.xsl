@@ -24,9 +24,9 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xmlns:imvert="http://www.imvertor.org/schema/system"
-  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v2" 
-  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2"
-  xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
+  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel"
+  xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel"
   xmlns:UML="omg.org/UML1.3" 
   xmlns:imf="http://www.imvertor.org/xsl/functions"    
   xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
@@ -175,9 +175,9 @@
       <xsl:document>
         <xsl:comment select="document('MIM' || $mim-version || '-readme.xml')/readme"/>
         <mim:Informatiemodel
-          xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v2" 
-          xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2"
-          xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
+          xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel" 
+          xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel"
+          xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel"
           xmlns:xlink="http://www.w3.org/1999/xlink"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           
@@ -185,11 +185,11 @@
           
           <xsl:variable name="schema">
             <xsl:choose>
-              <xsl:when test="$meta-is-role-based">xsd/{$mim-version}/MIMFORMAT_Mim_relatierol_v2.xsd</xsl:when>
-              <xsl:otherwise>xsd/{$mim-version}/MIMFORMAT_Mim_relatiesoort_v2.xsd</xsl:otherwise>
+              <xsl:when test="$meta-is-role-based">xsd/{$mim-version}/MIMFORMAT_Mim_relatierol.xsd</xsl:when>
+              <xsl:otherwise>xsd/{$mim-version}/MIMFORMAT_Mim_relatiesoort.xsd</xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
-          <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel/v2 {$schema}</xsl:attribute>
+          <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel {$schema}</xsl:attribute>
           
           <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
           
@@ -571,13 +571,17 @@
     </mim:Extern>
   </xsl:template>
   
-  <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface']" priority="1">  <!-- TODO hoe gaan we om met interfaces? Dit zijn geen MIM constructs. Check #242 -->    
+  <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface']" priority="1">     
     <xsl:variable name="name">
       <xsl:call-template name="naam">
         <xsl:with-param name="context" select="." as="element()"/>
       </xsl:call-template>
     </xsl:variable>
-    <xsl:comment>Interface: {$name}</xsl:comment>
+    <mim-ext:Constructie>
+      <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
+      <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype>
+      <mim:naam source-id="CFG-TV-PSEUDO-NAME">{$name}</mim:naam>
+    </mim-ext:Constructie>
   </xsl:template>
   
   <xsl:template match="(imvert:class|imvert:attribute|imvert:association)[imf:is-not-mim-construct(.)]">
@@ -863,10 +867,10 @@
     <xsl:for-each select="$context[imvert:supertype]">
       <xsl:variable name="first-supertype" select="key('key-imvert-construct-by-id', (imvert:supertype/imvert:type-id)[1])" as="element()"/>
       <xsl:choose>
-        <xsl:when test="$first-supertype/imvert:stereotype/@id = 'stereotype-name-objecttype'">
-          <mim:supertypes>
+        <xsl:when test="($context,$first-supertype)/imvert:stereotype/@id = 'stereotype-name-objecttype'">
+          <mim:supertypen>
             <xsl:for-each select="imvert:supertype">
-              <mim:GeneralisatieObjecttypes>
+              <mim:GeneralisatieObjecttypen>
                 <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
                 <mim:supertype>
                   <xsl:choose>
@@ -886,14 +890,14 @@
                   </xsl:choose>
                 </mim:supertype>
                 <xsl:call-template name="extensieKenmerken"/>
-              </mim:GeneralisatieObjecttypes>
+              </mim:GeneralisatieObjecttypen>
             </xsl:for-each>
-          </mim:supertypes>
+          </mim:supertypen>
         </xsl:when>
         <xsl:otherwise>
-          <mim:supertype>
+          <mim:supertypen>
             <xsl:for-each select="imvert:supertype">
-              <mim:GeneralisatieDatatypes>
+              <mim:GeneralisatieDatatypen>
                 <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
                 <xsl:call-template name="genereer-metagegevens">
                   <xsl:with-param name="modelelement-type" as="xs:string">Generalisatie Datatypes</xsl:with-param>
@@ -905,9 +909,9 @@
                   </xsl:call-template>
                 </mim:supertype>
                 <xsl:call-template name="extensieKenmerken"/>
-              </mim:GeneralisatieDatatypes>
+              </mim:GeneralisatieDatatypen>
             </xsl:for-each>
-          </mim:supertype>
+          </mim:supertypen>
         </xsl:otherwise>
       </xsl:choose>  
     </xsl:for-each>
@@ -1292,7 +1296,7 @@
           'stereotype-name-simpletype',
           'stereotype-name-enumeration',
           'stereotype-name-codelist',
-          'stereotype-name-referentielijst')">DatatypeRef</xsl:when>
+          'stereotype-name-referentielijst')">mim-ref:DatatypeRef</xsl:when>
         <!--
         <xsl:when test="$target-stereotype-name = $stereotype-name-datatype">_DatatypeRef</xsl:when>
         <xsl:when test="$target-stereotype-name = $stereotype-name-gestructureerd-datatype">GestructureerdDatatypeRef</xsl:when>
@@ -1302,13 +1306,13 @@
         <xsl:when test="$target-stereotype-name = $stereotype-name-referentielijst">ReferentielijstRef</xsl:when>
         -->
         <xsl:when test="$restrict-datatypes"/>
-        <xsl:when test="$target-stereotype-id = 'stereotype-name-objecttype'">ObjecttypeRef</xsl:when> 
-        <xsl:when test="$target-stereotype-id = 'stereotype-name-composite'">GegevensgroeptypeRef</xsl:when>
-        <xsl:when test="$target-stereotype-id = ('stereotype-name-union-datatypes','stereotype-name-union-attributes', 'stereotype-name-union-associations')">KeuzeRef</xsl:when>         
-        <xsl:when test="imf:is-not-mim-construct($target-element)">ConstructieRef</xsl:when>
+        <xsl:when test="$target-stereotype-id = 'stereotype-name-objecttype'">mim-ref:ObjecttypeRef</xsl:when> 
+        <xsl:when test="$target-stereotype-id = 'stereotype-name-composite'">mim-ref:GegevensgroeptypeRef</xsl:when>
+        <xsl:when test="$target-stereotype-id = ('stereotype-name-union-datatypes','stereotype-name-union-attributes', 'stereotype-name-union-associations')">mim-ref:KeuzeRef</xsl:when>         
+        <xsl:when test="imf:is-not-mim-construct($target-element)">mim-ext:ConstructieRef</xsl:when>
         <xsl:otherwise>
           <xsl:sequence select="imf:message(., 'WARNING', 'Unexpected stereotype [1] in &quot;create-ref-element&quot;', $target-stereotype-id)"/>
-          <xsl:text>UnsupportedRef</xsl:text>
+          <xsl:text>mim-ref:UnsupportedRef</xsl:text>
         </xsl:otherwise>
       </xsl:choose>   
     </xsl:variable>
@@ -1326,15 +1330,18 @@
         </mim:Datatype>
       </xsl:when>
       <xsl:when test="$target-stereotype-id = 'stereotype-name-interface'">
-        <mim:ExternDatatype>
+        <mim-ext:ConstructieRef>
           <xsl:if test="$label">
             <xsl:attribute name="label">{$label}</xsl:attribute>
           </xsl:if>
+          <xsl:if test="$add-xlink-id">
+            <xsl:attribute name="xlink:href" namespace="http://www.w3.org/1999/xlink">#{$ref-id}</xsl:attribute>
+          </xsl:if>
           <xsl:value-of select="imf:name($target-element)"/>
-        </mim:ExternDatatype>
+        </mim-ext:ConstructieRef>
       </xsl:when>
       <xsl:when test="$element-name">
-        <xsl:element name="mim-ref:{$element-name}" namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2">
+        <xsl:element name="{$element-name}">
           <xsl:if test="$label">
             <xsl:attribute name="label">{$label}</xsl:attribute>
           </xsl:if>
@@ -1351,7 +1358,7 @@
     <xsl:where-populated>
       <mim-ext:kenmerken>
         <xsl:for-each select="imvert:tagged-values/imvert:tagged-value[not(@id = $mim-tagged-value-ids)]">
-          <mim-ext:kenmerk naam="{imvert:name/@original}">{imvert:value/@original}</mim-ext:kenmerk>
+          <mim-ext:Kenmerk naam="{imvert:name/@original}">{imvert:value/@original}</mim-ext:Kenmerk>
         </xsl:for-each>  
         <!--
         <xsl:where-populated>
@@ -1359,10 +1366,10 @@
         </xsl:where-populated>
         -->
         <xsl:where-populated>
-          <mim-ext:kenmerk naam="positie">{imvert:position/@original}</mim-ext:kenmerk>
+          <mim-ext:Kenmerk naam="positie">{imvert:position/@original}</mim-ext:Kenmerk>
         </xsl:where-populated>
         <xsl:if test="imvert:min-occurs-source|imvert:max-occurs-source">
-          <mim-ext:kenmerk naam="kardinaliteitBron">{imf:kardinaliteit(imvert:min-occurs-source, imvert:max-occurs-source)}</mim-ext:kenmerk>
+          <mim-ext:Kenmerk naam="kardinaliteitBron">{imf:kardinaliteit(imvert:min-occurs-source, imvert:max-occurs-source)}</mim-ext:Kenmerk>
         </xsl:if>
       </mim-ext:kenmerken>        
     </xsl:where-populated>
