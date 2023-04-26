@@ -16,7 +16,7 @@
             <name lang="nl">Begrip</name>
             <name lang="en">Concept</name>
             <desc lang="nl">MIM 1.1: Verwijzing naar een begrip, vanuit een modelelement, waarmee wordt aangegeven op welk begrip, of begrippen, het informatiemodel element is gebaseerd. De verwijzing heeft de vorm van een term of een URI.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: Reference to a concept, from a model element, indicating on which concept, or concepts, the information model element is based. The reference is in the form of a term or a URI.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-begrip</catalog>
             <derive>yes</derive>
@@ -45,7 +45,7 @@
             <name lang="nl">Locatie</name>
             <name lang="en">Location</name>
             <desc lang="nl">MIM 1.1: Als het type van het attribuutsoort een waardenlijst is, dan wordt hier de locatie waar deze te vinden is opgegeven.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: If the type of the attribute type is a list of values, the location where it can be found is specified here.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-locatie</catalog>
             <derive>yes</derive>
@@ -87,7 +87,7 @@
             <name lang="nl">Definitie</name>
             <name lang="en">Definition</name>
             <desc lang="nl">MIM 1.1: De beschrijving van de betekenis van dit modelelement.</desc>
-            <desc lang="en">MIM 1.1: The description of the meaning of the construct as specified in the catalog of the relevant (base) registration or information model.</desc>
+            <desc lang="en">MIM 1.1: The description of the meaning of this model element.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-definitie</catalog>
             <derive>yes</derive>
@@ -119,7 +119,7 @@
             <name lang="nl">Toelichting</name>
             <name lang="en">Description</name>
             <desc lang="nl">MIM 1.1: Een inhoudelijke toelichting op de definitie, ter verheldering of nadere duiding.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: A substantive explanation of the definition, for clarification or further interpretation.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-toelichting</catalog>
             <derive>yes</derive>
@@ -140,7 +140,7 @@
             <name lang="nl">Formeel patroon</name>
             <name lang="en">Formal pattern</name>
             <desc lang="nl">MIM 1.1: Zoals patroon, formeel vastgelegd, uitgedrukt in een formele taal die door de computer wordt herkend.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: Like pattern, formally recorded, expressed in a formal language recognized by the computer.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-formeel-patroon</catalog>
             <derive>no</derive>
@@ -157,7 +157,7 @@
             <name lang="nl">Informatiedomein</name>
             <name lang="en">Information domain</name>
             <desc lang="nl">MIM 1.1: Aanduiding van het functionele domein waartoe het informatiemodel behoort.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: Indication of the functional domain to which the information model belongs.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-informatiedomein</catalog>
             <derive>yes</derive>
@@ -170,7 +170,7 @@
             <name lang="nl">Informatiemodel type</name>
             <name lang="en">Information model type</name>
             <desc lang="nl">MIM 1.1: De beschrijving van de aard van het informatiemodel, hoe het geïnterpreteerd moet worden.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: The description of the nature of the information model, how it should be interpreted.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-informatiemodel-type</catalog>
             <derive>yes</derive>
@@ -187,7 +187,7 @@
             <name lang="nl">Relatiemodelleringtype</name>
             <name lang="en">Relation modeling type</name>
             <desc lang="nl">MIM 1.1: Aanduiding van een in MIM gedefinieerd alternatief voor een modelleringswijze, en welke keuze hierbij is gemaakt.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: Indication of an alternative to a modeling method defined in MIM, and which choice has been made.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringtype</catalog>
             <derive>yes</derive>
@@ -204,7 +204,7 @@
             <name lang="nl">Indicatie classificerend</name>
             <name lang="en">Indication classifying</name>
             <desc lang="nl">MIM 1.1: Indicatie dat een attribuutsoort het objecttype waar het bijhoort classificeert in (sub)typen.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: Indication that an attribute type classifies the object type it belongs to into (sub)types.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-classificerend</catalog>
             <derive>yes</derive>
@@ -225,7 +225,7 @@
             <name lang="nl">Indicatie materiële historie</name>
             <name lang="en">Indication material history</name>
             <desc lang="nl">MIM 1.1: Indicatie of de materiële historie van het kenmerk van het object te bevragen is.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: Indication whether the material history of the feature of the object can be queried.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-materiele-historie</catalog>
             <derive>yes</derive>
@@ -251,7 +251,7 @@
             <name lang="nl">Indicatie formele historie</name>
             <name lang="en">Indication formal history</name>
             <desc lang="nl">MIM 1.1: Indicatie of de formele historie van het kenmerk van het object bijgehouden wordt en te bevragen is.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: Indication whether the formal history of the characteristic of the object is maintained and can be queried.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-formele-historie</catalog>
             <derive>yes</derive>
@@ -277,7 +277,7 @@
             <name lang="nl">Authentiek</name>
             <name lang="en">Authentic</name>
             <desc lang="nl">MIM 1.1: Aanduiding of het kenmerk een authentiek gegeven betreft.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: Indication whether the characteristic is an authentic piece of data.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-authentiek</catalog>
             <derive>yes</derive>
@@ -307,7 +307,7 @@
             <name lang="nl">MIM extensie</name>
             <name lang="en">MIM extension</name>
             <desc lang="nl">MIM 1.1: De aanduiding van een extensie op MIM.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: The designation of an extension on MIM.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-mim-extensie</catalog>
             <derive>yes</derive>
@@ -319,9 +319,8 @@
         <tv norm="space" id="CFG-TV-MIMLANGUAGE">
             <name lang="nl">MIM taal</name>
             <name lang="en">MIM language</name>
-            <desc lang="nl">De aanduiding van de taal die gebruikt is voor de modelelementen.</desc>
             <desc lang="nl">MIM 1.1: De aanduiding van de taal die gebruikt is voor de modelelementen.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: The designation of the language used for the model elements.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-mim-taal</catalog>
             <derive>yes</derive>
@@ -338,7 +337,7 @@
             <name lang="nl">MIM versie</name>
             <name lang="en">MIM version</name>
             <desc lang="nl">MIM 1.1: De versie van de MIM specificatie die gebruikt is om het informatiemodel in uit te drukken.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: The version of the MIM specification used to express the information model.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-mim-versie</catalog>
             <derive>yes</derive>
@@ -348,6 +347,7 @@
             <declared-values lang="nl">
                 <value default="yes">1.1</value>
                 <value default="yes">1.1.0</value>
+                <value default="yes">1.1.1</value>
             </declared-values>
         </tv>
         
@@ -355,7 +355,7 @@
             <name lang="nl">Lengte</name>
             <name lang="en">Length</name>
             <desc lang="nl">MIM 1.1: De aanduiding van de lengte van een gegeven.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: The designation of the length of a data.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-lengte</catalog>
             <derive>yes</derive>
@@ -371,7 +371,7 @@
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
             <desc lang="nl">MIM 1.1: De verzameling van waarden die gegevens van deze attribuutsoort kunnen hebben, oftewel het waardenbereik, uitgedrukt in een specifieke structuur.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: The set of values ​​that data of this attribute type can have, i.e. the range of values, expressed in a specific structure.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-patroon</catalog>
             <derive>yes</derive>
@@ -388,7 +388,7 @@
             <name lang="nl">Populatie</name>
             <name lang="en">Population</name>
             <desc lang="nl">MIM 1.1: Voor objecttypen die deel uitmaken van een (basis)registratie betreft dit de beschrijving van de exemplaren van het gedefinieerde objecttype die in de desbetreffende (basis)­registratie voorhanden zijn.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: For object types that are part of a (base)registration, this concerns the description of the instances of the defined object type that are available in the relevant (base)registration.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-populatie</catalog>
             <derive>yes</derive>
@@ -401,7 +401,7 @@
             <name lang="nl">Kwaliteit</name>
             <name lang="en">Quality</name>
             <desc lang="nl">MIM 1.1: Beschrijving van de mate waarin in de registratie opgenomen objecten van het desbetreffende type volledig, juist, actueel, nauwkeurig en betrouwbaar zijn.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: Description of the extent to which objects of the relevant type included in the registration are complete, correct, current, accurate and reliable.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-kwaliteit</catalog>
             <derive>yes</derive>
@@ -414,7 +414,7 @@
             <name lang="nl">Herkomst</name>
             <name lang="en">Source</name>
             <desc lang="nl">MIM 1.1: De registratie of het informatiemodel waaraan het modelelement ontleend is dan wel de eigen organisatie indien het door de eigen organisatie toegevoegd is.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: The registration of the information model to which the model element is added is then the own organization if it has been added by the own organization.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-herkomst</catalog>
             <derive>yes</derive>
@@ -440,7 +440,7 @@
             <name lang="nl">Herkomst definitie</name>
             <name lang="en">Source of definition</name>
             <desc lang="nl">MIM 1.1: De registratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die aangeeft uit welke bronnen de definitie is samengesteld.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: The registration or the information model from which the definition has been taken, or an indication that indicates from which sources the definition has been compiled.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-herkomst-definitie</catalog>
             <derive>yes</derive>
@@ -458,7 +458,7 @@
             <name lang="nl">Mogelijk geen waarde</name>
             <name lang="en">Voidable</name>
             <desc lang="nl">MIM 1.1: Aanduiding dat van een aspect geen waarde is geregistreerd, maar dat onduidelijk is of de waarde er werkelijk ook niet is.</desc>
-            <desc lang="en">MIM 1.1: TODO</desc>
+            <desc lang="en">MIM 1.1: Indication that no value has been registered for an aspect, but that it is unclear whether the value really does not exist.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-mogelijk-geen-waarde</catalog>
             <derive>yes</derive>
@@ -486,73 +486,97 @@
          -->
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-NAME">
             <name lang="nl">Pseudo naam</name>
+            <name lang="en">Pseudo name</name>
             <desc lang="nl">De naam van een modelelement.</desc>
+            <desc lang="en">The name of a model element.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-naam</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-AGGREGATIETYPE">
             <name lang="nl">Pseudo aggregatietype</name>
+            <name lang="en">Pseudo aggregationtype</name>
             <desc lang="nl">Aanduiding of het objecttype die de eigenaar is van een relatie het doel van relatie ziet als een samen te voegen onderdeel die bij het objecttype hoort.</desc>
+            <desc lang="en">Indication of whether the object type that owns a relationship sees the object of the relationship as a joinable part belonging to the object type</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-aggregatietype</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-ALIAS">
             <name lang="nl">Pseudo alias</name>
+            <name lang="en">Pseudo alias</name>
             <desc lang="nl">De weergave van de naam van een modelelement in natuurlijke taal (niet technisch).</desc>
+            <desc lang="en">The representation of the name of a model element in natural language (not technical).</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-alias</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-CODE">
             <name lang="nl">Pseudo code</name>
+            <name lang="en">Pseudo code</name>
             <desc lang="nl">De in een registratie of informatiemodel aan de enumeratiewaarde toegekend unieke code</desc>
+            <desc lang="en">The unique code assigned to the enumeration value in a registration or information model</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-code</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-ISID">
             <name lang="nl">Pseudo identificerend</name>
+            <name lang="en">Pseudo identifying</name>
             <desc lang="nl">Een aanduiding dat een kenmerk of een combinatie van kenmerken van een objecttype uniek identificerend is voor alle objecten in de populatie van objecten van dit objecttype, of de aanduiding dat een referentie element uniek identificerend is voor alle lijst items in een referentielijst.</desc>
+            <desc lang="en">An indication that a feature or combination of attributes of an object type uniquely identifies all objects in the population of objects of this object type, or an indication that a reference element uniquely identifies all list items in a reference list.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-identificerend</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-INDICATIONABSTRACT">
             <name lang="nl">Pseudo indicatie abstract object</name>
+            <name lang="en">Pseudo indication abstract object</name>
             <desc lang="nl">Een indicatie die aangeeft of er objecten kunnen bestaan die getypeerd worden als zijnde objecten (instanties) van alleen dit objecttype. Een abstract objecttype moet altijd de generalisatie zijn van één of meerdere objecttypes die niet abstract zijn.</desc>
+            <desc lang="en">An indication that indicates whether objects can exist that are typed as being objects (instances) of only this object type. An abstract object type must always be the generalization of one or more object types that are not abstract.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-abstract-object</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-ISVALUEDERIVED">
             <name lang="nl">Pseudo indicatie afleidbaar</name>
+            <name lang="en">Pseudo indication derivable</name>
             <desc lang="nl">Aanduiding dat gegeven afleidbaar is uit andere attribuut- en/of relatiesoorten.</desc>
+            <desc lang="en">Indication that data can be derived from other attribute and/or relationship types.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-afleidbaar</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-CARDINALITY">
             <name lang="nl">Pseudo kardinaliteit</name>
+            <name lang="en">Pseudo cardinality</name>
             <desc lang="nl">De kardinaliteit geeft aan hoeveel keer waarden van dit kenmerk van een object kunnen voorkomen bij een object van het betreffende objecttype.</desc>
+            <desc lang="en">The cardinality indicates how many times values ​​of this property of an object can occur in an object of the object type in question.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-kardinaliteit</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-RELATIONTARGET">
             <name lang="nl">Pseudo doel</name>
+            <name lang="en">Pseudo target</name>
             <desc lang="nl">Aanduiding van het gerelateerde objecttype die het eindpunt van de relatie aangeeft. Naar objecten van dit objecttype wordt verwezen.</desc>
+            <desc lang="en">Indication of the related object type that indicates the endpoint of the relationship. Objects of this object type are referenced.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-doel</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-RELATIONMODELLING">
             <name lang="nl">Pseudo relatiemodelleringtype</name>
+            <name lang="en">Pseudo relation modeling type</name>
             <desc lang="nl">Aanduiding van een in MIM gedefinieerd alternatief voor een modelleringswijze, en welke keuze hierbij is gemaakt.</desc>
+            <desc lang="en">Indication of an alternative to a modeling method defined in MIM, and which choice has been made.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringtype</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-TYPE">
             <name lang="nl">Pseudo type</name>
+            <name lang="en">Pseudo type</name>
             <desc lang="nl">Het datatype waarmee waarden van dit modelelement worden vastgelegd.</desc>
+            <desc lang="en">The data type used to record values ​​of this model element.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-type-domein-van-een-waarde-een-gegeven</catalog>
         </pseudo-tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-UNIDIRECTIONAL">
             <name lang="nl">Pseudo unidirectioneel</name>
+            <name lang="en">Pseudo unidirectional</name>
             <desc lang="nl">De richting van een relatie, welke betekenis geeft aan de relatie vanuit het perspectief van de eigenaar van de relatie.</desc>
+            <desc lang="en">The direction of a relationship, which gives meaning to the relationship from the perspective of the owner of the relationship.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-unidirectioneel</catalog>
         </pseudo-tv>

@@ -30,7 +30,9 @@
         
         <tv norm="space" id="CFG-TV-ACTUALITEIT">
             <name lang="nl">Actualiteit</name>
+            <name lang="en">Actuality</name>
             <desc lang="nl">Beschrijving van eisen aan de update frequentie.</desc>
+            <desc lang="en">Description of update frequency requirements.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-objecttype</stereo>
@@ -39,7 +41,9 @@
         
         <tv norm="space" id="CFG-TV-INWINNINGVERPLICHT">
             <name lang="nl">Inwinning verplicht</name>
+            <name lang="en">Collection required</name>
             <desc lang="nl">Geeft de mate van compleetheid van het objecttype aan.</desc>
+            <desc lang="en">Indicates the degree of completeness of the object type.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-objecttype</stereo>
@@ -52,7 +56,9 @@
         
         <tv norm="note" id="CFG-TV-INWINNINGSREGELS">
             <name lang="nl">Inwinningsregels</name>
+            <name lang="en">Retrieval rules</name>
             <desc lang="nl">Hyperlink naar inwinningsregels voor het objecttype.</desc>
+            <desc lang="en">Hyperlink to retrieval rules for the object type.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -61,7 +67,9 @@
         
         <tv norm="space" id="CFG-TV-POSITIONELEJUISTHEID"><!-- TODO valideer op integer -->
             <name lang="nl">Positionele juistheid</name>
+            <name lang="en">Positional accuracy</name>
             <desc lang="nl">De nauwkeurigheid van de geometrie.</desc>
+            <desc lang="en">The accuracy of the geometry.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>

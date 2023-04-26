@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v2" xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2" xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://www.geostandaarden.nl/mim/informatiemodel/v2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  
+  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel" 
+  xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel" 
+  xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+  targetNamespace="http://www.geostandaarden.nl/mim/informatiemodel" 
+  elementFormDefault="qualified" 
+  attributeFormDefault="unqualified" 
+  version="2.0.0">
 
-  <xs:import namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2" schemaLocation="MIMFORMAT_MimRef_v2.xsd"/>
-  <xs:import namespace="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1" schemaLocation="MIMFORMAT_MimExt_v1.xsd"/>
+  <xs:import namespace="http://www.geostandaarden.nl/mim-ref/informatiemodel" schemaLocation="MIMFORMAT_MimRef.xsd"/>
+  <xs:import namespace="http://www.geostandaarden.nl/mim-ext/informatiemodel" schemaLocation="MIMFORMAT_MimExt.xsd"/>
 
   <xs:annotation>
     <xs:appinfo source="http://www.imvertor.org/metamodel/uri">https://docs.geostandaarden.nl/mim/vv-st-mim-20200225/</xs:appinfo>
     <xs:appinfo source="http://www.imvertor.org/metamodel/version">1.1.0</xs:appinfo>
-    <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/mim/informatiemodel/v2</xs:appinfo>
+    <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/mim/informatiemodel</xs:appinfo>
     <xs:appinfo source="http://www.imvertor.org/schema-info/version">2.0.0</xs:appinfo>
   </xs:annotation>
 
@@ -97,12 +106,6 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="DomeinViewConstructies">
-    <xs:sequence>
-      <xs:element ref="mim-ext:Constructie" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
   <!-- Domein: -->
   <xs:element name="Domein" type="mim:Domein">
     <xs:annotation>
@@ -120,7 +123,7 @@
       <xs:element name="objecttypen" type="mim:DomeinViewObjectTypen" minOccurs="0"/>
       <xs:element name="gegevensgroeptypen" type="mim:DomeinViewGegevensgroepTypen" minOccurs="0"/>
       <xs:element name="keuzen" type="mim:DomeinViewKeuzen" minOccurs="0"/>
-      <xs:element name="constructies" type="mim:DomeinViewConstructies" minOccurs="0"/>
+      <xs:element ref="mim-ext:constructies" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
@@ -158,7 +161,7 @@
       <xs:element name="objecttypen" type="mim:DomeinViewObjectTypen" minOccurs="0"/>
       <xs:element name="gegevensgroeptypen" type="mim:DomeinViewGegevensgroepTypen" minOccurs="0"/>
       <xs:element name="keuzen" type="mim:DomeinViewKeuzen" minOccurs="0"/>
-      <xs:element name="constructies" type="mim:DomeinViewConstructies" minOccurs="0"/>
+      <xs:element ref="mim-ext:constructies" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
@@ -192,6 +195,7 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De registratie of het informatiemodel waaraan het package ontleend is. Bij een view is de herkomst nooit de eigen organsiatie.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element ref="mim-ext:Constructie" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
@@ -267,10 +271,10 @@
           <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Indicatie dat er geen instanties (objecten) voor het betreffende objecttype mogen voorkomen.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="supertypes" minOccurs="0">
+      <xs:element name="supertypen" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="mim:GeneralisatieObjecttypes" maxOccurs="unbounded"/>
+            <xs:element ref="mim:GeneralisatieObjecttypen" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -404,9 +408,9 @@
         <xs:complexType>
           <xs:choice>
             <xs:element ref="mim:Datatype"/>
-            <xs:element ref="mim:ExternDatatype"/>
             <xs:element ref="mim-ref:DatatypeRef"/>
             <xs:element ref="mim-ref:KeuzeRef"/>
+            <xs:element ref="mim-ext:ConstructieRef"/>
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -565,27 +569,13 @@
     </xs:complexType>
   </xs:element>
 
-  <!-- ExternDatatype: -->
-  <xs:element name="ExternDatatype">
-    <xs:annotation>
-      <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Referentie naar een modelelement in een extern package.</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:simpleContent>
-        <xs:extension base="xs:string">
-          <xs:attribute name="label" type="xs:string" use="optional"/>
-        </xs:extension>
-      </xs:simpleContent>
-    </xs:complexType>
-  </xs:element>
-
   <!-- Datatype type: -->
   <xs:complexType name="Datatype" abstract="true">
     <xs:sequence>
-      <xs:element name="supertype" minOccurs="0">
+      <xs:element name="supertypen" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="mim:GeneralisatieDatatypes"/>
+            <xs:element ref="mim:GeneralisatieDatatypen"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -726,8 +716,8 @@
         <xs:complexType>
           <xs:choice>
             <xs:element ref="mim:Datatype"/>
-            <xs:element ref="mim:ExternDatatype"/>
             <xs:element ref="mim-ref:DatatypeRef"/>
+            <xs:element ref="mim-ext:ConstructieRef"/>
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -976,8 +966,8 @@
         <xs:complexType>
           <xs:choice>
             <xs:element ref="mim:Datatype"/>
-            <xs:element ref="mim:ExternDatatype"/>
             <xs:element ref="mim-ref:DatatypeRef"/>
+            <xs:element ref="mim-ext:ConstructieRef"/>
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -1075,18 +1065,18 @@
   </xs:complexType>
 
   <!-- Generalisatie tussen objecttypes: -->
-  <xs:element name="GeneralisatieObjecttypes" type="mim:GeneralisatieObjecttypes">
+  <xs:element name="GeneralisatieObjecttypen" type="mim:GeneralisatieObjecttypen">
     <xs:annotation>
       <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De typering van het hiërarchische verband tussen een meer generiek en een meer specifiek modelelement van hetzelfde soort, waarbij het meer specifieke modelelement eigenschappen van het meer generieke modelelement overerft. Dit verband is alleen gedefinieerd voor objecttypen en datatypen.</xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:complexType name="GeneralisatieObjecttypes">
+  <xs:complexType name="GeneralisatieObjecttypen">
     <xs:sequence>
       <xs:element name="supertype">
         <xs:complexType>
           <xs:sequence>
             <xs:element ref="mim-ref:ObjecttypeRef" minOccurs="0"/>
-            <xs:element ref="mim-ext:Constructie" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="mim-ext:ConstructieRef" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -1096,12 +1086,12 @@
   </xs:complexType>
 
   <!-- Generalisatie tussen datatypes: -->
-  <xs:element name="GeneralisatieDatatypes" type="mim:GeneralisatieDatatypes">
+  <xs:element name="GeneralisatieDatatypen" type="mim:GeneralisatieDatatypen">
     <xs:annotation>
       <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De typering van het hiërarchische verband tussen een meer generiek en een meer specifiek modelelement van hetzelfde soort, waarbij het meer specifieke modelelement eigenschappen van het meer generieke modelelement overerft. Dit verband is alleen gedefinieerd voor objecttypen en datatypen.</xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:complexType name="GeneralisatieDatatypes">
+  <xs:complexType name="GeneralisatieDatatypen">
     <xs:sequence>
       <xs:element name="naam" type="xs:string" minOccurs="0">
         <xs:annotation>
@@ -1122,8 +1112,8 @@
         <xs:complexType>
           <xs:choice>
             <xs:element ref="mim:Datatype"/>
-            <xs:element ref="mim:ExternDatatype"/>
             <xs:element ref="mim-ref:DatatypeRef"/>
+            <xs:element ref="mim-ext:ConstructieRef"/>
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -1173,8 +1163,8 @@
           <xs:complexType>
             <xs:choice minOccurs="2" maxOccurs="unbounded">
               <xs:element ref="mim:Datatype"/>
-              <xs:element ref="mim:ExternDatatype"/>
               <xs:element ref="mim-ref:DatatypeRef"/>
+              <xs:element ref="mim-ext:ConstructieRef"/>
             </xs:choice>
           </xs:complexType>
         </xs:element>
