@@ -78,7 +78,7 @@ public class EpCompiler extends Step {
 		
 		runner.debug(logger,"CHAIN","Generating EP");
 		
-		transformer.setXslParm("ep-schema-path","../etc/xsd/EP/EP.xsd");
+		transformer.setXslParm("ep-schema-path","xsd/EP.xsd");
 		
 		// Create EP
 		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_EP_XMLPATH", "properties/IMVERTOR_EP_XSLPATH");
@@ -92,7 +92,7 @@ public class EpCompiler extends Step {
 			resultEpFile.copyFile(targetEpFile);
 			
 			XmlFile managedSchemaFile = new XmlFile(Configurator.getInstance().getBaseFolder().getCanonicalPath() + "/etc/xsd/EP/EP.xsd");
-			XmlFile targetSchemaFile = new XmlFile(workAppFolder.getCanonicalPath() + "/etc/xsd/EP/EP.xsd");
+			XmlFile targetSchemaFile = new XmlFile(workAppFolder.getCanonicalPath() + "/ep/xsd/EP.xsd");
 			managedSchemaFile.copyFile(targetSchemaFile);
 			
 			// Debug: test if EP is okay
