@@ -1984,8 +1984,9 @@
 				<xsl:apply-templates select="ep:documentation"/>
 			</xsl:if>
 			<xsl:choose>
-				<!-- If the content of all ep:name elements is equal to their sibbling ep:alias elements no further documentation is generated. -->
+				<!-- If the content of all ep:name elements is equal to their sibbling ep:alias elements and none of the ep:enum elements has an ep:documentation element no further documentation is generated. -->
 				<xsl:when test="count(ep:enum[ep:name=ep:alias])=count(ep:enum) and empty(ep:enum/ep:documentation)"/>
+				<!-- Next xsl:when is processed if the content of all ep:name elements is equal to their sibbling ep:alias elements and the configured documentationtype is markdown. -->
 				<xsl:when test="count(ep:enum[ep:name=ep:alias])=count(ep:enum) and //ep:p/@format = 'markdown'">
 					<xsl:text>&lt;body&gt;&lt;ul&gt;</xsl:text>
 					<xsl:for-each select="ep:enum">
@@ -2001,6 +2002,7 @@
 					</xsl:for-each>
 					<xsl:text>&lt;/ul&gt;&lt;/body&gt;</xsl:text>
 				</xsl:when>
+				<!-- Next xsl:when is processed if not all the content of ep:name elements is equal to their sibbling ep:alias elements and the configured documentationtype is markdown. -->
 				<xsl:when test="//ep:p/@format = 'markdown'">
 					<xsl:text>&lt;body&gt;&lt;ul&gt;</xsl:text>
 						<xsl:for-each select="ep:enum">
@@ -2016,6 +2018,7 @@
 						</xsl:for-each>
 					<xsl:text>&lt;/ul&gt;&lt;/body&gt;</xsl:text>
 				</xsl:when>
+				<!-- Next xsl:when is processed if the content of all ep:name elements is equal to their sibbling ep:alias elements and the configured documentationtype is not markdown. -->
 				<xsl:when test="count(ep:enum[ep:name=ep:alias])=count(ep:enum) and //ep:p/@format != 'markdown'">
 					<!--xsl:text>:</xsl:text-->
 					<xsl:for-each select="ep:enum">
@@ -2030,6 +2033,7 @@
 						</xsl:choose-->
 					</xsl:for-each>
 				</xsl:when>
+				<!-- In all other cases the next xsl:when is processed. -->
 				<xsl:otherwise>
 					<!--xsl:text>:</xsl:text-->
 					<xsl:for-each select="ep:enum">
