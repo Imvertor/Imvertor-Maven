@@ -1157,8 +1157,10 @@
                     then $tokens[2]
                     else $tokens[1]
                 else
-                    $tokens[1]
-            "/>
+                    if ($tokens[1] = '&lt;memo&gt;')
+                    then ()
+                    else $tokens[1]
+                "/>
             <xsl:sequence select="if (normalize-space($value-select)) then $value-select else ()"/>
         </xsl:if>
    </xsl:function>
