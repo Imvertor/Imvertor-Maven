@@ -56,7 +56,7 @@
         <tv id="CFG-TV-MAXVALUEINCLUSIVE">
             <name lang="nl">Maximumwaarde</name>
             <name lang="en">MaxInclusive</name>
-            <desc lang="nl">De boven (inclusief) voor de waarde.</desc>
+            <desc lang="nl">De bovengrens (inclusief) voor de waarde.</desc>
             <desc lang="en">Defines upper bounds for values including this number.</desc>
             <derive>yes</derive>
             <stereotypes>
