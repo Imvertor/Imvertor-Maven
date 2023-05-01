@@ -198,7 +198,7 @@
 
         <tv norm="space" id="CFG-TV-MAXVALUEINCLUSIVE">
             <name lang="nl">Maximum waarde (inclusief)</name>
-            <desc lang="nl">DDe maximale waarde (inclusief) dat een attribuut mag hebben.</desc>
+            <desc lang="nl">De maximale waarde (inclusief) dat een attribuut mag hebben.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
