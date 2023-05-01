@@ -1146,6 +1146,8 @@
                 2/    <memo>#NOTES#value
                 3/    value#NOTES#note
                 4/    $ea_notes=....
+                
+                Bugfix https://github.com/Imvertor/Imvertor-Maven/issues/339 doorgevoerd
             -->        
             <xsl:variable name="tokens" select="tokenize($value,'(#NOTES#)|(\$ea_notes=)')"/> 
             <xsl:variable name="value-select" select="
@@ -1155,9 +1157,7 @@
                     then $tokens[2]
                     else $tokens[1]
                 else
-                    if ($tokens[1] = '&lt;memo&gt;')
-                    then $tv/XMI.extension/UML:Comment/@name
-                    else $tokens[1]
+                    $tokens[1]
             "/>
             <xsl:sequence select="if (normalize-space($value-select)) then $value-select else ()"/>
         </xsl:if>
