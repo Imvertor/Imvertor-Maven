@@ -45,6 +45,15 @@
         </xs:annotation>
       </xs:element>
       <xs:element name="unidirectioneel" type="xs:string"/>
+      <xs:element name="doel">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="mim-ref:ObjecttypeRef"/>
+            <xs:element ref="mim-ref:KeuzeRef"/>
+            <xs:element ref="mim-ext:ConstructieRef"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="relatierollen">
         <xs:complexType>
           <xs:sequence>

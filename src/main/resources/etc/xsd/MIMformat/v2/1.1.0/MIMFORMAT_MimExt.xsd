@@ -58,6 +58,7 @@
   <xs:complexType name="RefType">
     <xs:simpleContent>
       <xs:extension base="xs:string">
+        <xs:attribute name="label" type="xs:string" use="optional"/>
         <xs:attribute ref="xlink:href" use="required"/>
       </xs:extension>
     </xs:simpleContent>
