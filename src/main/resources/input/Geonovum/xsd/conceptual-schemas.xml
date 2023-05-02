@@ -39,6 +39,7 @@
             <cs-ref:MapRef xlink:href="#IMGEO211"/>
             <cs-ref:MapRef xlink:href="#CITYGML"/>
             <cs-ref:MapRef xlink:href="#STUB"/>
+            <cs-ref:MapRef xlink:href="#dso-cim-op"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
@@ -52,6 +53,12 @@
          <xi:include href="../../OGC/xsd/cs-GML322.xml"/><!-- implements ConceptualSchema GML -->
          <xi:include href="../../OGC/xsd/cs-CityGML.xml"/>
          <xi:include href="../../OGC/xsd/cs-GMLSF.xml"/>
+         
+         <xi:include href="../../DSO/xsd/cs-dso-cim-op.xml"/>
+         <xi:include href="../../DSO/xsd/cs-dso-cim-ex.xml"/>
+         <xi:include href="../../DSO/xsd/cs-dso-cim-oi.xml"/>
+         <xi:include href="../../DSO/xsd/cs-dso-cim-ow.xml"/>
+         <xi:include href="../../DSO/xsd/cs-dso-cim-tr.xml"/>
          
          <cs:ConceptualSchema>
             <cs:id>STUB</cs:id>
@@ -67,7 +74,13 @@
          <xi:include href="../../OGC/xsd/cm-GML322.xml"/><!-- implements Map #GML -->
          <xi:include href="../../OGC/xsd/cm-CityGML.xml"/>
          <xi:include href="../../OGC/xsd/cm-GMLSF.xml"/>
-         
+       
+         <xi:include href="../../DSO/xsd/cm-dso-cim-op.xml"/>
+         <xi:include href="../../DSO/xsd/cm-dso-cim-ex.xml"/>
+         <xi:include href="../../DSO/xsd/cm-dso-cim-oi.xml"/>
+         <xi:include href="../../DSO/xsd/cm-dso-cim-ow.xml"/>
+         <xi:include href="../../DSO/xsd/cm-dso-cim-tr.xml"/>
+            
          <cs:Map>
             <cs:id>STUB</cs:id>
             <cs:namespace>http://schemas.opengis.net/STUB/</cs:namespace>
