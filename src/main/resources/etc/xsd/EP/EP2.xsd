@@ -27,6 +27,9 @@
      - Introduceer ep:text en ep:parameters in documentatie elementen 
      - onderscheid localconstruct en globalconstruct opgeheven.
      - introductie van groups(s) naast message-set(s)
+     - alias overal toestaan waar een naam mogelijk is
+     - Tech-name wordt niet meer doorgegeven, zelf bepalen op basis van naam
+     - Supertypen kunnen worden opgegeven, in dat geval is "content" (een ep:seq of ep:choice) element niet meer nodig.
      
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -49,12 +52,13 @@
 			<xs:element ref="parameters" minOccurs="0"/>
 			<xs:element ref="id" minOccurs="0"/>
 			<xs:element ref="name"/>
-			<xs:element ref="tech-name"/>
+			<xs:element ref="alias" minOccurs="0"/><!-- nieuw: alle namen kunnen ook een alias hebben -->
 			<xs:element ref="documentation" minOccurs="0"/>
 			<xs:element ref="min-occurs" minOccurs="0"/>
 			<xs:element ref="max-occurs" minOccurs="0"/>
 			<xs:element ref="external" minOccurs="0"/>
-			<xs:choice>
+			<xs:element ref="super" minOccurs="0"/>
+			<xs:choice minOccurs="0"><!-- 0 is toegestaan als er supertypen zijn -->
 				<xs:choice>
 					<xs:sequence>
 						<xs:element ref="data-type"/>
@@ -128,13 +132,17 @@
 			<xs:sequence>
 				<xs:element ref="parameters" minOccurs="0"/>
 				<xs:element ref="name"/>
-				<xs:element ref="tech-name"/>
+				<xs:element ref="alias" minOccurs="0"/>
 				<xs:element ref="release" minOccurs="0"/>
 				<xs:element ref="documentation" minOccurs="0"/>
-				<xs:choice minOccurs="0" maxOccurs="unbounded">
-					<xs:element ref="construct"/>
-					<xs:element ref="group"/>
-				</xs:choice>
+				<xs:element name="seq" minOccurs="0"><!-- 0 is toegestaan als het een leeg of extern package betreft -->
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="construct"/>
+							<xs:element ref="group"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -146,7 +154,7 @@
 			<xs:sequence>
 				<xs:element ref="parameters" minOccurs="0"/>
 				<xs:element ref="name"/>
-				<xs:element ref="tech-name"/>
+				<xs:element ref="alias" minOccurs="0"/>
 				<xs:element ref="documentation" minOccurs="0"/>
 				<xs:element ref="seq"/>
 			</xs:sequence>
@@ -225,10 +233,17 @@
 			</xs:choice>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="tech-name" type="xs:string"/>
 	<xs:element name="type-name" type="xs:string"/>
 	<xs:element name="value" type="xs:string"/>
 	<xs:element name="min-value" type="xs:int"/>
 	<xs:element name="max-value" type="xs:int"/>
 	<xs:element name="external" type="xs:boolean"/>
+	<xs:element name="super">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="ref" maxOccurs="unbounded"/>
+				<xs:element ref="data-type"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
 </xs:schema>

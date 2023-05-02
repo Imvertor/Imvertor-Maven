@@ -53,6 +53,7 @@
       <WORK_SCHEMA_YAMLPATH>${system/work-imvert-folder-path}/imvertor.26.4.schema.yaml</WORK_SCHEMA_YAMLPATH>   
       
       <IMVERTOR_EP_XSLPATH>Imvert2EP.xsl</IMVERTOR_EP_XSLPATH>
+      <IMVERTOR_EP2_XSLPATH>Imvert2EP2.xsl</IMVERTOR_EP2_XSLPATH>
       <IMVERTOR_JSONXML_XSLPATH>EP2Json.xsl</IMVERTOR_JSONXML_XSLPATH>
       
    </properties>

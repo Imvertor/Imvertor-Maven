@@ -20,11 +20,14 @@
 
 package nl.imvertor.EpCompiler;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
 
@@ -78,10 +81,16 @@ public class EpCompiler extends Step {
 		
 		runner.debug(logger,"CHAIN","Generating EP");
 		
-		transformer.setXslParm("ep-schema-path","xsd/EP.xsd");
+		String epSchema = (requiresMIM() ? "EP2.xsd" : "EP.xsd");
+		
+		transformer.setXslParm("ep-schema-path","xsd/" + epSchema);	
 		
 		// Create EP
-		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_EP_XMLPATH", "properties/IMVERTOR_EP_XSLPATH");
+		if (requiresMIM())
+			succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH","properties/WORK_EP_XMLPATH", "properties/IMVERTOR_EP2_XSLPATH");
+		else 
+			succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_EP_XMLPATH", "properties/IMVERTOR_EP_XSLPATH");
+	
 		
 		// if this succeeds, copy the EP schema to the app and validate
 		if (succeeds) {
@@ -91,8 +100,8 @@ public class EpCompiler extends Step {
 			XmlFile targetEpFile = new XmlFile(workAppFolder.getCanonicalPath() + "/ep/ep.xml"); // TODO nette naam, bepaald door gebruiker oid.
 			resultEpFile.copyFile(targetEpFile);
 			
-			XmlFile managedSchemaFile = new XmlFile(Configurator.getInstance().getBaseFolder().getCanonicalPath() + "/etc/xsd/EP/EP.xsd");
-			XmlFile targetSchemaFile = new XmlFile(workAppFolder.getCanonicalPath() + "/ep/xsd/EP.xsd");
+			XmlFile managedSchemaFile = new XmlFile(Configurator.getInstance().getBaseFolder().getCanonicalPath() + "/etc/xsd/EP/" + epSchema);
+			XmlFile targetSchemaFile = new XmlFile(workAppFolder.getCanonicalPath() + "/ep/xsd/" + epSchema);
 			managedSchemaFile.copyFile(targetSchemaFile);
 			
 			// Debug: test if EP is okay
@@ -102,4 +111,11 @@ public class EpCompiler extends Step {
 
 		return succeeds;
 	}
+	
+	public static Boolean requiresMIM() throws IOException, ConfiguratorException {
+		// bepaal of hier de MIM schema variant moet worden gebruikt
+		String jsonsource = Configurator.getInstance().getXParm("cli/jsonsource");
+		return (jsonsource == null || jsonsource.equals("MIM"));
+	}				
+
 }

@@ -305,6 +305,7 @@
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="attribuutsoorten"/>
       <xsl:call-template name="gegevensgroepen"/>
+      <xsl:call-template name="relatiesoorten"/>
       <xsl:call-template name="extensieKenmerken"/>
     </mim:Gegevensgroeptype>
   </xsl:template>
@@ -354,6 +355,12 @@
     <xsl:call-template name="genereer-metagegevens">
       <xsl:with-param name="modelelement-type" select="$soort-type" as="xs:string"/>
     </xsl:call-template>
+    <mim:doel>
+      <xsl:call-template name="create-ref-element">
+        <xsl:with-param name="label" select="imvert:name" as="xs:string"/>
+        <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
+      </xsl:call-template> 
+    </mim:doel>
     <xsl:where-populated>
       <mim:relatierollen>
         <xsl:where-populated>
@@ -1371,6 +1378,11 @@
         <xsl:if test="imvert:min-occurs-source|imvert:max-occurs-source">
           <mim-ext:Kenmerk naam="kardinaliteitBron">{imf:kardinaliteit(imvert:min-occurs-source, imvert:max-occurs-source)}</mim-ext:Kenmerk>
         </xsl:if>
+        <xsl:if test="imvert:namespace">
+          <mim-ext:Kenmerk naam="namespace">{imvert:namespace}</mim-ext:Kenmerk>
+        </xsl:if>
+        <!-- en bewaard de natuurlijke positie -->
+        <mim-ext:Kenmerk naam="index">{count(preceding::*)}</mim-ext:Kenmerk>
       </mim-ext:kenmerken>        
     </xsl:where-populated>
   </xsl:template>

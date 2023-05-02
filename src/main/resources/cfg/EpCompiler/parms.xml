@@ -31,6 +31,7 @@
    
       <WORK_EP_XMLPATH>${system/work-imvert-folder-path}/imvertor.26.ep.xml</WORK_EP_XMLPATH>   
       <IMVERTOR_EP_XSLPATH alias="EP">Imvert2EP.xsl</IMVERTOR_EP_XSLPATH>
+      <IMVERTOR_EP2_XSLPATH alias="EP">Imvert2EP2.xsl</IMVERTOR_EP2_XSLPATH>
       
    </properties>
    
