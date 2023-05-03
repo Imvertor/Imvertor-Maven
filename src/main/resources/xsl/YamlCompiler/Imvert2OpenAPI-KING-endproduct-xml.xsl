@@ -169,9 +169,12 @@
 					<xsl:sequence select="imf:create-output-element('ep:name', 'serialisation')" />
 					<xsl:sequence select="imf:create-output-element('ep:value', $kv-serialisation)" />
 				</ep:parameter>
+				<ep:parameter>
+					<xsl:sequence select="imf:create-output-element('ep:name', 'imvertor-generator-version')" />
+					<xsl:sequence select="imf:create-output-element('ep:value', ep:imvertor-generator-version)" />
+				</ep:parameter>
 			</ep:parameters>
 			<ep:name><xsl:value-of select="ep:name"/></ep:name>
-			<ep:imvertor-generator-version><xsl:value-of select="ep:imvertor-generator-version"/></ep:imvertor-generator-version>
 			<ep:message-set>
 				<!-- The ep:message-set element contains the messages of the interface. 
 					 It's possible to have more than one ep:message-set elements but for Open API interfaces only one ep:message-set 
