@@ -40,6 +40,10 @@
             <cs-ref:MapRef xlink:href="#CITYGML"/>
             <cs-ref:MapRef xlink:href="#STUB"/>
             <cs-ref:MapRef xlink:href="#dso-cim-op"/>
+            <cs-ref:MapRef xlink:href="#dso-cim-ex"/>
+            <cs-ref:MapRef xlink:href="#dso-cim-oi"/>
+            <cs-ref:MapRef xlink:href="#dso-cim-ow"/>
+            <cs-ref:MapRef xlink:href="#dso-cim-tr"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
