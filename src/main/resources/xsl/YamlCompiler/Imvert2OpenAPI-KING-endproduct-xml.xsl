@@ -914,6 +914,13 @@
 								<xsl:sequence select="imf:msg('WARNING','It wasn&quot;t possible to retrieve the SIM-name of the construct [1].', ($construct/imvert:name))" />
 							</xsl:otherwise>
 						</xsl:choose>
+						<xsl:if
+							test="imf:get-tagged-value($construct,'##CFG-TV-POSITION')">
+							<ep:parameter>
+								<xsl:sequence select="imf:create-output-element('ep:name', 'position')" />
+								<xsl:sequence select="imf:create-output-element('ep:value', $construct/imvert:position)" />
+							</ep:parameter>
+						</xsl:if>
 					</ep:parameters>
 					
 					<xsl:sequence select="imf:create-debug-comment(concat('Result check on id attributes: ',$contains-non-id-attributes),$debugging)" />
@@ -1649,13 +1656,28 @@
 				<xsl:variable name="expand">
 					<xsl:value-of select="$expandconfigurations//ep:message[ep:name=$messagename and @berichtcode=$berichtcode and @messagetype=$messagetype]/ep:expand"/>
 				</xsl:variable>
+				<xsl:variable name="id">
+					<xsl:value-of select="ep:id"/>
+				</xsl:variable>
+				<xsl:variable name="node-id">
+					<xsl:value-of select="generate-id()"/>
+				</xsl:variable>
 				
 				<xsl:copy>
-					<!-- Wellicht kan de onderstaande variabele weg. $construct wordt immers al eerder gegenereerd. Enige verschil is dat deze daar evt. gevuld kan worden
-						 op basis van type-id. -->
+					<!-- Wellicht kan de onderstaande variabele weg. $construct wordt immers al eerder gegenereerd. Enige verschil is dat deze daar mogelijk ook gevuld kan worden
+						 op basis van type-id en hier altijd op basis van id. -->
 					<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
+					<!-- the variable 'endpointavailable' is important when serialisation is 'json'. In that case only Entiteittype classes result in a schema component when they are a fundamental of an endpoint.
+						 If an Entiteittype class is only present as the target of an association no schema component is generated. 
+						 To be sure no Entiteitype class which is a fundamental of an endpoint is excluded in plain json because it is also present as the target of an association the first when clause is created. -->
 					<xsl:variable name="endpointavailable">
 						<xsl:choose>
+							<xsl:when test="$kv-serialisation = 'json' and (parent::ep:rough-message or //ep:construct[generate-id()!=$node-id and parent::ep:rough-message and ep:id=$id])">
+								<xsl:value-of select="'Ja'"/>								
+							</xsl:when>
+							<xsl:when test="$kv-serialisation = 'json'">
+								<xsl:value-of select="'Nee'"/>								
+							</xsl:when>
 							<xsl:when test="not(empty(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-ENDPOINTAVAILABLE')))">
 								<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-ENDPOINTAVAILABLE')" />
 							</xsl:when>
@@ -1710,7 +1732,7 @@
 							<xsl:variable name="tvs">
 								<xsl:sequence select="imf:get-compiled-tagged-values($construct,false())"/>
 							</xsl:variable>
-							<ep:name original="{$tvs/tv[@id='CFG-TV-ENDPOINTAVAILABLE']/@original-name}">endpointavailable</ep:name>
+							<ep:name>endpointavailable</ep:name>
 							<xsl:sequence select="imf:create-output-element('ep:value', $endpointavailable)" />
 						</ep:parameter>
 					</ep:parameters>
