@@ -73,6 +73,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- DomeinOfView: -->
@@ -127,6 +128,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- View: -->
@@ -165,6 +167,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Extern: -->
@@ -199,6 +202,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Objecttype: -->
@@ -305,6 +309,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Gegevensgroeptype: -->
@@ -359,6 +364,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Attribuutsoort: -->
@@ -477,6 +483,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Gegevensgroep: -->
@@ -553,6 +560,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Datatype element: -->
@@ -564,6 +572,7 @@
       <xs:simpleContent>
         <xs:extension base="xs:string">
           <xs:attribute name="label" type="xs:string" use="optional"/>
+          <xs:attribute name="index" type="xs:integer" use="optional"/>
         </xs:extension>
       </xs:simpleContent>
     </xs:complexType>
@@ -581,6 +590,7 @@
       </xs:element>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Primitief Datatype -->
@@ -744,6 +754,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Enumeratie -->
@@ -809,6 +820,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Codelijst -->
@@ -1004,6 +1016,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Relatieklasse -->
@@ -1039,6 +1052,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Constraint: -->
@@ -1083,6 +1097,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Generalisatie tussen datatypes: -->
@@ -1120,6 +1135,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Keuze: -->
@@ -1186,6 +1202,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!--
@@ -1246,6 +1263,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <xs:element name="attribuutsoorten">

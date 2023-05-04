@@ -267,6 +267,7 @@
   <!-- mim:Domein -->
   <xsl:template match="imvert:package[imvert:stereotype/@id = 'stereotype-name-domain-package']">
     <mim:Domein source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="domein-of-view"/>
@@ -276,6 +277,7 @@
   <!-- mim:View -->
   <xsl:template match="imvert:package[imvert:stereotype/@id = 'stereotype-name-view-package']">
     <mim:View source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="domein-of-view"/>
@@ -285,6 +287,7 @@
   <!-- mim:Objectype -->
   <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-objecttype']">
     <mim:Objecttype source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="supertype">
@@ -301,6 +304,7 @@
   
   <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-composite']">
     <mim:Gegevensgroeptype source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="attribuutsoorten"/>
@@ -312,6 +316,7 @@
   
   <xsl:template match="imvert:attribute[not(imvert:stereotype) or (imvert:stereotype/@id = 'stereotype-name-attribute') or (imvert:stereotype/@id = 'stereotype-name-union-element-DEPRECATED')]">
     <mim:Attribuutsoort source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
       <xsl:call-template name="genereer-metagegevens">
         <xsl:with-param name="modelelement-type" as="xs:string">Attribuutsoort</xsl:with-param>
@@ -322,6 +327,7 @@
   
   <xsl:template match="imvert:attribute[imvert:stereotype/@id = 'stereotype-name-attributegroup']">
     <mim:Gegevensgroep source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="extensieKenmerken"/>
@@ -331,6 +337,7 @@
   <xsl:template match="imvert:association[not($meta-is-role-based) and 
     (imvert:stereotype/@id = 'stereotype-name-relatiesoort' or imvert:stereotype/@id = 'stereotype-name-union-association') and not(imf:association-is-keuze-attributes(.))]">
     <mim:Relatiesoort source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:call-template name="generate-relatiesoort">
         <xsl:with-param name="soort-type" as="xs:string">Relatiesoort - Relatiesoort leidend</xsl:with-param>
         <xsl:with-param name="rol-type" as="xs:string">Relatierol - Relatiesoort leidend</xsl:with-param>
@@ -341,6 +348,7 @@
   <xsl:template match="imvert:association[($meta-is-role-based) and 
     (imvert:stereotype/@id = 'stereotype-name-relatiesoort' or imvert:stereotype/@id = 'stereotype-name-union-association') and not(imf:association-is-keuze-attributes(.))]">
     <mim:Relatiesoort source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:call-template name="generate-relatiesoort">
         <xsl:with-param name="soort-type" as="xs:string">Relatiesoort - Relatierol leidend</xsl:with-param>
         <xsl:with-param name="rol-type" as="xs:string">Relatierol - Relatierol leidend</xsl:with-param>
@@ -401,6 +409,7 @@
   
   <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-relatieklasse']">
     <mim:Relatieklasse source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="attribuutsoorten"/>
@@ -410,6 +419,7 @@
   
   <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-complextype']">
     <mim:GestructureerdDatatype source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="supertype">
         <xsl:with-param name="context" select="." as="element()"/>
@@ -428,6 +438,7 @@
   
   <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-simpletype']">
     <mim:PrimitiefDatatype source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="supertype">
         <xsl:with-param name="context" select="." as="element()"/>
@@ -439,6 +450,7 @@
   
   <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-enumeration']">
     <mim:Enumeratie source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="supertype">
         <xsl:with-param name="context" select="." as="element()"/>
@@ -455,6 +467,7 @@
   
   <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-codelist']">
     <mim:Codelijst source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="supertype">
         <xsl:with-param name="context" select="." as="element()"/>
@@ -466,6 +479,7 @@
   
   <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-referentielijst']">
     <mim:Referentielijst source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="supertype">
         <xsl:with-param name="context" select="." as="element()"/>
@@ -484,6 +498,7 @@
   
   <xsl:template match="imvert:attribute[imvert:stereotype/@id = 'stereotype-name-data-element']">
     <mim:DataElement source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="extensieKenmerken"/>
@@ -492,6 +507,7 @@
   
   <xsl:template match="imvert:attribute[imvert:stereotype/@id = 'stereotype-name-enum']">
     <mim:Waarde source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="extensieKenmerken"/>
@@ -500,6 +516,7 @@
   
   <xsl:template match="imvert:attribute[imvert:stereotype/@id = 'stereotype-name-referentie-element']">
     <mim:ReferentieElement source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="extensieKenmerken"/>
@@ -520,6 +537,7 @@
   <!-- mim:Keuze -->
   <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union-attributes', 'stereotype-name-union-datatypes', 'stereotype-name-union-associations')]">
     <mim:Keuze source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="genereer-metagegevens">
         <xsl:with-param name="modelelement-type" select="'Keuze'" as="xs:string"/>
@@ -561,6 +579,7 @@
   
   <xsl:template match="imvert:association[imvert:stereotype/@id = 'stereotype-name-externekoppeling']">
     <mim:ExterneKoppeling source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="extensieKenmerken"/>
@@ -569,6 +588,7 @@
   
   <xsl:template match="imvert:package[imvert:stereotype/@id = 'stereotype-name-external-package']">
     <mim:Extern source-id="{imvert:stereotype/@id}">
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface' and imvert:id]">
@@ -585,6 +605,7 @@
       </xsl:call-template>
     </xsl:variable>
     <mim-ext:Constructie>
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype>
       <mim:naam source-id="CFG-TV-PSEUDO-NAME">{$name}</mim:naam>
@@ -593,6 +614,7 @@
   
   <xsl:template match="(imvert:class|imvert:attribute|imvert:association)[imf:is-not-mim-construct(.)]">
     <mim-ext:Constructie>
+      <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype> 
       <xsl:call-template name="genereer-metagegevens">
@@ -878,6 +900,7 @@
           <mim:supertypen>
             <xsl:for-each select="imvert:supertype">
               <mim:GeneralisatieObjecttypen>
+                <xsl:sequence select="imf:generate-index(.)"/>
                 <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
                 <mim:supertype>
                   <xsl:choose>
@@ -905,6 +928,7 @@
           <mim:supertypen>
             <xsl:for-each select="imvert:supertype">
               <mim:GeneralisatieDatatypen>
+                <xsl:sequence select="imf:generate-index(.)"/>
                 <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
                 <xsl:call-template name="genereer-metagegevens">
                   <xsl:with-param name="modelelement-type" as="xs:string">Generalisatie Datatypes</xsl:with-param>
@@ -1330,6 +1354,7 @@
       <!-- nieuwe constructies obv. #242 -->
       <xsl:when test="$target-stereotype-id = 'stereotype-name-interface' and $is-mim-datatype">
         <mim:Datatype>
+          <xsl:sequence select="imf:generate-index(.)"/>
           <xsl:if test="$label">
             <xsl:attribute name="label">{$label}</xsl:attribute>
           </xsl:if>
@@ -1338,6 +1363,7 @@
       </xsl:when>
       <xsl:when test="$target-stereotype-id = 'stereotype-name-interface'">
         <mim-ext:ConstructieRef>
+          <xsl:sequence select="imf:generate-index(.)"/>
           <xsl:if test="$label">
             <xsl:attribute name="label">{$label}</xsl:attribute>
           </xsl:if>
@@ -1349,6 +1375,7 @@
       </xsl:when>
       <xsl:when test="$element-name">
         <xsl:element name="{$element-name}">
+          <xsl:sequence select="imf:generate-index(.)"/>
           <xsl:if test="$label">
             <xsl:attribute name="label">{$label}</xsl:attribute>
           </xsl:if>
@@ -1381,8 +1408,6 @@
         <xsl:if test="imvert:namespace">
           <mim-ext:Kenmerk naam="namespace">{imvert:namespace}</mim-ext:Kenmerk>
         </xsl:if>
-        <!-- en bewaard de natuurlijke positie -->
-        <mim-ext:Kenmerk naam="index">{count(preceding::*)}</mim-ext:Kenmerk>
       </mim-ext:kenmerken>        
     </xsl:where-populated>
   </xsl:template>
@@ -1398,4 +1423,11 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
+  
+  <!-- en bewaar de natuurlijke positie -->
+  <xsl:function name="imf:generate-index" as="attribute()">
+    <xsl:param name="construct"/>
+    <xsl:attribute name="index">{count($construct/preceding::*)}</xsl:attribute>
+  </xsl:function>
+  
 </xsl:stylesheet>

@@ -108,6 +108,7 @@ public class EpCompiler extends Step {
 			succeeds = succeeds && resultEpFile.isValid();
 		}
 		configurator.setXParm("system/ep-schema-created",succeeds);
+		configurator.setXParm("system/ep-schema-version",requiresMIM() ? "2" : "1"); // when MIM based, generated EP version 2
 
 		return succeeds;
 	}

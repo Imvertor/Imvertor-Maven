@@ -94,8 +94,11 @@ public class JsonSchemaCompiler extends Step {
 		runner.debug(logger,"CHAIN","Generating Json");
 		
 		// Transform previously generated EP to Json XML
-		succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH","properties/WORK_JSONXML_XMLPATH", "properties/IMVERTOR_JSONXML_XSLPATH");
-		
+		if (configurator.getXParm("system/ep-schema-version").equals("1"))
+			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH","properties/WORK_JSONXML_XMLPATH", "properties/IMVERTOR_JSONXML_XSLPATH");
+		else 
+			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH","properties/WORK_JSONXML_XMLPATH", "properties/IMVERTOR_JSONXML2_XSLPATH");
+				
 		// convert the json xml to Json.
 		XmlFile jsonXmlFile = new XmlFile(configurator.getXParm("properties/WORK_JSONXML_XMLPATH"));
 		JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/WORK_SCHEMA_JSONPATH"));

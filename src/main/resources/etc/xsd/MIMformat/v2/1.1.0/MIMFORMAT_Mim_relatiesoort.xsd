@@ -119,6 +119,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
   <!-- Relatierol: -->
@@ -148,6 +149,7 @@
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
 </xs:schema>

@@ -52,12 +52,14 @@
           processContents="lax"/>
       </xs:sequence>
       <xs:attribute name="id" type="xs:string" use="optional"/>
+      <xs:attribute name="index" type="xs:integer" use="optional"/>
     </xs:complexType>
   </xs:element>
     
   <xs:complexType name="RefType">
     <xs:simpleContent>
       <xs:extension base="xs:string">
+        <xs:attribute name="index" type="xs:integer" use="optional"/>
         <xs:attribute name="label" type="xs:string" use="optional"/>
         <xs:attribute ref="xlink:href" use="required"/>
       </xs:extension>

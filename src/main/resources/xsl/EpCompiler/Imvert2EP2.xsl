@@ -669,7 +669,7 @@
             if ($this/self::mim:Relatiesoort) then '200' else 
             '0'"/>
         <xsl:sequence select="imf:set-parameter('position',(imf:get-kenmerk($this,'positie'),$default-positie)[1])"/>
-        <xsl:sequence select="imf:set-parameter('index',imf:get-kenmerk($this,'index'))"/>
+        <xsl:sequence select="imf:set-parameter('index',$this/@index)"/>
     </xsl:function>
     
     <xsl:function name="imf:get-cardinality" as="element()*">
