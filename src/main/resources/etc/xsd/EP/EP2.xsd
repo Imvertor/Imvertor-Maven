@@ -23,13 +23,20 @@
    - 20211220
       - vervang waarde van note fields door ##any
    
-   - 20230424
-     - Introduceer ep:text en ep:parameters in documentatie elementen 
-     - onderscheid localconstruct en globalconstruct opgeheven.
-     - introductie van groups(s) naast message-set(s)
-     - alias overal toestaan waar een naam mogelijk is
-     - Tech-name wordt niet meer doorgegeven, zelf bepalen op basis van naam
-     - Supertypen kunnen worden opgegeven, in dat geval is "content" (een ep:seq of ep:choice) element niet meer nodig.
+   - 20230507
+   	 zie aanpassingen zoals beschreven in https://github.com/Imvertor/Imvertor-Maven/issues/343
+   	 
+     - (1) ep:documentation krijgt /@name vorm; introduceer ep:text en ep:parameters in ep:documentation elementen 
+     - (2) onderscheid localconstruct en globalconstruct opgeheven.
+     - (3) introductie van groups(s) naast message-set(s)
+     - (4) alias overal verwijderen, wordt parameter.
+     - (5) Tech-name wordt niet meer doorgegeven, zelf bepalen op basis van naam
+     - (6) Supertypen kunnen worden opgegeven, in dat geval is "content" (een ep:seq of ep:choice) element niet meer nodig.
+     - (7) ep:parameter krijgt /@name vorm
+     - (8) ep:example vervalt
+     - (9) ep:enum wordt string
+     - (10) ep:parameters vervalt in ep:seq en ep:choice
+     - (11) element ep:id verwijderd, ep:ref zal nu verwijzen naar @id (exact match)
      
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -37,28 +44,27 @@
 	xmlns:ep="http://www.imvertor.org/schema/endproduct"
 	targetNamespace="http://www.imvertor.org/schema/endproduct" elementFormDefault="qualified">
 
-	<xs:element name="alias" type="xs:string"/>
 	<xs:element name="choice">
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="parameters" minOccurs="0"/>
-				<xs:element ref="construct" maxOccurs="unbounded"/>
-			</xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="unbounded">
+				<xs:element ref="seq"/>
+				<xs:element ref="choice"/>
+				<xs:element ref="construct"/>
+			</xs:choice>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="construct" type="ep:construct"/>
 	<xs:complexType name="construct">
 		<xs:sequence>
 			<xs:element ref="parameters" minOccurs="0"/>
-			<xs:element ref="id" minOccurs="0"/>
 			<xs:element ref="name"/>
-			<xs:element ref="alias" minOccurs="0"/><!-- nieuw: alle namen kunnen ook een alias hebben -->
-			<xs:element ref="documentation" minOccurs="0"/>
+			<xs:element ref="documentation" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element ref="min-occurs" minOccurs="0"/>
 			<xs:element ref="max-occurs" minOccurs="0"/>
 			<xs:element ref="external" minOccurs="0"/>
 			<xs:element ref="super" minOccurs="0"/>
-			<xs:choice minOccurs="0"><!-- 0 is toegestaan als er supertypen zijn -->
+			<xs:choice minOccurs="0">
+				<!-- 0 is toegestaan als er supertypen zijn -->
 				<xs:choice>
 					<xs:sequence>
 						<xs:element ref="data-type"/>
@@ -67,12 +73,10 @@
 						<xs:element ref="min-length" minOccurs="0"/>
 						<xs:element ref="max-length" minOccurs="0"/>
 						<xs:element ref="formal-pattern" minOccurs="0"/>
-						<xs:element ref="example" minOccurs="0"/>
 						<xs:element ref="enum" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 					<xs:sequence>
 						<xs:element ref="type-name"/>
-						<xs:element ref="example" minOccurs="0"/>
 					</xs:sequence>
 				</xs:choice>
 				<xs:element ref="seq"/>
@@ -80,32 +84,17 @@
 				<xs:element ref="ref"/>
 			</xs:choice>
 		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="optional"/>
 	</xs:complexType>
 	<xs:element name="data-type" type="xs:string"/>
 	<xs:element name="date" type="xs:date"/>
-	<xs:element name="definition">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="parameters" minOccurs="0"/>
-				<xs:element ref="text"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="description">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="parameters" minOccurs="0"/>
-				<xs:element ref="text"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
 	<xs:element name="documentation">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="definition" minOccurs="0"/>
-				<xs:element ref="description" minOccurs="0"/>
-				<xs:element ref="pattern" minOccurs="0"/>
+				<xs:element ref="parameters" minOccurs="0"/>
+				<xs:element ref="text"/>
 			</xs:sequence>
+			<xs:attribute name="type" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -118,24 +107,17 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="enum">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="name"/>
-				<xs:element ref="alias" minOccurs="0"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="example" type="xs:string"/>
+	<xs:element name="enum" type="xs:string"/>
+	
 	<xs:element name="group">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="parameters" minOccurs="0"/>
 				<xs:element ref="name"/>
-				<xs:element ref="alias" minOccurs="0"/>
 				<xs:element ref="release" minOccurs="0"/>
-				<xs:element ref="documentation" minOccurs="0"/>
-				<xs:element name="seq" minOccurs="0"><!-- 0 is toegestaan als het een leeg of extern package betreft -->
+				<xs:element ref="documentation" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="seq" minOccurs="0">
+					<!-- 0 is toegestaan als het een leeg of extern package betreft -->
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
 							<xs:element ref="construct"/>
@@ -149,39 +131,6 @@
 	<xs:element name="min-length" type="xs:short"/>
 	<xs:element name="max-length" type="xs:short"/>
 	<xs:element name="max-occurs" type="xs:string"/>
-	<xs:element name="message">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="parameters" minOccurs="0"/>
-				<xs:element ref="name"/>
-				<xs:element ref="alias" minOccurs="0"/>
-				<xs:element ref="documentation" minOccurs="0"/>
-				<xs:element ref="seq"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="message-set">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="name"/>
-				<xs:element ref="release"/>
-				<xs:element ref="date"/>
-				<xs:element ref="patch-number"/>
-				<xs:element ref="documentation" minOccurs="0"/>
-				<xs:element ref="message" maxOccurs="unbounded"/>
-				<xs:element name="construct" type="construct" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="message-sets">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="parameters" minOccurs="0"/>
-				<xs:element ref="name"/>
-				<xs:element ref="message-set"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
 	<xs:element name="min-occurs" type="xs:int"/>
 	<xs:element name="name" type="xs:string"/>
 	<xs:element name="id" type="xs:string"/>
@@ -200,10 +149,11 @@
 	</xs:element>
 	<xs:element name="parameter">
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="name"/>
-				<xs:element ref="value"/>
-			</xs:sequence>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="name" type="xs:string"/>
+				</xs:extension>
+			</xs:simpleContent>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="parameters">
@@ -214,22 +164,15 @@
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="patch-number" type="xs:string"/>
-	<xs:element name="pattern">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="parameters" minOccurs="0"/>
-				<xs:element ref="text"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
 	<xs:element name="formal-pattern" type="xs:string"/>
 	<xs:element name="ref" type="xs:string"/>
 	<xs:element name="release" type="xs:int"/>
 	<xs:element name="seq">
-		<xs:complexType mixed="true">
-			<xs:choice minOccurs="0" maxOccurs="unbounded">
+		<xs:complexType>
+			<xs:choice minOccurs="1" maxOccurs="unbounded">
+				<xs:element ref="seq"/>
 				<xs:element ref="choice"/>
-				<xs:element name="construct" type="construct" maxOccurs="unbounded"/>
+				<xs:element ref="construct"/>
 			</xs:choice>
 		</xs:complexType>
 	</xs:element>

@@ -56,7 +56,7 @@
                     <xsl:sequence select="imf:set-parameter('version',imf:get-kenmerk(.,'Release'))"/>
                     <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'namespace'))"/>
                 </ep:parameters>
-                <xsl:sequence select="imf:get-names(.)"/>
+                <xsl:sequence select="imf:get-name(.)"/>
                 <xsl:sequence select="imf:get-documentation(.)"/>
                 <ep:seq>
                     <xsl:apply-templates select="mim:packages/*"/>
@@ -74,7 +74,7 @@
                 <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'namespace'))"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="mim:datatypen/*"/>
@@ -94,7 +94,7 @@
                 <xsl:sequence select="imf:get-index(.)"/>
                 
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="mim:datatypen/*"/>
@@ -122,7 +122,7 @@
                             <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'Namespace'))"/>
                             <xsl:sequence select="imf:get-index(.)"/>
                         </ep:parameters>
-                        <xsl:sequence select="imf:get-names(.)"/>
+                        <xsl:sequence select="imf:get-name(.)"/>
                         <xsl:sequence select="imf:get-documentation(.)"/>
                         <ep:seq>
                             <xsl:sequence select="$defs"/>
@@ -135,14 +135,14 @@
     
     <xsl:template match="mim:Objecttype">
         <ep:construct>
+            <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Objecttype',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','objecttype')"/>
                 <xsl:sequence select="imf:set-parameter('position',imf:get-kenmerk(.,'positie'))"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:seq>
@@ -156,13 +156,13 @@
     
     <xsl:template match="mim:Relatieklasse">
         <ep:construct>
+            <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Relatieklasse',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','relatieklasse')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:seq>
@@ -175,13 +175,13 @@
     
     <xsl:template match="mim:Koppelklasse">
         <ep:construct>
+            <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Koppelklasse',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','koppelklasse')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:seq>
@@ -195,13 +195,13 @@
     
     <xsl:template match="mim:Gegevensgroeptype">
         <ep:construct>
+            <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Gegevensgroeptype',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','gegevensgroeptype')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:seq>
@@ -219,8 +219,7 @@
                 <xsl:sequence select="imf:set-parameter('use','externekoppeling')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:seq>
@@ -231,13 +230,13 @@
     
     <xsl:template match="mim:Keuze">
         <ep:construct>
+            <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','keuze')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:apply-templates select="mim:keuzeDatatypen | mim:keuzeRelatiedoelen | mim:keuzeAttributen"/>
         </ep:construct>
@@ -272,21 +271,21 @@
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-ref(.)"/>
         </ep:construct>
     </xsl:template>
     
     <xsl:template match="mim:Codelijst">
         <ep:construct>
+            <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Codelijst',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','codelijst')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:set-parameter('locatie',mim:locatie)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:data-type>ep:string</ep:data-type>
@@ -295,13 +294,13 @@
     
     <xsl:template match="mim:Enumeratie">
         <ep:construct>
+            <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Enumeratie',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','enumeratie')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:data-type>ep:string</ep:data-type>
@@ -311,27 +310,27 @@
     
     <xsl:template match="mim-ext:Constructie[mim-ext:constructietype = 'INTERFACE']">
         <ep:construct>
+            <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Interface (extern)',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','interface')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:set-parameter('oas-name','TODO')"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
         </ep:construct>
     </xsl:template>
     
     <xsl:template match="mim:GestructureerdDatatype">
         <ep:construct>
+            <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een gestructureerd datatype',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','gestructureerddatatype')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <xsl:sequence select="imf:get-props(.)"/>
@@ -344,14 +343,14 @@
     
     <xsl:template match="mim:Referentielijst">
         <ep:construct>
+            <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een referentielijst',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','referentielijst')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:set-parameter('locatie',mim:locatie)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="mim:referentieElementen/mim:ReferentieElement"/>
@@ -367,8 +366,7 @@
                 <xsl:sequence select="imf:set-parameter('use','primitiefdatatype')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-id(.)"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <xsl:sequence select="imf:get-type($super)"/>
@@ -386,7 +384,7 @@
                 <xsl:sequence select="imf:get-nillable(.)"/>
                 <xsl:sequence select="imf:get-data-location(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
@@ -403,7 +401,7 @@
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
@@ -417,7 +415,7 @@
                 <xsl:sequence select="imf:set-parameter('use','constructieref')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
@@ -432,7 +430,7 @@
                 <xsl:sequence select="imf:set-parameter('use','datatype')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-props(.)"/>
         </ep:construct>
@@ -446,7 +444,7 @@
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
@@ -463,7 +461,7 @@
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
@@ -474,8 +472,7 @@
     
     <xsl:template match="mim:Enumeratie/mim:waarden/mim:Waarde">
         <ep:enum>
-            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een enumeratie waarde',())"/>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:value-of select="imf:get-name(.)"/><!-- de string waarde -->
         </ep:enum>
     </xsl:template>
     
@@ -487,7 +484,7 @@
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <ep:seq>
@@ -504,7 +501,7 @@
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-ref(.)"/>
         </ep:construct>
@@ -518,7 +515,7 @@
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-ref(.)"/>
         </ep:construct>
@@ -532,7 +529,7 @@
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-ref(.)"/>
         </ep:construct>
@@ -546,7 +543,7 @@
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-ref(.)"/>
         </ep:construct>
@@ -573,8 +570,6 @@
     -->    
     <xsl:template match="
         ep:documentation | 
-        ep:definition | 
-        ep:description | 
         ep:parameters | 
         ep:seq | 
         ep:choice |
@@ -583,7 +578,6 @@
         ep:max-length | 
         ep:min-value | 
         ep:max-value | 
-        ep:pattern | 
         ep:formal-pattern | 
         ep:alias | 
         ep:example
@@ -610,21 +604,16 @@
     <!--
         FUNCTIONS 
     -->    
-    <xsl:function name="imf:get-id" as="element(ep:id)*">
+    <xsl:function name="imf:get-id" as="attribute(id)">
         <xsl:param name="this"/>
-        <ep:id>
-            <xsl:value-of select="$this/@id"/>
-        </ep:id>
+        <xsl:attribute name="id" select="$this/@id"/>
     </xsl:function>
     
-    <xsl:function name="imf:get-names" as="element()*">
+    <xsl:function name="imf:get-name" as="element()*">
         <xsl:param name="this"/>
         <ep:name>
             <xsl:value-of select="(imf:info($this)/mim:naam,$this/@label,'UNKNOWNNAME')[1]"/>
         </ep:name>
-        <ep:alias>
-            <xsl:value-of select="imf:info($this)/mim:alias"/>
-        </ep:alias>         
     </xsl:function>
     
     <xsl:function name="imf:get-supers" as="element(ep:super)*">
@@ -635,18 +624,19 @@
         </ep:super>
     </xsl:function>
     
-    <xsl:function name="imf:get-documentation" as="element(ep:documentation)?">
+    <xsl:function name="imf:get-documentation" as="element(ep:documentation)*">
         <xsl:param name="this"/>
-        <ep:documentation>
-            <ep:definition>
+        <ep:documentation type="alias">
+            <xsl:sequence select="imf:info($this)/mim:alias"/>  
+        </ep:documentation>
+        <ep:documentation type="definitie">
                 <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:definitie)"/>  
-            </ep:definition>
-            <ep:description>
-                <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:toelichting)"/>  
-            </ep:description>
-            <ep:pattern>
-                <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:patroon)"/>  
-            </ep:pattern>
+        </ep:documentation>
+        <ep:documentation type="toelichting">
+            <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:toelichting)"/>  
+        </ep:documentation>
+        <ep:documentation type="patroon">
+            <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:patroon)"/>  
         </ep:documentation>
     </xsl:function>
     
@@ -776,13 +766,8 @@
         <xsl:param name="name"/>
         <xsl:param name="value"/>
         <xsl:if test="normalize-space($value)">
-            <ep:parameter>
-                <ep:name>
-                    <xsl:value-of select="$name"/>
-                </ep:name>
-                <ep:value>
-                    <xsl:value-of select="$value"/>
-                </ep:value>
+            <ep:parameter name="{$name}">
+                <xsl:value-of select="$value"/>
             </ep:parameter>
         </xsl:if>
     </xsl:function>
