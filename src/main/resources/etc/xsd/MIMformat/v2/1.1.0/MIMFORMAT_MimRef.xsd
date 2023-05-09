@@ -2,17 +2,17 @@
 <xs:schema 
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel"   
-  targetNamespace="http://www.geostandaarden.nl/mim-ref/informatiemodel" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"   
+  targetNamespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1" 
   elementFormDefault="qualified" 
   attributeFormDefault="unqualified" 
-  version="2.0.0">
+  version="1.0.0">
   
   <xs:annotation>
-    <xs:appinfo source="http://www.imvertor.org/metamodel/uri">https://docs.geostandaarden.nl/mim/vv-st-mim-20200225/</xs:appinfo>
-    <xs:appinfo source="http://www.imvertor.org/metamodel/version">1.1.0</xs:appinfo>
-    <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/mim/informatiemodel</xs:appinfo>
-    <xs:appinfo source="http://www.imvertor.org/schema-info/version">2.0.0</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/metamodel/uri">https://docs.geostandaarden.nl/mim/vv-st-mim-20200225/</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/metamodel/version">1.1.0</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/uri">http://www.geostandaarden.nl/mim-ref/informatiemodel</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/version">1.0.0</xs:appinfo>
   </xs:annotation>
   
   <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
