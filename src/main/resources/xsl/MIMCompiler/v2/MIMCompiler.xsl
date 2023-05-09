@@ -24,9 +24,9 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xmlns:imvert="http://www.imvertor.org/schema/system"
-  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel" 
-  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel"
-  xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel"
+  xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
+  xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
   xmlns:UML="omg.org/UML1.3" 
   xmlns:imf="http://www.imvertor.org/xsl/functions"    
   xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
@@ -175,9 +175,9 @@
       <xsl:document>
         <xsl:comment select="document('MIM' || $mim-version || '-readme.xml')/readme"/>
         <mim:Informatiemodel
-          xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel" 
-          xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel"
-          xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel"
+          xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1" 
+          xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
+          xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
           xmlns:xlink="http://www.w3.org/1999/xlink"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           
@@ -189,7 +189,7 @@
               <xsl:otherwise>xsd/{$mim-version}/MIMFORMAT_Mim_relatiesoort.xsd</xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
-          <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel {$schema}</xsl:attribute>
+          <xsl:attribute name="schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance">http://www.geostandaarden.nl/mim/informatiemodel/v1 {$schema}</xsl:attribute>
           
           <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
           
@@ -587,15 +587,21 @@
   </xsl:template>
   
   <xsl:template match="imvert:package[imvert:stereotype/@id = 'stereotype-name-external-package']">
-    <mim:Extern source-id="{imvert:stereotype/@id}">
-      <xsl:sequence select="imf:generate-index(.)"/>
-      <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
-      <xsl:call-template name="genereer-metagegevens"/>
-      <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface' and imvert:id]">
-        <xsl:sort select="imvert:name"/>
-      </xsl:apply-templates>
-      <xsl:call-template name="extensieKenmerken"/>
-    </mim:Extern>
+    <xsl:if test="not(starts-with(imvert:name,'MIM11'))">
+      <mim:Extern source-id="{imvert:stereotype/@id}">
+        <xsl:sequence select="imf:generate-index(.)"/>
+        <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
+        <xsl:call-template name="genereer-metagegevens"/>
+        <xsl:where-populated>
+          <mim:externen>
+            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface' and imvert:id]">
+              <xsl:sort select="imvert:name"/>
+            </xsl:apply-templates>
+          </mim:externen>
+        </xsl:where-populated>
+        <xsl:call-template name="extensieKenmerken"/>
+      </mim:Extern>
+    </xsl:if>
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface']" priority="1">     
