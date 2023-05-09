@@ -198,22 +198,13 @@
           <xs:documentation source="http://www.geostandaarden.nl/mim/schema-info/technical-documentation">De registratie of het informatiemodel waaraan het package ontleend is. Bij een view is de herkomst nooit de eigen organsiatie.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element ref="mim:externen" minOccurs="0"/>
+      <xs:element ref="mim-ext:constructies" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>
     <xs:attribute name="index" type="xs:integer" use="optional"/>
   </xs:complexType>
 
-  <xs:element name="externen">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="mim-ext:Constructie" maxOccurs="unbounded"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  
-  
   <!-- Objecttype: -->
   <xs:element name="Objecttype" type="mim:Objecttype">
     <xs:annotation>

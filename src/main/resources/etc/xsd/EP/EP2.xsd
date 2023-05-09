@@ -3,7 +3,7 @@
 	Dit schema is gegenereerd door XML spy, en daarna handmatig bewerkt tbv.Kadaster Json schema generatie.
 	
 	Aanpassingen:
-  - 20181117 (Eerste integratie in Imvertor)
+  - 20181117 (Eerste integratie in Imvertor, http://www.imvertor.org/schema/endproduct)
 	  - element <ep:id> toegevoegd, ep:ref zal nu verwijzen naar ep:id
 	  - <ep:parameters> (in model) mag leeg zijn, en is nergens verplicht
 	  - ep:pattern en ep:eq zijn niet mixed (mixed=false).
@@ -23,7 +23,7 @@
    - 20211220
       - vervang waarde van note fields door ##any
    
-   - 20230507
+   - 20230507 (http://www.imvertor.org/schema/endproduct/v2)
    	 zie aanpassingen zoals beschreven in https://github.com/Imvertor/Imvertor-Maven/issues/343
    	 
      - (1) ep:documentation krijgt /@name vorm; introduceer ep:text en ep:parameters in ep:documentation elementen 
@@ -33,16 +33,22 @@
      - (5) Tech-name wordt niet meer doorgegeven, zelf bepalen op basis van naam
      - (6) Supertypen kunnen worden opgegeven, in dat geval is "content" (een ep:seq of ep:choice) element niet meer nodig.
      - (7) ep:parameter krijgt /@name vorm
-     - (8) ep:example vervalt
+     - (8) ep:example vervalt, wordt ep:documentation
      - (9) ep:enum wordt string
      - (10) ep:parameters vervalt in ep:seq en ep:choice
-     - (11) element ep:id verwijderd, ep:ref zal nu verwijzen naar @id (exact match)
+     - (11) element ep:id verwijderd, ep:ref/@href zal nu verwijzen naar @id (exact match)
+     - (12) ep:release wordt ep:version
      
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns="http://www.imvertor.org/schema/endproduct"
-	xmlns:ep="http://www.imvertor.org/schema/endproduct"
-	targetNamespace="http://www.imvertor.org/schema/endproduct" elementFormDefault="qualified">
+	
+	xmlns="http://www.imvertor.org/schema/endproduct/v2"
+	xmlns:ep="http://www.imvertor.org/schema/endproduct/v2"
+	
+	targetNamespace="http://www.imvertor.org/schema/endproduct/v2" 
+	elementFormDefault="qualified"
+	
+	version="2.0.0">
 
 	<xs:element name="choice">
 		<xs:complexType>
@@ -53,6 +59,7 @@
 			</xs:choice>
 		</xs:complexType>
 	</xs:element>
+	
 	<xs:element name="construct" type="ep:construct"/>
 	<xs:complexType name="construct">
 		<xs:sequence>
@@ -86,8 +93,10 @@
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID" use="optional"/>
 	</xs:complexType>
+	
 	<xs:element name="data-type" type="xs:string"/>
 	<xs:element name="date" type="xs:date"/>
+	
 	<xs:element name="documentation">
 		<xs:complexType>
 			<xs:sequence>
@@ -114,7 +123,7 @@
 			<xs:sequence>
 				<xs:element ref="parameters" minOccurs="0"/>
 				<xs:element ref="name"/>
-				<xs:element ref="release" minOccurs="0"/>
+				<xs:element ref="version" minOccurs="0"/>
 				<xs:element ref="documentation" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="seq" minOccurs="0">
 					<!-- 0 is toegestaan als het een leeg of extern package betreft -->
@@ -133,7 +142,6 @@
 	<xs:element name="max-occurs" type="xs:string"/>
 	<xs:element name="min-occurs" type="xs:int"/>
 	<xs:element name="name" type="xs:string"/>
-	<xs:element name="id" type="xs:string"/>
 	<xs:element name="p">
 		<xs:complexType>
 			<xs:simpleContent>
@@ -147,6 +155,7 @@
 			</xs:simpleContent>
 		</xs:complexType>
 	</xs:element>
+	
 	<xs:element name="parameter">
 		<xs:complexType>
 			<xs:simpleContent>
@@ -156,6 +165,7 @@
 			</xs:simpleContent>
 		</xs:complexType>
 	</xs:element>
+	
 	<xs:element name="parameters">
 		<xs:complexType>
 			<xs:sequence>
@@ -163,10 +173,18 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="patch-number" type="xs:string"/>
+	
 	<xs:element name="formal-pattern" type="xs:string"/>
-	<xs:element name="ref" type="xs:string"/>
-	<xs:element name="release" type="xs:int"/>
+	<xs:element name="ref">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="href" type="xs:IDREF"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	
 	<xs:element name="seq">
 		<xs:complexType>
 			<xs:choice minOccurs="1" maxOccurs="unbounded">
@@ -179,6 +197,8 @@
 	<xs:element name="type-name" type="xs:string"/>
 	<xs:element name="value" type="xs:string"/>
 	<xs:element name="min-value" type="xs:int"/>
+	<xs:element name="version" type="xs:string"/>
+	
 	<xs:element name="max-value" type="xs:int"/>
 	<xs:element name="external" type="xs:boolean"/>
 	<xs:element name="super">

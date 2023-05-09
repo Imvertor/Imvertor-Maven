@@ -1,11 +1,11 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel"
-    xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel"
-    xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel"
+    xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1"
+    xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
+    xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
     
     xmlns:imf="http://www.imvertor.org/xsl/functions"
-    xmlns:ep="http://www.imvertor.org/schema/endproduct"
+    xmlns:ep="http://www.imvertor.org/schema/endproduct/v2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -38,7 +38,7 @@
     
     <xsl:template match="/">
    
-        <xsl:variable name="step-1" >
+        <xsl:variable name="step-1" as="element(ep:group)">
             <xsl:apply-templates select="/mim:Informatiemodel"/>
         </xsl:variable>
 
@@ -49,12 +49,14 @@
     <xsl:template match="mim:Informatiemodel">
         <xsl:variable name="body" as="element()">
             <ep:group 
-                xsi:schemaLocation="http://www.imvertor.org/schema/endproduct {$ep-schema-path}">
+                xsi:schemaLocation="http://www.imvertor.org/schema/endproduct/v2 {$ep-schema-path}">
                 <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Model',())"/>
                 <ep:parameters>
                     <xsl:sequence select="imf:set-parameter('use','informatiemodel')"/>
-                    <xsl:sequence select="imf:set-parameter('version',imf:get-kenmerk(.,'Release'))"/>
+                    <xsl:sequence select="imf:set-parameter('version',imf:get-kenmerk(.,'version'))"/>
+                    <xsl:sequence select="imf:set-parameter('release',imf:get-kenmerk(.,'release'))"/>
                     <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'namespace'))"/>
+                    <xsl:sequence select="imf:set-parameter('imvertor-version',imf:get-kenmerk(.,'imvertor-version'))"/>
                 </ep:parameters>
                 <xsl:sequence select="imf:get-name(.)"/>
                 <xsl:sequence select="imf:get-documentation(.)"/>
@@ -112,14 +114,14 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="defs" as="node()*">
-                    <xsl:apply-templates select="mim-ext:Constructie"/><!-- dit zijn interfaces -->
+                    <xsl:apply-templates select="mim-ext:constructies/mim-ext:Constructie"/><!-- dit zijn interfaces -->
                 </xsl:variable>
                 <xsl:if test="exists($defs)">
                     <ep:group>
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Extern',())"/>
                         <ep:parameters>
                             <xsl:sequence select="imf:set-parameter('use','extern')"/>
-                            <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'Namespace'))"/>
+                            <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'namespace'))"/>
                             <xsl:sequence select="imf:get-index(.)"/>
                         </ep:parameters>
                         <xsl:sequence select="imf:get-name(.)"/>
@@ -147,6 +149,7 @@
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
+                <xsl:apply-templates select="mim:gegevensgroepen/mim:Gegevensgroep"/>
                 <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort"/>
                 <xsl:apply-templates select="mim:keuzen/mim-ref:KeuzeRef"/>
                 <xsl:apply-templates select="mim:externeKoppelingen/mim:ExterneKoppeling"/>
@@ -167,6 +170,7 @@
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
+                <xsl:apply-templates select="mim:gegevensgroepen/mim:Gegevensgroep"/>
                 <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort"/>
                 <xsl:apply-templates select="mim:keuzen/mim-ref:KeuzeRef"/>
             </ep:seq>
@@ -186,6 +190,7 @@
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
+                <xsl:apply-templates select="mim:gegevensgroepen/mim:Gegevensgroep"/>
                 <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort"/>
                 <xsl:apply-templates select="mim:keuzen/mim-ref:KeuzeRef"/>
                 <xsl:apply-templates select="mim:externeKoppelingen/mim:ExterneKoppeling"/><!-- koppelklasse is een soort objecttype -->
@@ -206,6 +211,7 @@
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
+                <xsl:apply-templates select="mim:gegevensgroepen/mim:Gegevensgroep"/>
                 <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort"/>
                 <xsl:apply-templates select="mim:keuzen/mim-ref:KeuzeRef"/>
             </ep:seq>
@@ -221,10 +227,7 @@
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
-            <xsl:sequence select="imf:get-supers(.)"/>
-            <ep:seq>
-                <xsl:apply-templates select="mim:doel/mim-ref:ObjecttypeRef"/>
-            </ep:seq>
+            <xsl:apply-templates select="mim:doel/mim-ref:ObjecttypeRef"/>
         </ep:construct>
     </xsl:template>
     
@@ -314,8 +317,8 @@
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Interface (extern)',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','interface')"/>
+                <xsl:sequence select="imf:set-parameter('oas-name',imf:get-kenmerk(.,'oasnaam'))"/>
                 <xsl:sequence select="imf:get-index(.)"/>
-                <xsl:sequence select="imf:set-parameter('oas-name','TODO')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -334,7 +337,6 @@
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <xsl:sequence select="imf:get-props(.)"/>
-            <xsl:sequence select="imf:get-meta(.)"/>
             <ep:seq>
                 <xsl:apply-templates select="mim:dataElementen/mim:DataElement"/>
             </ep:seq>
@@ -361,6 +363,7 @@
     <xsl:template match="mim:PrimitiefDatatype">
         <xsl:variable name="super" select="mim:supertypen/mim:GeneralisatieDatatypen"/>
         <ep:construct>
+            <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een primitief datatype',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','primitiefdatatype')"/>
@@ -371,7 +374,6 @@
             <xsl:sequence select="imf:get-supers(.)"/>
             <xsl:sequence select="imf:get-type($super)"/>
             <xsl:sequence select="imf:get-props(.)"/>
-            <xsl:sequence select="imf:get-meta(.)"/>
         </ep:construct>
     </xsl:template>
     
@@ -389,7 +391,6 @@
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
             <xsl:sequence select="imf:get-props(.)"/>
-            <xsl:sequence select="imf:get-meta(.)"/>
         </ep:construct>
     </xsl:template>
 
@@ -408,31 +409,26 @@
         </ep:construct>
     </xsl:template>
     
-    <xsl:template match="mim:keuzeDatatypen/mim-ext:ConstructieRef"><!-- TODO -->
+    <xsl:template match="mim:keuzeDatatypen/mim-ext:ConstructieRef">
         <ep:construct>
-            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een keuze element',())"/>
+            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een keuze element, constructies',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','constructieref')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
-            <xsl:sequence select="imf:get-documentation(.)"/>
-            <xsl:sequence select="imf:get-cardinality(.)"/>
-            <xsl:sequence select="imf:get-type(.)"/>
-            <xsl:sequence select="imf:get-props(.)"/>
+            <xsl:sequence select="imf:get-ref(.)"/>
         </ep:construct>
     </xsl:template>
     
-    <xsl:template match="mim:keuzeDatatypen/mim:Datatype">
+    <xsl:template match="mim:keuzeDatatypen/mim:Datatype"><!-- TODO hoe vormgeven? -->
         <ep:construct>
-            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een keuze element, een datatypen',())"/>
+            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een keuze element, datatypen',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','datatype')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
-            <xsl:sequence select="imf:get-documentation(.)"/>
-            <xsl:sequence select="imf:get-props(.)"/>
         </ep:construct>
     </xsl:template>
     
@@ -449,7 +445,6 @@
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
             <xsl:sequence select="imf:get-props(.)"/>
-            <xsl:sequence select="imf:get-meta(.)"/>
         </ep:construct>
     </xsl:template>
     
@@ -466,7 +461,6 @@
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
             <xsl:sequence select="imf:get-props(.)"/>
-            <xsl:sequence select="imf:get-meta(.)"/>
         </ep:construct>
     </xsl:template>
     
@@ -486,7 +480,7 @@
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
-            <xsl:sequence select="imf:get-cardinality(.)"/>
+            <xsl:sequence select="imf:get-cardinality(if ($relatierol-leidend) then mim:relatierollen/mim:Doel else .)"/>
             <ep:seq>
                 <xsl:apply-templates select="mim:doel/mim-ref:ObjecttypeRef | mim:doel/mim-ref:KeuzeRef"/>
             </ep:seq>
@@ -508,17 +502,7 @@
     </xsl:template>
     
     <xsl:template match="mim:ExterneKoppeling/mim:doel/mim-ref:ObjecttypeRef">
-        <ep:construct>
-            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een objecttype in een externe koppeling',())"/>
-            <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','objecttyperef')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
-                <xsl:sequence select="imf:get-nillable(.)"/>
-            </ep:parameters>
-            <xsl:sequence select="imf:get-name(.)"/>
-            <xsl:sequence select="imf:get-documentation(.)"/>
-            <xsl:sequence select="imf:get-ref(.)"/>
-        </ep:construct>
+        <xsl:sequence select="imf:get-ref(.)"/>
     </xsl:template>
     
     <xsl:template match="mim:Relatiesoort/mim:doel/mim-ref:ObjecttypeRef">
@@ -635,6 +619,9 @@
         <ep:documentation type="toelichting">
             <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:toelichting)"/>  
         </ep:documentation>
+        <ep:documentation type="voorbeeld">
+            <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:voorbeeld)"/>  
+        </ep:documentation>
         <ep:documentation type="patroon">
             <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:patroon)"/>  
         </ep:documentation>
@@ -675,7 +662,7 @@
     
     <xsl:function name="imf:get-type" as="node()*">
         <xsl:param name="this" as="element()?"/><!-- een constructie die een type of supertype kan hebben -->
-        <xsl:variable name="type" select="$this/(mim:type|mim:supertype)"/>
+        <xsl:variable name="type" select="$this/(mim:type|mim:supertype|mim:gegevensgroeptype)"/>
         <xsl:choose>
             <xsl:when test="empty($this)"><!-- dit alleen als primitief datatype zonder supertype voorkomt -->
                 <ep:data-type>ep:string</ep:data-type>
@@ -688,6 +675,9 @@
             </xsl:when>
             <xsl:when test="$type/mim-ref:ObjecttypeRef">
                 <xsl:sequence select="imf:get-ref($type/mim-ref:ObjecttypeRef)"/>
+            </xsl:when>
+            <xsl:when test="$type/mim-ref:GegevensgroeptypeRef">
+                <xsl:sequence select="imf:get-ref($type/mim-ref:GegevensgroeptypeRef)"/>
             </xsl:when>
             <xsl:when test="$type/mim-ref:KeuzeRef">
                 <xsl:sequence select="imf:get-ref($type/mim-ref:KeuzeRef)"/>
@@ -716,9 +706,8 @@
    
     <xsl:function name="imf:get-ref" as="element(ep:ref)">
         <xsl:param name="this" as="element()"/>
-        <ep:ref>
-            <xsl:value-of select="substring-after($this/@xlink:href,'#')"/>
-        </ep:ref>
+        <xsl:variable name="id" select="substring-after($this/@xlink:href,'#')"/>
+        <ep:ref href="{$id}">{root($this)//*[@id = $id]/mim:naam}</ep:ref>
     </xsl:function>
     
     <xsl:function name="imf:get-props" as="element()*">
@@ -740,27 +729,6 @@
             <xsl:value-of select="$this/mim:formeelPatroon"/>
         </ep:formal-pattern>
     </xsl:function>
-    
-    <xsl:function name="imf:get-meta" as="element()*">
-        <xsl:param name="this"/>
-        <ep:example>
-            <xsl:value-of select="imf:get-kenmerk(imf:info($this),'voorbeeld')"/><!-- TODO -->
-        </ep:example>
-    </xsl:function>
-    
-    <!-- TODO wordt niet gebruikt -->
-    <xsl:function name="imf:get-interface-type" as="node()*">
-        <xsl:param name="attribute"/>
-        <xsl:variable name="ep-type" select="imf:get-type($attribute)"/>
-        <xsl:choose>
-            <xsl:when test="$ep-type/self::ep:ref">
-                <ep:external>true</ep:external><!-- signalleer dat dit een externe constructie is; oplossen door de verwerkende software -->
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:sequence select="$ep-type"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:function>    
     
     <xsl:function name="imf:set-parameter" as="element(ep:parameter)*">
         <xsl:param name="name"/>
@@ -806,8 +774,8 @@
     
     <xsl:function name="imf:get-kenmerk" as="xs:string?">
         <xsl:param name="construct" as="element()"/>
-        <xsl:param name="naam" as="xs:string"/>
-        <xsl:value-of select="$construct/mim-ext:kenmerken/mim-ext:Kenmerk[@naam = $naam]"/>
+        <xsl:param name="naam" as="xs:string"/><!-- in lower case -->
+        <xsl:value-of select="$construct/mim-ext:kenmerken/mim-ext:Kenmerk[lower-case(@naam) = $naam]"/>
     </xsl:function>
     
     <xsl:function name="imf:info" as="element()?">

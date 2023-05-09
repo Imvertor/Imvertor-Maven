@@ -593,11 +593,11 @@
         <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
         <xsl:call-template name="genereer-metagegevens"/>
         <xsl:where-populated>
-          <mim:externen>
+          <mim-ext:constructies>
             <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface' and imvert:id]">
               <xsl:sort select="imvert:name"/>
             </xsl:apply-templates>
-          </mim:externen>
+          </mim-ext:constructies>
         </xsl:where-populated>
         <xsl:call-template name="extensieKenmerken"/>
       </mim:Extern>
@@ -615,6 +615,13 @@
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype>
       <mim:naam source-id="CFG-TV-PSEUDO-NAME">{$name}</mim:naam>
+      <mim-ext:kenmerken>
+        <!-- geef OAS type mee meals kenmerk -->
+        <xsl:variable name="oas" select="(//imvert:attribute[imvert:conceptual-schema-type = current()/imvert:conceptual-schema-class-name]/imvert:type-name-oas)[1]"/>
+        <xsl:if test="$oas">
+          <mim-ext:Kenmerk naam="oasnaam">{$oas}</mim-ext:Kenmerk>
+        </xsl:if>
+      </mim-ext:kenmerken>
     </mim-ext:Constructie>
   </xsl:template>
   
@@ -791,7 +798,20 @@
   
   <xsl:template match="metagegeven[. = 'Kardinaliteit']">
     <xsl:param name="context" as="element()"/>
-    <mim:kardinaliteit source-id="CFG-TV-PSEUDO-CARDINALITY">{imf:kardinaliteit($context/imvert:min-occurs, $context/imvert:max-occurs)}</mim:kardinaliteit>
+    <!-- als relatie en role-based, de reklatie zelf bevragen -->
+    <xsl:choose>
+      <xsl:when test="$context/self::imvert:source">
+        <xsl:variable name="context" select="if ($meta-is-role-based) then $context/.. else $context"/>
+        <mim:kardinaliteit source-id="CFG-TV-PSEUDO-CARDINALITY">{imf:kardinaliteit($context/imvert:min-occurs-source, $context/imvert:max-occurs-source)}</mim:kardinaliteit>
+      </xsl:when>
+      <xsl:when test="$context/self::imvert:target">
+        <xsl:variable name="context" select="if ($meta-is-role-based) then $context/.. else $context"/>
+        <mim:kardinaliteit source-id="CFG-TV-PSEUDO-CARDINALITY">{imf:kardinaliteit($context/imvert:min-occurs, $context/imvert:max-occurs)}</mim:kardinaliteit>
+      </xsl:when>
+      <xsl:otherwise>
+        <mim:kardinaliteit source-id="CFG-TV-PSEUDO-CARDINALITY">{imf:kardinaliteit($context/imvert:min-occurs, $context/imvert:max-occurs)}</mim:kardinaliteit>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Kwaliteit']">
@@ -1411,9 +1431,13 @@
         <xsl:if test="imvert:min-occurs-source|imvert:max-occurs-source">
           <mim-ext:Kenmerk naam="kardinaliteitBron">{imf:kardinaliteit(imvert:min-occurs-source, imvert:max-occurs-source)}</mim-ext:Kenmerk>
         </xsl:if>
+        <xsl:if test="imvert:version">
+          <mim-ext:Kenmerk naam="version">{imvert:version}</mim-ext:Kenmerk>
+        </xsl:if>
         <xsl:if test="imvert:namespace">
           <mim-ext:Kenmerk naam="namespace">{imvert:namespace}</mim-ext:Kenmerk>
         </xsl:if>
+        <mim-ext:Kenmerk naam="imvertor-version">{imvert:generator}</mim-ext:Kenmerk>
       </mim-ext:kenmerken>        
     </xsl:where-populated>
   </xsl:template>
