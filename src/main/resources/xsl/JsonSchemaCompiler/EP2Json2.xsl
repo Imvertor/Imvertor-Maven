@@ -47,7 +47,6 @@
             <xsl:variable name="constructs" as="element(j:map)*">
                 <xsl:apply-templates select="ep:seq/ep:group/ep:seq/ep:construct[not(imf:boolean(ep:external))]"/>
             </xsl:variable>
-            <xsl:sequence select="dlogger:save('$constructs',$constructs)"></xsl:sequence>
             <!-- ontdubbel -->
             <xsl:for-each-group select="$constructs" group-by="@key"><!-- van iedere construct de eerste; het XSL proces genereert veel dubbelen (bij choices). -->
                 <xsl:sequence select="current-group()[1]"/>
@@ -120,7 +119,6 @@
     <xsl:template match="ep:construct">
         <xsl:variable name="n" select="'EP: ' || imf:ep-tech-name(ep:name) || ' ID: ' || @id"/>
         <xsl:variable name="nillable" select="imf:get-ep-parameter(.,'nillable') = 'true'"/>
-        <xsl:sequence select="dlogger:save('$construct ' || $n,.)"/>
         <j:map key="{imf:ep-tech-name(ep:name)}">
             <xsl:sequence select="imf:ep-to-namevaluepair('title',ep:name)"/>
             <xsl:variable name="added-location" select="if (imf:get-ep-parameter(.,'locatie')) then ('; Locatie: ' || imf:get-ep-parameter(.,'locatie')) else ()"/>
@@ -333,7 +331,6 @@
         <xsl:param name="text" as="xs:string"/>
         <xsl:param name="info" as="item()*"/>
         <xsl:variable name="ctext" select="imf:msg-insert-parms($text,$info)"/>
-        <xsl:sequence select="dlogger:save('_comment',$ctext)"/>
         <xsl:if test="imf:debug-mode()">
             <xsl:sequence select="imf:msg($this,$type,$text,$info)"/>
             <xsl:sequence select="imf:ep-to-namevaluepair('_comment',$ctext)"/>
@@ -419,7 +416,6 @@
         <xsl:param name="this" as="element(ep:construct)?"/><!-- teken van een fout als de construct niet wordt meegegeven -->
         <xsl:choose>
             <xsl:when test="empty($this)">
-                <xsl:sequence select="dlogger:save('empty reference','')"/>
                 <xsl:sequence select="imf:msg($this,'WARNING','(Fatal) Invalid reference',())"/>
                 <xsl:value-of select="'INVALID-REFERENCE'"/>
             </xsl:when>
