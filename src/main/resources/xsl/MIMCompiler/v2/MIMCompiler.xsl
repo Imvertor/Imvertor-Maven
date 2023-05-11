@@ -615,13 +615,15 @@
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype>
       <mim:naam source-id="CFG-TV-PSEUDO-NAME">{$name}</mim:naam>
-      <mim-ext:kenmerken>
-        <!-- geef OAS type mee meals kenmerk -->
-        <xsl:variable name="oas" select="(//imvert:attribute[imvert:conceptual-schema-type = current()/imvert:conceptual-schema-class-name]/imvert:type-name-oas)[1]"/>
-        <xsl:if test="$oas">
-          <mim-ext:Kenmerk naam="oasnaam">{$oas}</mim-ext:Kenmerk>
-        </xsl:if>
-      </mim-ext:kenmerken>
+      <xsl:where-populated>
+        <mim-ext:kenmerken>
+          <!-- geef OAS type mee meals kenmerk -->
+          <xsl:variable name="oas" select="(//imvert:attribute[imvert:conceptual-schema-type = current()/imvert:conceptual-schema-class-name]/imvert:type-name-oas)[1]"/>
+          <xsl:if test="$oas">
+            <mim-ext:Kenmerk naam="oasnaam">{$oas}</mim-ext:Kenmerk>
+          </xsl:if>
+        </mim-ext:kenmerken>
+      </xsl:where-populated>
     </mim-ext:Constructie>
   </xsl:template>
   
