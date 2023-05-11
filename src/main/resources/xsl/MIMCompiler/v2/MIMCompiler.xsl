@@ -1436,6 +1436,9 @@
         <xsl:if test="imvert:version">
           <mim-ext:Kenmerk naam="version">{imvert:version}</mim-ext:Kenmerk>
         </xsl:if>
+        <xsl:if test="imvert:base-namespace">
+          <mim-ext:Kenmerk naam="namespace">{imvert:base-namespace}</mim-ext:Kenmerk>
+        </xsl:if>
         <xsl:if test="imvert:namespace">
           <mim-ext:Kenmerk naam="namespace">{imvert:namespace}</mim-ext:Kenmerk>
         </xsl:if>
