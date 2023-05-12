@@ -44,14 +44,18 @@
 
 	<xsl:variable name="messages" select="imf:document($processable-base-file)" />
 	<xsl:variable name="packages" select="$messages/imvert:packages" />
-
 	<xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
 	<xsl:variable name="kv-definition">
 		<xsl:if test="not(empty(imf:get-tagged-value($packages,'##CFG-TV-DEFINITION')))">
 			<ep:definition>
-				<ep:p format="markdown" level="BSM">
-					<xsl:sequence select="imf:get-tagged-value($packages,'##CFG-TV-DEFINITION')" />
-				</ep:p>
+				<xsl:for-each select="$packages/imvert:tagged-values/imvert:tagged-value[@id='CFG-TV-DEFINITION']/imvert:value/html:body/html:p">
+					<ep:p format="{$packages/imvert:tagged-values/imvert:tagged-value[@id='CFG-TV-DEFINITION']/imvert:value/@format}" level="BSM">
+						<xsl:value-of select="."/>
+					</ep:p>
+					<xsl:if test="following-sibling::html:p">
+						<ep:p format="{$packages/imvert:tagged-values/imvert:tagged-value[@id='CFG-TV-DEFINITION']/imvert:value/@format}" level="BSM"/>
+					</xsl:if>
+				</xsl:for-each>
 			</ep:definition>
 		</xsl:if>
 	</xsl:variable>
