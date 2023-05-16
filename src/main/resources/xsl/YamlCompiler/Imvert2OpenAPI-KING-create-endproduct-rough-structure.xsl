@@ -31,8 +31,7 @@
 	<xsl:variable name="rough-messages">
 		<ep:rough-messages>
 			<ep:name>
-				<!--xsl:value-of select="$packages/imvert:tagged-values/imvert:tagged-value[@id='CFG-TV-INTERFACE-NAME']/imvert:value"/-->
-				<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($packages, '##CFG-TV-SERVICENAME')"/>
+				<xsl:value-of select="$packages/imvert:tagged-values/imvert:tagged-value[@id='CFG-TV-INTERFACE-NAME']/imvert:value"/>
 			</ep:name>
 			<ep:imvertor-generator-version><xsl:value-of select="$packages/imvert:generator"/></ep:imvertor-generator-version>
 			<!-- The 'Berichtstructuren' package doesn't hold the actual message classes for the interface so it's neglected in this stage. -->
@@ -313,7 +312,7 @@
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
-					<xsl:when test="(contains($berichtcode,'Pa') or contains($berichtcode,'Pu') and not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1))">
+					<xsl:when test="(contains($berichtcode,'Pa') or contains($berichtcode,'Pu')) and not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1)">
 						<!-- In case of a Pa or Pu messagetype it's required to have one and not more than one association with the name 'request'. 
 						     If this isn't the case an error message is generated. -->
 						<xsl:variable name="msg"
@@ -807,8 +806,8 @@
 				</xsl:when>
 			</xsl:choose>
 
-			<xsl:sequence select="imf:create-output-element('ep:type-id', $type-id)" />
 			<xsl:sequence select="imf:create-output-element('ep:id', imvert:id)" />
+			<xsl:sequence select="imf:create-output-element('ep:type-id', $type-id)" />
 
 			<xsl:sequence select="imf:create-debug-comment-with-xpath('A18250]',$debugging,.)" />
 			<!-- The association can have an association-class connected to it. This is processed here. -->
