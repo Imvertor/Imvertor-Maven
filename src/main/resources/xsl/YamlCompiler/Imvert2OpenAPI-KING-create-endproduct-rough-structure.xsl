@@ -100,18 +100,18 @@
 		</xsl:variable>
 		<xsl:variable name="padClass" as="element()">
 			<xsl:choose>
-				<xsl:when test="$packages//imvert:class[imvert:id=$pad-id]/imvert:stereotype/@id='stereotype-name-padtype'">
+				<xsl:when test="not(empty($pad-id)) and $packages//imvert:class[imvert:id=$pad-id]/imvert:stereotype/@id='stereotype-name-padtype'">
 					<xsl:sequence select="$packages//imvert:class[imvert:id=$pad-id]"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:sequence select="imf:msg('WARNING','The padclass [1] has the wrong stereotype. It should be [2].',($packages//imvert:class[imvert:id=$pad-id],'Padtype'))" />
-					<xsl:sequence select="$packages//imvert:class[imvert:id=$pad-id]"/>
+					<xsl:sequence select="imf:msg('ERROR','The padclass [1] has the wrong stereotype (it should be Padtype) or is not present. ',($packages//imvert:class[imvert:id=$pad-id]))" />
+					<imvert:empty/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="messagename">
 			<xsl:choose>
-				<xsl:when test="empty($padClass)">
+				<xsl:when test="$padClass/imvert:empty">
 					<xsl:value-of select="'onbekend'"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -120,9 +120,12 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="customPathFacet">
-			<xsl:if test="not(empty($padClass))">
-				<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($padClass, '##CFG-TV-CUSTOMPATHFACET')"/>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="$padClass/imvert:empty"/>
+				<xsl:otherwise>
+					<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($padClass, '##CFG-TV-CUSTOMPATHFACET')"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="operationId">
 			<xsl:choose>
