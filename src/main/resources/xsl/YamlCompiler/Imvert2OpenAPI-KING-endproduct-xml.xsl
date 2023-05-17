@@ -135,6 +135,8 @@
 			</xsl:result-document>
 		</xsl:if>
 		
+		<!-- Within this stylesheet provisions have already been made to be able to process associations between which XOR or OR constraints are valid. However it's not clear if these provisions have been made 
+			 within the stylesheets of the next steps in the process and if,  in case that's the case, that leads to correct structures within the generated json files. -->
 		<xsl:for-each select="//ep:construct[@xor]">
 			<xsl:variable name="xorId" select="@xor"/>
 			<xsl:variable name="naam" select="ep:name"/>
@@ -207,7 +209,7 @@
 				<xsl:for-each-group 
 					select="//ep:superconstruct"
 					group-by="ep:name">
-					<!-- This for-each-group processes al superconstructs within the rough-message structure. -->
+					<!-- This for-each-group processes al superconstructs within the rough-message structure once. -->
 					<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS02000',$debugging,.)" />
 					<!-- All global constructs need to be provided with the berichtcode and messagetype they apply to, 
 						 to be able to decide how to proces them in a following step. -->
@@ -225,7 +227,7 @@
 					select="//ep:construct[@type!='complex-datatype' and @type!='groep' and @type!='table-datatype' and @type!='groepCompositieAssociation']"
 					group-by="ep:name">
 					<!-- This for-each-group processes al constructs within the rough-message structure which are not of 'complex-datatype', 'groep'
-						 'table-datatype' or 'groepCompositieAssociation' type. Those type of constructs, except the groepCompositieAssociation' 
+						 'table-datatype' or 'groepCompositieAssociation' type once. Those type of constructs, except the groepCompositieAssociation' 
 						 type which doesn't lead to global constructs at all, are processed after this for-each-group. -->
 					<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS02500',$debugging,.)" />
 					<xsl:sequence select="imf:create-debug-comment(concat('Groupname: ',ep:name),$debugging)" />
@@ -243,7 +245,7 @@
 				<xsl:for-each-group 
 					select="//ep:construct[@type='complex-datatype' or @type='groep']"
 					group-by="ep:type-id">
-					<!-- This for-each-group processes al constructs within the rough-message structure which are of 'complex-datatype' or 'groep' type. -->
+					<!-- This for-each-group processes al constructs within the rough-message structure which are of 'complex-datatype' or 'groep' type once. -->
 					<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS035000',$debugging,.)" />
 					<!-- All global constructs need to be provided with the berichtcode and messagetype they apply to, 
 						 to be able to decide how to proces them in a following step. -->
@@ -259,7 +261,7 @@
 				<xsl:for-each-group 
 					select="//ep:construct[@type='table-datatype']"
 					group-by="ep:type-id">
-					<!-- This for-each-group processes al constructs within the rough-message structure which are of 'table-datatype' type. -->
+					<!-- This for-each-group processes al constructs within the rough-message structure which are of 'table-datatype' type once. -->
 					<xsl:sequence select="imf:create-debug-comment-with-xpath('Debuglocation OAS035500',$debugging,.)" />
 					<!-- All global constructs need to be provided with the berichtcode and messagetype they apply to, 
 						 to be able to decide how to proces them in a following step. -->
@@ -277,8 +279,8 @@
                                              generate-id(key('enumerationClass',imvert:name,$packages)[1])]" mode="as-global-enumeration" />
 				<!-- Following apply creates all global ep:constructs elements being a local datatype. -->
 				<xsl:apply-templates select="$packages//imvert:package[not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]/
-					imvert:class[imf:get-stereotype(.) = ('stereotype-name-simpletype') and generate-id(.) = 
-					generate-id(key('dataTypeClass',imvert:name,$packages)[1])]" mode="as-global-dataType" />
+											 imvert:class[imf:get-stereotype(.) = ('stereotype-name-simpletype') and generate-id(.) = 
+											 generate-id(key('dataTypeClass',imvert:name,$packages)[1])]" mode="as-global-dataType" />
 			</ep:message-set>
 		</ep:message-sets>
 	</xsl:template>
