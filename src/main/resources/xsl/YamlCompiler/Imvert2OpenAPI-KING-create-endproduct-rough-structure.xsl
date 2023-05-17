@@ -759,7 +759,7 @@
 		</xsl:variable>
 
 		<xsl:variable name="orAssociation">
-			<xsl:if test="ancestor::imvert:package//imvert:constraints/imvert:constraint[imvert:definition = 'or']/imvert:connectors/imvert:connector = $id"><xsl:value-of select="generate-id(ancestor::imvert:package//imvert:constraints/imvert:constraint[imvert:definition = 'xor' and imvert:connectors/imvert:connector = $id])"/></xsl:if>
+			<xsl:if test="ancestor::imvert:package//imvert:constraints/imvert:constraint[imvert:definition = 'or']/imvert:connectors/imvert:connector = $id"><xsl:value-of select="generate-id(ancestor::imvert:package//imvert:constraints/imvert:constraint[imvert:definition = 'or' and imvert:connectors/imvert:connector = $id])"/></xsl:if>
 		</xsl:variable>
 		
 		<xsl:sequence
