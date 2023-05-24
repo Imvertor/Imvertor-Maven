@@ -58,11 +58,7 @@ public class JsonSchemaCompiler extends Step {
 		
 		runner.info(logger,"Compiling JSON schema");
 		
-		String jsonschemarules = configurator.getJsonSchemarules();
-		if (jsonschemarules.equals("JSON-Kadaster")) {
-			generateKadaster();
-		} else
-			runner.error(logger,"Schemarules not implemented: " + jsonschemarules + "\", cannot compile JSON");
+		generate();
 		
 		configurator.setStepDone(STEP_NAME);
 		
@@ -81,7 +77,7 @@ public class JsonSchemaCompiler extends Step {
 	 * 
 	 * @throws Exception
 	 */
-	public boolean generateKadaster() throws Exception {
+	public boolean generate() throws Exception {
 		
 		// create a transformer
 		Transformer transformer = new Transformer();

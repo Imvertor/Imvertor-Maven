@@ -51,11 +51,7 @@ public class EpCompiler extends Step {
 		
 		runner.info(logger,"Compiling EP");
 		
-		String jsonschemarules = configurator.getJsonSchemarules();
-		if (jsonschemarules.equals("JSON-Kadaster")) {
-			generateKadaster();
-		} else
-			runner.error(logger,"Schemarules not implemented: \"" + jsonschemarules + "\", cannot compile EP");
+		generate();
 		
 		configurator.setStepDone(STEP_NAME);
 		
@@ -68,11 +64,11 @@ public class EpCompiler extends Step {
 	}
 
 	/**
-	 * Generate EP file suited for Kadaster Json schema.
+	 * Generate EP file suited for Kadaster and OGC Json schema.
 	 * 
 	 * @throws Exception
 	 */
-	public boolean generateKadaster() throws Exception {
+	public boolean generate() throws Exception {
 		
 		// create a transformer
 		Transformer transformer = new Transformer();
@@ -86,9 +82,9 @@ public class EpCompiler extends Step {
 		transformer.setXslParm("ep-schema-path","xsd/" + epSchema);	
 		
 		// Create EP
-		if (requiresMIM())
+		if (requiresMIM()) {
 			succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH","properties/WORK_EP_XMLPATH", "properties/IMVERTOR_EP2_XSLPATH");
-		else 
+		} else 
 			succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_EP_XMLPATH", "properties/IMVERTOR_EP_XSLPATH");
 	
 		

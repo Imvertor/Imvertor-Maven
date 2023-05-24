@@ -26,21 +26,12 @@
         - omgaan met aanpassingen in mim serialisatie v2 (MIM 1.1.0) 
         - ep:group ipv. ep:construct
         - Json name (tech-name) wordt hier dynamisch samengesteld tbv. json op basis van ep:name.
-       
+        - verwerking van json GML is nu anders, conform OGC BP.
     -->
     
-    <xsl:variable name="geoJSONfiles" select="imf:collect-geoJSONs()"/>
-    <xsl:variable name="references-geoJSON-collection" select="//*[imf:ep-tech-name(ep:name) = ('geometrygeojson','geometrycollectiongeojson')]"/><!-- TODO GeoJson integratie -->
-    <xsl:variable name="geoJSONnames" select="(
-        'geometryGeoJSON',
-        'geometrycollectionGeoJSON',
-        'linestringGeoJSON',
-        'multilinestringGeoJSON',
-        'multipointGeoJSON',
-        'multipolygonGeoJSON',
-        'pointGeoJSON',
-        'polygonGeoJSON')"/>
+    <xsl:variable name="jsonvariant" select="imf:get-ep-parameter(/ep:group,'json-schema-variant')" as="xs:string?"/>
     
+    <xsl:variable name="schema-id">{imf:get-ep-parameter(/ep:group,'namespace')}/{imf:get-ep-parameter(/ep:group,'version')}/{imf:get-ep-parameter(/ep:group,'release')}</xsl:variable>
     
     <xsl:template match="/ep:group">
         <xsl:variable name="defs">
@@ -51,29 +42,16 @@
             <xsl:for-each-group select="$constructs" group-by="@key"><!-- van iedere construct de eerste; het XSL proces genereert veel dubbelen (bij choices). -->
                 <xsl:sequence select="current-group()[1]"/>
             </xsl:for-each-group>
-            <xsl:if test="$references-geoJSON-collection">
-                <xsl:sequence select="$geoJSONfiles[@construct = 'geometryGeoJSON']/j:map/*"/>
-                <xsl:sequence select="$geoJSONfiles[@construct = 'geometrycollectionGeoJSON']/j:map/*"/>
-            </xsl:if>
-            <xsl:variable name="maps" as="element(j:map)*">
-                <xsl:for-each-group select="ep:seq/ep:group/ep:seq/ep:construct[imf:boolean(ep:external)]" group-by="imf:ep-tech-name(ep:name)"><!-- van iedere geoJson external de eerste -->
-                    <xsl:apply-templates select="current-group()[1]" mode="external"/>
-                </xsl:for-each-group>
-            </xsl:variable>
-            <!-- Verwijder duplicate keys. Kan gebeuren als twee externals mappen naar hetzelfde oas object -->
-            <xsl:for-each-group select="$maps" group-adjacent="@key">
-                <xsl:sequence select="current-group()[1]"/>
-            </xsl:for-each-group>
         </xsl:variable>
         
-        <xsl:variable name="schema-desc">{ep:name} - version {imf:get-ep-parameter(.,'version')} / {imf:get-ep-parameter(.,'release')} by Imvertor {imf:get-ep-parameter(.,'imvertor-version')}</xsl:variable>
+        <xsl:variable name="schema-desc">{ep:name} - version {imf:get-ep-parameter(.,'version')} / {imf:get-ep-parameter(.,'release')} by Imvertor {imf:get-ep-parameter(.,'imvertor-version')} variant {imf:get-ep-parameter(.,'json-schema-variant')}{if ($debugging) then  ' DEBUG' else ''}</xsl:variable>
         <xsl:choose>
-            <xsl:when test="true()">
+            <xsl:when test="$jsonvariant = ('plainjson','geojson','jsonfg')">
                 <j:map>
                     <xsl:sequence select="imf:ep-to-namevaluepair('$comment',$schema-desc)"/>
                     <xsl:sequence select="imf:ep-to-namevaluepair('$schema','https://json-schema.org/draft/2019-09/schema')"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('$id','urn:local')"/>
-                    <j:map key="defs">
+                    <xsl:sequence select="imf:ep-to-namevaluepair('$id',$schema-id)"/>
+                    <j:map key="$defs">
                         <xsl:sequence select="$defs"/>
                     </j:map>
                 </j:map>
@@ -117,178 +95,192 @@
     </xsl:template>
     
     <xsl:template match="ep:construct">
-        <xsl:variable name="n" select="'EP: ' || imf:ep-tech-name(ep:name) || ' ID: ' || @id"/>
-        <xsl:variable name="nillable" select="imf:get-ep-parameter(.,'nillable') = 'true'"/>
-        <j:map key="{imf:ep-tech-name(ep:name)}">
-            <xsl:sequence select="imf:ep-to-namevaluepair('title',ep:name)"/>
-            <xsl:variable name="added-location" select="if (imf:get-ep-parameter(.,'locatie')) then ('; Locatie: ' || imf:get-ep-parameter(.,'locatie')) else ()"/>
-            <xsl:sequence select="imf:ep-to-namevaluepair('description',imf:create-description(.) || $added-location)"/>
-            <xsl:choose>
-                <xsl:when test="ep:ref and (ep:min-occurs or ep:max-occurs)">
-                    <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Ref with occurs [1]',$n)"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
-                    <j:map key="items">
-                        <xsl:variable name="target" select="//ep:construct[@id = current()/ep:ref/@href]"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('$ref','#/components/schemas/' || imf:get-type-name($target))"/>
-                    </j:map>
-                    <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
-                </xsl:when>
-                <xsl:when test="ep:ref">
-                    <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Ref [1]',$n)"/>
-                    <xsl:variable name="target" select="//ep:construct[@id = current()/ep:ref/@href]"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('$ref','#/components/schemas/' || imf:get-type-name($target))"/>
-                </xsl:when>
-                <xsl:when test="ep:seq and (ep:min-occurs or ep:max-occurs)">
-                    <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Seq with occurs [1]',$n)"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
-                    <j:map key="items">
-                        <xsl:variable name="target" select="//ep:construct[@id = current()/ep:seq/ep:construct/ep:ref/@href]"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('$ref','#/components/schemas/' || imf:get-type-name($target))"/>
-                    </j:map>
-                    <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
-                </xsl:when>
-                <xsl:when test="ep:seq">
-                    <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
-                    <xsl:variable name="body">
-                        <xsl:variable name="required" select="ep:seq/ep:construct[not(ep:min-occurs eq '0')]"/>
-                        <xsl:if test="exists($required)">
-                            <j:array key="required">
-                                <xsl:for-each select="$required">
-                                    <j:string>
-                                        <xsl:value-of select="imf:ep-tech-name(ep:name)"/>
-                                    </j:string>
-                                </xsl:for-each>
-                            </j:array>
-                        </xsl:if>
-                        <j:map key="properties">
-                            <xsl:apply-templates select="ep:seq/ep:construct"/>
+        <xsl:param name="as-property" select="false()" as="xs:boolean"/>
+        <xsl:if test="empty(imf:get-ep-parameter(.,'url'))"> <!-- externe constructs met URL worden niet opgenomen; wanneer ernaar wordt verwezen wordt de URL aldaar ingevoegd -->
+            <xsl:variable name="n" select="'EP: ' || imf:ep-tech-name(ep:name) || ' ID: ' || @id"/>
+            <xsl:variable name="nillable" select="imf:get-ep-parameter(.,'nillable') = 'true'"/>
+            <xsl:variable name="header">
+                <xsl:sequence select="imf:ep-to-namevaluepair('$anchor',imf:get-type-name(.))"/>
+                <xsl:sequence select="imf:ep-to-namevaluepair('title',ep:name)"/>
+                <xsl:variable name="added-location" select="if (imf:get-ep-parameter(.,'locatie')) then ('; Locatie: ' || imf:get-ep-parameter(.,'locatie')) else ()"/>
+                <xsl:sequence select="imf:ep-to-namevaluepair('description',imf:create-description(.) || $added-location)"/>
+            </xsl:variable>
+            <j:map key="{imf:ep-tech-name(ep:name)}">
+                <xsl:choose>
+                    <xsl:when test="ep:ref and (ep:max-occurs and ep:max-occurs ne '1')">
+                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Ref with maxoccurs [1]',$n)"/>
+                        <xsl:sequence select="$header"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',imf:get-ep-parameter(.,'is-value-derived'))"/>
+                        <j:map key="items">
+                            <xsl:variable name="target" select="//ep:construct[@id = current()/ep:ref/@href]"/>
+                            <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref($target))"/>
                         </j:map>
-                    </xsl:variable>
-                    <xsl:variable name="super" select="ep:super/ep:ref/@href"/>
-                    <xsl:choose>
-                        <xsl:when test="exists($super)">
-                            <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Seq with super [1]',imf:string-group($n))"/>
-                            <j:array key="allOf">
-                                <j:map>
-                                    <xsl:variable name="target" select="(//ep:construct[@id = $super])[1]"/>
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('$ref','#/components/schemas/' || imf:get-type-name($target))"/>
-                                    <?x TODO lennart Hoe omgaan met meerdere supertypen
-                                    <j:array key="$ref">
-                                        <xsl:for-each select="$target">
-                                            <j:string>
-                                                <xsl:value-of select="'#/components/schemas/' || imf:ep-tech-name(ep:name)"/>
-                                            </j:string>
-                                        </xsl:for-each>
-                                    </j:array>
-                                    x?>
-                                </j:map>
-                                <j:map>
-                                    <xsl:sequence select="$body"/>
-                                </j:map>
-                            </j:array>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Seq [1]',$n)"/>
-                            <xsl:sequence select="$body"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:when>
-                <xsl:when test="ep:choice">
-                    <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice [1]',$n)"/>
-                    <j:array key="oneOf">
-                        <xsl:for-each select="ep:choice/ep:construct">
-                            <xsl:variable name="ref" select="ep:ref/@href"/>
+                        <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
+                        <xsl:if test="$as-property">
+                            <xsl:sequence select="imf:ep-to-namevaluepair('uniqueItems',true())"/>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:when test="ep:ref">
+                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Ref [1]',$n)"/>
+                        <xsl:sequence select="$header"/>
+                        <xsl:variable name="target" select="//ep:construct[@id = current()/ep:ref/@href]"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref($target))"/>
+                        <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
+                    </xsl:when>
+                    <xsl:when test="ep:seq and (ep:max-occurs and ep:max-occurs ne '1')">
+                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Seq with maxoccurs [1]',$n)"/>
+                        <xsl:sequence select="$header"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',imf:get-ep-parameter(.,'is-value-derived'))"/>
+                        <j:map key="items">
+                            <xsl:variable name="target" select="//ep:construct[@id = current()/ep:seq/ep:construct/ep:ref/@href]"/>
+                            <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref($target))"/>
+                        </j:map>
+                        <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
+                        <xsl:if test="$as-property">
+                            <xsl:sequence select="imf:ep-to-namevaluepair('uniqueItems',true())"/>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:when test="ep:seq">
+                        <xsl:variable name="super" select="ep:super/ep:ref/@href"/>
+                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', if ($super) then 'Seq with super [1]' else 'Seq [1]',imf:string-group($n))"/>
+                        <xsl:sequence select="$header"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',imf:get-ep-parameter(.,'is-value-derived'))"/>
+                        <xsl:variable name="body">
+                            <xsl:variable name="required" select="ep:seq/ep:construct[not(ep:min-occurs eq '0')]"/>
+                            <xsl:if test="exists($required)">
+                                <j:array key="required">
+                                    <xsl:for-each select="$required">
+                                        <j:string>
+                                            <xsl:value-of select="imf:ep-tech-name(ep:name)"/>
+                                        </j:string>
+                                    </xsl:for-each>
+                                </j:array>
+                            </xsl:if>
+                            <j:map key="properties">
+                                <xsl:apply-templates select="ep:seq/ep:construct">
+                                    <xsl:with-param name="as-property" select="true()"/>
+                                </xsl:apply-templates>
+                            </j:map>
+                        </xsl:variable>
+                        <xsl:choose>
+                            <xsl:when test="exists($super)">
+                                <j:array key="allOf">
+                                    <j:map>
+                                        <xsl:variable name="target" select="(//ep:construct[@id = $super])[1]"/>
+                                        <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref($target))"/>
+                                        <?x TODO lennart Hoe omgaan met meerdere supertypen
+                                        <j:array key="$ref">
+                                            <xsl:for-each select="$target">
+                                                <j:string>
+                                                    <xsl:value-of select="'#/components/schemas/' || imf:ep-tech-name(ep:name)"/>
+                                                </j:string>
+                                            </xsl:for-each>
+                                        </j:array>
+                                        x?>
+                                    </j:map>
+                                    <j:map>
+                                        <xsl:sequence select="$body"/>
+                                    </j:map>
+                                </j:array>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:sequence select="$body"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
+                    </xsl:when>
+                    <xsl:when test="ep:choice">
+                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice [1]',$n)"/>
+                        <xsl:sequence select="$header"/>
+                        <j:array key="oneOf">
                             <xsl:choose>
-                                <xsl:when test="imf:get-ep-parameter(.,'use') = 'keuze-element-datatype'">
-                                    <j:map>
-                                        <xsl:sequence select="imf:ep-to-namevaluepair('$ref','#/components/schemas/' || imf:get-type-name(.))"/>
-                                    </j:map>
+                                <xsl:when test="imf:get-ep-parameter(ep:choice/ep:construct,'use') = 'attribuutsoort'">
+                                    <xsl:for-each select="ep:choice/ep:construct">
+                                        <j:map>
+                                            <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice attribuutsoorten',())"/>
+                                            <xsl:apply-templates select="."/>
+                                        </j:map>
+                                    </xsl:for-each>
                                 </xsl:when>
-                                <xsl:when test="$ref">
-                                    <j:map>
-                                        <xsl:variable name="target" select="//ep:construct[@id = $ref]"/>
-                                        <xsl:sequence select="imf:ep-to-namevaluepair('$ref','#/components/schemas/' || imf:get-type-name($target))"/>
-                                    </j:map>
+                                <xsl:when test="imf:get-ep-parameter(ep:choice/ep:construct,'use') = 'datatype'">
+                                    <xsl:for-each select="ep:choice/ep:construct">
+                                        <xsl:variable name="ref" select="ep:ref/@href"/>
+                                        <j:map>
+                                            <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice datatypen',())"/>
+                                            <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref(.))"/>
+                                        </j:map>
+                                    </xsl:for-each>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <j:map>
-                                        <xsl:apply-templates select="."/>
-                                    </j:map>
+                                    <xsl:for-each select="ep:choice/ep:construct">
+                                        <xsl:variable name="ref" select="ep:ref/@href"/>
+                                        <j:map>
+                                            <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice objecttypen',())"/>
+                                            <xsl:variable name="target" select="//ep:construct[@id = $ref]"/>
+                                            <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref($target))"/>
+                                        </j:map>
+                                    </xsl:for-each>
                                 </xsl:otherwise>
                             </xsl:choose>
-                        </xsl:for-each>
-                    </j:array>
-                </xsl:when>
-                <xsl:when test="ep:enum">
-                    <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Enum [1]',$n)"/>
-                    <j:array key="enum">
-                        <xsl:for-each select="ep:enum">
-                            <j:string>
-                                <xsl:value-of select="."/>
-                            </j:string>
-                        </xsl:for-each>
-                    </j:array>
-                </xsl:when>
-                <xsl:when test="ep:data-type and imf:get-ep-parameter(.,'use') eq 'codelist'">
-                    <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Codelist [1]',$n)"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
-                    <j:map key="properties">
-                        <j:map key="code">
-                            <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
+                        </j:array>
+                    </xsl:when>
+                    <xsl:when test="ep:enum">
+                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Enum [1]',$n)"/>
+                        <xsl:sequence select="$header"/>
+                        <j:array key="enum">
+                            <xsl:for-each select="ep:enum">
+                                <j:string>
+                                    <xsl:value-of select="."/>
+                                </j:string>
+                            </xsl:for-each>
+                        </j:array>
+                    </xsl:when>
+                    <xsl:when test="ep:data-type and imf:get-ep-parameter(.,'use') eq 'codelist'">
+                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Codelist [1]',$n)"/>
+                        <xsl:sequence select="$header"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',imf:get-ep-parameter(.,'is-value-derived'))"/>
+                        <j:map key="properties">
+                            <j:map key="code">
+                                <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
+                                <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',imf:get-ep-parameter(.,'is-value-derived'))"/>
+                            </j:map>
                         </j:map>
-                    </j:map>
-                </xsl:when>
-                
-                <xsl:when test="ep:data-type">
-                    <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Datatype [1]',$n)"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('minValue',ep:min-value)"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('maxValue',ep:max-value)"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('minLength',ep:min-length)"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',ep:max-length)"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('pattern',ep:formal-pattern)"/>
-                    <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
-                </xsl:when>
-                
-                <xsl:when test="ep:external">
-                    <!-- deze constructs worden aan het einde toegevoegd, wanneer ernaar verwezen wordt --> 
-                    <xsl:sequence select="imf:ep-to-namevaluepair('$ref','#/components/schemas/' || imf:get-type-name(.))"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:sequence select="imf:msg-comment(.,'WARN', 'Ken dit type niet: [1]',$n)"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </j:map>
-        <xsl:if test="ep:choice/ep:construct[imf:get-ep-parameter(.,'use') = 'keuze-element-datatype']">
-            <!-- verzamel alle datatype keuze elementen --> 
-            <xsl:apply-templates select="ep:choice/ep:construct"/>
+                    </xsl:when>
+                    
+                    <xsl:when test="ep:data-type">
+                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Datatype [1]',$n)"/>
+                        <xsl:sequence select="$header"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',imf:get-ep-parameter(.,'is-value-derived'))"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('minimum',ep:min-value)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('maximum',ep:max-value)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('minLength',ep:min-length)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',ep:max-length)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('pattern',ep:formal-pattern)"/>
+                        <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
+                    </xsl:when>
+                    
+                    <xsl:when test="ep:external">
+                        <!-- deze constructs worden aan het einde toegevoegd, wanneer ernaar verwezen wordt --> 
+                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'External [1]',$n)"/>
+                        <xsl:sequence select="$header"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref(.))"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:sequence select="imf:msg-comment(.,'WARN', 'Ken dit type niet: [1]',$n)"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </j:map>
+            <xsl:if test="ep:choice/ep:construct[imf:get-ep-parameter(.,'use') = 'keuze-element-datatype']">
+                <!-- verzamel alle datatype keuze elementen --> 
+                <xsl:apply-templates select="ep:choice/ep:construct"/>
+            </xsl:if>
         </xsl:if>
-    </xsl:template>
-    
-    <xsl:template match="ep:construct" mode="external">
-        <xsl:variable name="tech-name" select="imf:ep-tech-name(ep:name)"/>
-        <xsl:variable name="oas-name" select="imf:get-ep-parameter(.,'oas-name')"/>
-        <xsl:variable name="first" select="empty(preceding-sibling::ep:construct[imf:get-ep-parameter(.,'oas-name') eq $oas-name])"/><!-- Meerdere externe constructs kunnen naar dezelfde geojson verwijzen. Één ref is voldoende. --> 
-        <xsl:choose>
-            <xsl:when test="not($references-geoJSON-collection) and $oas-name = $geoJSONnames and $first">
-                <j:map key="{$oas-name}">
-                    <xsl:sequence select="$geoJSONfiles[@construct = $oas-name]/j:map/*"/>
-                </j:map>
-            </xsl:when>
-            <xsl:when test="not($references-geoJSON-collection) and $oas-name = $geoJSONnames">
-                <!-- already processed -->
-            </xsl:when>
-            <xsl:when test="$oas-name = $geoJSONnames">
-                <!-- de naam is een geoJSON naam maar er is al een collectie gegenereerd -->
-            </xsl:when>
-            <xsl:otherwise>
-                <j:map key="{$tech-name}">
-                    <xsl:sequence select="imf:msg-comment(.,'WARNING', '(fatal) Cannot resolve EP construct [1] to a type in [2]',($tech-name,'GeoJSON'))"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('error','undefined')"/>
-                </j:map>
-            </xsl:otherwise>
-        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="node()">
@@ -310,6 +302,9 @@
             <xsl:when test="$value instance of xs:integer">
                 <j:number key="{$name}">{$value}</j:number>
             </xsl:when>
+            <xsl:when test="$value instance of xs:boolean">
+                <j:boolean key="{$name}">{$value}</j:boolean>
+            </xsl:when>
             <xsl:otherwise>
                 <j:string key="{$name}">{$value}</j:string>
             </xsl:otherwise>
@@ -330,10 +325,12 @@
         <xsl:param name="type" as="xs:string"/>
         <xsl:param name="text" as="xs:string"/>
         <xsl:param name="info" as="item()*"/>
-        <xsl:variable name="ctext" select="imf:msg-insert-parms($text,$info)"/>
-        <xsl:if test="imf:debug-mode()">
+        <xsl:variable name="quot">"</xsl:variable>
+        <xsl:variable name="apos">'</xsl:variable>
+        <xsl:variable name="ctext" select="replace(imf:msg-insert-parms($text,$info),$quot,$apos)"/>
+        <xsl:if test="$debugging">
             <xsl:sequence select="imf:msg($this,$type,$text,$info)"/>
-            <xsl:sequence select="imf:ep-to-namevaluepair('_comment',$ctext)"/>
+            <xsl:sequence select="imf:ep-to-namevaluepair('$comment',$ctext)"/>
         </xsl:if>
     </xsl:function>
     
@@ -368,8 +365,8 @@
     <xsl:function name="imf:map-dataformat-to-ep-type" as="xs:string?">
         <xsl:param name="data-type"/> 
         <xsl:choose>
-            <xsl:when test="$data-type = 'ep:date'">date-time</xsl:when>
-            <xsl:when test="$data-type = 'ep:datetime'">date-time</xsl:when>
+            <xsl:when test="$data-type = 'ep:date'">date</xsl:when>
+            <xsl:when test="$data-type = 'ep:datetime'">date</xsl:when>
             <xsl:when test="$data-type = 'ep:time'">time</xsl:when>
             <xsl:when test="$data-type = 'ep:year'">year</xsl:when>
             <xsl:when test="$data-type = 'ep:uri'">uri</xsl:when>
@@ -379,23 +376,7 @@
         </xsl:choose>
     </xsl:function>
     
-    <xsl:function name="imf:collect-geoJSONs" as="element(geoJSONfile)*">
-        <xsl:variable name="path" select="imf:get-xparm('system/folder-path') || '/input/OGC/openapi/schemas'"/>
-        <xsl:variable name="tempfile" select="imf:get-xparm('properties/WORK_GEOJSONXML_XMLPATH')"/>
-        <xsl:variable name="files" select="if (ext:imvertorFolderSerializer($path,$tempfile,'')) then imf:document($tempfile) else ()"/>
-        <xsl:variable name="geoJSONfiles" as="element(geoJSONfile)*">
-            <xsl:for-each select="$files/cw:files/cw:file[@ext = 'yaml']">
-                <xsl:variable name="fullpath" select="$path || '/' || replace(@path,'\\','/')"/>
-                <!-- transform to Saxon JsonXML -->
-                <geoJSONfile construct="{substring-before(@path,'.')}">
-                    <xsl:sequence select="parse-xml(ext:imvertorParseYaml(string($fullpath)))"/>
-                </geoJSONfile>
-            </xsl:for-each>
-        </xsl:variable>
-        <xsl:sequence select="$geoJSONfiles"/>
-    </xsl:function>
-
-    <xsl:function name="imf:create-description" as="xs:string">
+   <xsl:function name="imf:create-description" as="xs:string">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="text" as="xs:string*">
             <xsl:for-each select="$this/ep:documentation[@type = 'definitie']/ep:text">
@@ -408,7 +389,7 @@
     <xsl:function name="imf:create-minmax" as="element()*">
         <xsl:param name="min" as="xs:string?"/>
         <xsl:param name="max" as="xs:string?"/>
-        <xsl:sequence select="imf:ep-to-namevaluepair('minItems',xs:integer(($min,1)[1]))"/>
+        <xsl:sequence select="imf:ep-to-namevaluepair('minItems',for $i in xs:integer(($min,1)[1]) return if ($i eq 1) then () else $i)"/><!-- default van minItems is 1, weglaten als 1 -->
         <xsl:sequence select="if ($max and $max ne '*') then imf:ep-to-namevaluepair('maxItems',xs:integer($max)) else ()"/>
     </xsl:function>
     
@@ -428,8 +409,24 @@
         </xsl:choose>
     </xsl:function>
     
+    <xsl:function name="imf:get-type-ref" as="xs:string">
+        <xsl:param name="target" as="element(ep:construct)?"/>
+        <xsl:variable name="url" select="imf:get-ep-parameter($target,'url')"/>
+        <xsl:choose>
+            <xsl:when test="$url">
+                <xsl:value-of select="$url"/>
+            </xsl:when>
+            <xsl:when test="imf:get-ep-parameter($target,'use') = ('objecttype','relatieklasse','koppelklasse')"><!-- zie /req/core/class-name -->
+                <xsl:value-of select="'#' || imf:get-type-name($target)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="'#/$defs/' || imf:get-type-name($target)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
     <xsl:function name="imf:ep-tech-name" as="xs:string?">
         <xsl:param name="name" as="xs:string?"/>
-        <xsl:sequence select="if ($name) then imf:extract($name,'[a-zA-Z0-9]+') else ()"/>
+        <xsl:sequence select="if ($name) then $name else ()"/><!-- was: imf:extract($name,'[a-zA-Z0-9]+') maar lijkt geen reden voor te zijn -->
     </xsl:function>
 </xsl:stylesheet>

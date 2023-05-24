@@ -66,7 +66,7 @@ public class JsonFile extends AnyFile {
 	 * 
 	 **/
 	public void setDuplicates(String value) {
-		parms.put("liberal", value);
+		parms.put("duplicates", value);
 	}
 	
 	/**
@@ -81,13 +81,13 @@ public class JsonFile extends AnyFile {
 	}
 	
 	/**
-	 * Determines whether the generated XML tree is schema-validated.
+	 * Determines whether special characters are represented in the XDM output in backslash-escaped form.
 	 * 
 	 * See <a href="https://www.w3.org/TR/xpath-functions-31/#func-json-to-xml">W3C spec</a>
 	 * 
 	 **/
 	public void setEscape(Boolean value) {
-		parms.put("ecape", value.toString());
+		parms.put("escape", value.toString());
 	}
 	
 	/**

@@ -1442,6 +1442,9 @@
         <xsl:if test="imvert:namespace">
           <mim-ext:Kenmerk naam="namespace">{imvert:namespace}</mim-ext:Kenmerk>
         </xsl:if>
+        <xsl:if test="imvert:is-value-derived = 'true'">
+          <mim-ext:Kenmerk naam="is-value-derived">true</mim-ext:Kenmerk>
+        </xsl:if>
         <mim-ext:Kenmerk naam="imvertor-version">{imvert:generator}</mim-ext:Kenmerk>
       </mim-ext:kenmerken>        
     </xsl:where-populated>
