@@ -34,8 +34,10 @@
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
-    version="2.0">
+    version="3.0">
 
     <!-- 
         implementation of ISO 19136:2007
@@ -635,7 +637,7 @@
 
     <xsl:function name="imf:create-element-property" as="item()*">
         <xsl:param name="this" as="node()"/>
-        
+
         <!-- nilllable may be forced for specific circumstances. This only applies to attributes of a true class or associations -->
         <xsl:variable name="is-property" select="exists(($this/self::imvert:attribute,$this/self::imvert:association))"/>
         <xsl:variable name="force-nillable" select="$is-property and $is-forced-nillable"/>
@@ -923,7 +925,10 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A restriction on a primitive type, after mapping')"/>
+                    <xsl:if test="$is-nillable">
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                    </xsl:if>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A restriction on a primitive type, after mapping, nillable=' || $is-nillable)"/>
                     <xsl:sequence select="imf:get-annotation($this)"/>
                     <xs:simpleType>
                         <xs:restriction base="{$this/imvert:type-name}">
@@ -939,19 +944,11 @@
                     <xsl:attribute name="type" select="$this/imvert:type-name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A primitive type, after mapping')"/>
+                    <xsl:if test="$is-nillable">
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                    </xsl:if>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A primitive type, after mapping, nillable=' || $is-nillable)"/>
                     <xsl:sequence select="imf:get-annotation($this)"/>
-                </xs:element>
-            </xsl:when>
-            <xsl:when test="$is-codelist and $is-nillable">
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:attribute name="type" select="if ($codelist-option = 'Option1') then 'gml:ReferenceType' else if ($codelist-option = 'Option2') then 'gml:CodeType' else concat($type,'Type')"/>
-                    <xsl:sequence select="imf:create-xml-debug-comment($this,concat('A nillable codelist attribute at ', $codelist-option))"/>
-                    <xsl:sequence select="imf:get-annotation($this,(),$appinfo-codelist)"/>
                 </xs:element>
             </xsl:when>
             <xsl:when test="$is-codelist">
@@ -959,8 +956,11 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:if test="$is-nillable">
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                    </xsl:if>
                     <xsl:attribute name="type" select="if ($codelist-option = 'Option1') then 'gml:ReferenceType' else if ($codelist-option = 'Option2') then 'gml:CodeType' else concat($type,'Type')"/>
-                    <xsl:sequence select="imf:create-xml-debug-comment($this,concat('A codelist attribute at ', $codelist-option))"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A codelist attribute at ' || $codelist-option || ', nillable=' || $is-nillable )"/>
                     <xsl:sequence select="imf:get-annotation($this,(),$appinfo-codelist)"/>
                 </xs:element>
             </xsl:when>
