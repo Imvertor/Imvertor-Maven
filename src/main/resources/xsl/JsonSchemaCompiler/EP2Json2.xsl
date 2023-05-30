@@ -340,7 +340,7 @@
         <xsl:sequence select="$this/ep:parameters/ep:parameter[@name = $parameter-name]"/>
     </xsl:function>
     
-    <xsl:function name="imf:map-datatype-to-ep-type" as="xs:string">
+    <xsl:function name="imf:map-datatype-to-ep-type" as="xs:string"><!-- 7.3.3.1.  External types -->
         <xsl:param name="data-type"/> 
         <xsl:choose>
             <xsl:when test="$data-type = 'ep:string'">string</xsl:when>
@@ -353,7 +353,7 @@
             <xsl:when test="$data-type = 'ep:uri'">string</xsl:when>
             <xsl:when test="$data-type = 'ep:real'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:decimal'">number</xsl:when>
-            <xsl:when test="$data-type = 'ep:integer'">integer</xsl:when>
+            <xsl:when test="$data-type = 'ep:integer'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:boolean'">boolean</xsl:when>
             <xsl:when test="$data-type = 'ep:time'">string</xsl:when>
             <xsl:otherwise>
@@ -362,13 +362,12 @@
         </xsl:choose>
     </xsl:function>
     
-    <xsl:function name="imf:map-dataformat-to-ep-type" as="xs:string?">
+    <xsl:function name="imf:map-dataformat-to-ep-type" as="xs:string?"><!-- 7.3.3.1.  External types -->
         <xsl:param name="data-type"/> 
         <xsl:choose>
             <xsl:when test="$data-type = 'ep:date'">date</xsl:when>
-            <xsl:when test="$data-type = 'ep:datetime'">date</xsl:when>
+            <xsl:when test="$data-type = 'ep:datetime'">date-time</xsl:when>
             <xsl:when test="$data-type = 'ep:time'">time</xsl:when>
-            <xsl:when test="$data-type = 'ep:year'">year</xsl:when>
             <xsl:when test="$data-type = 'ep:uri'">uri</xsl:when>
             <xsl:otherwise>
                 <!--  no format -->
