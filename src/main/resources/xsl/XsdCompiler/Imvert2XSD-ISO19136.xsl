@@ -1053,6 +1053,24 @@
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
+            <xsl:when test="$is-conceptual-enumeration and $is-nillable">
+                <!-- an enumeration  -->
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A voidable conceptual enumeration')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="{$type}{$Type-suffix}">
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xsl:when>
             <xsl:when test="$is-conceptual-enumeration">
                 <!-- note that we do not support avoiding substitution on complex datatypes -->
                 <xs:element>
