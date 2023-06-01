@@ -1072,14 +1072,14 @@
 				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$serialisation = 'json'">
-				<!-- In het geval van een associatie met een ander entiteittype en serialisatie json is vooralsnog besloten de associatie niet terug te laten komen in de json. -->
-<?x 				<xsl:apply-templates select="ep:construct[ep:parameters[ep:parameter[ep:name='type']/ep:value ='association']]" mode="embedded">
-					<xsl:sort select="ep:parameters/ep:parameter[ep:name='position']/ep:value" order="ascending"/>
-				</xsl:apply-templates> ?>
-				<!-- Betreft het echter een supertype-association dan wordt deze wel verwerkt. -->
- 				<xsl:apply-templates select="ep:construct[ep:parameters[ep:parameter[ep:name='type']/ep:value ='supertype-association']]" mode="embedded">
+				<xsl:apply-templates select="ep:construct[ep:parameters[ep:parameter[ep:name='type']/ep:value ='association' or ep:parameter[ep:name='type']/ep:value ='supertype-association']]" mode="embedded">
 					<xsl:sort select="ep:parameters/ep:parameter[ep:name='position']/ep:value" order="ascending"/>
 				</xsl:apply-templates>
+				<!-- In het geval we er voor kiezen een associatie met een ander entiteittype bij de serialisatie json niet terug te laten komen in de json dan moet de volgende code geactiveerd worden. 
+					In dat geval worden relaties van het type 'association' niet meer verwerkt maar die van het type 'supertype-association' wel. -->
+				<!-- <xsl:apply-templates select="ep:construct[ep:parameters[ep:parameter[ep:name='type']/ep:value ='supertype-association']]" mode="embedded">
+					<xsl:sort select="ep:parameters/ep:parameter[ep:name='position']/ep:value" order="ascending"/>
+				</xsl:apply-templates> -->
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
@@ -1371,16 +1371,16 @@
 								</xsl:if>
 							</xsl:when>
 							<xsl:when test="$serialisation = 'json'">
-								<!-- In het geval van een associatie met een ander entiteittype en serialisatie json is vooralsnog besloten de associatie niet te verwerken tenzij deze zelf de fundamenteel van een bericht is. Er wordt dus geen property voor de associatie opgenomen in entiteittype schema-componenten.
-								     Om die reden is onderstaande xsl:if uitbecommentarieerd. Mocht besloten worden dit toch mogelijk te maken moet bekeken worden of ep:type-name wel kan voorkomen op de current ep:construct (deze heeft immers een ep:seq element wat
-								     volgens mij niet i.c.m. ep:type-name voor kan komen). -->
-								<!--xsl:if test=".[ep:parameters/ep:parameter[ep:name='type']/ep:value!='complex-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='table-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='groep']//ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value='association' 
+								<!-- In het geval van een associatie met een ander entiteittype en serialisatie json wordt besloten de associatie niet te verwerken tenzij deze zelf de fundamenteel van een bericht is moet de volgende xsl:if verwijderd worden (wellicht kan zelfs deze xsl:when verwijderd worden). 
+									 Er wordt in dat geval dus dus geen property voor de associatie opgenomen in entiteittype schema-componenten.
+								     Er moet, in geval we dit intact laten, nog bekeken worden of ep:type-name wel kan voorkomen op de current ep:construct (deze heeft immers een ep:seq element wat volgens mij niet i.c.m. ep:type-name voor kan komen). -->
+								<xsl:if test=".[ep:parameters/ep:parameter[ep:name='type']/ep:value!='complex-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='table-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='groep']//ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value='association' 
 									or ep:parameters/ep:parameter[ep:name='type']/ep:value='supertype-association')]">
 									<xsl:variable name="typeName" select="ep:type-name"/>
 									<xsl:apply-templates select="ep:seq">
 										<xsl:with-param name="typeName" select="$typeName"/>
 									</xsl:apply-templates>
-								</xsl:if-->
+								</xsl:if>
 							</xsl:when>
 						</xsl:choose>
 					</xsl:variable>
@@ -2344,64 +2344,64 @@
 						</xsl:choose>
 					</j:map>
 				</xsl:when>
-				<!-- In het geval van JSON serialisatie is vooralsnog besloten associaties in entiteittypes niet embedded op te nemen tenzij
-				     deze entiteittypes zelf de fundamenteel van een bericht zijn. 
-				     Onderstaande when is uitbecommentarieerd voor het geval dat nog wel ooit van toepassing zal worden. -->
-<?x				<xsl:when test="$serialisation = 'json'">
+				<!-- In het geval we bij JSON serialisatie besluiten associaties in entiteittypes niet embedded op te nemen tenzij
+				     deze entiteittypes zelf de fundamenteel van een bericht zijn dan moet de volgende when worden verwijderd. -->
+				<xsl:when test="$serialisation = 'json'">
 			
+					<j:map key="{$elementName}">
 					<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
-						<j:string key="type"><xsl:value-of select="$occurence-type"/></j:string>
-					</xsl:if>
-	
-					<!--<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">-->
-					<j:string key="title"><xsl:value-of select="$title"/></j:string>
-					<!--</xsl:if>-->
-					
-					<j:string key="description">
-						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-						<xsl:value-of select="replace($documentation, '^\s+|\s+$', '')"/>
-					</j:string>
-					
-					<xsl:choose>
-						<!-- Depending on the occurence-type and the type of construct content is generated. -->
-						<xsl:when test="$occurence-type = 'array' and (ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')">
-							<xsl:if test="$maxOccurs != 'unbounded'">
-								<j:number key="maxItems"><xsl:value-of select="$maxOccurs"/></j:number>
-							</xsl:if>
-							<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-								<j:number key="minItems"><xsl:value-of select="$minOccurs"/></j:number>
-							</xsl:if>
-							<j:map key="items">
+							<j:string key="type"><xsl:value-of select="$occurence-type"/></j:string>
+						</xsl:if>
+		
+						<!--<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">-->
+						<j:string key="title"><xsl:value-of select="$title"/></j:string>
+						<!--</xsl:if>-->
+						
+						<j:string key="description">
+							<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+							<xsl:value-of select="replace($documentation, '^\s+|\s+$', '')"/>
+						</j:string>
+						
+						<xsl:choose>
+							<!-- Depending on the occurence-type and the type of construct content is generated. -->
+							<xsl:when test="$occurence-type = 'array' and (ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')">
+								<xsl:if test="$maxOccurs != 'unbounded'">
+									<j:number key="maxItems"><xsl:value-of select="$maxOccurs"/></j:number>
+								</xsl:if>
+								<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+									<j:number key="minItems"><xsl:value-of select="$minOccurs"/></j:number>
+								</xsl:if>
+								<j:map key="items">
+									<j:string key="type">string</j:string>
+									<j:string key="format">uri</j:string>
+								</j:map>
+								<j:boolean key="readOnly">true</j:boolean>
+								<j:boolean key="uniqueItems">true</j:boolean>
+								<j:string key="example"><xsl:value-of select="concat('datapunt.voorbeeldgemeente.nl/api/v1/',$sourceName,'/123456789')"/></j:string>
+							</xsl:when>
+							<xsl:when test="$occurence-type != 'array' and (ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')">
 								<j:string key="type">string</j:string>
 								<j:string key="format">uri</j:string>
-							</j:map>
-							<j:boolean key="readOnly">true</j:boolean>
-							<j:boolean key="uniqueItems">true</j:boolean>
-							<j:string key="example"><xsl:value-of select="concat('datapunt.voorbeeldgemeente.nl/api/v1/',$sourceName,'/123456789')"/></j:string>
-						</xsl:when>
-						<xsl:when test="$occurence-type != 'array' and (ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')">
-							<j:string key="type">string</j:string>
-							<j:string key="format">uri</j:string>
-							<j:boolean key="readOnly">true</j:boolean>
-							<j:string key="example"><xsl:value-of select="concat('datapunt.voorbeeldgemeente.nl/api/v1/',$sourceName,'/123456789')"/></j:string>
-						</xsl:when>
-						<!--<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
-							<xsl:if test="$maxOccurs != 'unbounded'">
-								<j:number key="maxItems"><xsl:value-of select="$maxOccurs"/></j:number>
-							</xsl:if>
-							<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-								<j:number key="minItems"><xsl:value-of select="$minOccurs"/></j:number>
-							</xsl:if>
-							<j:map key="items">
+								<j:boolean key="readOnly">true</j:boolean>
+								<j:string key="example"><xsl:value-of select="concat('datapunt.voorbeeldgemeente.nl/api/v1/',$sourceName,'/123456789')"/></j:string>
+							</xsl:when>
+							<!--<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+								<xsl:if test="$maxOccurs != 'unbounded'">
+									<j:number key="maxItems"><xsl:value-of select="$maxOccurs"/></j:number>
+								</xsl:if>
+								<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+									<j:number key="minItems"><xsl:value-of select="$minOccurs"/></j:number>
+								</xsl:if>
+								<j:map key="items">
+									<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+								</j:map>
+							</xsl:when>
+							<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
 								<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
-							</j:map>
-						</xsl:when>
-						<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
-							<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
-						</xsl:when> -->
-					</xsl:choose>
-						
-				</xsl:when> ?>
+							</xsl:when> -->
+						</xsl:choose>
+					</j:map>		
+				</xsl:when>
 			</xsl:choose>
 	</xsl:template>
 
