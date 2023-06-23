@@ -88,6 +88,7 @@
 	
 	<xsl:template match="ep:message-sets">
 		
+		<!-- ep:construct elementen die een ep:parameter hebben met de naam 'endpointavailable' en de waarde 'Nee' mogen niet als child van een 'ep:message/ep:seq' voorkomen aangezien dat zou betekenen dat ze wel een endpoint hebben. -->
 		<xsl:for-each select="/ep:message-sets/ep:message-set/ep:construct[ep:parameters/ep:parameter[ep:name='endpointavailable']/ep:value = 'Nee' and ep:tech-name = //ep:message/ep:seq/ep:construct/ep:type-name]">
 			<xsl:sequence select="imf:msg(.,'ERROR','The tv &quot;[1]&quot; has been specified with the value &quot;Nee&quot; on the top level entity [2]. This is not allowed',(./ep:parameters/ep:parameter/ep:name[.='endpointavailable']/@original,./ep:name))" />			
 		</xsl:for-each>
@@ -315,7 +316,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 
-				<!-- This variable is created to prevent constructs being processed in the following xsl:choose as well as in the for-each in rule 862 and 923. -->
+				<!-- This variable is created to prevent constructs being processed in the following xsl:choose as well as in the for-each in rule 886 and 947. -->
 				<xsl:variable name="Ids2BeProcessedConstructs">
 
 					<xsl:choose>
@@ -512,7 +513,6 @@
 										</xsl:call-template>								
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:variable name="type-name" select="ep:type-name"/>
 										<xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 										
 										<xsl:sequence select="imf:createHalComponent($elementName,.)"/>
@@ -1528,9 +1528,8 @@
 					<xsl:sort select="ep:parameters/ep:parameter[ep:name='position']/ep:value" order="ascending"/>
 					<xsl:sort select="ep:tech-name" order="ascending"/>
 					<xsl:sequence select="imf:generateDebugInfo('Debuglocatie-03080',.)"/>
-					<!-- Loops over constructs, which are required, are no associations and have no ep:seq. -->
+					<!-- Loops over constructs, which are required. -->
 					<xsl:choose>
-						<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association'"/>
 						<xsl:when test="ep:parameters/ep:parameter[ep:name='meervoudigeNaam']">
 							<j:string><xsl:value-of select="translate(ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value,'.','_')"/></j:string>
 						</xsl:when>

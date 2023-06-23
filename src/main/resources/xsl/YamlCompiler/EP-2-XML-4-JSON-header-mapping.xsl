@@ -265,7 +265,7 @@
 					</xsl:variable>
 					<xsl:choose>
 						<xsl:when test="contains($falseAndEmptyUriParts,',')">
-							<xsl:sequence select="imf:msg(.,'WARNING','The request tree of the message [1] contains empty entities ([2]) which are not part of the message.', ($messageName,$falseAndEmptyUriParts))" />			
+							<xsl:sequence select="imf:msg(.,'WARNING','The request tree of the message [1] contains the empty entities ([2]) which are not part of the message.', ($messageName,$falseAndEmptyUriParts))" />			
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:msg(.,'WARNING','The request tree of the message [1] contains the empty entity ([2]) which is not part of the message.', ($messageName,$falseAndEmptyUriParts))" />			
@@ -854,7 +854,7 @@
 					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and not(contains(upper-case($berichttype),'PO'))">
 						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
 					</xsl:when>
-					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and empty($checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE'])">
+					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and empty($checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE']) and contains(upper-case($berichttype),'PO')">
 						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for [1] message [2] since no page parameter has been created, remove it or create a page parameter.', ($method, $messageName))" />			
 					</xsl:when>
 				</xsl:choose>
