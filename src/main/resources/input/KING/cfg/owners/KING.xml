@@ -76,7 +76,12 @@
 
     <parameter name="documentation-newline">&#10;</parameter>
     <parameter name="concept-documentation-state-obsolete-uri">http://brk.kadaster.nl/id/lifecycle/afgekeurd</parameter>
-
+    
+    <!-- 
+        insert a break in HTML office documents when a word becomes too long and is camelcased. 
+    -->
+    <parameter name="insert-html-wordbreaks">yes</parameter>
+    
     <!--
         Add a TV in profile when a notes field that is linked to that tagged value exists?
         Applied in: EA toolbox.
