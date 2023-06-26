@@ -190,6 +190,7 @@
             </cs:forSchema>
             <cs:owner>BRO</cs:owner>
             <cs:constructs>
+               <?x verwijderd, want is opgenomen in BRO-COMMON
                <cs:Construct>
                   <cs:name>NITGCode</cs:name>
                   <cs:sentinel>false</cs:sentinel>
@@ -200,6 +201,7 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+               x?>
                <cs:Construct>
                   <cs:name>Putcode</cs:name>
                   <cs:name>wellCode</cs:name>
