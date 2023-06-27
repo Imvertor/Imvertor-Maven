@@ -483,6 +483,18 @@
         </ep:construct>
     </xsl:template>
     
+    <xsl:template match="mim:keuzeDatatypen/mim-ref:DatatypeRef"><!-- TODO hoe vormgeven? -->
+        <ep:construct>
+            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een keuze element, referentie naar datatype',())"/>
+            <ep:parameters>
+                <xsl:sequence select="imf:set-parameter('use','datatyperef')"/>
+                <xsl:sequence select="imf:get-index(.)"/>
+            </ep:parameters>
+            <xsl:sequence select="imf:get-name(.)"/>
+            <xsl:sequence select="imf:get-ref(.)"/>
+        </ep:construct>
+    </xsl:template>
+    
     <xsl:template match="mim:DataElement">
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een data element',())"/>
