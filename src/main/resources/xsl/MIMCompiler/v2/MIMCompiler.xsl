@@ -255,11 +255,11 @@
       </mim:keuzen>
     </xsl:where-populated>
     <xsl:where-populated>
-      <mim:constructies>
+      <mim-ext:constructies>
         <xsl:apply-templates select="imvert:class[imf:is-not-mim-construct(.)]">
           <xsl:sort select="imvert:name"/>
         </xsl:apply-templates>
-      </mim:constructies>
+      </mim-ext:constructies>
     </xsl:where-populated>
     <xsl:call-template name="extensieKenmerken"/>
   </xsl:template>
@@ -363,12 +363,17 @@
     <xsl:call-template name="genereer-metagegevens">
       <xsl:with-param name="modelelement-type" select="$soort-type" as="xs:string"/>
     </xsl:call-template>
-    <mim:doel>
-      <xsl:call-template name="create-ref-element">
-        <xsl:with-param name="label" select="imvert:name" as="xs:string"/>
-        <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
-      </xsl:call-template> 
-    </mim:doel>
+    
+    <!-- in rol-gebaseerde modellen bestaat geen metagegeven "Relatie doel"; daarom hier expliciet opnemen -->   
+    <xsl:if test="$meta-is-role-based">
+      <mim:doel>
+        <xsl:call-template name="create-ref-element">
+          <xsl:with-param name="label" select="imvert:name" as="xs:string"/>
+          <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
+        </xsl:call-template> 
+      </mim:doel>
+    </xsl:if>
+    
     <xsl:where-populated>
       <mim:relatierollen>
         <xsl:where-populated>
@@ -564,7 +569,8 @@
             <xsl:for-each select="imvert:associations/imvert:association">
               <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
               <mim:Relatiedoel>
-                <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>                <xsl:call-template name="create-ref-element">
+                <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
+                <xsl:call-template name="create-ref-element">
                   <xsl:with-param name="label" select="imvert:name" as="xs:string"/>
                   <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
                 </xsl:call-template> 
@@ -938,6 +944,7 @@
                       </xsl:call-template>
                     </xsl:when>
                     <xsl:otherwise>
+                      <!-- zie https://github.com/Imvertor/Imvertor-Maven/issues/356 -->
                       <mim-ext:Constructie>
                         <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype>
                         <xsl:call-template name="create-ref-element">
