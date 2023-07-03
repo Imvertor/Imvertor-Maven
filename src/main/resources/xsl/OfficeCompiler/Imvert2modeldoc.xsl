@@ -431,7 +431,7 @@
            <xsl:sequence select="imf:calculate-node-position(.)"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/> 
            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
-           <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imf:plugin-splice(imvert:baretype),false())))"/>
+           <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-splice(imvert:baretype)))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
        </part>
     </xsl:template>
@@ -442,7 +442,7 @@
            <xsl:sequence select="imf:calculate-node-position(.)"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
-           <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imf:plugin-splice(imvert:baretype),false())))"/>
+           <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-splice(imvert:baretype)))"/>
           <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
         </part>
     </xsl:template>
@@ -453,7 +453,7 @@
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
-            <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imvert:type-name/@original,false())))"/>
+            <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',xs:string(imvert:type-name/@original)))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
         </part>
     </xsl:template>
@@ -1293,7 +1293,7 @@
                     <!-- we hebben geen detailinfo over bepaalde datatypen, dus verwijs in de hyperlink naar globale datatypen --> 
                     <xsl:variable name="global-or-detail" select="if ($type/imvert:stereotype/@id = ('stereotype-name-simpletype')) then 'global' else 'detail'"/>
                     <xsl:variable name="formaat-type" select="if ($type) then imf:create-link($type,$global-or-detail,imf:get-name($type,true())) else ()"/>
-                    <xsl:variable name="formaat-bare" select="imf:plugin-translate-i3n($relation/imvert:baretype,false())"/>
+                    <xsl:variable name="formaat-bare" select="$relation/imvert:baretype"/>
                     <xsl:sequence select="imf:create-part-2(., ($formaat-type,$formaat-bare)[1])"/>         
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-LENGTH'">
@@ -1465,7 +1465,8 @@
                 <item type="{$type}">
                     <xsl:sequence select="imf:create-idref($this,$type)"/>
                     <xsl:sequence select="imf:create-content($label)"/>
-                </item>            </xsl:otherwise>
+                </item>
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
     
