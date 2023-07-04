@@ -1,8 +1,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v1"
-    xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
-    xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v1"
+    xmlns:mim="http://www.geostandaarden.nl/mim/mim-core/1.1"
+    xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0"
+    xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0"
     
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:ep="http://www.imvertor.org/schema/endproduct/v2"

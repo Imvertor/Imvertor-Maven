@@ -2,14 +2,14 @@
 <xs:schema 
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1" 
-  targetNamespace="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1" 
+  xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0" 
+  targetNamespace="http://www.geostandaarden.nl/mim/mim-ext/1.0" 
   elementFormDefault="qualified" 
   attributeFormDefault="unqualified" 
   version="1.0.0">
 
   <xs:annotation>
-    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/uri">http://www.geostandaarden.nl/mim-ext/informatiemodel</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/uri">https://docs.geostandaarden.nl/mim/TODO-schemainfo-1.0.0</xs:appinfo>
     <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/version">1.0.0</xs:appinfo>
   </xs:annotation>
   
@@ -45,7 +45,7 @@
       <xs:sequence>
         <xs:element name="constructietype" type="xs:string"/>
         <xs:any 
-          namespace="http://www.geostandaarden.nl/mim/informatiemodel/v1 http://www.geostandaarden.nl/mim-ref/informatiemodel/v1 http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
+          namespace="http://www.geostandaarden.nl/mim/mim-core/1.1 http://www.geostandaarden.nl/mim/mim-ref/1.0 http://www.geostandaarden.nl/mim/mim-ext/1.0"
           minOccurs="0"
           maxOccurs="unbounded"
           processContents="lax"/>
