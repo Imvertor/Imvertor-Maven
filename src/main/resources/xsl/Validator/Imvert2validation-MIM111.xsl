@@ -27,9 +27,13 @@
     
         <xsl:variable name="parent-stereotypes" select="../../imvert:stereotype"/>
         
+        <?x zie https://github.com/Geonovum/MIM-Werkomgeving/issues/317
+            
         <xsl:sequence select="imf:report-error(., 
             not($parent-stereotypes/@id = ('stereotype-name-objecttype','stereotype-name-composite','stereotype-name-relatieklasse')), 
             'Constraint must not appear here', ())"/>
+            
+        x?>
         
         <xsl:next-match/>
         
