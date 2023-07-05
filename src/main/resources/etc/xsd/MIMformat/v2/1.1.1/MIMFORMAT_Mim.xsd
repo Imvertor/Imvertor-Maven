@@ -11,7 +11,7 @@
   elementFormDefault="qualified" 
   attributeFormDefault="unqualified" 
   
-  version="2.0.0">
+  version="1.0.0">
 
   <xs:import namespace="http://www.geostandaarden.nl/mim/mim-ref/1.0" schemaLocation="MIMFORMAT_MimRef.xsd"/>
   <xs:import namespace="http://www.geostandaarden.nl/mim/mim-ext/1.0" schemaLocation="MIMFORMAT_MimExt.xsd"/>
@@ -19,8 +19,8 @@
   <xs:annotation>
     <xs:appinfo source="http://www.geostandaarden.nl/mim/metamodel/uri">https://docs.geostandaarden.nl/mim/vv-st-mim-20200225/</xs:appinfo>
     <xs:appinfo source="http://www.geostandaarden.nl/mim/metamodel/version">1.1.1</xs:appinfo>
-    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/uri">https://docs.geostandaarden.nl/mim/TODO-schemainfo-2.0.0</xs:appinfo>
-    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/version">2.0.0</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/uri">https://docs.geostandaarden.nl/mim/TODO-schemainfo-1.0.0</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/version">1.0.0</xs:appinfo>
   </xs:annotation>
 
   <!-- Informatiemodel: -->

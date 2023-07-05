@@ -1,0 +1,2035 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+=============================================================================================
+Dit bestand bevat een XML serialisatie van een informatiemodel dat is gemodelleerd volgens de 
+"Metamodel Informatie Modellering (MIM)" standaard versie 1.1.1.
+Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de standaard.
+
+In deze serialisatie komen <mim-ref:xRef> elementen voor, zoals <mim-ref:ObjecttypeRef>. 
+Deze elementen zijn verwijzingen naar een type modelelement X elders in deze serialisatie. 
+Via xlink:href attribuut wordt naar betreffende ID verwezen, voorafgegaan door een # teken.
+Ook kan men de naam van het modelelement zelf gebruiken, zoals deze in de inhoud van het 
+element is opgenomen.
+
+Waar mogelijk is een referentie naar de officiele uitleg (met name de MIM standaard) als 
+commentaar toegevoegd. Dat is alleen bij de éérste opkomst van een contructie gedaan.
+=============================================================================================
+-->
+<mim:Informatiemodel xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+                     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+                     xmlns:mim="http://www.geostandaarden.nl/mim/mim-core/1.1"
+                     xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0"
+                     xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0"
+                     xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://www.geostandaarden.nl/mim/mim-core/1.1 ../MIMFORMAT_Mim_relatierol.xsd">
+   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-naam-->
+   <mim:naam>Fietsenwinkel</mim:naam>
+   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-herkomst-->
+   <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-definitie-->
+   <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-herkomst-definitie-->
+   <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-datum-opname-->
+   <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-informatiemodel-type-->
+   <mim:informatiemodeltype>Conceptueel</mim:informatiemodeltype>
+   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-informatiedomein-->
+   <mim:informatiedomein>detailhandel</mim:informatiedomein>
+   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringtype-->
+   <mim:relatiemodelleringtype>Relatierol leidend</mim:relatiemodelleringtype>
+   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-mim-versie-->
+   <mim:MIMVersie>1.1.1</mim:MIMVersie>
+   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-mim-taal-->
+   <mim:MIMTaal>NL</mim:MIMTaal>
+   <mim:packages><!--https://docs.geostandaarden.nl/mim/mim/#domein-->
+      <mim:Domein index="1743" id="contacten-domein-contacten">
+         <mim:naam>Contacten</mim:naam>
+         <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+         <mim:definitie>
+            <xhtml:body>
+               <xhtml:p>Dit is een submodel voor baksteen productie.</xhtml:p>
+            </xhtml:body>
+         </mim:definitie>
+         <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+         <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+         <mim:datatypen><!--https://docs.geostandaarden.nl/mim/mim/#primitief-datatype-->
+            <mim:PrimitiefDatatype index="3151" id="contacten-primitiefdatatype-iban">
+               <mim:supertypen>
+                  <mim:GeneralisatieDatatypen index="3167">
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:supertype>
+                        <mim:Datatype index="3167">CharacterString</mim:Datatype>
+                     </mim:supertype>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:GeneralisatieDatatypen>
+               </mim:supertypen>
+               <mim:naam>IBAN</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>International Bank Account Number</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:datumOpname>2021-01-08</mim:datumOpname>
+               <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-patroon-->
+               <mim:patroon>IBAN nummer zoals beschreven in https://en.wikipedia.org/wiki/International_Bank_Account_Number</mim:patroon>
+               <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-formeel-patroon-->
+               <mim:formeelPatroon>[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}</mim:formeelPatroon>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:PrimitiefDatatype>
+            <!--https://docs.geostandaarden.nl/mim/mim/#referentielijst-->
+            <mim:Referentielijst index="2380" id="contacten-referentielijst-kvk-lijst">
+               <mim:naam>KVK lijst</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Lijst van KVK nummers met daaraan gekoppeld de bedrijfsnaam.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+               <mim:datumOpname>2020-12-01</mim:datumOpname>
+               <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-locatie-->
+               <mim:locatie>https://services.kvk.nl/zoeken/handelsregister/</mim:locatie>
+               <mim:referentieElementen><!--https://docs.geostandaarden.nl/mim/mim/#referentie-element-->
+                  <mim:ReferentieElement index="2396">
+                     <mim:naam>nummer</mim:naam>
+                     <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                     <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                     <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-type-domein-van-een-waarde-een-gegeven-->
+                     <mim:type>
+                        <mim:Datatype index="2396">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-kardinaliteit-->
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-identificerend-->
+                     <mim:identificerend>true</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:ReferentieElement>
+                  <mim:ReferentieElement index="2422">
+                     <mim:naam>bedrijfsnaam</mim:naam>
+                     <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                     <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                     <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="2422">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:ReferentieElement>
+                  <mim:ReferentieElement index="2447">
+                     <mim:naam>vestigingsadres</mim:naam>
+                     <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                     <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                     <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="2447">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:ReferentieElement>
+               </mim:referentieElementen>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Referentielijst>
+         </mim:datatypen>
+         <mim:objecttypen><!--https://docs.geostandaarden.nl/mim/mim/#objecttype-->
+            <mim:Objecttype index="2920" id="contacten-objecttype-bankrekening">
+               <mim:naam>Bankrekening</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Rekening bij een bank.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-abstract-object-->
+               <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
+               <mim:attribuutsoorten><!--https://docs.geostandaarden.nl/mim/mim/#attribuutsoort-->
+                  <mim:Attribuutsoort index="2936">
+                     <mim:naam>Rekeningnummer</mim:naam>
+                     <mim:herkomst>IMFW</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Nummer van de rekening.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim-ref:DatatypeRef index="2936" xlink:href="#contacten-primitiefdatatype-iban">IBAN</mim-ref:DatatypeRef>
+                     </mim:type>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-materiele-historie-->
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-formele-historie-->
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-authentiek-->
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-afleidbaar-->
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-classificerend-->
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-mogelijk-geen-waarde-->
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>true</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+            <mim:Objecttype index="2701" id="contacten-objecttype-contact">
+               <mim:naam>Contact</mim:naam>
+               <mim:herkomst>IFO</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Een persoon of instelling waar mee wordt gecommuniceerd.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:indicatieAbstractObject>true</mim:indicatieAbstractObject>
+               <mim:attribuutsoorten>
+                  <mim:Attribuutsoort index="2718">
+                     <mim:naam>naam</mim:naam>
+                     <mim:herkomst>IMFW</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De naam van het contact. </xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-toelichting-->
+                     <mim:toelichting>
+                        <xhtml:body>
+                           <xhtml:p>Dit is de naam waaronder het contact uniek geindentificeerd kan worden. Het is niet een-op-een afgeleid van de naam van de Persoon (wanneer het een persoon betreft) maar kan daar wel op zijn gebaseerd.</xhtml:p>
+                        </xhtml:body>
+                     </mim:toelichting>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="2718">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>true</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim:gegevensgroepen><!--https://docs.geostandaarden.nl/mim/mim/#gegevensgroep-->
+                  <mim:Gegevensgroep index="2785">
+                     <mim:naam>postadres</mim:naam>
+                     <mim:herkomst>IMFW</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Het postadres van dit contact. </xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>true</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:gegevensgroeptype>
+                        <mim-ref:GegevensgroeptypeRef index="2785" xlink:href="#contacten-gegevensgroeptype-adres">Adres</mim-ref:GegevensgroeptypeRef>
+                     </mim:gegevensgroeptype>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Gegevensgroep>
+               </mim:gegevensgroepen>
+               <mim:relatiesoorten><!--https://docs.geostandaarden.nl/mim/mim/#relatiesoort-->
+                  <mim:Relatiesoort index="2837">
+                     <mim:naam>betaling</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Een contact doet een betaling met een betaalmiddel.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:doel>
+                        <mim-ref:KeuzeRef index="2837"
+                                          label="betaling"
+                                          xlink:href="#contacten-keuze-betaalmiddel">Betaalmiddel</mim-ref:KeuzeRef>
+                     </mim:doel>
+                     <mim:relatierollen>
+                        <mim:Bron>
+                           <mim:naam><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:naam>
+                           <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                           <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                           <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                           <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                           <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                           <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                           <mim:kardinaliteit>1</mim:kardinaliteit>
+                           <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+                           <mim:authentiek><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:authentiek>
+                           <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                           <mim:identificerend>false</mim:identificerend>
+                           <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-aggregatietype-->
+                           <mim:aggregatietype>Geen</mim:aggregatietype>
+                        </mim:Bron>
+                        <mim:Doel>
+                           <mim:naam>betaalmiddel</mim:naam>
+                           <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                           <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                           <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                           <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                           <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                           <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                           <mim:kardinaliteit>1..*</mim:kardinaliteit>
+                           <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+                           <mim:authentiek><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:authentiek>
+                           <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                           <mim:identificerend>false</mim:identificerend>
+                           <mim:aggregatietype>Geen</mim:aggregatietype>
+                        </mim:Doel>
+                     </mim:relatierollen>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">200</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="kardinaliteitBron">1</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Relatiesoort>
+               </mim:relatiesoorten>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+            <mim:Objecttype index="1887" id="contacten-objecttype-creditcard">
+               <mim:naam>Creditcard</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Kaart waarmee op basis van kredieten een betaling wordt gedaan.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
+               <mim:attribuutsoorten>
+                  <mim:Attribuutsoort index="1903">
+                     <mim:naam>Kaartnummer</mim:naam>
+                     <mim:herkomst>IMFW</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Nummer van de kaart.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="1903">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-lengte-->
+                     <mim:lengte>16</mim:lengte>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>true</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="1963">
+                     <mim:naam>Verloopdatum</mim:naam>
+                     <mim:herkomst>IMFW</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Verloopdatum van de kaart (jaar, maand)</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="1963">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <mim:formeelPatroon>\d{2}/\d{2}</mim:formeelPatroon>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+            <mim:Objecttype index="2141" id="contacten-objecttype-klant">
+               <mim:naam>Klant</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Een persoon die een fiets heeft gekocht.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
+               <mim:supertypen>
+                  <mim:GeneralisatieObjecttypen index="2157">
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:supertype>
+                        <mim-ref:ObjecttypeRef index="2157" xlink:href="#contacten-objecttype-contact">Contact</mim-ref:ObjecttypeRef>
+                     </mim:supertype>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:GeneralisatieObjecttypen>
+               </mim:supertypen>
+               <mim:attribuutsoorten>
+                  <mim:Attribuutsoort index="2163">
+                     <mim:naam>nieuwsbrief</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Indicatie dat de klant de nieuwsbrief wenst te ontvangen.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="2163">Boolean</mim:Datatype>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim:externeKoppelingen><!--https://docs.geostandaarden.nl/mim/mim/#externe-koppeling-->
+                  <mim:ExterneKoppeling index="2220">
+                     <mim:naam>betreft</mim:naam>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-unidirectioneel-->
+                     <mim:unidirectioneel>true</mim:unidirectioneel>
+                     <mim:aggregatietype>Compositie</mim:aggregatietype>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-doel-->
+                     <mim:doel>
+                        <mim-ref:ObjecttypeRef index="2220" xlink:href="#personen-objecttype-persoon">Persoon</mim-ref:ObjecttypeRef>
+                     </mim:doel>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="positie">200</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="kardinaliteitBron">1</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:ExterneKoppeling>
+               </mim:externeKoppelingen>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+            <mim:Objecttype index="2046" id="contacten-objecttype-leverancier">
+               <mim:naam>Leverancier</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Een instelling die een fietsen levert.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
+               <mim:supertypen>
+                  <mim:GeneralisatieObjecttypen index="2062">
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:supertype>
+                        <mim-ref:ObjecttypeRef index="2062" xlink:href="#contacten-objecttype-contact">Contact</mim-ref:ObjecttypeRef>
+                     </mim:supertype>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:GeneralisatieObjecttypen>
+               </mim:supertypen>
+               <mim:attribuutsoorten>
+                  <mim:Attribuutsoort index="2068">
+                     <mim:naam>kvk nummer</mim:naam>
+                     <mim:herkomst>IMFW</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Het nummer uit de KVK lijst.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim-ref:DatatypeRef index="2068" xlink:href="#contacten-referentielijst-kvk-lijst">KVK lijst</mim-ref:DatatypeRef>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+         </mim:objecttypen>
+         <mim:gegevensgroeptypen><!--https://docs.geostandaarden.nl/mim/mim/#gegevensgroeptype-->
+            <mim:Gegevensgroeptype index="2495" id="contacten-gegevensgroeptype-adres">
+               <mim:naam>Adres</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Het adres van een contact.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:attribuutsoorten>
+                  <mim:Attribuutsoort index="2512">
+                     <mim:naam>postcode</mim:naam>
+                     <mim:herkomst>IMFW</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Postcode in een adres.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="2512">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <mim:patroon>Vier cijfers, en dan twee letters in kapitaal, opgenomen in de post-nl postcodelijst</mim:patroon>
+                     <mim:formeelPatroon>[0-9]{4}[A-Z]{2}</mim:formeelPatroon>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="2575">
+                     <mim:naam>huisnummer</mim:naam>
+                     <mim:herkomst>IMFW</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Huisnummer met eventuele toevoegingen.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="2575">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>true</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="2631">
+                     <mim:naam>locatie</mim:naam>
+                     <mim:herkomst>IMFW</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De geografische plek waar het adres is geregistreerd.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim-ref:KeuzeRef index="2631" xlink:href="#contacten-keuze-geografische-locatie">Geografische locatie</mim-ref:KeuzeRef>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>0..1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Gegevensgroeptype>
+         </mim:gegevensgroeptypen>
+         <mim:keuzen>
+            <mim:Keuze index="2273" id="contacten-keuze-betaalmiddel">
+               <mim:naam>Betaalmiddel</mim:naam>
+               <mim:herkomst>IFO</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Middel waarmee de financiering wordt gerealiseerd.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:keuzeRelatiedoelen>
+                  <mim:Relatiedoel>
+                     <mim-ref:ObjecttypeRef index="2291"
+                                            label="bank"
+                                            xlink:href="#contacten-objecttype-bankrekening">Bankrekening</mim-ref:ObjecttypeRef>
+                  </mim:Relatiedoel>
+                  <mim:Relatiedoel>
+                     <mim-ref:ObjecttypeRef index="2326"
+                                            label="credit"
+                                            xlink:href="#contacten-objecttype-creditcard">Creditcard</mim-ref:ObjecttypeRef>
+                  </mim:Relatiedoel>
+               </mim:keuzeRelatiedoelen>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Keuze>
+            <mim:Keuze index="1782" id="contacten-keuze-geografische-locatie">
+               <mim:naam>Geografische locatie</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>De locatie van een aan het aardoppervlak geboden object.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:keuzeDatatypen>
+                  <mim-ext:ConstructieRef index="1799" label="punt" xlink:href="#constructie-gmpoint">GM_Point</mim-ext:ConstructieRef>
+                  <mim-ext:ConstructieRef index="1833" label="vlak" xlink:href="#constructie-gmpolygon">GM_Polygon</mim-ext:ConstructieRef>
+               </mim:keuzeDatatypen>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Keuze>
+         </mim:keuzen>
+         <mim-ext:kenmerken>
+            <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="Ref-release">20210901</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="Ref-version">1.0.0</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="Release">20210901</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="namespace">https://docs.geostandaarden.nl/mim/primer/Fietsenwinkel/Contacten</mim-ext:Kenmerk>
+         </mim-ext:kenmerken>
+      </mim:Domein>
+      <mim:Domein index="3206"
+                  id="gemeenschappelijke-typen-domein-gemeenschappelijke-typen">
+         <mim:naam>Gemeenschappelijke typen</mim:naam>
+         <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+         <mim:definitie>
+            <xhtml:body>
+               <xhtml:p>Dit is de omschrijving van "Gemeenschappelijke typen". Het betreft typen die over meerdere submodellen kunnen worden hergebruiikt.</xhtml:p>
+            </xhtml:body>
+         </mim:definitie>
+         <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+         <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+         <mim:datatypen><!--https://docs.geostandaarden.nl/mim/mim/#gestructureerd-datatype-->
+            <mim:GestructureerdDatatype index="3280"
+                                        id="gemeenschappelijke-typen-gestructureerddatatype-dimensies">
+               <mim:naam>Dimensies</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>De dimensies van een 3-dimensionaal object.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:datumOpname>2021-10-14</mim:datumOpname>
+               <mim:dataElementen><!--https://docs.geostandaarden.nl/mim/mim/#data-element-->
+                  <mim:DataElement index="3296">
+                     <mim:naam>lengte</mim:naam>
+                     <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Lengte van het object in mm.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="3296">Integer</mim:Datatype>
+                     </mim:type>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:DataElement>
+                  <mim:DataElement index="3331">
+                     <mim:naam>breedte</mim:naam>
+                     <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Breedte van het object in mm.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="3331">Integer</mim:Datatype>
+                     </mim:type>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:DataElement>
+                  <mim:DataElement index="3366">
+                     <mim:naam>hoogte</mim:naam>
+                     <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Hoogte van het object in mm.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="3366">Integer</mim:Datatype>
+                     </mim:type>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:DataElement>
+               </mim:dataElementen>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:GestructureerdDatatype>
+            <mim:PrimitiefDatatype index="3237"
+                                   id="gemeenschappelijke-typen-primitiefdatatype-garantienummer">
+               <mim:naam>Garantienummer</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Nummer van de Garantie van Fiets zoals uitgegeven door producent.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:datumOpname>2021-01-10</mim:datumOpname>
+               <mim:patroon>Een willekeurige combinatie van tekens; nummers verschillen per Producent. Kan niet leeg zijn.</mim:patroon>
+               <mim:formeelPatroon>\S+</mim:formeelPatroon>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:PrimitiefDatatype>
+         </mim:datatypen>
+         <mim-ext:kenmerken>
+            <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="release">20210901</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="version">1.0.0</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="namespace">https://docs.geostandaarden.nl/mim/primer/Fietsenwinkel/Typen</mim-ext:Kenmerk>
+         </mim-ext:kenmerken>
+      </mim:Domein>
+      <mim:Domein index="134" id="inventaris-domein-inventaris">
+         <mim:naam>Inventaris</mim:naam>
+         <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+         <mim:definitie>
+            <xhtml:body>
+               <xhtml:p>Een submodel voor klanten van de fabriek.</xhtml:p>
+            </xhtml:body>
+         </mim:definitie>
+         <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+         <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+         <mim:datatypen><!--https://docs.geostandaarden.nl/mim/mim/#codelijst-->
+            <mim:Codelijst index="644" id="inventaris-codelijst-ketting-lijst">
+               <mim:naam>Ketting lijst</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Lijst van ketting-typen voor fietsen met ketting aandrijving.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+               <mim:datumOpname>2021-01-01</mim:datumOpname>
+               <mim:locatie>https://detailhandel.nl/lijsten/Kettingen</mim:locatie>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Codelijst>
+            <mim:Codelijst index="789" id="inventaris-codelijst-snaar-lijst">
+               <mim:naam>Snaar lijst</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Lijst van snaar-typen voor fietsen met snaaraandrijving.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+               <mim:datumOpname>2021-01-01</mim:datumOpname>
+               <mim:locatie>https://detailhandel.nl/lijsten/Snaren</mim:locatie>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Codelijst>
+            <!--https://docs.geostandaarden.nl/mim/mim/#enumeratie-->
+            <mim:Enumeratie index="173" id="inventaris-enumeratie-sportfiets-typen">
+               <mim:naam>Sportfiets typen</mim:naam>
+               <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Dit is een lijst van alle typen sportfietsen.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+               <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+               <mim:waarden><!--https://docs.geostandaarden.nl/mim/mim/#enumeratiewaarde-->
+                  <mim:Waarde index="189">
+                     <mim:naam>Cube</mim:naam>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Een sportfiets van type Cube</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-code-->
+                     <mim:code>cube</mim:code>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Waarde>
+                  <mim:Waarde index="213">
+                     <mim:naam>Bianchi</mim:naam>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Een sportfiets van type Bianchi</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:code>bianchi</mim:code>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Waarde>
+                  <mim:Waarde index="237">
+                     <mim:naam>Giant</mim:naam>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Een sportfiets van type Giant</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:code>giant</mim:code>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Waarde>
+                  <mim:Waarde index="261">
+                     <mim:naam>Canondale</mim:naam>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Een sportfiets van type Canondale</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:code>canondale</mim:code>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Waarde>
+               </mim:waarden>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Enumeratie>
+         </mim:datatypen>
+         <mim:objecttypen>
+            <mim:Objecttype index="354" id="inventaris-objecttype-batterij">
+               <mim:naam>Batterij</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>De batterij van de E-Bike.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
+               <mim:attribuutsoorten>
+                  <mim:Attribuutsoort index="370">
+                     <mim:naam>garantienummer</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Garantienummer op de <xhtml:strong>Batterij</xhtml:strong> (wanneer e-bike).</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim-ref:DatatypeRef index="370"
+                                             xlink:href="#gemeenschappelijke-typen-primitiefdatatype-garantienummer">Garantienummer</mim-ref:DatatypeRef>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="421">
+                     <mim:naam>omvang</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De omvang van de batterij.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim-ref:DatatypeRef index="421"
+                                             xlink:href="#gemeenschappelijke-typen-gestructureerddatatype-dimensies">Dimensies</mim-ref:DatatypeRef>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+            <mim:Objecttype index="1048" id="inventaris-objecttype-fiets">
+               <mim:naam>Fiets</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Een tweewieler.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:indicatieAbstractObject>true</mim:indicatieAbstractObject>
+               <mim:attribuutsoorten>
+                  <mim:Attribuutsoort index="1065">
+                     <mim:naam>id</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De identificatie van de fiets. </xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:toelichting>
+                        <xhtml:body>
+                           <xhtml:p>Deze identificatie is afgeleid van typenummer + leveringsdatum + volgnummer</xhtml:p>
+                        </xhtml:body>
+                     </mim:toelichting>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="1065">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>true</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>true</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="is-value-derived">true</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="1133">
+                     <mim:naam>leveringsdatum</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Datum waarop de fiets is geleverd aan de winkel.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="1133">Date</mim:Datatype>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="1189">
+                     <mim:naam>omvang</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De omvang van de fiets in dimensies vanaf voor tot achterband (opgepompt), uitersten van trappers of bak of bagagedrager, en hoogste punt vanaf de weg (stuur, zadel).</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim-ref:DatatypeRef index="1189"
+                                             xlink:href="#gemeenschappelijke-typen-gestructureerddatatype-dimensies">Dimensies</mim-ref:DatatypeRef>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="1239">
+                     <mim:naam>typenummer</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Het type nummer van de fiets.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:toelichting>
+                        <xhtml:body>
+                           <xhtml:p>Onttrokken aan de lijst van fietstypen.</xhtml:p>
+                        </xhtml:body>
+                     </mim:toelichting>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="1239">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="1305">
+                     <mim:naam>verkoopprijs</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De verkoopprijs van de fiets, met twee decimalen, in Euro.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="1305">Decimal</mim:Datatype>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="1361">
+                     <mim:naam>versnellingen</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Het aantal versnellingen van de fiets. </xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:toelichting>
+                        <xhtml:body>
+                           <xhtml:p>Wordt niet opgenomen als zonder versnellingen.</xhtml:p>
+                        </xhtml:body>
+                     </mim:toelichting>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="1361">Integer</mim:Datatype>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>0..1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="1427">
+                     <mim:naam>volgnummer</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Het volgummer van de fiets in één levering.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="1427">Integer</mim:Datatype>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim:relatiesoorten>
+                  <mim:Relatiesoort index="1520">
+                     <mim:naam>aangestuurd door</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Een fiets kan zijn aangestuurd door een motor. Wanneer electrische fiets, dan spreken we over "aansturing door Batterij".</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:doel>
+                        <mim-ref:ObjecttypeRef index="1520"
+                                               label="aangestuurdDoor"
+                                               xlink:href="#inventaris-objecttype-batterij">Batterij</mim-ref:ObjecttypeRef>
+                     </mim:doel>
+                     <mim:relatierollen>
+                        <mim:Bron>
+                           <mim:naam><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:naam>
+                           <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                           <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                           <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                           <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                           <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                           <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                           <mim:kardinaliteit>1</mim:kardinaliteit>
+                           <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+                           <mim:authentiek><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:authentiek>
+                           <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                           <mim:identificerend>false</mim:identificerend>
+                           <mim:aggregatietype>Geen</mim:aggregatietype>
+                        </mim:Bron>
+                        <mim:Doel>
+                           <mim:naam>powerunit</mim:naam>
+                           <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                           <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                           <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                           <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                           <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                           <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                           <mim:kardinaliteit>0..1</mim:kardinaliteit>
+                           <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+                           <mim:authentiek><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:authentiek>
+                           <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                           <mim:identificerend>false</mim:identificerend>
+                           <mim:aggregatietype>Geen</mim:aggregatietype>
+                        </mim:Doel>
+                     </mim:relatierollen>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">200</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="kardinaliteitBron">1</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Relatiesoort>
+                  <mim:Relatiesoort index="1582">
+                     <mim:naam>geleverd door</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De Fiets is geleverd door een Leverancier. </xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:doel>
+                        <mim-ref:ObjecttypeRef index="1582"
+                                               label="geleverdDoor"
+                                               xlink:href="#contacten-objecttype-leverancier">Leverancier</mim-ref:ObjecttypeRef>
+                     </mim:doel>
+                     <mim:relatierollen>
+                        <mim:Bron>
+                           <mim:naam><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:naam>
+                           <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                           <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                           <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                           <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                           <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                           <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                           <mim:kardinaliteit>1</mim:kardinaliteit>
+                           <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+                           <mim:authentiek><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:authentiek>
+                           <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                           <mim:identificerend>false</mim:identificerend>
+                           <mim:aggregatietype>Geen</mim:aggregatietype>
+                        </mim:Bron>
+                        <mim:Doel>
+                           <mim:naam>aanleveraar</mim:naam>
+                           <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                           <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                           <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                           <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                           <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                           <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                           <mim:kardinaliteit>1</mim:kardinaliteit>
+                           <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+                           <mim:authentiek><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:authentiek>
+                           <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                           <mim:identificerend>false</mim:identificerend>
+                           <mim:aggregatietype>Geen</mim:aggregatietype>
+                        </mim:Doel>
+                     </mim:relatierollen>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">200</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="kardinaliteitBron">1</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Relatiesoort>
+                  <mim:Relatiesoort index="1643">
+                     <mim:naam>verkocht aan</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Overdracht van geld heeft plaatsgevonden waarmee een relatie is opgebouwd met de <xhtml:strong>Klant</xhtml:strong>, w.o. garantieverplichtingen.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:toelichting>
+                        <xhtml:body>
+                           <xhtml:p>De verkoop heeft eigenschappen, zoals vastgelegd in <xhtml:strong>Verkoop</xhtml:strong>.</xhtml:p>
+                        </xhtml:body>
+                     </mim:toelichting>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:doel>
+                        <mim-ref:ObjecttypeRef index="1643"
+                                               label="verkochtAan"
+                                               xlink:href="#contacten-objecttype-klant">Klant</mim-ref:ObjecttypeRef>
+                     </mim:doel>
+                     <mim:relatierollen>
+                        <mim:Bron>
+                           <mim:naam><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:naam>
+                           <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                           <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                           <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                           <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                           <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                           <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                           <mim:kardinaliteit>1</mim:kardinaliteit>
+                           <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+                           <mim:authentiek><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:authentiek>
+                           <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                           <mim:identificerend>false</mim:identificerend>
+                           <mim:aggregatietype>Geen</mim:aggregatietype>
+                        </mim:Bron>
+                        <mim:Doel>
+                           <mim:naam>ontvanger</mim:naam>
+                           <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                           <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                           <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                           <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                           <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                           <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                           <mim:kardinaliteit>0..1</mim:kardinaliteit>
+                           <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+                           <mim:authentiek><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:authentiek>
+                           <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                           <mim:identificerend>false</mim:identificerend>
+                           <mim:aggregatietype>Geen</mim:aggregatietype>
+                        </mim:Doel>
+                     </mim:relatierollen>
+                     <mim:relatieklasse><!--https://docs.geostandaarden.nl/mim/mim/#relatieklasse-->
+                        <mim:Relatieklasse index="3010">
+                           <mim:naam>Verkoop</mim:naam>
+                           <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                           <mim:definitie>
+                              <xhtml:body>
+                                 <xhtml:p>Details omtrent de verkoop van een <xhtml:strong>Fiets</xhtml:strong> aan een <xhtml:strong>Klant</xhtml:strong>.</xhtml:p>
+                              </xhtml:body>
+                           </mim:definitie>
+                           <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                           <mim:toelichting><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:toelichting>
+                           <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                           <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                           <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                           <mim:kardinaliteit>1</mim:kardinaliteit>
+                           <mim:authentiek><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:authentiek>
+                           <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                           <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                           <mim:aggregatietype>Geen</mim:aggregatietype>
+                           <mim:attribuutsoorten>
+                              <mim:Attribuutsoort index="3026">
+                                 <mim:naam>verkoopdatum</mim:naam>
+                                 <mim:herkomst>IMFW</mim:herkomst>
+                                 <mim:definitie>
+                                    <xhtml:body>
+                                       <xhtml:p>Datum van verkoop van de <xhtml:strong>Fiets</xhtml:strong>.</xhtml:p>
+                                    </xhtml:body>
+                                 </mim:definitie>
+                                 <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                                 <mim:datumOpname>14-12-2021</mim:datumOpname>
+                                 <mim:type>
+                                    <mim:Datatype index="3026">Date</mim:Datatype>
+                                 </mim:type>
+                                 <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                                 <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                                 <mim:kardinaliteit>1</mim:kardinaliteit>
+                                 <mim:authentiek>Overig</mim:authentiek>
+                                 <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                                 <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                                 <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                                 <mim:identificerend>false</mim:identificerend>
+                                 <mim-ext:kenmerken>
+                                    <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                                    <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                                 </mim-ext:kenmerken>
+                              </mim:Attribuutsoort>
+                              <mim:Attribuutsoort index="3083">
+                                 <mim:naam>garantienummer</mim:naam>
+                                 <mim:herkomst>IMFW</mim:herkomst>
+                                 <mim:definitie>
+                                    <xhtml:body>
+                                       <xhtml:p>Garantienummer van de <xhtml:strong>Fiets</xhtml:strong>. Wanneer E-Bike, dan heeft de <xhtml:strong>Batterij</xhtml:strong> een apart garantienummer.</xhtml:p>
+                                    </xhtml:body>
+                                 </mim:definitie>
+                                 <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                                 <mim:datumOpname>14-12-2021</mim:datumOpname>
+                                 <mim:type>
+                                    <mim-ref:DatatypeRef index="3083"
+                                                         xlink:href="#gemeenschappelijke-typen-primitiefdatatype-garantienummer">Garantienummer</mim-ref:DatatypeRef>
+                                 </mim:type>
+                                 <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                                 <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                                 <mim:kardinaliteit>1</mim:kardinaliteit>
+                                 <mim:authentiek>Overig</mim:authentiek>
+                                 <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                                 <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                                 <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                                 <mim:identificerend>false</mim:identificerend>
+                                 <mim-ext:kenmerken>
+                                    <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                                    <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                                 </mim-ext:kenmerken>
+                              </mim:Attribuutsoort>
+                           </mim:attribuutsoorten>
+                           <mim-ext:kenmerken>
+                              <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                              <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+                           </mim-ext:kenmerken>
+                        </mim:Relatieklasse>
+                     </mim:relatieklasse>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">200</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="kardinaliteitBron">1</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Relatiesoort>
+               </mim:relatiesoorten>
+               <mim:keuzen>
+                  <mim-ref:KeuzeRef index="1483"
+                                    label="aandrijving"
+                                    xlink:href="#inventaris-keuze-aandrijving">Aandrijving</mim-ref:KeuzeRef>
+               </mim:keuzen>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+            <mim:Objecttype index="680" id="inventaris-objecttype-sportfiets">
+               <mim:naam>Sportfiets</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Een fiets bedoeld voor gebruik in sportieve toepassingen.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+               <mim:toelichting>
+                  <xhtml:body>
+                     <xhtml:p>Een sportfiets heeft over het algemeen geen licht of spatborden, en is zo licht als mogelijk uitgevoerd.
+Voorbeeld: Racefiets, mountainbike.</xhtml:p>
+                  </xhtml:body>
+               </mim:toelichting>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
+               <mim:supertypen>
+                  <mim:GeneralisatieObjecttypen index="702">
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:supertype>
+                        <mim-ref:ObjecttypeRef index="702" xlink:href="#inventaris-objecttype-fiets">Fiets</mim-ref:ObjecttypeRef>
+                     </mim:supertype>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:GeneralisatieObjecttypen>
+               </mim:supertypen>
+               <mim:attribuutsoorten>
+                  <mim:Attribuutsoort index="708">
+                     <mim:naam>type</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Het type van de sportfiets, een waarde uit een enumeratieve lijst.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim-ref:DatatypeRef index="708" xlink:href="#inventaris-enumeratie-sportfiets-typen">Sportfiets typen</mim-ref:DatatypeRef>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>true</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+            <mim:Objecttype index="299" id="inventaris-objecttype-stadsfiets">
+               <mim:naam>Stadsfiets</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Een fiets die is ingericht op gebruik in het stadsverkeer.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+               <mim:toelichting>
+                  <xhtml:body>
+                     <xhtml:p>Een stadsfiets heeft typisch een bagagedrager, spatborden en verlichting.</xhtml:p>
+                  </xhtml:body>
+               </mim:toelichting>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
+               <mim:supertypen>
+                  <mim:GeneralisatieObjecttypen index="320">
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:supertype>
+                        <mim-ref:ObjecttypeRef index="320" xlink:href="#inventaris-objecttype-fiets">Fiets</mim-ref:ObjecttypeRef>
+                     </mim:supertype>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:GeneralisatieObjecttypen>
+               </mim:supertypen>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+            <mim:Objecttype index="825" id="inventaris-objecttype-winkel">
+               <mim:naam>Winkel</mim:naam>
+               <mim:herkomst>IMFW</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Een locatie waar fietsen worden verkocht. </xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+               <mim:toelichting>
+                  <xhtml:body>
+                     <xhtml:p>Hierbij worden groothandels uitgesloten. Ook webwinkels zijn geen onderdeel van dit infomatiemodel.</xhtml:p>
+                  </xhtml:body>
+               </mim:toelichting>
+               <mim:datumOpname>20210901</mim:datumOpname>
+               <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-populatie-->
+               <mim:populatie>Winkels die bij de landelijke keten Fietsenhandel zijn aangesloten.</mim:populatie>
+               <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-kwaliteit-->
+               <mim:kwaliteit>99% van alle data voor dit kenmerk is actueel juist. De informatie wordt maandelijks gecontroleerd en verwerkt voor de 1e van de maand.</mim:kwaliteit>
+               <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
+               <mim:attribuutsoorten>
+                  <mim:Attribuutsoort index="846">
+                     <mim:naam>naam</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>Naam van de winkel. </xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="846">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>true</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="903">
+                     <mim:naam>locatie</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De (geografische) locatie van de winkel.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim-ref:KeuzeRef index="903" xlink:href="#contacten-keuze-geografische-locatie">Geografische locatie</mim-ref:KeuzeRef>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim:relatiesoorten>
+                  <mim:Relatiesoort index="954">
+                     <mim:naam>verhandelt</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De handelswaar van een fietsenwinkel.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:doel>
+                        <mim-ref:ObjecttypeRef index="954"
+                                               label="verhandelt"
+                                               xlink:href="#inventaris-objecttype-fiets">Fiets</mim-ref:ObjecttypeRef>
+                     </mim:doel>
+                     <mim:relatierollen>
+                        <mim:Bron>
+                           <mim:naam><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:naam>
+                           <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                           <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                           <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                           <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                           <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                           <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                           <mim:kardinaliteit>1</mim:kardinaliteit>
+                           <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+                           <mim:authentiek><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:authentiek>
+                           <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                           <mim:identificerend>false</mim:identificerend>
+                           <mim:aggregatietype>Geen</mim:aggregatietype>
+                        </mim:Bron>
+                        <mim:Doel>
+                           <mim:naam>handelswaar</mim:naam>
+                           <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                           <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                           <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                           <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                           <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                           <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                           <mim:kardinaliteit>0..*</mim:kardinaliteit>
+                           <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+                           <mim:authentiek><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:authentiek>
+                           <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                           <mim:identificerend>false</mim:identificerend>
+                           <mim:aggregatietype>Geen</mim:aggregatietype>
+                        </mim:Doel>
+                     </mim:relatierollen>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">200</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="kardinaliteitBron">1</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Relatiesoort>
+               </mim:relatiesoorten>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+         </mim:objecttypen>
+         <mim:keuzen>
+            <mim:Keuze index="494" id="inventaris-keuze-aandrijving">
+               <mim:naam>Aandrijving</mim:naam>
+               <mim:herkomst>IFO</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>De aandrijving van een fiets.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:keuzeAttributen>
+                  <mim:Attribuutsoort index="512">
+                     <mim:naam>kettingaandrijving</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De code van het type kettingaandrijving.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:toelichting>
+                        <xhtml:body>
+                           <xhtml:p>notes test</xhtml:p>
+                        </xhtml:body>
+                     </mim:toelichting>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim-ref:DatatypeRef index="512" xlink:href="#inventaris-codelijst-ketting-lijst">Ketting lijst</mim-ref:DatatypeRef>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="573">
+                     <mim:naam>snaaraandrijving</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De code van het type snaaraandrijving.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim-ref:DatatypeRef index="573" xlink:href="#inventaris-codelijst-snaar-lijst">Snaar lijst</mim-ref:DatatypeRef>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:keuzeAttributen>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Keuze>
+         </mim:keuzen>
+         <mim-ext:kenmerken>
+            <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="Ref-release">20210901</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="Ref-version">1.0.0</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="Release">20210901</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="namespace">https://docs.geostandaarden.nl/mim/primer/Fietsenwinkel/Inventaris</mim-ext:Kenmerk>
+         </mim-ext:kenmerken>
+      </mim:Domein>
+      <mim:Domein index="3615" id="testmateriaal-domein-testmateriaal">
+         <mim:naam>Testmateriaal</mim:naam>
+         <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+         <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+         <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+         <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+         <mim:objecttypen>
+            <mim:Objecttype index="3726" id="testmateriaal-objecttype-parcel">
+               <mim:naam>Parcel</mim:naam>
+               <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+               <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+               <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+               <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+               <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
+               <mim:attribuutsoorten>
+                  <mim:Attribuutsoort index="3737">
+                     <mim:naam>extent</mim:naam>
+                     <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                     <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                     <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:type>
+                        <mim-ext:ConstructieRef index="3737" xlink:href="#constructie-gmpolygon">GM_Polygon</mim-ext:ConstructieRef>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Authentiek</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+            <mim:Objecttype index="3636" id="testmateriaal-objecttype-parcel-border">
+               <mim:naam>Parcel border</mim:naam>
+               <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+               <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+               <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+               <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+               <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
+               <mim:attribuutsoorten>
+                  <mim:Attribuutsoort index="3647">
+                     <mim:naam>top</mim:naam>
+                     <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                     <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                     <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:type>
+                        <mim-ext:ConstructieRef index="3647" xlink:href="#constructie-gmlinestring">GM_LineString</mim-ext:ConstructieRef>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Authentiek</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="3682">
+                     <mim:naam>center</mim:naam>
+                     <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                     <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                     <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:type>
+                        <mim-ext:ConstructieRef index="3682" xlink:href="#constructie-gmpoint">GM_Point</mim-ext:ConstructieRef>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Authentiek</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+         </mim:objecttypen>
+         <mim-ext:kenmerken>
+            <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="Release">20210901</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="namespace">https://docs.geostandaarden.nl/mim/primer/Fietsenwinkel/Testmateriaal</mim-ext:Kenmerk>
+         </mim-ext:kenmerken>
+      </mim:Domein>
+      <!--https://docs.geostandaarden.nl/mim/mim/#view-->
+      <mim:View index="3422" id="personen-view-personen">
+         <mim:naam>Personen</mim:naam>
+         <mim:herkomst>BRP</mim:herkomst>
+         <mim:definitie>
+            <xhtml:body>
+               <xhtml:p>Domein gebaseerd op een extern informatiemodel <xhtml:strong>Personen</xhtml:strong> (View).</xhtml:p>
+            </xhtml:body>
+         </mim:definitie>
+         <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+         <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+         <mim:locatie>https://www.amsterdam.nl/stelselpedia/brp-index/</mim:locatie>
+         <mim:objecttypen>
+            <mim:Objecttype index="3461" id="personen-objecttype-persoon">
+               <mim:naam>Persoon</mim:naam>
+               <mim:herkomst>IFO</mim:herkomst>
+               <mim:definitie>
+                  <xhtml:body>
+                     <xhtml:p>Een natuurlijk persoon.</xhtml:p>
+                  </xhtml:body>
+               </mim:definitie>
+               <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+               <mim:datumOpname>14-12-2021</mim:datumOpname>
+               <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
+               <mim:attribuutsoorten>
+                  <mim:Attribuutsoort index="3477">
+                     <mim:naam>voornaam</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De roepnaam van een <xhtml:strong>Persoon</xhtml:strong>, vol uitgeschreven.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="3477">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>0..1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+                  <mim:Attribuutsoort index="3534">
+                     <mim:naam>achternaam</mim:naam>
+                     <mim:herkomst>IFO</mim:herkomst>
+                     <mim:definitie>
+                        <xhtml:body>
+                           <xhtml:p>De achternaam van de <xhtml:strong>Persoon</xhtml:strong>.</xhtml:p>
+                        </xhtml:body>
+                     </mim:definitie>
+                     <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                     <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="3534">CharacterString</mim:Datatype>
+                     </mim:type>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:authentiek>Overig</mim:authentiek>
+                     <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+                     <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
+                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:Attribuutsoort>
+               </mim:attribuutsoorten>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                  <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim:Objecttype>
+         </mim:objecttypen>
+         <mim-ext:kenmerken>
+            <mim-ext:Kenmerk naam="Ref-release">20180101</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="Release">20180101</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="namespace">https://docs.geostandaarden.nl/mim/primer/Fietsenwinkel/Personen</mim-ext:Kenmerk>
+         </mim-ext:kenmerken>
+      </mim:View>
+      <!--https://docs.geostandaarden.nl/mim/mim/#extern-->
+      <mim:Extern index="3861" id="OUTSIDE-2">
+         <mim:naam>GML</mim:naam>
+         <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+         <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+         <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+         <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+         <mim:locatie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:locatie>
+         <mim-ext:constructies>
+            <mim-ext:Constructie index="3887" id="constructie-gmlinestring">
+               <mim-ext:constructietype>INTERFACE</mim-ext:constructietype>
+               <mim:naam>GM_LineString</mim:naam>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="oasnaam">linestringGeoJSON</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim-ext:Constructie>
+            <mim-ext:Constructie index="3893" id="constructie-gmpoint">
+               <mim-ext:constructietype>INTERFACE</mim-ext:constructietype>
+               <mim:naam>GM_Point</mim:naam>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="oasnaam">pointGeoJSON</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim-ext:Constructie>
+            <mim-ext:Constructie index="3899" id="constructie-gmpolygon">
+               <mim-ext:constructietype>INTERFACE</mim-ext:constructietype>
+               <mim:naam>GM_Polygon</mim:naam>
+               <mim-ext:kenmerken>
+                  <mim-ext:Kenmerk naam="oasnaam">polygonGeoJSON</mim-ext:Kenmerk>
+               </mim-ext:kenmerken>
+            </mim-ext:Constructie>
+         </mim-ext:constructies>
+         <mim-ext:kenmerken>
+            <mim-ext:Kenmerk naam="version">3.2.2</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="namespace">http://www.opengis.net/gml/3.2</mim-ext:Kenmerk>
+         </mim-ext:kenmerken>
+      </mim:Extern>
+      <mim:Extern index="3912" id="OUTSIDE-3">
+         <mim:naam>GMLSF</mim:naam>
+         <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+         <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+         <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+         <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+         <mim:locatie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:locatie>
+         <mim-ext:kenmerken>
+            <mim-ext:Kenmerk naam="version">2.0</mim-ext:Kenmerk>
+            <mim-ext:Kenmerk naam="namespace">http://www.opengis.net/gmlsf/2.0</mim-ext:Kenmerk>
+         </mim-ext:kenmerken>
+      </mim:Extern>
+   </mim:packages>
+   <mim-ext:kenmerken>
+      <mim-ext:Kenmerk naam="Afkorting">IMFW</mim-ext:Kenmerk>
+      <mim-ext:Kenmerk naam="Imvertor">model</mim-ext:Kenmerk>
+      <mim-ext:Kenmerk naam="Is afgeleid">Nee</mim-ext:Kenmerk>
+      <mim-ext:Kenmerk naam="Niveau">specifiek</mim-ext:Kenmerk>
+      <mim-ext:Kenmerk naam="Release">20210901</mim-ext:Kenmerk>
+      <mim-ext:Kenmerk naam="version">1.0.0</mim-ext:Kenmerk>
+      <mim-ext:Kenmerk naam="namespace">https://docs.geostandaarden.nl/mim/primer/Fietsenwinkel</mim-ext:Kenmerk>
+      <mim-ext:Kenmerk naam="imvertor-version">FB-336.0</mim-ext:Kenmerk>
+   </mim-ext:kenmerken>
+</mim:Informatiemodel>
