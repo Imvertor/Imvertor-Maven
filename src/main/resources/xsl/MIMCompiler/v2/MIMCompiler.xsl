@@ -52,7 +52,7 @@
   <xsl:param name="generate-all-ids" select="'false'" as="xs:string"/>
   <xsl:param name="add-generated-id" select="'false'" as="xs:string"/>
   
-  <xsl:variable name="mim-version" select="for $v in imf:tagged-values-not-traced(/imvert:packages, 'CFG-TV-MIMVERSION') return if ($v = '1.1') then '1.1.0' else $v" as="xs:string?"/>
+  <xsl:variable name="mim-version" select="for $v in imf:tagged-values-not-traced(/imvert:packages, 'CFG-TV-MIMVERSION') return if ($v = '1.1') then '1.1.1' else $v" as="xs:string?"/>
   
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   <xsl:variable name="add-xlink-id" select="true()"/>
@@ -117,9 +117,6 @@
         <xsl:sequence select="imf:message(., 'ERROR', 'Attempt to use native scalars while MIM package is available. Please set [1] to [2].', ('nativescalars','no'))"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:if test="$mim-version eq '1.1.1'">
-          <xsl:sequence select="imf:message(., 'WARNING', 'Implementation of MIM serialisation of MIM 1.1.1 models is work in progress and results may be invalid', ())"/>
-        </xsl:if>
         <xsl:apply-templates select="$preprocessed-xml/imvert:packages"/>
       </xsl:otherwise>
     </xsl:choose>
@@ -364,15 +361,12 @@
       <xsl:with-param name="modelelement-type" select="$soort-type" as="xs:string"/>
     </xsl:call-template>
     
-    <!-- in rol-gebaseerde modellen bestaat geen metagegeven "Relatie doel"; daarom hier expliciet opnemen -->   
-    <xsl:if test="$meta-is-role-based">
-      <mim:doel>
-        <xsl:call-template name="create-ref-element">
-          <xsl:with-param name="label" select="imvert:name" as="xs:string"/>
-          <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
-        </xsl:call-template> 
-      </mim:doel>
-    </xsl:if>
+    <mim:doel>
+      <xsl:call-template name="create-ref-element">
+        <xsl:with-param name="label" select="imvert:name" as="xs:string"/>
+        <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
+      </xsl:call-template> 
+    </mim:doel>
     
     <xsl:where-populated>
       <mim:relatierollen>
@@ -588,6 +582,11 @@
       <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
       <xsl:call-template name="genereer-metagegevens"/>
+      <mim:doel source-id="CFG-TV-PSEUDO-RELATIONTARGET">
+        <xsl:call-template name="create-ref-element">
+          <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
+        </xsl:call-template>  
+      </mim:doel>
       <xsl:call-template name="extensieKenmerken"/>
     </mim:ExterneKoppeling>
   </xsl:template>
@@ -806,7 +805,7 @@
   
   <xsl:template match="metagegeven[. = 'Kardinaliteit']">
     <xsl:param name="context" as="element()"/>
-    <!-- als relatie en role-based, de reklatie zelf bevragen -->
+    <!-- als relatie en role-based, de relatie zelf bevragen -->
     <xsl:choose>
       <xsl:when test="$context/self::imvert:source">
         <xsl:variable name="context" select="if ($meta-is-role-based) then $context/.. else $context"/>
@@ -820,6 +819,26 @@
         <mim:kardinaliteit source-id="CFG-TV-PSEUDO-CARDINALITY">{imf:kardinaliteit($context/imvert:min-occurs, $context/imvert:max-occurs)}</mim:kardinaliteit>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+  
+  <xsl:template match="metagegeven[. = 'Kardinaliteit bron']">
+    <xsl:param name="context" as="element()"/>
+    <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+    <?x
+    <xsl:choose>
+      <xsl:when test="$context/self::imvert:source">
+        <xsl:variable name="context" select="if ($meta-is-role-based) then $context/.. else $context"/>
+        <mim:kardinaliteit source-id="CFG-TV-PSEUDO-CARDINALITY">{imf:kardinaliteit($context/imvert:min-occurs-source, $context/imvert:max-occurs-source)}</mim:kardinaliteit>
+      </xsl:when>
+      <xsl:when test="$context/self::imvert:target">
+        <xsl:variable name="context" select="if ($meta-is-role-based) then $context/.. else $context"/>
+        <mim:kardinaliteit source-id="CFG-TV-PSEUDO-CARDINALITY">{imf:kardinaliteit($context/imvert:min-occurs, $context/imvert:max-occurs)}</mim:kardinaliteit>
+      </xsl:when>
+      <xsl:otherwise>
+        <mim:kardinaliteit source-id="CFG-TV-PSEUDO-CARDINALITY">{imf:kardinaliteit($context/imvert:min-occurs, $context/imvert:max-occurs)}</mim:kardinaliteit>
+      </xsl:otherwise>
+    </xsl:choose>
+    x?>
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Kwaliteit']">
@@ -889,17 +908,6 @@
     <mim:populatie source-id="CFG-TV-POPULATION">{imf:tagged-values($context, 'CFG-TV-POPULATION')}</mim:populatie>
   </xsl:template>
   
-  <xsl:template match="metagegeven[. = 'Relatie doel']">
-    <xsl:param name="context" as="element()"/>
-    <mim:doel source-id="CFG-TV-PSEUDO-RELATIONTARGET">
-      <xsl:for-each select="$context">
-        <xsl:call-template name="create-ref-element">
-          <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
-        </xsl:call-template>  
-      </xsl:for-each>
-    </mim:doel>
-  </xsl:template>
-  
   <xsl:template match="metagegeven[. = 'Relatie eigenaar']">
     <xsl:param name="context" as="element()"/>
     <!-- Via embedding -->
@@ -936,24 +944,16 @@
               <mim:GeneralisatieObjecttypen>
                 <xsl:sequence select="imf:generate-index(.)"/>
                 <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
+                <xsl:call-template name="genereer-metagegevens">
+                  <xsl:with-param name="modelelement-type" as="xs:string">Generalisatie Objecttypes</xsl:with-param>
+                  <xsl:with-param name="metagegevens-to-skip" select="('Supertype','Subtype')" as="xs:string+"/>
+                </xsl:call-template>
                 <mim:supertype>
-                  <xsl:choose>
-                    <xsl:when test="not(imvert:stereotype) or (imvert:stereotype/@id = 'stereotype-name-generalization')">
-                      <xsl:call-template name="create-ref-element">
-                        <xsl:with-param name="ref-id" select="imvert:type-id"/>
-                      </xsl:call-template>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <!-- zie https://github.com/Imvertor/Imvertor-Maven/issues/356 -->
-                      <mim-ext:Constructie>
-                        <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype>
-                        <xsl:call-template name="create-ref-element">
-                          <xsl:with-param name="ref-id" select="imvert:type-id"/>
-                        </xsl:call-template>
-                      </mim-ext:Constructie>
-                    </xsl:otherwise>
-                  </xsl:choose>
+                    <xsl:call-template name="create-ref-element">
+                      <xsl:with-param name="ref-id" select="imvert:type-id"/>
+                    </xsl:call-template>
                 </mim:supertype>
+                <!--TODO mim:Subtype -->
                 <xsl:call-template name="extensieKenmerken"/>
               </mim:GeneralisatieObjecttypen>
             </xsl:for-each>
@@ -967,13 +967,14 @@
                 <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
                 <xsl:call-template name="genereer-metagegevens">
                   <xsl:with-param name="modelelement-type" as="xs:string">Generalisatie Datatypes</xsl:with-param>
-                  <xsl:with-param name="metagegevens-to-skip" select="'Supertype'" as="xs:string"/>
+                  <xsl:with-param name="metagegevens-to-skip" select="('Supertype','Subtype')" as="xs:string+"/>
                 </xsl:call-template>
                 <mim:supertype>
                   <xsl:call-template name="create-ref-element">
                     <xsl:with-param name="ref-id" select="imvert:type-id"/>
                   </xsl:call-template>
                 </mim:supertype>
+                <!--TODO mim:Subtype -->
                 <xsl:call-template name="extensieKenmerken"/>
               </mim:GeneralisatieDatatypen>
             </xsl:for-each>
@@ -988,6 +989,11 @@
     <mim:toelichting source-id="CFG-TV-DESCRIPTION">
       <xsl:sequence select="imf:tagged-values($context, 'CFG-TV-DESCRIPTION')"/>
     </mim:toelichting>
+  </xsl:template>
+  
+  <xsl:template match="metagegeven[. = 'Type supertype']">
+    <xsl:param name="context" as="element()"/>
+    <!-- loopt via kenmerken -->
   </xsl:template>
   
   <xsl:template name="type" match="metagegeven[. = 'Type']">
@@ -1452,7 +1458,12 @@
         <xsl:if test="imvert:is-value-derived = 'true'">
           <mim-ext:Kenmerk naam="is-value-derived">true</mim-ext:Kenmerk>
         </xsl:if>
-        <mim-ext:Kenmerk naam="imvertor-version">{imvert:generator}</mim-ext:Kenmerk>
+        <xsl:if test="self::imvert:supertype and imvert:stereotype">
+          <mim-ext:Kenmerk naam="type">{imvert:stereotype}</mim-ext:Kenmerk>
+        </xsl:if>        
+        <xsl:if test="self::imvert:packages">
+          <mim-ext:Kenmerk naam="imvertor-version">{imvert:generator}</mim-ext:Kenmerk>
+        </xsl:if>
       </mim-ext:kenmerken>        
     </xsl:where-populated>
   </xsl:template>

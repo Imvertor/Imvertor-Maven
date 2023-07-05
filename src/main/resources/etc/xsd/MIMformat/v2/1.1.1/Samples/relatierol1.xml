@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mim:Objecttype xmlns:xlink="http://www.w3.org/1999/xlink"
- xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2"
- xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel/v1"
- xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel/v2"
+ xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0"
+ xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0"
+ xmlns:mim="http://www.geostandaarden.nl/mim/mim-core/1.1"
  xmlns:xhtml="http://www.w3.org/1999/xhtml"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.geostandaarden.nl/mim/informatiemodel/v2 ../MIMFORMAT_Mim_relatierol_v2.xsd" id="id1">
+ xsi:schemaLocation="http://www.geostandaarden.nl/mim/mim-core/1.1 ../MIMFORMAT_Mim_relatierol.xsd" id="id1">
     <mim:naam>naam</mim:naam>
     <mim:herkomst>herkomst</mim:herkomst>
     <mim:definitie>definitie</mim:definitie>
@@ -17,19 +17,39 @@
             <mim:naam>relatiesoort</mim:naam>
             <mim:alias>alias</mim:alias>
             <mim:definitie>definitie</mim:definitie>
-            <mim:unidirectioneel>true</mim:unidirectioneel>
+            <mim:herkomstDefinitie>herkomst definitie</mim:herkomstDefinitie>
+            <mim:datumOpname>2023-04-04</mim:datumOpname>
+            <mim:doel>
+                <mim-ref:ObjecttypeRef xlink:href="#id1"/>
+            </mim:doel>
             <mim:relatierollen>
+                <mim:Bron>
+                    <mim:naam>naam,</mim:naam>
+                    <mim:herkomst>herkomst</mim:herkomst>
+                    <mim:definitie>definitie</mim:definitie>
+                    <mim:herkomstDefinitie>herkomst definitie</mim:herkomstDefinitie>
+                    <mim:datumOpname>2022-01-01</mim:datumOpname>
+                    <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                    <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                    <mim:kardinaliteit>0..1</mim:kardinaliteit>
+                    <mim:kardinaliteitBron>1</mim:kardinaliteitBron>
+                    <mim:authentiek>false</mim:authentiek>
+                    <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                    <mim:aggregatietype>Gedeeld</mim:aggregatietype>
+                </mim:Bron>
                 <mim:Doel>
                     <mim:naam>naam</mim:naam>
                     <mim:herkomst>herkomst</mim:herkomst>
                     <mim:definitie>definitie</mim:definitie>
                     <mim:herkomstDefinitie>herkomstDefinitie</mim:herkomstDefinitie>
                     <mim:datumOpname>2022-01-01</mim:datumOpname>
-                    <mim:kardinaliteit>0..1</mim:kardinaliteit>
                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                    <mim:kardinaliteit>0..1</mim:kardinaliteit>
+                    <mim:kardinaliteitBron>1</mim:kardinaliteitBron>
                     <mim:authentiek>false</mim:authentiek>
                     <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                    <mim:aggregatietype>Gedeeld</mim:aggregatietype>
                 </mim:Doel>
             </mim:relatierollen>
         </mim:Relatiesoort>
