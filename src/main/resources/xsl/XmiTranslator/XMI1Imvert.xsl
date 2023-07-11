@@ -863,7 +863,12 @@
         <xsl:sequence select="imf:create-output-element('imvert:min-length',imf:get-profile-tagged-value($this,'minLength'))"/>
         <xsl:sequence select="imf:create-output-element('imvert:max-length',imf:get-profile-tagged-value($this,'maxLength'))"/>
         <xsl:sequence select="imf:create-output-element('imvert:any-from-package',imf:get-profile-tagged-value($this,'package'))"/>
-       
+
+        <xsl:variable name="iv" select="$this/UML:Attribute.initialValue/UML:Expression/@body"/>
+        <xsl:variable name="ro" select="if ($this/@changeable = 'frozen') then 'true' else ()"/>
+        <xsl:sequence select="imf:create-output-element('imvert:initial-value',$iv)"/>
+        <xsl:sequence select="imf:create-output-element('imvert:read-only',$ro)"/>
+        
     </xsl:function>
     
     <xsl:function name="imf:get-association-info" as="node()*">
