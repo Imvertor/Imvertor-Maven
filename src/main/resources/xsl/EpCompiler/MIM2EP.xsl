@@ -440,6 +440,12 @@
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-cardinality(.)"/>
+            <ep:initial-value>
+                <xsl:value-of select="imf:get-kenmerk(.,'startwaarde')"/>
+            </ep:initial-value>
+            <ep:read-only>
+                <xsl:value-of select="imf:get-kenmerk(.,'readonly')"/>
+            </ep:read-only>
             <xsl:sequence select="imf:get-type(.)"/>
             <xsl:sequence select="imf:get-props(.)"/>
         </ep:construct>
@@ -627,7 +633,9 @@
         ep:max-value | 
         ep:formal-pattern | 
         ep:alias | 
-        ep:example
+        ep:example |
+        ep:read-only |
+        ep:initial-value
         " 
         mode="remove-empty-elements">
         <xsl:if test="normalize-space()">
@@ -681,10 +689,12 @@
     <xsl:function name="imf:get-documentation" as="element(ep:documentation)*">
         <xsl:param name="this"/>
         <ep:documentation type="alias">
-            <xsl:sequence select="imf:info($this)/mim:alias"/>  
+            <ep:text>
+                <xsl:value-of select="imf:info($this)/mim:alias"/>
+            </ep:text>  
         </ep:documentation>
         <ep:documentation type="definitie">
-                <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:definitie)"/>  
+            <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:definitie)"/>  
         </ep:documentation>
         <ep:documentation type="toelichting">
             <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:toelichting)"/>  
@@ -798,7 +808,7 @@
         <ep:formal-pattern>
             <xsl:value-of select="$this/mim:formeelPatroon"/>
         </ep:formal-pattern>
-    </xsl:function>
+     </xsl:function>
     
     <xsl:function name="imf:set-parameter" as="element(ep:parameter)*">
         <xsl:param name="name"/>

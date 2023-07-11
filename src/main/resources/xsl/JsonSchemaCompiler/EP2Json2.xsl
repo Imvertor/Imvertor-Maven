@@ -105,13 +105,14 @@
                 <xsl:variable name="added-location" select="if (imf:get-ep-parameter(.,'locatie')) then ('; Locatie: ' || imf:get-ep-parameter(.,'locatie')) else ()"/>
                 <xsl:sequence select="imf:ep-to-namevaluepair('description',imf:create-description(.) || $added-location)"/>
             </xsl:variable>
+            <xsl:variable name="read-only" select="if (ep:read-only = 'true' or imf:get-ep-parameter(.,'is-value-derived')) then true() else ()"/>
+            <xsl:variable name="initial-value" select="ep:initial-value"/>
             <j:map key="{imf:ep-tech-name(ep:name)}">
                 <xsl:choose>
                     <xsl:when test="ep:ref and (ep:max-occurs and ep:max-occurs ne '1')">
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Ref with maxoccurs [1]',$n)"/>
                         <xsl:sequence select="$header"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',imf:get-ep-parameter(.,'is-value-derived'))"/>
                         <j:map key="items">
                             <xsl:variable name="target" select="//ep:construct[@id = current()/ep:ref/@href]"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref($target))"/>
@@ -120,6 +121,8 @@
                         <xsl:if test="$as-property">
                             <xsl:sequence select="imf:ep-to-namevaluepair('uniqueItems',true())"/>
                         </xsl:if>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
                     </xsl:when>
                     <xsl:when test="ep:ref">
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Ref [1]',$n)"/>
@@ -127,12 +130,13 @@
                         <xsl:variable name="target" select="//ep:construct[@id = current()/ep:ref/@href]"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref($target))"/>
                         <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
                     </xsl:when>
                     <xsl:when test="ep:seq and (ep:max-occurs and ep:max-occurs ne '1')">
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Seq with maxoccurs [1]',$n)"/>
                         <xsl:sequence select="$header"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',imf:get-ep-parameter(.,'is-value-derived'))"/>
                         <j:map key="items">
                             <xsl:variable name="target" select="//ep:construct[@id = current()/ep:seq/ep:construct/ep:ref/@href]"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref($target))"/>
@@ -141,13 +145,14 @@
                         <xsl:if test="$as-property">
                             <xsl:sequence select="imf:ep-to-namevaluepair('uniqueItems',true())"/>
                         </xsl:if>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
                     </xsl:when>
                     <xsl:when test="ep:seq">
                         <xsl:variable name="super" select="ep:super/ep:ref/@href"/>
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', if ($super) then 'Seq with super [1]' else 'Seq [1]',imf:string-group($n))"/>
                         <xsl:sequence select="$header"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',imf:get-ep-parameter(.,'is-value-derived'))"/>
                         <xsl:variable name="body">
                             <xsl:variable name="required" select="ep:seq/ep:construct[not(ep:min-occurs eq '0')]"/>
                             <xsl:if test="exists($required)">
@@ -191,6 +196,8 @@
                             </xsl:otherwise>
                         </xsl:choose>
                         <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
                     </xsl:when>
                     <xsl:when test="ep:choice">
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice [1]',$n)"/>
@@ -242,11 +249,11 @@
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Codelist [1]',$n)"/>
                         <xsl:sequence select="$header"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',imf:get-ep-parameter(.,'is-value-derived'))"/>
                         <j:map key="properties">
                             <j:map key="code">
                                 <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
-                                <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',imf:get-ep-parameter(.,'is-value-derived'))"/>
+                                <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
+                                <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
                             </j:map>
                         </j:map>
                     </xsl:when>
@@ -255,7 +262,6 @@
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Datatype [1]',$n)"/>
                         <xsl:sequence select="$header"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',imf:get-ep-parameter(.,'is-value-derived'))"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('minimum',ep:min-value)"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('maximum',ep:max-value)"/>
@@ -263,6 +269,8 @@
                         <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',ep:max-length)"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('pattern',ep:formal-pattern)"/>
                         <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
                     </xsl:when>
                     
                     <xsl:when test="ep:external">

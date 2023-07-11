@@ -39,6 +39,9 @@
      - (11) element ep:id verwijderd, ep:ref/@href zal nu verwijzen naar @id (exact match)
      - (12) ep:release wordt ep:version
      
+   - 20230711
+     - (13) initial-value en read-only toegevoegd
+     
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	
@@ -70,6 +73,8 @@
 			<xs:element ref="max-occurs" minOccurs="0"/>
 			<xs:element ref="external" minOccurs="0"/>
 			<xs:element ref="super" minOccurs="0"/>
+			<xs:element ref="initial-value" minOccurs="0"/>
+			<xs:element ref="read-only" minOccurs="0"/>
 			<xs:choice minOccurs="0">
 				<!-- 0 is toegestaan als er supertypen zijn -->
 				<xs:choice>
@@ -108,7 +113,7 @@
 	</xs:element>
 
 	<xs:element name="text">
-		<xs:complexType>
+		<xs:complexType mixed="true">
 			<xs:sequence>
 				<xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##any"
 				/>
@@ -116,6 +121,8 @@
 		</xs:complexType>
 	</xs:element>
 
+	<xs:element name="alias" type="xs:string"/>
+	
 	<xs:element name="enum" type="xs:string"/>
 	
 	<xs:element name="group">
@@ -175,6 +182,10 @@
 	</xs:element>
 	
 	<xs:element name="formal-pattern" type="xs:string"/>
+	<xs:element name="initial-value" type="xs:string"/>
+	
+	<xs:element name="read-only" type="xs:boolean"/>
+	
 	<xs:element name="ref">
 		<xs:complexType>
 			<xs:simpleContent>
