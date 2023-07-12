@@ -42,8 +42,14 @@
    
         <xsl:sequence select="dlogger:save('$jsonschemavariant',$jsonschemavariant)"/>
         
+        <xsl:variable name="step-0" as="element(mim:Informatiemodel)">
+            <xsl:apply-templates select="/mim:Informatiemodel" mode="assoc-class"/>    
+        </xsl:variable>
+        
+        <xsl:sequence select="dlogger:save('$step-0',$step-0)"/>
+        
         <xsl:variable name="step-1" as="element(ep:group)">
-            <xsl:apply-templates select="/mim:Informatiemodel"/>
+            <xsl:apply-templates select="$step-0"/>
         </xsl:variable>
 
         <xsl:sequence select="pack:reorder-ep-structure($step-1)"/>
@@ -862,5 +868,77 @@
         <xsl:param name="this"/>
         <xsl:sequence select="if ($this/self::mim:Relatiesoort and $relatierol-leidend) then $this/mim:relatierollen/mim:Doel else $this"/>
     </xsl:function>
+    
+    <!-- ==============
+        Omzetten van associatieklassen naar gewone objecttypen
+        
+        zie https://geonovum.github.io/uml2json/document.html#toc40
+        =============== -->
+    
+    <xsl:template match="mim:Domein/mim:objecttypen" mode="assoc-class">
+        <mim:objecttypen>
+            <xsl:apply-templates select="*" mode="#current"/>
+            <xsl:apply-templates select="mim:Objecttype/mim:relatiesoorten/mim:Relatiesoort/mim:relatieklasse/mim:Relatieklasse" mode="#current"/>
+        </mim:objecttypen>
+    </xsl:template>
+    
+    <xsl:template match="mim:relatieklasse" mode="assoc-class">
+        <!-- wodrt in andere context verwerkt -->
+    </xsl:template>
+    
+    <xsl:template match="mim:Relatiesoort[mim:relatieklasse]" mode="assoc-class">
+        <xsl:variable name="relatie" select="."/>
+        <xsl:variable name="relatieklasse" select="mim:relatieklasse/mim:Relatieklasse"/>
+        <mim:Relatiesoort>
+            <mim:naam>{$relatie/mim:naam}</mim:naam>
+            <mim:doel>
+                <mim-ref:ObjecttypeRef index="{$relatie/@index}"
+                    xlink:href="#{$relatieklasse/@id}">{$relatieklasse/mim:naam}</mim-ref:ObjecttypeRef>
+            </mim:doel>
+            <mim:relatierollen>
+                <mim:Bron>
+                    <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Bron/*[not(name() = ('mim:kardinaliteit'))]" mode="#current"/>
+                    <mim:kardinaliteit>1</mim:kardinaliteit>
+                </mim:Bron>
+                <mim:Doel>
+                    <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/*[not(name() = ('mim:kardinaliteit'))]" mode="#current"/>
+                    <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/mim:kardinaliteit" mode="#current"/>
+                </mim:Doel>
+            </mim:relatierollen>
+        </mim:Relatiesoort>
+    </xsl:template>
+    
+    <!-- maak een objecttype voor de associatieklasse waarbij deze één in-gaande en één uitgaande relatie heeft -->
+    <xsl:template match="mim:Relatieklasse" mode="assoc-class">
+        <xsl:variable name="relatie" select="../.."/>
+        <xsl:variable name="relatieklasse" select="."/>
+        <mim:Objecttype>
+            <xsl:apply-templates select="$relatieklasse/@*" mode="#current"/>
+            <xsl:apply-templates select="$relatieklasse/*[not(name() = ('mim:relatiesoorten','mim:kardinaliteit'))]" mode="#current"/>
+            <mim:relatiesoorten>
+                <xsl:apply-templates select="$relatieklasse/mim:relatiesoorten/mim:Relatiesoort" mode="#current"/>
+                <mim:Relatiesoort>
+                    <xsl:apply-templates select="$relatie/mim:naam" mode="#current"/><!-- herhaling van dezelfde naam -->
+                    <xsl:apply-templates select="$relatie/mim:doel" mode="#current"/>
+                    <mim:relatierollen>
+                        <mim:Bron>
+                            <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Bron/mim:naam" mode="#current"/>
+                            <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Bron/mim:kardinaliteit" mode="#current"/>
+                        </mim:Bron>
+                        <mim:Doel>
+                            <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/mim:naam" mode="#current"/>
+                            <mim:kardinaliteit>1<!--fixed--></mim:kardinaliteit>
+                        </mim:Doel>
+                    </mim:relatierollen>
+                </mim:Relatiesoort>
+            </mim:relatiesoorten>
+        </mim:Objecttype>
+    </xsl:template>
+    
+    <xsl:template match="node() | @*" mode="assoc-class">
+        <xsl:copy>
+            <xsl:apply-templates select="node() | @*" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
     
 </xsl:stylesheet>

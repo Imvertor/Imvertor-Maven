@@ -409,7 +409,7 @@
   <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-relatieklasse']">
     <mim:Relatieklasse source-id="{imvert:stereotype/@id}">
       <xsl:sequence select="imf:generate-index(.)"/>
-      <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
+      <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="attribuutsoorten"/>
       <xsl:call-template name="extensieKenmerken"/>
