@@ -202,6 +202,15 @@
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
+
+        <tv norm="space" id="CFG-TV-RELATIONNAMEINVERSE">
+            <name lang="nl">Relatienaam inverse</name>
+            <name lang="en">Relation name inverse</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
     </tagged-values>
 
 </tagset>
