@@ -18,7 +18,7 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <jsonschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <name>OGC Json schema's</name>
+    <name>OGC Json schema's in accordance with Best Practices</name>
     
     <desc lang="nl">Regels voor het verwerken van MIM modellen tot OGC JSON schema's</desc>
     <desc lang="en">Rules for processing MIM models to OGC JSON schemas</desc>
@@ -28,5 +28,40 @@
     
     <!-- specify if Json must use HAL conventions -->
     <parameter name="json-hal">false</parameter>
+    
+    <!-- 
+        Best Practice for OGC - UML to JSON Encoding Rules
+        options: 
+        /req/plain
+        /req/geojson
+        /req/jsonfg
+    -->
+    <parameter name="bp-basic-encodings">/req/plain</parameter><!-- Clause 7.4 -->
+    
+    <!-- 
+        Best Practice for OGC - UML to JSON Encoding Rules
+        options: 
+        /req/by-reference-basic
+        /req/by-reference-uri
+        /req/by-reference-link-object
+    -->
+    <parameter name="bp-by-reference-encodings">/req/by-reference-basic</parameter><!-- Clause 7.8.2 -->
+    
+    <!-- 
+        Best Practice for OGC - UML to JSON Encoding Rules
+        options: 
+        /req/codelists-basic
+        /req/codelists-literal
+        /req/codelists-uri
+        /req/codelists-link-object
+    -->
+    <parameter name="bp-code-list-encodings">/req/codelists-basic</parameter><!-- Clause 7.10.2 -->
+    
+    <!-- 
+        Best Practice for OGC - UML to JSON Encoding Rules
+        options: 
+        /req/entitytype
+    -->
+    <parameter name="bp-additional-requirements-classes">/req/entitytype</parameter><!-- Clause 7.11 -->    
     
 </jsonschema-rules>

@@ -18,7 +18,7 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <jsonschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <name>OGC Json schema's</name>
+    <name>OGC Json schema's voor GeoJson</name>
     
     <desc lang="nl">Regels voor het verwerken van MIM modellen tot OGC GeoJSON schema's</desc>
     <desc lang="en">Rules for processing MIM models to OGC GeoJSON schemas</desc>
@@ -27,5 +27,7 @@
     
     <!-- specify the json variant -->
     <parameter name="json-variant">geojson</parameter>
+
+    <parameter name="bp-basic-encodings">/req/geojson</parameter>
     
 </jsonschema-rules>
