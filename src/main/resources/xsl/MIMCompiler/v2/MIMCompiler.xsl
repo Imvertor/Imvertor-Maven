@@ -1464,12 +1464,16 @@
         <xsl:if test="self::imvert:packages">
           <mim-ext:Kenmerk naam="imvertor-version">{imvert:generator}</mim-ext:Kenmerk>
         </xsl:if>
-        <xsl:if test="self::imvert:attribute">
-          <mim-ext:Kenmerk naam="startwaarde">{imvert:initial-value}</mim-ext:Kenmerk>
-        </xsl:if>
-        <xsl:if test="self::imvert:attribute">
-          <mim-ext:Kenmerk naam="readonly">{imvert:read-only}</mim-ext:Kenmerk>
-        </xsl:if>
+        <xsl:where-populated>
+          <xsl:if test="self::imvert:attribute">
+            <mim-ext:Kenmerk naam="startwaarde">{imvert:initial-value}</mim-ext:Kenmerk>
+          </xsl:if>
+        </xsl:where-populated>
+        <xsl:where-populated>
+          <xsl:if test="self::imvert:attribute">
+            <mim-ext:Kenmerk naam="readonly">{imvert:read-only}</mim-ext:Kenmerk>
+          </xsl:if>
+        </xsl:where-populated>
       </mim-ext:kenmerken>        
     </xsl:where-populated>
   </xsl:template>
