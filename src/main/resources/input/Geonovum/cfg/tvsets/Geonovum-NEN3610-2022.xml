@@ -35,6 +35,19 @@
             </stereotypes>
         </tv>
        
+        <!-- tagged values voor Json serialisatie -->
+        <tv norm="space" id="CFG-TV-LITERALENCODINGTYPE">
+            <name lang="nl">Waarde codering type</name>
+            <name lang="en">Literal encoding type</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">The tagged value literalEncodingType identifies the conceptual type that applies to the enumeration values. If the tagged value is not set on the enumeration, or has an empty value, then the literal encoding type is defined to be CharacterString.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+                <stereo minmax="0..1">stereotype-name-codelist</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
     
 </tagset>
