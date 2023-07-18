@@ -185,7 +185,7 @@ public class ChainTranslateAndReport {
 				    succeeds = succeeds && (new ImvertCompiler()).run();
 				    
 				    // generate the MIM format from Imvertor embellish format
-				    if (succeeds)
+				    if (succeeds) {
 				    	if (configurator.isTrue("cli","createmimformat",false))
 				    		succeeds = (new MIMCompiler()).run() && succeeds;
 					
@@ -245,7 +245,7 @@ public class ChainTranslateAndReport {
 		
 					    if (configurator.isTrue("cli","createyaml",false)) 
 					    	succeeds = (new YamlCompiler()).run() && succeeds;
-				  
+				    }
 			    }
 	    		(new ParmsCopier()).run();
 	    		
