@@ -42,6 +42,8 @@
          <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="0..1">Locatie</metagegeven>
+         <!-- json extensie -->
+         <metagegeven kardinaliteit="0..1">Waarde codering type</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Constraint</naam>
@@ -88,6 +90,8 @@
          <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
+         <!-- json extensie -->
+         <metagegeven kardinaliteit="0..1">Waarde codering type</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Enumeratiewaarde</naam>
@@ -840,6 +844,11 @@
          <modelelement kardinaliteit="1">Externe koppeling</modelelement>
          <modelelement kardinaliteit="1">Relatiesoort - Relatierol leidend</modelelement>
          <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Waarde codering type</naam>
+         <modelelement kardinaliteit="0..1">Codelijst</modelelement>
+         <modelelement kardinaliteit="0..1">Enumeratie</modelelement>
       </metagegeven>
    </metagegevens>
 </metamodel>

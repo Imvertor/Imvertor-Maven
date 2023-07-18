@@ -29,7 +29,7 @@
         - verwerking van json GML is nu anders, conform OGC BP.
     -->
     
-    <xsl:variable name="jsonvariant" select="imf:get-ep-parameter(/ep:group,'json-schema-variant')" as="xs:string?"/>
+    <xsl:variable name="bp-req-applies" select="imf:boolean(imf:get-ep-parameter(/ep:group,'bp-req-applies'))" as="xs:boolean"/>
     
     <xsl:variable name="schema-id">{imf:get-ep-parameter(/ep:group,'namespace')}/{imf:get-ep-parameter(/ep:group,'version')}/{imf:get-ep-parameter(/ep:group,'release')}</xsl:variable>
     
@@ -46,11 +46,17 @@
         
         <xsl:variable name="schema-desc">{ep:name} - version {imf:get-ep-parameter(.,'version')} / {imf:get-ep-parameter(.,'release')} by Imvertor {imf:get-ep-parameter(.,'imvertor-version')} variant {imf:get-ep-parameter(.,'json-schema-variant')}{if ($debugging) then  ' DEBUG' else ''}</xsl:variable>
         <xsl:choose>
-            <xsl:when test="$jsonvariant = ('plainjson','geojson','jsonfg')">
+            <xsl:when test="$bp-req-applies">
                 <j:map>
                     <xsl:sequence select="imf:ep-to-namevaluepair('$comment',$schema-desc)"/>
                     <xsl:sequence select="imf:ep-to-namevaluepair('$schema','https://json-schema.org/draft/2019-09/schema')"/>
                     <xsl:sequence select="imf:ep-to-namevaluepair('$id',$schema-id)"/>
+                    <j:array key="$reqs">
+                        <j:string>{imf:get-ep-parameter(.,'bp-req-basic-encodings')}</j:string>
+                        <j:string>{imf:get-ep-parameter(.,'bp-req-by-reference-encodings')}</j:string>
+                        <j:string>{imf:get-ep-parameter(.,'bp-req-code-list-encodings')}</j:string>
+                        <j:string>{imf:get-ep-parameter(.,'bp-req-additional-requirements-classes')}</j:string>
+                    </j:array>
                     <j:map key="$defs">
                         <xsl:sequence select="$defs"/>
                     </j:map>
@@ -237,6 +243,7 @@
                     <xsl:when test="ep:enum">
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Enum [1]',$n)"/>
                         <xsl:sequence select="$header"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
                         <j:array key="enum">
                             <xsl:for-each select="ep:enum">
                                 <j:string>
@@ -362,6 +369,7 @@
             <xsl:when test="$data-type = 'ep:real'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:decimal'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:integer'">number</xsl:when>
+            <xsl:when test="$data-type = 'ep:number'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:boolean'">boolean</xsl:when>
             <xsl:when test="$data-type = 'ep:time'">string</xsl:when>
             <xsl:otherwise>

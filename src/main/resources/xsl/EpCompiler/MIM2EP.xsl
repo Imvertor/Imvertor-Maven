@@ -32,7 +32,10 @@
     <xsl:variable name="stylesheet-code">EP</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/> 
     
-    <xsl:variable name="jsonschemavariant" select="$configuration-jsonschemarules-file//parameter[@name = 'json-variant']"/> <!-- elke variant is uitgewerkt in een mode -->
+    <xsl:variable name="bp-req-basic-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-basic-encodings']"/> 
+    <xsl:variable name="bp-req-by-reference-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-by-reference-encodings']"/> 
+    <xsl:variable name="bp-req-code-list-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-code-list-encodings']"/> 
+    <xsl:variable name="bp-req-additional-requirements-classes" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-additional-requirements-classes']"/> 
     
     <xsl:variable name="domain-packages" select="/mim:Informatiemodel/mim:packages/mim:Domein"/>
     
@@ -40,7 +43,7 @@
     
     <xsl:template match="/">
    
-        <xsl:sequence select="dlogger:save('$jsonschemavariant',$jsonschemavariant)"/>
+        <xsl:sequence select="dlogger:save('$jsonschemavariant',imf:get-xparm('cli/createjsonschemavariant'))"/>
         
         <xsl:variable name="step-0" as="element(mim:Informatiemodel)">
             <xsl:apply-templates select="/mim:Informatiemodel" mode="assoc-class"/>    
@@ -67,7 +70,11 @@
                     <xsl:sequence select="imf:set-parameter('release',imf:get-kenmerk(.,'release'))"/>
                     <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'namespace'))"/>
                     <xsl:sequence select="imf:set-parameter('imvertor-version',imf:get-kenmerk(.,'imvertor-version'))"/>
-                    <xsl:sequence select="imf:set-parameter('json-schema-variant',$jsonschemavariant)"/>
+                    <xsl:sequence select="imf:set-parameter('bp-req-applies','yes')"/>
+                    <xsl:sequence select="imf:set-parameter('bp-req-basic-encodings',$bp-req-basic-encodings)"/>
+                    <xsl:sequence select="imf:set-parameter('bp-req-by-reference-encodings',$bp-req-by-reference-encodings)"/>
+                    <xsl:sequence select="imf:set-parameter('bp-req-code-list-encodings',$bp-req-code-list-encodings)"/>
+                    <xsl:sequence select="imf:set-parameter('bp-req-additional-requirements-classes',$bp-req-additional-requirements-classes)"/>
                 </ep:parameters>
                 <xsl:sequence select="imf:get-name(.)"/>
                 <xsl:sequence select="imf:get-documentation(.)"/>
@@ -123,7 +130,7 @@
             <xsl:apply-templates select="mim-ext:constructies/mim-ext:Constructie"/><!-- dit zijn interfaces -->
         </xsl:variable>
         <xsl:variable name="added-defs">
-            <xsl:if test="mim:naam = 'GML' and $jsonschemavariant = ('geojson','jsonfg')">
+            <xsl:if test="mim:naam = 'GML' and $bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')">
                 <ep:construct id="constructie-feature">
                     <!-- 7.6.1. Common base schema -->
                     <ep:parameters>
@@ -327,7 +334,9 @@
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
-            <ep:data-type>ep:string</ep:data-type>
+            <xsl:variable name="type" select="lower-case(imf:get-kenmerk(.,'waarde codering type'))"/>
+            <xsl:variable name="jtype" select="if ($type = ('real','number')) then 'ep:number' else if ($type = ('integer')) then 'ep:integer' else 'ep:string'"/>
+            <ep:data-type>{$jtype}</ep:data-type>
             <xsl:apply-templates select="mim:waarden/mim:Waarde"/>
         </ep:construct>
     </xsl:template>
@@ -342,8 +351,8 @@
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:if test="ancestor::mim:Extern/mim:naam = 'GML'">
                     <!-- bepaal hier de locatie van de externe json definitie --> 
-                    <xsl:variable name="requires-geojson" select="$jsonschemavariant = ('plainjson','geojson')"/>
-                    <xsl:variable name="requires-jsonfg" select="$jsonschemavariant = ('jsonfg')"/>
+                    <xsl:variable name="requires-geojson" select="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')"/>
+                    <xsl:variable name="requires-jsonfg" select="$bp-req-basic-encodings = ('/req/jsonfg')"/>
                     <xsl:variable name="name" select="imf:info(.)/mim:naam"/>
                     <xsl:variable name="url" as="xs:string?">
                         <xsl:choose>
@@ -375,6 +384,7 @@
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
+            <ep:external>true</ep:external><!-- signalleer dat dit een externe constructie is; oplossen door de verwerkende software -->
         </ep:construct>
     </xsl:template>
     
@@ -439,7 +449,7 @@
                 <xsl:sequence select="imf:get-nillable(.)"/>
                 <xsl:sequence select="imf:get-data-location(.)"/>
                 <xsl:sequence select="imf:set-parameter('is-value-derived',imf:get-kenmerk(.,'is-value-derived'))"/>
-                <xsl:if test="mim:identificerend and $jsonschemavariant = ('geojson','jsonfg')">
+                <xsl:if test="mim:identificerend and $bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')">
                     <xsl:sequence select="imf:set-parameter('identifier','true')"/>
                 </xsl:if>
             </ep:parameters>
@@ -540,8 +550,9 @@
     </xsl:template>
     
     <xsl:template match="mim:Enumeratie/mim:waarden/mim:Waarde">
+        <xsl:sequence select="dlogger:save('startwaarde',imf:get-kenmerk(.,'startwaarde'))"></xsl:sequence>
         <ep:enum>
-            <xsl:value-of select="imf:get-name(.)"/><!-- de string waarde -->
+            <xsl:value-of select="(imf:get-kenmerk(.,'startwaarde'),imf:get-name(.))[1]"/><!-- de startwaarde of anders de string waarde -->
         </ep:enum>
     </xsl:template>
     
@@ -685,7 +696,7 @@
                 <xsl:when test="$this/mim:supertypen/*">
                     <xsl:apply-templates select="$this/mim:supertypen/*"/>
                 </xsl:when>
-                <xsl:when test="$jsonschemavariant = ('geojson','jsonfg') and local-name($this) = ('Objecttype','Relatieklasse','Koppelklasse')"><!-- see OGC BP 7.6.1. Common base schema -->
+                <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and local-name($this) = ('Objecttype','Relatieklasse','Koppelklasse')"><!-- see OGC BP 7.6.1. Common base schema -->
                     <ep:ref href="constructie-feature">GM_Feature</ep:ref>
                 </xsl:when>
             </xsl:choose>
@@ -781,7 +792,7 @@
     <xsl:function name="imf:get-ep-datatype" as="element(ep:data-type)">
         <xsl:param name="mim-datatype" as="xs:string"/>
         <xsl:choose>
-            <xsl:when test="$mim-datatype = 'CharacterString'">
+            <xsl:when test="$mim-datatype = 'CHARACTERSTRING'">
                 <ep:data-type>ep:string</ep:data-type>
             </xsl:when>
             <xsl:otherwise>
@@ -861,7 +872,7 @@
     <xsl:function name="imf:get-kenmerk" as="xs:string?">
         <xsl:param name="construct" as="element()"/>
         <xsl:param name="naam" as="xs:string"/><!-- in lower case -->
-        <xsl:value-of select="$construct/mim-ext:kenmerken/mim-ext:Kenmerk[lower-case(@naam) = $naam]"/>
+        <xsl:sequence select="$construct/mim-ext:kenmerken/mim-ext:Kenmerk[lower-case(@naam) = $naam]"/>
     </xsl:function>
     
     <xsl:function name="imf:info" as="element()?">
@@ -869,11 +880,13 @@
         <xsl:sequence select="if ($this/self::mim:Relatiesoort and $relatierol-leidend) then $this/mim:relatierollen/mim:Doel else $this"/>
     </xsl:function>
     
-    <!-- ==============
+    <!-- 
+        ==============
         Omzetten van associatieklassen naar gewone objecttypen
         
         zie https://geonovum.github.io/uml2json/document.html#toc40
-        =============== -->
+        =============== 
+    -->
     
     <xsl:template match="mim:Domein/mim:objecttypen" mode="assoc-class">
         <mim:objecttypen>
@@ -893,6 +906,7 @@
             <mim:naam>{$relatie/mim:naam}</mim:naam>
             <mim:doel>
                 <mim-ref:ObjecttypeRef index="{$relatie/@index}"
+                    label="TODO1"
                     xlink:href="#{$relatieklasse/@id}">{$relatieklasse/mim:naam}</mim-ref:ObjecttypeRef>
             </mim:doel>
             <mim:relatierollen>
