@@ -241,14 +241,24 @@
                         </j:array>
                     </xsl:when>
                     <xsl:when test="ep:enum">
+                        <xsl:variable name="type" select="imf:map-datatype-to-ep-type(ep:data-type)"/>
+                   
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Enum [1]',$n)"/>
                         <xsl:sequence select="$header"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('type',$type,$nillable)"/>
                         <j:array key="enum">
                             <xsl:for-each select="ep:enum">
-                                <j:string>
-                                    <xsl:value-of select="."/>
-                                </j:string>
+                                <xsl:choose>
+                                    <xsl:when test="$type = 'number'">
+                                        <j:number>{.}</j:number>
+                                    </xsl:when>
+                                    <xsl:when test="$type = 'integer'">
+                                        <j:number>{.}</j:number><!-- bestaat integer in json? -->
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <j:string>{.}</j:string>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </xsl:for-each>
                         </j:array>
                     </xsl:when>
@@ -368,7 +378,7 @@
             <xsl:when test="$data-type = 'ep:uri'">string</xsl:when>
             <xsl:when test="$data-type = 'ep:real'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:decimal'">number</xsl:when>
-            <xsl:when test="$data-type = 'ep:integer'">number</xsl:when>
+            <xsl:when test="$data-type = 'ep:integer'">integer</xsl:when>
             <xsl:when test="$data-type = 'ep:number'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:boolean'">boolean</xsl:when>
             <xsl:when test="$data-type = 'ep:time'">string</xsl:when>
