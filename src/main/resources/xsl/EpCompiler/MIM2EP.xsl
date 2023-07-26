@@ -130,7 +130,7 @@
             <xsl:apply-templates select="mim-ext:constructies/mim-ext:Constructie"/><!-- dit zijn interfaces -->
         </xsl:variable>
         <xsl:variable name="added-defs">
-            <xsl:if test="mim:naam = 'GML' and $bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')">
+            <xsl:if test="mim:naam = 'GML'"><!-- was:  and $bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') -->
                 <ep:construct id="constructie-feature">
                     <!-- 7.6.1. Common base schema -->
                     <ep:parameters>
@@ -164,6 +164,9 @@
     </xsl:template>
     
     <xsl:template match="mim:Objecttype">
+        
+        <xsl:variable name="pga" select="imf:get-primary-geometry-attribute(.)"/>
+        
         <ep:construct>
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Objecttype',())"/>
@@ -174,9 +177,10 @@
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
-            <xsl:sequence select="imf:get-supers(.)"/>
+            <xsl:sequence select="imf:get-supers(.,$pga)"/>
             <ep:seq>
-                <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
+                <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort[mim:naam ne $pga/mim:naam]"/>
+                <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort[mim:naam eq $pga/mim:naam]" mode="pga"/>
                 <xsl:apply-templates select="mim:gegevensgroepen/mim:Gegevensgroep"/>
                 <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort"/>
                 <xsl:apply-templates select="mim:keuzen/mim-ref:KeuzeRef"/>
@@ -466,7 +470,21 @@
             <xsl:sequence select="imf:get-props(.)"/>
         </ep:construct>
     </xsl:template>
-
+    <xsl:template match="mim:Attribuutsoort" mode="pga">
+        <ep:construct>
+            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een PGA attribuutsoort',())"/>
+            <ep:parameters>
+                <xsl:sequence select="imf:set-parameter('use','attribuutsoort')"/>
+                <xsl:sequence select="imf:set-parameter('is pga','true')"/>
+                <xsl:sequence select="imf:get-index(.)"/>
+            </ep:parameters>
+            <ep:name>geometry</ep:name>
+            <xsl:sequence select="imf:get-cardinality(.)"/>
+            <xsl:sequence select="imf:get-type(.)"/>
+            <xsl:sequence select="imf:get-props(.)"/>
+        </ep:construct>
+    </xsl:template>
+    
     <xsl:template match="mim:Gegevensgroep">
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Gegevensgroep',())"/>
@@ -641,8 +659,8 @@
     <xsl:template match="
         ep:documentation | 
         ep:parameters | 
-        ep:seq | 
-        ep:choice |
+        ep:seqxx | 
+        ep:choicexx |
         ep:super |
         ep:min-length | 
         ep:max-length | 
@@ -697,9 +715,19 @@
    
     <xsl:function name="imf:get-supers" as="element(ep:super)*">
         <xsl:param name="this"/>
+        <xsl:sequence select="imf:get-supers($this,())"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-supers" as="element(ep:super)*">
+        <xsl:param name="this"/>
+        <xsl:param name="pga" as="element(mim:Attribuutsoort)?"/>
         <!-- TODO let op: in xml schema generatie moet static een copy-down worden! -->
         <ep:super>
             <xsl:choose>
+                <xsl:when test="$pga">
+                    <ep:ref href="constructie-feature">GM_Feature</ep:ref>
+                    <xsl:apply-templates select="$this/mim:supertypen/*"/>
+                </xsl:when>
                 <xsl:when test="$this/mim:supertypen/*">
                     <xsl:apply-templates select="$this/mim:supertypen/*"/>
                 </xsl:when>
@@ -888,6 +916,13 @@
         <xsl:sequence select="if ($this/self::mim:Relatiesoort and $relatierol-leidend) then $this/mim:relatierollen/mim:Doel else $this"/>
     </xsl:function>
     
+    <xsl:function name="imf:get-primary-geometry-attribute" as="element(mim:Attribuutsoort)?">
+        <xsl:param name="this" as="element(mim:Objecttype)"/>
+        <xsl:variable name="geo-atts" select="$this//mim:Attribuutsoort[starts-with(mim:type/mim-ext:ConstructieRef,'GM_')]"/>
+        <xsl:variable name="geo-att1" select="$geo-atts[imf:boolean(imf:get-kenmerk(.,'primaire geometrie'))]"/>
+        <xsl:variable name="geo-att2" select="if (count($geo-atts) = 1) then $geo-atts else ()"/>
+        <xsl:sequence select="($geo-att1,$geo-att2)[1]"/>
+    </xsl:function>
     <!-- 
         ==============
         Omzetten van associatieklassen naar gewone objecttypen

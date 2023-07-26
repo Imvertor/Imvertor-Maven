@@ -103,13 +103,15 @@
     <xsl:template match="ep:construct">
         <xsl:param name="as-property" select="false()" as="xs:boolean"/>
         <xsl:if test="empty(imf:get-ep-parameter(.,'url'))"> <!-- externe constructs met URL worden niet opgenomen; wanneer ernaar wordt verwezen wordt de URL aldaar ingevoegd -->
-            <xsl:variable name="n" select="'EP: ' || imf:ep-tech-name(ep:name) || ' ID: ' || @id"/>
+            <xsl:variable name="n" select="'EP=' || imf:ep-tech-name(ep:name) || ', ID=' || @id"/>
             <xsl:variable name="nillable" select="imf:get-ep-parameter(.,'nillable') = 'true'"/>
             <xsl:variable name="header">
-                <xsl:sequence select="imf:ep-to-namevaluepair('$anchor',imf:get-type-name(.))"/>
-                <xsl:sequence select="imf:ep-to-namevaluepair('title',ep:name)"/>
-                <xsl:variable name="added-location" select="if (imf:get-ep-parameter(.,'locatie')) then ('; Locatie: ' || imf:get-ep-parameter(.,'locatie')) else ()"/>
-                <xsl:sequence select="imf:ep-to-namevaluepair('description',imf:create-description(.) || $added-location)"/>
+                <xsl:if test="not(imf:get-ep-parameter(.,'is pga') = 'true')">
+                    <xsl:sequence select="imf:ep-to-namevaluepair('$anchor',imf:get-type-name(.))"/>
+                    <xsl:sequence select="imf:ep-to-namevaluepair('title',ep:name)"/>
+                    <xsl:variable name="added-location" select="if (imf:get-ep-parameter(.,'locatie')) then ('; Locatie: ' || imf:get-ep-parameter(.,'locatie')) else ()"/>
+                    <xsl:sequence select="imf:ep-to-namevaluepair('description',imf:create-description(.) || $added-location)"/>
+                </xsl:if>
             </xsl:variable>
             <xsl:variable name="read-only" select="if (ep:read-only = 'true' or imf:get-ep-parameter(.,'is-value-derived')) then true() else ()"/>
             <xsl:variable name="initial-value" select="ep:initial-value"/>
@@ -158,7 +160,9 @@
                         <xsl:variable name="super" select="ep:super/ep:ref/@href"/>
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', if ($super) then 'Seq with super [1]' else 'Seq [1]',imf:string-group($n))"/>
                         <xsl:sequence select="$header"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
+                        <xsl:if test="empty($super)">
+                            <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
+                        </xsl:if>
                         <xsl:variable name="body">
                             <xsl:variable name="required" select="ep:seq/ep:construct[not(ep:min-occurs eq '0')]"/>
                             <xsl:if test="exists($required)">
@@ -171,6 +175,9 @@
                                 </j:array>
                             </xsl:if>
                             <j:map key="properties">
+                                <xsl:if test="exists($super)">
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
+                                </xsl:if>
                                 <xsl:apply-templates select="ep:seq/ep:construct">
                                     <xsl:with-param name="as-property" select="true()"/>
                                 </xsl:apply-templates>
