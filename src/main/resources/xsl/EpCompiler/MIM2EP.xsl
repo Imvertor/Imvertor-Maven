@@ -681,13 +681,20 @@
         <xsl:attribute name="id" select="$this/@id"/>
     </xsl:function>
     
+    <!--
+        De naam in de MIM serialisatie is de originele naam (zoals ingevoerd door de analist).
+        De naam die in Json wordt gebruikt is de XML versie van die naam.
+        Deze correcte naam wordt bepaald op basis van geconfigureerde naamconventies.
+        Als die conventie niet bestaat, gebruik dan de ingevoerde waarde.
+    -->
     <xsl:function name="imf:get-name" as="element()*">
         <xsl:param name="this"/>
+        <xsl:variable name="name" select="(imf:info($this)/mim:naam,$this/@label,'UNKNOWNNAME')[1]"/>
         <ep:name>
-            <xsl:value-of select="(imf:info($this)/mim:naam,$this/@label,'UNKNOWNNAME')[1]"/>
+            <xsl:value-of select="imf:get-normalized-name($name,'json-bp-name')"/>
         </ep:name>
     </xsl:function>
-    
+   
     <xsl:function name="imf:get-supers" as="element(ep:super)*">
         <xsl:param name="this"/>
         <!-- TODO let op: in xml schema generatie moet static een copy-down worden! -->
