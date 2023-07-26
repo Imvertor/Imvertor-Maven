@@ -798,12 +798,13 @@
     
     <xsl:function name="imf:get-ep-datatype" as="element(ep:data-type)">
         <xsl:param name="mim-datatype" as="xs:string"/>
+        <xsl:variable name="lc" select="lower-case($mim-datatype)"/>
         <xsl:choose>
-            <xsl:when test="$mim-datatype = 'CHARACTERSTRING'">
+            <xsl:when test="$lc = 'characterstring'">
                 <ep:data-type>ep:string</ep:data-type>
             </xsl:when>
             <xsl:otherwise>
-                <ep:data-type>ep:{lower-case($mim-datatype)}</ep:data-type>
+                <ep:data-type>ep:{$lc}</ep:data-type>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
