@@ -102,20 +102,22 @@
     
     <xsl:template match="ep:construct">
         <xsl:param name="as-property" select="false()" as="xs:boolean"/>
+        <xsl:param name="use" select="imf:get-ep-parameter(.,'use')"/>
+        <xsl:param name="tech-name" select="imf:ep-tech-name(ep:name)"/>
         <xsl:if test="empty(imf:get-ep-parameter(.,'url'))"> <!-- externe constructs met URL worden niet opgenomen; wanneer ernaar wordt verwezen wordt de URL aldaar ingevoegd -->
-            <xsl:variable name="n" select="'EP=' || imf:ep-tech-name(ep:name) || ', ID=' || @id"/>
+            <xsl:variable name="n" select="'EP=' || $tech-name || ', ID=' || @id"/>
             <xsl:variable name="nillable" select="imf:get-ep-parameter(.,'nillable') = 'true'"/>
             <xsl:variable name="header">
-                <xsl:if test="not(imf:get-ep-parameter(.,'is pga') = 'true')">
-                    <xsl:sequence select="imf:ep-to-namevaluepair('$anchor',imf:get-type-name(.))"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('title',ep:name)"/>
+                <xsl:if test="not(imf:get-ep-parameter(.,'is pga') = 'true') and not(imf:get-ep-parameter(.,'is ppa') = 'true')">
+                    <xsl:sequence select="if (not($use = ('dataelement','attribuutsoort','relatiesoort'))) then imf:ep-to-namevaluepair('$anchor',imf:get-type-name(.)) else ()"/>
+                    <xsl:sequence select="if (ep:name ne $tech-name) then imf:ep-to-namevaluepair('title',ep:name) else ()"/>
                     <xsl:variable name="added-location" select="if (imf:get-ep-parameter(.,'locatie')) then ('; Locatie: ' || imf:get-ep-parameter(.,'locatie')) else ()"/>
                     <xsl:sequence select="imf:ep-to-namevaluepair('description',imf:create-description(.) || $added-location)"/>
                 </xsl:if>
             </xsl:variable>
             <xsl:variable name="read-only" select="if (ep:read-only = 'true' or imf:get-ep-parameter(.,'is-value-derived')) then true() else ()"/>
             <xsl:variable name="initial-value" select="ep:initial-value"/>
-            <j:map key="{imf:ep-tech-name(ep:name)}">
+            <j:map key="{$tech-name}">
                 <xsl:choose>
                     <xsl:when test="ep:ref and (ep:max-occurs and ep:max-occurs ne '1')">
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Ref with maxoccurs [1]',$n)"/>
@@ -137,7 +139,7 @@
                         <xsl:sequence select="$header"/>
                         <xsl:variable name="target" select="//ep:construct[@id = current()/ep:ref/@href]"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref($target))"/>
-                        <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
+                        <?x <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/> x?>
                         <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
                     </xsl:when>
@@ -164,6 +166,14 @@
                             <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
                         </xsl:if>
                         <xsl:variable name="body">
+                            <xsl:if test="exists($super)">
+                                <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
+                            </xsl:if>
+                            <j:map key="properties">
+                                <xsl:apply-templates select="ep:seq/ep:construct">
+                                    <xsl:with-param name="as-property" select="true()"/>
+                                </xsl:apply-templates>
+                            </j:map>
                             <xsl:variable name="required" select="ep:seq/ep:construct[not(ep:min-occurs eq '0')]"/>
                             <xsl:if test="exists($required)">
                                 <j:array key="required">
@@ -174,14 +184,6 @@
                                     </xsl:for-each>
                                 </j:array>
                             </xsl:if>
-                            <j:map key="properties">
-                                <xsl:if test="exists($super)">
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
-                                </xsl:if>
-                                <xsl:apply-templates select="ep:seq/ep:construct">
-                                    <xsl:with-param name="as-property" select="true()"/>
-                                </xsl:apply-templates>
-                            </j:map>
                         </xsl:variable>
                         <xsl:choose>
                             <xsl:when test="exists($super)">
@@ -208,7 +210,7 @@
                                 <xsl:sequence select="$body"/>
                             </xsl:otherwise>
                         </xsl:choose>
-                        <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
+                        <?x <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/> x?>
                         <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
                     </xsl:when>
@@ -421,7 +423,7 @@
     <xsl:function name="imf:create-minmax" as="element()*">
         <xsl:param name="min" as="xs:string?"/>
         <xsl:param name="max" as="xs:string?"/>
-        <xsl:sequence select="imf:ep-to-namevaluepair('minItems',for $i in xs:integer(($min,1)[1]) return if ($i eq 1) then () else $i)"/><!-- default van minItems is 1, weglaten als 1 -->
+        <xsl:sequence select="imf:ep-to-namevaluepair('minItems',for $i in xs:integer(($min,1)[1]) return if ($i lt 2) then () else $i)"/><!-- default van minItems is 1, weglaten als 1 -->
         <xsl:sequence select="if ($max and $max ne '*') then imf:ep-to-namevaluepair('maxItems',xs:integer($max)) else ()"/>
     </xsl:function>
     

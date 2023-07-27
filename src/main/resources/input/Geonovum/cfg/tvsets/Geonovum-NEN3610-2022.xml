@@ -57,6 +57,26 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
+        <tv norm="space" id="CFG-TV-PRIMARYPLACE">
+            <name lang="nl">Primaire plaats</name>
+            <name lang="en">Primary place</name>
+            <desc lang="nl">Een eigenschap die eigendom is van een objecttype en die deze tag heeft met een waarde gelijk aan, hoofdlettergebruik negerend, "true", zal worden gecodeerd als een typebeperking voor het "place"-lid op het hoogste niveau. De UML-eigenschap wordt niet gecodeerd binnen het lid "properties".</desc>
+            <desc lang="en">A property that is owned by an Objecttype and that has this tag with value equal to, ignoring case, “true”, shall be encoded as a type restriction for the top-level “place” member. The UML property shall not be encoded within the “properties” member.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-PRIMARYINSTANT">
+            <name lang="nl">Primair moment</name>
+            <name lang="en">Primary instant</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
         
     </tagged-values>
     

@@ -43,13 +43,9 @@
     
     <xsl:template match="/">
    
-        <xsl:sequence select="dlogger:save('$jsonschemavariant',imf:get-xparm('cli/createjsonschemavariant'))"/>
-        
-        <xsl:variable name="step-0" as="element(mim:Informatiemodel)">
+       <xsl:variable name="step-0" as="element(mim:Informatiemodel)">
             <xsl:apply-templates select="/mim:Informatiemodel" mode="assoc-class"/>    
         </xsl:variable>
-        
-        <xsl:sequence select="dlogger:save('$step-0',$step-0)"/>
         
         <xsl:variable name="step-1" as="element(ep:group)">
             <xsl:apply-templates select="$step-0"/>
@@ -70,6 +66,7 @@
                     <xsl:sequence select="imf:set-parameter('release',imf:get-kenmerk(.,'release'))"/>
                     <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'namespace'))"/>
                     <xsl:sequence select="imf:set-parameter('imvertor-version',imf:get-kenmerk(.,'imvertor-version'))"/>
+                    <xsl:sequence select="imf:set-parameter('json-schema-variant',imf:get-xparm('cli/createjsonschemavariant'))"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-applies','yes')"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-basic-encodings',$bp-req-basic-encodings)"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-by-reference-encodings',$bp-req-by-reference-encodings)"/>
@@ -166,6 +163,7 @@
     <xsl:template match="mim:Objecttype">
         
         <xsl:variable name="pga" select="imf:get-primary-geometry-attribute(.)"/>
+        <xsl:variable name="ppa" select="imf:get-primary-place-attribute(.)"/>
         
         <ep:construct>
             <xsl:sequence select="imf:get-id(.)"/>
@@ -177,15 +175,32 @@
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
-            <xsl:sequence select="imf:get-supers(.,$pga)"/>
-            <ep:seq>
-                <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort[mim:naam ne $pga/mim:naam]"/>
-                <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort[mim:naam eq $pga/mim:naam]" mode="pga"/>
+            
+            <xsl:variable name="props">
                 <xsl:apply-templates select="mim:gegevensgroepen/mim:Gegevensgroep"/>
                 <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort"/>
                 <xsl:apply-templates select="mim:keuzen/mim-ref:KeuzeRef"/>
                 <xsl:apply-templates select="mim:externeKoppelingen/mim:ExterneKoppeling"/>
-            </ep:seq>
+            </xsl:variable>
+
+            <xsl:choose>
+                <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')">
+                    <xsl:sequence select="imf:get-supers(.,$pga,$ppa)"/>
+                    <ep:seq>
+                        <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort[not(mim:naam = ($pga/mim:naam,$ppa/mim:naam))]"/>
+                        <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort[mim:naam = $pga/mim:naam]" mode="pga"/>
+                        <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort[mim:naam = $ppa/mim:naam]" mode="ppa"/>
+                        <xsl:sequence select="$props"/>
+                    </ep:seq>
+                </xsl:when>
+                <xsl:otherwise><!-- plain -->
+                    <xsl:sequence select="imf:get-supers(.)"/>
+                    <ep:seq>
+                        <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
+                        <xsl:sequence select="$props"/>
+                    </ep:seq>
+                </xsl:otherwise>
+            </xsl:choose>
         </ep:construct>
     </xsl:template>
     
@@ -354,36 +369,9 @@
                 <xsl:sequence select="imf:set-parameter('oas-name',imf:get-kenmerk(.,'oasnaam'))"/>
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:if test="ancestor::mim:Extern/mim:naam = 'GML'">
-                    <!-- bepaal hier de locatie van de externe json definitie --> 
-                    <xsl:variable name="requires-geojson" select="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')"/>
-                    <xsl:variable name="requires-jsonfg" select="$bp-req-basic-encodings = ('/req/jsonfg')"/>
-                    <xsl:variable name="name" select="imf:info(.)/mim:naam"/>
-                    <xsl:variable name="url" as="xs:string?">
-                        <xsl:choose>
-                            <xsl:when test="$requires-geojson and $name = 'GM_Point'">https://geojson.org/schema/Point.json</xsl:when>
-                            <xsl:when test="$requires-geojson and $name = 'GM_Curve'">https://geojson.org/schema/LineString.json</xsl:when>
-                            <xsl:when test="$requires-geojson and $name = 'GM_Surface'">https://geojson.org/schema/Polygon.json</xsl:when>
-                            <xsl:when test="$requires-geojson and $name = 'GM_Polygon'">https://geojson.org/schema/Polygon.json</xsl:when>
-                            <xsl:when test="$requires-geojson and $name = 'GM_MultiPoint'">https://geojson.org/schema/MultiPoint.json</xsl:when>
-                            <xsl:when test="$requires-geojson and $name = 'GM_MultiCurve'">https://geojson.org/schema/MultiLineString.json</xsl:when>
-                            <xsl:when test="$requires-geojson and $name = 'GM_MultiSurface'">https://geojson.org/schema/MultiPolygon.json</xsl:when>
-                            <xsl:when test="$requires-geojson and $name = 'GM_Aggregate'">https://geojson.org/schema/GeometryCollection.json</xsl:when>
-                            <xsl:when test="$requires-geojson and $name = 'GM_Object'">https://geojson.org/schema/Geometry.json</xsl:when>
-                            
-                            <xsl:when test="$requires-jsonfg and $name = 'GM_Point'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/Point</xsl:when>
-                            <xsl:when test="$requires-jsonfg and $name = 'GM_Curve'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/LineString</xsl:when>
-                            <xsl:when test="$requires-jsonfg and $name = 'GM_Surface'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/Polygon</xsl:when>
-                            <xsl:when test="$requires-jsonfg and $name = 'GM_Polygon'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/Polygon</xsl:when>
-                            <xsl:when test="$requires-jsonfg and $name = 'GM_Solid'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/Polyhedron</xsl:when>
-                            <xsl:when test="$requires-jsonfg and $name = 'GM_MultiPoint'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/MultiPoint</xsl:when>
-                            <xsl:when test="$requires-jsonfg and $name = 'GM_MultiCurve'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/MultiLineString</xsl:when>
-                            <xsl:when test="$requires-jsonfg and $name = 'GM_MultiSurface'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/MultiPolygon</xsl:when>
-                            <xsl:when test="$requires-jsonfg and $name = 'GM_MultiSolid'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/MultiPolyhedron</xsl:when>
-                            <xsl:when test="$requires-jsonfg and $name = 'GM_Aggregate'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/GeometryCollection</xsl:when>
-                            <xsl:when test="$requires-jsonfg and $name = 'GM_Object'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/Geometry.json</xsl:when>
-                        </xsl:choose>
-                    </xsl:variable>
-                    <xsl:sequence select="imf:set-parameter('url',$url)"/>
+                    <xsl:sequence select="dlogger:save('$url',imf:get-geo-url(.))"></xsl:sequence>
+                    
+                    <xsl:sequence select="imf:set-parameter('url',imf:get-geo-url(.))"/>
                 </xsl:if>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
@@ -453,7 +441,7 @@
                 <xsl:sequence select="imf:get-nillable(.)"/>
                 <xsl:sequence select="imf:get-data-location(.)"/>
                 <xsl:sequence select="imf:set-parameter('is-value-derived',imf:get-kenmerk(.,'is-value-derived'))"/>
-                <xsl:if test="mim:identificerend and $bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')">
+                <xsl:if test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and mim:identificerend">
                     <xsl:sequence select="imf:set-parameter('identifier','true')"/>
                 </xsl:if>
             </ep:parameters>
@@ -479,6 +467,20 @@
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
             <ep:name>geometry</ep:name>
+            <xsl:sequence select="imf:get-cardinality(.)"/>
+            <xsl:sequence select="imf:get-type(.)"/>
+            <xsl:sequence select="imf:get-props(.)"/>
+        </ep:construct>
+    </xsl:template>
+    <xsl:template match="mim:Attribuutsoort" mode="ppa">
+        <ep:construct>
+            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een PPA attribuutsoort',())"/>
+            <ep:parameters>
+                <xsl:sequence select="imf:set-parameter('use','attribuutsoort')"/>
+                <xsl:sequence select="imf:set-parameter('is ppa','true')"/>
+                <xsl:sequence select="imf:get-index(.)"/>
+            </ep:parameters>
+            <ep:name>place</ep:name>
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
             <xsl:sequence select="imf:get-props(.)"/>
@@ -568,7 +570,6 @@
     </xsl:template>
     
     <xsl:template match="mim:Enumeratie/mim:waarden/mim:Waarde">
-        <xsl:sequence select="dlogger:save('startwaarde',imf:get-kenmerk(.,'startwaarde'))"></xsl:sequence>
         <ep:enum>
             <xsl:value-of select="(imf:get-kenmerk(.,'startwaarde'),imf:get-name(.))[1]"/><!-- de startwaarde of anders de string waarde -->
         </ep:enum>
@@ -715,24 +716,28 @@
    
     <xsl:function name="imf:get-supers" as="element(ep:super)*">
         <xsl:param name="this"/>
-        <xsl:sequence select="imf:get-supers($this,())"/>
+        <xsl:sequence select="imf:get-supers($this,(),())"/>
     </xsl:function>
     
     <xsl:function name="imf:get-supers" as="element(ep:super)*">
         <xsl:param name="this"/>
         <xsl:param name="pga" as="element(mim:Attribuutsoort)?"/>
+        <xsl:param name="ppa" as="element(mim:Attribuutsoort)?"/>
         <!-- TODO let op: in xml schema generatie moet static een copy-down worden! -->
         <ep:super>
+            <xsl:if test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and $pga">
+                <ep:ref href="{imf:get-geo-url-for-name('GM_Feature')}">GM_Feature</ep:ref>
+            </xsl:if>
+            <xsl:if test="$bp-req-basic-encodings = ('/req/jsonfg') and $ppa">
+                <xsl:variable name="name" select="$ppa/mim:naam"/>
+                <ep:ref href="{imf:get-geo-url-for-name($name)}">{$name}</ep:ref>
+            </xsl:if>
             <xsl:choose>
-                <xsl:when test="$pga">
-                    <ep:ref href="constructie-feature">GM_Feature</ep:ref>
-                    <xsl:apply-templates select="$this/mim:supertypen/*"/>
-                </xsl:when>
                 <xsl:when test="$this/mim:supertypen/*">
                     <xsl:apply-templates select="$this/mim:supertypen/*"/>
                 </xsl:when>
                 <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and local-name($this) = ('Objecttype','Relatieklasse','Koppelklasse')"><!-- see OGC BP 7.6.1. Common base schema -->
-                    <ep:ref href="constructie-feature">GM_Feature</ep:ref>
+                    <ep:ref href="{imf:get-geo-url-for-name('GM_Feature')}">GM_Feature</ep:ref>
                 </xsl:when>
             </xsl:choose>
         </ep:super>
@@ -795,6 +800,7 @@
     <xsl:function name="imf:get-type" as="node()*">
         <xsl:param name="this" as="element()?"/><!-- een constructie die een type of supertype kan hebben -->
         <xsl:variable name="type" select="$this/(mim:type|mim:supertype|mim:gegevensgroeptype)"/>
+        <xsl:sequence select="dlogger:save('$type ' || $type,$type)"></xsl:sequence>
         <xsl:choose>
             <xsl:when test="empty($this)"><!-- dit alleen als primitief datatype zonder supertype voorkomt -->
                 <ep:data-type>ep:string</ep:data-type>
@@ -818,7 +824,6 @@
                 <xsl:sequence select="imf:get-ref($type/mim-ext:ConstructieRef)"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="dlogger:save('$this',$this)"></xsl:sequence>
                 <xsl:sequence select="imf:msg-comment($this,'WARNING','Unknown type: [1]',$type/*)"/>
             </xsl:otherwise>
         </xsl:choose>
@@ -862,6 +867,44 @@
             <xsl:value-of select="$this/mim:formeelPatroon"/>
         </ep:formal-pattern>
      </xsl:function>
+    
+    <xsl:function name="imf:get-geo-url" as="xs:string?">
+        <xsl:param name="this" as="element()"/>
+        <xsl:variable name="name" select="imf:info($this)/mim:naam"/>
+        <xsl:sequence select="imf:get-geo-url-for-name($name)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-geo-url-for-name" as="xs:string?">
+        <xsl:param name="name" as="xs:string?"/>
+        <!-- bepaal hier de locatie van de externe json definitie --> 
+        <xsl:variable name="requires-geojson" select="$bp-req-basic-encodings = ('/req/geojson','/req/plain')"/>
+        <xsl:variable name="requires-jsonfg" select="$bp-req-basic-encodings = ('/req/jsonfg')"/>
+        <xsl:choose>
+            <xsl:when test="$requires-geojson and $name = 'GM_Point'">https://geojson.org/schema/Point.json</xsl:when>
+            <xsl:when test="$requires-geojson and $name = 'GM_Curve'">https://geojson.org/schema/LineString.json</xsl:when>
+            <xsl:when test="$requires-geojson and $name = 'GM_Surface'">https://geojson.org/schema/Polygon.json</xsl:when>
+            <xsl:when test="$requires-geojson and $name = 'GM_Polygon'">https://geojson.org/schema/Polygon.json</xsl:when>
+            <xsl:when test="$requires-geojson and $name = 'GM_MultiPoint'">https://geojson.org/schema/MultiPoint.json</xsl:when>
+            <xsl:when test="$requires-geojson and $name = 'GM_MultiCurve'">https://geojson.org/schema/MultiLineString.json</xsl:when>
+            <xsl:when test="$requires-geojson and $name = 'GM_MultiSurface'">https://geojson.org/schema/MultiPolygon.json</xsl:when>
+            <xsl:when test="$requires-geojson and $name = 'GM_Aggregate'">https://geojson.org/schema/GeometryCollection.json</xsl:when>
+            <xsl:when test="$requires-geojson and $name = 'GM_Object'">https://geojson.org/schema/Geometry.json</xsl:when>
+            <xsl:when test="$requires-geojson and $name = 'GM_Feature'">https://geojson.org/schema/Feature.json</xsl:when>
+            
+            <xsl:when test="$requires-jsonfg and $name = 'GM_Point'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/Point</xsl:when>
+            <xsl:when test="$requires-jsonfg and $name = 'GM_Curve'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/LineString</xsl:when>
+            <xsl:when test="$requires-jsonfg and $name = 'GM_Surface'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/Polygon</xsl:when>
+            <xsl:when test="$requires-jsonfg and $name = 'GM_Polygon'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/Polygon</xsl:when>
+            <xsl:when test="$requires-jsonfg and $name = 'GM_Solid'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/Polyhedron</xsl:when>
+            <xsl:when test="$requires-jsonfg and $name = 'GM_MultiPoint'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/MultiPoint</xsl:when>
+            <xsl:when test="$requires-jsonfg and $name = 'GM_MultiCurve'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/MultiLineString</xsl:when>
+            <xsl:when test="$requires-jsonfg and $name = 'GM_MultiSurface'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/MultiPolygon</xsl:when>
+            <xsl:when test="$requires-jsonfg and $name = 'GM_MultiSolid'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/MultiPolyhedron</xsl:when>
+            <xsl:when test="$requires-jsonfg and $name = 'GM_Aggregate'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/GeometryCollection</xsl:when>
+            <xsl:when test="$requires-jsonfg and $name = 'GM_Object'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/Geometry.json</xsl:when>
+            <xsl:when test="$requires-jsonfg and $name = 'GM_Feature'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/Feature.json</xsl:when>
+        </xsl:choose>
+    </xsl:function>
     
     <xsl:function name="imf:set-parameter" as="element(ep:parameter)*">
         <xsl:param name="name"/>
@@ -923,6 +966,13 @@
         <xsl:variable name="geo-att2" select="if (count($geo-atts) = 1) then $geo-atts else ()"/>
         <xsl:sequence select="($geo-att1,$geo-att2)[1]"/>
     </xsl:function>
+
+    <xsl:function name="imf:get-primary-place-attribute" as="element(mim:Attribuutsoort)?">
+        <xsl:param name="this" as="element(mim:Objecttype)"/>
+        <xsl:variable name="place-att" select="$this//mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primaire plaats'))]"/>
+        <xsl:sequence select="$place-att[1]"/>
+    </xsl:function>
+
     <!-- 
         ==============
         Omzetten van associatieklassen naar gewone objecttypen
