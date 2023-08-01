@@ -109,7 +109,6 @@
                 <xsl:sequence select="imf:set-parameter('use','view')"/>
                 <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'namespace'))"/>
                 <xsl:sequence select="imf:get-index(.)"/>
-                
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -127,7 +126,7 @@
             <xsl:apply-templates select="mim-ext:constructies/mim-ext:Constructie"/><!-- dit zijn interfaces -->
         </xsl:variable>
         <xsl:variable name="added-defs">
-            <xsl:if test="mim:naam = 'GML'"><!-- was:  and $bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') -->
+            <xsl:if test="mim:naam = 'GML'">
                 <ep:construct id="constructie-feature">
                     <!-- 7.6.1. Common base schema -->
                     <ep:parameters>
@@ -162,9 +161,6 @@
     
     <xsl:template match="mim:Objecttype">
         
-        <xsl:variable name="pga" select="imf:get-primary-geometry-attribute(.)"/>
-        <xsl:variable name="ppa" select="imf:get-primary-place-attribute(.)"/>
-        
         <ep:construct>
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Objecttype',())"/>
@@ -176,31 +172,16 @@
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             
-            <xsl:variable name="props">
+            <xsl:sequence select="imf:get-supers(.)"/>
+            
+            <ep:seq>
+                <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
                 <xsl:apply-templates select="mim:gegevensgroepen/mim:Gegevensgroep"/>
                 <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort"/>
                 <xsl:apply-templates select="mim:keuzen/mim-ref:KeuzeRef"/>
                 <xsl:apply-templates select="mim:externeKoppelingen/mim:ExterneKoppeling"/>
-            </xsl:variable>
-
-            <xsl:choose>
-                <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')">
-                    <xsl:sequence select="imf:get-supers(.,$pga,$ppa)"/>
-                    <ep:seq>
-                        <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort[not(mim:naam = ($pga/mim:naam,$ppa/mim:naam))]"/>
-                        <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort[mim:naam = $pga/mim:naam]" mode="pga"/>
-                        <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort[mim:naam = $ppa/mim:naam]" mode="ppa"/>
-                        <xsl:sequence select="$props"/>
-                    </ep:seq>
-                </xsl:when>
-                <xsl:otherwise><!-- plain -->
-                    <xsl:sequence select="imf:get-supers(.)"/>
-                    <ep:seq>
-                        <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
-                        <xsl:sequence select="$props"/>
-                    </ep:seq>
-                </xsl:otherwise>
-            </xsl:choose>
+            </ep:seq>
+            
         </ep:construct>
     </xsl:template>
     
@@ -369,8 +350,6 @@
                 <xsl:sequence select="imf:set-parameter('oas-name',imf:get-kenmerk(.,'oasnaam'))"/>
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:if test="ancestor::mim:Extern/mim:naam = 'GML'">
-                    <xsl:sequence select="dlogger:save('$url',imf:get-geo-url(.))"></xsl:sequence>
-                    
                     <xsl:sequence select="imf:set-parameter('url',imf:get-geo-url(.))"/>
                 </xsl:if>
             </ep:parameters>
@@ -433,6 +412,13 @@
     </xsl:template>
     
     <xsl:template match="mim:Attribuutsoort">
+        
+        <xsl:variable name="pga" select="imf:get-primary-geometry-attribute(../..)"/>
+        <xsl:variable name="ppa" select="imf:get-primary-place-attribute(../..)"/>
+        <xsl:variable name="unit" select="imf:get-kenmerk(.,'eenheid')"/>
+        <xsl:variable name="is-gml-measure-type" select="lower-case(mim:naam) = ('measure', 'length', 'speed', 'angle', 'area', 'volume')"/>
+        <xsl:variable name="inlineOrByReference" select="imf:get-kenmerk(.,'inlineorbyreference')"/>
+        
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een attribuutsoort',())"/>
             <ep:parameters>
@@ -441,9 +427,17 @@
                 <xsl:sequence select="imf:get-nillable(.)"/>
                 <xsl:sequence select="imf:get-data-location(.)"/>
                 <xsl:sequence select="imf:set-parameter('is-value-derived',imf:get-kenmerk(.,'is-value-derived'))"/>
+                <xsl:sequence select="imf:set-parameter('is-identifying',imf:boolean(mim:identificerend))"/>
+                <xsl:sequence select="imf:set-parameter('is-pga',mim:naam = $pga/mim:naam)"/>
+                <xsl:sequence select="imf:set-parameter('is-ppa',mim:naam = $ppa/mim:naam)"/>
+                <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
+                
+                <xsl:sequence select="imf:set-parameter('unit',$unit)"/><!-- wordt verwerkt in json stap. zie /req/core/iso19103-measure-types -->
+                <?req
                 <xsl:if test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and mim:identificerend">
                     <xsl:sequence select="imf:set-parameter('identifier','true')"/>
                 </xsl:if>
+                x?>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -454,16 +448,28 @@
             <ep:read-only>
                 <xsl:value-of select="imf:get-kenmerk(.,'readonly')"/>
             </ep:read-only>
-            <xsl:sequence select="imf:get-type(.)"/>
+            <xsl:choose>
+                <xsl:when test="$unit">
+                    <ep:data-type>ep:number</ep:data-type>
+                </xsl:when>
+                <xsl:when test="$is-gml-measure-type">
+                    <ep:ref href="/known/measure">Measure</ep:ref>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:sequence select="imf:get-type(.)"/>
+                </xsl:otherwise>
+            </xsl:choose>
             <xsl:sequence select="imf:get-props(.)"/>
+            
         </ep:construct>
     </xsl:template>
+    <?req
     <xsl:template match="mim:Attribuutsoort" mode="pga">
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een PGA attribuutsoort',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','attribuutsoort')"/>
-                <xsl:sequence select="imf:set-parameter('is pga','true')"/>
+                <xsl:sequence select="imf:set-parameter('is-pga','true')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
             <ep:name>geometry</ep:name>
@@ -477,7 +483,7 @@
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een PPA attribuutsoort',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','attribuutsoort')"/>
-                <xsl:sequence select="imf:set-parameter('is ppa','true')"/>
+                <xsl:sequence select="imf:set-parameter('is-ppa','true')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
             <ep:name>place</ep:name>
@@ -486,6 +492,7 @@
             <xsl:sequence select="imf:get-props(.)"/>
         </ep:construct>
     </xsl:template>
+    req?>
     
     <xsl:template match="mim:Gegevensgroep">
         <ep:construct>
@@ -576,12 +583,14 @@
     </xsl:template>
     
     <xsl:template match="mim:Relatiesoort">
+        <xsl:variable name="inlineOrByReference" select="imf:get-kenmerk(.,'inlineorbyreference')"/>
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Relatiesoort',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-parameter('use','relatiesoort')"/>
                 <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
+                <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -716,13 +725,10 @@
    
     <xsl:function name="imf:get-supers" as="element(ep:super)*">
         <xsl:param name="this"/>
-        <xsl:sequence select="imf:get-supers($this,(),())"/>
-    </xsl:function>
-    
-    <xsl:function name="imf:get-supers" as="element(ep:super)*">
-        <xsl:param name="this"/>
-        <xsl:param name="pga" as="element(mim:Attribuutsoort)?"/>
-        <xsl:param name="ppa" as="element(mim:Attribuutsoort)?"/>
+        
+        <xsl:variable name="pga" select="if (local-name($this) = ('Objecttype','Relatieklasse','Koppelklasse')) then imf:get-primary-geometry-attribute($this) else ()"/>
+        <xsl:variable name="ppa" select="if (local-name($this) = ('Objecttype','Relatieklasse','Koppelklasse')) then imf:get-primary-place-attribute($this) else ()"/>
+        
         <!-- TODO let op: in xml schema generatie moet static een copy-down worden! -->
         <ep:super>
             <xsl:if test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and $pga">
@@ -736,7 +742,7 @@
                 <xsl:when test="$this/mim:supertypen/*">
                     <xsl:apply-templates select="$this/mim:supertypen/*"/>
                 </xsl:when>
-                <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and local-name($this) = ('Objecttype','Relatieklasse','Koppelklasse')"><!-- see OGC BP 7.6.1. Common base schema -->
+                <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')"><!-- see OGC BP 7.6.1. Common base schema -->
                     <ep:ref href="{imf:get-geo-url-for-name('GM_Feature')}">GM_Feature</ep:ref>
                 </xsl:when>
             </xsl:choose>
@@ -800,7 +806,6 @@
     <xsl:function name="imf:get-type" as="node()*">
         <xsl:param name="this" as="element()?"/><!-- een constructie die een type of supertype kan hebben -->
         <xsl:variable name="type" select="$this/(mim:type|mim:supertype|mim:gegevensgroeptype)"/>
-        <xsl:sequence select="dlogger:save('$type ' || $type,$type)"></xsl:sequence>
         <xsl:choose>
             <xsl:when test="empty($this)"><!-- dit alleen als primitief datatype zonder supertype voorkomt -->
                 <ep:data-type>ep:string</ep:data-type>
@@ -845,6 +850,7 @@
     <xsl:function name="imf:get-ref" as="element(ep:ref)">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="id" select="substring-after($this/@xlink:href,'#')"/>
+        <xsl:variable name="property" select="$this//ancestor::*[mim:type|mim:supertype|mim:gegevensgroeptype|mim:doel]"/>
         <ep:ref href="{$id}">{root($this)//*[@id = $id]/mim:naam}</ep:ref>
     </xsl:function>
     
@@ -876,6 +882,7 @@
     
     <xsl:function name="imf:get-geo-url-for-name" as="xs:string?">
         <xsl:param name="name" as="xs:string?"/>
+        
         <!-- bepaal hier de locatie van de externe json definitie --> 
         <xsl:variable name="requires-geojson" select="$bp-req-basic-encodings = ('/req/geojson','/req/plain')"/>
         <xsl:variable name="requires-jsonfg" select="$bp-req-basic-encodings = ('/req/jsonfg')"/>
@@ -884,6 +891,7 @@
             <xsl:when test="$requires-geojson and $name = 'GM_Curve'">https://geojson.org/schema/LineString.json</xsl:when>
             <xsl:when test="$requires-geojson and $name = 'GM_Surface'">https://geojson.org/schema/Polygon.json</xsl:when>
             <xsl:when test="$requires-geojson and $name = 'GM_Polygon'">https://geojson.org/schema/Polygon.json</xsl:when>
+            <xsl:when test="$requires-geojson and $name = 'GM_Solid'">https://geojson.org/schema/Polyhedron.json</xsl:when>
             <xsl:when test="$requires-geojson and $name = 'GM_MultiPoint'">https://geojson.org/schema/MultiPoint.json</xsl:when>
             <xsl:when test="$requires-geojson and $name = 'GM_MultiCurve'">https://geojson.org/schema/MultiLineString.json</xsl:when>
             <xsl:when test="$requires-geojson and $name = 'GM_MultiSurface'">https://geojson.org/schema/MultiPolygon.json</xsl:when>
@@ -909,7 +917,7 @@
     <xsl:function name="imf:set-parameter" as="element(ep:parameter)*">
         <xsl:param name="name"/>
         <xsl:param name="value"/>
-        <xsl:if test="normalize-space($value)">
+        <xsl:if test="normalize-space(xs:string($value))">
             <ep:parameter name="{$name}">
                 <xsl:value-of select="$value"/>
             </ep:parameter>

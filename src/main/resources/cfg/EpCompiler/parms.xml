@@ -29,11 +29,17 @@
   
    <properties>
    
-      <WORK_EP_XMLPATH>${system/work-imvert-folder-path}/imvertor.26.ep.xml</WORK_EP_XMLPATH>   
-      
+      <WORK_EP_XMLPATH_PRE>${system/work-imvert-folder-path}/imvertor.26.1.ep-pre.xml</WORK_EP_XMLPATH_PRE>   
+      <WORK_EP_XMLPATH_CORE>${system/work-imvert-folder-path}/imvertor.26.2.ep-core.xml</WORK_EP_XMLPATH_CORE>   
+      <WORK_EP_XMLPATH_FINAL>${system/work-imvert-folder-path}/imvertor.26.ep-final.xml</WORK_EP_XMLPATH_FINAL>   
+ 
+      <!-- non-MIM, non BP -->
       <IMVERTOR_EP_XSLPATH alias="EP">Imvert2EP.xsl</IMVERTOR_EP_XSLPATH>
-
-      <IMVERTOR_EP2_XSLPATH>MIM2EP.xsl</IMVERTOR_EP2_XSLPATH>
+      
+      <!-- MIM to BP -->
+      <IMVERTOR_EP2_XSLPATH_PRE>MIM2EP-pre.xsl</IMVERTOR_EP2_XSLPATH_PRE>
+      <IMVERTOR_EP2_XSLPATH_CORE>MIM2EP-core.xsl</IMVERTOR_EP2_XSLPATH_CORE>
+      <IMVERTOR_EP2_XSLPATH_POST>MIM2EP-post.xsl</IMVERTOR_EP2_XSLPATH_POST>
       
    </properties>
    

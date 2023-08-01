@@ -33,6 +33,9 @@
          <!-- json extensie -->
          <metagegeven kardinaliteit="0..1">Primaire geometrie</metagegeven>
          <metagegeven kardinaliteit="0..1">Primaire plaats</metagegeven>
+         <metagegeven kardinaliteit="0..1">Primair moment</metagegeven>
+         <metagegeven kardinaliteit="0..1">InlineOrByReference</metagegeven>
+         <metagegeven kardinaliteit="0..1">Eenheid</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Codelijst</naam>
@@ -406,6 +409,8 @@
          <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
+         <!-- json extensie -->
+         <metagegeven kardinaliteit="0..1">InlineOrByReference</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Relatiesoort - Relatiesoort leidend</naam>
@@ -428,6 +433,8 @@
          <metagegeven kardinaliteit="1">Unidirectioneel</metagegeven>
          <metagegeven kardinaliteit="1">Aggregatietype</metagegeven>
          <metagegeven kardinaliteit="1">Relatie eigenaar</metagegeven><!-- add ext 1.1.1 -->
+         <!-- json extensie -->
+         <metagegeven kardinaliteit="0..1">InlineOrByReference</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Static liskov</naam>
@@ -562,6 +569,10 @@
          <modelelement kardinaliteit="1">View</modelelement>
       </metagegeven>
       <metagegeven>
+         <naam>Eenheid</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+      </metagegeven>
+      <metagegeven>
          <naam>Eigenaar</naam>
          <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
          <modelelement kardinaliteit="0..1">Gegevensgroeptype</modelelement>
@@ -664,6 +675,12 @@
       <metagegeven>
          <naam>Informatiemodel type</naam>
          <modelelement kardinaliteit="1">Informatiemodel</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>InlineOrByReference</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatierol leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
       </metagegeven>
       <metagegeven>
          <naam>Kardinaliteit</naam>

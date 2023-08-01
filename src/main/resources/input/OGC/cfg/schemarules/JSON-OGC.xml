@@ -41,21 +41,19 @@
     <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules
         options: 
-        /req/by-reference-basic
         /req/by-reference-uri
         /req/by-reference-link-object
     -->
-    <parameter name="bp-by-reference-encodings">/req/by-reference-basic</parameter><!-- Clause 7.8.2 -->
+    <parameter name="bp-by-reference-encodings">/req/by-reference-uri</parameter><!-- Clause 7.8.2 -->
     
     <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules
         options: 
-        /req/codelists-basic
         /req/codelists-literal
         /req/codelists-uri
         /req/codelists-link-object
     -->
-    <parameter name="bp-code-list-encodings">/req/codelists-basic</parameter><!-- Clause 7.10.2 -->
+    <parameter name="bp-code-list-encodings">/req/codelists-literal</parameter><!-- Clause 7.10.2 -->
     
     <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules

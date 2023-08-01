@@ -77,7 +77,32 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
-        
+        <tv norm="space" id="CFG-TV-INLINEORBYREFERENCE">
+            <name lang="nl">InlineOrByReference</name>
+            <name lang="en">InlineOrByReference</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">inline</value>
+                <value>byReference</value>
+                <value>inlineOrByReference</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" id="CFG-TV-UNIT">
+            <name lang="nl">Eenheid</name>
+            <name lang="en">Unit</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
     </tagged-values>
     
 </tagset>
