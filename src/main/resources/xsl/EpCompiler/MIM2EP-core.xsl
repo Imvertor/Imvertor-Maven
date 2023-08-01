@@ -43,14 +43,10 @@
     
     <xsl:template match="/">
    
-       <xsl:variable name="step-0" as="element(mim:Informatiemodel)">
-            <xsl:apply-templates select="/mim:Informatiemodel" mode="assoc-class"/>    
+       <xsl:variable name="step-1" as="element(ep:group)">
+            <xsl:apply-templates select="/mim:Informatiemodel"/>    
         </xsl:variable>
-        
-        <xsl:variable name="step-1" as="element(ep:group)">
-            <xsl:apply-templates select="$step-0"/>
-        </xsl:variable>
-
+      
         <xsl:sequence select="pack:reorder-ep-structure($step-1)"/>
 
     </xsl:template>
@@ -175,6 +171,7 @@
             <xsl:sequence select="imf:get-supers(.)"/>
             
             <ep:seq>
+                <xsl:sequence select="imf:add-entitytype(.)"/>
                 <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
                 <xsl:apply-templates select="mim:gegevensgroepen/mim:Gegevensgroep"/>
                 <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort"/>
@@ -197,6 +194,7 @@
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:seq>
+                <xsl:sequence select="imf:add-entitytype(.)"/>
                 <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
                 <xsl:apply-templates select="mim:gegevensgroepen/mim:Gegevensgroep"/>
                 <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort"/>
@@ -217,6 +215,7 @@
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:seq>
+                <xsl:sequence select="imf:add-entitytype(.)"/>
                 <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
                 <xsl:apply-templates select="mim:gegevensgroepen/mim:Gegevensgroep"/>
                 <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort"/>
@@ -238,6 +237,7 @@
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
             <ep:seq>
+                <xsl:sequence select="imf:add-entitytype(.)"/>
                 <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
                 <xsl:apply-templates select="mim:gegevensgroepen/mim:Gegevensgroep"/>
                 <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort"/>
@@ -983,79 +983,27 @@
         <xsl:sequence select="$place-att[1]"/>
     </xsl:function>
 
-    <!-- 
-        ==============
-        Omzetten van associatieklassen naar gewone objecttypen
-        
-        zie https://geonovum.github.io/uml2json/document.html#toc40
-        =============== 
-    -->
-    
-    <xsl:template match="mim:Domein/mim:objecttypen" mode="assoc-class">
-        <mim:objecttypen>
-            <xsl:apply-templates select="*" mode="#current"/>
-            <xsl:apply-templates select="mim:Objecttype/mim:relatiesoorten/mim:Relatiesoort/mim:relatieklasse/mim:Relatieklasse" mode="#current"/>
-        </mim:objecttypen>
-    </xsl:template>
-    
-    <xsl:template match="mim:relatieklasse" mode="assoc-class">
-        <!-- wodrt in andere context verwerkt -->
-    </xsl:template>
-    
-    <xsl:template match="mim:Relatiesoort[mim:relatieklasse]" mode="assoc-class">
-        <xsl:variable name="relatie" select="."/>
-        <xsl:variable name="relatieklasse" select="mim:relatieklasse/mim:Relatieklasse"/>
-        <mim:Relatiesoort>
-            <mim:naam>{$relatie/mim:naam}</mim:naam>
-            <mim:doel>
-                <mim-ref:ObjecttypeRef index="{$relatie/@index}"
-                    label="TODO1"
-                    xlink:href="#{$relatieklasse/@id}">{$relatieklasse/mim:naam}</mim-ref:ObjecttypeRef>
-            </mim:doel>
-            <mim:relatierollen>
-                <mim:Bron>
-                    <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Bron/*[not(name() = ('mim:kardinaliteit'))]" mode="#current"/>
-                    <mim:kardinaliteit>1</mim:kardinaliteit>
-                </mim:Bron>
-                <mim:Doel>
-                    <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/*[not(name() = ('mim:kardinaliteit'))]" mode="#current"/>
-                    <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/mim:kardinaliteit" mode="#current"/>
-                </mim:Doel>
-            </mim:relatierollen>
-        </mim:Relatiesoort>
-    </xsl:template>
-    
-    <!-- maak een objecttype voor de associatieklasse waarbij deze één in-gaande en één uitgaande relatie heeft -->
-    <xsl:template match="mim:Relatieklasse" mode="assoc-class">
-        <xsl:variable name="relatie" select="../.."/>
-        <xsl:variable name="relatieklasse" select="."/>
-        <mim:Objecttype>
-            <xsl:apply-templates select="$relatieklasse/@*" mode="#current"/>
-            <xsl:apply-templates select="$relatieklasse/*[not(name() = ('mim:relatiesoorten','mim:kardinaliteit'))]" mode="#current"/>
-            <mim:relatiesoorten>
-                <xsl:apply-templates select="$relatieklasse/mim:relatiesoorten/mim:Relatiesoort" mode="#current"/>
-                <mim:Relatiesoort>
-                    <xsl:apply-templates select="$relatie/mim:naam" mode="#current"/><!-- herhaling van dezelfde naam -->
-                    <xsl:apply-templates select="$relatie/mim:doel" mode="#current"/>
-                    <mim:relatierollen>
-                        <mim:Bron>
-                            <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Bron/mim:naam" mode="#current"/>
-                            <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Bron/mim:kardinaliteit" mode="#current"/>
-                        </mim:Bron>
-                        <mim:Doel>
-                            <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/mim:naam" mode="#current"/>
-                            <mim:kardinaliteit>1<!--fixed--></mim:kardinaliteit>
-                        </mim:Doel>
-                    </mim:relatierollen>
-                </mim:Relatiesoort>
-            </mim:relatiesoorten>
-        </mim:Objecttype>
-    </xsl:template>
-    
-    <xsl:template match="node() | @*" mode="assoc-class">
-        <xsl:copy>
-            <xsl:apply-templates select="node() | @*" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
+    <xsl:function name="imf:add-entitytype" as="element()*">
+        <xsl:param name="this" as="element()"/>
+        <xsl:variable name="super" select="$this//mim:supertype"/>
+        <xsl:choose>
+            <xsl:when test="$super">
+                <!-- skip -->
+            </xsl:when>
+            <xsl:when test="$bp-req-additional-requirements-classes = '/req/entitytype'">
+                <ep:construct>
+                    <ep:parameters>
+                        <ep:parameter name="use">entitytype</ep:parameter>
+                        <ep:parameter name="index">0</ep:parameter>
+                    </ep:parameters>
+                    <ep:name>entityType</ep:name>
+                    <ep:data-type>ep:string</ep:data-type>
+                </ep:construct>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- skip; this is not within range of the spec; entitytype is expected, no alternatives -->
+            </xsl:otherwise>
+        </xsl:choose>    
+    </xsl:function>
     
 </xsl:stylesheet>

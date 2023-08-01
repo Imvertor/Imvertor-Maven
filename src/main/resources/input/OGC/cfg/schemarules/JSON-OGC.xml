@@ -44,7 +44,7 @@
         /req/by-reference-uri
         /req/by-reference-link-object
     -->
-    <parameter name="bp-by-reference-encodings">/req/by-reference-uri</parameter><!-- Clause 7.8.2 -->
+    <parameter name="bp-by-reference-encodings">/req/by-reference-link-object</parameter><!-- Clause 7.8.2 -->
     
     <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules

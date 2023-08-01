@@ -72,7 +72,7 @@
         </xsl:variable>
         
         <xsl:variable name="by-reference-form">
-            <ep:ref href="/known/byReference">ByReference</ep:ref>
+            <ep:ref href="/known/byreference">ByReference</ep:ref>
         </xsl:variable>
       
         <xsl:variable name="link-object-form">

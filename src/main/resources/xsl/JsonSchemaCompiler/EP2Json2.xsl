@@ -118,7 +118,7 @@
         <xsl:variable name="tech-name" select="imf:ep-tech-name(ep:name)"/>
         <xsl:variable name="is-anchor" select="$top-constructs-with-identity[. is $construct]"/>
         
-        <xsl:sequence select="dlogger:save('ep:construct',$construct)"></xsl:sequence>
+        <xsl:sequence select="dlogger:save('ep:construct ' || ep:name,$construct)"></xsl:sequence>
         
         <xsl:if test="empty($url)"> <!-- externe constructs met URL worden niet opgenomen; wanneer ernaar wordt verwezen wordt de URL aldaar ingevoegd -->
             <xsl:variable name="n" select="'EP=' || $tech-name || ', ID=' || @id"/>
@@ -146,7 +146,7 @@
                                     <xsl:sequence select="imf:ep-to-namevaluepair('format','uri-reference')"/>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref-by-id(ep:ref/@href))"/>
+                                    <xsl:sequence select="imf:get-type-ref-by-id(ep:ref/@href)"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:variable>
@@ -172,14 +172,13 @@
                     </xsl:when>
                     <!-- de construct bestaat uit meerdere sequences -->
                     <xsl:when test="ep:seq and (ep:max-occurs and ep:max-occurs ne '1')">
-                        <xsl:sequence select="dlogger:save('max',.)"></xsl:sequence>
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Seq with maxoccurs [1]',$n)"/>
                         <xsl:sequence select="$header"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
                         <j:map key="items">
                             <xsl:choose>
                                 <xsl:when test="ep:seq/ep:construct/ep:ref/@href">
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref-by-id(ep:seq/ep:construct/ep:ref/@href))"/>
+                                    <xsl:sequence select="imf:get-type-ref-by-id(ep:seq/ep:construct/ep:ref/@href)"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:apply-templates select="ep:seq/ep:construct/ep:seq"/>
@@ -225,7 +224,7 @@
                             <xsl:when test="exists($super)">
                                 <j:array key="allOf">
                                     <j:map>
-                                        <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref-by-id($super))"/>
+                                        <xsl:sequence select="imf:get-type-ref-by-id($super)"/>
                                     </j:map>
                                     <j:map>
                                         <xsl:sequence select="$body"/>
@@ -246,15 +245,7 @@
                             <xsl:for-each select="ep:choice/ep:ref">
                                 <j:map>
                                     <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'byReference',())"/>
-                                    <xsl:choose>
-                                        <xsl:when test="@href = '/known/byReference'">
-                                            <xsl:sequence select="imf:ep-to-namevaluepair('type','string')"/>
-                                            <xsl:sequence select="imf:ep-to-namevaluepair('format','uri-reference')"/>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref-by-id(@href))"/>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
+                                    <xsl:sequence select="imf:get-type-ref-by-id(@href)"/>
                                 </j:map>
                             </xsl:for-each>
                         </j:array>
@@ -278,7 +269,7 @@
                                         <xsl:variable name="ref" select="ep:ref/@href"/>
                                         <j:map>
                                             <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice datatypen',())"/>
-                                            <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref-by-id($ref))"/>
+                                            <xsl:sequence select="imf:get-type-ref-by-id($ref)"/>
                                         </j:map>
                                     </xsl:for-each>
                                 </xsl:when>
@@ -287,7 +278,7 @@
                                         <xsl:variable name="ref" select="ep:ref/@href"/>
                                         <j:map>
                                             <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice objecttypen',())"/>
-                                            <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref-by-id($ref))"/>
+                                            <xsl:sequence select="imf:get-type-ref-by-id($ref)"/>
                                         </j:map>
                                     </xsl:for-each>
                                 </xsl:otherwise>
@@ -333,7 +324,7 @@
                                 <xsl:sequence select="imf:ep-to-namevaluepair('format','uri')"/>
                             </xsl:when>
                             <xsl:when test="$bp-req-code-list-encodings = '/req/codelists-link-object'">
-                                <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref-by-id('/known/linkobject'))"/>
+                                <xsl:sequence select="imf:get-type-ref-by-id('/known/linkobject')"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
@@ -511,21 +502,26 @@
         </xsl:choose>
     </xsl:function>
     
-    <xsl:function name="imf:get-type-ref-by-id" as="xs:string">
+    <xsl:function name="imf:get-type-ref-by-id" as="element()*">
         <xsl:param name="href" as="xs:string"/>
         <xsl:variable name="target" select="($document//ep:construct[@id = $href])[1]"/>
         <xsl:choose>
             <xsl:when test="$href = '/known/measure'">
-                <xsl:value-of select="'https://register.geostandaarden.nl/jsonschema/uml2json/0.1/schema_definitions.json#/$defs/Measure'"/>
+                <xsl:sequence select="imf:ep-to-namevaluepair('$ref','https://register.geostandaarden.nl/jsonschema/uml2json/0.1/schema_definitions.json#/$defs/Measure')"/>
             </xsl:when>
             <xsl:when test="$href = '/known/linkobject'">
-                <xsl:value-of select="'https://register.geostandaarden.nl/jsonschema/uml2json/0.1/schema_definitions.json#/$defs/LinkObject'"/>
+                <xsl:sequence select="imf:ep-to-namevaluepair('$ref','https://register.geostandaarden.nl/jsonschema/uml2json/0.1/schema_definitions.json#/$defs/LinkObject')"/>
+            </xsl:when>
+            <xsl:when test="$href = '/known/byreference'">
+                <xsl:sequence select="imf:ep-to-namevaluepair('type','string')"/>
+                <xsl:sequence select="imf:ep-to-namevaluepair('format','uri-reference')"/>
             </xsl:when>
             <xsl:when test="exists($target)">
-                <xsl:sequence select="imf:get-type-ref($target)"/>
+                <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref($target))"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:msg($target,'ERROR','Invalid reference to id [1]',($href))"/>
+                <xsl:sequence select="imf:ep-to-namevaluepair('$ref','INVALID-REFERENCE')"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
