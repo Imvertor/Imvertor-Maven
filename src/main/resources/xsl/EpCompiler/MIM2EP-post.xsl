@@ -59,24 +59,28 @@
     
     <xsl:template match="ep:ref">
         
-        <xsl:variable name="ibr" select="imf:get-ep-parameter(..,'inlineorbyreference')"/><!-- dit is de waarde van de tagged value op het element -->
-        
         <xsl:variable name="has-identity" select="imf:get-ep-parameter(..,'use') = ('objecttyperef')"/>
         
+        <!-- haal de waarde van de tagged value op het element, of de default, Voor relaties (met identity), een niveau hoger. -->
+        <xsl:variable name="ibr" select="
+            if ($has-identity) 
+            then imf:get-ep-parameter(../../..,'inlineorbyreference')
+            else imf:get-ep-parameter(..,'inlineorbyreference')"/>
+          
         <xsl:variable name="inline-form">
             <xsl:next-match/>
         </xsl:variable>
         
         <xsl:variable name="by-reference-form">
-            <ep:ref href="/byReference"/>
+            <ep:ref href="/known/byReference">ByReference</ep:ref>
         </xsl:variable>
-        
+      
         <xsl:variable name="link-object-form">
             <ep:ref href="/known/linkobject">LinkObject</ep:ref>
         </xsl:variable>
         
         <xsl:choose>
-            <xsl:when test="$bp-req-by-reference-encodings = '/req/by-reference-uri' and $ibr = 'byreference'">
+            <xsl:when test="$bp-req-by-reference-encodings = '/req/by-reference-uri' and $ibr = 'byReference'">
                 <xsl:sequence select="$by-reference-form"/>
             </xsl:when>                    
             <xsl:when test="$bp-req-by-reference-encodings = '/req/by-reference-uri' and $ibr = 'inlineOrByReference' and $has-identity">
@@ -88,6 +92,18 @@
             <xsl:when test="$bp-req-by-reference-encodings = '/req/by-reference-uri'"><!-- inline -->
                 <xsl:sequence select="$inline-form"/>
             </xsl:when>                    
+            <xsl:when test="$bp-req-by-reference-encodings = '/req/by-reference-link-object' and $ibr = 'byReference'">
+                <xsl:sequence select="$link-object-form"/>
+            </xsl:when>                    
+            <xsl:when test="$bp-req-by-reference-encodings = '/req/by-reference-link-object' and $ibr = 'inlineOrByReference' and $has-identity">
+                <ep:choice>
+                    <xsl:sequence select="$inline-form"/>
+                    <xsl:sequence select="$link-object-form"/>
+                </ep:choice>
+            </xsl:when>                    
+            <xsl:when test="$bp-req-by-reference-encodings = '/req/by-reference-link-object'"><!-- inline -->
+                <xsl:sequence select="$inline-form"/>
+            </xsl:when>                    
             <xsl:otherwise>
                 <xsl:comment>Unknown ref requirement for {$bp-req-by-reference-encodings}</xsl:comment>
             </xsl:otherwise>
@@ -95,7 +111,7 @@
         
     </xsl:template>
 
-    <xsl:function name="imf:get-ep-parameter" as="xs:string*">
+     <xsl:function name="imf:get-ep-parameter" as="xs:string*">
         <xsl:param name="this"/>
         <xsl:param name="parameter-name"/>
         <xsl:sequence select="$this/ep:parameters/ep:parameter[@name = $parameter-name]"/>

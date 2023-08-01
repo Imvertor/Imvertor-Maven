@@ -30,12 +30,16 @@
     -->
     
     <xsl:variable name="bp-req-applies" select="imf:boolean(imf:get-ep-parameter(/ep:group,'bp-req-applies'))" as="xs:boolean"/>
+    <xsl:variable name="bp-req-basic-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-basic-encodings')"/>
+    <xsl:variable name="bp-req-by-reference-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-by-reference-encodings')"/>
+    <xsl:variable name="bp-req-code-list-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-code-list-encodings')"/>
+    <xsl:variable name="bp-req-additional-requirements-classes" select="imf:get-ep-parameter(/ep:group,'bp-req-additional-requirements-classes')"/>
     
     <xsl:variable name="schema-id">{imf:get-ep-parameter(/ep:group,'namespace')}/{imf:get-ep-parameter(/ep:group,'version')}/{imf:get-ep-parameter(/ep:group,'release')}</xsl:variable>
     
     <xsl:variable name="document" select="/"/>
     <xsl:variable name="domains" select="/ep:group/ep:seq/ep:group"/>
-    <xsl:variable name="top-constructs" select="$domains/ep:seq/ep:construct"/>
+    <xsl:variable name="top-constructs-with-identity" select="$domains/ep:seq/ep:construct[imf:has-identity(.)]"/>
     
     <xsl:template match="/ep:group">
         <xsl:variable name="defs">
@@ -112,7 +116,7 @@
         <xsl:variable name="use" select="imf:get-ep-parameter(.,'use')"/>
         <xsl:variable name="url" select="imf:get-ep-parameter(.,'url')"/>
         <xsl:variable name="tech-name" select="imf:ep-tech-name(ep:name)"/>
-        <xsl:variable name="top-construct" select="$top-constructs[. is $construct]"/>
+        <xsl:variable name="is-anchor" select="$top-constructs-with-identity[. is $construct]"/>
         
         <xsl:sequence select="dlogger:save('ep:construct',$construct)"></xsl:sequence>
         
@@ -121,7 +125,7 @@
             <xsl:variable name="nillable" select="imf:get-ep-parameter(.,'nillable') = 'true'"/>
             <xsl:variable name="header">
                 <xsl:if test="not(imf:get-ep-parameter(.,'is-pga') = 'true') and not(imf:get-ep-parameter(.,'is-ppa') = 'true')">
-                    <xsl:sequence select="if ($top-construct) then imf:ep-to-namevaluepair('$anchor',imf:get-type-name(.)) else ()"/>
+                    <xsl:sequence select="if ($is-anchor) then imf:ep-to-namevaluepair('$anchor',imf:get-type-name(.)) else ()"/>
                     <xsl:sequence select="if (ep:name ne $tech-name) then imf:ep-to-namevaluepair('title',ep:name) else ()"/>
                     <xsl:variable name="added-location" select="if (imf:get-ep-parameter(.,'locatie')) then ('; Locatie: ' || imf:get-ep-parameter(.,'locatie')) else ()"/>
                     <xsl:sequence select="imf:ep-to-namevaluepair('description',imf:create-description(.) || $added-location)"/>
@@ -243,7 +247,7 @@
                                 <j:map>
                                     <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'byReference',())"/>
                                     <xsl:choose>
-                                        <xsl:when test="@href = '/byReference'">
+                                        <xsl:when test="@href = '/known/byReference'">
                                             <xsl:sequence select="imf:ep-to-namevaluepair('type','string')"/>
                                             <xsl:sequence select="imf:ep-to-namevaluepair('format','uri-reference')"/>
                                         </xsl:when>
@@ -315,16 +319,26 @@
                     </xsl:when>
                     <!-- de construct is een codelijst -->
                     <xsl:when test="ep:data-type and imf:get-ep-parameter(.,'use') eq 'codelijst'">
+                        <xsl:variable name="type" select="imf:map-datatype-to-ep-type(ep:data-type)"/>
+                        <xsl:variable name="locatie" select="imf:get-ep-parameter(.,'locatie')"/>
+                        
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Codelist [1]',$n)"/>
                         <xsl:sequence select="$header"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('type','object')"/>
-                        <j:map key="properties">
-                            <j:map key="code">
+                        <xsl:choose>
+                            <xsl:when test="$locatie">
+                                <xsl:sequence select="imf:ep-to-namevaluepair('codeList',$locatie)"/>
+                            </xsl:when>
+                            <xsl:when test="$bp-req-code-list-encodings = '/req/codelists-uri'">
+                                <xsl:sequence select="imf:ep-to-namevaluepair('type','string')"/>
+                                <xsl:sequence select="imf:ep-to-namevaluepair('format','uri')"/>
+                            </xsl:when>
+                            <xsl:when test="$bp-req-code-list-encodings = '/req/codelists-link-object'">
+                                <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref-by-id('/known/linkobject'))"/>
+                            </xsl:when>
+                            <xsl:otherwise>
                                 <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
-                                <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
-                                <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
-                            </j:map>
-                        </j:map>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:when>
                     <!-- de construct is een datatype -->
                     <xsl:when test="ep:data-type">
@@ -486,12 +500,8 @@
     </xsl:function>
     
     <xsl:function name="imf:get-type-name" as="xs:string">
-        <xsl:param name="this" as="element(ep:construct)?"/><!-- teken van een fout als de construct niet wordt meegegeven -->
+        <xsl:param name="this" as="element(ep:construct)"/><!-- teken van een fout als de construct niet wordt meegegeven -->
         <xsl:choose>
-            <xsl:when test="empty($this)">
-                <xsl:sequence select="imf:msg($this,'WARNING','(Fatal) Invalid reference',())"/>
-                <xsl:value-of select="'INVALID-REFERENCE'"/>
-            </xsl:when>
             <xsl:when test="$this/ep:external">
                 <xsl:value-of select="(imf:get-ep-parameter($this,'oas-name'),'UNKNOWN-OAS-TYPE')[1]"/>
             </xsl:when>
@@ -503,6 +513,7 @@
     
     <xsl:function name="imf:get-type-ref-by-id" as="xs:string">
         <xsl:param name="href" as="xs:string"/>
+        <xsl:variable name="target" select="($document//ep:construct[@id = $href])[1]"/>
         <xsl:choose>
             <xsl:when test="$href = '/known/measure'">
                 <xsl:value-of select="'https://register.geostandaarden.nl/jsonschema/uml2json/0.1/schema_definitions.json#/$defs/Measure'"/>
@@ -510,15 +521,17 @@
             <xsl:when test="$href = '/known/linkobject'">
                 <xsl:value-of select="'https://register.geostandaarden.nl/jsonschema/uml2json/0.1/schema_definitions.json#/$defs/LinkObject'"/>
             </xsl:when>
-            <xsl:otherwise>
-                <xsl:variable name="target" select="($document//ep:construct[@id = $href])[1]"/>
+            <xsl:when test="exists($target)">
                 <xsl:sequence select="imf:get-type-ref($target)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg($target,'ERROR','Invalid reference to id [1]',($href))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
     
     <xsl:function name="imf:get-type-ref" as="xs:string">
-        <xsl:param name="target" as="element(ep:construct)?"/>
+        <xsl:param name="target" as="element(ep:construct)"/>
         <xsl:variable name="url" select="imf:get-ep-parameter($target,'url')"/>
         <xsl:choose>
             <xsl:when test="$url">
@@ -535,4 +548,8 @@
         <xsl:sequence select="if ($name) then $name else ()"/><!-- was: imf:extract($name,'[a-zA-Z0-9]+') maar lijkt geen reden voor te zijn -->
     </xsl:function>
     
+    <xsl:function name="imf:has-identity" as="xs:boolean">
+        <xsl:param name="this" as="element()"/>
+        <xsl:sequence select="imf:get-ep-parameter($this,'use') = ('objecttype','relatieklasse','koppelklasse')"/>
+    </xsl:function>
 </xsl:stylesheet>

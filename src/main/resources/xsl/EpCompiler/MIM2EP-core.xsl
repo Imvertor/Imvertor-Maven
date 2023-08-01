@@ -319,7 +319,9 @@
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
-            <ep:data-type>ep:string</ep:data-type>
+            <xsl:variable name="type" select="lower-case(imf:get-kenmerk(.,'waarde codering type'))"/>
+            <xsl:variable name="jtype" select="if ($type = ('real','number')) then 'ep:number' else if ($type = ('integer')) then 'ep:integer' else 'ep:string'"/>
+            <ep:data-type>{$jtype}</ep:data-type>
         </ep:construct>
     </xsl:template>
     
@@ -417,7 +419,7 @@
         <xsl:variable name="ppa" select="imf:get-primary-place-attribute(../..)"/>
         <xsl:variable name="unit" select="imf:get-kenmerk(.,'eenheid')"/>
         <xsl:variable name="is-gml-measure-type" select="lower-case(mim:naam) = ('measure', 'length', 'speed', 'angle', 'area', 'volume')"/>
-        <xsl:variable name="inlineOrByReference" select="imf:get-kenmerk(.,'inlineorbyreference')"/>
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineorbyreference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
         
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een attribuutsoort',())"/>
@@ -583,7 +585,7 @@
     </xsl:template>
     
     <xsl:template match="mim:Relatiesoort">
-        <xsl:variable name="inlineOrByReference" select="imf:get-kenmerk(.,'inlineorbyreference')"/>
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineorbyreference'),'byReference')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Relatiesoort',())"/>
             <ep:parameters>

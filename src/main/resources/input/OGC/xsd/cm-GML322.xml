@@ -445,12 +445,6 @@
                 <cs:name>rdfs:Datatype</cs:name>
              </cs:RdfType>
           </cs:rdfTypes>
-          <cs:oasTypes>
-             <cs:OasType>
-                <cs:name>solidGeoJSON</cs:name>
-                <cs:primitive>false</cs:primitive>
-             </cs:OasType>
-          </cs:oasTypes>
        </cs:Construct>
        <cs:Construct>
           <cs:name>GM_OrientableCurve</cs:name>
