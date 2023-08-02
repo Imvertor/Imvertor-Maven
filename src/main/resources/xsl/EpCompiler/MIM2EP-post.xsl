@@ -118,9 +118,12 @@
         <xsl:choose>
             <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')">
                 <ep:seq>
+                    <xsl:apply-templates select="ep:construct[imf:boolean(imf:get-ep-parameter(.,'is-pga')) or imf:boolean(imf:get-ep-parameter(.,'is-ppa'))]"/>
                     <ep:construct>
                         <ep:name>properties</ep:name>
-                        <xsl:next-match/>
+                        <ep:seq>
+                            <xsl:apply-templates select="ep:construct[not(imf:boolean(imf:get-ep-parameter(.,'is-pga')) or imf:boolean(imf:get-ep-parameter(.,'is-ppa')))]"/>
+                        </ep:seq>
                     </ep:construct>
                 </ep:seq>
             </xsl:when>
