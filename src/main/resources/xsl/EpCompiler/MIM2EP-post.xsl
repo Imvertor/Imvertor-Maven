@@ -51,7 +51,7 @@
         <ep:name>
             <xsl:choose>
                 <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and imf:boolean(imf:get-ep-parameter(..,'is-pga'))">geometry</xsl:when>
-                <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and imf:boolean(imf:get-ep-parameter(..,'is-ppa'))">place</xsl:when>
+                <xsl:when test="$bp-req-basic-encodings = ('/req/jsonfg') and imf:boolean(imf:get-ep-parameter(..,'is-ppa'))">place</xsl:when>
                 <xsl:otherwise>{.}</xsl:otherwise>
             </xsl:choose>    
         </ep:name>
@@ -109,6 +109,25 @@
             </xsl:otherwise>
         </xsl:choose>
         
+    </xsl:template>
+    
+    <!-- 
+        nested properties, see /req/geojson-formats/nesting-feature-type-properties 
+    -->
+    <xsl:template match="ep:construct[imf:get-ep-parameter(.,'is-featuretype')]/ep:seq">
+        <xsl:choose>
+            <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')">
+                <ep:seq>
+                    <ep:construct>
+                        <ep:name>properties</ep:name>
+                        <xsl:next-match/>
+                    </ep:construct>
+                </ep:seq>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
      <xsl:function name="imf:get-ep-parameter" as="xs:string*">

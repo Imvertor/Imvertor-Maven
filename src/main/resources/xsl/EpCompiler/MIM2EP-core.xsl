@@ -57,7 +57,7 @@
                 xsi:schemaLocation="http://www.imvertor.org/schema/endproduct/v2 {$ep-schema-path}">
                 <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Model',())"/>
                 <ep:parameters>
-                    <xsl:sequence select="imf:set-parameter('use','informatiemodel')"/>
+                    <xsl:sequence select="imf:set-common-parameters(.,'informatiemodel')"/>
                     <xsl:sequence select="imf:set-parameter('version',imf:get-kenmerk(.,'version'))"/>
                     <xsl:sequence select="imf:set-parameter('release',imf:get-kenmerk(.,'release'))"/>
                     <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'namespace'))"/>
@@ -83,9 +83,8 @@
         <ep:group>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Domein',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','domein')"/>
                 <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'namespace'))"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'domein')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -102,9 +101,8 @@
         <ep:group>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een View',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','view')"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'view')"/>
                 <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'namespace'))"/>
-                <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -121,17 +119,6 @@
         <xsl:variable name="defs" as="node()*">
             <xsl:apply-templates select="mim-ext:constructies/mim-ext:Constructie"/><!-- dit zijn interfaces -->
         </xsl:variable>
-        <xsl:variable name="added-defs">
-            <xsl:if test="mim:naam = 'GML'">
-                <ep:construct id="constructie-feature">
-                    <!-- 7.6.1. Common base schema -->
-                    <ep:parameters>
-                        <ep:parameter name="url">https://geojson.org/schema/Feature.json</ep:parameter>
-                    </ep:parameters>
-                    <ep:name>GM_Feature</ep:name>
-                </ep:construct>
-            </xsl:if>
-        </xsl:variable>
         <xsl:choose>
             <xsl:when test="mim:naam = 'MIM11'">
                 <!-- skip -->
@@ -140,15 +127,13 @@
                 <ep:group>
                     <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Extern',())"/>
                     <ep:parameters>
-                        <xsl:sequence select="imf:set-parameter('use','extern')"/>
+                        <xsl:sequence select="imf:set-common-parameters(.,'extern')"/>
                         <xsl:sequence select="imf:set-parameter('namespace',imf:get-kenmerk(.,'namespace'))"/>
-                        <xsl:sequence select="imf:get-index(.)"/>
                     </ep:parameters>
                     <xsl:sequence select="imf:get-name(.)"/>
                     <xsl:sequence select="imf:get-documentation(.)"/>
                     <ep:seq>
                         <xsl:sequence select="$defs"/>
-                        <xsl:sequence select="$added-defs"/>
                     </ep:seq>
                 </ep:group>    
             </xsl:when>
@@ -161,9 +146,7 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Objecttype',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','objecttype')"/>
-                <xsl:sequence select="imf:set-parameter('position',imf:get-kenmerk(.,'positie'))"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'objecttype')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -187,8 +170,7 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Relatieklasse',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','relatieklasse')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'relatieklasse')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -208,8 +190,7 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Koppelklasse',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','koppelklasse')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'koppelklasse')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -230,8 +211,7 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Gegevensgroeptype',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','gegevensgroeptype')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'gegevensgroeptype')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -250,8 +230,7 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Externe koppeling',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','externekoppeling')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'externekoppeling')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -264,8 +243,7 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','keuze')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'keuze')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -298,8 +276,7 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een pseudo-attribuut dat een keuze tussen attribuutsoorten representeert',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','keuzeref')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'keuzeref')"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
@@ -312,8 +289,7 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Codelijst',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','codelijst')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'codelijst')"/>
                 <xsl:sequence select="imf:set-parameter('locatie',mim:locatie)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
@@ -330,8 +306,7 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Enumeratie',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','enumeratie')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'enumeratie')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -348,9 +323,8 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Interface (extern)',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','interface')"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'interface')"/>
                 <xsl:sequence select="imf:set-parameter('oas-name',imf:get-kenmerk(.,'oasnaam'))"/>
-                <xsl:sequence select="imf:get-index(.)"/>
                 <xsl:if test="ancestor::mim:Extern/mim:naam = 'GML'">
                     <xsl:sequence select="imf:set-parameter('url',imf:get-geo-url(.))"/>
                 </xsl:if>
@@ -366,8 +340,7 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een gestructureerd datatype',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','gestructureerddatatype')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'gestructureerddatatype')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -384,8 +357,7 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een referentielijst',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','referentielijst')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'referentielijst')"/>
                 <xsl:sequence select="imf:set-parameter('locatie',mim:locatie)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
@@ -402,8 +374,7 @@
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een primitief datatype',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','primitiefdatatype')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'primitiefdatatype')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -415,8 +386,15 @@
     
     <xsl:template match="mim:Attribuutsoort">
         
-        <xsl:variable name="pga" select="imf:get-primary-geometry-attribute(../..)"/>
-        <xsl:variable name="ppa" select="imf:get-primary-place-attribute(../..)"/>
+        <!-- 
+            Kijk of er een supertype is dat een pga heeft
+            
+            Als die er is, dan geldt de default NIET. Maar wel een eventueel lokaal vastgestelde ppa.
+            Als die er niet is, dan geldt de DEFAULT wel (en een eventueel lokaal vastgestelde ppa)
+        -->
+        <xsl:variable name="obj" select="if (imf:is-featuretype(../..)) then ../.. else ()"/>
+        <xsl:variable name="pga" select="if ($obj) then if (imf:get-supers-with-pga($obj)) then () else imf:get-primary-geometry-attribute(../..) else ()"/>
+        <xsl:variable name="ppa" select="if ($obj) then if (imf:get-supers-with-ppa($obj)) then () else imf:get-primary-place-attribute(../..) else ()"/>
         <xsl:variable name="unit" select="imf:get-kenmerk(.,'eenheid')"/>
         <xsl:variable name="is-gml-measure-type" select="lower-case(mim:naam) = ('measure', 'length', 'speed', 'angle', 'area', 'volume')"/>
         <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineorbyreference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
@@ -424,22 +402,15 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een attribuutsoort',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','attribuutsoort')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'attribuutsoort')"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
                 <xsl:sequence select="imf:get-data-location(.)"/>
                 <xsl:sequence select="imf:set-parameter('is-value-derived',imf:get-kenmerk(.,'is-value-derived'))"/>
-                <xsl:sequence select="imf:set-parameter('is-identifying',imf:boolean(mim:identificerend))"/>
+                <xsl:sequence select="imf:set-parameter('is-identifying',imf:boolean(mim:identificerend))"/><!-- see /req/geojson-formats/identifier, we gebruiken dit verder niet, misschien een todo -->
                 <xsl:sequence select="imf:set-parameter('is-pga',mim:naam = $pga/mim:naam)"/>
                 <xsl:sequence select="imf:set-parameter('is-ppa',mim:naam = $ppa/mim:naam)"/>
                 <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
-                
                 <xsl:sequence select="imf:set-parameter('unit',$unit)"/><!-- wordt verwerkt in json stap. zie /req/core/iso19103-measure-types -->
-                <?req
-                <xsl:if test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and mim:identificerend">
-                    <xsl:sequence select="imf:set-parameter('identifier','true')"/>
-                </xsl:if>
-                x?>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -470,9 +441,8 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een PGA attribuutsoort',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','attribuutsoort')"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'attribuutsoort')"/>
                 <xsl:sequence select="imf:set-parameter('is-pga','true')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
             <ep:name>geometry</ep:name>
             <xsl:sequence select="imf:get-cardinality(.)"/>
@@ -484,9 +454,8 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een PPA attribuutsoort',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','attribuutsoort')"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'attribuutsoort')"/>
                 <xsl:sequence select="imf:set-parameter('is-ppa','true')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
             </ep:parameters>
             <ep:name>place</ep:name>
             <xsl:sequence select="imf:get-cardinality(.)"/>
@@ -500,8 +469,7 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Gegevensgroep',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','gegevensgroep')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'gegevensgroep')"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
@@ -515,8 +483,7 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een keuze element, constructies',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','constructieref')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'constructieref')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-ref(.)"/>
@@ -527,8 +494,7 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een keuze element, datatypen',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','datatype')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'datatype')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
         </ep:construct>
@@ -538,8 +504,7 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een keuze element, referentie naar datatype',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','datatyperef')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'datatyperef')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-ref(.)"/>
@@ -550,8 +515,7 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een data element',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','dataelement')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'dataelement')"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
@@ -566,8 +530,7 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een referentie element',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','referentieelement')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'referentieelement')"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
@@ -589,8 +552,7 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Relatiesoort',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','relatiesoort')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'relatiesoort')"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
                 <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
             </ep:parameters>
@@ -607,8 +569,7 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een objecttype in een keuze',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','objecttyperef')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'objecttyperef')"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
@@ -625,8 +586,7 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een objecttype in een relatiesoort',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','objecttyperef')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'objecttyperef')"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
@@ -639,8 +599,7 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een relatie naar een keuze tussen relatiedoelen',())"/>
             <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('use','keuzeref')"/>
-                <xsl:sequence select="imf:get-index(.)"/>
+                <xsl:sequence select="imf:set-common-parameters(.,'keuzeref')"/>
                 <xsl:sequence select="imf:get-nillable(.)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
@@ -728,24 +687,21 @@
     <xsl:function name="imf:get-supers" as="element(ep:super)*">
         <xsl:param name="this"/>
         
-        <xsl:variable name="pga" select="if (local-name($this) = ('Objecttype','Relatieklasse','Koppelklasse')) then imf:get-primary-geometry-attribute($this) else ()"/>
-        <xsl:variable name="ppa" select="if (local-name($this) = ('Objecttype','Relatieklasse','Koppelklasse')) then imf:get-primary-place-attribute($this) else ()"/>
+        <xsl:variable name="is-featuretype" select="imf:is-featuretype($this)"/>
         
-        <!-- TODO let op: in xml schema generatie moet static een copy-down worden! -->
-        <ep:super>
-            <xsl:if test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and $pga">
-                <ep:ref href="{imf:get-geo-url-for-name('GM_Feature')}">GM_Feature</ep:ref>
-            </xsl:if>
-            <xsl:if test="$bp-req-basic-encodings = ('/req/jsonfg') and $ppa">
-                <xsl:variable name="name" select="$ppa/mim:naam"/>
-                <ep:ref href="{imf:get-geo-url-for-name($name)}">{$name}</ep:ref>
-            </xsl:if>
+        <xsl:variable name="super-refs" as="element(ep:ref)*">
+            <xsl:apply-templates select="$this/mim:supertypen/*"/>
+        </xsl:variable>
+        
+       <ep:super>
             <xsl:choose>
-                <xsl:when test="$this/mim:supertypen/*">
-                    <xsl:apply-templates select="$this/mim:supertypen/*"/>
+                <!-- wanneer supertypen, neem aan dat daarop het feature type is gedefinieerd -->
+                <xsl:when test="$super-refs">
+                    <xsl:sequence select="$super-refs"/>
                 </xsl:when>
-                <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')"><!-- see OGC BP 7.6.1. Common base schema -->
-                    <ep:ref href="{imf:get-geo-url-for-name('GM_Feature')}">GM_Feature</ep:ref>
+                <!-- anders nemen we aan dat ojecttypen e.d. een featuretype zijn -->
+                <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and $is-featuretype">
+                    <ep:ref href="/known/feature">GM_Feature</ep:ref>
                 </xsl:when>
             </xsl:choose>
         </ep:super>
@@ -784,14 +740,17 @@
         </xsl:if>
     </xsl:function>
 
-    <xsl:function name="imf:get-index" as="element(ep:parameter)*">
+    <xsl:function name="imf:set-common-parameters" as="element(ep:parameter)*">
         <xsl:param name="this"/>
+        <xsl:param name="shortname" as="xs:string"/>
         <xsl:variable name="default-positie" select="
             if ($this/self::mim:Attribuutsoort) then '100' else 
             if ($this/self::mim:Relatiesoort) then '200' else 
             '0'"/>
+        <xsl:sequence select="imf:set-parameter('use',$shortname)"/>
         <xsl:sequence select="imf:set-parameter('position',(imf:get-kenmerk($this,'positie'),$default-positie)[1])"/>
         <xsl:sequence select="imf:set-parameter('index',$this/@index)"/>
+        <xsl:sequence select="if (imf:is-featuretype($this)) then imf:set-parameter('is-featuretype','true') else ()"/>
     </xsl:function>
     
     <xsl:function name="imf:get-cardinality" as="element()*">
@@ -969,13 +928,14 @@
         <xsl:sequence select="if ($this/self::mim:Relatiesoort and $relatierol-leidend) then $this/mim:relatierollen/mim:Doel else $this"/>
     </xsl:function>
     
+    <!-- haal het attribuut met de primaire geometrie op, zie /req/geojson-formats/primary-geometry -->
     <xsl:function name="imf:get-primary-geometry-attribute" as="element(mim:Attribuutsoort)?">
         <xsl:param name="this" as="element(mim:Objecttype)"/>
         <xsl:variable name="geo-atts" select="$this//mim:Attribuutsoort[starts-with(mim:type/mim-ext:ConstructieRef,'GM_')]"/>
         <xsl:variable name="geo-att1" select="$geo-atts[imf:boolean(imf:get-kenmerk(.,'primaire geometrie'))]"/>
         <xsl:variable name="geo-att2" select="if (count($geo-atts) = 1) then $geo-atts else ()"/>
         <xsl:sequence select="($geo-att1,$geo-att2)[1]"/>
-    </xsl:function>
+     </xsl:function>
 
     <xsl:function name="imf:get-primary-place-attribute" as="element(mim:Attribuutsoort)?">
         <xsl:param name="this" as="element(mim:Objecttype)"/>
@@ -1004,6 +964,54 @@
                 <!-- skip; this is not within range of the spec; entitytype is expected, no alternatives -->
             </xsl:otherwise>
         </xsl:choose>    
+    </xsl:function>
+    
+    <xsl:function name="imf:is-featuretype">
+        <xsl:param name="this" as="element()"/>
+        <xsl:sequence select="local-name($this) = ('Objecttype','Relatieklasse','Koppelklasse')"/>
+    </xsl:function>
+    
+    <!-- 
+        geef alle supertypen af van het objecttype die een primaire geometrie definieren 
+    --> 
+    <xsl:function name="imf:get-supers-with-pga" as="element()*">
+        <xsl:param name="this" as="element()"/>
+        
+        <xsl:variable name="supers" select="imf:get-mim-superclasses($this)"/>
+        <xsl:variable name="supers-with-pga" select="$supers[mim:attribuutsoorten/mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primaire geometrie'))]]"/>
+        
+        <xsl:sequence select="$supers-with-pga"/>
+    </xsl:function>
+    <!-- 
+        geef alle supertypen af van het objecttype die een primaire plaats definieren 
+    --> 
+    <xsl:function name="imf:get-supers-with-ppa" as="element()*">
+        <xsl:param name="this" as="element()"/>
+        
+        <xsl:variable name="supers" select="imf:get-mim-superclasses($this)"/>
+        <xsl:variable name="supers-with-ppa" select="$supers[mim:attribuutsoorten/mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primaire plaats'))]]"/>
+        
+        <xsl:sequence select="$supers-with-ppa"/>
+    </xsl:function>
+    
+    <!-- return all superclasses of this class, i.e. in complete type hierarchy -->
+    <xsl:function name="imf:get-mim-superclasses" as="element()*">
+        <xsl:param name="this" as="element()"/>
+        <xsl:for-each select="imf:get-mim-superclass($this)">
+            <!-- this should be a class, but if not so, allow validation to signal this -->
+            <xsl:sequence select="(., imf:get-mim-superclasses(.))"/>
+        </xsl:for-each>
+    </xsl:function>
+    
+    <!-- return the direct superclasses of this class -->
+    <xsl:function name="imf:get-mim-superclass" as="element()*">
+        <xsl:param name="this" as="element()"/>
+        <xsl:sequence select="for $href in $this/mim:supertypen/*/mim:supertype/mim-ref:*/@xlink:href return imf:get-mim-class-by-id(substring-after($href,'#'))"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-mim-class-by-id" as="element()?">
+        <xsl:param name="id" as="xs:string?"/>
+        <xsl:sequence select="$document//mim:*[@id = $id][1]"/>
     </xsl:function>
     
 </xsl:stylesheet>

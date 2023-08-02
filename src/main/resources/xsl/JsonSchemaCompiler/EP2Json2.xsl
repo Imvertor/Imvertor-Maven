@@ -118,8 +118,6 @@
         <xsl:variable name="tech-name" select="imf:ep-tech-name(ep:name)"/>
         <xsl:variable name="is-anchor" select="$top-constructs-with-identity[. is $construct]"/>
         
-        <xsl:sequence select="dlogger:save('ep:construct ' || ep:name,$construct)"></xsl:sequence>
-        
         <xsl:if test="empty($url)"> <!-- externe constructs met URL worden niet opgenomen; wanneer ernaar wordt verwezen wordt de URL aldaar ingevoegd -->
             <xsl:variable name="n" select="'EP=' || $tech-name || ', ID=' || @id"/>
             <xsl:variable name="nillable" select="imf:get-ep-parameter(.,'nillable') = 'true'"/>
@@ -515,6 +513,9 @@
             <xsl:when test="$href = '/known/byreference'">
                 <xsl:sequence select="imf:ep-to-namevaluepair('type','string')"/>
                 <xsl:sequence select="imf:ep-to-namevaluepair('format','uri-reference')"/>
+            </xsl:when>
+            <xsl:when test="$href = '/known/feature'">
+                <xsl:sequence select="imf:ep-to-namevaluepair('$ref','https://geojson.org/schema/Feature.json')"/>
             </xsl:when>
             <xsl:when test="exists($target)">
                 <xsl:sequence select="imf:ep-to-namevaluepair('$ref',imf:get-type-ref($target))"/>
