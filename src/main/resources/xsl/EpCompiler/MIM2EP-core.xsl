@@ -893,7 +893,7 @@
             <xsl:when test="$requires-geojson and $name = 'GM_Curve'">https://geojson.org/schema/LineString.json</xsl:when>
             <xsl:when test="$requires-geojson and $name = 'GM_Surface'">https://geojson.org/schema/Polygon.json</xsl:when>
             <xsl:when test="$requires-geojson and $name = 'GM_Polygon'">https://geojson.org/schema/Polygon.json</xsl:when>
-            <xsl:when test="$requires-geojson and $name = 'GM_Solid'">https://geojson.org/schema/Polyhedron.json</xsl:when>
+            <xsl:when test="$requires-geojson and $name = 'GM_Solid'">https://beta.schemas.opengis.net/json-fg/geometry-objects.json#/$defs/Polyhedron</xsl:when><!-- overnemen van jsonFG omdat het niet in geojson voorkomt -->
             <xsl:when test="$requires-geojson and $name = 'GM_MultiPoint'">https://geojson.org/schema/MultiPoint.json</xsl:when>
             <xsl:when test="$requires-geojson and $name = 'GM_MultiCurve'">https://geojson.org/schema/MultiLineString.json</xsl:when>
             <xsl:when test="$requires-geojson and $name = 'GM_MultiSurface'">https://geojson.org/schema/MultiPolygon.json</xsl:when>
@@ -990,7 +990,7 @@
             <xsl:when test="$super">
                 <!-- skip -->
             </xsl:when>
-            <xsl:when test="$bp-req-additional-requirements-classes = '/req/entitytype'">
+            <xsl:when test="$bp-req-additional-requirements-classes = '/req/entitytype'"><!-- optioneel; kan ook "none" zijn -->
                 <ep:construct>
                     <ep:parameters>
                         <ep:parameter name="use">entitytype</ep:parameter>

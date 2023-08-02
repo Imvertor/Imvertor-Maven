@@ -544,8 +544,9 @@
         <xsl:sequence select="if ($name) then $name else ()"/><!-- was: imf:extract($name,'[a-zA-Z0-9]+') maar lijkt geen reden voor te zijn -->
     </xsl:function>
     
+    <!-- wanneer het element voorkomt in een domein, dan heeft het identity, omdat je ernaar kunt verwijzen -->
     <xsl:function name="imf:has-identity" as="xs:boolean">
         <xsl:param name="this" as="element()"/>
-        <xsl:sequence select="imf:get-ep-parameter($this,'use') = ('objecttype','relatieklasse','koppelklasse')"/>
+        <xsl:sequence select="imf:get-ep-parameter($this/ancestor::ep:group[1],'use') = 'domein'"/>
     </xsl:function>
 </xsl:stylesheet>

@@ -59,6 +59,7 @@
         Best Practice for OGC - UML to JSON Encoding Rules
         options: 
         /req/entitytype
+        none (geen entity type)
     -->
     <parameter name="bp-additional-requirements-classes">/req/entitytype</parameter><!-- Clause 7.11 -->    
     
