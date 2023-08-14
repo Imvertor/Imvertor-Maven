@@ -8,6 +8,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:fn="http://www.w3.org/2005/xpath-functions"
+    
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all" 
@@ -33,6 +35,8 @@
     <xsl:variable name="document-ids" select="for $id in //@id return string($id)"/>
 
     <xsl:variable name="meta-is-role-based" select="imf:boolean(imf:get-xparm('appinfo/meta-is-role-based'))"/>
+    
+    <xsl:variable name="diagram-encoding" select="imf:get-config-parameter('diagram-encoding',false())"/><!-- #326 als figure, of als img met tekst eronder -->
     
     <xsl:template match="/book">
         <xsl:sequence select="imf:track('Generating HTML',())"/>
@@ -663,6 +667,7 @@
     </xsl:template>
     
     <xsl:template name="process-imagemaps">
+       
         <!-- context is a section holding imagemap elements -->
         <xsl:for-each select="section[@type = 'IMAGEMAP']">
             <xsl:variable name="diagram-id" select="@id"/>
@@ -670,9 +675,7 @@
             <xsl:variable name="diagram-path" select="imf:insert-diagram-path($diagram-id)"/>
             <xsl:variable name="diagram-css-class" select="if ($diagram/imvert-imap:purpose = 'CFG-IMG-OVERVIEW') then 'overview' else ''"/>
             <xsl:variable name="caption-desc" select="content/part[@type='CFG-DOC-DESCRIPTION']/item[2]"/>
-            
-            <div class="imageinfo {$diagram-css-class}">
-                <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+            <xsl:variable name="map" as="element(map)">
                 <map name="imagemap-{$diagram-id}">
                     <xsl:for-each select="$diagram/imvert-imap:map">
                         <xsl:variable name="section-id" select="imvert-imap:for-id"/>
@@ -688,16 +691,41 @@
                         </xsl:if>
                     </xsl:for-each>
                 </map>
-                <!-- create the caption -->
-                <p>
-                    <b>
-                        <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
-                    </b>
-                    <xsl:if test="normalize-space($caption-desc)">    
-                        <!--<xsl:text> &#8212; </xsl:text>-->
-                        <xsl:sequence select="$caption-desc/node()"/>
-                    </xsl:if>
-                </p>    
+            </xsl:variable> 
+            <div class="imageinfo {$diagram-css-class}">
+                <xsl:choose>
+                    <xsl:when test="$diagram-encoding = 'figure'">
+                        <figure>
+                            <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+                            <figcaption>
+                                <b>
+                                    <xsl:variable name="title" select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
+                                    <xsl:variable name="stitle" select="analyze-string($title,'^(.*?)\s+-\s+(\S+)$')/fn:match/fn:group[@nr = '1']"/><!-- verwijder de suffix -->
+                                    <xsl:value-of select="($stitle,$title)[1]"/>
+                                </b>
+                                <xsl:if test="normalize-space($caption-desc)">    
+                                    <!--<xsl:text> &#8212; </xsl:text>-->
+                                    <xsl:sequence select="$caption-desc/node()"/>
+                                </xsl:if>
+                            </figcaption>
+                        </figure>
+                        <xsl:sequence select="$map"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+                        <xsl:sequence select="$map"/>
+                        <!-- create the caption -->
+                        <p>
+                            <b>
+                                <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
+                            </b>
+                            <xsl:if test="normalize-space($caption-desc)">    
+                                <!--<xsl:text> &#8212; </xsl:text>-->
+                                <xsl:sequence select="$caption-desc/node()"/>
+                            </xsl:if>
+                        </p>    
+                    </xsl:otherwise>
+                </xsl:choose>
             </div>
         </xsl:for-each>
     </xsl:template>

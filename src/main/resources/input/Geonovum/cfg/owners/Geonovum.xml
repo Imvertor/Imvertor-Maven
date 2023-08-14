@@ -96,4 +96,12 @@
     -->  
     <parameter name="message-collapse-keys">TV1NSBRF2 NAFFA NAFF1 TCBR1 DOFRT1IOMUM2</parameter>
     
+    <!-- 
+        Wordt een diagram geplaatst binnen <figure> (met figcaption) of (default) gewoon in een <img>? 
+        Options:
+        - figure
+        - img
+    -->
+    <parameter name="diagram-encoding">figure</parameter>
+
 </project-owner>

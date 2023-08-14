@@ -91,16 +91,25 @@
     </xsl:function>
     
     <xsl:function name="imf:get-config-parameter" as="item()*">
-        <xsl:param name="parameter-name"/>
+        <xsl:param name="parameter-name" as="xs:string"/>
+        <xsl:param name="must-exist" as="xs:boolean"/>
         <xsl:variable name="v" select="$configuration-owner-file/parameter[@name=$parameter-name]/node()"/>
         <xsl:choose>
             <xsl:when test="exists($v)">
                 <xsl:sequence select="$v"/>
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:when test="$must-exist">
                 <xsl:sequence select="imf:msg('FATAL','No such parameter [1]', $parameter-name)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- nothing -->
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-config-parameter" as="item()*">
+       <xsl:param name="parameter-name"/>
+       <xsl:sequence select="imf:get-config-parameter($parameter-name,true())"/>
     </xsl:function>
     
     <xsl:function name="imf:get-config-has-owner" as="xs:boolean">
