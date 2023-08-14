@@ -676,14 +676,15 @@
                 <map name="imagemap-{$diagram-id}">
                     <xsl:for-each select="$diagram/imvert-imap:map">
                         <xsl:variable name="section-id" select="imvert-imap:for-id"/>
-                        <xsl:variable name="section" select="$document//*[@uuid = $section-id]"/><!-- expected are: section or item; but can be anything referenced from within graph by imagemap -->
+                        <xsl:variable name="section" select="($document//*[@uuid = $section-id])[1]"/><!-- expected are: section or item; but can be anything referenced from within graph by imagemap -->
                         <xsl:if test="$section">
                             <xsl:variable name="section-name" select="$section/@name"/>
+                            <xsl:variable name="section-id" select="$section/@id"/>
                             <area 
                                 shape="rect" 
                                 alt="{$section-name}"
                                 coords="{imvert-imap:loc[@type = 'imgL']},{imvert-imap:loc[@type = 'imgT']},{imvert-imap:loc[@type = 'imgR']},{imvert-imap:loc[@type = 'imgB']}" 
-                                href="#graph_{$section-id}"/>
+                                href="#{$section-id}"/><!-- do not use graph_ references. see #360 -->
                         </xsl:if>
                     </xsl:for-each>
                 </map>
@@ -703,9 +704,13 @@
     
     <xsl:function name="imf:create-anchors" as="element()*">
         <xsl:param name="section-or-item"/>
+        <!-- do not use graph_ references. see #360 -->
+        <?x
         <xsl:if test="$section-or-item/@uuid">
             <a class="anchor" name="graph_{$section-or-item/@uuid}"/>
         </xsl:if>
+        x?>
+        <!-- obsolete duplication of ID. see #360 -->
         <?x
         <xsl:if test="$section-or-item/@id">
             <a class="anchor" name="{$section-or-item/@id}"/>
