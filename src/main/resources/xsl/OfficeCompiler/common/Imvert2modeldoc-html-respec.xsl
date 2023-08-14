@@ -61,7 +61,10 @@
             <xsl:when test="$has-multiple-domains">
                 <xsl:variable name="level" select="imf:get-section-level(.)"/>
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:if test="$id">
+                        <xsl:attribute name="id" select="$id"/>
+                    </xsl:if>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,string(@name))"/>
                     <xsl:apply-templates select="section" mode="detail"/>
                 </section>
@@ -78,27 +81,34 @@
         <xsl:variable name="section" select="."/>
         
         <xsl:variable name="level" select="imf:get-section-level(.)"/>
-        
+        <xsl:variable name="idatt" as="attribute()?">
+            <xsl:if test="$id">
+                <xsl:attribute name="id" select="$id"/>
+            </xsl:if>
+        </xsl:variable>
         <xsl:choose>
             <!-- verwerken van diagrammen -->
             <xsl:when test="@type = 'IMAGEMAPS'">
                <xsl:call-template name="process-imagemaps"/>     
             </xsl:when>
             <xsl:when test="section[@type = 'IMAGEMAP']"><!-- the type is not IMAGEMAPS -->
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,string(@name))"/>
                     <xsl:call-template name="process-imagemaps"/>
                 </section>
             </xsl:when>
             <!-- de kop van de details sectie. -->
             <xsl:when test="starts-with(@type,'DETAILS')"> <!-- bijv. DETAILS of DETAILS-OBJECTYPE -->
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,())"/>
                     <xsl:apply-templates mode="#current"/>
                 </section>
             </xsl:when>
             <xsl:when test="@type = 'EXPLANATION'">
-                <section id="{$id}" class="notoc" level="{$level}">
+                <section class="notoc" level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,'EXPLANATION',$language-model,())"/>
                     <xsl:apply-templates select="content[not(@approach='association')]/part/item" mode="#current"/>
                 </section>
@@ -121,7 +131,8 @@
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ATTRIBUTE'">
                 <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
-                <section id="{$id}" class="notoc" level="{$level}">
+                <section class="notoc" level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:variable name="name">
                         <xsl:if test="exists(../@id-global)">
                             <a href="#{../@id-global}">
@@ -137,20 +148,23 @@
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ASSOCIATION'">
                 <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
-                <section id="{$id}" class="notoc" level="{$level}">
+                <section class="notoc" level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,'ASSOCIATION',$language-model,concat(' ',@name,' ',imf:translate-i3n('OF-COMPOSITION',$language-model,()),' ',$composer))"/>
                     <xsl:apply-templates mode="detail"/>
                 </section>
             </xsl:when>
             <xsl:when test="starts-with(@type,'OVERVIEW-')">
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,string(@name))"/>
                     <xsl:apply-templates mode="detail"/>
                 </section>
             </xsl:when> 
             <xsl:when test="@type = ('OBJECTTYPE')"> <!-- objecttypes are in TOC -->
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,string(@name))"/>
                     <xsl:apply-templates mode="detail"/>
                 </section>
@@ -158,7 +172,8 @@
             <!-- een detail sectie, deze krijgen geen TOC ingang -->
             <xsl:when test="starts-with(@type,'DETAIL-')">
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:variable name="name">
                         <xsl:if test="exists(../@id-global)">
                             <a href="#{../@id-global}">
@@ -174,7 +189,8 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,string(@name))"/>
                     <xsl:apply-templates mode="detail"/>
                 </section>
@@ -690,9 +706,11 @@
         <xsl:if test="$section-or-item/@uuid">
             <a class="anchor" name="graph_{$section-or-item/@uuid}"/>
         </xsl:if>
+        <?x
         <xsl:if test="$section-or-item/@id">
             <a class="anchor" name="{$section-or-item/@id}"/>
         </xsl:if>
+        x?>
     </xsl:function>
     
     <xsl:function name="imf:get-section-level" as="xs:integer">

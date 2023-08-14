@@ -816,7 +816,7 @@
         <part>
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:if test="$is-coded">
-                <xsl:sequence select="imf:create-element('item',imvert:alias)"/>
+                <xsl:sequence select="imf:create-element('item',string(imvert:alias))"/>
             </xsl:if>
             <xsl:sequence select="imf:create-element('item',imf:get-name(.,true()))"/>
             <xsl:if test="$is-imbroa">
@@ -1294,7 +1294,7 @@
                     <xsl:variable name="global-or-detail" select="if ($type/imvert:stereotype/@id = ('stereotype-name-simpletype')) then 'global' else 'detail'"/>
                     <xsl:variable name="formaat-type" select="if ($type) then imf:create-link($type,$global-or-detail,imf:get-name($type,true())) else ()"/>
                     <xsl:variable name="formaat-bare" select="$relation/imvert:baretype"/>
-                    <xsl:sequence select="imf:create-part-2(., ($formaat-type,$formaat-bare)[1])"/>         
+                    <xsl:sequence select="imf:create-part-2(., ($formaat-type,string($formaat-bare))[1])"/>         
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-LENGTH'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-LENGTH'))"/>         
