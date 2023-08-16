@@ -698,18 +698,18 @@
                         <figure>
                             <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
                             <figcaption>
-                                <b>
-                                    <xsl:variable name="title" select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
-                                    <xsl:variable name="stitle" select="analyze-string($title,'^(.*?)\s+-\s+(\S+)$')/fn:match/fn:group[@nr = '1']"/><!-- verwijder de suffix -->
-                                    <xsl:value-of select="($stitle,$title)[1]"/>
-                                </b>
-                                <xsl:if test="normalize-space($caption-desc)">    
-                                    <!--<xsl:text> &#8212; </xsl:text>-->
-                                    <xsl:sequence select="$caption-desc/node()"/>
-                                </xsl:if>
+                                <xsl:variable name="title" select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
+                                <xsl:variable name="stitle" select="analyze-string($title,'^(.*?)\s+-\s+(\S+)$')/fn:match/fn:group[@nr = '1']"/><!-- verwijder de suffix -->
+                                <xsl:value-of select="($stitle,$title)[1]"/>
                             </figcaption>
                         </figure>
                         <xsl:sequence select="$map"/>
+                        <xsl:if test="normalize-space($caption-desc)">    
+                            <!--<xsl:text> &#8212; </xsl:text>-->
+                            <p>
+                                <xsl:sequence select="$caption-desc/node()"/>
+                            </p>
+                        </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>
                         <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
