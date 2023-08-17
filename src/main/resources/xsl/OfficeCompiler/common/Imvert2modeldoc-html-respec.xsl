@@ -369,14 +369,25 @@
     
     <xsl:template match="part" mode="detail">
         <xsl:variable name="items" select="count(item)"/>
-        <xsl:variable name="type" select="ancestor::section/@type"/>
+        <xsl:variable name="type" select="ancestor::section/@type" as="attribute()*"/>
         <tr>
             <xsl:choose>
                 <xsl:when test="@type = 'COMPOSER' and $type='DETAIL-COMPOSITE-ATTRIBUTE'">
                     <!-- skip, do not show in detail listings -->
                 </xsl:when>
+                <xsl:when test="@type = 'CFG-DOC-NAAM' and $type['DETAILS'] and not($type = ('DETAIL-ATTRIBUTE','DETAIL-ASSOCIATION','DETAIL-UNIONELEMENT'))"> 
+                    <!-- https://github.com/Imvertor/Imvertor-Maven/issues/365# -->
+                    <th>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </th>
+                    <td>
+                        <dfn>
+                            <xsl:apply-templates select="item[2]" mode="#current"/>
+                        </dfn>
+                    </td>
+                </xsl:when>
                 <xsl:when test="@type = 'CFG-DOC-INDICATIEAUTHENTIEK'">
-                   <!-- add suffix info string -->
+                    <!-- add suffix info string -->
                     <th>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </th>
