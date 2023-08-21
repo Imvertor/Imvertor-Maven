@@ -1432,7 +1432,7 @@
   <xsl:template name="extensieKenmerken">
     <xsl:where-populated>
       <mim-ext:kenmerken>
-        <xsl:for-each select="imvert:tagged-values/imvert:tagged-value[not(@id = $mim-tagged-value-ids)]">
+        <xsl:for-each select="imvert:tagged-values/imvert:tagged-value[not(@id = ($mim-tagged-value-ids,'CFG-TV-POSITION'))]">
           <mim-ext:Kenmerk naam="{imvert:name/@original}">{imvert:value/@original}</mim-ext:Kenmerk>
         </xsl:for-each>  
         <!--
