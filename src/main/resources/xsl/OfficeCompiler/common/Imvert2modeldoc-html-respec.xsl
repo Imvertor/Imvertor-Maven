@@ -375,6 +375,7 @@
                 <xsl:when test="@type = 'COMPOSER' and $type='DETAIL-COMPOSITE-ATTRIBUTE'">
                     <!-- skip, do not show in detail listings -->
                 </xsl:when>
+                <?x issue https://github.com/Imvertor/Imvertor-Maven/issues/366
                 <xsl:when test="@type = 'CFG-DOC-NAAM' and $type['DETAILS'] and not($type = ('DETAIL-ATTRIBUTE','DETAIL-ASSOCIATION','DETAIL-UNIONELEMENT'))"> 
                     <!-- https://github.com/Imvertor/Imvertor-Maven/issues/365# -->
                     <th>
@@ -386,6 +387,7 @@
                         </dfn>
                     </td>
                 </xsl:when>
+                x?>
                 <xsl:when test="@type = 'CFG-DOC-INDICATIEAUTHENTIEK'">
                     <!-- add suffix info string -->
                     <th>
