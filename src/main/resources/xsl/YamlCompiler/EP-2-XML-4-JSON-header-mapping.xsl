@@ -209,76 +209,34 @@
 				
 				<xsl:variable name="determinedUriStructure">
 					<!-- This variable contains a structure determined from the messageName. -->
-					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
-						<xsl:choose>
-							<xsl:when test="contains($messageName,'{') and contains($messageName,'/')">
-								<xsl:sequence select="imf:determineUriStructure(substring-after($messageName,'/'))"/>
-							</xsl:when>
-							<xsl:when test="contains($messageName,'/')">
-								<ep:uriPart>
-									<ep:entityName><xsl:value-of select="lower-case(substring-after($messageName,'/'))"/></ep:entityName>
-								</ep:uriPart>
-							</xsl:when>
-						</xsl:choose>
-					</ep:uriStructure>
+
+					<xsl:call-template name="determine-uriStructure">
+						<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+						<xsl:with-param name="customPathFacet" select="$customPathFacet"/>
+						<xsl:with-param name="messageName" select="$messageName"/>
+					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="calculatedUriStructure">
 					<!-- This  variable contains a similar structure as the variable determinedUriStructure but this time determined from 
 						 the request tree. -->
-					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
-						<xsl:choose>
-							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct])">
-								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$construct)"/>
-							</xsl:when>
-							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
-								<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct,$rawMessageName))"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<ep:uriPart>
-									<ep:entityName original="{$meervoudigeNaam}"><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
-									<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getParameters"/>
-								</ep:uriPart>
-								<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getUriPart"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</ep:uriStructure>
+
+					<xsl:call-template name="calculate-uriStructure">
+						<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+						<xsl:with-param name="customPathFacet" select="$customPathFacet"/>
+						<xsl:with-param name="construct" select="$construct"/>
+						<xsl:with-param name="meervoudigeNaam" select="$meervoudigeNaam"/>
+					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="checkedUriStructure">
 					<!-- Within this variable the variables determinedUriStructure and the calculatedUriStructure are compared with eachother
 						 and during that process a comparable structure as in those variables is generated. It's also determined if a parameter
 						 is a query or a path parameter. -->
-					<xsl:variable name="checkOnParameters">
-						<xsl:for-each select="$determinedUriStructure//ep:uriPart">
-							<xsl:if test="contains(ep:entityName,'{') or contains(ep:entityName,'}')">Y</xsl:if>
-						</xsl:for-each>
-					</xsl:variable>
-					<xsl:choose>
-						<xsl:when test="contains($checkOnParameters,'Y')">
-							<!-- Within the path 2 parameter uriparts are placed after eachother. -->
-							<xsl:sequence select="imf:msg(.,'WARNING','Within the message [1] 2 parameters are placed after eachother.', ($rawMessageName))" />			
-							<ep:uriStructure/>
-						</xsl:when>
-						<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
-							<!-- If the amount of entities withn the determined structure is larger than within the calculated structure
-								 comparisson isn't possible and a warnings is generated. The structure within the padtype class doesn't fit with the structure within the query tree.
-								 This might be caused by names not being equal within both structures or by missing structure parts within the query tree. -->
-							<xsl:sequence select="imf:msg(.,'WARNING','The structure of the padtype class within the message [1] does not comply with the structure within the query tree.', ($rawMessageName))" />			
-							<ep:uriStructure/>
-						</xsl:when>
-						<xsl:otherwise>
-							<!-- Process the calculated uristructure with the checkUriStructure template. -->
-							<xsl:for-each select="$calculatedUriStructure/ep:uriStructure">
-								<ep:uriStructure>
-									<xsl:call-template name="checkUriStructure">
-										<xsl:with-param name="uriPart2Check" select="1"/>
-										<xsl:with-param name="determinedUriStructure" select="$determinedUriStructure"/>
-										<xsl:with-param name="calculatedUriStructure" select="$calculatedUriStructure"/>
-										<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
-									</xsl:call-template>
-								</ep:uriStructure>
-							</xsl:for-each>
-						</xsl:otherwise>
-					</xsl:choose>
+
+					<xsl:call-template name="check-uriStructure">
+						<xsl:with-param name="determinedUriStructure" select="$determinedUriStructure"/>
+						<xsl:with-param name="calculatedUriStructure" select="$calculatedUriStructure"/>
+						<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+					</xsl:call-template>
 				</xsl:variable>
 
 				<xsl:variable name="analyzedResponseStructure">
@@ -307,7 +265,7 @@
 					</xsl:variable>
 					<xsl:choose>
 						<xsl:when test="contains($falseAndEmptyUriParts,',')">
-							<xsl:sequence select="imf:msg(.,'WARNING','The request tree of the message [1] contains empty entities ([2]) which are not part of the message.', ($messageName,$falseAndEmptyUriParts))" />			
+							<xsl:sequence select="imf:msg(.,'WARNING','The request tree of the message [1] contains the empty entities ([2]) which are not part of the message.', ($messageName,$falseAndEmptyUriParts))" />			
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:msg(.,'WARNING','The request tree of the message [1] contains the empty entity ([2]) which is not part of the message.', ($messageName,$falseAndEmptyUriParts))" />			
@@ -382,7 +340,7 @@
 						<xsl:sequence select="imf:msg(.,'ERROR','An expand parameter is only applicable for hal+json, remove it from the [1] message [2].', ($method, $messageName))" />			
 					</xsl:when>
 					<xsl:when test="$expand = false() and $checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND']">
-						<xsl:sequence select="imf:msg(.,'WARNING','An expand parameter is not applicable for the [1] message [2], remove it.', ($messageName))" />			
+						<xsl:sequence select="imf:msg(.,'WARNING','An expand parameter is not applicable for the [1] message [2], remove it.', ($method, $messageName))" />			
 					</xsl:when>
 				</xsl:choose>
 				
@@ -765,75 +723,34 @@
 
 				<xsl:variable name="determinedUriStructure">
 					<!-- This variable contains a structure determined from the messageName. -->
-					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
-						<xsl:choose>
-							<xsl:when test="contains($messageName,'{') and contains($messageName,'/')">
-								<xsl:sequence select="imf:determineUriStructure(substring-after($messageName,'/'))"/>
-							</xsl:when>
-							<xsl:when test="contains($messageName,'/')">
-								<ep:uriPart>
-									<ep:entityName original="{substring-after($messageName,'/')}"><xsl:value-of select="lower-case(substring-after($messageName,'/'))"/></ep:entityName>
-								</ep:uriPart>
-							</xsl:when>
-						</xsl:choose>
-					</ep:uriStructure>
+					
+					<xsl:call-template name="determine-uriStructure">
+						<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+						<xsl:with-param name="customPathFacet" select="$customPathFacet"/>
+						<xsl:with-param name="messageName" select="$messageName"/>
+					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="calculatedUriStructure">
 					<!-- This  variable contains a similar structure as the variable determinedUriStructure but this time determined from 
 						 the request tree. -->
-					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
-						<xsl:choose>
-							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct])">
-								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$construct)"/>
-							</xsl:when>
-							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
-								<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct,$rawMessageName))"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<ep:uriPart>
-									<ep:entityName original="{$meervoudigeNaam}"><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
-									<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getParameters"/>
-								</ep:uriPart>
-								<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getUriPart"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</ep:uriStructure>
+
+					<xsl:call-template name="calculate-uriStructure">
+						<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+						<xsl:with-param name="customPathFacet" select="$customPathFacet"/>
+						<xsl:with-param name="construct" select="$construct"/>
+						<xsl:with-param name="meervoudigeNaam" select="$meervoudigeNaam"/>
+					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="checkedUriStructure">
 					<!-- Within this variable the variables determinedUriStructure and the calculatedUriStructure are compared with eachother
 						 and durng that process a comparable structure as in those variables is generated. It's also determined if a parameter
 						 is a query or a path parameter. -->
-					<xsl:variable name="checkOnParameters">
-						<xsl:for-each select="$determinedUriStructure//ep:uriPart">
-							<xsl:if test="contains(ep:entityName,'{') or contains(ep:entityName,'}')">Y</xsl:if>
-						</xsl:for-each>
-					</xsl:variable>
-					<xsl:choose>
-						<xsl:when test="contains($checkOnParameters,'Y')">
-							<!-- Within the path 2 parameter uriparts are placed after eachother. -->
-							<xsl:sequence select="imf:msg(.,'WARNING','Within the message [1] 2 parameters are placed after eachother.', ($rawMessageName))" />			
-							<ep:uriStructure/>
-						</xsl:when>
-						<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
-							<!-- If the amount of entities within the detremined structure is larger than withn the calculated structure
-								 comparisson isn't possible and a warnings is generated. -->
-							<xsl:sequence select="imf:msg(.,'WARNING','The amount of entities within the message [1] is larger than the amount of entities within the query tree.', ($rawMessageName))" />			
-							<ep:uriStructure/>
-						</xsl:when>
-						<xsl:otherwise>
-							<!-- Process the calculated uristructure with the checkUriStructure template. -->
-							<xsl:for-each select="$calculatedUriStructure/ep:uriStructure">
-								<ep:uriStructure>
-									<xsl:call-template name="checkUriStructure">
-										<xsl:with-param name="uriPart2Check" select="1"/>
-										<xsl:with-param name="determinedUriStructure" select="$determinedUriStructure"/>
-										<xsl:with-param name="calculatedUriStructure" select="$calculatedUriStructure"/>
-										<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
-									</xsl:call-template>
-								</ep:uriStructure>
-							</xsl:for-each>
-						</xsl:otherwise>
-					</xsl:choose>
+
+					<xsl:call-template name="check-uriStructure">
+						<xsl:with-param name="determinedUriStructure" select="$determinedUriStructure"/>
+						<xsl:with-param name="calculatedUriStructure" select="$calculatedUriStructure"/>
+						<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+					</xsl:call-template>
 				</xsl:variable>
 				
 				<xsl:if test="$checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
@@ -937,7 +854,7 @@
 					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and not(contains(upper-case($berichttype),'PO'))">
 						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
 					</xsl:when>
-					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and empty($checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE'])">
+					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and empty($checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE']) and contains(upper-case($berichttype),'PO')">
 						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for [1] message [2] since no page parameter has been created, remove it or create a page parameter.', ($method, $messageName))" />			
 					</xsl:when>
 				</xsl:choose>
@@ -1242,76 +1159,34 @@
 				
 				<xsl:variable name="determinedUriStructure">
 					<!-- This variable contains a structure determined from the messageName. -->
-					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
-						<xsl:choose>
-							<xsl:when test="contains($messageName,'{') and contains($messageName,'/')">
-								<xsl:sequence select="imf:determineUriStructure(substring-after($messageName,'/'))"/>
-							</xsl:when>
-							<xsl:when test="contains($messageName,'/')">
-								<ep:uriPart>
-									<ep:entityName original="{substring-after($messageName,'/')}"><xsl:value-of select="lower-case(substring-after($messageName,'/'))"/></ep:entityName>
-								</ep:uriPart>
-							</xsl:when>
-						</xsl:choose>
-					</ep:uriStructure>
+					
+					<xsl:call-template name="determine-uriStructure">
+						<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+						<xsl:with-param name="customPathFacet" select="$customPathFacet"/>
+						<xsl:with-param name="messageName" select="$messageName"/>
+					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="calculatedUriStructure">
 					<!-- This  variable contains a similar structure as the variable determinedUriStructure but this time determined from 
 						 the request tree. -->
-					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
-						<xsl:choose>
-							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct])">
-								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$construct)"/>
-							</xsl:when>
-							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
-								<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct,$rawMessageName))"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<ep:uriPart>
-									<ep:entityName original="{$meervoudigeNaam}"><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
-									<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getParameters"/>
-								</ep:uriPart>
-								<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getUriPart"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</ep:uriStructure>
+
+					<xsl:call-template name="calculate-uriStructure">
+						<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+						<xsl:with-param name="customPathFacet" select="$customPathFacet"/>
+						<xsl:with-param name="construct" select="$construct"/>
+						<xsl:with-param name="meervoudigeNaam" select="$meervoudigeNaam"/>
+					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="checkedUriStructure">
 					<!-- Within this variable the variables determinedUriStructure and the calculatedUriStructure are compared with eachother
 						 and durng that process a comparable structure as in those variables is generated. It's also determined if a parameter
 						 is a query or a path parameter. -->
-					<xsl:variable name="checkOnParameters">
-						<xsl:for-each select="$determinedUriStructure//ep:uriPart">
-							<xsl:if test="contains(ep:entityName,'{') or contains(ep:entityName,'}')">Y</xsl:if>
-						</xsl:for-each>
-					</xsl:variable>
-					<xsl:choose>
-						<xsl:when test="contains($checkOnParameters,'Y')">
-							<!-- Within the path 2 parameter uriparts are placed after eachother. -->
-							<xsl:sequence select="imf:msg(.,'WARNING','Within the message [1] 2 parameters are placed after eachother.', ($rawMessageName))" />			
-							<ep:uriStructure/>
-						</xsl:when>
-						<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
-							<!-- If the amount of entities withn the determined structure is larger than within the calculated structure
-								 comparisson isn't possible and a warnings is generated. The structure within the padtype class doesn't fit with the structure within the query tree.
-								 This might be caused by names not being equal within both structures or by missing structure parts within the query tree. -->
-							<xsl:sequence select="imf:msg(.,'WARNING','The structure of the padtype class within the message [1] does not comply with the structure within the query tree.', ($rawMessageName))" />			
-							<ep:uriStructure/>
-						</xsl:when>
-						<xsl:otherwise>
-							<!-- Process the calculated uristructure with the checkUriStructure template. -->
-							<xsl:for-each select="$calculatedUriStructure/ep:uriStructure">
-								<ep:uriStructure>
-									<xsl:call-template name="checkUriStructure">
-										<xsl:with-param name="uriPart2Check" select="1"/>
-										<xsl:with-param name="determinedUriStructure" select="$determinedUriStructure"/>
-										<xsl:with-param name="calculatedUriStructure" select="$calculatedUriStructure"/>
-										<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
-									</xsl:call-template>
-								</ep:uriStructure>
-							</xsl:for-each>
-						</xsl:otherwise>
-					</xsl:choose>
+
+					<xsl:call-template name="check-uriStructure">
+						<xsl:with-param name="determinedUriStructure" select="$determinedUriStructure"/>
+						<xsl:with-param name="calculatedUriStructure" select="$calculatedUriStructure"/>
+						<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+					</xsl:call-template>
 				</xsl:variable>
 
 				<xsl:if test="$checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
@@ -1494,6 +1369,91 @@
 				</j:map>
 			</xsl:when>
 		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="determine-uriStructure">
+		<xsl:param name="rawMessageName"/>
+		<xsl:param name="customPathFacet"/>
+		<xsl:param name="messageName"/>
+		
+		<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
+			<xsl:choose>
+				<xsl:when test="contains($messageName,'{') and contains($messageName,'/')">
+					<xsl:sequence select="imf:determineUriStructure(substring-after($messageName,'/'))"/>
+				</xsl:when>
+				<xsl:when test="contains($messageName,'/')">
+					<ep:uriPart>
+						<!--ep:entityName><xsl:value-of select="lower-case(substring-after($messageName,'/'))"/></ep:entityName-->
+						<ep:entityName original="{substring-after($messageName,'/')}"><xsl:value-of select="lower-case(substring-after($messageName,'/'))"/></ep:entityName>
+					</ep:uriPart>
+				</xsl:when>
+			</xsl:choose>
+		</ep:uriStructure>		
+	</xsl:template> 
+
+	<xsl:template name="calculate-uriStructure">
+		<xsl:param name="rawMessageName"/>
+		<xsl:param name="customPathFacet"/>
+		<xsl:param name="construct"/>
+		<xsl:param name="meervoudigeNaam"/>
+		
+		<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
+			<xsl:choose>
+				<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct])">
+					<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$construct)"/>
+				</xsl:when>
+				<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
+					<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct,$rawMessageName))"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<ep:uriPart>
+						<ep:entityName original="{$meervoudigeNaam}"><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
+						<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getParameters"/>
+					</ep:uriPart>
+					<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $construct]" mode="getUriPart"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</ep:uriStructure>
+	</xsl:template>
+
+	<xsl:template name="check-uriStructure">
+		<xsl:param name="determinedUriStructure"/>
+		<xsl:param name="calculatedUriStructure"/>
+		<xsl:param name="rawMessageName"/>
+		
+		<xsl:variable name="checkOnParameters">
+			<xsl:for-each select="$determinedUriStructure//ep:uriPart">
+				<xsl:if test="contains(ep:entityName,'{') or contains(ep:entityName,'}')">Y</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="contains($checkOnParameters,'Y')">
+				<!-- Within the path 2 parameter uriparts are placed after eachother (e.g. /fiets/{serienummer}/{kleur}). -->
+				<xsl:sequence select="imf:msg(.,'WARNING','Within the message [1] 2 path parameters are placed after eachother.', ($rawMessageName))" />			
+				<ep:uriStructure/>
+			</xsl:when>
+			<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
+				<!-- If the amount of entities within the determined structure is larger than within the calculated structure
+								 comparisson isn't possible and a warnings is generated. The structure within the padtype class doesn't fit with the structure within the request tree.
+								 This might be caused by names not being equal within both structures or by missing structure parts within the request tree. -->
+				<xsl:sequence select="imf:msg(.,'WARNING','The structure of the padtype class within the message [1] does not comply with the structure within the request tree.', ($rawMessageName))" />			
+				<ep:uriStructure/>
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- Process the calculated uristructure with the checkUriStructure template. -->
+				<xsl:for-each select="$calculatedUriStructure/ep:uriStructure">
+					<ep:uriStructure>
+						<xsl:call-template name="checkUriStructure">
+							<xsl:with-param name="uriPart2Check" select="1"/>
+							<xsl:with-param name="determinedUriStructure" select="$determinedUriStructure"/>
+							<xsl:with-param name="calculatedUriStructure" select="$calculatedUriStructure"/>
+							<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+						</xsl:call-template>
+					</ep:uriStructure>
+				</xsl:for-each>
+			</xsl:otherwise>
+		</xsl:choose>
+		
 	</xsl:template>
 	
 	<xsl:template match="ep:construct" mode="simpletype-class">

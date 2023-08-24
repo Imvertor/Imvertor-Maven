@@ -19,10 +19,12 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
+    <!--xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/-->
+    <xi:include href="../../../MIM/cfg/tvsets/MIM111.xml"/>
     
-    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM11.xml"/>
-
+    <!--xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM11.xml"/-->
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM111.xml"/>
+    
     <?x
     <xi:include href="VNGRBSM-cross-SIM-and-UGM.xml"/>
     x?>
