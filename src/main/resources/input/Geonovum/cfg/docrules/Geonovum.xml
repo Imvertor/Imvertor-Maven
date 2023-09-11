@@ -12,6 +12,11 @@
     
     <show-properties>compact</show-properties> <!-- config, all, compact -->
     
+    <!--
+        Where to show the explanation? (at-bottom or as-row)
+    -->
+    <explanation-location>as-row</explanation-location>
+    
     <doc-rule id="CFG-DOC-ACTUALITEIT" order="300">
         <name lang="nl">Actualiteit</name>
         <levels>
