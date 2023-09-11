@@ -686,6 +686,8 @@
             <xsl:variable name="diagram-id" select="@id"/>
             <xsl:variable name="diagram" select="$imagemap/imvert-imap:diagram[imvert-imap:id = $diagram-id]"/>
             <xsl:variable name="diagram-path" select="imf:insert-diagram-path($diagram-id)"/>
+            <xsl:variable name="diagram-name" select="xs:string($diagram/imvert-imap:name)"/>
+            <xsl:variable name="diagram-show-caption" select="xs:boolean($diagram/imvert-imap:show-caption)"/>
             <xsl:variable name="diagram-css-class" select="if ($diagram/imvert-imap:purpose = 'CFG-IMG-OVERVIEW') then 'overview' else ''"/>
             <xsl:variable name="caption-desc" select="content/part[@type='CFG-DOC-DESCRIPTION']/item[2]"/>
             <xsl:variable name="map" as="element(map)">
@@ -707,13 +709,14 @@
             </xsl:variable> 
             <div class="imageinfo {$diagram-css-class}">
                 <xsl:choose>
+                    <xsl:when test="not($diagram-show-caption)">
+                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+                    </xsl:when>
                     <xsl:when test="$diagram-encoding = 'figure'">
                         <figure>
                             <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
                             <figcaption>
-                                <xsl:variable name="title" select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
-                                <xsl:variable name="stitle" select="analyze-string($title,'^(.*?)\s+-\s+(\S+)$')/fn:match/fn:group[@nr = '1']"/><!-- verwijder de suffix -->
-                                <xsl:value-of select="($stitle,$title)[1]"/>
+                                <xsl:sequence select="imf:parse-diagram-title($diagram-name)[1]"/> 
                             </figcaption>
                         </figure>
                         <xsl:sequence select="$map"/>
@@ -807,5 +810,18 @@
             </xsl:analyze-string>
         </xsl:variable>
         <xsl:value-of select="string-join($r,'')"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:parse-diagram-title" as="xs:string*">
+        <xsl:param name="title" as="xs:string?"/>
+        <xsl:variable name="stitle" select="analyze-string($title,'^(.*?)\s+-\s+(\S+)$')/fn:match/fn:group"/>
+        <xsl:choose>
+            <xsl:when test="$stitle[2]">
+                <xsl:sequence select="(xs:string($stitle[1]),xs:string($stitle[2]))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="$title"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
 </xsl:stylesheet>

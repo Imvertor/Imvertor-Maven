@@ -76,7 +76,7 @@
         <name lang="en">Detail diagram</name>
         <marker lang="nl">detail</marker>
         <marker lang="en">detail</marker>
-        <show-caption>no</show-caption>
+        <show-caption>yes</show-caption>
     </image-purpose>
     
     <doc-rule id="CFG-DOC-NORMNAAM" order="000">
