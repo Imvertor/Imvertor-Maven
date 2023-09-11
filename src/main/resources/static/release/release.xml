@@ -2,7 +2,7 @@
     <release>
         <artifact>Imvertor</artifact>
         <major-minor>Nightly-build</major-minor>
-        <bugfix>9</bugfix>
+        <bugfix>10</bugfix>
         
         <notice>Copyright (C) 2016-2022 Dienst voor het Kadaster en de openbare registers.
             This program comes with ABSOLUTELY NO WARRANTY; for details pass -help program.
