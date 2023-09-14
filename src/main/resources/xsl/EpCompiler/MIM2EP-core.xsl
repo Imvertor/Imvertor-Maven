@@ -687,9 +687,11 @@
     <xsl:function name="imf:get-supers" as="element(ep:super)*">
         <xsl:param name="this"/>
         
+        <xsl:sequence select="dlogger:save('$this',$this)"></xsl:sequence>
+        
         <xsl:variable name="is-featuretype" select="imf:is-featuretype($this)"/>
         
-        <xsl:variable name="super-refs" as="element(ep:ref)*">
+        <xsl:variable name="super-refs" as="element()*"><!-- ep:ref of ep:data-type -->
             <xsl:apply-templates select="$this/mim:supertypen/*"/>
         </xsl:variable>
         
