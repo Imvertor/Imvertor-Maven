@@ -7,7 +7,7 @@
     xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
     ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
     
-    <cs:id>dso-cim-ow</cs:id>
+    <cs:id>dso-cim-pdc</cs:id>
     <cs:shortName>DSO CIM Producten en diensten catalogus</cs:shortName>
     <cs:version>1.0.0</cs:version>
     <cs:phase>3</cs:phase>
