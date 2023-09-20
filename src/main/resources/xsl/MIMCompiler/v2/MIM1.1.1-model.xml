@@ -166,6 +166,7 @@
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="1">Unidirectioneel</metagegeven>
          <metagegeven kardinaliteit="1">Aggregatietype</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Gegevensgroep</naam>
@@ -690,6 +691,7 @@
          <modelelement kardinaliteit="1">Referentie element</modelelement>
          <modelelement kardinaliteit="1">Relatierol - Relatierol leidend</modelelement>
          <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="1">Externe koppeling</modelelement>
       </metagegeven>
       <metagegeven>
          <naam>Kwaliteit</naam>

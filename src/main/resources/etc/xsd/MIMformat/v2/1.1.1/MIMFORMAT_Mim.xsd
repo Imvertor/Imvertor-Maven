@@ -729,6 +729,7 @@
       <xs:element name="datumOpname" type="xs:string"/>
       <xs:element name="unidirectioneel" type="xs:string"/>
       <xs:element name="aggregatietype" type="mim:aggregatietype"/>
+      <xs:element name="kardinaliteit" type="xs:string"/>
       <xs:element name="doel">
         <xs:complexType>
           <xs:choice>
