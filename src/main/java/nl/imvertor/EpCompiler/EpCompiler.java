@@ -113,8 +113,8 @@ public class EpCompiler extends Step {
 	
 	public static Boolean requiresMIM() throws IOException, ConfiguratorException {
 		// bepaal of hier de MIM schema variant moet worden gebruikt
-		String jsonsource = Configurator.getInstance().getXParm("cli/jsonsource",false);
-		return (jsonsource == null || jsonsource.equals("MIM"));
+		String jsonschemasource = Configurator.getInstance().getXParm("cli/jsonschemasource",false);
+		return (jsonschemasource == null || jsonschemasource.equals("MIM"));
 	}				
 
 }

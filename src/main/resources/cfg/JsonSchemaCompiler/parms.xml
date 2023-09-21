@@ -39,7 +39,13 @@
       <cli-parm>
          <name>jsonschemaname</name>
          <arg>string</arg>
-         <tip>Thee name of the json schema generated</tip>
+         <tip>The name of the json schema generated</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>jsonschemasource</name>
+         <arg>string</arg>
+         <tip>This is MIM or any other source. If MIM (default), Json schemas are based on a MIM serialisation.</tip>
          <required>false</required>
       </cli-parm> 
    </cli-parms>
