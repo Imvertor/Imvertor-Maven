@@ -35,7 +35,8 @@
     <xsl:variable name="bp-req-code-list-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-code-list-encodings')"/>
     <xsl:variable name="bp-req-additional-requirements-classes" select="imf:get-ep-parameter(/ep:group,'bp-req-additional-requirements-classes')"/>
     
-    <xsl:variable name="schema-id">{imf:get-ep-parameter(/ep:group,'namespace')}/{imf:get-ep-parameter(/ep:group,'version')}/{imf:get-ep-parameter(/ep:group,'release')}</xsl:variable>
+    <xsl:variable name="schema-tv-id">{imf:get-ep-parameter(/ep:group,'json-id')}</xsl:variable>
+    <xsl:variable name="schema-gen-id">{imf:get-ep-parameter(/ep:group,'namespace')}/{imf:get-ep-parameter(/ep:group,'version')}/{imf:get-ep-parameter(/ep:group,'release')}</xsl:variable>
     
     <xsl:variable name="document" select="/"/>
     <xsl:variable name="domains" select="/ep:group/ep:seq/ep:group"/>
@@ -61,7 +62,7 @@
                 <j:map>
                     <xsl:sequence select="imf:ep-to-namevaluepair('$comment',$schema-desc)"/>
                     <xsl:sequence select="imf:ep-to-namevaluepair('$schema','https://json-schema.org/draft/2019-09/schema')"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('$id',$schema-id)"/>
+                    <xsl:sequence select="imf:ep-to-namevaluepair('$id',($schema-tv-id,$schema-gen-id)[1])"/>
                     <j:array key="$reqs">
                         <j:string>{imf:get-ep-parameter(.,'bp-req-basic-encodings')}</j:string>
                         <j:string>{imf:get-ep-parameter(.,'bp-req-by-reference-encodings')}</j:string>

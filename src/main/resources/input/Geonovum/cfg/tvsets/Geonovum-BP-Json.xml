@@ -82,7 +82,17 @@
             <name lang="en">Json document</name>
             <desc lang="nl">TODO</desc>
             <desc lang="en">TODO</desc>
-            <derive>yes</derive>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-JSONID">
+            <name lang="nl">Json id</name>
+            <name lang="en">Json id</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>

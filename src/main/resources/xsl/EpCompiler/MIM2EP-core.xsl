@@ -64,6 +64,7 @@
                     <xsl:sequence select="imf:set-parameter('imvertor-version',imf:get-kenmerk(.,'imvertor-version'))"/>
                     <xsl:sequence select="imf:set-parameter('json-schema-variant',imf:get-xparm('cli/createjsonschemavariant'))"/>
                     <xsl:sequence select="imf:set-parameter('json-document-name',imf:get-kenmerk(.,'json document'))"/>
+                    <xsl:sequence select="imf:set-parameter('json-id',imf:get-kenmerk(.,'json id'))"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-applies','yes')"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-basic-encodings',$bp-req-basic-encodings)"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-by-reference-encodings',$bp-req-by-reference-encodings)"/>
