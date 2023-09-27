@@ -42,6 +42,9 @@
     <xsl:variable name="top-constructs-with-identity" select="$domains/ep:seq/ep:construct[imf:has-identity(.)]"/>
     
     <xsl:template match="/ep:group">
+        
+        <xsl:sequence select="imf:set-xparm('appinfo/json-document-name', imf:get-ep-parameter(.,'json-document-name'))"/>
+        
         <xsl:variable name="defs">
             <xsl:variable name="constructs" as="element(j:map)*">
                 <xsl:apply-templates select="ep:seq/ep:group/ep:seq/ep:construct[not(imf:boolean(ep:external))]"/>

@@ -77,6 +77,18 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
+        <tv norm="space" id="CFG-TV-JSONDOCUMENT">
+            <name lang="nl">Json document</name>
+            <name lang="en">Json document</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        
     </tagged-values>
     
 </tagset>

@@ -110,7 +110,12 @@ public class JsonSchemaCompiler extends Step {
 			jsonFile.toYaml(yamlFile);
 			
 			// copy to the app folder
-			String schemaName = configurator.mergeParms(configurator.getXParm("cli/jsonschemaname"));
+			String schemaNameTv  = configurator.getXParm("appinfo/json-document-name");
+			String schemaNameCli = configurator.mergeParms(configurator.getXParm("cli/jsonschemaname"));
+			String schemaName = (schemaNameTv == null || schemaNameTv.matches("^\s*$")) ? schemaNameCli : schemaNameTv;
+			
+			 // normaliseerd deze naam; volg BP Json conventies
+			schemaName = schemaName.replaceAll("[^A-Za-z0-9]+", "_");
 			
 			// Create the folder; it is not expected to exist yet.
 			AnyFolder jsonFolder = new AnyFolder(configurator.getXParm("system/work-json-folder-path"));
