@@ -333,11 +333,22 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:when>
+                    
                     <!-- de construct is een datatype -->
                     <xsl:when test="ep:data-type">
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Datatype [1]',$n)"/>
                         <xsl:sequence select="$header"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
+                        <xsl:choose>
+                            <xsl:when test="ep:max-occurs and ep:max-occurs ne '1'"><!-- de construct is een datatype die meermaals kan voorkomen (requirement 14B)-->
+                                <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
+                                <j:map key="items">
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
+                                </j:map>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>         
+                            </xsl:otherwise>
+                        </xsl:choose>
                         <xsl:sequence select="if ($unit) then imf:ep-to-namevaluepair('unit',$unit) else ()"/><!-- /req/core/iso19103-measure-types -->
                         <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('minimum',ep:min-value)"/>
