@@ -119,7 +119,12 @@
         
         <xsl:variable name="use" select="imf:get-ep-parameter(.,'use')"/>
         <xsl:variable name="url" select="imf:get-ep-parameter(.,'url')"/>
-        <xsl:variable name="tech-name" select="imf:ep-tech-name(ep:name)"/>
+        <xsl:variable name="tech-name" as="xs:string">
+            <xsl:choose>
+                <xsl:when test="imf:get-ep-parameter(.,'is-pga') = 'true'">geometry</xsl:when><!-- equirements class 3: /req/geojson-formats -->
+                <xsl:otherwise>{imf:ep-tech-name(ep:name)}</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <xsl:variable name="is-anchor" select="$top-constructs-with-identity[. is $construct]"/>
         
         <xsl:if test="empty($url)"> <!-- externe constructs met URL worden niet opgenomen; wanneer ernaar wordt verwezen wordt de URL aldaar ingevoegd -->
@@ -136,7 +141,7 @@
             <xsl:variable name="read-only" select="if (ep:read-only = 'true' or imf:get-ep-parameter(.,'is-value-derived')) then true() else ()"/>
             <xsl:variable name="initial-value" select="ep:initial-value"/>
             <xsl:variable name="unit" select="imf:get-ep-parameter(.,'unit')"/>
-            
+           
             <j:map key="{$tech-name}">
                 <xsl:choose>
                     <!-- de construct verwijst naar meerdere typen -->
