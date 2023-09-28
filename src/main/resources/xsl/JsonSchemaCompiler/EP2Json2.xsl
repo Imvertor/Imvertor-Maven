@@ -41,6 +41,7 @@
     <xsl:variable name="document" select="/"/>
     <xsl:variable name="domains" select="/ep:group/ep:seq/ep:group"/>
     <xsl:variable name="top-constructs-with-identity" select="$domains/ep:seq/ep:construct[imf:has-identity(.)]"/>
+    <xsl:variable name="json-schema-variant" select="imf:get-ep-parameter(/ep:group,'json-schema-variant')"/>
     
     <xsl:template match="/ep:group">
         
@@ -56,7 +57,7 @@
             </xsl:for-each-group>
         </xsl:variable>
         
-        <xsl:variable name="schema-desc">{ep:name} - version {imf:get-ep-parameter(.,'version')} / {imf:get-ep-parameter(.,'release')} by Imvertor {imf:get-ep-parameter(.,'imvertor-version')} variant {imf:get-ep-parameter(.,'json-schema-variant')}{if ($debugging) then  ' DEBUG' else ''}</xsl:variable>
+        <xsl:variable name="schema-desc">{ep:name} - version {imf:get-ep-parameter(.,'version')} / {imf:get-ep-parameter(.,'release')} by Imvertor {imf:get-ep-parameter(.,'imvertor-version')} variant {$json-schema-variant}{if ($debugging) then  ' DEBUG' else ''}</xsl:variable>
         <xsl:choose>
             <xsl:when test="$bp-req-applies">
                 <j:map>
@@ -529,6 +530,9 @@
                 <xsl:sequence select="imf:ep-to-namevaluepair('type','string')"/>
                 <xsl:sequence select="imf:ep-to-namevaluepair('format','uri-reference')"/>
             </xsl:when>
+            <xsl:when test="$href = '/known/feature' and $json-schema-variant = 'jsonfg'">
+                <xsl:sequence select="imf:ep-to-namevaluepair('$ref','https://beta.schemas.opengis.net/json-fg/feature.json')"/>
+            </xsl:when> 
             <xsl:when test="$href = '/known/feature'">
                 <xsl:sequence select="imf:ep-to-namevaluepair('$ref','https://geojson.org/schema/Feature.json')"/>
             </xsl:when>
