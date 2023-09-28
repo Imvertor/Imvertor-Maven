@@ -52,6 +52,7 @@
             <xsl:choose>
                 <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and imf:boolean(imf:get-ep-parameter(..,'is-pga'))">geometry</xsl:when>
                 <xsl:when test="$bp-req-basic-encodings = ('/req/jsonfg') and imf:boolean(imf:get-ep-parameter(..,'is-ppa'))">place</xsl:when>
+                <xsl:when test="$bp-req-basic-encodings = ('/req/jsonfg') and imf:boolean(imf:get-ep-parameter(..,'is-pia'))">time</xsl:when><!-- req. 28 -->
                 <xsl:otherwise>{.}</xsl:otherwise>
             </xsl:choose>    
         </ep:name>
@@ -117,14 +118,18 @@
     <xsl:template match="ep:construct[imf:get-ep-parameter(.,'is-featuretype')]/ep:seq">
         <xsl:choose>
             <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')">
+                <xsl:variable name="not-pconstructs" select="ep:construct[not(imf:boolean(imf:get-ep-parameter(.,'is-pga')) or imf:boolean(imf:get-ep-parameter(.,'is-ppa')) or imf:boolean(imf:get-ep-parameter(.,'is-pia')))]"/>
+                <xsl:variable name="pconstructs" select="ep:construct[imf:boolean(imf:get-ep-parameter(.,'is-pga')) or imf:boolean(imf:get-ep-parameter(.,'is-ppa')) or imf:boolean(imf:get-ep-parameter(.,'is-pia'))]"/>
                 <ep:seq>
-                    <xsl:apply-templates select="ep:construct[imf:boolean(imf:get-ep-parameter(.,'is-pga')) or imf:boolean(imf:get-ep-parameter(.,'is-ppa'))]"/>
-                    <ep:construct>
-                        <ep:name>properties</ep:name>
-                        <ep:seq>
-                            <xsl:apply-templates select="ep:construct[not(imf:boolean(imf:get-ep-parameter(.,'is-pga')) or imf:boolean(imf:get-ep-parameter(.,'is-ppa')))]"/>
-                        </ep:seq>
-                    </ep:construct>
+                    <xsl:apply-templates select="$pconstructs"/>
+                    <xsl:if test="$not-pconstructs">
+                        <ep:construct>
+                            <ep:name>properties</ep:name>
+                            <ep:seq>
+                                <xsl:apply-templates select="$not-pconstructs"/>
+                            </ep:seq>
+                        </ep:construct>
+                    </xsl:if>
                 </ep:seq>
             </xsl:when>
             <xsl:otherwise>

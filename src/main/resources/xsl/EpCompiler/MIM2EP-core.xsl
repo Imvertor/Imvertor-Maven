@@ -397,6 +397,7 @@
         <xsl:variable name="obj" select="if (imf:is-featuretype(../..)) then ../.. else ()"/>
         <xsl:variable name="pga" select="if ($obj) then if (imf:get-supers-with-pga($obj)) then () else imf:get-primary-geometry-attribute(../..) else ()"/>
         <xsl:variable name="ppa" select="if ($obj) then if (imf:get-supers-with-ppa($obj)) then () else imf:get-primary-place-attribute(../..) else ()"/>
+        <xsl:variable name="pia" select="if ($obj) then if (imf:get-supers-with-pia($obj)) then () else imf:get-primary-instant-attribute(../..) else ()"/>
         <xsl:variable name="unit" select="imf:get-kenmerk(.,'eenheid')"/>
         <xsl:variable name="is-gml-measure-type" select="lower-case(mim:naam) = ('measure', 'length', 'speed', 'angle', 'area', 'volume')"/>
         <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineorbyreference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
@@ -411,6 +412,7 @@
                 <xsl:sequence select="imf:set-parameter('is-identifying',imf:boolean(mim:identificerend))"/><!-- see /req/geojson-formats/identifier, we gebruiken dit verder niet, misschien een todo -->
                 <xsl:sequence select="imf:set-parameter('is-pga',mim:naam = $pga/mim:naam)"/>
                 <xsl:sequence select="imf:set-parameter('is-ppa',mim:naam = $ppa/mim:naam)"/>
+                <xsl:sequence select="imf:set-parameter('is-pia',mim:naam = $pia/mim:naam)"/>
                 <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
                 <xsl:sequence select="imf:set-parameter('unit',$unit)"/><!-- wordt verwerkt in json stap. zie /req/core/iso19103-measure-types -->
             </ep:parameters>
@@ -944,7 +946,13 @@
         <xsl:variable name="place-att" select="$this//mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primaire plaats'))]"/>
         <xsl:sequence select="$place-att[1]"/>
     </xsl:function>
-
+    
+    <xsl:function name="imf:get-primary-instant-attribute" as="element(mim:Attribuutsoort)?">
+        <xsl:param name="this" as="element(mim:Objecttype)"/>
+        <xsl:variable name="instant-att" select="$this//mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primair moment'))]"/>
+        <xsl:sequence select="$instant-att[1]"/>
+    </xsl:function>
+    
     <xsl:function name="imf:add-entitytype" as="element()*">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="super" select="$this//mim:supertype"/>
@@ -994,6 +1002,17 @@
         <xsl:variable name="supers-with-ppa" select="$supers[mim:attribuutsoorten/mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primaire plaats'))]]"/>
         
         <xsl:sequence select="$supers-with-ppa"/>
+    </xsl:function>
+    <!-- 
+        geef alle supertypen af van het objecttype die een primair moment definieren 
+    --> 
+    <xsl:function name="imf:get-supers-with-pia" as="element()*">
+        <xsl:param name="this" as="element()"/>
+        
+        <xsl:variable name="supers" select="imf:get-mim-superclasses($this)"/>
+        <xsl:variable name="supers-with-pia" select="$supers[mim:attribuutsoorten/mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primair moment'))]]"/>
+        
+        <xsl:sequence select="$supers-with-pia"/>
     </xsl:function>
     
     <!-- return all superclasses of this class, i.e. in complete type hierarchy -->
