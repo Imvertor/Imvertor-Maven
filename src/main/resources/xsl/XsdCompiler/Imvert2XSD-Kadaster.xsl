@@ -1208,7 +1208,11 @@
     <xsl:function name="imf:get-namespace" as="xs:string">
         <xsl:param name="this" as="node()"/>
         <xsl:choose>
-            <xsl:when test="$this/imvert:stereotype='external-package'">
+            <xsl:when test="empty($this/imvert:namespace)">
+                <xsl:sequence select="imf:msg('ERROR', 'No namespace found for package [1])', $this/imvert:name)"/>
+                <xsl:value-of select="'urn:error:nonamespace'"/><!-- TODO dit zou eigenlijk al eerder moeten zijn gesignalleerd: maar wat zijn de namespace regels voor ISO 19136? -->
+            </xsl:when>
+            <xsl:when test="$this/imvert:stereotype = 'external-package'">
                 <xsl:value-of select="$this/imvert:namespace"/>
             </xsl:when>
             <xsl:otherwise>
