@@ -66,7 +66,6 @@ import org.apache.commons.configuration2.tree.NodeCombiner;
 import org.apache.commons.configuration2.tree.OverrideCombiner;
 import org.apache.commons.configuration2.tree.xpath.XPathExpressionEngine;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.jena.shared.ConfigException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.xml.resolver.Catalog;
@@ -712,7 +711,6 @@ public class Configurator {
 	 * Set the location of all system files/folders. 
 	 *
 	 * @throws IOException
-	 * @throws ConfigException
 	 * @throws ConfiguratorException 
 	 */
 	public void setParmsFromEnv() throws IOException, ConfiguratorException {
@@ -741,7 +739,6 @@ public class Configurator {
 	 * @param value The value of the parameter
 	 * 
 	 * @throws IOException
-	 * @throws ConfigException
 	 * @throws ConfiguratorException 
 	 */
 	public void setParm(String group, String name, Object value) throws IOException, ConfiguratorException {
@@ -760,7 +757,6 @@ public class Configurator {
 	 * @param value The value of the parameter
 	 * 
 	 * @throws IOException
-	 * @throws ConfigException
 	 * @throws ConfiguratorException 
 	 */
 	public void setParm(String group, String name, String value, boolean replace) throws IOException, ConfiguratorException {
@@ -779,9 +775,7 @@ public class Configurator {
 	 * @param name  The name of the parameter 
 	 * 
 	 * @throws IOException
-	 * @throws ConfigException
 	 * @throws ConfiguratorException 
-	 * @throws ConfigurationException 
 	 */
 	public String getParm(String group, String name) throws IOException, ConfiguratorException {
 		return getParm(workConfiguration, group, name, true);
@@ -812,7 +806,6 @@ public class Configurator {
 	 * @param name  The name of the parameter 
 	 * 
 	 * @throws IOException
-	 * @throws ConfigException
 	 * @throws ConfiguratorException 
 	 * @throws ConfigurationException 
 	 */
