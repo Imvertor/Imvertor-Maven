@@ -494,17 +494,18 @@
         </ep:construct>
     </xsl:template>
     
-    <xsl:template match="mim:keuzeDatatypen/mim:Datatype"><!-- TODO hoe vormgeven? -->
+    <xsl:template match="mim:keuzeDatatypen/mim:Datatype">
         <ep:construct>
-            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een keuze element, datatypen',())"/>
+            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een keuze element, MIM datatypen',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-common-parameters(.,'datatype')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
+            <ep:data-type>{imf:get-ep-datatype(.)}</ep:data-type>
         </ep:construct>
     </xsl:template>
     
-    <xsl:template match="mim:keuzeDatatypen/mim-ref:DatatypeRef"><!-- TODO hoe vormgeven? -->
+    <xsl:template match="mim:keuzeDatatypen/mim-ref:DatatypeRef">
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een keuze element, referentie naar datatype',())"/>
             <ep:parameters>
