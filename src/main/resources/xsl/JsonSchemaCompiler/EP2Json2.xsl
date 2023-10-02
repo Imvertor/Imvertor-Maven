@@ -269,9 +269,17 @@
                                 </xsl:when>
                                 <xsl:when test="imf:get-ep-parameter(ep:choice/ep:construct,'use') = 'datatype'">
                                     <xsl:for-each select="ep:choice/ep:construct">
+                                        <xsl:variable name="ref" select="ep:ref/@href"/>
                                         <j:map>
                                             <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice datatypen',())"/>
-                                            <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type))"/>
+                                            <xsl:choose>
+                                                <xsl:when test="$ref">
+                                                    <xsl:sequence select="imf:get-type-ref-by-id($ref)"/>
+                                                </xsl:when>
+                                                <xsl:otherwise><!-- een MIM datatype -->
+                                                    <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type))"/>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
                                         </j:map>
                                     </xsl:for-each>
                                 </xsl:when>

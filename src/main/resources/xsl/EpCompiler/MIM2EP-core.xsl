@@ -501,7 +501,14 @@
                 <xsl:sequence select="imf:set-common-parameters(.,'datatype')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
-            <ep:data-type>{imf:get-ep-datatype(.)}</ep:data-type>
+            <xsl:choose>
+                <xsl:when test="mim-ext:ConstructieRef"><!-- referentie naar niet-MIM datatype -->
+                    <xsl:sequence select="imf:get-ref(.)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ep:data-type>{imf:get-ep-datatype(.)}</ep:data-type>
+                </xsl:otherwise>
+            </xsl:choose>
         </ep:construct>
     </xsl:template>
     
