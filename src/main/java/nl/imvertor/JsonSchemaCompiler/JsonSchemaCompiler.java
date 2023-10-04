@@ -99,7 +99,7 @@ public class JsonSchemaCompiler extends Step {
 		XmlFile jsonXmlFile = new XmlFile(configurator.getXParm("properties/WORK_JSONXML_XMLPATH"));
 		JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/WORK_SCHEMA_JSONPATH"));
 		YamlFile yamlFile = new YamlFile(configurator.getXParm("properties/WORK_SCHEMA_YAMLPATH"));
-		jsonXmlFile.toJson(jsonFile);
+		jsonXmlFile.toJson(jsonFile,true);
 		
 		// Debug: test if json is okay
 		succeeds = succeeds && jsonFile.validate();

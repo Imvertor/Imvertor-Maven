@@ -645,6 +645,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	
 	/**
 	 * Create a new Json file from this W3C compliant XML file. 
+	 * Specify if json pretty print is required.
 	 * 
 	 * Check Jsonfile for more info. 
 	 * 
@@ -652,9 +653,12 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	 * @throws Exception
 	 */
 	public void toJson(JsonFile targetFile) throws Exception {
+		toJson(targetFile,false);
+    }
+	public void toJson(JsonFile targetFile, Boolean pretty) throws Exception {
 		targetFile.setEscape(false);
 		targetFile.setIndent(true);
-		targetFile.fromXml(this);
+		targetFile.fromXml(this,pretty);
     }
 	
 	/**

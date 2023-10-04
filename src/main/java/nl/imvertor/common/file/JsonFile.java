@@ -120,9 +120,13 @@ public class JsonFile extends AnyFile {
      * 
      */
     public void fromXml(XmlFile xmlFile) throws Exception {
-		XslFile xslFile = new XslFile(Configurator.getInstance().getResource("static/xsl/JsonFile/xmlToJson.xsl"));
-		xslFile.transform(xmlFile, this, parms);
-    }
+ 		fromXml(xmlFile,false);
+     }
+    public void fromXml(XmlFile xmlFile, Boolean pretty) throws Exception {
+ 		XslFile xslFile = new XslFile(Configurator.getInstance().getResource("static/xsl/JsonFile/xmlToJson.xsl"));
+ 		xslFile.transform(xmlFile, this, parms);
+ 		if (pretty) this.prettyPrint();
+     }
     
     /**
 	 * Validate the contents of this file. 
@@ -179,4 +183,11 @@ public class JsonFile extends AnyFile {
 		}
 		return true;
 	}
+    
+    public void prettyPrint() throws IOException {
+    	ObjectMapper mapper = new ObjectMapper();
+        Object rawJson = mapper.readValue(getContent(), Object.class);
+        String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rawJson);
+        setContent(prettyJson);
+    }
 }
