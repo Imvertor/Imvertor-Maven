@@ -34,6 +34,7 @@
          <metagegeven kardinaliteit="0..1">Primaire geometrie</metagegeven>
          <metagegeven kardinaliteit="0..1">Primaire plaats</metagegeven>
          <metagegeven kardinaliteit="0..1">Primair moment</metagegeven>
+         <metagegeven kardinaliteit="0..1">Primair interval</metagegeven>
          <metagegeven kardinaliteit="0..1">InlineOrByReference</metagegeven>
          <metagegeven kardinaliteit="0..1">Eenheid</metagegeven>
       </modelelement>
@@ -797,6 +798,14 @@
       </metagegeven>
       <metagegeven>
          <naam>Primaire plaats</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Primair moment</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Primair interval</naam>
          <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
       </metagegeven>
       <metagegeven>

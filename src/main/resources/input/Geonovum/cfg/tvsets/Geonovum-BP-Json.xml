@@ -51,6 +51,16 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
+        <tv norm="space" id="CFG-TV-PRIMARYINTERVAL">
+            <name lang="nl">Primair interval</name>
+            <name lang="en">Primary interval</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
         <tv norm="space" id="CFG-TV-INLINEORBYREFERENCE">
             <name lang="nl">InlineOrByReference</name>
             <name lang="en">InlineOrByReference</name>

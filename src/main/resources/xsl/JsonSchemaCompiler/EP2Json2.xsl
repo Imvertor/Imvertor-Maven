@@ -127,7 +127,7 @@
             <xsl:variable name="n" select="'EP=' || $tech-name || ', ID=' || @id"/>
             <xsl:variable name="nillable" select="imf:get-ep-parameter(.,'nillable') = 'true'"/>
             <xsl:variable name="header">
-                <xsl:if test="not(imf:get-ep-parameter(.,'is-pga') = 'true') and not(imf:get-ep-parameter(.,'is-ppa') = 'true') and not(imf:get-ep-parameter(.,'is-pia') = 'true')">
+                <xsl:if test="not(imf:get-ep-parameter(.,'is-pga') = 'true') and not(imf:get-ep-parameter(.,'is-ppa') = 'true') and not(imf:get-ep-parameter(.,'is-pia') = 'true') and not(imf:get-ep-parameter(.,'is-pva') = 'true')">
                     <xsl:sequence select="if ($is-anchor) then imf:ep-to-namevaluepair('$anchor',imf:get-type-name(.)) else ()"/>
                     <xsl:sequence select="if (ep:name ne $tech-name) then imf:ep-to-namevaluepair('title',ep:name) else ()"/>
                     <xsl:variable name="added-location" select="if (imf:get-ep-parameter(.,'locatie')) then ('; Locatie: ' || imf:get-ep-parameter(.,'locatie')) else ()"/>
@@ -352,6 +352,20 @@
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:sequence select="imf:ep-to-namevaluepair('$ref','https://register.geostandaarden.nl/jsonschema/uml2json/0.1/schema_definitions.json#/$defs/PrimaryInstantRequired')"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:when>
+                    
+                    <!-- de construct is een datatype dat een primair interval representeert -->
+                    <xsl:when test="ep:data-type and imf:get-ep-parameter(.,'is-pva') = 'true'">
+                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Datatype als primair interval [1]',$n)"/>
+                        <xsl:sequence select="$header"/>
+                        <xsl:choose>
+                            <xsl:when test="ep:min-occurs = '0'">
+                                <xsl:sequence select="imf:ep-to-namevaluepair('$ref','https://register.geostandaarden.nl/jsonschema/uml2json/0.1/schema_definitions.json#/$defs/PrimaryIntervalOptional')"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:sequence select="imf:ep-to-namevaluepair('$ref','https://register.geostandaarden.nl/jsonschema/uml2json/0.1/schema_definitions.json#/$defs/PrimaryIntervalRequired')"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:when>
