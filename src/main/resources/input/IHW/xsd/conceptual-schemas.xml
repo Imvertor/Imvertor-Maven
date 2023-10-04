@@ -59,6 +59,10 @@
                   <cs:name>OIN</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
+              <cs:Construct>
+                  <cs:name>IMWA_GeoObject</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
                <cs:Construct>
                   <cs:name>UUID</cs:name>
                   <cs:sentinel>false</cs:sentinel>
