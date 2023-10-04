@@ -37,25 +37,16 @@
     <!-- ============================= transform an EA string to xhtml. ====================================== -->
     <xsl:function name="imf:eadoc-to-xhtml" as="element()*">
         <xsl:param name="eadoc" as="xs:string?"/>
-        <xsl:choose>
-            <xsl:when test="contains($eadoc,'&gt;')">
-                <xsl:variable name="lis1" select="replace($eadoc,'(&#xA;)+\s*?&lt;li&gt;','&lt;li&gt;')"/>
-                <xsl:variable name="lis2" select="replace($lis1,'&lt;/li&gt;\s+?(&#xA;)+','&lt;/li&gt;')"/>
-                <xsl:variable name="startp" select="concat('&#xA;',$lis2)"/>
-                <xsl:variable name="nl" select="replace($startp,'&#xA;','&lt;p&gt;')"/>
-                <xsl:variable name="inet" select="imf:replace-inet-references($nl)"/>
-                <xsl:variable name="xhtml" select="imf:parse-html((),$inet,true())"/>
-                <xsl:variable name="clean">
-                    <xsl:apply-templates select="$xhtml" mode="clean-xhtml"/>
-                </xsl:variable>
-                <xsl:sequence select="$clean/*/*"/> <!-- all within body element -->
-            </xsl:when>
-            <xsl:otherwise>
-                <html:p>
-                    <xsl:sequence select="imf:replace-inet-references($eadoc)"/>
-                </html:p>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:variable name="lis1" select="replace($eadoc,'(&#xA;)+\s*?&lt;li&gt;','&lt;li&gt;')"/>
+        <xsl:variable name="lis2" select="replace($lis1,'&lt;/li&gt;\s+?(&#xA;)+','&lt;/li&gt;')"/>
+        <xsl:variable name="startp" select="concat('&#xA;',$lis2)"/>
+        <xsl:variable name="nl" select="replace($startp,'&#xA;','&lt;p&gt;')"/>
+        <xsl:variable name="inet" select="imf:replace-inet-references($nl)"/>
+        <xsl:variable name="xhtml" select="imf:parse-html((),$inet,true())"/>
+        <xsl:variable name="clean">
+            <xsl:apply-templates select="$xhtml" mode="clean-xhtml"/>
+        </xsl:variable>
+        <xsl:sequence select="$clean/*/*"/> <!-- all within body element -->
     </xsl:function>
     
     <xsl:function name="imf:replace-inet-references" as="xs:string">
