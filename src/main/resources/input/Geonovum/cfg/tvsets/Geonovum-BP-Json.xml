@@ -77,8 +77,8 @@
                 <value>inlineOrByReference</value>
             </declared-values>
         </tv>
-        <tv norm="space" id="CFG-TV-UNIT">
-            <name lang="nl">Eenheid</name>
+        <tv norm="space" id="CFG-TV-UNITOFMEASURE">
+            <name lang="nl">Meeteenheid</name>
             <name lang="en">Unit</name>
             <desc lang="nl">TODO</desc>
             <desc lang="en">TODO</desc>

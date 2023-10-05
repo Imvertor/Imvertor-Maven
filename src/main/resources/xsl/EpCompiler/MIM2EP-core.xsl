@@ -399,7 +399,7 @@
         <xsl:variable name="ppa" select="if ($obj) then if (imf:get-supers-with-ppa($obj)) then () else imf:get-primary-place-attribute($obj) else ()"/>
         <xsl:variable name="pia" select="if ($obj) then if (imf:get-supers-with-pia($obj)) then () else imf:get-primary-instant-attribute($obj) else ()"/>
         <xsl:variable name="pva" select="if ($obj) then if (imf:get-supers-with-pva($obj)) then () else imf:get-primary-interval-attribute($obj) else ()"/>
-        <xsl:variable name="unit" select="imf:get-kenmerk(.,'eenheid')"/>
+        <xsl:variable name="unit" select="imf:get-kenmerk(.,'meeteenheid')"/>
         <xsl:variable name="is-gml-measure-type" select="lower-case(mim:naam) = ('measure', 'length', 'speed', 'angle', 'area', 'volume')"/>
         <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineorbyreference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
         
