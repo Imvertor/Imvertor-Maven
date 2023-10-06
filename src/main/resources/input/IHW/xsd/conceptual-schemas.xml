@@ -64,6 +64,14 @@
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
               <cs:Construct>
+                  <cs:name>VerticaleReferentie</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+              <cs:Construct>
+                  <cs:name>Watersysteem</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+              <cs:Construct>
                   <cs:name>Waterbeheerfunctie</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
