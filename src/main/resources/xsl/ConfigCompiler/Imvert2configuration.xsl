@@ -459,7 +459,14 @@
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="@order" order="ascending"/>
-                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                    <doc-rule id="{current-grouping-key()}" order="{@order}">
+                        <xsl:apply-templates select="current-group()[last()]/name" mode="#current"/>
+                        <levels>
+                            <xsl:for-each-group select="current-group()/levels/level" group-by="text()">
+                                <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                            </xsl:for-each-group>
+                        </levels>
+                    </doc-rule>
                 </xsl:for-each-group>
                 <xsl:for-each-group select="$doc-rules//image-purpose[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="current-grouping-key()"/>
