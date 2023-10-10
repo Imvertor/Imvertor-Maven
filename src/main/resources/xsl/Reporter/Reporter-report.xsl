@@ -79,7 +79,7 @@
         </xsl:variable>
         
         <!-- create frameset -->
-        <xsl:result-document href="{$doc-folder-url}/index.html">
+        <xsl:result-document href="{$doc-folder-url}index.html">
             <html>
                 <xsl:call-template name="create-html-head">
                     <xsl:with-param name="title" select="concat('Imvert - ', imf:get-config-string('cli','application','Unknown application'))"/>
@@ -96,7 +96,7 @@
         </xsl:result-document>
         
         <!-- create toc -->
-        <xsl:result-document href="{$doc-folder-url}/toc/index.html">
+        <xsl:result-document href="{$doc-folder-url}toc/index.html">
             <html>
                 <xsl:call-template name="create-html-head">
                     <xsl:with-param name="title" select="'Imvert - TOC'"/>
@@ -122,7 +122,7 @@
         
         
         <!-- create a home page-->
-        <xsl:result-document href="{$doc-folder-url}/home/index.html">
+        <xsl:result-document href="{$doc-folder-url}home/index.html">
             <html>
                 <xsl:call-template name="create-html-head">
                     <xsl:with-param name="title" select="'Imvert - Home'"/>
@@ -155,7 +155,7 @@
         </xsl:result-document>
         
         <!-- create a full overview page from all summaries -->
-        <xsl:result-document href="{$doc-folder-url}/overview/index.html">
+        <xsl:result-document href="{$doc-folder-url}overview/index.html">
             <html>
                 <xsl:call-template name="create-html-head">
                     <xsl:with-param name="title" select="'Imvert - Overview'"/>
@@ -268,7 +268,7 @@
     <xsl:template match="page" mode="content">
         <xsl:choose>
             <xsl:when test="content">
-                <xsl:result-document href="{$doc-folder-url}/{../step-name}-{count(preceding-sibling::page)}/index.html">
+                <xsl:result-document href="{$doc-folder-url}{../step-name}-{count(preceding-sibling::page)}/index.html">
                     <html>
                         <xsl:call-template name="create-html-head">
                             <xsl:with-param name="title" select="concat('Imvert - ', ../step-display-name)"/>
