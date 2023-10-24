@@ -1227,8 +1227,19 @@
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
+            <!--TODO conceptual type: dit is waarschijnlijk te beperkt. De externe modellen moeten beter afgehandeld worden. -->
+            <xsl:when test="$is-conceptual and $is-nillable">
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                    <xsl:attribute name="maxOccurs" select="1"/>
+                    <xsl:attribute name="type" select="$type"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A nillable conceptual type')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
+                </xs:element>
+            </xsl:when>
             <xsl:when test="$is-conceptual">
-                <!--TODO dit is waarschijnlijk te beperkt. De externe modellen moeten beter afgehandeld worden. -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
