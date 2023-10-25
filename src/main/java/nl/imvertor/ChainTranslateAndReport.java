@@ -195,12 +195,12 @@ public class ChainTranslateAndReport {
 			        if (succeeds && configurator.isTrue("cli","createstccsv",false))
 			        	succeeds = (new StcCompiler()).run();
 				
-					// compare releases. 
+			        // compare releases. 
 				    // Eg. check if this only concerns a "documentation release". If so, must not be different from existing release.
 				    // also includes other types of release comparisons
-			    	if (succeeds && configurator.isTrue("cli","compare",false))
-			    		succeeds = (new ReleaseComparer()).run();
-			    
+			    	if (!configurator.getXParm("cli/compare").equals("none"))
+			    		succeeds = (new ReleaseComparer()).run() && succeeds;
+			    	
 			    	// generate the XSD 
 			    	if (succeeds && configurator.isTrue("cli","createxmlschema",false)) {
 			    		succeeds = (new XsdCompiler()).run();
