@@ -133,8 +133,10 @@
         <xsl:variable name="this" select="."/>
         <xsl:variable name="class" select="../.."/>
         
+        <xsl:variable name="is-object-attribute" select="imvert:stereotype/@id = ('stereotype-name-attribute')"/>
+        
         <xsl:sequence select="imf:report-error(., 
-            (imvert:name = imf:get-config-parameter('fixed-identification-attribute-name') and not(imvert:is-id = 'true')), 
+            ($is-object-attribute and (imvert:name = imf:get-config-parameter('fixed-identification-attribute-name')) and not(imvert:is-id = 'true')), 
             'Identification attribute is not marked as ID')"/>
         
         <?x
