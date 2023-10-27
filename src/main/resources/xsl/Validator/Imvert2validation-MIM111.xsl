@@ -34,6 +34,31 @@
             'Constraint must not appear here', ())"/>
             
         x?>
+        <xsl:next-match/>
+        
+    </xsl:template>
+
+    <!-- 
+        Json BP validaties 
+    -->
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-relatieklasse','stereotype-name-koppelklasse')]">
+        
+        <xsl:variable name="tv-primary-interval" select="for $a in (imvert:attributes/imvert:attribute) return imf:get-tagged-value($a,'##CFG-TV-PRIMARYINTERVAL')"/>
+        
+        <xsl:sequence select="imf:report-error(., 
+            count($tv-primary-interval) gt 2, 
+            'Too many tagged values[1] on this [2]', 
+            (imf:get-config-name-by-id('CFG-TV-PRIMARYINTERVAL'),imf:get-config-name-by-id(imvert:stereotype/@id)))"/>
+        
+        <xsl:sequence select="imf:report-error(., 
+            count($tv-primary-interval) eq 2 and not($tv-primary-interval = 'start' and $tv-primary-interval = 'end'), 
+            'Tagged value [1] on attributes may only be combined by values [2] and [3]', 
+            (imf:get-config-name-by-id('CFG-TV-PRIMARYINTERVAL'),'start','end'))"/>
+        
+        <xsl:sequence select="imf:report-error(., 
+            count($tv-primary-interval) eq 1 and not($tv-primary-interval = 'interval'), 
+            'Tagged value [1] on attribute has unexpected value. Use [2], [3] or [4]', 
+            (imf:get-config-name-by-id('CFG-TV-PRIMARYINTERVAL'),'interval','start','end'))"/>
         
         <xsl:next-match/>
         

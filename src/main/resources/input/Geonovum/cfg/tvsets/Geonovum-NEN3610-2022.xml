@@ -10,6 +10,8 @@
     
     <xi:include href="Geonovum.xml"/>
     
+    <xi:include href="Geonovum-BP-Json.xml"/>
+    
     <name>Geonovum NEN3610:2022</name>
     
     <desc lang="en">Tagset for Geonovum NEN3610:2022 models</desc>

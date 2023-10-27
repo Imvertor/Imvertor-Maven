@@ -41,7 +41,11 @@ public class XmlDiff {
 			HttpEntity entity = builder.build();
 			post.setEntity(entity);
 			HttpResponse response = client.execute(post);
-			XmlFile.setFileContent(docResult.getCanonicalPath(), EntityUtils.toString(response.getEntity(), "UTF-8"));
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 400)
+				XmlFile.setFileContent(docResult.getCanonicalPath(), "<error>" + status + "</error>");
+			else
+				XmlFile.setFileContent(docResult.getCanonicalPath(), EntityUtils.toString(response.getEntity(), "UTF-8"));
 		} finally {
 			client.close();
 		}

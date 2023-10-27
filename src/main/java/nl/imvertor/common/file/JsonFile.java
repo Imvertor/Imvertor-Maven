@@ -66,7 +66,7 @@ public class JsonFile extends AnyFile {
 	 * 
 	 **/
 	public void setDuplicates(String value) {
-		parms.put("liberal", value);
+		parms.put("duplicates", value);
 	}
 	
 	/**
@@ -81,13 +81,13 @@ public class JsonFile extends AnyFile {
 	}
 	
 	/**
-	 * Determines whether the generated XML tree is schema-validated.
+	 * Determines whether special characters are represented in the XDM output in backslash-escaped form.
 	 * 
 	 * See <a href="https://www.w3.org/TR/xpath-functions-31/#func-json-to-xml">W3C spec</a>
 	 * 
 	 **/
 	public void setEscape(Boolean value) {
-		parms.put("ecape", value.toString());
+		parms.put("escape", value.toString());
 	}
 	
 	/**
@@ -120,9 +120,13 @@ public class JsonFile extends AnyFile {
      * 
      */
     public void fromXml(XmlFile xmlFile) throws Exception {
-		XslFile xslFile = new XslFile(Configurator.getInstance().getResource("static/xsl/JsonFile/xmlToJson.xsl"));
-		xslFile.transform(xmlFile, this, parms);
-    }
+ 		fromXml(xmlFile,false);
+     }
+    public void fromXml(XmlFile xmlFile, Boolean pretty) throws Exception {
+ 		XslFile xslFile = new XslFile(Configurator.getInstance().getResource("static/xsl/JsonFile/xmlToJson.xsl"));
+ 		xslFile.transform(xmlFile, this, parms);
+ 		if (pretty) this.prettyPrint();
+     }
     
     /**
 	 * Validate the contents of this file. 
@@ -179,4 +183,11 @@ public class JsonFile extends AnyFile {
 		}
 		return true;
 	}
+    
+    public void prettyPrint() throws IOException {
+    	ObjectMapper mapper = new ObjectMapper();
+        Object rawJson = mapper.readValue(getContent(), Object.class);
+        String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rawJson);
+        setContent(prettyJson);
+    }
 }

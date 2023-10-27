@@ -77,9 +77,6 @@
     <xsl:template match="/">
         <!--<xsl:apply-templates select="/" mode="speed-analyzer"/>-->
        
-        <xsl:sequence select="dlogger:save('metamodel doc',$configuration-metamodel-doc)"></xsl:sequence>
-        <xsl:sequence select="dlogger:save('tvset doc',$configuration-tvset-doc)"></xsl:sequence>
-        <xsl:sequence select="dlogger:save('translations',$translations)"></xsl:sequence>
         <xsl:variable name="config-raw">
             <config>
                 <xsl:sequence select="$configuration-owner-file"/>
@@ -93,7 +90,8 @@
                 <xsl:sequence select="$configuration-visuals-file"/>
                 <xsl:sequence select="$configuration-shaclrules-file"/>
                 <xsl:sequence select="$configuration-skosrules-file"/>
-            </config>        </xsl:variable>
+            </config>
+        </xsl:variable>
         
         <!-- create a short tre-like representation of this config for referecing purposes; this will reappear in the documentation -->
         <xsl:variable name="tree-includes">
@@ -363,7 +361,6 @@
                 </xsl:for-each-group>
           
             </xmlschema-rules>
-
 
             <jsonschema-rules root="true">
                 <xsl:variable name="jsonschema-rules" select="jsonschema-rules"/> 

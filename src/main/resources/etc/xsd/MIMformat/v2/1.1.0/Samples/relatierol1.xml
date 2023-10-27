@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mim:Objecttype xmlns:xlink="http://www.w3.org/1999/xlink"
- xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel"
- xmlns:mim-ext="http://www.geostandaarden.nl/mim-ext/informatiemodel"
- xmlns:mim="http://www.geostandaarden.nl/mim/informatiemodel"
+ xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0"
+ xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0"
+ xmlns:mim="http://www.geostandaarden.nl/mim/mim-core/1.1"
  xmlns:xhtml="http://www.w3.org/1999/xhtml"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.geostandaarden.nl/mim/informatiemodel ../MIMFORMAT_Mim_relatierol.xsd" id="id1">
+ xsi:schemaLocation="http://www.geostandaarden.nl/mim/mim-core/1.1 ../MIMFORMAT_Mim_relatierol.xsd" id="id1">
     <mim:naam>naam</mim:naam>
     <mim:herkomst>herkomst</mim:herkomst>
     <mim:definitie>definitie</mim:definitie>
@@ -18,6 +18,9 @@
             <mim:alias>alias</mim:alias>
             <mim:definitie>definitie</mim:definitie>
             <mim:unidirectioneel>true</mim:unidirectioneel>
+            <mim:doel>
+                <mim-ref:ObjecttypeRef xlink:href="#id1"/>
+            </mim:doel>
             <mim:relatierollen>
                 <mim:Doel>
                     <mim:naam>naam</mim:naam>

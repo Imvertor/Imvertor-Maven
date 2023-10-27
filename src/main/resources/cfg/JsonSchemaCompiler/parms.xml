@@ -39,21 +39,28 @@
       <cli-parm>
          <name>jsonschemaname</name>
          <arg>string</arg>
-         <tip>Thee name of the json schema generated</tip>
+         <tip>The name of the json schema generated</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>jsonschemasource</name>
+         <arg>string</arg>
+         <tip>This is MIM or any other source. If MIM (default), Json schemas are based on a MIM serialisation.</tip>
          <required>false</required>
       </cli-parm> 
    </cli-parms>
   
    <properties>
    
-      <WORK_EP_XMLPATH>${system/work-imvert-folder-path}/imvertor.26.0.ep.xml</WORK_EP_XMLPATH>   
-      <WORK_GEOJSONXML_XMLPATH>${system/work-imvert-folder-path}/imvertor.26.1.geojsonxml.xml</WORK_GEOJSONXML_XMLPATH>   
-      <WORK_JSONXML_XMLPATH>${system/work-imvert-folder-path}/imvertor.26.2.jsonxml.xml</WORK_JSONXML_XMLPATH>   
-      <WORK_SCHEMA_JSONPATH>${system/work-imvert-folder-path}/imvertor.26.3.schema.json</WORK_SCHEMA_JSONPATH>   
-      <WORK_SCHEMA_YAMLPATH>${system/work-imvert-folder-path}/imvertor.26.4.schema.yaml</WORK_SCHEMA_YAMLPATH>   
+      <WORK_EP_XMLPATH>${system/work-imvert-folder-path}/imvertor.26.ep-final.xml</WORK_EP_XMLPATH>   
       
-      <IMVERTOR_EP_XSLPATH>Imvert2EP.xsl</IMVERTOR_EP_XSLPATH>
+      <WORK_GEOJSONXML_XMLPATH>${system/work-imvert-folder-path}/imvertor.27.1.geojsonxml.xml</WORK_GEOJSONXML_XMLPATH>   
+      <WORK_JSONXML_XMLPATH>${system/work-imvert-folder-path}/imvertor.27.1.jsonxml.xml</WORK_JSONXML_XMLPATH>   
+      <WORK_SCHEMA_JSONPATH>${system/work-imvert-folder-path}/imvertor.27.2.schema.json</WORK_SCHEMA_JSONPATH>   
+      <WORK_SCHEMA_YAMLPATH>${system/work-imvert-folder-path}/imvertor.27.3.schema.yaml</WORK_SCHEMA_YAMLPATH>   
+      
       <IMVERTOR_JSONXML_XSLPATH>EP2Json.xsl</IMVERTOR_JSONXML_XSLPATH>
+      <IMVERTOR_JSONXML2_XSLPATH>EP2Json2.xsl</IMVERTOR_JSONXML2_XSLPATH>
       
    </properties>
    
