@@ -394,11 +394,13 @@
             Als die er is, dan geldt de default NIET. Maar wel een eventueel lokaal vastgestelde ppa.
             Als die er niet is, dan geldt de DEFAULT wel (en een eventueel lokaal vastgestelde ppa)
         -->
+        <xsl:variable name="requires-pia" select="$bp-req-basic-encodings = '/req/jsonfg'"/>
+        
         <xsl:variable name="obj" select="if (imf:is-featuretype(../..)) then ../.. else ()"/>
         <xsl:variable name="pga" select="if ($obj) then if (imf:get-supers-with-pga($obj)) then () else imf:get-primary-geometry-attribute($obj) else ()"/>
         <xsl:variable name="ppa" select="if ($obj) then if (imf:get-supers-with-ppa($obj)) then () else imf:get-primary-place-attribute($obj) else ()"/>
-        <xsl:variable name="pia" select="if ($obj) then if (imf:get-supers-with-pia($obj)) then () else imf:get-primary-instant-attribute($obj) else ()"/>
-        <xsl:variable name="pva" select="if ($obj) then if (imf:get-supers-with-pva($obj)) then () else imf:get-primary-interval-attribute($obj) else ()"/>
+        <xsl:variable name="pia" select="if ($obj and $requires-pia) then if (imf:get-supers-with-pia($obj)) then () else imf:get-primary-instant-attribute($obj) else ()"/>
+        <xsl:variable name="pva" select="if ($obj and $requires-pia) then if (imf:get-supers-with-pva($obj)) then () else imf:get-primary-interval-attribute($obj) else ()"/>
         <xsl:variable name="unit" select="imf:get-kenmerk(.,'meeteenheid')"/>
         <xsl:variable name="is-gml-measure-type" select="lower-case(mim:naam) = ('measure', 'length', 'speed', 'angle', 'area', 'volume')"/>
         <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineorbyreference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
