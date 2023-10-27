@@ -61,6 +61,6 @@
         /req/entitytype
         none (geen entity type)
     -->
-    <parameter name="bp-additional-requirements-classes">none</parameter><!-- Clause 7.11 -->    
+    <parameter name="bp-additional-requirements-classes">/req/entitytype</parameter><!-- Clause 7.11 -->    
     
 </jsonschema-rules>
