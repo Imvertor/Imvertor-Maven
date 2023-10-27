@@ -374,6 +374,8 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-INDICATIEMATERIELEHISTORIE" order="160">

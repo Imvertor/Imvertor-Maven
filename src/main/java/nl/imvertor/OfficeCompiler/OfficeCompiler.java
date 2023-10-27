@@ -230,7 +230,7 @@ public class OfficeCompiler extends Step {
 			
 			// create and prepare the GIT resource pusher
 			ResourcePusher rp = new ResourcePusher();
-			rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gittoken, gitemail);
+			rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gittoken, gitemail, true);
 			
 			// copy the files to the work folder
 			catfolder.copy(new AnyFolder(gitfolder,"data"));
@@ -239,12 +239,12 @@ public class OfficeCompiler extends Step {
 			Iterator<PushResult> result = rp.push(gitcomment).iterator();
 			while (result.hasNext()) {
 				String next = result.next().getMessages();
-				if (!next.equals("")) logger.warn(next); else logger.info("Push succeeds"); 
+				if (next.matches(".*\\S.*")) logger.warn(next); else logger.info("Push succeeds");  
 			}
 			
 			configurator.setXParm("properties/giturl-resolved", giturl);
 		} catch (Exception e) {
-			logger.error("Error pushing files to remote repository https://github.com" + gitpath, e);
+			runner.error(logger, "Error pushing files to remote repository https://github.com" + gitpath + ": " + e.getMessage(),e);
 		}
 	}
 }

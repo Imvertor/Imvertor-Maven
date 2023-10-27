@@ -8,6 +8,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:fn="http://www.w3.org/2005/xpath-functions"
+    
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all" 
@@ -33,6 +35,8 @@
     <xsl:variable name="document-ids" select="for $id in //@id return string($id)"/>
 
     <xsl:variable name="meta-is-role-based" select="imf:boolean(imf:get-xparm('appinfo/meta-is-role-based'))"/>
+    
+    <xsl:variable name="diagram-encoding" select="imf:get-config-parameter('diagram-encoding',false())"/><!-- #326 als figure, of als img met tekst eronder -->
     
     <xsl:template match="/book">
         <xsl:sequence select="imf:track('Generating HTML',())"/>
@@ -61,7 +65,10 @@
             <xsl:when test="$has-multiple-domains">
                 <xsl:variable name="level" select="imf:get-section-level(.)"/>
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:if test="$id">
+                        <xsl:attribute name="id" select="$id"/>
+                    </xsl:if>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,string(@name))"/>
                     <xsl:apply-templates select="section" mode="detail"/>
                 </section>
@@ -78,27 +85,34 @@
         <xsl:variable name="section" select="."/>
         
         <xsl:variable name="level" select="imf:get-section-level(.)"/>
-        
+        <xsl:variable name="idatt" as="attribute()?">
+            <xsl:if test="$id">
+                <xsl:attribute name="id" select="$id"/>
+            </xsl:if>
+        </xsl:variable>
         <xsl:choose>
             <!-- verwerken van diagrammen -->
             <xsl:when test="@type = 'IMAGEMAPS'">
                <xsl:call-template name="process-imagemaps"/>     
             </xsl:when>
             <xsl:when test="section[@type = 'IMAGEMAP']"><!-- the type is not IMAGEMAPS -->
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,string(@name))"/>
                     <xsl:call-template name="process-imagemaps"/>
                 </section>
             </xsl:when>
             <!-- de kop van de details sectie. -->
             <xsl:when test="starts-with(@type,'DETAILS')"> <!-- bijv. DETAILS of DETAILS-OBJECTYPE -->
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,())"/>
                     <xsl:apply-templates mode="#current"/>
                 </section>
             </xsl:when>
             <xsl:when test="@type = 'EXPLANATION'">
-                <section id="{$id}" class="notoc" level="{$level}">
+                <section class="notoc" level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,'EXPLANATION',$language-model,())"/>
                     <xsl:apply-templates select="content[not(@approach='association')]/part/item" mode="#current"/>
                 </section>
@@ -121,7 +135,8 @@
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ATTRIBUTE'">
                 <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
-                <section id="{$id}" class="notoc" level="{$level}">
+                <section class="notoc" level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:variable name="name">
                         <xsl:if test="exists(../@id-global)">
                             <a href="#{../@id-global}">
@@ -137,20 +152,23 @@
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ASSOCIATION'">
                 <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
-                <section id="{$id}" class="notoc" level="{$level}">
+                <section class="notoc" level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,'ASSOCIATION',$language-model,concat(' ',@name,' ',imf:translate-i3n('OF-COMPOSITION',$language-model,()),' ',$composer))"/>
                     <xsl:apply-templates mode="detail"/>
                 </section>
             </xsl:when>
             <xsl:when test="starts-with(@type,'OVERVIEW-')">
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,string(@name))"/>
                     <xsl:apply-templates mode="detail"/>
                 </section>
             </xsl:when> 
             <xsl:when test="@type = ('OBJECTTYPE')"> <!-- objecttypes are in TOC -->
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,string(@name))"/>
                     <xsl:apply-templates mode="detail"/>
                 </section>
@@ -158,7 +176,8 @@
             <!-- een detail sectie, deze krijgen geen TOC ingang -->
             <xsl:when test="starts-with(@type,'DETAIL-')">
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:variable name="name">
                         <xsl:if test="exists(../@id-global)">
                             <a href="#{../@id-global}">
@@ -174,7 +193,8 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}" level="{$level}">
+                <section level="{$level}">
+                    <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,string(@type),$language-model,string(@name))"/>
                     <xsl:apply-templates mode="detail"/>
                 </section>
@@ -349,14 +369,27 @@
     
     <xsl:template match="part" mode="detail">
         <xsl:variable name="items" select="count(item)"/>
-        <xsl:variable name="type" select="ancestor::section/@type"/>
+        <xsl:variable name="type" select="ancestor::section/@type" as="attribute()*"/>
         <tr>
             <xsl:choose>
                 <xsl:when test="@type = 'COMPOSER' and $type='DETAIL-COMPOSITE-ATTRIBUTE'">
                     <!-- skip, do not show in detail listings -->
                 </xsl:when>
+                <?x issue https://github.com/Imvertor/Imvertor-Maven/issues/366
+                <xsl:when test="@type = 'CFG-DOC-NAAM' and $type['DETAILS'] and not($type = ('DETAIL-ATTRIBUTE','DETAIL-ASSOCIATION','DETAIL-UNIONELEMENT'))"> 
+                    <!-- https://github.com/Imvertor/Imvertor-Maven/issues/365# -->
+                    <th>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </th>
+                    <td>
+                        <dfn>
+                            <xsl:apply-templates select="item[2]" mode="#current"/>
+                        </dfn>
+                    </td>
+                </xsl:when>
+                x?>
                 <xsl:when test="@type = 'CFG-DOC-INDICATIEAUTHENTIEK'">
-                   <!-- add suffix info string -->
+                    <!-- add suffix info string -->
                     <th>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </th>
@@ -647,52 +680,86 @@
     </xsl:template>
     
     <xsl:template name="process-imagemaps">
+       
         <!-- context is a section holding imagemap elements -->
         <xsl:for-each select="section[@type = 'IMAGEMAP']">
             <xsl:variable name="diagram-id" select="@id"/>
             <xsl:variable name="diagram" select="$imagemap/imvert-imap:diagram[imvert-imap:id = $diagram-id]"/>
             <xsl:variable name="diagram-path" select="imf:insert-diagram-path($diagram-id)"/>
+            <xsl:variable name="diagram-name" select="xs:string($diagram/imvert-imap:name)"/>
+            <xsl:variable name="diagram-show-caption" select="xs:boolean($diagram/imvert-imap:show-caption)"/>
             <xsl:variable name="diagram-css-class" select="if ($diagram/imvert-imap:purpose = 'CFG-IMG-OVERVIEW') then 'overview' else ''"/>
             <xsl:variable name="caption-desc" select="content/part[@type='CFG-DOC-DESCRIPTION']/item[2]"/>
-            
-            <div class="imageinfo {$diagram-css-class}">
-                <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+            <xsl:variable name="map" as="element(map)">
                 <map name="imagemap-{$diagram-id}">
                     <xsl:for-each select="$diagram/imvert-imap:map">
                         <xsl:variable name="section-id" select="imvert-imap:for-id"/>
-                        <xsl:variable name="section" select="$document//*[@uuid = $section-id]"/><!-- expected are: section or item; but can be anything referenced from within graph by imagemap -->
+                        <xsl:variable name="section" select="($document//*[@uuid = $section-id])[1]"/><!-- expected are: section or item; but can be anything referenced from within graph by imagemap -->
                         <xsl:if test="$section">
                             <xsl:variable name="section-name" select="$section/@name"/>
+                            <xsl:variable name="section-id" select="$section/@id"/>
                             <area 
                                 shape="rect" 
                                 alt="{$section-name}"
                                 coords="{imvert-imap:loc[@type = 'imgL']},{imvert-imap:loc[@type = 'imgT']},{imvert-imap:loc[@type = 'imgR']},{imvert-imap:loc[@type = 'imgB']}" 
-                                href="#graph_{$section-id}"/>
+                                href="#{$section-id}"/><!-- do not use graph_ references. see #360 -->
                         </xsl:if>
                     </xsl:for-each>
                 </map>
-                <!-- create the caption -->
-                <p>
-                    <b>
-                        <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
-                    </b>
-                    <xsl:if test="normalize-space($caption-desc)">    
-                        <!--<xsl:text> &#8212; </xsl:text>-->
-                        <xsl:sequence select="$caption-desc/node()"/>
-                    </xsl:if>
-                </p>    
+            </xsl:variable> 
+            <div class="imageinfo {$diagram-css-class}">
+                <xsl:choose>
+                    <xsl:when test="not($diagram-show-caption)">
+                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+                    </xsl:when>
+                    <xsl:when test="$diagram-encoding = 'figure'">
+                        <figure>
+                            <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+                            <figcaption>
+                                <xsl:sequence select="imf:parse-diagram-title($diagram-name)[1]"/> 
+                            </figcaption>
+                        </figure>
+                        <xsl:sequence select="$map"/>
+                        <xsl:if test="normalize-space($caption-desc)">    
+                            <!--<xsl:text> &#8212; </xsl:text>-->
+                            <p>
+                                <xsl:sequence select="$caption-desc/node()"/>
+                            </p>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+                        <xsl:sequence select="$map"/>
+                        <!-- create the caption -->
+                        <p>
+                            <b>
+                                <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
+                            </b>
+                            <xsl:if test="normalize-space($caption-desc)">    
+                                <!--<xsl:text> &#8212; </xsl:text>-->
+                                <xsl:sequence select="$caption-desc/node()"/>
+                            </xsl:if>
+                        </p>    
+                    </xsl:otherwise>
+                </xsl:choose>
             </div>
         </xsl:for-each>
     </xsl:template>
     
     <xsl:function name="imf:create-anchors" as="element()*">
         <xsl:param name="section-or-item"/>
+        <!-- do not use graph_ references. see #360 -->
+        <?x
         <xsl:if test="$section-or-item/@uuid">
             <a class="anchor" name="graph_{$section-or-item/@uuid}"/>
         </xsl:if>
+        x?>
+        <!-- obsolete duplication of ID. see #360 -->
+        <?x
         <xsl:if test="$section-or-item/@id">
             <a class="anchor" name="{$section-or-item/@id}"/>
         </xsl:if>
+        x?>
     </xsl:function>
     
     <xsl:function name="imf:get-section-level" as="xs:integer">
@@ -743,5 +810,18 @@
             </xsl:analyze-string>
         </xsl:variable>
         <xsl:value-of select="string-join($r,'')"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:parse-diagram-title" as="xs:string*">
+        <xsl:param name="title" as="xs:string?"/>
+        <xsl:variable name="stitle" select="analyze-string($title,'^(.*?)\s+-\s+(\S+)$')/fn:match/fn:group"/>
+        <xsl:choose>
+            <xsl:when test="$stitle[2]">
+                <xsl:sequence select="(xs:string($stitle[1]),xs:string($stitle[2]))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="$title"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
 </xsl:stylesheet>

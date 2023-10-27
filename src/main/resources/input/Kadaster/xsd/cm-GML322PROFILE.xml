@@ -253,7 +253,7 @@
           </cs:oasTypes>
        </cs:Construct>
        <cs:Construct>
-          <cs:name>GM_MultiLinestring</cs:name>
+          <cs:name>GM_MultiLineString</cs:name>
           <cs:sentinel>false</cs:sentinel>
           <cs:oasTypes>
              <cs:OasType>
@@ -544,7 +544,7 @@
           <cs:sentinel>false</cs:sentinel>
           <cs:xsdTypes>
              <cs:XsdType>
-                <cs:name>MultiPrimitive</cs:name>
+                <cs:name>MultiGeometry</cs:name>
                 <cs:asAttribute>MultiGeometryPropertyType</cs:asAttribute>
                 <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                 <cs:primitive>false</cs:primitive>
@@ -555,18 +555,12 @@
                 <cs:name>rdfs:Datatype</cs:name>
              </cs:RdfType>
           </cs:rdfTypes>
-       </cs:Construct>
-       <cs:Construct>
-          <cs:name>GM_Aggregate</cs:name>
-          <cs:sentinel>false</cs:sentinel>
-          <cs:xsdTypes>
-             <cs:XsdType>
-                <cs:name>Aggregate</cs:name>
-                <cs:asAttribute>AggregatePropertyType</cs:asAttribute>
-                <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+          <cs:oasTypes>
+             <cs:OasType>
+                <cs:name>geometrycollectionGeoJSON</cs:name>
                 <cs:primitive>false</cs:primitive>
-             </cs:XsdType>
-          </cs:xsdTypes>
+             </cs:OasType>
+          </cs:oasTypes>
        </cs:Construct>
        <cs:Construct>
           <cs:name>Measure</cs:name>

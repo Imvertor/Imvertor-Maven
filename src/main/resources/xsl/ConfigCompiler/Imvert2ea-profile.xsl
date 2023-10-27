@@ -96,7 +96,7 @@
                                 hideicon="0">
                                 <AppliesTo>
                                     <xsl:for-each select="$stereo/construct">
-                                        <Apply type="{imf:get-apply(.)}"/>
+                                        <xsl:sequence select="imf:get-apply(.)"/>
                                     </xsl:for-each>
                                 </AppliesTo>
                                 <TaggedValues>
@@ -105,8 +105,8 @@
                                         
                                         <xsl:variable name="tv-id" select="@id"/>
                                         <xsl:variable name="tv-name" select="name/@original"/>
-                                        <xsl:variable name="tv-values" select="string-join(declared-values/value/@original,',')"/>
-                                        <xsl:variable name="tv-type" select="if (exists(declared-values/value)) then 'enumeration' else ()"/>
+                                        <xsl:variable name="tv-values" select="if (exists(declared-values/value[2])) then string-join(declared-values/value/@original,',') else ''"/>
+                                        <xsl:variable name="tv-type" select="if (exists(declared-values/value[2])) then 'enumeration' else ''"/>
                                         <xsl:variable name="tv-note" select="normalize-space(desc)"/>
                                         <xsl:variable name="tv-unit" select="''"/>
                                         
@@ -150,7 +150,7 @@
                             <xsl:variable name="category" select="current-grouping-key()"/>
                            
                             <xsl:variable name="name" select="$category"/>
-                            <xsl:variable name="alias" select="$categories[@id = $category]/desc"/>
+                            <xsl:variable name="alias" select="($categories[@id = $category]/desc,'(No category)')[1]"/>
                             <xsl:variable name="notes" select="'Selecteer en klik ergens op het diagram om te plaatsen'"/>
                             <Stereotype name="{$prefix}: {$alias}" alias="{$prefix} {$alias}" notes="{$notes}" cx="0" cy="0" bgcolor="-1" fontcolor="-1" bordercolor="-1" borderwidth="-1" hideicon="0">
                                 <AppliesTo>
@@ -163,7 +163,7 @@
                                         <xsl:variable name="stereo" select=".."/>
                                         <xsl:variable name="stereotype-id" select="$stereo/@id"/>
                                         <xsl:variable name="toolbox" select="$visuals[@id = $stereotype-id]/toolbox"/>
-                                        <xsl:variable name="construct-type" select="'UML::' || imf:get-apply($stereo/construct)"/>
+                                        <xsl:variable name="construct-type" select="'UML::' || imf:get-apply($stereo/construct)[1]/@type"/>
                                         <Tag name="{$profile-name}::{$name}({$construct-type})" type="" description="" unit="" values="" default="{$name}"/>
                                     </xsl:for-each>
                                 </TaggedValues>
@@ -196,22 +196,35 @@
         
     </xsl:template>
    
-    <xsl:function name="imf:get-apply">
+    <xsl:function name="imf:get-apply" as="element()+">
         <xsl:param name="construct"/>
+        
+        <xsl:variable name="type" as="xs:string?">
+            <xsl:choose>
+                <xsl:when test="$construct = 'attribute'">Attribute</xsl:when>
+                <xsl:when test="$construct = 'package'">Package</xsl:when>
+                <xsl:when test="$construct = 'class'">Class</xsl:when>
+                <xsl:when test="$construct = 'datatype'">DataType</xsl:when>
+                <xsl:when test="$construct = 'association'">Association</xsl:when>
+                <xsl:when test="$construct = 'enumeration'">Enumeration</xsl:when>
+                <xsl:when test="$construct = 'associationend'">AssociationEnd</xsl:when>
+                <xsl:when test="$construct = 'associationrole'">AssociationRole</xsl:when>
+                <xsl:when test="$construct = 'generalization'">Generalization</xsl:when>
+                <xsl:when test="$construct = 'constraint'">Constraint</xsl:when>
+                <xsl:when test="$construct = 'primitivetype'">PrimitiveType</xsl:when>
+                <xsl:otherwise>
+                    <xsl:sequence select="imf:msg($construct,'FATAL','Unknown stereotype appliance: [1]', $construct)"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <Apply type="{$type}"/>
         <xsl:choose>
-            <xsl:when test="$construct = 'attribute'">Attribute</xsl:when>
-            <xsl:when test="$construct = 'package'">Package</xsl:when>
-            <xsl:when test="$construct = 'class'">Class</xsl:when>
-            <xsl:when test="$construct = 'datatype'">DataType</xsl:when>
-            <xsl:when test="$construct = 'association'">Association</xsl:when>
-            <xsl:when test="$construct = 'enumeration'">Enumeration</xsl:when>
-            <xsl:when test="$construct = 'associationend'">AssociationEnd</xsl:when>
-            <xsl:when test="$construct = 'associationrole'">AssociationRole</xsl:when>
-            <xsl:when test="$construct = 'generalization'">Generalization</xsl:when>
-            <xsl:when test="$construct = 'constraint'">Constraint</xsl:when>
-            <xsl:when test="$construct = 'primitivetype'">PrimitiveType</xsl:when>
+            <xsl:when test="$construct = 'associationend'">
+                <Apply type="Property"/>
+                <Property name="isReference" value="false"/>
+            </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:msg($construct,'FATAL','Unknown stereotype appliance: [1]', $construct)"/>
+                <!-- geen aanvullingen -->
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>

@@ -30,7 +30,6 @@ import org.w3c.dom.NodeList;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
-import nl.imvertor.common.exceptions.EnvironmentException;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.EapFile;
@@ -74,7 +73,7 @@ public class XmiCompiler extends Step {
 		AnyFile umlFile = new AnyFile(configurator.getFile(configurator.getXParm("cli/umlfile")));
 		boolean refreshXmi = configurator.isTrue("cli", "refreshxmi", false);
 
-		EapFile eapFile = umlFile.getExtension().toLowerCase().startsWith("eap") ? new EapFile(umlFile) : null;
+		EapFile eapFile = (umlFile.getExtension().toLowerCase().startsWith("eap") || umlFile.getExtension().toLowerCase().equals("qea")) ? new EapFile(umlFile) : null;
 		XmiFile xmiFile = umlFile.getExtension().toLowerCase().equals("xmi") ? new XmiFile(umlFile) : null;
 		ZipFile zipFile = umlFile.getExtension().toLowerCase().equals("zip") ? new ZipFile(umlFile) : null; // holds single XMI, /images, and an optional /modeldoc folder 
 		
@@ -105,20 +104,19 @@ public class XmiCompiler extends Step {
 			}
 		}
 		if (activeFileOrigin == null && eapFile != null) {
-		    runner.debug(logger,"CHAIN","Try EAP file at: " + eapFile);
+		    runner.debug(logger,"CHAIN","Try EA file at: " + eapFile);
 		    if (!configurator.isEaEnabled()) {
-		    	runner.error(logger,"EAP file is not supported in this environment: " + eapFile);
+		    	runner.error(logger,"EA file is not supported in this environment: " + eapFile);
 		    } else if (!eapFile.isFile()) {
-		    	runner.error(logger,"EAP file doesn't exist: " + eapFile);
-		    } else if (eapFile.isAccessible()) {
+		    	runner.error(logger,"EA file doesn't exist: " + eapFile);
+		    } else {
 				passedFile = eapFile;
-				activeFileOrigin = "EAP passed";
-			} else 
-				throw new EnvironmentException("Cannot access EA (on 32 bit java)");
+				activeFileOrigin = "EA passed";
+			}
 		}	
 		
 		if (activeFileOrigin == null) {
-			runner.error(logger,"No such ZIP, XMI or EAP file");
+			runner.error(logger,"No such ZIP, XMI or EA file");
 		} else {
 			String filespec = " " + passedFile + " (" + activeFileOrigin + ")";
 			activeFile = new XmlFile(configurator.getXParm("properties/WORK_XMI_FOLDER") + File.separator + passedFile.getName() + ".xmi");

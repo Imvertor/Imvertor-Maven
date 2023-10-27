@@ -252,7 +252,7 @@
           </cs:oasTypes>
        </cs:Construct>
        <cs:Construct>
-          <cs:name>GM_MultiLinestring</cs:name>
+          <cs:name>GM_MultiLineString</cs:name>
           <cs:sentinel>false</cs:sentinel>
           <cs:oasTypes>
              <cs:OasType>
@@ -543,7 +543,7 @@
           <cs:sentinel>false</cs:sentinel>
           <cs:xsdTypes>
              <cs:XsdType>
-                <cs:name>MultiPrimitive</cs:name>
+                <cs:name>MultiGeometry</cs:name>
                 <cs:asAttribute>MultiGeometryPropertyType</cs:asAttribute>
                 <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                 <cs:primitive>false</cs:primitive>
@@ -554,18 +554,12 @@
                 <cs:name>rdfs:Datatype</cs:name>
              </cs:RdfType>
           </cs:rdfTypes>
-       </cs:Construct>
-       <cs:Construct>
-          <cs:name>GM_Aggregate</cs:name>
-          <cs:sentinel>false</cs:sentinel>
-          <cs:xsdTypes>
-             <cs:XsdType>
-                <cs:name>Aggregate</cs:name>
-                <cs:asAttribute>AggregatePropertyType</cs:asAttribute>
-                <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+          <cs:oasTypes>
+             <cs:OasType>
+                <cs:name>geometrycollectionGeoJSON</cs:name>
                 <cs:primitive>false</cs:primitive>
-             </cs:XsdType>
-          </cs:xsdTypes>
+             </cs:OasType>
+          </cs:oasTypes>
        </cs:Construct>
        <cs:Construct>
           <cs:name>Measure</cs:name>
@@ -587,6 +581,7 @@
              </cs:XsdType>
           </cs:xsdTypes>
        </cs:Construct>
+       <?x
        <cs:Construct>
           <cs:name>Boolean</cs:name>
           <cs:sentinel>false</cs:sentinel>
@@ -647,6 +642,7 @@
              </cs:XsdType>
           </cs:xsdTypes>
        </cs:Construct>
+       x?>
        <cs:Construct>
           <cs:name>Time</cs:name>
           <cs:sentinel>false</cs:sentinel>
@@ -657,6 +653,7 @@
              </cs:XsdType>
           </cs:xsdTypes>
        </cs:Construct>
+       <?x
        <cs:Construct>
           <cs:name>URI</cs:name>
           <cs:sentinel>false</cs:sentinel>
@@ -667,5 +664,38 @@
              </cs:XsdType>
           </cs:xsdTypes>
        </cs:Construct>
+       x?>
+       <cs:Construct>
+          <cs:name>DoubleList</cs:name>
+          <cs:sentinel>false</cs:sentinel>
+          <cs:xsdTypes>
+             <cs:XsdType>
+                <cs:name>gml:doubleList</cs:name>
+                <cs:primitive>true</cs:primitive>
+             </cs:XsdType>
+          </cs:xsdTypes>
+       </cs:Construct>
+       <?x
+       <cs:Construct>
+          <cs:name>GenericName</cs:name><!-- nodig voor IMGEO omzetting -->
+          <cs:sentinel>false</cs:sentinel>
+          <cs:xsdTypes>
+             <cs:XsdType>
+                <cs:name>gml:GenericName</cs:name>
+                <cs:primitive>true</cs:primitive>
+             </cs:XsdType>
+          </cs:xsdTypes>
+       </cs:Construct>
+       <cs:Construct>
+          <cs:name>ScopedName</cs:name><!-- nodig voor IMRO omzetting -->
+          <cs:sentinel>false</cs:sentinel>
+          <cs:xsdTypes>
+             <cs:XsdType>
+                <cs:name>gml:ScopedName</cs:name>
+                <cs:primitive>true</cs:primitive>
+             </cs:XsdType>
+          </cs:xsdTypes>
+       </cs:Construct>
+       x?>
     </cs:constructs>
 </cs:Map>

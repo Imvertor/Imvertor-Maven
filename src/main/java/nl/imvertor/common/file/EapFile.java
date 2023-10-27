@@ -94,17 +94,6 @@ public class EapFile extends AnyFile {
 	}
 	
 	/**
-	 * Determine if running on a 32 bit system; EA is a 32 bit application 
-	 * 
-	 * web: http://stackoverflow.com/questions/2062020/how-can-i-tell-if-im-running-in-64-bit-jvm-or-32-bit-jvm
-	 * 
-	 * @return true when accessible, i.e. when system is 32 bit 
-	 */
-	public boolean isAccessible() {
-		return System.getProperty("sun.arch.data.model").equals("32"); 	
-	}
-	
-	/**
 	 * Export EAP as an XMI file which is retained until the program end. 
 	 * In order to save the XMI create a copy the result XmlFile.
 	 * 
@@ -189,8 +178,6 @@ public class EapFile extends AnyFile {
 	 * @throws Exception
 	 */
 	public boolean open() throws Exception {
-		if (!isAccessible()) 
-			throw new Exception("Enterprise Architect cannot be accessed on this 64bit system.");
 		if (!this.canRead()) 
 			throw new Exception("Cannot read the EA file.");
 		boolean result = false;

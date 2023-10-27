@@ -19,6 +19,7 @@
             <cs-ref:MapRef xlink:href="#INSPIRE"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-GEO"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-SOIL"/>
+            <cs-ref:MapRef xlink:href="#INSPIRE-NETWORK"/>
             <cs-ref:MapRef xlink:href="#MIM11"/>
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <cs-ref:MapRef xlink:href="#BRO-COMMON"/>
@@ -91,6 +92,7 @@
          <xi:include href="../../INSPIRE/xsd/cm-INSPIRE.xml"/>
          <xi:include href="../../INSPIRE/xsd/cm-INSPIRE-GEO.xml"/>
          <xi:include href="../../INSPIRE/xsd/cm-INSPIRE-SOIL.xml"/>
+         <xi:include href="../../INSPIRE/xsd/cm-INSPIRE-NETWORK.xml"/>
          
          <xi:include href="../../BRO/xsd/cm-GML321-profile.xml"/><!-- for GML321-BROPROFILE -->
          <xi:include href="../../BRO/xsd/cm-BRO-COMMON.xml"/><!-- for #RO-BRO -->
@@ -188,6 +190,7 @@
             </cs:forSchema>
             <cs:owner>BRO</cs:owner>
             <cs:constructs>
+               <?x verwijderd, want is opgenomen in BRO-COMMON
                <cs:Construct>
                   <cs:name>NITGCode</cs:name>
                   <cs:sentinel>false</cs:sentinel>
@@ -198,6 +201,7 @@
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
+               x?>
                <cs:Construct>
                   <cs:name>Putcode</cs:name>
                   <cs:name>wellCode</cs:name>

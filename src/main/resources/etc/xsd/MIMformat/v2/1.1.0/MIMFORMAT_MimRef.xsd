@@ -2,17 +2,15 @@
 <xs:schema 
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mim-ref="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2"   
-  targetNamespace="http://www.geostandaarden.nl/mim-ref/informatiemodel/v2" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0"   
+  targetNamespace="http://www.geostandaarden.nl/mim/mim-ref/1.0" 
   elementFormDefault="qualified" 
   attributeFormDefault="unqualified" 
-  version="2.0.0">
+  version="1.0.0">
   
   <xs:annotation>
-    <xs:appinfo source="http://www.imvertor.org/metamodel/uri">https://docs.geostandaarden.nl/mim/vv-st-mim-20200225/</xs:appinfo>
-    <xs:appinfo source="http://www.imvertor.org/metamodel/version">1.1.0</xs:appinfo>
-    <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/mim/informatiemodel/v2</xs:appinfo>
-    <xs:appinfo source="http://www.imvertor.org/schema-info/version">2.0.0</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/uri">https://docs.geostandaarden.nl/mim/TODO-schemainfo-1.0.0</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/version">1.0.0</xs:appinfo>
   </xs:annotation>
   
   <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
@@ -36,6 +34,7 @@
     <xs:simpleContent>
       <xs:extension base="xs:string">
         <xs:attribute name="label" type="xs:string" use="optional"/>
+        <xs:attribute name="index" type="xs:integer" use="optional"/>
         <xs:attribute ref="xlink:href" use="required"/>
       </xs:extension>
     </xs:simpleContent>

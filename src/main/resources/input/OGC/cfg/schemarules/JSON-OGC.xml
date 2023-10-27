@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<jsonschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <name>OGC Json schema's in accordance with Best Practices</name>
+    
+    <desc lang="nl">Regels voor het verwerken van MIM modellen tot OGC JSON schema's</desc>
+    <desc lang="en">Rules for processing MIM models to OGC JSON schemas</desc>
+     
+    <!-- specify which Json version to generate -->
+    <parameter name="json-version">6</parameter>
+    
+    <!-- specify if Json must use HAL conventions -->
+    <parameter name="json-hal">false</parameter>
+    
+    <!-- 
+        Best Practice for OGC - UML to JSON Encoding Rules
+        options: 
+        /req/plain
+        /req/geojson
+        /req/jsonfg
+    -->
+    <parameter name="bp-basic-encodings">/req/plain</parameter><!-- Clause 7.4 -->
+    
+    <!-- 
+        Best Practice for OGC - UML to JSON Encoding Rules
+        options: 
+        /req/by-reference-uri
+        /req/by-reference-link-object
+    -->
+    <parameter name="bp-by-reference-encodings">/req/by-reference-link-object</parameter><!-- Clause 7.8.2 -->
+    
+    <!-- 
+        Best Practice for OGC - UML to JSON Encoding Rules
+        options: 
+        /req/codelists-literal
+        /req/codelists-uri
+        /req/codelists-link-object
+    -->
+    <parameter name="bp-code-list-encodings">/req/codelists-literal</parameter><!-- Clause 7.10.2 -->
+    
+    <!-- 
+        Best Practice for OGC - UML to JSON Encoding Rules
+        options: 
+        /req/entitytype
+        none (geen entity type)
+    -->
+    <parameter name="bp-additional-requirements-classes">/req/entitytype</parameter><!-- Clause 7.11 -->    
+    
+</jsonschema-rules>

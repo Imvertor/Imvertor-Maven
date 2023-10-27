@@ -9,6 +9,7 @@
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all" 
     version="3.0"
@@ -40,6 +41,7 @@
         <xsl:sequence select="imf:report-error(., 
             (imvert:min-occurs ne '1' or imvert:max-occurs ne '1'), 
             'Attribute with stereotype [1] must have cardinality of 1..1', imf:get-config-name-by-id('stereotype-name-union'))"/>
+ 
         <xsl:next-match/>
     </xsl:template>
     
@@ -81,7 +83,7 @@
         Aan MIM 1.1 validatie toegevoegd bij de implementatie van MIM 1.1.1
     -->
     <xsl:template match="imvert:attribute" priority="10">
-        <xsl:variable name="stereotypes" select="imvert:stereotype"/>
+       <xsl:variable name="stereotypes" select="imvert:stereotype"/>
         <xsl:variable name="parent-stereotypes" select="../../imvert:stereotype"/>
         <xsl:variable name="allowed-parent-stereotypes" select="$configuration-metamodel-file/stereotypes/stereo[@id = $stereotypes/@id]/context/parent-stereo" as="xs:string*"/>
         
@@ -92,6 +94,22 @@
         
         <xsl:next-match/>
     </xsl:template>
+    
+    <!--
+        MIM: Foutmelding als enumeratie geen waarden heeft 
+        #312
+    -->
+    <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-enumeration']" priority="10">
+        <xsl:variable name="enums" select="imvert:attributes/imvert:attribute[imvert:stereotype/@id = 'stereotype-name-enum']"/>
+        
+        <xsl:sequence select="imf:report-validation(., 
+            empty($enums), 
+            $context-signaltype,
+            'Empty enumeration [1] is not allowed', imf:get-config-name-by-id('stereotype-name-enumeration'))"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
     
     <!-- 
         other validation that is required for the immediate XMI translation result. 

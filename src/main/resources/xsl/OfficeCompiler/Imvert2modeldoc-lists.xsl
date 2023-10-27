@@ -109,10 +109,11 @@
                     <!-- ignore -->
                 </xsl:when>
                 <xsl:when test="empty($doclist-xml-url)">
-                    <xsl:sequence select="imf:msg(.,'FATAL','Owner parameter doclist-xml-url not defined',())"/>
+                    <xsl:sequence select="imf:msg(.,'ERROR','Owner parameter doclist-xml-url not defined',())"/>
                 </xsl:when>
                 <xsl:when test="normalize-space($loc)">
-                    <xsl:variable name="url" select="imf:merge-parms($doclist-xml-url)"/>
+                    <!-- Wanneer het een URL met xmlk extensie betreft, dan integraal overnemen. Anders oplossen op basis van de doclist-xml-url. -->
+                    <xsl:variable name="url" select="if (matches($loc,'^https?://.*?\.xml$','i')) then $loc else imf:merge-parms($doclist-xml-url)"/>
                     <xsl:sequence select="imf:msg(.,'DEBUG','Reading [1] entries from: [2]',(imf:get-config-stereotypes(imvert:stereotype/@id),$url))"/>
                     <xsl:variable name="xml" select="if (unparsed-text-available($url)) then document($url) else ()"/>
                     <xsl:choose>

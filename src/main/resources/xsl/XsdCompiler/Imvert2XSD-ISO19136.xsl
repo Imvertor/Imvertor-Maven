@@ -34,8 +34,10 @@
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
-    version="2.0">
+    version="3.0">
 
     <!-- 
         implementation of ISO 19136:2007
@@ -635,7 +637,7 @@
 
     <xsl:function name="imf:create-element-property" as="item()*">
         <xsl:param name="this" as="node()"/>
-        
+
         <!-- nilllable may be forced for specific circumstances. This only applies to attributes of a true class or associations -->
         <xsl:variable name="is-property" select="exists(($this/self::imvert:attribute,$this/self::imvert:association))"/>
         <xsl:variable name="force-nillable" select="$is-property and $is-forced-nillable"/>
@@ -696,8 +698,9 @@
             </xs:appinfo>
         </xsl:variable>
         
-        <xsl:if test="$this/imvert:conceptual-schema-type = ('Measure','Meetwaarde') and not($this/imvert:type-package = ('GML3','RO-BRO'))">
-            <xsl:sequence select="imf:msg('WARNING', 'Measure type [1] occurs in unexpected package [2]', ($this/imvert:conceptual-schema-type,$this/imvert:type-package))"/>
+        <xsl:variable name="allow" select="('GML3','RO-BRO')"/>
+        <xsl:if test="$this/imvert:conceptual-schema-type = ('Measure','Meetwaarde') and not($this/imvert:type-package = $allow)">
+            <xsl:sequence select="imf:msg('WARNING', 'Measure type [1] occurs in package [2] unexpectedly, expected any of packages [3]', ($this/imvert:conceptual-schema-type,$this/imvert:type-package, imf:string-group($allow)))"/>
         </xsl:if> 
         
         <xsl:variable name="is-gml-measure" select="
@@ -922,7 +925,10 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A restriction on a primitive type, after mapping')"/>
+                    <xsl:if test="$is-nillable">
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                    </xsl:if>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A restriction on a primitive type, after mapping, nillable=' || $is-nillable)"/>
                     <xsl:sequence select="imf:get-annotation($this)"/>
                     <xs:simpleType>
                         <xs:restriction base="{$this/imvert:type-name}">
@@ -938,19 +944,11 @@
                     <xsl:attribute name="type" select="$this/imvert:type-name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A primitive type, after mapping')"/>
+                    <xsl:if test="$is-nillable">
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                    </xsl:if>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A primitive type, after mapping, nillable=' || $is-nillable)"/>
                     <xsl:sequence select="imf:get-annotation($this)"/>
-                </xs:element>
-            </xsl:when>
-            <xsl:when test="$is-codelist and $is-nillable">
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:attribute name="type" select="if ($codelist-option = 'Option1') then 'gml:ReferenceType' else if ($codelist-option = 'Option2') then 'gml:CodeType' else concat($type,'Type')"/>
-                    <xsl:sequence select="imf:create-xml-debug-comment($this,concat('A nillable codelist attribute at ', $codelist-option))"/>
-                    <xsl:sequence select="imf:get-annotation($this,(),$appinfo-codelist)"/>
                 </xs:element>
             </xsl:when>
             <xsl:when test="$is-codelist">
@@ -958,8 +956,11 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:if test="$is-nillable">
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                    </xsl:if>
                     <xsl:attribute name="type" select="if ($codelist-option = 'Option1') then 'gml:ReferenceType' else if ($codelist-option = 'Option2') then 'gml:CodeType' else concat($type,'Type')"/>
-                    <xsl:sequence select="imf:create-xml-debug-comment($this,concat('A codelist attribute at ', $codelist-option))"/>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A codelist attribute at ' || $codelist-option || ', nillable=' || $is-nillable )"/>
                     <xsl:sequence select="imf:get-annotation($this,(),$appinfo-codelist)"/>
                 </xs:element>
             </xsl:when>
@@ -1000,7 +1001,11 @@
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:restriction base="gml:MeasureType">
-                                <xs:attribute name="uom" type="gml:UomIdentifier" use="required" fixed="{$uom}" />
+                                <xs:attribute name="uom" type="gml:UomIdentifier" use="required">
+                                    <xsl:if test="$uom">
+                                        <xsl:attribute name="fixed" select="$uom"/>
+                                    </xsl:if>
+                                </xs:attribute>
                             </xs:restriction>
                         </xs:simpleContent>
                     </xs:complexType>
@@ -1046,6 +1051,24 @@
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:create-xml-debug-comment($this,'A conceptual complex type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="$is-conceptual-enumeration and $is-nillable">
+                <!-- an enumeration  -->
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A voidable conceptual enumeration')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="{$type}{$Type-suffix}">
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
                 </xs:element>
             </xsl:when>
             <xsl:when test="$is-conceptual-enumeration">
@@ -1204,8 +1227,19 @@
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
+            <!--TODO conceptual type: dit is waarschijnlijk te beperkt. De externe modellen moeten beter afgehandeld worden. -->
+            <xsl:when test="$is-conceptual and $is-nillable">
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                    <xsl:attribute name="maxOccurs" select="1"/>
+                    <xsl:attribute name="type" select="$type"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:sequence select="imf:create-xml-debug-comment($this,'A nillable conceptual type')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
+                </xs:element>
+            </xsl:when>
             <xsl:when test="$is-conceptual">
-                <!--TODO dit is waarschijnlijk te beperkt. De externe modellen moeten beter afgehandeld worden. -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
@@ -1332,6 +1366,10 @@
         <xsl:variable name="schema-version-majorminor" select="string-join(subsequence(tokenize($schema-version,'\.'),1,2),'.')"/>
         
         <xsl:choose>
+            <xsl:when test="empty($this/imvert:namespace)">
+                <xsl:sequence select="imf:msg('ERROR', 'No namespace found for package [1]', $this/imvert:name)"/>
+                <xsl:value-of select="'urn:error:nonamespace'"/><!-- TODO dit zou eigenlijk al eerder moeten zijn gesignalleerd: maar wat zijn de namespace regels voor ISO 19136? -->
+            </xsl:when>
             <xsl:when test="$this/imvert:stereotype/@id = ('stereotype-name-external-package')">
                 <xsl:value-of select="$this/imvert:namespace"/>
             </xsl:when>

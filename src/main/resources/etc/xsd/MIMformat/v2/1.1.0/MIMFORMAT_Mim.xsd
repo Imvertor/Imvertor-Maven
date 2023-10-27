@@ -1,0 +1,1345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  
+  xmlns:mim="http://www.geostandaarden.nl/mim/mim-core/1.1" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0" 
+  xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0" 
+  xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+  targetNamespace="http://www.geostandaarden.nl/mim/mim-core/1.1" 
+  elementFormDefault="qualified" 
+  attributeFormDefault="unqualified" 
+  version="1.0.0">
+
+  <xs:import namespace="http://www.geostandaarden.nl/mim/mim-ref/1.0" schemaLocation="MIMFORMAT_MimRef.xsd"/>
+  <xs:import namespace="http://www.geostandaarden.nl/mim/mim-ext/1.0" schemaLocation="MIMFORMAT_MimExt.xsd"/>
+
+  <xs:annotation>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/metamodel/uri">https://docs.geostandaarden.nl/mim/vv-st-mim-20200225/</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/metamodel/version">1.1.0</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/uri">https://docs.geostandaarden.nl/mim/TODO-schemainfo-1.0.0</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/version">1.0.0</xs:appinfo>
+  </xs:annotation>
+
+  <!-- Informatiemodel: -->
+  <xs:element name="Informatiemodel" type="mim:Informatiemodel">
+    <xs:annotation>
+      <xs:documentation>De groepering van alle modelelementen waaruit het informatiemodel is opgebouwd. Het informatiemodel als geheel.</xs:documentation>
+    </xs:annotation>
+    <xs:unique name="uniqueId">
+      <xs:selector xpath=".//*"/>
+      <xs:field xpath="@id"/>
+    </xs:unique>
+  </xs:element>
+  <xs:complexType name="Informatiemodel">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van de view package. Deze is, indien mogelijk, analoog aan de naamgeving in het externe schema waar de view over gaat, eventueel met een prefix.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van de package.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomst" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De registratie of het informatiemodel waaraan het package ontleend is. Bij een view is de herkomst nooit de eigen organsiatie.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="informatiemodeltype" type="xs:string"/>
+      <xs:element name="informatiedomein" type="xs:string"/>
+      <xs:element name="relatiemodelleringtype" type="mim:relatiemodelleringtype"/>
+      <xs:element name="MIMVersie">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="1.1.0"/>
+            <xs:enumeration value="1.1.1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="MIMExtensie" type="xs:string" minOccurs="0"/>
+      <xs:element name="MIMExtensieVersie" type="xs:string" minOccurs="0"/>
+      <xs:element name="MIMTaal" type="xs:string" minOccurs="0"/>
+      <xs:element name="packages" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim:Domein" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="mim:View" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="mim:Extern" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- DomeinOfView: -->
+  <xs:complexType name="DomeinViewDatatypen">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="mim:GestructureerdDatatype"/>
+        <xs:element ref="mim:PrimitiefDatatype"/>
+        <xs:element ref="mim:Enumeratie"/>
+        <xs:element ref="mim:Codelijst"/>
+        <xs:element ref="mim:Referentielijst"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DomeinViewObjectTypen">
+    <xs:sequence>
+      <xs:element ref="mim:Objecttype" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DomeinViewGegevensgroepTypen">
+    <xs:sequence>
+      <xs:element ref="mim:Gegevensgroeptype" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DomeinViewKeuzen">
+    <xs:sequence>
+      <xs:element ref="mim:Keuze" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Domein: -->
+  <xs:element name="Domein" type="mim:Domein">
+    <xs:annotation>
+      <xs:documentation>Een groepering van constructies die een semantisch samenhangend gedeelte van een informatiemodel beschrijven.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Domein">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van de domein package. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datatypen" type="mim:DomeinViewDatatypen" minOccurs="0"/>
+      <xs:element name="objecttypen" type="mim:DomeinViewObjectTypen" minOccurs="0"/>
+      <xs:element name="gegevensgroeptypen" type="mim:DomeinViewGegevensgroepTypen" minOccurs="0"/>
+      <xs:element name="keuzen" type="mim:DomeinViewKeuzen" minOccurs="0"/>
+      <xs:element ref="mim-ext:constructies" minOccurs="0"/>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- View: -->
+  <xs:element name="View" type="mim:View">
+    <xs:annotation>
+      <xs:documentation>Een groepering van objecttypen die gespecificeerd zijn in een extern informatiemodel en vanuit het perspectief van het eigen informatiemodel inzicht geeft welke gegevens van deze objecttypen relevant zijn binnen het eigen informatiemodel.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="View">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van de view package. Deze is, indien mogelijk, analoog aan de naamgeving in het externe schema waar de view over gaat, eventueel met een prefix.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="locatie" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De verwijzing naar de locatie van de bijbehorende schema’s waar de view over gaat.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van de package.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomst" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De registratie of het informatiemodel waaraan het package ontleend is. Bij een view is de herkomst nooit de eigen organsiatie.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datatypen" type="mim:DomeinViewDatatypen" minOccurs="0"/>
+      <xs:element name="objecttypen" type="mim:DomeinViewObjectTypen" minOccurs="0"/>
+      <xs:element name="gegevensgroeptypen" type="mim:DomeinViewGegevensgroepTypen" minOccurs="0"/>
+      <xs:element name="keuzen" type="mim:DomeinViewKeuzen" minOccurs="0"/>
+      <xs:element ref="mim-ext:constructies" minOccurs="0"/>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Extern: -->
+  <xs:element name="Extern" type="mim:Extern">
+    <xs:annotation>
+      <xs:documentation>Een groepering van constructies die een externe instantie beheert en beschikbaar stelt aan een informatiemodel en die in het informatiemodel ongewijzigd gebruikt worden.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Extern">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van de externe package zoals gespecificeerd door de externe instantie.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="locatie" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De verwijzing naar de locatie van de bijbehorende schema’s.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van de package.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomst" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De registratie of het informatiemodel waaraan het package ontleend is. Bij een view is de herkomst nooit de eigen organsiatie.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="mim-ext:constructies" minOccurs="0"/>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Objecttype: -->
+  <xs:element name="Objecttype" type="mim:Objecttype">
+    <xs:annotation>
+      <xs:documentation>Een ding, een tastbaar iets, in de werkelijkheid, zoals daarnaar gekeken wordt vanuit een bepaald domein.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Objecttype">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van het objecttype.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alias" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De alternatieve weergave van de naam.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomst" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De registratie in wiens catalogus het objecttype is gespecificeerd (oftewel de registratie waar het objecttype deel van uitmaakt). Deze specificatie is toegevoegd omdat het wel duidelijk moet zijn in welke (basis)registratie of informatiemodel het objecttype voorkomt (indien van toepassing). </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van het objecttype zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie of informatiemodel.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomstDefinitie" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Voor objecttypen die deel uitmaken van een registratie is de definitie hieruit overgenomen.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datumOpname" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De datum waarop het objecttype is opgenomen in het informatiemodel.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!--
+                <xs:element name="uniekeAanduiding" type="xs:string">
+                <xs:annotation>
+                <xs:documentation>Voor objecttypen die deel uitmaken van een (basis)registratie of informatiemodel betreft dit de wijze waarop daarin voorkomende objecten (van dit type) uniek in de registratie worden aangeduid. Afgeleid gegeven op basis van combinatie van attribuutsoorten en relatiesoorten met is ID = True</xs:documentation>
+                </xs:annotation>
+                </xs:element>
+            -->
+      <xs:element name="populatie" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Voor objecttypen die deel uitmaken van een (basis)registratie betreft dit de beschrijving van de exemplaren van het gedefinieerde objecttype die in de desbetreffende (basis)registratie voorhanden zijn.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="kwaliteit" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Voor objecttypen die deel uitmaken van een registratie betreft dit de waarborgen voor de juistheid van de in de registratie opgenomen objecten van het desbetreffende type.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Voor objecttypen die deel uitmaken van een (basis)registratie of informatiemodel betreft dit de daarin opgenomen toelichting.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="indicatieAbstractObject" type="mim:boolean">
+        <xs:annotation>
+          <xs:documentation>Indicatie dat er geen instanties (objecten) voor het betreffende objecttype mogen voorkomen.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="supertypen" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim:GeneralisatieObjecttypen" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element ref="mim:attribuutsoorten" minOccurs="0"/>
+      <xs:element ref="mim:gegevensgroepen" minOccurs="0"/>
+      <xs:element name="relatiesoorten" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim:Relatiesoort" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="externeKoppelingen" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim:ExterneKoppeling" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="keuzen" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim-ref:KeuzeRef" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element ref="mim:constraints" minOccurs="0"/>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Gegevensgroeptype: -->
+  <xs:element name="Gegevensgroeptype" type="mim:Gegevensgroeptype">
+    <xs:annotation>
+      <xs:documentation>Een groep van met elkaar samenhangende attribuutsoorten. Een gegevensgroeptype is altijd een type van een gegevensgroep.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Gegevensgroeptype">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van de type gegevensgroep.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alias" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De alternatieve weergave van de naam.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van de attribuutsoort.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomstDefinitie" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De registratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die aangeeft uit welke bronnen de defintie is samengesteld.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Een inhoudelijke toelichting op de attribuutsoort.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datumOpname" type="xs:string"/>
+      <xs:element ref="mim:attribuutsoorten" minOccurs="0"/>
+      <xs:element ref="mim:gegevensgroepen" minOccurs="0"/>
+      <xs:element name="relatiesoorten" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim:Relatiesoort" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element ref="mim:constraints" minOccurs="0"/>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Attribuutsoort: -->
+  <xs:element name="Attribuutsoort" type="mim:Attribuutsoort">
+    <xs:annotation>
+      <xs:documentation>De typering van gelijksoortige gegevens die voor een objecttype van toepassing is.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Attribuutsoort">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van de attribuutsoort.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alias" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De alternatieve weergave van de naam.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomst" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De registratie of het informatiemodel waaraan de attribuutsoort ontleend is dan wel de eigen organisatie indien het door de eigen organisatie toegevoegd is.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van de attribuutsoort.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomstDefinitie" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De registratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die aangeeft uit welke bronnen de defintie is samengesteld.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datumOpname" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De datum waarop de attribuutsoort is opgenomen in het informatiemodel.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="type">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="mim:Datatype"/>
+            <xs:element ref="mim-ref:DatatypeRef"/>
+            <xs:element ref="mim-ref:KeuzeRef"/>
+            <xs:element ref="mim-ext:ConstructieRef"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="lengte" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De aanduiding van de lengte van een gegeven. Getallen kunnen altijd positief of negatief zijn.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="patroon" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De verzameling van waarden die gegevens van deze attribuutsoort kunnen hebben (bereik) danwel moeten voldoen aan een specifiek patroon.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="formeelPatroon" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Zoals patroon , formeel vastgelegd (met een reguliere expressie)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="indicatieMaterieleHistorie" type="mim:boolean">
+        <xs:annotation>
+          <xs:documentation>Indicatie of de materiële historie van de attribuutsoort te bevragen is. Materiële historie geeft aan wanneer een verandering is opgetreden in de werkelijkheid die heeft geleid tot verandering van de attribuutwaarde.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="indicatieFormeleHistorie" type="mim:boolean">
+        <xs:annotation>
+          <xs:documentation>Indicatie of de formele historie van de attribuutsoort te bevragen is. Formele historie geeft aan wanneer in de administratie een verandering is verwerkt van de attribuutwaarde (wanneer was de verandering bekend en is deze verwerkt).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="kardinaliteit" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Deze indicatie geeft aan hoeveel keer waarden van deze attribuutsoort kunnen voorkomen bij een object van het betreffende objecttype.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="authentiek" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Aanduiding of het een authentiek gegeven (attribuutsoort) betreft.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Een inhoudelijke toelichting op de attribuutsoort.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="indicatieAfleidbaar" type="mim:boolean">
+        <xs:annotation>
+          <xs:documentation>Aanduiding dat gegeven afleidbaar is uit andere attribuut- en/of relatiesoorten.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="indicatieClassificerend" type="mim:boolean">
+        <xs:annotation>
+          <xs:documentation>Indicatie dat een attribuutsoort het objecttype waar het bijhoort classificeert in (sub)typen.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="mogelijkGeenWaarde" type="mim:boolean">
+        <xs:annotation>
+          <xs:documentation>Aanduiding dat attribuutsoort geen waarde met betekenis kan bevatten.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="identificerend" type="mim:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Aanduiding dat attribuutsoort onderdeel uitmaakt van de unieke aanduiding van een object.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Gegevensgroep: -->
+  <xs:element name="Gegevensgroep" type="mim:Gegevensgroep">
+    <xs:annotation>
+      <xs:documentation>Een typering van een groep van gelijksoortige gegevens die voor een objecttype van toepassing is.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Gegevensgroep">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van de compositie relatie. Deze moet ingevuld zijn indien er twee of meer soorten compositie relaties zijn tussen hetzelfde objecttype en hetzelfde gegevensgroeptype.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alias" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De alternatieve weergave van de naam.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van de type gegevensgroep.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Een inhoudelijke toelichting op de type gegevensgroep.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="gegevensgroeptype">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim-ref:GegevensgroeptypeRef"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="herkomst" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De registratie of het informatiemodel waaraan de type gegevensgroep ontleend is dan wel de eigen organisatie indien het door de eigen organisatie toegevoegd is.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomstDefinitie" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De registratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die aangeeft uit welke bronnen de defintie is samengesteld.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datumOpname" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De datum waarop de type gegevensgroep is opgenomen in het informatiemodel.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="indicatieMaterieleHistorie" type="mim:boolean">
+        <xs:annotation>
+          <xs:documentation>Indicatie of de materiële historie van de type gegevensgroep te bevragen is. Materiële historie geeft aan wanneer een verandering is opgetreden in de werkelijkheid die heeft geleid tot verandering van de attribuutwaarde.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="indicatieFormeleHistorie" type="mim:boolean">
+        <xs:annotation>
+          <xs:documentation>Indicatie of de formele historie van de type gegevensgroep te bevragen is. Formele historie geeft aan wanneer in de administratie een verandering is verwerkt van de attribuutwaarde (wanneer was de verandering bekend en is deze verwerkt).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="kardinaliteit" type="xs:string"/>
+      <xs:element name="authentiek" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Aanduiding of het een authentiek gegeven betreft.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Datatype element: -->
+  <xs:element name="Datatype">
+    <xs:annotation>
+      <xs:documentation>Referentie naar een datatype zoals benoemd in de MIM standaard.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="label" type="xs:string" use="optional"/>
+          <xs:attribute name="index" type="xs:integer" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Datatype type: -->
+  <xs:complexType name="Datatype" abstract="true">
+    <xs:sequence>
+      <xs:element name="supertypen" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim:GeneralisatieDatatypen"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Primitief Datatype -->
+  <xs:element name="PrimitiefDatatype" type="mim:PrimitiefDatatype">
+    <xs:annotation>
+      <xs:documentation>Een in het eigen model gedefinieerd datatype die gebaseerd is op een PrimitiveType, met een eigen naam en definitie.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PrimitiefDatatype">
+    <xs:complexContent>
+      <xs:extension base="mim:Datatype">
+        <xs:sequence>
+          <xs:element name="naam" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De naam van de complex datatype zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie. </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0"/>
+          <xs:element name="lengte" type="xs:string" minOccurs="0"/>
+          <xs:element name="patroon" type="xs:string" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>De samenstelling van het complex datatype bestaande uit twee of meer data elementenmoet voldoen aan een specifiek patroon.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="formeelPatroon" type="xs:string" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Zoals patroon , formeel vastgelegd (met een reguliere expressie)</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="herkomst" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De registratie of het informatiemodel waaraan de complex datatype ontleend is dan wel de eigen organisatie indien het door de eigen organisatie toegevoegd is.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="datumOpname" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De datum waarop het complex datatype is opgenomen in het informatiemodel.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Gestructureerd Datatype -->
+  <xs:element name="GestructureerdDatatype" type="mim:GestructureerdDatatype">
+    <xs:annotation>
+      <xs:documentation>Specifiek benoemd datatype dat de structuur van een gegeven beschrijft, samengesteld uit minimaal twee elementen die in samenhang betekenisvol zijn.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GestructureerdDatatype">
+    <xs:complexContent>
+      <xs:extension base="mim:Datatype">
+        <xs:sequence>
+          <xs:element name="naam" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De naam van de complex datatype zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie. </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="herkomst" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De registratie of het informatiemodel waaraan de complex datatype ontleend is dan wel de eigen organisatie indien het door de eigen organisatie toegevoegd is.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="definitie" type="mim:xhtmlText">
+            <xs:annotation>
+              <xs:documentation>De beschrijving van de betekenis van de complex datatype zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie. </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="patroon" type="xs:string" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>De samenstelling van het complex datatype bestaande uit twee of meer data elementenmoet voldoen aan een specifiek patroon.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="formeelPatroon" type="xs:string" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Zoals patroon , formeel vastgelegd (met een reguliere expressie)</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="datumOpname" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De datum waarop het complex datatype is opgenomen in het informatiemodel.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="dataElementen" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="mim:DataElement" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Data Element -->
+  <xs:element name="DataElement" type="mim:DataElement">
+    <xs:annotation>
+      <xs:documentation>Een onderdeel/element van een Gestructureerd datatype die als type een datatype heeft. </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="DataElement">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van het data element zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van het data element zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="type">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="mim:Datatype"/>
+            <xs:element ref="mim-ref:DatatypeRef"/>
+            <xs:element ref="mim-ext:ConstructieRef"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="lengte" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Het exact aantal tekens dat de waarde van een data element moet bevatten.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="patroon" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De verzameling van waarden die gegevens van deze data element kunnen hebben (bereik) dan wel moeten voldoen aan een specifiek patroon.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="formeelPatroon" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Zoals patroon , formeel vastgelegd (met een reguliere expressie)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="kardinaliteit" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Deze indicatie geeft aan hoeveel keer waarden van deze data element kunnen voorkomen bij een refentielijst van het betreffende type.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Enumeratie -->
+  <xs:element name="Enumeratie" type="mim:Enumeratie">
+    <xs:annotation>
+      <xs:documentation>Een datatype waarvan de mogelijke waarden limitatief zijn opgesomd in een statische lijst.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Enumeratie">
+    <xs:complexContent>
+      <xs:extension base="mim:Datatype">
+        <xs:sequence>
+          <xs:element name="naam" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De naam van de enumeratie zoals gespecificeerd in de catalogus van de desbetreffende registratie. </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="definitie" type="mim:xhtmlText">
+            <xs:annotation>
+              <xs:documentation>De beschrijving van de betekenis van de enumeratie zoals gespecificeerd in de catalogus van de desbetreffende registratie.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="waarden">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="mim:Waarde" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="Waarde" type="mim:Enumeratiewaarde">
+    <xs:annotation>
+      <xs:documentation>Een gedefinieerde waarde, in de vorm van een eenmalig vastgesteld constant gegeven.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Enumeratiewaarde">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van de enumeratiewaarde zoals gespecificeerd in de catalogus van de desbetreffende registratie. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van de enumeratiewaarde zoals gespecificeerd in de catalogus van de desbetreffende registratie.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="code" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De in een registratie of informatiemodel aan de enumeratiewaarde toegekende unieke code.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Codelijst -->
+  <xs:element name="Codelijst" type="mim:Codelijst">
+    <xs:annotation>
+      <xs:documentation>Een lijst met een opsomming van de toegestane/mogelijke domeinwaarden, welke buiten het model in een externe waardenlijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast worden of uitgebreid worden of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie).</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Codelijst">
+    <xs:complexContent>
+      <xs:extension base="mim:Datatype">
+        <xs:sequence>
+          <xs:element name="naam" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De naam van de lijst zoals gespecificeerd in de catalogus van de desbetreffende registratie dan wel, indien het een door de eigen organisatie toegevoegde lijst betreft, de door de eigen organisatie vastgestelde naam.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="alias" type="xs:string" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>De alternatieve weergave van de naam.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="herkomst" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De registratie in wiens catalogus de lijst is gespecificeerd (oftewel de registratie waar de lijst deel van uitmaakt). Deze specificatie is toegevoegd t.o.v. de registratie-catalogus aangezien het hier niet om een registratie gaat maar wel duidelijk moet zijn in welke registratie de (verwijzing naar de) referentielijst voorkomt (indien van toepassing).</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="definitie" type="mim:xhtmlText">
+            <xs:annotation>
+              <xs:documentation>De beschrijving van de betekenis van de lijst zoals gespecificeerd in de catalogus van de desbetreffende registratie. </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="datumOpname" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De datum waarop de lijst is opgenomen in het informatiemodel.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Voor lijsten die deel uitmaken van een registratie betreft dit de daarin opgenomen toelichting.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="locatie" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De verwijzing (URL) naar de locatie van de bijbehorende schema’s met waardenlijsten.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Referentielijst -->
+  <xs:element name="Referentielijst" type="mim:Referentielijst">
+    <xs:annotation>
+      <xs:documentation>De representatie van een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort, die buiten het model in een externe waardenlijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast, uitgebreid, of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie). De representatie bevat een aantal kenmerken, die overgenomen zijn van de specificatie van de externe waardelijst.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Referentielijst">
+    <xs:complexContent>
+      <xs:extension base="mim:Datatype">
+        <xs:sequence>
+          <xs:element name="naam" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De naam van de lijst zoals gespecificeerd in de catalogus van de desbetreffende registratie dan wel, indien het een door de eigen organisatie toegevoegde lijst betreft, de door de eigen organisatie vastgestelde naam van de lijst.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="alias" type="xs:string" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>De alternatieve weergave van de naam.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="herkomst" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De registratie in wiens catalogus de lijst is gespecificeerd (oftewel de registratie waar de referentielijst deel van uitmaakt). Deze specificatie is toegevoegd t.o.v. de registratie catalogus aangezien het hier niet om een registratie gaat maar wel duidelijk moet zijn in welke registratie de (verwijzing naar de) lijst voorkomt (indien van toepassing). </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="definitie" type="mim:xhtmlText">
+            <xs:annotation>
+              <xs:documentation>De beschrijving van de betekenis van de lijst zoals gespecificeerd in de catalogus van de desbetreffende registratie. </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="datumOpname" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De datum waarop de lijst is opgenomen in het informatiemodel.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Voor lijsten die deel uitmaken van een registratie betreft dit de daarin opgenomen toelichting. </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="locatie" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>De verwijzing (URL) naar de locatie van de bijbehorende schema’s met waardenlijsten.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="referentieElementen" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="mim:ReferentieElement" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="ReferentieElement" type="mim:ReferentieElement">
+    <xs:annotation>
+      <xs:documentation>Een eigenschap van een object in een referentielijst in de vorm van een gegeven. </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="ReferentieElement">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van het referentie element.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alias" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De alternatieve weergave van de naam.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van het referentie element.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datumOpname" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De datum waarop het referentie element is opgenomen in het informatiemodel.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="type">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="mim:Datatype"/>
+            <xs:element ref="mim-ref:DatatypeRef"/>
+            <xs:element ref="mim-ext:ConstructieRef"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="lengte" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Het exaxt aantal tekens dat de waarde van een referentie element moet bevatten.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="patroon" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De verzameling van waarden die gegevens van deze referentie element kunnen hebben (bereik) dan wel moeten voldoen aan een specifiek patroon.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="formeelPatroon" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Zoals patroon , formeel vastgelegd (met een reguliere expressie)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="kardinaliteit" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Deze indicatie geeft aan hoeveel keer waarden van deze referentie element kunnen voorkomen bij een refentielijst van het betreffende type.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="identificerend" type="mim:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Aanduiding dat referentie element onderdeel uitmaakt van de unieke aanduiding van een referentielijst.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Een inhoudelijke toelichting op het referentie element.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Relatieklasse -->
+  <xs:element name="Relatieklasse" type="mim:Relatieklasse">
+    <xs:annotation>
+      <xs:documentation>Een relatiesoort met eigenschappen.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Relatieklasse">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van het referentie element.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alias" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De alternatieve weergave van de naam.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van het referentie element.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="mim:attribuutsoorten" minOccurs="0"/>
+      <xs:element ref="mim:constraints" minOccurs="0"/>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Constraint: -->
+  <xs:element name="Constraint" type="mim:Constraint">
+    <xs:annotation>
+      <xs:documentation>Een constraint is een conditie of een beperking, die over een of meerdere modelelementen uit het informatiemodel geldt.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Constraint">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string"/>
+      <xs:element name="specificatieTekst" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De specificatie van de constraint in tekst.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="specificatieFormeel" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De specificatie van de constraint in een formele specifieke taal (OCL).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Generalisatie tussen objecttypes: -->
+  <xs:element name="GeneralisatieObjecttypen" type="mim:GeneralisatieObjecttypen">
+    <xs:annotation>
+      <xs:documentation>De typering van het hiërarchische verband tussen een meer generiek en een meer specifiek modelelement van hetzelfde soort, waarbij het meer specifieke modelelement eigenschappen van het meer generieke modelelement overerft. Dit verband is alleen gedefinieerd voor objecttypen en datatypen.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GeneralisatieObjecttypen">
+    <xs:sequence>
+      <xs:element name="supertype">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim-ref:ObjecttypeRef" minOccurs="0"/>
+            <xs:element ref="mim-ext:ConstructieRef" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Generalisatie tussen datatypes: -->
+  <xs:element name="GeneralisatieDatatypen" type="mim:GeneralisatieDatatypen">
+    <xs:annotation>
+      <xs:documentation>De typering van het hiërarchische verband tussen een meer generiek en een meer specifiek modelelement van hetzelfde soort, waarbij het meer specifieke modelelement eigenschappen van het meer generieke modelelement overerft. Dit verband is alleen gedefinieerd voor objecttypen en datatypen.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GeneralisatieDatatypen">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De naam van het referentie element.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alias" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De alternatieve weergave van de naam.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="supertype">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="mim:Datatype"/>
+            <xs:element ref="mim-ref:DatatypeRef"/>
+            <xs:element ref="mim-ext:ConstructieRef"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Keuze: -->
+  <xs:element name="Keuze" type="mim:Keuze"/>
+  <xs:complexType name="Keuze">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van de keuze.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomst" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De registratie in wiens catalogus de keuze is gespecificeerd (oftewel de registratie waar het objecttype deel van uitmaakt). Deze specificatie is toegevoegd omdat het wel duidelijk moet zijn in welke (basis)registratie of informatiemodel het objecttype voorkomt (indien van toepassing). </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van de keuze.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datumOpname" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De datum waarop het referentie element is opgenomen in het informatiemodel.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:choice>
+        <xs:element name="keuzeAttributen">
+          <xs:complexType>
+            <xs:sequence minOccurs="2" maxOccurs="unbounded">
+              <xs:element ref="mim:Attribuutsoort"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="keuzeDatatypen">
+          <xs:complexType>
+            <xs:choice minOccurs="2" maxOccurs="unbounded">
+              <xs:element ref="mim:Datatype"/>
+              <xs:element ref="mim-ref:DatatypeRef"/>
+              <xs:element ref="mim-ext:ConstructieRef"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="keuzeRelatiedoelen">
+          <xs:complexType>
+            <xs:sequence minOccurs="2" maxOccurs="unbounded">
+              <xs:element name="Relatiedoel">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element ref="mim-ref:ObjecttypeRef"/>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="xs:string" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!--
+        <xs:element name="RelatierolKeuze" type="mim:RelatierolKeuze"/>
+        <xs:complexType name="RelatierolKeuze">
+        <xs:complexContent>
+        <xs:extension base="mim:Relatierol"/>
+        </xs:complexContent>
+        </xs:complexType>
+        <xs:element name="RelatierolDoelKeuze" type="mim:RelatierolDoelKeuze"/>
+        <xs:complexType name="RelatierolDoelKeuze">
+        <xs:complexContent>
+        <xs:extension base="mim:RelatierolKeuze"/>
+        </xs:complexContent>
+        </xs:complexType>
+    -->
+
+  <xs:element name="ExterneKoppeling" type="mim:ExterneKoppeling">
+    <xs:annotation>
+      <xs:documentation>Een associatie waarmee vanuit het perspectief van het eigen informatiemodel een objecttype uit het ‘eigen’ informatiemodel gekoppeld wordt aan een objecttype van een extern informatiemodel. De relatie zelf hoort bij het ‘eigen’ objecttype.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="ExterneKoppeling">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De naam van de externe koppeling. Standaard 'betreft'. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alias" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De alternatieve weergave van de naam.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datumOpname" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De datum waarop de externe koppeling is opgenomen in het informatiemodel.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="unidirectioneel" type="xs:string"/>
+      <xs:element name="doel">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="mim-ref:ObjecttypeRef"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="aggregatietype" type="mim:aggregatietype">
+        <xs:annotation>
+          <xs:documentation>Aanduiding dat het een compositie relatie is.Waarde is altijd Composite.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <xs:element name="attribuutsoorten">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="mim:Attribuutsoort"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="gegevensgroepen">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="mim:Gegevensgroep"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="constraints">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="mim:Constraint" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="boolean">
+    <xs:restriction base="xs:boolean"/>
+    <!--
+            <xs:restriction base="xs:string">
+            <xs:enumeration value="Ja"/>
+            <xs:enumeration value="Nee"/>
+            </xs:restriction>
+        -->
+  </xs:simpleType>
+
+  <xs:simpleType name="aggregatietype">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Geen"/>
+      <xs:enumeration value="Compositie"/>
+      <xs:enumeration value="Gedeeld"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="relatiemodelleringtype">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Relatiesoort leidend"/>
+      <xs:enumeration value="Relatierol leidend"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="MIMVersie">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1.0"/>
+      <xs:enumeration value="1.1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="MIMTaal">
+    <xs:restriction base="xs:language"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="authentiek">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Authentiek"/>
+      <xs:enumeration value="Basisgegeven"/>
+      <xs:enumeration value="Wettelijk gegeven"/>
+      <xs:enumeration value="Landelijk kerngegeven"/>
+      <xs:enumeration value="Overig"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="xhtmlText" mixed="true">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

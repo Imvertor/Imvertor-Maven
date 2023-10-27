@@ -4,6 +4,8 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
+    <xi:include href="../../../MIM/cfg/docrules/MIM111.xml"/>
+    
     <name>NEN3610:2022</name>
     
     <desc>Generic requirements on NEN3610:2022 documentation.</desc>
@@ -414,5 +416,34 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
+    
+    <doc-rule id="CFG-DOC-ACTUALITEIT" order="300">
+        <name lang="nl">Actualiteit</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-INWINNINGVERPLICHT" order="310">
+        <name lang="nl">Inwinning verplicht</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-INWINNINGSREGELS" order="320">
+        <name lang="nl">Inwinningsregels</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+ 
+    <doc-rule id="CFG-DOC-POSITIONELEJUISTHEID" order="330">
+        <name lang="nl">Positionele juistheid</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    
     
 </doc-rules>

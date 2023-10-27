@@ -7,6 +7,8 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:bro="http://www.geostandaarden.nl/bro"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
     
@@ -437,7 +439,7 @@
                     <item><xsl:value-of select="$context/part[@type = 'CFG-DOC-PATROON']/item[2]/text()"/></item>
                 </part>
             </xsl:when>
-            <xsl:when test="$item-text=('Bepalingscode','NITGCode','Putcode')">
+            <xsl:when test="$item-text=('Bepalingscode','NITGCode','Putcode','GUID')">
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item><xsl:value-of select="$item"/></item>
@@ -505,7 +507,8 @@
                 </part>
             </xsl:when>
             <xsl:otherwise> 
-                <xsl:variable name="id" select="concat('detail_class_Model_',$item-text)"/>
+                <xsl:variable name="item-formal-name" select="imf:extract($item-text,'[A-Za-z0-9_]')"/>
+                <xsl:variable name="id" select="concat('detail_class_Model_',$item-formal-name)"/>
                 <xsl:variable name="defining-class-section" select="root($context)//section[@id = $id]"/>
                 <xsl:variable name="defining-class-type" select="$defining-class-section/parent::section/@type"/>
                 <xsl:variable name="identifiers" select="$defining-class-section//itemtype[@is-id = 'true']"/>
@@ -514,7 +517,7 @@
                     <xsl:when test="$defining-class-type = ('CONTENTS-CODELIST','CONTENTS-REFERENCELIST')">
                         <part>
                             <item>&#160;&#160;Naam</item>
-                            <item><item idref="detail_class_Model_{$item-text}"><xsl:value-of select="$item"/></item></item>
+                            <item><item idref="detail_class_Model_{$item-formal-name}"><xsl:value-of select="$item-text"/></item></item>
                         </part>
                         <part>
                             <item>&#160;&#160;Type</item>
@@ -538,7 +541,7 @@
                     <xsl:otherwise>
                         <part>
                             <item>&#160;&#160;Naam</item>
-                            <item><item idref="detail_class_Model_{$item-text}"><xsl:value-of select="$item"/></item></item>
+                            <item><item idref="detail_class_Model_{$item-formal-name}"><xsl:value-of select="$item-text"/></item></item>
                         </part>
                     </xsl:otherwise>
                 </xsl:choose>

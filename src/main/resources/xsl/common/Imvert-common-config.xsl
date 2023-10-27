@@ -91,16 +91,25 @@
     </xsl:function>
     
     <xsl:function name="imf:get-config-parameter" as="item()*">
-        <xsl:param name="parameter-name"/>
+        <xsl:param name="parameter-name" as="xs:string"/>
+        <xsl:param name="must-exist" as="xs:boolean"/>
         <xsl:variable name="v" select="$configuration-owner-file/parameter[@name=$parameter-name]/node()"/>
         <xsl:choose>
             <xsl:when test="exists($v)">
                 <xsl:sequence select="$v"/>
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:when test="$must-exist">
                 <xsl:sequence select="imf:msg('FATAL','No such parameter [1]', $parameter-name)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- nothing -->
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-config-parameter" as="item()*">
+       <xsl:param name="parameter-name"/>
+       <xsl:sequence select="imf:get-config-parameter($parameter-name,true())"/>
     </xsl:function>
     
     <xsl:function name="imf:get-config-has-owner" as="xs:boolean">
@@ -304,10 +313,14 @@
                 <!-- the name of an element may not contain * or ? or the like -->
                 <!--xsl:variable name="translated-name" select="imf:extract(normalize-space(translate($name, '/', '-')),'[A-Za-z0-9_:][A-Za-z0-9_\.\-:]+')"/>
                 <xsl:value-of select="concat(lower-case(substring($translated-name,1,1)),substring($translated-name,2,string-length($translated-name)-1))"/-->
-
-
+                
+                
                 <xsl:variable name="translated-name" select="imf:extract(translate($name, '/', '-'),'[A-Za-z0-9_:][A-Za-z0-9_\s\.\-:]+')"/>
                 <xsl:value-of select="imf:get-normalized-name-sub($translated-name,'E',true())"/>
+            </xsl:when>
+            <xsl:when test="$scheme = 'json-bp-name'">
+                <!-- the name of a Json Best Practices name is any name, as found, no normalizations -->
+                <xsl:value-of select="$name"/>
             </xsl:when>
             <xsl:when test="$scheme = 'type-name'">
                 <xsl:variable name="nameWithoutType">

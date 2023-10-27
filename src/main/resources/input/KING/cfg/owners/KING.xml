@@ -75,8 +75,14 @@
     <parameter name="documentation-separator-pattern">\n---*\n</parameter> <!-- two hyphens or more, must be limited by newlines. -->
 
     <parameter name="documentation-newline">&#10;</parameter>
-    <parameter name="concept-documentation-state-obsolete-uri">http://brk.kadaster.nl/id/lifecycle/afgekeurd</parameter>
+    <parameter name="concept-documentation-state-obsolete-uri">https://vng.nl/id/lifecycle/afgekeurd</parameter>
 
+    <!--
+        insert a break in HTML office documents when a wordt becomes too long and is camelcased.
+    -->
+    <parameter name="insert-html-wordbreaks">yes</parameter>
+    
+    
     <!--
         Add a TV in profile when a notes field that is linked to that tagged value exists?
         Applied in: EA toolbox.

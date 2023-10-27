@@ -77,9 +77,6 @@
     <xsl:template match="/">
         <!--<xsl:apply-templates select="/" mode="speed-analyzer"/>-->
        
-        <xsl:sequence select="dlogger:save('metamodel doc',$configuration-metamodel-doc)"></xsl:sequence>
-        <xsl:sequence select="dlogger:save('tvset doc',$configuration-tvset-doc)"></xsl:sequence>
-        <xsl:sequence select="dlogger:save('translations',$translations)"></xsl:sequence>
         <xsl:variable name="config-raw">
             <config>
                 <xsl:sequence select="$configuration-owner-file"/>
@@ -93,18 +90,13 @@
                 <xsl:sequence select="$configuration-visuals-file"/>
                 <xsl:sequence select="$configuration-shaclrules-file"/>
                 <xsl:sequence select="$configuration-skosrules-file"/>
-            </config>        </xsl:variable>
+            </config>
+        </xsl:variable>
         
         <!-- create a short tre-like representation of this config for referecing purposes; this will reappear in the documentation -->
         <xsl:variable name="tree-includes">
             <xsl:apply-templates select="$config-raw" mode="tree-includes"/>
         </xsl:variable>
-        
-        <?x
-            <xsl:result-document href="file:/c:/temp/xml.xml">
-                <xsl:sequence select="$config-raw"/>
-            </xsl:result-document>
-        x?>
         
         <xsl:result-document href="{imf:file-to-url(imf:get-xparm('properties/WORK_CONFIG_TREE_FILE'))}">
             <xsl:sequence select="$tree-includes"/>
@@ -370,7 +362,6 @@
           
             </xmlschema-rules>
 
-
             <jsonschema-rules root="true">
                 <xsl:variable name="jsonschema-rules" select="jsonschema-rules"/> 
                 <xsl:apply-templates select="imf:distinct($jsonschema-rules/name[@lang=($language,'#all')])" mode="#current"/>
@@ -465,7 +456,14 @@
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="@order" order="ascending"/>
-                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                    <doc-rule id="{current-grouping-key()}" order="{@order}">
+                        <xsl:apply-templates select="current-group()[last()]/name" mode="#current"/>
+                        <levels>
+                            <xsl:for-each-group select="current-group()/levels/level" group-by="text()">
+                                <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                            </xsl:for-each-group>
+                        </levels>
+                    </doc-rule>
                 </xsl:for-each-group>
                 <xsl:for-each-group select="$doc-rules//image-purpose[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="current-grouping-key()"/>

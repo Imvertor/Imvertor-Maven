@@ -20,6 +20,8 @@
 
 package nl.imvertor;
 
+import java.nio.charset.Charset;
+
 import org.apache.log4j.Logger;
 
 import nl.imvertor.ApcModifier.ApcModifier;
@@ -74,7 +76,10 @@ public class ChainTranslateAndReport {
 			configurator.getRunner().info(logger, "Framework version " + Release.getVersionString("Imvertor"));
 			configurator.getRunner().info(logger, "Chain version " + Release.getVersionString("ChainTranslateAndReport"));
 			configurator.getRunner().info(logger, "Job ID \"" + System.getProperty("job.id") + "\"");
-			
+			configurator.getRunner().info(logger, "JVM " + System.getProperty("java.version") + " on " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
+			configurator.getRunner().info(logger, "JNU encoding " + System.getProperty("sun.jnu.encoding"));
+			configurator.getRunner().info(logger, "Default character encoding " + Charset.defaultCharset());
+					
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();
 			
@@ -127,12 +132,12 @@ public class ChainTranslateAndReport {
 		    try {
 		    	
 		    	// Build the configuration file
-			    succeeds = (new ConfigCompiler()).run();
+			    succeeds = succeeds && (new ConfigCompiler()).run();
 			 
 			    Transformer.setMayProfile(true);
 			    
 			    // Create the XMI file from EAP or other sources
-			    succeeds = (new XmiCompiler()).run();
+			    succeeds = succeeds && (new XmiCompiler()).run();
 				
 			    // Translate XMI to Imvertor format
 			    succeeds = succeeds && (new XmiTranslator()).run();
@@ -147,7 +152,9 @@ public class ChainTranslateAndReport {
 			    // read the current application phase
 			    configurator.getRunner().getAppPhase(); 
 			    
-			    if (succeeds || forced) {
+			    //if (1 == 1) throw new Exception("hellup step");
+		    	 
+		    	if (succeeds || forced) {
 			    
 			    	if (forced) { 
 				    	configurator.getRunner().warn(logger,"Ignoring metamodel errors found (forced compilation)");
@@ -155,86 +162,91 @@ public class ChainTranslateAndReport {
 			    	}
 			    	
 			    	// Add information to the Imvertor file that is specific for a particular run
-			    	if (true) // TODO must add condition here
-			    		succeeds = succeeds && (new ApcModifier()).run();
+			    	if (succeeds) // TODO must add condition here
+			    		succeeds = (new ApcModifier()).run();
 					
 					// analyze the model history file. 
 			    	// this records the state of the previous release.
-				    succeeds = succeeds && (new ModelHistoryAnalyzer()).run();
+			    	if (succeeds) 
+			    		succeeds = (new ModelHistoryAnalyzer()).run();
 					
 					// check if we can start the release, i.e. overwrite the contents of the application folder
 					// this is not allowed when previous release was a release, no errors, and in phase 3.
 					// note: this could be postponed when first creating the application, and then deciding to copy the (temporary) folder to the output folder. 
 					// However, this implies a full run and we want to signal this at early stage.
-				    succeeds = configurator.prepareRelease() && succeeds;
+			    	if (succeeds) 
+			    		succeeds = configurator.prepareRelease();
 					
-					// get all concept info to be used in validation: URI references must be valid.
-				    if (!configurator.getXParm("cli/refreshconcepts").equals("never")) 
-				    	succeeds = succeeds && (new ConceptCollector()).run();
+				    if (succeeds)
+						// get all concept info to be used in validation: URI references must be valid.
+				    	if (!configurator.getXParm("cli/refreshconcepts").equals("never")) 
+				    		(new ConceptCollector()).run();
 					
 					// compile a final usable representation of the input file for XML schema generation.
 					// TODO determine if this steps must be split into several steps
-				    succeeds = succeeds && (new ImvertCompiler()).run();
+				    if (succeeds)
+				    	succeeds = (new ImvertCompiler()).run();
 				    
-				    // generate the MIM format from Imvertor embellish format
-				    if (configurator.isTrue("cli","createmimformat",false))
-			 			(new MIMCompiler()).run(); // MIM compiler does not block further processing
-					
-				    // generate the Stelselcatalogus CSV
-				    if (configurator.isTrue("cli","createstccsv",false))
-			 			succeeds = succeeds && (new StcCompiler()).run();
-					
-					// compare releases. 
+		    		// generate the MIM format from Imvertor embellish format
+			    	if (succeeds && configurator.isTrue("cli","createmimformat",false))
+			    		succeeds = (new MIMCompiler()).run();
+				
+			    	// generate the Stelselcatalogus CSV
+			        if (succeeds && configurator.isTrue("cli","createstccsv",false))
+			        	succeeds = (new StcCompiler()).run();
+				
+			        // compare releases. 
 				    // Eg. check if this only concerns a "documentation release". If so, must not be different from existing release.
 				    // also includes other types of release comparisons
-				    if (configurator.isTrue("cli","compare",false))
-				    	succeeds = succeeds && (new ReleaseComparer()).run();
-				    
-				    // generate the XSD 
-					if (configurator.isTrue("cli","createxmlschema",false))
-						succeeds = succeeds && (new XsdCompiler()).run();
-								
-					// validate the generated XSDs 
-					if (succeeds)
-						if (configurator.isTrue("cli","createxmlschema",false))
-							if (configurator.isTrue("cli","validateschema",false) || configurator.getRunner().isFinal())
-								(new SchemaValidator()).run(); // XML schema validation does not block further processing
-					
-					// Generate a json schema
-				    if (configurator.isTrue("cli","createjsonschema",false)) {
-			    		succeeds = succeeds && (new EpCompiler()).run();
-		    			succeeds = succeeds && (new JsonSchemaCompiler()).run();
-					}
+			    	if (!configurator.getXParm("cli/compare").equals("none"))
+			    		succeeds = (new ReleaseComparer()).run() && succeeds;
+			    	
+			    	// generate the XSD 
+			    	if (succeeds && configurator.isTrue("cli","createxmlschema",false)) {
+			    		succeeds = (new XsdCompiler()).run();
+						// validate the generated XSDs 
+						if (succeeds && configurator.isTrue("cli","validateschema",false) || configurator.getRunner().isFinal())
+							succeeds = (new SchemaValidator()).run();
+			    	}
+			    	
+				    // Generate a json schema
+			    	if (succeeds && configurator.isTrue("cli","createjsonschema",false)) {
+			    		succeeds = (new EpCompiler()).run();
+			    		if (succeeds)
+			    			succeeds = (new JsonSchemaCompiler()).run();
+			    	}
+			    	
 				    // compile the history info 
-					if (configurator.isTrue("cli","createhistory",false))
-						succeeds = succeeds && (new HistoryCompiler()).run();
-								
+					if (succeeds && configurator.isTrue("cli","createhistory",false))
+						succeeds = (new HistoryCompiler()).run();
+							
 					// compile Office documentation 
-					if (!configurator.getXParm("cli/createoffice").equals("none"))
-						succeeds = succeeds && (new OfficeCompiler()).run();
-			
+					if (succeeds && !configurator.getXParm("cli/createoffice").equals("none"))
+						succeeds = (new OfficeCompiler()).run();
+		
 					// compile templates and reports on UML EAP 
-				    succeeds = succeeds && (new EapCompiler()).run();
-			
+					if (succeeds)
+						succeeds = (new EapCompiler()).run();
+		
 					// compile compliancy Excel
-				   	if (configurator.isTrue("cli","createxmlschema",false))
+				   	if (succeeds && configurator.isTrue("cli","createxmlschema",false))
 					    if (configurator.isTrue("cli","createcomplyexcel",false))
-				    		succeeds = succeeds && (new ComplyCompiler()).run();
-				     
-				    if (configurator.isTrue("cli","createshacl",false)) 
-				    	succeeds = succeeds && (new ShaclCompiler()).run();
-				    if (configurator.isTrue("cli","createld",false)) 
-				    	succeeds = succeeds && (new LDCompiler()).run();
+					    	succeeds = (new ComplyCompiler()).run();
+			     
+				    if (succeeds && configurator.isTrue("cli","createshacl",false)) 
+				    	succeeds = (new ShaclCompiler()).run();
+				    
+				    if (succeeds && configurator.isTrue("cli","createld",false)) 
+				    	succeeds = (new LDCompiler()).run();
 		
-				    if (configurator.isTrue("cli","createjsonconcepts",false))
-			 			succeeds = succeeds && (new JsonConceptsCompiler()).run();
+				    if (succeeds && configurator.isTrue("cli","createjsonconcepts",false))
+				    	succeeds = (new JsonConceptsCompiler()).run();
 				
-				    if (configurator.isTrue("cli","createskos",false)) 
-				    	succeeds = succeeds && (new SkosCompiler()).run();
-		
-				    if (configurator.isTrue("cli","createyaml",false)) 
-			    		succeeds = succeeds && (new YamlCompiler()).run();
-				  
+				    if (succeeds && configurator.isTrue("cli","createskos",false)) 
+				    	succeeds = (new SkosCompiler()).run();
+	
+				    if (succeeds && configurator.isTrue("cli","createyaml",false)) 
+				    	succeeds = (new YamlCompiler()).run();
 			    }
 	    		(new ParmsCopier()).run();
 	    		
@@ -245,10 +257,12 @@ public class ChainTranslateAndReport {
 			    }
 		    
 		    } catch (Exception e) {
-				configurator.getRunner().error(logger,"Step-level system error - Please notify your system administrator: " + e.getMessage(),e);
+				configurator.getRunner().error(logger,"Step-level system error: " + e.getMessage(),e,null,"SLSEPNYSA");
 			}   
 		    
 		    Transformer.setMayProfile(false);
+	    	
+		    //if (1 == 1) throw new Exception("hellup chain");
 	    	
 			// analyze this run. 
 		    (new RunAnalyzer()).run();
@@ -270,8 +284,13 @@ public class ChainTranslateAndReport {
 		    	configurator.getRunner().info(logger, "** Warnings have been suppressed");
 		    
 		} catch (Exception e) {
-			configurator.getRunner().fatal(logger,"Chain-level system error - Please notify your administrator: " + e.getMessage(),e,"PNYSA");
+			try {
+				configurator.getRunner().fatal(logger,"Chain-level system error: " + e.getMessage(),e,"CLSEPNYSA");
+			} catch (Exception f) {
+				System.err.println("Error reporting chain-level system error: " + f + " (" + e + ")" );
+			}
 		}
+		
 		System.exit(0); // should be 1 , "okay"
 	}
 }

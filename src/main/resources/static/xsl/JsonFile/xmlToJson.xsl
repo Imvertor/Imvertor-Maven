@@ -10,13 +10,22 @@
     
     <!-- https://www.w3.org/TR/xpath-functions-31/#func-xml-to-json -->
     
-    <xsl:param name="indent"/>
+    <xsl:param name="indent" as="xs:string?"/>
+    <xsl:param name="liberal" as="xs:string?"/>
+    <xsl:param name="duplicates" as="xs:string?"/>
+    <xsl:param name="validate" as="xs:string?"/>
+    <xsl:param name="escape" as="xs:string?"/>
     
     <xsl:output method="text" encoding="UTF-8"/>
     
     <xsl:variable name="json-options" as="map(*)">
         <xsl:map>
-            <xsl:if test="$indent"><xsl:map-entry key="'indent'">{$indent}</xsl:map-entry></xsl:if>
+            <xsl:if test="$indent"><xsl:map-entry key="'indent'" select="$indent = 'true'"/></xsl:if>
+            <!-- onderstaande worden  nog niet herkend door Saxon -->
+            <xsl:if test="$liberal"><xsl:map-entry key="'liberal'" select="$liberal = 'true'"/></xsl:if>
+            <xsl:if test="$escape"><xsl:map-entry key="'escape'" select="$escape = 'true'"/></xsl:if>
+            <xsl:if test="$validate"><xsl:map-entry key="'validate'" select="$validate = 'true'"/></xsl:if>
+            <xsl:if test="$duplicates"><xsl:map-entry key="'duplicates'" select="$duplicates"/></xsl:if>
         </xsl:map>
     </xsl:variable>
     

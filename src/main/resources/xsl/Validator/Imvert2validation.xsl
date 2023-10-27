@@ -1380,7 +1380,7 @@
                     <xsl:variable name="value-required" select="not($value-derived) and $min ge 1"/> <!--TODO test if derived value is actually available --> 
                     <xsl:variable name="value-max" select="not($value-derived) and $max ge 1"/> <!--TODO test if derived value is actually available --> 
                     
-                    <xsl:variable name="value-listing" select="$declared/declared-values/value"/>
+                    <xsl:variable name="value-listing" select="$declared/declared-values/value"/><!-- kan uit één waarde bestaan, dan is het een default waarde. daar testen we niet op. --> 
                     
                     <xsl:variable name="valid-for-stereotype" select="$declared/stereotypes/stereo/@id = $stereotype-ids"/>
                     <xsl:variable name="valid-omitted" select="empty($stereotype-ids) and $declared/stereotypes/stereo = $normalized-stereotype-none"/>
@@ -1390,6 +1390,9 @@
                     
                     <xsl:choose>
                         <xsl:when test="@origin='notes'"><!-- reading notes field may result in a tagged value, that is therefore system generated. It does not have to be part of the metamodel tagged value set. -->
+                            <!-- ignore -->
+                        </xsl:when>
+                        <xsl:when test="@origin='system'"><!-- Dit geldt voor external packages (OUTSIDE-#). Niet valideren. -->
                             <!-- ignore -->
                         </xsl:when>
                         <xsl:when test="$is-first-in-group and empty($declared)">
@@ -1405,7 +1408,7 @@
                         <xsl:when test="$value-max and count($group) gt $max">
                             <xsl:sequence select="imf:report-error($this, true(), 'Tagged value [1] occurs too often',($name/@original))"/>
                         </xsl:when>
-                        <xsl:when test="exists($value-listing) and not($valid-from-listing)">
+                        <xsl:when test="$value-listing[2] and not($valid-from-listing)">
                             <xsl:sequence select="imf:report-error($this, true(), 'Tagged value [1] has undeclared value [2], allowed values are: [3]',($name/@original,imf:value-trim($value,80),imf:string-group($value-listing)))"/>
                         </xsl:when>
                         <xsl:when test="not($valid-omitted)">

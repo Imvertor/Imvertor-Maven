@@ -90,19 +90,17 @@
         </imvert:packages>
     </xsl:template>
     
-    <xsl:template match="*">
+    <xsl:template match="node()|@*">
         <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:apply-templates/>
+            <xsl:apply-templates select="node()|@*"/>
         </xsl:copy>
     </xsl:template>
     
     <!-- finalization: add some info to the compiled document fragment -->
     
-    <xsl:template match="*" mode="finalize">
+    <xsl:template match="node()|@*" mode="finalize">
         <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:apply-templates mode="finalize"/>
+            <xsl:apply-templates select="node()|@*" mode="#current"/>
         </xsl:copy>
     </xsl:template>
     
@@ -117,9 +115,10 @@
     
     <xsl:template match="imvert:package" mode="finalize">
         <xsl:copy>
-            <xsl:apply-templates select="*[not(self::imvert:class)]" mode="finalize"/>
-            <xsl:apply-templates select="ancestor::imvert:package/imvert:stereotype" mode="finalize"/>
-            <xsl:apply-templates select="imvert:class" mode="finalize"/>
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates select="*[not(self::imvert:class)]" mode="#current"/>
+            <xsl:apply-templates select="ancestor::imvert:package/imvert:stereotype" mode="#current"/>
+            <xsl:apply-templates select="imvert:class" mode="#current"/>
         </xsl:copy>
     </xsl:template>
     

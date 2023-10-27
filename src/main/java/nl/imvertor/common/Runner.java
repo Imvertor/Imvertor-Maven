@@ -254,7 +254,7 @@ public class Runner {
 	public void error(Logger logger, String text, Exception e, String id, String wiki) throws IOException, ConfiguratorException {
 		imvertorErrors += 1;
 		Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
-		messenger.writeMsg(logger.getName(), "ERROR", "", text, id, wiki);
+		messenger.writeMsg(Configurator.currentComponentIdentifier, "ERROR", "", text, id, wiki);
 		logger.error(text,e);
 	}
 	
@@ -280,13 +280,13 @@ public class Runner {
 	public void error(Logger logger, String text, String id, String wiki) throws IOException, ConfiguratorException {
 		imvertorErrors += 1;
 		Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
-		messenger.writeMsg(logger.getName(), "ERROR", "", text, id, wiki);
+		messenger.writeMsg(Configurator.currentComponentIdentifier, "ERROR", "", text, id, wiki);
 		logger.error(text);
 	}
 	public void error(Logger logger, String text) throws IOException, ConfiguratorException {
 		imvertorErrors += 1;
 		Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
-		messenger.writeMsg(logger.getName(), "ERROR", "", text, null,null);
+		messenger.writeMsg(Configurator.currentComponentIdentifier, "ERROR", "", text, null,null);
 		logger.error(text);
 	}
 
@@ -303,7 +303,7 @@ public class Runner {
 	public void warn(Logger logger, String text, String id, String wiki) throws IOException, ConfiguratorException {
 		imvertorWarnings += 1;
 		Configurator.getInstance().setXParm("system/warning-count", String.valueOf(imvertorWarnings),true);
-		messenger.writeMsg(logger.getName(), "WARNING", "", text, id, wiki);
+		messenger.writeMsg(Configurator.currentComponentIdentifier, "WARNING", "", text, id, wiki);
 		logger.warn(text);
 	}
 	public void warn(Logger logger, String text) throws IOException, ConfiguratorException {
@@ -325,7 +325,7 @@ public class Runner {
 	
 	public void info(Logger logger, String text, boolean store) throws IOException, ConfiguratorException {
 		logger.info(text);
-		if (store) messenger.writeMsg(logger.getName(), "INFO", "", text);
+		if (store) messenger.writeMsg(Configurator.currentComponentIdentifier, "INFO", "", text);
 		track(text);
 	}
 	
@@ -341,7 +341,7 @@ public class Runner {
 	 */
 	public void debug(Logger logger, String viableMode, String text) {
 		if (getDebug(viableMode)) {
-			messenger.writeMsg(logger.getName(), "DEBUG", "", text, null,null);
+			messenger.writeMsg(Configurator.currentComponentIdentifier, "DEBUG", "", text, null,null);
 			logger.debug(text);
 		}
 	}
@@ -372,7 +372,7 @@ public class Runner {
 		try {
 			imvertorErrors += 1;
 			Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
-			messenger.writeMsg(logger.getName(), "FATAL", "", text, id, wiki);
+			messenger.writeMsg(Configurator.currentComponentIdentifier, "FATAL", "", text, id, wiki);
 			logger.fatal(text);
 			info(logger, "");
 			info(logger, "Must stop.");
@@ -415,7 +415,7 @@ public class Runner {
 	}
 	
 	public void msg(String type, String text) {
-		messenger.writeMsg(logger.getName(), type, "", text);
+		messenger.writeMsg(Configurator.currentComponentIdentifier, type, "", text);
 	}
 	
 

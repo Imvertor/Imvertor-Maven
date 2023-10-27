@@ -25,6 +25,7 @@
          <xi:include href="../../OGC/xsd/cs-GML322.xml"/>
          
          <xi:include href="../../KING/xsd/cs-VNGR.xml"/>
+         <xi:include href="../../KING/xsd/cs-VNGR-GENERIEK.xml"/>
          
          <!--maps:-->
          

@@ -11,6 +11,7 @@
          <metagegeven kardinaliteit="1">Herkomst</metagegeven>
          <metagegeven kardinaliteit="1">Definitie</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="1">Type</metagegeven>
          <metagegeven kardinaliteit="0..1">Lengte</metagegeven>
@@ -20,18 +21,22 @@
          <metagegeven kardinaliteit="1">Indicatie formele historie</metagegeven>
          <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
          <metagegeven kardinaliteit="1">Authentiek</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="0..1">Locatie</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Indicatie afleidbaar</metagegeven>
          <metagegeven kardinaliteit="1">Indicatie classificerend</metagegeven>
          <metagegeven kardinaliteit="1">Mogelijk geen waarde</metagegeven>
          <metagegeven kardinaliteit="0..1">Identificerend</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="0..1">Locatie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven>
-         <metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven>
-         <metagegeven kardinaliteit="0..1">Regels</metagegeven>
-         <!-- ext -->         
-         <metagegeven kardinaliteit="0..1">Eigenaar</metagegeven>
+         <metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Regels</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Eigenaar</metagegeven><!-- add ext 1.1.1 -->
+         <!-- json extensie -->
+         <metagegeven kardinaliteit="0..1">Primaire geometrie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Primaire plaats</metagegeven>
+         <metagegeven kardinaliteit="0..1">Primair moment</metagegeven>
+         <metagegeven kardinaliteit="0..1">Primair interval</metagegeven>
+         <metagegeven kardinaliteit="0..1">InlineOrByReference</metagegeven>
+         <metagegeven kardinaliteit="0..1">Meeteenheid</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Codelijst</naam>
@@ -40,11 +45,12 @@
          <metagegeven kardinaliteit="0..1">Alias</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst</metagegeven>
          <metagegeven kardinaliteit="1">Definitie</metagegeven>
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="0..1">Locatie</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <!-- json extensie -->
+         <metagegeven kardinaliteit="0..1">Waarde codering type</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Constraint</naam>
@@ -56,19 +62,18 @@
          <naam>Data element</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Type</metagegeven>
          <metagegeven kardinaliteit="0..1">Lengte</metagegeven>
          <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
          <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
          <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
-         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven>
-         <metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven><!-- add 1.1.1 -->
       </modelelement>
       <modelelement>
          <naam>Datatype</naam>
@@ -76,33 +81,31 @@
       <modelelement>
          <naam>Domein</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <metagegeven kardinaliteit="1">Definitie</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
-         <!-- ext -->
-         <metagegeven kardinaliteit="0..1">Beheerder</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Beheerder</metagegeven><!-- add ext 1.1.1 -->
       </modelelement>
       <modelelement>
          <naam>Enumeratie</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Definitie</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
+         <!-- json extensie -->
+         <metagegeven kardinaliteit="0..1">Waarde codering type</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Enumeratiewaarde</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
          <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="0..1">Code</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Extensie</naam>
@@ -148,15 +151,13 @@
       <modelelement>
          <naam>Extern</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
-         <metagegeven kardinaliteit="1">Locatie</metagegeven>
-         <metagegeven kardinaliteit="1">Definitie</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
-         <!-- ext -->
-         <metagegeven kardinaliteit="0..1">Beheerder</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Locatie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Beheerder</metagegeven><!-- add ext 1.1.1 -->
       </modelelement>
       <modelelement>
          <naam>Externe koppeling</naam>
@@ -165,40 +166,36 @@
          <metagegeven kardinaliteit="0..1">Alias</metagegeven>
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="1">Unidirectioneel</metagegeven>
-         <metagegeven kardinaliteit="1">Relatie doel</metagegeven>
          <metagegeven kardinaliteit="1">Aggregatietype</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Relatie eigenaar</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Gegevensgroep</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
          <metagegeven kardinaliteit="0..1">Alias</metagegeven>
-         <metagegeven kardinaliteit="1">Definitie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
-         <metagegeven kardinaliteit="1">Gegevensgroeptype</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="0..1">Indicatie materiële historie</metagegeven>
          <metagegeven kardinaliteit="0..1">Indicatie formele historie</metagegeven>
          <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
          <metagegeven kardinaliteit="1">Authentiek</metagegeven>
+         <metagegeven kardinaliteit="1">Gegevensgroeptype</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Gegevensgroeptype</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
          <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Definitie</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
          <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
-         <metagegeven kardinaliteit="0..1">Regels</metagegeven>
-         <!-- ext -->
+         <metagegeven kardinaliteit="0..1">Regels</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="0..1">Eigenaar</metagegeven>
       </modelelement>
       <modelelement>
@@ -206,16 +203,16 @@
          <metagegeven kardinaliteit="0..1">Naam</metagegeven>
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
          <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Supertype</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <metagegeven kardinaliteit="1">Subtype</metagegeven>
+         <metagegeven kardinaliteit="1">Subtype</metagegeven><!-- add 1.1.1 -->
       </modelelement>
       <modelelement>
          <naam>Generalisatie Objecttypes</naam>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Type supertype</metagegeven><!-- zie https://github.com/Imvertor/Imvertor-Maven/issues/356 -->
          <metagegeven kardinaliteit="1">Supertype</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Subtype</metagegeven>
+         <metagegeven kardinaliteit="1">Subtype</metagegeven><!-- add 1.1.1 -->
       </modelelement>
       <modelelement>
          <naam>Gestructureerd datatype</naam>
@@ -223,20 +220,22 @@
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
          <metagegeven kardinaliteit="0..1">Herkomst</metagegeven>
          <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
          <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <!-- add -->         
-         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven>
-         <metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven><!-- add 1.1.1 -->
       </modelelement>
       <modelelement>
          <naam>Informatiemodel</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
-         <metagegeven kardinaliteit="1">Definitie</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Informatiemodel type</metagegeven>
          <metagegeven kardinaliteit="1">Informatiedomein</metagegeven>
          <metagegeven kardinaliteit="1">Relatiemodelleringtype</metagegeven>
@@ -244,12 +243,7 @@
          <metagegeven kardinaliteit="0..1">MIM extensie</metagegeven>
          <metagegeven kardinaliteit="0..1">MIM extensie versie</metagegeven>
          <metagegeven kardinaliteit="0..1">MIM taal</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
-         <!-- ext -->
-         <metagegeven kardinaliteit="0..1">Beheerder</metagegeven>
+         <metagegeven kardinaliteit="0..1">Beheerder</metagegeven><!-- add ext 1.1.1 -->
       </modelelement>
       <modelelement>
          <naam>Isid</naam>
@@ -260,10 +254,10 @@
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst</metagegeven>
          <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <!-- add -->
-         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Keuze attributen</naam>
@@ -293,12 +287,11 @@
          <metagegeven kardinaliteit="1">Definitie</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..*">Toelichting</metagegeven>
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="0..*">Kwaliteit</metagegeven>
          <metagegeven kardinaliteit="0..*">Populatie</metagegeven>
-         <metagegeven kardinaliteit="0..*">Toelichting</metagegeven>
-         <!-- ext -->
-         <metagegeven kardinaliteit="0..1">Eigenaar</metagegeven>
+         <metagegeven kardinaliteit="0..1">Eigenaar</metagegeven><!-- add ext 1.1.1 -->
       </modelelement>
       <modelelement>
          <naam>Objecttype</naam>
@@ -308,36 +301,37 @@
          <metagegeven kardinaliteit="1">Herkomst</metagegeven>
          <metagegeven kardinaliteit="1">Definitie</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="0..1">Populatie</metagegeven>
          <metagegeven kardinaliteit="0..1">Kwaliteit</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
          <metagegeven kardinaliteit="1">Indicatie abstract object</metagegeven>
-         <!-- ext -->
-         <metagegeven kardinaliteit="0..1">Eigenaar</metagegeven>
+         <metagegeven kardinaliteit="0..1">Eigenaar</metagegeven><!-- add ext 1.1.1 -->
       </modelelement>
       <modelelement>
          <naam>Primitief datatype</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
+         <metagegeven kardinaliteit="0..1">Herkomst</metagegeven>
          <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="0..1">Lengte</metagegeven>
          <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
          <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
-         <metagegeven kardinaliteit="0..1">Herkomst</metagegeven>
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven>
-         <metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven><!-- add 1.1.1 -->
       </modelelement>
       <modelelement>
          <naam>Referentie element</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
          <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="1">Type</metagegeven>
          <metagegeven kardinaliteit="0..1">Lengte</metagegeven>
@@ -345,10 +339,6 @@
          <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
          <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
          <metagegeven kardinaliteit="0..1">Identificerend</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Referentielijst</naam>
@@ -357,29 +347,30 @@
          <metagegeven kardinaliteit="0..1">Alias</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst</metagegeven>
          <metagegeven kardinaliteit="1">Definitie</metagegeven>
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
-         <metagegeven kardinaliteit="0..1">Locatie</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
+         <metagegeven kardinaliteit="1">Locatie</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Relatieklasse</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
          <metagegeven kardinaliteit="0..1">Alias</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Definitie</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Authentiek</metagegeven>
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
-         <metagegeven kardinaliteit="1">Indicatie formele historie</metagegeven>
-         <metagegeven kardinaliteit="1">Indicatie materiële historie</metagegeven>
-         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
-         <metagegeven kardinaliteit="1">Mogelijk geen waarde</metagegeven>
-         <metagegeven kardinaliteit="1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Toelichting</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Indicatie materiële historie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Indicatie formele historie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Authentiek</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Indicatie afleidbaar</metagegeven>
+         <metagegeven kardinaliteit="1">Mogelijk geen waarde</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Aggregatietype</metagegeven><!-- add 1.1.1 -->
       </modelelement>
+      
       <modelelement>
          <naam>Relatierol - Relatierol leidend</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
@@ -388,68 +379,64 @@
          <metagegeven kardinaliteit="1">Herkomst</metagegeven>
          <metagegeven kardinaliteit="1">Definitie</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
          <metagegeven kardinaliteit="1">Indicatie materiële historie</metagegeven>
          <metagegeven kardinaliteit="1">Indicatie formele historie</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit bron</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Authentiek</metagegeven>
          <metagegeven kardinaliteit="1">Mogelijk geen waarde</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="1">Identificerend</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Aggregatietype</metagegeven><!-- add 1.1.1 -->
       </modelelement>
       <modelelement>
          <naam>Relatierol - Relatiesoort leidend</naam>
-         <metagegeven kardinaliteit="0..1">Naam</metagegeven>
+         <metagegeven kardinaliteit="1">Naam</metagegeven>
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
          <metagegeven kardinaliteit="0..1">Alias</metagegeven>
-         <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="0..1">Authentiek</metagegeven>
-         <metagegeven kardinaliteit="0..1">Datum opname</metagegeven>
-         <metagegeven kardinaliteit="0..1">Herkomst</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Indicatie formele historie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Indicatie materiële historie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Mogelijk geen waarde</metagegeven>
-         <metagegeven kardinaliteit="0..1">Regels</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
       </modelelement>
       <modelelement>
          <naam>Relatiesoort - Relatierol leidend</naam>
          <metagegeven kardinaliteit="0..1">Naam</metagegeven>
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
          <metagegeven kardinaliteit="0..1">Alias</metagegeven>
-         <metagegeven kardinaliteit="1">Definitie</metagegeven>
-         <metagegeven kardinaliteit="1">Unidirectioneel</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Aggregatietype</metagegeven>
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
-         <metagegeven kardinaliteit="1">Relatie doel</metagegeven>
-         <metagegeven kardinaliteit="1">Relatie eigenaar</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
+         <!-- json extensie -->
+         <metagegeven kardinaliteit="0..1">InlineOrByReference</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Relatiesoort - Relatiesoort leidend</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
          <metagegeven kardinaliteit="0..*">Begrip</metagegeven>
          <metagegeven kardinaliteit="0..1">Alias</metagegeven>
-         <metagegeven kardinaliteit="1">Unidirectioneel</metagegeven>
-         <metagegeven kardinaliteit="1">Relatie doel</metagegeven>
-         <metagegeven kardinaliteit="1">Aggregatietype</metagegeven>
-         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst</metagegeven>
          <metagegeven kardinaliteit="1">Definitie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="1">Indicatie materiële historie</metagegeven>
          <metagegeven kardinaliteit="1">Indicatie formele historie</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
+         <metagegeven kardinaliteit="1">Kardinaliteit bron</metagegeven>
          <metagegeven kardinaliteit="1">Authentiek</metagegeven>
          <metagegeven kardinaliteit="1">Indicatie afleidbaar</metagegeven>
          <metagegeven kardinaliteit="1">Mogelijk geen waarde</metagegeven>
-         <!-- ext -->        
-         <metagegeven kardinaliteit="1">Relatie eigenaar</metagegeven>
+         <metagegeven kardinaliteit="0..1">Identificerend</metagegeven>
+         <metagegeven kardinaliteit="1">Unidirectioneel</metagegeven>
+         <metagegeven kardinaliteit="1">Aggregatietype</metagegeven>
+         <metagegeven kardinaliteit="1">Relatie eigenaar</metagegeven><!-- add ext 1.1.1 -->
+         <!-- json extensie -->
+         <metagegeven kardinaliteit="0..1">InlineOrByReference</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Static liskov</naam>
@@ -457,15 +444,13 @@
       <modelelement>
          <naam>View</naam>
          <metagegeven kardinaliteit="1">Naam</metagegeven>
-         <metagegeven kardinaliteit="1">Locatie</metagegeven>
-         <metagegeven kardinaliteit="1">Definitie</metagegeven>
          <metagegeven kardinaliteit="1">Herkomst</metagegeven>
-         <!-- add -->
-         <metagegeven kardinaliteit="1">Datum opname</metagegeven>
-         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven>
-         <!-- ext -->
-         <metagegeven kardinaliteit="0..1">Beheerder</metagegeven>
+         <metagegeven kardinaliteit="1">Definitie</metagegeven>
+         <metagegeven kardinaliteit="1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Locatie</metagegeven>
+         <metagegeven kardinaliteit="0..1">Beheerder</metagegeven><!-- add ext 1.1.1 -->
       </modelelement>
    </modelelementen>
    <metagegevens>
@@ -586,6 +571,10 @@
          <modelelement kardinaliteit="1">View</modelelement>
       </metagegeven>
       <metagegeven>
+         <naam>Meeteenheid</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+      </metagegeven>
+      <metagegeven>
          <naam>Eigenaar</naam>
          <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
          <modelelement kardinaliteit="0..1">Gegevensgroeptype</modelelement>
@@ -690,6 +679,12 @@
          <modelelement kardinaliteit="1">Informatiemodel</modelelement>
       </metagegeven>
       <metagegeven>
+         <naam>InlineOrByReference</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatierol leidend</modelelement>
+         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
          <naam>Kardinaliteit</naam>
          <modelelement kardinaliteit="1">Attribuutsoort</modelelement>
          <modelelement kardinaliteit="1">Data element</modelelement>
@@ -697,6 +692,7 @@
          <modelelement kardinaliteit="1">Referentie element</modelelement>
          <modelelement kardinaliteit="1">Relatierol - Relatierol leidend</modelelement>
          <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="1">Externe koppeling</modelelement>
       </metagegeven>
       <metagegeven>
          <naam>Kwaliteit</naam>
@@ -797,6 +793,22 @@
          <modelelement kardinaliteit="0..1">Objecttype</modelelement>
       </metagegeven>
       <metagegeven>
+         <naam>Primaire geometrie</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Primaire plaats</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Primair moment</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Primair interval</naam>
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+      </metagegeven>
+      <metagegeven>
          <naam>Relatie doel</naam>
          <modelelement kardinaliteit="1">Externe koppeling</modelelement>
          <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
@@ -807,7 +819,6 @@
          <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
       </metagegeven>
       <metagegeven>
-
          <naam>Regels</naam>
          <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
          <modelelement kardinaliteit="0..1">Gegevensgroeptype</modelelement>
@@ -871,6 +882,11 @@
          <modelelement kardinaliteit="1">Externe koppeling</modelelement>
          <modelelement kardinaliteit="1">Relatiesoort - Relatierol leidend</modelelement>
          <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Waarde codering type</naam>
+         <modelelement kardinaliteit="0..1">Codelijst</modelelement>
+         <modelelement kardinaliteit="0..1">Enumeratie</modelelement>
       </metagegeven>
    </metagegevens>
 </metamodel>

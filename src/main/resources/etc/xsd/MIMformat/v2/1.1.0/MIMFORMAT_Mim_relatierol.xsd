@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:mim="http://www.geostandaarden.nl/mim/mim-core/1.1" 
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0" 
+  xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0" 
+  xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+  targetNamespace="http://www.geostandaarden.nl/mim/mim-core/1.1" 
+  elementFormDefault="qualified" 
+  attributeFormDefault="unqualified" 
+  version="1.0.0">
+
+  <xs:include schemaLocation="MIMFORMAT_Mim.xsd"/>
+
+  <xs:import namespace="http://www.geostandaarden.nl/mim/mim-ref/1.0" schemaLocation="MIMFORMAT_MimRef.xsd"/>
+  <xs:import namespace="http://www.geostandaarden.nl/mim/mim-ext/1.0" schemaLocation="MIMFORMAT_MimExt.xsd"/>
+
+  <!-- Relatiesoort: -->
+  <xs:element name="Relatiesoort" type="mim:Relatiesoort">
+    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringtype == "Relatierol leidend" -->
+    <xs:annotation>
+      <xs:documentation>De typering van het structurele verband tussen een object van een objecttype en een (ander) object van een ander (of hetzelfde) objecttype.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Relatiesoort">
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De naam van de relatiesoort. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alias" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De alternatieve weergave van de naam.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="unidirectioneel" type="xs:string"/>
+      <xs:element name="doel">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="mim-ref:ObjecttypeRef"/>
+            <xs:element ref="mim-ref:KeuzeRef"/>
+            <xs:element ref="mim-ext:ConstructieRef"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="relatierollen">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Bron" type="mim:Relatierol" minOccurs="0"/>
+            <xs:element name="Doel" type="mim:Relatierol" minOccurs="1"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>  
+      <xs:element name="relatieklasse" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim:Relatieklasse"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- Relatierol: -->
+  <xs:complexType name="Relatierol">
+    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringtype == "Relatierol leidend" -->
+    <xs:sequence>
+      <xs:element name="naam" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De naam van de relatiesoort. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Verwijzing naar een begrip. De verwijzing heeft de vorm van een term of een URI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alias" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>De alternatieve weergave van de naam.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomst" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De registratie of het informatiemodel waaraan de relatiesoort ontleend is, dan wel de eigen organisatie. Indien zelf toegevoegd, dan is de herkomst de eigen organisatie. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="definitie" type="mim:xhtmlText">
+        <xs:annotation>
+          <xs:documentation>De beschrijving van de betekenis van de relatiesoort. Deze is verplicht als er geen source role respectievelijk target role is gespecificeerd.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="herkomstDefinitie" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De registratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die aangeeft uit welke bronnen de defintie is samengesteld.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datumOpname" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>De datum waarop de relatiesoort is opgenomen in het informatiemodel.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="kardinaliteit" type="xs:string"/>
+      <xs:element name="indicatieMaterieleHistorie" type="mim:boolean">
+        <xs:annotation>
+          <xs:documentation>Indicatie of de materiële historie van de relatiesoort te bevragen is. Materiële historie geeft aan wanneer een verandering is opgetreden in de werkelijkheid die heeft geleid tot verandering van de relatie.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="indicatieFormeleHistorie" type="mim:boolean">
+        <xs:annotation>
+          <xs:documentation>Indicatie of de formele historie van de relatiesoort te bevragen is. Formele historie geeft aan wanneer in de administratie een verandering is verwerkt van de relatie (wanneer was de verandering bekend en is deze verwerkt).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="authentiek" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Aanduiding of de attribuutsoort waarvan de relatiesoort is afgeleid, een authentiek gegeven (attribuutsoort) betreft.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="mogelijkGeenWaarde" type="mim:boolean">
+        <xs:annotation>
+          <xs:documentation>Aanduiding dat relatiesoort geen waarde met betekenis kan bevatten.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Een inhoudelijke toelichting op de relatiesoort.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+ 
+</xs:schema>

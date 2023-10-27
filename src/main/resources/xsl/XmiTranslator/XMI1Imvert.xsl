@@ -199,7 +199,7 @@
                             
                             <!-- check if xlinks must be included -->
                             <xsl:if test="not(exists($document-packages[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name('xlinks','package-name')]))" >
-                                <imvert:package>
+                                <imvert:package origin="system">
                                     <imvert:found-name>Xlinks</imvert:found-name>
                                     <imvert:short-name>xlinks</imvert:short-name>
                                     <imvert:id>XLINKS</imvert:id>
@@ -863,7 +863,12 @@
         <xsl:sequence select="imf:create-output-element('imvert:min-length',imf:get-profile-tagged-value($this,'minLength'))"/>
         <xsl:sequence select="imf:create-output-element('imvert:max-length',imf:get-profile-tagged-value($this,'maxLength'))"/>
         <xsl:sequence select="imf:create-output-element('imvert:any-from-package',imf:get-profile-tagged-value($this,'package'))"/>
-       
+
+        <xsl:variable name="iv" select="$this/UML:Attribute.initialValue/UML:Expression/@body"/>
+        <xsl:variable name="ro" select="if ($this/@changeable = 'frozen') then 'true' else ()"/>
+        <xsl:sequence select="imf:create-output-element('imvert:initial-value',$iv)"/>
+        <xsl:sequence select="imf:create-output-element('imvert:read-only',$ro)"/>
+        
     </xsl:function>
     
     <xsl:function name="imf:get-association-info" as="node()*">
@@ -1146,6 +1151,8 @@
                 2/    <memo>#NOTES#value
                 3/    value#NOTES#note
                 4/    $ea_notes=....
+                
+                Bugfix https://github.com/Imvertor/Imvertor-Maven/issues/339 doorgevoerd
             -->        
             <xsl:variable name="tokens" select="tokenize($value,'(#NOTES#)|(\$ea_notes=)')"/> 
             <xsl:variable name="value-select" select="
@@ -1156,9 +1163,9 @@
                     else $tokens[1]
                 else
                     if ($tokens[1] = '&lt;memo&gt;')
-                    then $tv/XMI.extension/UML:Comment/@name
+                    then ()
                     else $tokens[1]
-            "/>
+                "/>
             <xsl:sequence select="if (normalize-space($value-select)) then $value-select else ()"/>
         </xsl:if>
    </xsl:function>

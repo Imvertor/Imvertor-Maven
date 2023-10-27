@@ -20,11 +20,14 @@
 
 package nl.imvertor.EpCompiler;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
 
@@ -48,11 +51,7 @@ public class EpCompiler extends Step {
 		
 		runner.info(logger,"Compiling EP");
 		
-		String jsonschemarules = configurator.getJsonSchemarules();
-		if (jsonschemarules.equals("JSON-Kadaster")) {
-			generateKadaster();
-		} else
-			runner.error(logger,"Schemarules not implemented: \"" + jsonschemarules + "\", cannot compile EP");
+		generate();
 		
 		configurator.setStepDone(STEP_NAME);
 		
@@ -65,11 +64,11 @@ public class EpCompiler extends Step {
 	}
 
 	/**
-	 * Generate EP file suited for Kadaster Json schema.
+	 * Generate EP file suited for Kadaster and OGC Json schema.
 	 * 
 	 * @throws Exception
 	 */
-	public boolean generateKadaster() throws Exception {
+	public boolean generate() throws Exception {
 		
 		// create a transformer
 		Transformer transformer = new Transformer();
@@ -78,28 +77,44 @@ public class EpCompiler extends Step {
 		
 		runner.debug(logger,"CHAIN","Generating EP");
 		
-		transformer.setXslParm("ep-schema-path","../etc/xsd/EP/EP.xsd");
+		String epSchema = (requiresMIM() ? "EP2.xsd" : "EP.xsd");
+		
+		transformer.setXslParm("ep-schema-path","xsd/" + epSchema);	
 		
 		// Create EP
-		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_EP_XMLPATH", "properties/IMVERTOR_EP_XSLPATH");
+		if (requiresMIM()) {
+			succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH","properties/WORK_EP_XMLPATH_PRE", "properties/IMVERTOR_EP2_XSLPATH_PRE");
+			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH_PRE","properties/WORK_EP_XMLPATH_CORE", "properties/IMVERTOR_EP2_XSLPATH_CORE");
+			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH_CORE","properties/WORK_EP_XMLPATH_FINAL", "properties/IMVERTOR_EP2_XSLPATH_POST");
+		} else 
+			succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_EP_XMLPATH_FINAL", "properties/IMVERTOR_EP_XSLPATH");
+	
 		
 		// if this succeeds, copy the EP schema to the app and validate
 		if (succeeds) {
 			AnyFolder workAppFolder = new AnyFolder(Configurator.getInstance().getXParm("system/work-app-folder-path"));
 			
-			XmlFile resultEpFile = new XmlFile(configurator.getXParm("properties/WORK_EP_XMLPATH"));
+			XmlFile resultEpFile = new XmlFile(configurator.getXParm("properties/WORK_EP_XMLPATH_FINAL"));
 			XmlFile targetEpFile = new XmlFile(workAppFolder.getCanonicalPath() + "/ep/ep.xml"); // TODO nette naam, bepaald door gebruiker oid.
 			resultEpFile.copyFile(targetEpFile);
 			
-			XmlFile managedSchemaFile = new XmlFile(Configurator.getInstance().getBaseFolder().getCanonicalPath() + "/etc/xsd/EP/EP.xsd");
-			XmlFile targetSchemaFile = new XmlFile(workAppFolder.getCanonicalPath() + "/etc/xsd/EP/EP.xsd");
+			XmlFile managedSchemaFile = new XmlFile(Configurator.getInstance().getBaseFolder().getCanonicalPath() + "/etc/xsd/EP/" + epSchema);
+			XmlFile targetSchemaFile = new XmlFile(workAppFolder.getCanonicalPath() + "/ep/xsd/" + epSchema);
 			managedSchemaFile.copyFile(targetSchemaFile);
 			
 			// Debug: test if EP is okay
 			succeeds = succeeds && resultEpFile.isValid();
 		}
 		configurator.setXParm("system/ep-schema-created",succeeds);
+		configurator.setXParm("system/ep-schema-version",requiresMIM() ? "2" : "1"); // when MIM based, generated EP version 2
 
 		return succeeds;
 	}
+	
+	public static Boolean requiresMIM() throws IOException, ConfiguratorException {
+		// bepaal of hier de MIM schema variant moet worden gebruikt
+		String jsonschemasource = Configurator.getInstance().getXParm("cli/jsonschemasource",false);
+		return (jsonschemasource == null || jsonschemasource.equals("MIM"));
+	}				
+
 }
