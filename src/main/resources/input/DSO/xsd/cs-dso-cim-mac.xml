@@ -7,14 +7,14 @@
     xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
     ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
     
-    <cs:id>dso-cim-ex</cs:id>
-    <cs:shortName>DSO CIM Externe partijen</cs:shortName>
+    <cs:id>dso-cim-mac</cs:id>
+    <cs:shortName>DSO CIM Machtigen</cs:shortName>
     <cs:version>1.0.0</cs:version>
     <cs:phase>3</cs:phase>
-    <cs:desc>DSO Conceptueel Informatiemodel ex</cs:desc>
+    <cs:desc>DSO Conceptueel Informatiemodel Machtigen</cs:desc>
     <cs:source>Geonovum</cs:source>
-    <cs:data-location>https://docs.geostandaarden.nl/dso-cim-ex</cs:data-location>
-    <cs:url>http://www.geonovum.nl/conceptual-schemas/dso-cim-ex</cs:url>
-    <cs:catalogUrl>https://geonovum.github.io/dso-cim-ex/[entry]</cs:catalogUrl>
+    <cs:data-location>https://docs.geostandaarden.nl/dso-cim-mac</cs:data-location>
+    <cs:url>http://www.geonovum.nl/conceptual-schemas/dso-cim-mac</cs:url>
+    <cs:catalogUrl>https://geonovum.github.io/dso-cim-mac/[entry]</cs:catalogUrl>
  
 </cs:ConceptualSchema>
