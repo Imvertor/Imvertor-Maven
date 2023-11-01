@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.JsonFile;
 import nl.imvertor.common.file.XmlFile;
@@ -89,17 +90,21 @@ public class JsonSchemaCompiler extends Step {
 		
 		runner.debug(logger,"CHAIN","Generating Json");
 		
+		// check of vorige EP proces goed is afgerond
+		succeeds = succeeds && AnyFile.exists(configurator.getXParm("properties/WORK_EP_XMLPATH",false));
+		
 		// Transform previously generated EP to Json XML
 		if (configurator.getXParm("system/ep-schema-version").equals("1"))
 			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH","properties/WORK_JSONXML_XMLPATH", "properties/IMVERTOR_JSONXML_XSLPATH");
 		else 
 			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH","properties/WORK_JSONXML_XMLPATH", "properties/IMVERTOR_JSONXML2_XSLPATH");
-				
+
 		// convert the json xml to Json.
 		XmlFile jsonXmlFile = new XmlFile(configurator.getXParm("properties/WORK_JSONXML_XMLPATH"));
 		JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/WORK_SCHEMA_JSONPATH"));
 		YamlFile yamlFile = new YamlFile(configurator.getXParm("properties/WORK_SCHEMA_YAMLPATH"));
-		jsonXmlFile.toJson(jsonFile,true);
+		
+		if (succeeds) jsonXmlFile.toJson(jsonFile,true);
 		
 		// Debug: test if json is okay
 		succeeds = succeeds && jsonFile.validate();

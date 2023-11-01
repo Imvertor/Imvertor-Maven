@@ -641,6 +641,16 @@ public class AnyFile extends File  {
 
 	    return IOUtils.contentEqualsIgnoreEOL(reader1, reader2);
 	}
+
+	public static boolean exists(String path) {
+		try {
+			File file = new File(path);
+			return file.exists();
+		} catch (Exception e) {
+			return false;
+		}
+		
+	}
 }
 
 
