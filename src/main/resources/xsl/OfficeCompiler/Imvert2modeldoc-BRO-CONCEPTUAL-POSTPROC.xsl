@@ -441,7 +441,7 @@
                     <item><xsl:value-of select="$context/part[@type = 'CFG-DOC-PATROON']/item[2]/text()"/></item>
                 </part>
             </xsl:when>
-            <xsl:when test="$item-text=('Bepalingscode','NITGCode','Putcode','GUID')">
+            <xsl:when test="$item-text=('Bepalingscode','NITGCode','Putcode','GUID','KvK-nummer')">
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item><xsl:value-of select="$item"/></item>
