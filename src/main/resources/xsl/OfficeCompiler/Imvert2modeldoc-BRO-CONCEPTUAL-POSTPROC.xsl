@@ -118,6 +118,7 @@
                 <item>Keuze</item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-DEFINITIE']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>
         </content>
     </xsl:template>
     <xsl:template match="section[@type = ('DETAIL-UNIONELEMENT')]/content">
@@ -129,6 +130,7 @@
                 <item>Keuze element van <xsl:value-of select="../../@name"/></item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-DEFINITIE']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>
         </content>
     </xsl:template>
     
