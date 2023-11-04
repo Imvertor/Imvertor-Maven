@@ -348,6 +348,7 @@ public class Configurator {
 	public void setActiveStepName(String stepName) throws IOException, ConfiguratorException {
 		xParmLogger.openOrigin(stepName);
 		currentStepName = stepName;
+		currentComponentIdentifier = "Main: " + stepName;
 	}
 
 	/**
