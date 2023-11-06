@@ -97,7 +97,7 @@
 				<xsl:choose>
 					<xsl:when test="$serialisation = 'hal+json'">
 						<!-- Only if hal+json applies this when is relevant -->
-						<!-- In case of Gr or Gc messages HalCollectie and Hal entities have to be generated. -->
+						<!-- In case of Gr or Gc messages HalCollectie, Hal and Resource entities have to be generated. -->
 						<!-- Loop over global constructs which are refered to from constructs directly within the (collection) ep:message 
 						 elements (the top-level classes). So enumeration constructs and group constructs are not included.
 						 In case of hal+json serialisation for-each of those entities an '[eniteitnaam]Hal' component has to be created. -->
@@ -176,7 +176,7 @@
 							</xsl:variable>
 							<xsl:sequence select="$construct"/>
 						</xsl:for-each>
-						<!-- In case of Pa, Po or Pu messages only Hal entities have to be generated. -->
+						<!-- In case of Pa, Po or Pu messages only Hal and Resource entities have to be generated. -->
 						<xsl:for-each select="ep:message-set/ep:construct
 							[ 
 							ep:tech-name = //ep:message
@@ -208,15 +208,28 @@
 							)
 							]
 							/ep:*/ep:construct/ep:type-name 
+							
 							and 
 							not( ep:enum )
+							
 							and
+							not(
+							ep:tech-name = //ep:message
+							[
 							(
-							not(contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr'))
-							) 
-							and
 							(
-							not(contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')) 
+							(
+							contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr') 
+							or
+							contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+							)
+							and 
+							ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
+							)
+							)
+							]
+							/ep:*/ep:construct/ep:type-name 
+							
 							) 
 							]">
 							<xsl:sort select="ep:tech-name" order="ascending"/>
