@@ -7,7 +7,7 @@
     <name>MIM 1.1 tagged values (common extensions)</name>
     
     <tagged-values>
-    
+        
         <tv norm="space" id="CFG-TV-OWNER">
             <name lang="nl">Eigenaar</name>
             <name lang="en">Owned by</name>
@@ -146,6 +146,6 @@
         
         
     </tagged-values>
-
+    
     
 </tagset>
