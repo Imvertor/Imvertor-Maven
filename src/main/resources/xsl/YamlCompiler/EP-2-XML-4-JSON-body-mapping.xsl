@@ -290,105 +290,191 @@
 						
 					</xsl:otherwise>
 				</xsl:choose>
+
+				<!-- This variable is created to prevent constructs being processed in the following xsl:choose as well as in the for-each in rule 862 and 923. -->
+				<xsl:variable name="Ids2BeProcessedConstructs">
+					<xsl:choose>
+						<xsl:when test="$serialisation = 'hal+json'">
+							<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't 'enumeration', 'superclass', 'complex-datatype','groep' or 'table-datatype' constructs.
+							 This is only applicable when the serialisation is hal+json.
+							 See 'Imvertor-Maven\src\main\resources\xsl\YamlCompiler\documentatie\Explanation query constructions.xlsx' tab 'Query1' for an explanation on this query. -->
+							<xsl:for-each select="ep:message-set/ep:construct
+								[ 
+								(
+								ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name
+								or
+								ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:choice/ep:construct/ep:type-name
+								) 
+								and 
+								not
+								(
+								ep:tech-name = //ep:message
+								[
+								ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' 
+								]
+								/ep:*/ep:construct/ep:type-name
+								) 
+								and 
+								not(ep:enum) 
+								and 
+								(
+								(
+								(
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+								or
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+								or
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
+								)
+								and 
+								ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
+								) 
+								or 
+								(
+								( 
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+								or
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+								or
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
+								or
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+								or 	
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
+								) 
+								and 
+								ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
+								)
+								)
+								and 
+								(
+								(
+								not
+								(
+								ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
+								and 
+								ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:ref
+								)
+								and
+								not
+								(
+								ep:tech-name = //ep:message-set/ep:construct/ep:choice/ep:construct
+								[ ep:parameters/ep:parameter[ep:name='type']/ep:value = 'subclass']
+								/ep:type-name
+								)
+								and
+								(
+								ep:parameters/ep:parameter[ep:name='type']/ep:value != '' 
+								and 
+								ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'
+								)
+								and
+								
+								
+								(
+								not
+								(
+								ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
+								and 
+								not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
+								)
+								or
+								ep:parameters[ep:parameter[ep:name='contains-non-id-attributes' and ep:value='true']]
+								)
+								
+								)
+								or
+								(
+								ep:parameters/ep:parameter[ep:name='type']/ep:value='association' 
+								or
+								ep:parameters/ep:parameter[ep:name='type']/ep:value='supertype-association'
+								)
+								)
+								]">
+								<xsl:value-of select="generate-id()"/><xsl:text>;</xsl:text>
+							</xsl:for-each>
+						</xsl:when>
+						<xsl:when test="$serialisation = 'json'">
+							<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't 'enumeration', 'superclass', 'complex-datatype','groep' or 'table-datatype' constructs.
+							 This is only applicable when the serialisation is json. -->
+							<xsl:for-each select="ep:message-set/ep:construct
+								[ 
+								(
+								ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name
+								or
+								ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:choice/ep:construct/ep:type-name
+								) 
+								and 
+								not(
+								ep:tech-name = //ep:message
+								[
+								ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' 
+								]
+								/ep:*/ep:construct/ep:type-name
+								) 
+								and 
+								not(ep:enum) 
+								and 
+								(
+								(
+								(
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+								or
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+								or
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
+								)
+								and 
+								ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
+								) 
+								or 
+								(
+								( 
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+								or
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+								or
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
+								or
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+								or 	
+								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
+								) 
+								and 
+								ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
+								)
+								)
+								and 
+								not(
+								ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
+								and 
+								ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:ref
+								)
+								and
+								not(
+								ep:tech-name = //ep:message-set/ep:construct/ep:choice/ep:construct
+								[ ep:parameters/ep:parameter[ep:name='type']/ep:value = 'subclass']
+								/ep:type-name
+								)
+								and
+								not(
+								ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
+								and 
+								not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
+								)
+								]">
+								<xsl:value-of select="generate-id()"/><xsl:text>;</xsl:text>
+							</xsl:for-each>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:variable>
 				
 				<xsl:choose>
 					<xsl:when test="$serialisation = 'hal+json'">
 						<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't 'enumeration', 'superclass', 'complex-datatype','groep' or 'table-datatype' constructs.
 							 This is only applicable when the serialisation is hal+json.
 							 See 'Imvertor-Maven\src\main\resources\xsl\YamlCompiler\documentatie\Explanation query constructions.xlsx' tab 'Query1' for an explanation on this query. -->
-						<xsl:for-each select="ep:message-set/ep:construct
-							[ 
-									(
-									ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name
-									or
-									ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:choice/ep:construct/ep:type-name
-									) 
-								and 
-									not
-										(
-											ep:tech-name = //ep:message
-											[
-											ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' 
-											]
-											/ep:*/ep:construct/ep:type-name
-										) 
-								and 
-									not(ep:enum) 
-								and 
-									(
-										(
-											(
-												contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
-												or
-												contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
-												or
-												contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
-											)
-											and 
-											ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
-										) 
-									or 
-										(
-											( 
-												contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
-												or
-												contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
-												or
-												contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
-												or
-												contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
-												or 	
-												contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
-											) 
-											and 
-											ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
-										)
-									)
-							and 
-								(
-										(
-											not
-												(
-													ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
-													and 
-													ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:ref
-												)
-										and
-											not
-												(
-													ep:tech-name = //ep:message-set/ep:construct/ep:choice/ep:construct
-													[ ep:parameters/ep:parameter[ep:name='type']/ep:value = 'subclass']
-													/ep:type-name
-												)
-										and
-											(
-												ep:parameters/ep:parameter[ep:name='type']/ep:value != '' 
-												and 
-												ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'
-											)
-										and
-										
-										
-											(
-												not
-													(
-														ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
-														and 
-														not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
-													)
-												or
-												ep:parameters[ep:parameter[ep:name='contains-non-id-attributes' and ep:value='true']]
-											)
-										
-										)
-									or
-										(
-											ep:parameters/ep:parameter[ep:name='type']/ep:value='association' 
-											or
-											ep:parameters/ep:parameter[ep:name='type']/ep:value='supertype-association'
-										)
-								)
-							]">
+						<xsl:for-each select="ep:message-set/ep:construct[contains($Ids2BeProcessedConstructs,generate-id())]">
 							<xsl:sort select="ep:tech-name" order="ascending"/>
 							<!-- Only regular constructs are generated. -->
 							
@@ -418,72 +504,7 @@
 					<xsl:when test="$serialisation = 'json'">
 						<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't 'enumeration', 'superclass', 'complex-datatype','groep' or 'table-datatype' constructs.
 							 This is only applicable when the serialisation is json. -->
-						<xsl:for-each select="ep:message-set/ep:construct
-										[ 
-											(
-												ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name
-												or
-												ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:choice/ep:construct/ep:type-name
-											) 
-											and 
-											not(
-											   ep:tech-name = //ep:message
-											   [
-												 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' 
-											   ]
-											   /ep:*/ep:construct/ep:type-name
-											) 
-											and 
-											not(ep:enum) 
-											and 
-											(
-											  (
-												(
-												contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
-												or
-												contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
-												or
-												contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
-												)
-												and 
-												ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
-											  ) 
-											  or 
-											  (
-												( 
-												  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
-												  or
-												  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
-												  or
-												  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
-												  or
-												  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
-												  or 	
-												  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
-												) 
-												and 
-												ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
-											  )
-											)
-											and 
-											not(
-											   ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
-											   and 
-											   ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:ref
-											)
-											and
-											not(
-												ep:tech-name = //ep:message-set/ep:construct/ep:choice/ep:construct
-												[ ep:parameters/ep:parameter[ep:name='type']/ep:value = 'subclass']
-												/ep:type-name
-											)
-											and
-											not(
-												ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
-												and 
-												not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
-											)
-										]">
+						<xsl:for-each select="ep:message-set/ep:construct[contains($Ids2BeProcessedConstructs,generate-id())]">
 							<xsl:sort select="ep:tech-name" order="ascending"/>
 							<!-- Only regular constructs are generated. -->
 							
@@ -883,6 +904,8 @@
 							and 
 							not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
 							)
+							and
+							not(contains($Ids2BeProcessedConstructs,generate-id()))
 							]">
 							<xsl:sort select="ep:tech-name" order="ascending"/>
 							<!-- Only regular constructs are generated. -->
@@ -940,6 +963,8 @@
 							and 
 							not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
 							)
+							and
+							not(contains($Ids2BeProcessedConstructs,generate-id()))
 							]">
 							<xsl:sort select="ep:tech-name" order="ascending"/>
 							<!-- Only regular constructs are generated. -->
@@ -1156,7 +1181,7 @@
 			<xsl:variable name="documentation">
 				<xsl:apply-templates select="$firstChoice/ep:documentation"/>
 			</xsl:variable>
-			<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+			<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 			<xsl:if test="$occurence-type = 'array'">
 				<xsl:if test="$maxOccurs != 'unbounded'">
 					<j:number key="maxItems"><xsl:value-of select="$maxOccurs"/></j:number>
@@ -1369,7 +1394,7 @@
 										</j:map>
 										<j:map>
 											<j:string key="type">object</j:string>
-											<j:string key="description"><xsl:sequence select="$documentation"></xsl:sequence></j:string>
+											<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 											<xsl:if test="$requiredproperties">
 												<!-- Only if the variable requiredproperties is true a 'required' section has to be generated. -->
 												<j:array key="required">
@@ -1406,7 +1431,7 @@
 								</xsl:when>
 								<xsl:otherwise>
 									<j:string key="type">object</j:string>
-									<j:string key="description"><xsl:sequence select="$documentation"></xsl:sequence></j:string>
+									<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 									<xsl:if test="$requiredproperties">
 										<!-- Only if the variable requiredproperties is true a 'required' section has to be generated. -->
 										<j:array key="required">
@@ -1702,7 +1727,7 @@
 						<xsl:variable name="documentation">
 							<xsl:apply-templates select="ep:documentation"/>
 						</xsl:variable>
-						<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+						<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 						<xsl:sequence select="imf:generateRef(concat($standard-json-components-url,'Datum_onvolledig'))"/>
 					</j:map>
 				</j:array>
@@ -1745,7 +1770,7 @@
 				<xsl:variable name="documentation">
 					<xsl:apply-templates select="ep:documentation"/>
 				</xsl:variable>
-				<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+				<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 				<xsl:if test="ep:min-occurs">
 					<j:number key="minItems"><xsl:value-of select="ep:min-occurs"/></j:number>
 				</xsl:if>
@@ -1797,7 +1822,7 @@
 				<xsl:variable name="documentation">
 					<xsl:apply-templates select="ep:documentation"/>
 				</xsl:variable>
-				<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+				<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 				
 				<xsl:sequence select="imf:generateDebugInfo('Debuglocatie-04250',.)"/>
 				
@@ -1820,7 +1845,7 @@
 					</j:map>
 					<j:map>
 						<j:string key="title"><xsl:value-of select="ep:name"/></j:string>
-						<j:string key="description"><xsl:sequence select="$documentation"/></j:string>						
+						<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>						
 					</j:map>
 				</j:array>
 			</xsl:when>
@@ -1862,7 +1887,7 @@
 					</j:map>
 					<j:map>
 						<j:string key="title"><xsl:value-of select="ep:name"/></j:string>
-						<j:string key="description"><xsl:sequence select="$documentation"/></j:string>						
+						<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>						
 					</j:map>
 				</j:array>
 			</xsl:when>
@@ -2057,7 +2082,7 @@
 						<j:string key="title"><xsl:value-of select="ep:name"/></j:string>
 					</xsl:if>
 					<j:string key="type"><xsl:value-of select="$occurence-type"/></j:string>
-					<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+					<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 				</xsl:variable>
 		
 				<j:map key="{$elementName}">
@@ -2219,7 +2244,7 @@
 					<xsl:choose>
 						<!-- Depending on the occurence-type and the type of construct content is generated. -->
 						<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
-							<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+							<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 							<xsl:if test="$maxOccurs != 'unbounded'">
 								<j:number key="maxItems"><xsl:value-of select="$maxOccurs"/></j:number>
 							</xsl:if>
@@ -2234,7 +2259,7 @@
 							<xsl:sequence select="imf:generateRef(concat($json-topstructure,'/',$typeName,'Hal'))"/>
 						</xsl:when>
 						<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
-							<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+							<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 							<xsl:if test="$maxOccurs != 'unbounded'">
 								<j:number key="maxItems"><xsl:value-of select="$maxOccurs"/></j:number>
 							</xsl:if>
@@ -2248,7 +2273,7 @@
 							</j:map>
 						</xsl:when>
 						<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
-							<j:string key="description"><xsl:sequence select="$documentation"/></j:string>
+							<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 							<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded">
 								<xsl:sort select="ep:tech-name" order="ascending"/>
 							</xsl:apply-templates>
@@ -2267,7 +2292,7 @@
 					
 					<j:string key="description">
 						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-						<xsl:value-of select="normalize-space($documentation)"/>
+						<xsl:value-of select="replace($documentation, '^\s+|\s+$', '')"/>
 					</j:string>
 					
 					<xsl:choose>
@@ -2406,15 +2431,25 @@
 			</xsl:if>
 		</xsl:variable>
 		
-		<xsl:sequence select="$completeDefinition"/>
+<!--		<xsl:sequence select="$completeDefinition"/>
 		<xsl:if test="not(empty($completeDefinition)) and not(empty($completeDescription))"><xsl:text>
-  </xsl:text><xsl:text>
+</xsl:text><xsl:text>
 </xsl:text></xsl:if>
-  		<xsl:sequence select="$completeDescription"/>
+		<xsl:sequence select="$completeDescription"/>
 		<xsl:if test="(not(empty($completeDescription)) and not(empty($completePattern))) or (not(empty($completeDefinition)) and not(empty($completePattern)))"><xsl:text>
-  </xsl:text><xsl:text>
+</xsl:text><xsl:text>
 </xsl:text></xsl:if>
-  		<xsl:sequence select="$completePattern"/>
+		<xsl:sequence select="$completePattern"/>-->
+
+		<xsl:sequence select="$completeDefinition"/>
+		<xsl:if test="not($completeDefinition = '') and not($completeDescription = '')"><xsl:text>
+</xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$completeDescription"/>
+		<xsl:if test="(not($completeDescription = '') and not($completePattern = '')) or (not($completeDefinition = '') and not($completePattern = ''))"><xsl:text>
+</xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$completePattern"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:definition">
@@ -2427,13 +2462,24 @@
 		<xsl:variable name="BSM-definition">
 			<xsl:apply-templates select="ep:p[@level='BSM']"/>
 		</xsl:variable>
-		<xsl:sequence select="$SIM-definition"/>
+
+<!--		<xsl:sequence select="$SIM-definition"/>
 		<xsl:if test="not(empty($SIM-definition)) and not(empty($UGM-definition))"><xsl:text>
   </xsl:text><xsl:text>
 </xsl:text></xsl:if>
 		<xsl:sequence select="$UGM-definition"/>
 		<xsl:if test="(not(empty($UGM-definition)) and not(empty($BSM-definition))) or (not(empty($SIM-definition)) and not(empty($BSM-definition)))"><xsl:text>
   </xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$BSM-definition"/>-->
+
+		<xsl:sequence select="$SIM-definition"/>
+		<xsl:if test="not($SIM-definition = '') and not($UGM-definition = '')"><xsl:text>
+</xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$UGM-definition"/>
+		<xsl:if test="(not($UGM-definition = '') and not($BSM-definition = '')) or (not($SIM-definition = '') and not($BSM-definition = ''))"><xsl:text>
+</xsl:text><xsl:text>
 </xsl:text></xsl:if>
 		<xsl:sequence select="$BSM-definition"/>
 	</xsl:template>
@@ -2448,13 +2494,24 @@
 		<xsl:variable name="BSM-description">
 			<xsl:apply-templates select="ep:p[@level='BSM']"/>
 		</xsl:variable>
-		<xsl:sequence select="$SIM-description"/>
+
+<!--		<xsl:sequence select="$SIM-description"/>
 		<xsl:if test="not(empty($SIM-description)) and not(empty($UGM-description))"><xsl:text>
   </xsl:text><xsl:text>
 </xsl:text></xsl:if>
 		<xsl:sequence select="$UGM-description"/>
 		<xsl:if test="(not(empty($UGM-description)) and not(empty($BSM-description))) or (not(empty($SIM-description)) and not(empty($BSM-description)))"><xsl:text>
   </xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$BSM-description"/>-->
+
+		<xsl:sequence select="$SIM-description"/>
+		<xsl:if test="not($SIM-description = '') and not($UGM-description = '')"><xsl:text>
+</xsl:text><xsl:text>
+</xsl:text></xsl:if>
+		<xsl:sequence select="$UGM-description"/>
+		<xsl:if test="(not($UGM-description = '') and not($BSM-description = '')) or (not($SIM-description = '') and not($BSM-description = ''))"><xsl:text>
+</xsl:text><xsl:text>
 </xsl:text></xsl:if>
 		<xsl:sequence select="$BSM-description"/>
 	</xsl:template>
