@@ -189,7 +189,7 @@
 							contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
 							or
 							contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
-							) 
+							)
 							and 
 							ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
 							)
@@ -200,8 +200,7 @@
 							or
 							contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po' ) 
 							or
-							contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu' ) 
-							
+							contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu' ) 							
 							)
 							and 
 							ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
@@ -211,6 +210,14 @@
 							/ep:*/ep:construct/ep:type-name 
 							and 
 							not( ep:enum )
+							and
+							(
+							not(contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr'))
+							) 
+							and
+							(
+							not(contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')) 
+							) 
 							]">
 							<xsl:sort select="ep:tech-name" order="ascending"/>
 	
