@@ -78,7 +78,7 @@
 		<xsl:text>&#xa;  description: "</xsl:text> <xsl:apply-templates select="ep:documentation"><xsl:with-param name="description" select="'no'"/><xsl:with-param name="pattern" select="'no'"/></xsl:apply-templates><xsl:text>"</xsl:text>
 		<!--xsl:text>&#xa;  description: "</xsl:text> <xsl:value-of select="normalize-space(ep:documentation)"/><xsl:text>"</xsl:text-->
         <xsl:text>&#xa;  version: "</xsl:text><xsl:value-of select="ep:patch-number"/><xsl:text>"</xsl:text>
-		<xsl:text>&#xa;  x-imvertor-generator-version: "</xsl:text><xsl:value-of select="../ep:parameters/ep:parameter[ep:name='imvertor-generator-version']/ep:value"/><xsl:text>"</xsl:text>
+		<xsl:text>&#xa;  x-imvertor-generator-version: "</xsl:text><xsl:value-of select="../ep:imvertor-generator-version"/><xsl:text>"</xsl:text>
 		<xsl:text>&#xa;  x-yamlCompiler-stylesheets-version: "</xsl:text><xsl:value-of select="imf:get-config-parameter('yamlCompiler-stylesheets-version')"/><xsl:text>"</xsl:text>
 		<xsl:text>&#xa;  contact:</xsl:text>
 		<xsl:text>&#xa;    url: </xsl:text><xsl:value-of select="/ep:message-sets/ep:parameters/ep:parameter[ep:name='project-url']/ep:value"/>
@@ -1644,8 +1644,8 @@
 				<xsl:if test="ep:max-value != ''">
 					<ep:max-value><xsl:value-of select="ep:max-value"/></ep:max-value>
 				</xsl:if>
-				<xsl:if test="ep:patroon != ''">
-					<ep:patroon><xsl:value-of select="ep:patroon"/></ep:patroon>
+				<xsl:if test="ep:pattern != ''">
+					<ep:pattern><xsl:value-of select="ep:pattern"/></ep:pattern>
 				</xsl:if>
 				<xsl:if test="ep:example != ''">
 					<ep:example><xsl:value-of select="ep:example"/></ep:example>
@@ -1782,7 +1782,7 @@
 						<xsl:value-of select="ep:max-value"/>
 					</xsl:variable>
 					<xsl:variable name="patroon">
-						<xsl:value-of select="ep:patroon"/>
+						<xsl:value-of select="ep:pattern"/>
 					</xsl:variable>
 					<xsl:variable name="example">
 						<xsl:value-of select="ep:example"/>
@@ -1817,7 +1817,7 @@
 									<ep:max-value><xsl:value-of select="$max-value"/></ep:max-value>
 								</xsl:if>
 								<xsl:if test="$patroon != ''">
-									<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
+									<ep:pattern><xsl:value-of select="$patroon"/></ep:pattern>
 								</xsl:if>
 								<xsl:if test="$example != ''">
 									<ep:example><xsl:value-of select="$example"/></ep:example>
@@ -1828,7 +1828,7 @@
 	<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
 								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:pattern', $patroon)" />
 								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:when>
@@ -1860,7 +1860,7 @@
 									<ep:max-value><xsl:value-of select="$max-value"/></ep:max-value>
 								</xsl:if>
 								<xsl:if test="$patroon != ''">
-									<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
+									<ep:pattern><xsl:value-of select="$patroon"/></ep:pattern>
 								</xsl:if>
 								<xsl:if test="$example != ''">
 									<ep:example><xsl:value-of select="$example"/></ep:example>
@@ -1871,7 +1871,7 @@
 								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
 								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:pattern', $patroon)" />
 								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:when>
@@ -1900,7 +1900,7 @@
 									<ep:max-value><xsl:value-of select="$max-value"/></ep:max-value>
 								</xsl:if>
 								<xsl:if test="$patroon != ''">
-									<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
+									<ep:pattern><xsl:value-of select="$patroon"/></ep:pattern>
 								</xsl:if>
 								<xsl:if test="$example != ''">
 									<ep:example><xsl:value-of select="$example"/></ep:example>
@@ -1911,7 +1911,7 @@
 								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
 								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:pattern', $patroon)" />
 								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:otherwise>
@@ -1949,7 +1949,7 @@
 									<ep:max-value><xsl:value-of select="$max-value"/></ep:max-value>
 								</xsl:if>
 								<xsl:if test="$patroon != ''">
-									<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
+									<ep:pattern><xsl:value-of select="$patroon"/></ep:pattern>
 								</xsl:if>
 								<xsl:if test="$example != ''">
 									<ep:example><xsl:value-of select="$example"/></ep:example>
@@ -1960,7 +1960,7 @@
 								<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
 								<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:pattern', $patroon)" />
 								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 							</ep:param>
 						</xsl:if>
