@@ -389,6 +389,8 @@
          <metagegeven kardinaliteit="1">Mogelijk geen waarde</metagegeven>
          <metagegeven kardinaliteit="1">Identificerend</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Aggregatietype</metagegeven><!-- add 1.1.1 -->
+         <!-- json extensie -->
+         <metagegeven kardinaliteit="0..1">InlineOrByReference</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Relatierol - Relatiesoort leidend</naam>
