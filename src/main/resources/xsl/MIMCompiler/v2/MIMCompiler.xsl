@@ -378,6 +378,7 @@
                   <xsl:with-param name="modelelement-type" select="$rol-type" as="xs:string"/>
                   <xsl:with-param name="modelelement-name" select="imvert:role" as="xs:string?"/>
                 </xsl:call-template>  
+                <xsl:call-template name="extensieKenmerken"/>
               </xsl:for-each>  
             </mim:Bron>  
         </xsl:where-populated>
@@ -388,7 +389,8 @@
                 <xsl:call-template name="genereer-metagegevens">
                   <xsl:with-param name="modelelement-type" select="$rol-type" as="xs:string"/>
                   <xsl:with-param name="modelelement-name" select="imvert:role" as="xs:string?"/>
-                </xsl:call-template>  
+                </xsl:call-template>
+                <xsl:call-template name="extensieKenmerken"/>
               </xsl:for-each>
             </mim:Doel>  
         </xsl:where-populated>
