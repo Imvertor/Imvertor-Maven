@@ -256,44 +256,56 @@
                     <!-- de construct bestaat uit één keuze -->
                     <xsl:when test="ep:choice">
                         <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice [1]',$n)"/>
+                        <xsl:variable name="use" select="imf:get-ep-parameter(ep:choice/ep:construct,'use')"/>
                         <xsl:sequence select="$header"/>
-                        <j:array key="oneOf">
-                            <xsl:choose>
-                                <xsl:when test="imf:get-ep-parameter(ep:choice/ep:construct,'use') = 'attribuutsoort'">
+                        <xsl:choose>
+                            <xsl:when test="$use = 'attribuutsoort'">
+                                <j:array key="oneOf">
                                     <xsl:for-each select="ep:choice/ep:construct">
                                         <j:map>
                                             <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice attribuutsoorten',())"/>
                                             <xsl:apply-templates select="."/>
                                         </j:map>
                                     </xsl:for-each>
-                                </xsl:when>
-                                <xsl:when test="imf:get-ep-parameter(ep:choice/ep:construct,'use') = 'datatype'">
-                                    <xsl:for-each select="ep:choice/ep:construct">
-                                        <xsl:variable name="ref" select="ep:ref/@href"/>
-                                        <j:map>
-                                            <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice datatypen',())"/>
-                                            <xsl:choose>
-                                                <xsl:when test="$ref">
-                                                    <xsl:sequence select="imf:get-type-ref-by-id($ref)"/>
-                                                </xsl:when>
-                                                <xsl:otherwise><!-- een MIM datatype -->
-                                                    <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type))"/>
-                                                </xsl:otherwise>
-                                            </xsl:choose>
-                                        </j:map>
-                                    </xsl:for-each>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:for-each select="ep:choice/ep:construct">
-                                        <xsl:variable name="ref" select="ep:ref/@href"/>
-                                        <j:map>
-                                            <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice objecttypen',())"/>
-                                            <xsl:sequence select="imf:get-type-ref-by-id($ref)"/>
-                                        </j:map>
-                                    </xsl:for-each>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </j:array>
+                                </j:array>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:variable name="datatypes" select="ep:choice/ep:construct[ep:data-type]"/>
+                                <xsl:variable name="refs" select="ep:choice/ep:construct[ep:ref]"/>
+                                <xsl:variable name="json-types" select="distinct-values(for $t in $datatypes/ep:data-type return imf:map-datatype-to-ep-type($t))"/>
+                                <xsl:choose>
+                                    <xsl:when test="exists($json-types) and empty($refs)">
+                                        <!-- /req/union-type-discriminator/encoding casus Union_TypeDiscriminator_SimpleTypes -->
+                                        <xsl:sequence select="imf:get-choice-of-datatypes($json-types)"/>
+                                    </xsl:when>
+                                    <xsl:when test="exists($refs) and empty($json-types)">
+                                        <!-- /req/union-type-discriminator/encoding casus Union_TypeDiscriminator_Othertypes -->
+                                        <j:array key="oneOf">
+                                            <xsl:for-each select="$refs">
+                                                <j:map>
+                                                    <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice datatypen casus Union_TypeDiscriminator_Othertypes',())"/>
+                                                    <xsl:sequence select="imf:get-type-ref-by-id(ep:ref/@href)"/>
+                                                </j:map>
+                                            </xsl:for-each>
+                                        </j:array>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <!-- /req/union-type-discriminator/encoding casus Union_TypeDiscriminator -->
+                                        <j:array key="oneOf">
+                                            <j:map>
+                                                <xsl:sequence select="imf:get-choice-of-datatypes($json-types)"/>
+                                            </j:map>
+                                            <xsl:for-each select="$refs">
+                                                <j:map>
+                                                    <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice datatypen casus Union_TypeDiscriminator',())"/>
+                                                    <xsl:sequence select="imf:get-type-ref-by-id(ep:ref/@href)"/>
+                                                </j:map>
+                                            </xsl:for-each>
+                                        </j:array>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:when>
                     <!-- de construct is een enumeratie -->
                     <xsl:when test="ep:enum">
@@ -603,5 +615,23 @@
     <xsl:function name="imf:has-identity" as="xs:boolean">
         <xsl:param name="this" as="element()"/>
         <xsl:sequence select="imf:get-ep-parameter($this/ancestor::ep:group[1],'use') = 'domein'"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-choice-of-datatypes" as="element()*">
+        <xsl:param name="json-types" as="xs:string+"/>
+        <xsl:choose>
+            <xsl:when test="count($json-types) eq 1">
+                <!-- /req/union-type-discriminator/encoding casus Union_TypeDiscriminator_SimpleTypes waarbij typen als één json type gelden -->
+                <xsl:sequence select="imf:ep-to-namevaluepair('type',$json-types)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- /req/union-type-discriminator/encoding casus Union_TypeDiscriminator_SimpleTypes waarbij typen als meerdere json typen gelden (denk aan 'date') -->
+                <j:array key="type">
+                    <xsl:for-each select="$json-types">
+                        <j:string>{.}</j:string>
+                    </xsl:for-each>
+                </j:array>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
 </xsl:stylesheet>
