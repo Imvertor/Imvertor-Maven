@@ -564,17 +564,18 @@
     </xsl:template>
     
     <xsl:template match="mim:Relatiesoort">
-        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineorbyreference'),'byReference')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
+        <xsl:variable name="info-provider" select="if ($relatierol-leidend) then mim:relatierollen/mim:Doel else ."/>
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk($info-provider,'inlineorbyreference'),'byReference')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Relatiesoort',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-common-parameters(.,'relatiesoort')"/>
-                <xsl:sequence select="imf:get-nillable(.)"/>
+                <xsl:sequence select="imf:get-nillable($info-provider)"/>
                 <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-name(.)"/>
-            <xsl:sequence select="imf:get-documentation(.)"/>
-            <xsl:sequence select="imf:get-cardinality(if ($relatierol-leidend) then mim:relatierollen/mim:Doel else .)"/>
+            <xsl:sequence select="imf:get-name($info-provider)"/>
+            <xsl:sequence select="imf:get-documentation($info-provider)"/>
+            <xsl:sequence select="imf:get-cardinality($info-provider)"/>
             <ep:seq>
                 <xsl:apply-templates select="mim:doel/mim-ref:ObjecttypeRef | mim:doel/mim-ref:KeuzeRef"/>
             </ep:seq>
@@ -665,11 +666,13 @@
         </xsl:if>
     </xsl:template>
     
+    <?x
     <xsl:template match="ep:min-occurs |ep:max-occurs" mode="remove-empty-elements">
         <xsl:if test=". ne '1'">
             <xsl:next-match/>
         </xsl:if>
     </xsl:template>
+    x?>
     
     <xsl:template match="node()" mode="remove-empty-elements">
         <xsl:copy>

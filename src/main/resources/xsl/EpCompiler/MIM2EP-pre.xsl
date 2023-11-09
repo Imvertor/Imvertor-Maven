@@ -25,6 +25,8 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     
+    <xsl:variable name="relatierol-leidend" select="/mim:Informatiemodel/mim:relatiemodelleringtype = 'Relatierol leidend'"/>
+    
     <xsl:template match="/">
         <xsl:apply-templates mode="assoc-class"/>
     </xsl:template>
@@ -37,17 +39,18 @@
     </xsl:template>
     
     <xsl:template match="mim:relatieklasse" mode="assoc-class">
-        <!-- wodrt in andere context verwerkt -->
+        <!-- wordt in andere context verwerkt -->
     </xsl:template>
     
     <xsl:template match="mim:Relatiesoort[mim:relatieklasse]" mode="assoc-class">
         <xsl:variable name="relatie" select="."/>
         <xsl:variable name="relatieklasse" select="mim:relatieklasse/mim:Relatieklasse"/>
+        <xsl:variable name="relatie-naam" select="if ($relatierol-leidend) then $relatie/mim:relatierollen/mim:Doel/mim:naam else $relatie/mim:naam"/>
         <mim:Relatiesoort>
             <mim:naam>{$relatie/mim:naam}</mim:naam>
             <mim:doel>
                 <mim-ref:ObjecttypeRef index="{$relatie/@index}"
-                    label="TODO1"
+                    label="{$relatie-naam}"
                     xlink:href="#{$relatieklasse/@id}">{$relatieklasse/mim:naam}</mim-ref:ObjecttypeRef>
             </mim:doel>
             <mim:relatierollen>
@@ -67,13 +70,14 @@
     <xsl:template match="mim:Relatieklasse" mode="assoc-class">
         <xsl:variable name="relatie" select="../.."/>
         <xsl:variable name="relatieklasse" select="."/>
+        <xsl:variable name="relatie-naam" select="if ($relatierol-leidend) then $relatie/mim:relatierollen/mim:Doel/mim:naam else $relatie/mim:naam"/>
         <mim:Objecttype>
             <xsl:apply-templates select="$relatieklasse/@*" mode="#current"/>
             <xsl:apply-templates select="$relatieklasse/*[not(name() = ('mim:relatiesoorten','mim:kardinaliteit'))]" mode="#current"/>
             <mim:relatiesoorten>
                 <xsl:apply-templates select="$relatieklasse/mim:relatiesoorten/mim:Relatiesoort" mode="#current"/>
                 <mim:Relatiesoort>
-                    <xsl:apply-templates select="$relatie/mim:naam" mode="#current"/><!-- herhaling van dezelfde naam -->
+                    <xsl:apply-templates select="$relatie-naam" mode="#current"/><!-- herhaling van dezelfde naam -->
                     <xsl:apply-templates select="$relatie/mim:doel" mode="#current"/>
                     <mim:relatierollen>
                         <mim:Bron>
@@ -82,7 +86,7 @@
                         </mim:Bron>
                         <mim:Doel>
                             <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/mim:naam" mode="#current"/>
-                            <mim:kardinaliteit>1<!--fixed--></mim:kardinaliteit>
+                            <mim:kardinaliteit>1<!--staat vast--></mim:kardinaliteit>
                         </mim:Doel>
                     </mim:relatierollen>
                 </mim:Relatiesoort>
