@@ -70,6 +70,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value default="yes">inline</value>
@@ -78,7 +79,7 @@
             </declared-values>
         </tv>
         <tv norm="space" id="CFG-TV-UNITOFMEASURE">
-            <name lang="nl">Meeteenheid</name>
+            <name lang="nl">Eenheid</name>
             <name lang="en">Unit</name>
             <desc lang="nl">TODO</desc>
             <desc lang="en">TODO</desc>

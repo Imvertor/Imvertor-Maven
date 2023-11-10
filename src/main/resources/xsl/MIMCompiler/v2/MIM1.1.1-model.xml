@@ -36,7 +36,7 @@
          <metagegeven kardinaliteit="0..1">Primair moment</metagegeven>
          <metagegeven kardinaliteit="0..1">Primair interval</metagegeven>
          <metagegeven kardinaliteit="0..1">InlineOrByReference</metagegeven>
-         <metagegeven kardinaliteit="0..1">Meeteenheid</metagegeven>
+         <metagegeven kardinaliteit="0..1">Eenheid</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Codelijst</naam>
@@ -573,7 +573,7 @@
          <modelelement kardinaliteit="1">View</modelelement>
       </metagegeven>
       <metagegeven>
-         <naam>Meeteenheid</naam>
+         <naam>Eenheid</naam>
          <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
       </metagegeven>
       <metagegeven>

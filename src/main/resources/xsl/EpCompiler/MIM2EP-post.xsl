@@ -124,6 +124,9 @@
                     <xsl:apply-templates select="$pconstructs"/>
                     <xsl:if test="$not-pconstructs">
                         <ep:construct>
+                            <ep:parameters>
+                                <ep:parameter name="use">added-properties</ep:parameter>
+                            </ep:parameters>
                             <ep:name>properties</ep:name>
                             <ep:seq>
                                 <xsl:apply-templates select="$not-pconstructs"/>
