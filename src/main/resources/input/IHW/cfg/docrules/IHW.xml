@@ -13,7 +13,7 @@
     <!--
         Where to show the explanation? (at-bottom or as-row)
     -->
-    <explanation-location>at-bottom</explanation-location>
+    <explanation-location>as-row</explanation-location>
     
     <!-- 
         Append the role name at end of the association name? 
@@ -43,7 +43,7 @@
     
     <!-- visibility of properties: show in accordance with configuration (@show) or compact: only the specified parts -->
     
-    <show-properties>config</show-properties> <!-- config, all, compact -->
+    <show-properties>compact</show-properties> <!-- config, all, compact -->
  
     <!-- 
         Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
