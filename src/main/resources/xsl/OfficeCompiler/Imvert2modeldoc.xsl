@@ -190,7 +190,7 @@
                             <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="detail"/>
                         </section>
                         <section type="DETAILS-CODELIST" include="{$include-detail-sections-by-type}">
-                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="detail"/>
+                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="content"/>
                         </section>
                         <section type="DETAILS-ENUMERATION" include="{$include-detail-sections-by-type}">
                             <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="content"/>
