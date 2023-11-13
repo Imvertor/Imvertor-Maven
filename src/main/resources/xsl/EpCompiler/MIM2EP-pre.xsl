@@ -27,8 +27,20 @@
     
     <xsl:variable name="relatierol-leidend" select="/mim:Informatiemodel/mim:relatiemodelleringtype = 'Relatierol leidend'"/>
     
+    <xsl:variable name="requirement-levels" select="('bp-basic-encodings','bp-by-reference-encodings','bp-code-list-encodings','bp-additional-requirements-classes')" as="xs:string+"/>
+    
     <xsl:template match="/">
-        <xsl:apply-templates mode="assoc-class"/>
+        
+        <xsl:variable name="bp-reqs" select="$configuration-jsonschemarules-file//parameter[@name = $requirement-levels]"/> 
+        <xsl:choose>
+            <xsl:when test="count($bp-reqs) eq 4">
+                <xsl:apply-templates mode="assoc-class"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg(.,'ERROR','Incomplete Json schema configuration, please supply alle of [1]',imf:string-group($requirement-levels))"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        
     </xsl:template>
     
     <xsl:template match="mim:Domein/mim:objecttypen" mode="assoc-class">
