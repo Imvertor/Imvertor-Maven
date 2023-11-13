@@ -33,6 +33,7 @@
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
                 <stereo minmax="0..1">stereotype-name-union</stereo>
                 <stereo minmax="1..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
         </tv>
         
@@ -49,6 +50,7 @@
                 <stereo minmax="0..1">stereotype-name-view-package</stereo>
                 <stereo minmax="0..1">stereotype-name-enumeration</stereo>
                 <stereo minmax="0..1">stereotype-name-enum</stereo>
+                <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
         </tv>
         
@@ -56,6 +58,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
         </tv>
         
@@ -63,11 +66,8 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
-        </tv>
-        
-        <tv id="CFG-TV-INDICATIONAUTHENTIC">
-            <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
         </tv>
         
         <tv id="CFG-TV-SOURCE">
@@ -83,6 +83,7 @@
                 <stereo minmax="1..1">stereotype-name-enumeration</stereo>
                 <stereo minmax="0..1">stereotype-name-enum</stereo>
                 <stereo minmax="1..1">stereotype-name-composite</stereo><!-- verplicht in 1.1.1 -->
+                <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
         </tv>
         
@@ -108,18 +109,21 @@
                 <stereo minmax="1..1">stereotype-name-composite</stereo>
                 <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
                 <stereo minmax="1..1">stereotype-name-relation-role</stereo>
+                <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
         </tv>
         
         <tv id="CFG-TV-VOIDABLE">
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
         </tv>    
         
         <tv id="CFG-TV-INDICATIONAUTHENTIC">
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
         </tv>    
         
