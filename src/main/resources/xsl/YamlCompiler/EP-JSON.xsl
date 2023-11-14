@@ -2299,12 +2299,12 @@
 				</xsl:variable>
 				<xsl:value-of select="',&quot;description&quot;: &quot;'"/>
 				<xsl:sequence select="$documentation"/>
-				<xsl:value-of select="'&quot;'"/>
+				<xsl:value-of select="'&quot;,'"/>
 				<xsl:if test="ep:min-occurs">
-					<xsl:value-of select="concat(',&quot;minItems&quot;: ',ep:min-occurs,',')"/>
+					<xsl:value-of select="concat('&quot;minItems&quot;: ',ep:min-occurs,',')"/>
 				</xsl:if>
 				<xsl:if test="ep:max-occurs != 'unbounded'">
-					<xsl:value-of select="concat(',&quot;maxItems&quot;: ',ep:max-occurs,',')"/>
+					<xsl:value-of select="concat('&quot;maxItems&quot;: ',ep:max-occurs,',')"/>
 				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:value-of select="concat('&quot;type&quot;: &quot;',$datatype,'&quot;')"/>
