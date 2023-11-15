@@ -1049,8 +1049,8 @@
             </xsl:when>
             <xsl:when test="starts-with($kardinaliteit, '1')">
               <!--
-          <xsl:sequence select="imf:message(., 'WARNING', 'Modelelement [1] of type [2] is missing required metadata [3]', ($modelelement-name, $modelelement-type, .))"/>
-          -->
+              <xsl:sequence select="imf:message(., 'WARNING', 'Modelelement [1] of type [2] is missing required metadata [3]', ($modelelement-name, $modelelement-type, .))"/>
+              -->
               <xsl:apply-templates select="$metagegeven" mode="missing-metadata"/>
             </xsl:when>
             <xsl:otherwise>
@@ -1203,7 +1203,7 @@
     <xsl:param name="tag-id" as="xs:string"/>
     <xsl:choose>
       <xsl:when test="$tag-id = ('CFG-TV-DEFINITION', 'CFG-TV-DESCRIPTION')">
-        <xsl:apply-templates select="for $v in imf:get-most-relevant-compiled-taggedvalue-element($context-node, '##' || $tag-id) return $v/*" mode="xhtml"/>
+        <xsl:apply-templates select="for $v in imf:get-most-relevant-compiled-taggedvalue-element($context-node, '##' || $tag-id) return $v/node()" mode="xhtml"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence select="for $v in imf:get-most-relevant-compiled-taggedvalue-element($context-node, '##' || $tag-id) return normalize-space(string-join($v//text(), ' '))"/>

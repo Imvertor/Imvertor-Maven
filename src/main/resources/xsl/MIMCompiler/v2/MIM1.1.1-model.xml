@@ -569,7 +569,7 @@
          <modelelement kardinaliteit="1">Relatierol - Relatierol leidend</modelelement>
          <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
          <modelelement kardinaliteit="0..1">Relatiesoort - Relatierol leidend</modelelement>
-         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
          <modelelement kardinaliteit="1">View</modelelement>
       </metagegeven>
       <metagegeven>
