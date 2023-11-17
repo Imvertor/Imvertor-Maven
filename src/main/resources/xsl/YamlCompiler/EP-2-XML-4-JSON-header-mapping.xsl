@@ -99,7 +99,7 @@
 					<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
 				</xsl:if>
 				<j:string key="version"><xsl:value-of select="ep:patch-number"/></j:string>
-				<j:string key="x-imvertor-generator-version"><xsl:value-of select="../ep:imvertor-generator-version"/></j:string>
+				<j:string key="x-imvertor-generator-version"><xsl:value-of select="/ep:message-sets/ep:parameters/ep:parameter[ep:name='imvertor-generator-version']/ep:value"/></j:string>
 				<j:string key="x-yamlCompiler-stylesheets-version"><xsl:value-of select="imf:get-config-parameter('yamlCompiler-stylesheets-version')"/></j:string>
 				<j:map key="contact">
 					<j:string key="url"><xsl:value-of select="/ep:message-sets/ep:parameters/ep:parameter[ep:name='project-url']/ep:value"/></j:string>
