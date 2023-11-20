@@ -107,6 +107,7 @@
         <xsl:variable name="name" select="@name"/>
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates select="section[@type = 'IMAGEMAPS']"/>
             <xsl:apply-templates select="content"/>
             <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[@type = 'DETAILS']/section[@name = $name]/section[@type = 'DETAIL-UNIONELEMENT']"/>
         </xsl:copy>
