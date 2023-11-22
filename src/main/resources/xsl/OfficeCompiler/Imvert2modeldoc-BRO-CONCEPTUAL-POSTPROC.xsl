@@ -492,7 +492,7 @@
                     <item>Organisatie</item>
                 </part>
             </xsl:when>
-            <xsl:when test="$item-text = ('IndicatieJaNee', 'Kwaliteitsregime')">   
+            <xsl:when test="$item-text = ('IndicatieJaNee', 'IndicatieJaNeeOnbekend', 'Kwaliteitsregime')">   
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item><xsl:value-of select="$item"/></item>
