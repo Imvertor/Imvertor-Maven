@@ -65,7 +65,7 @@
         /req/codelists-uri
         /req/codelists-link-object
     -->
-    <parameter name="bp-code-list-encodings">/req/union-type-discriminator</parameter>
+    <parameter name="bp-code-list-encodings">/req/codelists-literal</parameter>
     
     <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules
