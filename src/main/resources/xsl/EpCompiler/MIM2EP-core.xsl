@@ -34,6 +34,7 @@
     
     <xsl:variable name="bp-req-basic-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-basic-encodings']"/> 
     <xsl:variable name="bp-req-by-reference-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-by-reference-encodings']"/> 
+    <xsl:variable name="bp-req-union-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-union-encodings']"/> 
     <xsl:variable name="bp-req-code-list-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-code-list-encodings']"/> 
     <xsl:variable name="bp-req-additional-requirements-classes" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-additional-requirements-classes']"/> 
     
@@ -67,6 +68,7 @@
                     <xsl:sequence select="imf:set-parameter('json-id',imf:get-kenmerk(.,'json id'))"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-applies','yes')"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-basic-encodings',$bp-req-basic-encodings)"/>
+                    <xsl:sequence select="imf:set-parameter('bp-req-union-encodings',$bp-req-union-encodings)"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-by-reference-encodings',$bp-req-by-reference-encodings)"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-code-list-encodings',$bp-req-code-list-encodings)"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-additional-requirements-classes',$bp-req-additional-requirements-classes)"/>
@@ -255,9 +257,20 @@
     
     <xsl:template match="mim:keuzeDatatypen">
         <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze tussen datatypen',())"/>
-        <ep:choice>
-            <xsl:apply-templates select="mim:Datatype | mim-ref:DatatypeRef | mim-ext:ConstructieRef"/>
-        </ep:choice>
+        <xsl:variable name="by-type" select="$bp-req-union-encodings = '/req/union-type-discriminator'"/>
+        <xsl:choose>
+            <xsl:when test="$by-type">
+                <ep:choice>
+                    <xsl:apply-templates select="mim:Datatype | mim-ref:DatatypeRef | mim-ext:ConstructieRef"/>
+                </ep:choice>
+            </xsl:when>
+            <xsl:otherwise>
+                <ep:seq>
+                    <xsl:apply-templates select="mim:Datatype | mim-ref:DatatypeRef | mim-ext:ConstructieRef"/>
+                </ep:seq>
+            </xsl:otherwise>
+        </xsl:choose>
+        
     </xsl:template>
     
     <xsl:template match="mim:keuzeRelatiedoelen">

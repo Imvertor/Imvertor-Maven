@@ -31,36 +31,49 @@
     
     <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules
+        Clause 7.4
         options: 
         /req/plain
         /req/geojson
         /req/jsonfg
     -->
-    <parameter name="bp-basic-encodings">/req/plain</parameter><!-- Clause 7.4 -->
+    <parameter name="bp-basic-encodings">/req/plain</parameter>
     
     <!-- 
-        Best Practice for OGC - UML to JSON Encoding Rules
+        Best Practice for OGC - UML to JSON Encoding Rules 
+        Clause 7.8
         options: 
         /req/by-reference-uri
         /req/by-reference-link-object
     -->
-    <parameter name="bp-by-reference-encodings">/req/by-reference-link-object</parameter><!-- Clause 7.8.2 -->
+    <parameter name="bp-by-reference-encodings">/req/by-reference-link-object</parameter>
     
     <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules
+        Clause 7.9
+        options: 
+        /req/union-type-discriminator
+        /req/union-property-choice
+    -->
+    <parameter name="bp-union-encodings">/req/union-type-discriminator</parameter>
+
+    <!-- 
+        Best Practice for OGC - UML to JSON Encoding Rules
+        Clause 7.10
         options: 
         /req/codelists-literal
         /req/codelists-uri
         /req/codelists-link-object
     -->
-    <parameter name="bp-code-list-encodings">/req/codelists-literal</parameter><!-- Clause 7.10.2 -->
+    <parameter name="bp-code-list-encodings">/req/union-type-discriminator</parameter>
     
     <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules
+        Clause 7.11
         options: 
         /req/entitytype
         none (geen entity type)
     -->
-    <parameter name="bp-additional-requirements-classes">none</parameter><!-- Clause 7.11 -->    
+    <parameter name="bp-additional-requirements-classes">none</parameter>    
     
 </jsonschema-rules>

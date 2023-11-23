@@ -18,14 +18,13 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <jsonschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <xi:include href="../../../OGC/cfg/schemarules/JSON-OGC-plainjson.xml"/>
-    <xi:include href="JSON-geonovum.xml"/>
+    <name>Geonovum standard settings for Json schema's</name>
     
-    <name>Geonovum OGC Plain Json schema's</name>
+    <desc lang="nl">Standaard instellingen voor het verwerken van Geonovum MIM modellen tot JSON schema's</desc>
+    <desc lang="en">Standard settings for processing Geonovum MIM models to JSON schemas</desc>
     
-    <desc lang="nl">Regels voor het verwerken van Geonovum MIM modellen tot OGC Plain JSON schema's</desc>
-    <desc lang="en">Rules for processing Geonovum MIM models to OGC Plain JSON schemas</desc>
+    <parameter name="bp-additional-requirements-classes">/req/entitytype</parameter><!-- Clause 7.11 --> 
     
-    <!-- niet anders dan OGC standaard -->
+    <parameter name="bp-union-encodings">/req/union-property-choice</parameter>
     
 </jsonschema-rules>

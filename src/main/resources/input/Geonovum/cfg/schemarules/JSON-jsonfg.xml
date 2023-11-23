@@ -19,7 +19,8 @@
 -->
 <jsonschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <xi:include href="../../../OGC/cfg/schemarules/JSON-OGC-jsonfg.xml"/>
-
+    <xi:include href="JSON-geonovum.xml"/>
+    
     <name>Geonovum OGC JSON-FG schema's</name>
     
     <desc lang="nl">Regels voor het verwerken van Geonovum MIM modellen tot OGC JSON-FG schema's</desc>
