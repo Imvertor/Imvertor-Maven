@@ -171,7 +171,7 @@
     <!-- all display names of all properties -->
     <xsl:variable name="property-display-names" select="for $p in ($domain-package//imvert:attribute,$domain-package/imvert:association) return imf:get-display-name($p)"/>
     
-    <xsl:variable name="model-is-role-based" select="imf:get-tagged-value(/imvert:packages,'##CFG-TV-IMRELATIONMODELINGTYPE')"/>
+    <xsl:variable name="model-is-role-based" select="imf:get-tagged-value($application-package,'##CFG-TV-IMRELATIONMODELINGTYPE')"/>
     <xsl:variable name="meta-is-role-based" select="if (exists($model-is-role-based)) then ($model-is-role-based = 'Relatierol leidend') else imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/>
     
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
@@ -182,7 +182,10 @@
         Place rules here that focus on the complete specification rather than particular constructs. 
     -->
     <xsl:template match="/imvert:packages">
-        
+  
+        <xsl:sequence select="dlogger:save('$model-is-role-based',$model-is-role-based)"></xsl:sequence>
+        <xsl:sequence select="dlogger:save('$meta-is-role-based',$meta-is-role-based)"></xsl:sequence>
+      
         <!-- bewaarde de info dat het model rolgebaseerd is of niet -->
         <xsl:sequence select="imf:set-xparm('appinfo/meta-is-role-based',$meta-is-role-based)"/>
    
