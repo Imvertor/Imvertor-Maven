@@ -408,12 +408,13 @@
             Als die er niet is, dan geldt de DEFAULT wel (en een eventueel lokaal vastgestelde ppa)
         -->
         <xsl:variable name="requires-pia" select="$bp-req-basic-encodings = '/req/jsonfg'"/>
+        <xsl:variable name="requires-pva" select="$bp-req-basic-encodings = '/req/jsonfg'"/>
         
         <xsl:variable name="obj" select="if (imf:is-featuretype(../..)) then ../.. else ()"/>
         <xsl:variable name="pga" select="if ($obj) then if (imf:get-supers-with-pga($obj)) then () else imf:get-primary-geometry-attribute($obj) else ()"/>
         <xsl:variable name="ppa" select="if ($obj) then if (imf:get-supers-with-ppa($obj)) then () else imf:get-primary-place-attribute($obj) else ()"/>
         <xsl:variable name="pia" select="if ($obj and $requires-pia) then if (imf:get-supers-with-pia($obj)) then () else imf:get-primary-instant-attribute($obj) else ()"/>
-        <xsl:variable name="pva" select="if ($obj and $requires-pia) then if (imf:get-supers-with-pva($obj)) then () else imf:get-primary-interval-attribute($obj) else ()"/>
+        <xsl:variable name="pva" select="if ($obj and $requires-pva) then if (imf:get-supers-with-pva($obj)) then () else imf:get-primary-interval-attribute($obj) else ()"/>
         <xsl:variable name="unit" select="imf:get-kenmerk(.,'eenheid')"/>
         <xsl:variable name="is-gml-measure-type" select="lower-case(mim:naam) = ('measure', 'length', 'speed', 'angle', 'area', 'volume')"/>
         <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineorbyreference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
@@ -433,7 +434,15 @@
                 <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
                 <xsl:sequence select="imf:set-parameter('unit',$unit)"/><!-- wordt verwerkt in json stap. zie /req/core/iso19103-measure-types -->
             </ep:parameters>
-            <xsl:sequence select="imf:get-name(.)"/>
+            <ep:name>
+                <xsl:choose>
+                    <xsl:when test="mim:naam = $pga/mim:naam">geometry</xsl:when>
+                    <xsl:when test="mim:naam = $ppa/mim:naam">place</xsl:when>
+                    <xsl:when test="mim:naam = $pia/mim:naam">time</xsl:when>
+                    <xsl:when test="mim:naam = $pva/mim:naam">time</xsl:when>
+                    <xsl:otherwise>{imf:get-name(.)}</xsl:otherwise>
+                </xsl:choose>
+            </ep:name>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <ep:initial-value>
