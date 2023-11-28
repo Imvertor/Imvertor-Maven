@@ -183,9 +183,6 @@
     -->
     <xsl:template match="/imvert:packages">
   
-        <xsl:sequence select="dlogger:save('$model-is-role-based',$model-is-role-based)"></xsl:sequence>
-        <xsl:sequence select="dlogger:save('$meta-is-role-based',$meta-is-role-based)"></xsl:sequence>
-      
         <!-- bewaarde de info dat het model rolgebaseerd is of niet -->
         <xsl:sequence select="imf:set-xparm('appinfo/meta-is-role-based',$meta-is-role-based)"/>
    
