@@ -54,6 +54,7 @@
                 <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg') and imf:boolean(imf:get-ep-parameter(..,'is-pga'))">geometry</xsl:when>
                 <xsl:when test="$bp-req-basic-encodings = ('/req/jsonfg') and imf:boolean(imf:get-ep-parameter(..,'is-ppa'))">place</xsl:when>
                 <xsl:when test="$bp-req-basic-encodings = ('/req/jsonfg') and imf:boolean(imf:get-ep-parameter(..,'is-pia'))">time</xsl:when><!-- req. 28 -->
+                <xsl:when test="$bp-req-basic-encodings = ('/req/jsonfg') and imf:boolean(imf:get-ep-parameter(..,'is-pva'))">time</xsl:when>
                 <xsl:otherwise>{.}</xsl:otherwise>
             </xsl:choose>    
         </ep:name>
@@ -119,8 +120,8 @@
     <xsl:template match="ep:construct[imf:get-ep-parameter(.,'is-featuretype')]/ep:seq">
         <xsl:choose>
             <xsl:when test="$bp-req-basic-encodings = ('/req/geojson','/req/jsonfg')">
-                <xsl:variable name="not-pconstructs" select="ep:construct[not(imf:boolean(imf:get-ep-parameter(.,'is-pga')) or imf:boolean(imf:get-ep-parameter(.,'is-ppa')) or imf:boolean(imf:get-ep-parameter(.,'is-pia')))]"/>
-                <xsl:variable name="pconstructs" select="ep:construct[imf:boolean(imf:get-ep-parameter(.,'is-pga')) or imf:boolean(imf:get-ep-parameter(.,'is-ppa')) or imf:boolean(imf:get-ep-parameter(.,'is-pia'))]"/>
+                <xsl:variable name="not-pconstructs" select="ep:construct[not(imf:boolean(imf:get-ep-parameter(.,'is-pga')) or imf:boolean(imf:get-ep-parameter(.,'is-ppa')) or imf:boolean(imf:get-ep-parameter(.,'is-pia')) or imf:boolean(imf:get-ep-parameter(.,'is-pva')))]"/>
+                <xsl:variable name="pconstructs" select="ep:construct[imf:boolean(imf:get-ep-parameter(.,'is-pga')) or imf:boolean(imf:get-ep-parameter(.,'is-ppa')) or imf:boolean(imf:get-ep-parameter(.,'is-pia')) or imf:boolean(imf:get-ep-parameter(.,'is-pva'))]"/>
                 <ep:seq>
                     <xsl:apply-templates select="$pconstructs"/>
                     <xsl:if test="$not-pconstructs">

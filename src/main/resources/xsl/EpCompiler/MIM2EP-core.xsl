@@ -415,8 +415,7 @@
         <xsl:variable name="pga" select="if ($obj) then if (imf:get-supers-with-pga($obj)) then () else imf:get-primary-geometry-attribute($obj) else ()"/>
         <xsl:variable name="ppa" select="if ($obj) then if (imf:get-supers-with-ppa($obj)) then () else imf:get-primary-place-attribute($obj) else ()"/>
         <xsl:variable name="pia" select="if ($obj and $requires-pia) then if (imf:get-supers-with-pia($obj)) then () else imf:get-primary-instant-attribute($obj) else ()"/>
-        <xsl:variable name="pva" select="if ($obj and $requires-pva) then if (imf:get-supers-with-pva($obj)) then () else imf:get-primary-interval-attributes($obj) else ()"/>
-        <xsl:variable name="pva" select="()"/><!-- TODO https://github.com/Geonovum/shapeChangeTest/issues/27 -->
+        <xsl:variable name="pva" select="if ($obj and $requires-pva) then if (imf:get-supers-with-pva($obj)) then () else imf:get-primary-interval-attribute($obj) else ()"/>
         <xsl:variable name="unit" select="imf:get-kenmerk(.,'eenheid')"/>
         <xsl:variable name="is-gml-measure-type" select="lower-case(mim:naam) = ('measure', 'length', 'speed', 'angle', 'area', 'volume')"/>
         <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineOrByReference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
@@ -441,7 +440,7 @@
                     <xsl:when test="mim:naam = $pga/mim:naam">geometry</xsl:when>
                     <xsl:when test="mim:naam = $ppa/mim:naam">place</xsl:when>
                     <xsl:when test="mim:naam = $pia/mim:naam">time</xsl:when>
-                    <xsl:when test="mim:naam = $pva/mim:naam">time</xsl:when><!-- TODO https://github.com/Geonovum/shapeChangeTest/issues/27 -->
+                    <xsl:when test="mim:naam = $pva/mim:naam">time</xsl:when>
                     <xsl:otherwise>{imf:get-name(.)}</xsl:otherwise>
                 </xsl:choose>
             </ep:name>
@@ -992,7 +991,7 @@
         <xsl:sequence select="$att[1]"/>
     </xsl:function>
  
-    <xsl:function name="imf:get-primary-interval-attributes" as="element(mim:Attribuutsoort)*">
+    <xsl:function name="imf:get-primary-interval-attribute" as="element(mim:Attribuutsoort)*">
         <xsl:param name="this" as="element(mim:Objecttype)"/>
         <xsl:variable name="att" select="$this//mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'jsonPrimaryInterval'))]"/>
         <xsl:sequence select="$att"/>
