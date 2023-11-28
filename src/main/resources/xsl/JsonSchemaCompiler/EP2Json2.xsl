@@ -573,8 +573,12 @@
    <xsl:function name="imf:create-description" as="xs:string">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="text" as="xs:string*">
-            <xsl:for-each select="$this/ep:documentation[@type = 'definitie']/ep:text">
-                <xsl:value-of select="."/>           
+            <xsl:for-each select="$this/ep:documentation">
+                <xsl:choose>
+                    <xsl:when test="@type = 'definitie'">Definition: {ep:text}</xsl:when>
+                    <xsl:when test="@type = 'toelichting'">Description: {ep:text}</xsl:when>
+                    <xsl:when test="@type = 'patroon'">Pattern: {ep:text}</xsl:when>
+                </xsl:choose>           
             </xsl:for-each>
         </xsl:variable>
         <xsl:value-of select="normalize-space(string-join($text,'; '))"/>
