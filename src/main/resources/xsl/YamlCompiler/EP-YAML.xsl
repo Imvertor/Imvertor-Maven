@@ -78,7 +78,7 @@
 		<xsl:text>&#xa;  description: "</xsl:text> <xsl:apply-templates select="ep:documentation"><xsl:with-param name="description" select="'no'"/><xsl:with-param name="pattern" select="'no'"/></xsl:apply-templates><xsl:text>"</xsl:text>
 		<!--xsl:text>&#xa;  description: "</xsl:text> <xsl:value-of select="normalize-space(ep:documentation)"/><xsl:text>"</xsl:text-->
         <xsl:text>&#xa;  version: "</xsl:text><xsl:value-of select="ep:patch-number"/><xsl:text>"</xsl:text>
-		<xsl:text>&#xa;  x-imvertor-generator-version: "</xsl:text><xsl:value-of select="../ep:imvertor-generator-version"/><xsl:text>"</xsl:text>
+		<xsl:text>&#xa;  x-imvertor-generator-version: "</xsl:text><xsl:value-of select="/ep:message-sets/ep:parameters/ep:parameter[ep:name='imvertor-generator-version']/ep:value"/><xsl:text>"</xsl:text>
 		<xsl:text>&#xa;  x-yamlCompiler-stylesheets-version: "</xsl:text><xsl:value-of select="imf:get-config-parameter('yamlCompiler-stylesheets-version')"/><xsl:text>"</xsl:text>
 		<xsl:text>&#xa;  contact:</xsl:text>
 		<xsl:text>&#xa;    url: </xsl:text><xsl:value-of select="/ep:message-sets/ep:parameters/ep:parameter[ep:name='project-url']/ep:value"/>
