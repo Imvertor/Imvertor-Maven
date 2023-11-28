@@ -19,7 +19,10 @@
         elementFormDefault="qualified"
         version="3.0.8">
 
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="../../../../../opengis/bro_gml/src/main/resources/schema/gml-profile.xsd"/>
+    <!--
     <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd"/>
+    -->
 
     <annotation>
         <documentation>
@@ -57,7 +60,8 @@
                 - Added DeliveredGeometry and StandardizedGeometry element and propertyType
             Version:3.0.8
                 - changed layout
-                - changed StandardizedGeometryType: added gml:MultiGeometry
+                - Added gml:Polygon to DeliveredGeometryType 
+                - Added gml:MultiGeometry to StandardizedGeometryType: 
         </documentation>
     </annotation>
 
@@ -481,6 +485,7 @@
         <choice minOccurs="1" maxOccurs="1">
             <element ref="gml:Point"/>
             <element ref="gml:Curve"/>
+            <element ref="gml:Polygon"/>
             <element ref="gml:Surface"/>
             <element ref="gml:MultiSurface"/>
         </choice>
