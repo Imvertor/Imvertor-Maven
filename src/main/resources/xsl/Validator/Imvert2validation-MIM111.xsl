@@ -57,7 +57,7 @@
         
         <xsl:sequence select="imf:report-error(., 
             count($tv-primary-interval) eq 1 and not($tv-primary-interval = 'interval'), 
-            'Tagged value [1] on attribute has unexpected value. Use [2], [3] or [4]', 
+            'Tagged value [1] on attribute has unexpected value. Use [2], [3] or [4] in a valid combination of attributes', 
             (imf:get-config-name-by-id('CFG-TV-PRIMARYINTERVAL'),'interval','start','end'))"/>
         
         <xsl:next-match/>

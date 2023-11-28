@@ -379,9 +379,9 @@
                         </xsl:choose>
                     </xsl:when>
                
-                    <!-- de construct is een datatype dat een primair moment representeert -->
+                    <!-- de construct is een datatype dat een jsonPrimaryInstant representeert -->
                     <xsl:when test="ep:data-type and imf:get-ep-parameter(.,'is-pia') = 'true'">
-                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Datatype als primair moment [1]',$n)"/>
+                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Datatype als jsonPrimaryInstant [1]',$n)"/>
                         <xsl:sequence select="$header"/>
                         <xsl:choose>
                             <xsl:when test="ep:min-occurs = '0'">
@@ -395,7 +395,7 @@
                     
                     <!-- de construct is een datatype dat een primair interval representeert -->
                     <xsl:when test="ep:data-type and imf:get-ep-parameter(.,'is-pva') = 'true'">
-                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Datatype als primair interval [1]',$n)"/>
+                        <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Datatype als jsonPrimaryInterval [1]',$n)"/>
                         <xsl:sequence select="$header"/>
                         <xsl:choose>
                             <xsl:when test="ep:min-occurs = '0'">

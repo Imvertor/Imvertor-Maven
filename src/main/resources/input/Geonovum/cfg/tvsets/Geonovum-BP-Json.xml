@@ -11,9 +11,9 @@
     <tagged-values>
         
         <tv norm="space" id="CFG-TV-LITERALENCODINGTYPE">
-            <name lang="nl">Waarde codering type</name>
-            <name lang="en">Literal encoding type</name>
-            <desc lang="nl">TODO</desc>
+            <name lang="nl">literalEncodingType</name>
+            <name lang="en">literalEncodingType</name>
+            <desc lang="nl">De tagged value literalEncodingType identificeert het conceptuele type dat van toepassing is op de enumeratiewaarden. Als de waarde niet is ingesteld op de enumeratie, of een lege waarde heeft, wordt het coderingstype gedefinieerd als CharacterString.</desc>
             <desc lang="en">The tagged value literalEncodingType identifies the conceptual type that applies to the enumeration values. If the tagged value is not set on the enumeration, or has an empty value, then the literal encoding type is defined to be CharacterString.</desc>
             <derive>yes</derive>
             <stereotypes>
@@ -22,48 +22,65 @@
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-PRIMARYGEOMETRY">
-            <name lang="nl">Primaire geometrie</name>
-            <name lang="en">Primary geometry</name>
+            <name lang="nl">jsonPrimaryGeometry</name>
+            <name lang="en">jsonPrimaryGeometry</name>
             <desc lang="nl">Als een eigenschap deze tag heeft met een waarde gelijk aan "true", en de eigenschap is direct eigendom (d.w.z. niet geërfd) van een objecttype, dan wordt die eigenschap gecodeerd als de primaire geometrie van het objecttype.</desc>
             <desc lang="en">If a property has this tag with value equal to “true”, and the property is directly owned (i.e., not inherited) by an Objecttype, then that property shall be encoded as the primary geometry of the Object type.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">true</value>
+                <value>false</value>
+            </declared-values>
         </tv>
         <tv norm="space" id="CFG-TV-PRIMARYPLACE">
-            <name lang="nl">Primaire plaats</name>
-            <name lang="en">Primary place</name>
+            <name lang="nl">jsonPrimaryPlace</name>
+            <name lang="en">jsonPrimaryPlace</name>
             <desc lang="nl">Een eigenschap die eigendom is van een objecttype en die deze tag heeft met een waarde gelijk aan, hoofdlettergebruik negerend, "true", zal worden gecodeerd als een typebeperking voor het "place"-lid op het hoogste niveau. De UML-eigenschap wordt niet gecodeerd binnen het lid "properties".</desc>
             <desc lang="en">A property that is owned by an Objecttype and that has this tag with value equal to, ignoring case, “true”, shall be encoded as a type restriction for the top-level “place” member. The UML property shall not be encoded within the “properties” member.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">true</value>
+                <value>false</value>
+            </declared-values>
         </tv>
         <tv norm="space" id="CFG-TV-PRIMARYINSTANT">
-            <name lang="nl">Primair moment</name>
-            <name lang="en">Primary instant</name>
+            <name lang="nl">jsonPrimaryInstant</name>
+            <name lang="en">jsonPrimaryInstant</name>
             <desc lang="nl">TODO</desc>
             <desc lang="en">TODO</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">true</value>
+                <value>false</value>
+            </declared-values>
         </tv>
         <tv norm="space" id="CFG-TV-PRIMARYINTERVAL">
-            <name lang="nl">Primair interval</name>
-            <name lang="en">Primary interval</name>
+            <name lang="nl">jsonPrimaryInterval</name>
+            <name lang="en">jsonPrimaryInterval</name>
             <desc lang="nl">TODO</desc>
             <desc lang="en">TODO</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">interval</value>
+                <value>start</value>
+                <value>end</value>
+            </declared-values>
         </tv>
         <tv norm="space" id="CFG-TV-INLINEORBYREFERENCE">
-            <name lang="nl">InlineOrByReference</name>
-            <name lang="en">InlineOrByReference</name>
+            <name lang="nl">inlineOrByReference</name>
+            <name lang="en">inlineOrByReference</name>
             <desc lang="nl">TODO</desc>
             <desc lang="en">TODO</desc>
             <derive>no</derive>
