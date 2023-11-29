@@ -42,6 +42,8 @@
     
     <xsl:variable name="relatierol-leidend" select="/mim:Informatiemodel/mim:relatiemodelleringtype = 'Relatierol leidend'"/>
     
+    <xsl:variable name="annotation-element-names" select="tokenize($configuration-jsonschemarules-file//parameter[@name = 'json-schema-annotations'],'\s+')" as="xs:string*"/>
+    
     <xsl:template match="/">
    
        <xsl:variable name="step-1" as="element(ep:group)">
@@ -408,12 +410,14 @@
             Als die er is, dan geldt de default NIET. Maar wel een eventueel lokaal vastgestelde ppa.
             Als die er niet is, dan geldt de DEFAULT wel (en een eventueel lokaal vastgestelde ppa)
         -->
+        <xsl:variable name="requires-pga" select="$bp-req-basic-encodings = '/req/jsonfg'"/>
+        <xsl:variable name="requires-ppa" select="$bp-req-basic-encodings = '/req/jsonfg'"/>
         <xsl:variable name="requires-pia" select="$bp-req-basic-encodings = '/req/jsonfg'"/>
         <xsl:variable name="requires-pva" select="$bp-req-basic-encodings = '/req/jsonfg'"/>
         
         <xsl:variable name="obj" select="if (imf:is-featuretype(../..)) then ../.. else ()"/>
-        <xsl:variable name="pga" select="if ($obj) then if (imf:get-supers-with-pga($obj)) then () else imf:get-primary-geometry-attribute($obj) else ()"/>
-        <xsl:variable name="ppa" select="if ($obj) then if (imf:get-supers-with-ppa($obj)) then () else imf:get-primary-place-attribute($obj) else ()"/>
+        <xsl:variable name="pga" select="if ($obj and $requires-pga) then if (imf:get-supers-with-pga($obj)) then () else imf:get-primary-geometry-attribute($obj) else ()"/>
+        <xsl:variable name="ppa" select="if ($obj and $requires-ppa) then if (imf:get-supers-with-ppa($obj)) then () else imf:get-primary-place-attribute($obj) else ()"/>
         <xsl:variable name="pia" select="if ($obj and $requires-pia) then if (imf:get-supers-with-pia($obj)) then () else imf:get-primary-instant-attribute($obj) else ()"/>
         <xsl:variable name="pva" select="if ($obj and $requires-pva) then if (imf:get-supers-with-pva($obj)) then () else imf:get-primary-interval-attribute($obj) else ()"/>
         <xsl:variable name="unit" select="imf:get-kenmerk(.,'eenheid')"/>
@@ -749,25 +753,20 @@
         </ep:super>
     </xsl:function>
     
+    <!-- 
+        haal de waarde van het mim documentatie element binnen, bijv. mim:definitie, op basis van 'definitie' zoals geconfigureerd.
+    -->
     <xsl:function name="imf:get-documentation" as="element(ep:documentation)*">
         <xsl:param name="this"/>
-        <ep:documentation type="alias">
-            <ep:text>
-                <xsl:value-of select="imf:info($this)/mim:alias"/>
-            </ep:text>  
-        </ep:documentation>
-        <ep:documentation type="definitie">
-            <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:definitie)"/>  
-        </ep:documentation>
-        <ep:documentation type="toelichting">
-            <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:toelichting)"/>  
-        </ep:documentation>
-        <ep:documentation type="voorbeeld">
-            <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:voorbeeld)"/>  
-        </ep:documentation>
-        <ep:documentation type="patroon">
-            <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:patroon)"/>  
-        </ep:documentation>
+        <xsl:variable name="info" select="imf:info($this)"/>
+        <xsl:for-each select="$annotation-element-names">
+            <xsl:variable name="elm-name" select="."/>
+            <ep:documentation type="{$elm-name}">
+                <ep:text>
+                    <xsl:value-of select="$info/*[local-name() = $elm-name]"/>
+                </ep:text>  
+            </ep:documentation>
+        </xsl:for-each>
     </xsl:function>
     
     <xsl:function name="imf:get-data-location" as="element(ep:parameter)?">
