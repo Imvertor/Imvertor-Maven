@@ -711,6 +711,7 @@
                 <xsl:choose>
                     <xsl:when test="not($diagram-show-caption)">
                         <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+                        <xsl:sequence select="$map"/>
                     </xsl:when>
                     <xsl:when test="$diagram-encoding = 'figure'">
                         <figure>
