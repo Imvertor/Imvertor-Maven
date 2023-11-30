@@ -68,7 +68,7 @@
     <parameter name="bp-additional-requirements-classes">none</parameter>    
     
     <!-- 
-        note that /req/union-type-discriminator is not a generic parameter but is decided on by the MIM construct encountered 
+        note that /req/union-encodings is not a generic requirement but its value is selected by the MIM construct encountered 
         See https://github.com/Geonovum/shapeChangeTest/issues/51
     -->
     
