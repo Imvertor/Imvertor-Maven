@@ -294,7 +294,7 @@
     </xsl:template>
     
     <xsl:template match="mim:keuzen/mim-ref:KeuzeRef">
-        <xsl:sequence select="imf:msg-comment(.,'WARNING','Json schema cannot represent a choice between properties, please adapt your model',())"/>
+        <xsl:sequence select="imf:msg-comment(.,'WARNING','The JSON Schema conversion does not fully support the concept of a choice between properties yet. Please check [1]',(@label))"/>
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een pseudo-attribuut dat een keuze tussen attribuutsoorten representeert',())"/>
             <ep:parameters>
