@@ -29,7 +29,7 @@
     
     <xsl:variable name="relatierol-leidend" select="/mim:Informatiemodel/mim:relatiemodelleringtype = 'Relatierol leidend'"/>
     
-    <xsl:variable name="requirement-levels" select="('bp-basic-encodings','bp-by-reference-encodings','bp-code-list-encodings','bp-union-encodings','bp-additional-requirements-classes')" as="xs:string+"/>
+    <xsl:variable name="requirement-levels" select="('bp-basic-encodings','bp-by-reference-encodings','bp-code-list-encodings','bp-additional-requirements-classes')" as="xs:string+"/>
     
     <xsl:variable name="bp-req-basic-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-basic-encodings']"/> 
     
@@ -37,11 +37,11 @@
         
         <xsl:variable name="bp-reqs" select="$configuration-jsonschemarules-file//parameter[@name = $requirement-levels]"/> 
         <xsl:choose>
-            <xsl:when test="count($bp-reqs) eq 5">
+            <xsl:when test="count($bp-reqs) eq 4">
                 <xsl:apply-templates/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:msg(.,'ERROR','Incomplete Json schema configuration, please supply alle of [1]',imf:string-group($requirement-levels))"/>
+                <xsl:sequence select="imf:msg(.,'ERROR','Incomplete Json schema configuration, please supply all of [1]',imf:string-group($requirement-levels))"/>
             </xsl:otherwise>
         </xsl:choose>
         
