@@ -32,7 +32,6 @@
     <xsl:variable name="bp-req-applies" select="imf:boolean(imf:get-ep-parameter(/ep:group,'bp-req-applies'))" as="xs:boolean"/>
     <xsl:variable name="bp-req-basic-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-basic-encodings')"/>
     <xsl:variable name="bp-req-by-reference-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-by-reference-encodings')"/>
-    <xsl:variable name="bp-req-union-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-union-encodings')"/> 
     <xsl:variable name="bp-req-code-list-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-code-list-encodings')"/>
     <xsl:variable name="bp-req-additional-requirements-classes" select="imf:get-ep-parameter(/ep:group,'bp-req-additional-requirements-classes')"/>
     
@@ -68,7 +67,6 @@
                     <j:array key="$reqs">
                         <j:string>{imf:get-ep-parameter(.,'bp-req-basic-encodings')}</j:string>
                         <j:string>{imf:get-ep-parameter(.,'bp-req-by-reference-encodings')}</j:string>
-                        <j:string>{imf:get-ep-parameter(.,'bp-req-union-encodings')}</j:string>
                         <j:string>{imf:get-ep-parameter(.,'bp-req-code-list-encodings')}</j:string>
                         <j:string>{imf:get-ep-parameter(.,'bp-req-additional-requirements-classes')}</j:string>
                     </j:array>
@@ -229,7 +227,7 @@
                                 </xsl:apply-templates>
                             </j:map>
                             <xsl:choose>
-                                <xsl:when test="(imf:get-ep-parameter(.,'use') eq 'keuze') and ($bp-req-union-encodings = '/req/union-property-choice')">
+                                <xsl:when test="(imf:get-ep-parameter(.,'use') eq 'keuze')">
                                     <xsl:sequence select="imf:ep-to-namevaluepair('additionalProperties',false())"/>
                                     <xsl:sequence select="imf:ep-to-namevaluepair('minProperties',1)"/>
                                     <xsl:sequence select="imf:ep-to-namevaluepair('maxProperties',1)"/>

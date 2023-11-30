@@ -50,15 +50,6 @@
     
     <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules
-        Clause 7.9
-        options: 
-        /req/union-type-discriminator
-        /req/union-property-choice
-    -->
-    <parameter name="bp-union-encodings">/req/union-type-discriminator</parameter>
-
-    <!-- 
-        Best Practice for OGC - UML to JSON Encoding Rules
         Clause 7.10
         options: 
         /req/codelists-literal
@@ -75,5 +66,10 @@
         none (geen entity type)
     -->
     <parameter name="bp-additional-requirements-classes">none</parameter>    
+    
+    <!-- 
+        note that /req/union-type-discriminator is not a generic parameter but is decided on by the MIM construct encountered 
+        See https://github.com/Geonovum/shapeChangeTest/issues/51
+    -->
     
 </jsonschema-rules>

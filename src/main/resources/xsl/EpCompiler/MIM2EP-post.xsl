@@ -22,7 +22,6 @@
 
     <xsl:variable name="bp-req-basic-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-basic-encodings')"/>
     <xsl:variable name="bp-req-by-reference-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-by-reference-encodings')"/>
-    <xsl:variable name="bp-req-union-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-union-encodings')"/> 
     <xsl:variable name="bp-req-code-list-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-code-list-encodings')"/>
     <xsl:variable name="bp-req-additional-requirements-classes" select="imf:get-ep-parameter(/ep:group,'bp-req-additional-requirements-classes')"/>
     
@@ -63,10 +62,11 @@
     <xsl:template match="ep:ref">
         
         <xsl:variable name="has-identity" select="imf:get-ep-parameter(..,'use') = ('objecttyperef')"/>
+        <xsl:variable name="is-choice" select="imf:get-ep-parameter(..,'use') = ('keuzeref')"/><!-- keuze tussen objecttypen in relatie -->
         
         <!-- haal de waarde van de tagged value op het element, of de default, Voor relaties (met identity), een niveau hoger. -->
         <xsl:variable name="ibr" select="
-            if ($has-identity) 
+            if ($has-identity or $is-choice) 
             then imf:get-ep-parameter(../../..,'inlineorbyreference')
             else imf:get-ep-parameter(..,'inlineorbyreference')"/>
           
@@ -111,7 +111,7 @@
                 <xsl:comment>Unknown ref requirement for {$bp-req-by-reference-encodings}</xsl:comment>
             </xsl:otherwise>
         </xsl:choose>
-        
+       
     </xsl:template>
     
     <!-- 
@@ -136,6 +136,26 @@
                         </ep:construct>
                     </xsl:if>
                 </ep:seq>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <!-- 
+        Wanneer meerdere keuze objecten, en effectief alle by reference, dan deze terugbrengen tot één keuzeobject. 
+        Check https://github.com/Geonovum/shapeChangeTest/issues/52 
+    -->
+    <xsl:template match="ep:construct[imf:get-ep-parameter(.,'use') = 'keuze']">
+        <xsl:sequence select="dlogger:save('keuze',.)"></xsl:sequence>
+        <xsl:choose>
+            <xsl:when test="$bp-req-by-reference-encodings = '/req/by-reference-link-object'">
+                <!-- breng construct terug tot een sequence van één target object -->
+                <ep:construct>
+                    <xsl:sequence select="*[empty(self::ep:choice)]"/>
+                    <xsl:apply-templates select="ep:choice/ep:construct[1]/ep:ref"/>
+                </ep:construct>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:next-match/>

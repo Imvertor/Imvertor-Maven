@@ -34,7 +34,6 @@
     
     <xsl:variable name="bp-req-basic-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-basic-encodings']"/> 
     <xsl:variable name="bp-req-by-reference-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-by-reference-encodings']"/> 
-    <xsl:variable name="bp-req-union-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-union-encodings']"/> 
     <xsl:variable name="bp-req-code-list-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-code-list-encodings']"/> 
     <xsl:variable name="bp-req-additional-requirements-classes" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-additional-requirements-classes']"/> 
     
@@ -70,7 +69,6 @@
                     <xsl:sequence select="imf:set-parameter('json-id',imf:get-kenmerk(.,'json id'))"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-applies','yes')"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-basic-encodings',$bp-req-basic-encodings)"/>
-                    <xsl:sequence select="imf:set-parameter('bp-req-union-encodings',$bp-req-union-encodings)"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-by-reference-encodings',$bp-req-by-reference-encodings)"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-code-list-encodings',$bp-req-code-list-encodings)"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-additional-requirements-classes',$bp-req-additional-requirements-classes)"/>
@@ -233,10 +231,12 @@
     </xsl:template>
     
     <xsl:template match="mim:ExterneKoppeling">
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineOrByReference'),'byReference')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Externe koppeling',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-common-parameters(.,'externekoppeling')"/>
+                <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -245,11 +245,13 @@
     </xsl:template>
     
     <xsl:template match="mim:Keuze">
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineOrByReference'),'byreference')[1]"/><!-- we nemen aan dat in keuze objecten de referentie by default op referentie is gebaseerd NB je kunt die niet specificeren op de keuze-relaties -->
         <ep:construct>
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-common-parameters(.,'keuze')"/>
+                <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -259,34 +261,36 @@
     
     <xsl:template match="mim:keuzeDatatypen">
         <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze tussen datatypen',())"/>
-        <xsl:variable name="by-type" select="$bp-req-union-encodings = '/req/union-type-discriminator'"/>
-        <xsl:choose>
-            <xsl:when test="$by-type">
-                <ep:choice>
-                    <xsl:apply-templates select="mim:Datatype | mim-ref:DatatypeRef | mim-ext:ConstructieRef"/>
-                </ep:choice>
-            </xsl:when>
-            <xsl:otherwise>
-                <ep:seq>
-                    <xsl:apply-templates select="mim:Datatype | mim-ref:DatatypeRef | mim-ext:ConstructieRef"/>
-                </ep:seq>
-            </xsl:otherwise>
-        </xsl:choose>
-        
+        <ep:choice>
+            <xsl:apply-templates select="mim:Datatype | mim-ref:DatatypeRef | mim-ext:ConstructieRef"/>
+        </ep:choice>
     </xsl:template>
     
+    <!-- 
+        Wanneer meerdere keuze objecten, en effectief alle by reference, dan deze terugbrengen tot één keuzeobject. 
+        Check https://github.com/Geonovum/shapeChangeTest/issues/52 
+    -->
     <xsl:template match="mim:keuzeRelatiedoelen">
-        <ep:choice>
-            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze tussen objecttypen / relatiedoelen',())"/>
-            <xsl:apply-templates select="mim:Relatiedoel/mim-ref:ObjecttypeRef"/>
-        </ep:choice>
+        <xsl:choose>
+            <xsl:when test="$bp-req-by-reference-encodings = '/req/by-reference-link-object'">
+                <!-- breng construct terug tot een sequence van één target object -->
+                <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze tussen objecttypen / relatiedoelen teruggebracht tot één',())"/>
+                <ep:ref href="/known/linkobject">LinkObject</ep:ref>
+            </xsl:when>
+            <xsl:otherwise>
+                <ep:choice>
+                    <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze tussen objecttypen / relatiedoelen',())"/>
+                    <xsl:apply-templates select="mim:Relatiedoel/mim-ref:ObjecttypeRef"/>
+                </ep:choice>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="mim:keuzeAttributen">
-        <ep:choice>
+        <ep:seq>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze tussen Attribuutsoorten',())"/>
             <xsl:apply-templates select="mim:Attribuutsoort"/>
-        </ep:choice>
+        </ep:seq>
     </xsl:template>
     
     <xsl:template match="mim:keuzen/mim-ref:KeuzeRef">
@@ -332,6 +336,11 @@
             <xsl:variable name="type" select="lower-case(imf:get-kenmerk(.,'literalEncodingType'))"/>
             <xsl:variable name="jtype" select="if ($type = ('real','number')) then 'ep:number' else if ($type = ('integer')) then 'ep:integer' else 'ep:string'"/>
             <ep:data-type>{$jtype}</ep:data-type>
+       
+            <!-- https://github.com/Geonovum/shapeChangeTest/issues/53 -->
+            <xsl:variable name="supers" select="imf:get-mim-superclasses(.)"/>
+            <xsl:apply-templates select="$supers/mim:waarden/mim:Waarde"/>
+            
             <xsl:apply-templates select="mim:waarden/mim:Waarde"/>
         </ep:construct>
     </xsl:template>
