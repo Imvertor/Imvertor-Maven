@@ -70,6 +70,8 @@
     
     <xsl:variable name="has-imbroa" select="//imvert:attribute/imvert:stereotype/@id = 'stereotype-name-imbroa'"/>
     
+    <xsl:variable name="gegevensgroep-attribute-container" select="($configuration-docrules-file/gegevensgroep-attribute-container,'object')[1]"/>
+    
     <xsl:template match="/imvert:packages">
         <xsl:sequence select="imf:track('Generating modeldoc',())"/>
         
@@ -776,11 +778,10 @@
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
         <xsl:variable name="naam" select="imf:get-name($construct,true())"/>
+        
+        <xsl:variable name="is-gegevensgroep" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')"/>
+        <xsl:variable name="in-gegevensgroeptype" select="ancestor::class[imvert:stereotype/@id = ('stereotype-name-composite')]"/>
         <xsl:choose>
-            <xsl:when test="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')">
-                <xsl:apply-templates select="." mode="detail-gegevensgroeptype"/>
-                <xsl:apply-templates select="$defining-class" mode="detail"/>
-            </xsl:when>
             <xsl:when test="imvert:stereotype/@id = ('stereotype-name-referentie-element')">
                 <xsl:apply-templates select="." mode="detail-referentie-element"/>
             </xsl:when>
@@ -792,6 +793,18 @@
             </xsl:when>
             <xsl:when test="imvert:stereotype/@id = ('stereotype-name-data-element')">
                 <xsl:apply-templates select="." mode="detail-dataelement"/>
+            </xsl:when>
+            <xsl:when test="$is-gegevensgroep">
+                <xsl:apply-templates select="." mode="detail-gegevensgroeptype"/>
+                <xsl:choose>
+                    <xsl:when test="$in-gegevensgroeptype and ($gegevensgroep-attribute-container = ('group','both'))">
+                        <xsl:apply-templates select="$defining-class" mode="detail"/>
+                    </xsl:when>
+                    <xsl:when test="not($in-gegevensgroeptype) and ($gegevensgroep-attribute-container = ('object','both'))">
+                        <xsl:apply-templates select="$defining-class" mode="detail"/>
+                    </xsl:when>
+                    <!-- anders niet weergeven -->
+                </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates select="." mode="detail-normal"/>
