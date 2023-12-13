@@ -1415,4 +1415,14 @@
         </xsl:choose>
     </xsl:function>
   
+    <xsl:function name="imf:find-duplicate-strings" as="xs:string*">
+        <xsl:param name="seq" as="xs:string*" />
+        
+        <!-- Use fn:distinct-values to get unique values -->
+        <xsl:variable name="distinct-values" select="distinct-values($seq)" />
+        
+        <!-- Filter out unique values by comparing counts -->
+        <xsl:sequence select="for $value in $distinct-values return if (count($seq[. = $value]) gt 1) then $value else ()"/>
+        
+    </xsl:function>
 </xsl:stylesheet>

@@ -127,6 +127,22 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <xsl:template match="imvert:class" priority="20">
+
+        <xsl:variable name="properties" select="(
+            imvert:attributes/imvert:attribute,
+            imvert:associations/imvert:association,
+            imvert:associations/imvert:association/imvert:target/imvert:role
+        )"/>
+        <xsl:variable name="properties-dups" select="imf:find-duplicate-strings($properties/imvert:name/@original)"/>
+        
+        <xsl:sequence select="imf:report-validation(., 
+            exists($properties-dups), 
+            $context-signaltype,
+            'Several properties with same name found: [1]', imf:string-group($properties-dups))"/>
+        
+        <xsl:next-match/>
+    </xsl:template>     
     
     <!-- 
         other validation that is required for the immediate XMI translation result. 
