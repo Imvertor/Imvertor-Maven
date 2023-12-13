@@ -111,7 +111,7 @@
   <xsl:template match="/">
     <xsl:choose>
       <xsl:when test="empty($mim-version)">
-        <xsl:sequence select="imf:message(., 'ERROR', 'MIM serialisation requested on an model is not MIM compliant. No [1] found.', (imf:get-config-name-by-id('CFG-TV-MIMVERSION')))"/>
+        <xsl:sequence select="imf:message(., 'ERROR', 'MIM serialisation requested on a model that is not MIM compliant. No [1] found.', (imf:get-config-name-by-id('CFG-TV-MIMVERSION')))"/>
       </xsl:when>
       <xsl:when test="$native-scalars and $mim11-package-found">
         <xsl:sequence select="imf:message(., 'ERROR', 'Attempt to use native scalars while MIM package is available. Please set [1] to [2].', ('nativescalars','no'))"/>
