@@ -427,11 +427,12 @@
     
     <xsl:template match="imvert:attribute" mode="short">
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
+        <xsl:variable name="global-or-detail" select="if ($type/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')) then 'detail' else 'global'"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/428 -->
        <part>
            <xsl:sequence select="imf:calculate-node-position(.)"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/> 
            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
-           <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-splice(imvert:baretype)))"/>
+           <xsl:sequence select="imf:create-element('item',imf:create-link($type,$global-or-detail,imf:plugin-splice(imvert:baretype)))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
        </part>
     </xsl:template>
