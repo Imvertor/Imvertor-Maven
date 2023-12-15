@@ -18,14 +18,19 @@
     >
     
     <!-- 
-       Deze stylesheet wwrkt op MIM serialisatie formaat en produceert MIM.
-       
-       Eerste stap:      
+         Deze stylesheet wwrkt op MIM serialisatie formaat en produceert MIM.
+           
+         Dit is een eerste stap in een proces.
+          
          - Omzetten van associatieklassen naar gewone objecttypen, zie https://geonovum.github.io/uml2json/document.html#toc40
          - Verwijderen van tweede jsonPrimaryInterval attribuut
+         - Copy-down van enumeratiewaarden in overerving
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-MIM.xsl"/>
+    
+    <xsl:variable name="mim-document" select="/"/>
     
     <xsl:variable name="relatierol-leidend" select="/mim:Informatiemodel/mim:relatiemodelleringtype = 'Relatierol leidend'"/>
     
@@ -121,10 +126,26 @@
         </xsl:choose>
     </xsl:template>
     
+    <!-- 
+         https://github.com/Geonovum/shapeChangeTest/issues/53
+         
+         Kopieer de enumeratieve waarden naar subtype.
+    -->
+    <xsl:template match="mim:Enumeratie">
+        <xsl:variable name="supers" select="imf:get-mim-supertypes(.)"/>
+        <xsl:copy>
+            <xsl:copy-of select="*[not(local-name() = 'waarden')]"/>
+            <mim:waarden>
+                <xsl:sequence select="($supers,.)/mim:waarden/mim:Waarde"/>
+            </mim:waarden>
+        </xsl:copy>
+    </xsl:template>
+    
     <xsl:template match="node() | @*">
         <xsl:copy>
             <xsl:apply-templates select="node() | @*"/>
         </xsl:copy>
     </xsl:template>
     
+
 </xsl:stylesheet>
