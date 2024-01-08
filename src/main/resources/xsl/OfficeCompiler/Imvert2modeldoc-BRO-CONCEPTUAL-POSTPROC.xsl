@@ -119,6 +119,7 @@
                 <item>Keuze</item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-DEFINITIE']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>
         </content>
     </xsl:template>
