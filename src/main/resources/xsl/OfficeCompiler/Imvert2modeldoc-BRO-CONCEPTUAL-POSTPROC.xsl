@@ -46,12 +46,12 @@
                 <xsl:variable name="sections" as="element()*">
                     <xsl:apply-templates select="section[@type = 'OVERVIEW-OBJECTTYPE']/section[@type = 'OBJECTTYPE' and not(@name = 'Registratieobject')]"/>
                     <xsl:apply-templates select=".//section[@type = 'DETAIL-COMPOSITE']"/> <!-- omgezet naar objecttypen -->
+                    <xsl:apply-templates select="section[@type = 'OVERVIEW-UNION']/section[@type = 'UNION']"/>
                 </xsl:variable>
                 <xsl:for-each select="$sections">
                     <xsl:sort select="@position" order="ascending" data-type="number"/>
                     <xsl:sequence select="."/>
                 </xsl:for-each>
-                <xsl:apply-templates select="section[@type = 'OVERVIEW-UNION']/section[@type = 'UNION']"/>
             </section>
             <section type="SPECIAL-LISTS">
                 <!-- minder kopjes lijsten -->
