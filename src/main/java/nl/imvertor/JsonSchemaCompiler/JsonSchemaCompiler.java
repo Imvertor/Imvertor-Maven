@@ -115,8 +115,8 @@ public class JsonSchemaCompiler extends Step {
 			jsonFile.toYaml(yamlFile);
 			
 			// copy to the app folder
-			String schemaNameTv  = configurator.getXParm("appinfo/json-document-name");
-			String schemaNameCli = configurator.mergeParms(configurator.getXParm("cli/jsonschemaname"));
+			String schemaNameTv  = configurator.getXParm("appinfo/json-document-name",false);
+			String schemaNameCli = configurator.mergeParms(configurator.getXParm("cli/jsonschemaname",true));
 			String schemaName = (schemaNameTv == null || schemaNameTv.matches("^\s*$")) ? schemaNameCli : schemaNameTv;
 			
 			 // normaliseerd deze naam; volg BP Json conventies
