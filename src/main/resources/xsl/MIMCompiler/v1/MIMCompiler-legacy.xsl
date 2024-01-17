@@ -162,12 +162,12 @@
           <mim:informatiedomein>{imf:tagged-values-not-traced(., 'CFG-TV-IMDOMAIN')}</mim:informatiedomein>
           <mim:informatiemodeltype>{imf:tagged-values-not-traced(., 'CFG-TV-IMTYPE')}</mim:informatiemodeltype>
           <mim:relatiemodelleringtype>{imf:tagged-values-not-traced(., 'CFG-TV-IMRELATIONMODELINGTYPE')}</mim:relatiemodelleringtype>
-          <mim:mIMVersie>{imf:tagged-values-not-traced(., 'CFG-TV-MIMVERSION')}</mim:mIMVersie>
+          <mim:MIMVersie>{imf:tagged-values-not-traced(., 'CFG-TV-MIMVERSION')}</mim:MIMVersie>
           <xsl:where-populated>
-            <mim:mIMExtensie>{imf:tagged-values-not-traced(., 'CFG-TV-MIMEXTENSION')}</mim:mIMExtensie>    
+            <mim:MIMExtensie>{imf:tagged-values-not-traced(., 'CFG-TV-MIMEXTENSION')}</mim:MIMExtensie>    
           </xsl:where-populated>
           <xsl:where-populated>
-            <mim:mIMTaal>{imf:tagged-values-not-traced(., 'CFG-TV-MIMLANGUAGE')}</mim:mIMTaal>  
+            <mim:MIMTaal>{imf:tagged-values-not-traced(., 'CFG-TV-MIMLANGUAGE')}</mim:MIMTaal>  
           </xsl:where-populated>
           <xsl:where-populated>
             <mim:bevat>
