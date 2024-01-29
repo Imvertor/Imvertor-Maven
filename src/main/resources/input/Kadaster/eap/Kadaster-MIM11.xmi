@@ -1132,7 +1132,6 @@
 								<UML:TaggedValue tag="tagged" value="0"/>
 								<UML:TaggedValue tag="package_name" value="MIM11 Primitieve datatypen"/>
 								<UML:TaggedValue tag="phase" value="1.0"/>
-								<UML:TaggedValue tag="alias" value="Vlak"/>
 								<UML:TaggedValue tag="author" value="Wilko Quak"/>
 								<UML:TaggedValue tag="complexity" value="1"/>
 								<UML:TaggedValue tag="stereotype" value="interface"/>
