@@ -26,6 +26,21 @@
     <desc lang="nl">Regels voor het verwerken van Kadaster MIM modellen tot OGC JSON schema's</desc>
     <desc lang="en">Rules for processing Kadaster MIM models to OGC JSON schemas</desc>
     
-    <!-- niet anders dan OGC standaard -->
+    <!-- aanpassingen op de OGC standaard: -->
+    
+    <parameter name="bp-additional-requirements-classes"><!--/req/entitytype-->none</parameter><!-- Clause 7.11 --> 
+    
+    <parameter name="json-schema-annotations">definitie begrip<!-- alias definitie toelichting voorbeeld patroon begrip --></parameter><!-- mim element namen! -->
+    
+    <!-- 
+        MIM requirement
+        
+        Moeten referentielijsten worden opgenomen als een enkele waarde (zo mogelijk op basis van het is-id attribuut) of als een lijst van waarden, één per data element? 
+        
+        options: 
+        single
+        multiple
+    -->
+    <parameter name="mim-referentielijst-waarde">single</parameter>
     
 </jsonschema-rules>
