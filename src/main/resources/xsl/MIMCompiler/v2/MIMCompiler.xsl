@@ -371,7 +371,7 @@
     <xsl:where-populated>
       <mim:relatierollen>
         <xsl:where-populated>
-          <xsl:if test="imvert:source/imvert:name">
+          <xsl:if test="imvert:source/(imvert:name | imvert:role)">
             <mim:Bron>
               <xsl:sequence select="imf:generate-id-attr(imvert:source/imvert:id, false())"/>
               <xsl:for-each select="imvert:source">
@@ -385,7 +385,7 @@
           </xsl:if>
         </xsl:where-populated>
         <xsl:where-populated>
-          <xsl:if test="imvert:target/imvert:name">
+          <xsl:if test="imvert:target/(imvert:name | imvert:role)">
             <mim:Doel>
               <xsl:sequence select="imf:generate-id-attr(imvert:target/imvert:id, false())"/>
               <xsl:for-each select="imvert:target">
