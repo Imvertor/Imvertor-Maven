@@ -134,6 +134,7 @@
     <xsl:template match="mim:Enumeratie">
         <xsl:variable name="supers" select="imf:get-mim-supertypes(.)"/>
         <xsl:copy>
+            <xsl:copy-of select="@*"/>
             <xsl:copy-of select="*[not(local-name() = 'waarden')]"/>
             <mim:waarden>
                 <xsl:sequence select="($supers,.)/mim:waarden/mim:Waarde"/>
