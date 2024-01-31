@@ -371,8 +371,9 @@
     <xsl:where-populated>
       <mim:relatierollen>
         <xsl:where-populated>
+          <xsl:if test="imvert:source/imvert:name">
             <mim:Bron>
-              <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
+              <xsl:sequence select="imf:generate-id-attr(imvert:source/imvert:id, false())"/>
               <xsl:for-each select="imvert:source">
                 <xsl:call-template name="genereer-metagegevens">
                   <xsl:with-param name="modelelement-type" select="$rol-type" as="xs:string"/>
@@ -380,11 +381,13 @@
                 </xsl:call-template>  
                 <xsl:call-template name="extensieKenmerken"/>
               </xsl:for-each>  
-            </mim:Bron>  
+            </mim:Bron> 
+          </xsl:if>
         </xsl:where-populated>
         <xsl:where-populated>
+          <xsl:if test="imvert:target/imvert:name">
             <mim:Doel>
-              <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
+              <xsl:sequence select="imf:generate-id-attr(imvert:target/imvert:id, false())"/>
               <xsl:for-each select="imvert:target">
                 <xsl:call-template name="genereer-metagegevens">
                   <xsl:with-param name="modelelement-type" select="$rol-type" as="xs:string"/>
@@ -393,6 +396,7 @@
                 <xsl:call-template name="extensieKenmerken"/>
               </xsl:for-each>
             </mim:Doel>  
+          </xsl:if>
         </xsl:where-populated>
       </mim:relatierollen>
     </xsl:where-populated>
