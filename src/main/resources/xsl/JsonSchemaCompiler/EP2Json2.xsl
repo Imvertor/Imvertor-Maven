@@ -249,9 +249,11 @@
                         <xsl:choose>
                             <xsl:when test="exists($super)">
                                 <j:array key="allOf">
-                                    <j:map>
-                                        <xsl:sequence select="imf:get-type-ref-by-id($super)"/>
-                                    </j:map>
+                                    <xsl:for-each select="$super">
+                                        <j:map>
+                                            <xsl:sequence select="imf:get-type-ref-by-id(.)"/>
+                                        </j:map>
+                                    </xsl:for-each>
                                     <j:map>
                                         <xsl:sequence select="$body"/>
                                     </j:map>
