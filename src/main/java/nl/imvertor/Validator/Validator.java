@@ -77,8 +77,8 @@ public class Validator extends Step {
 		// first step has no sequence number.
 		int i = 1;
 		while (true) {
-			String xslname = "IMVERTOR_METAMODEL_" + mm + "_CANONICAL_XSLPATH" + ((i == 1) ? "" : ("_" + i));
-			String outname = "WORK_BASE_METAMODEL_FILE" + ((i == 1) ? "" : ("_" + i));
+			String xslname = "IMVERTOR_METAMODEL_" + mm + "_CANONICAL_XSLPATH_" + i;
+			String outname = "WORK_BASE_METAMODEL_FILE_" + i;
 			if (configurator.getParm("properties", xslname, false) != null) {
 				// curpath is "properties/WORK_BASE_FILE", 
 				succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/" + outname, "properties/" + xslname, "system/cur-imvertor-filepath") : false ;
@@ -101,8 +101,8 @@ public class Validator extends Step {
 			// VALIDATION IN STEPS
 			int j = 1;
 			while (true) {
-				String xslname = "IMVERTOR_METAMODEL_" + mm + "_VALIDATE_XSLPATH" + ((j == 1) ? "" : ("_" + j));
-				String outname = "WORK_VALIDATE_FILE" + ((j == 1) ? "" : ("_" + j));
+				String xslname = "IMVERTOR_METAMODEL_" + mm + "_VALIDATE_XSLPATH_" + j;
+				String outname = "WORK_VALIDATE_FILE_" + j;
 				if (configurator.getParm("properties", xslname, false) != null) {
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/" + outname, "properties/" + xslname) : false ;
 					j += 1;
@@ -113,11 +113,8 @@ public class Validator extends Step {
 				} else 
 					break;
 			}
-			
-			// final validation
-			// must be performed even when canonical validation fails.
-			succeeds = transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_VALIDATE_FILE", "properties/IMVERTOR_VALIDATE_XSLPATH") && succeeds ;
 		}
+
 		// set two parameter to appinfo here
 		String docrelease = configurator.getXParm("cli/docrelease");
 		configurator.setXParm("appinfo/documentation-release",docrelease.equals("00000000") ? "" : "-" + docrelease);
