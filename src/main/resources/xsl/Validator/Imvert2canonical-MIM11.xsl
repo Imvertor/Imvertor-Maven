@@ -17,23 +17,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
-
-    exclude-result-prefixes="#all" 
-    expand-text="yes"
-    version="3.0">
-
+    
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy" 
+    >
+    
     <!-- 
-       Canonization of MIM models.
+       Canonization of MIM 1.1 models.
     -->
     
-    <xsl:import href="Imvert2canonical-MIM10.xsl"/> <!-- for now, use MIM 1.0 -->    
+    <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
     <xsl:variable name="att-stereos" select="
         (
@@ -41,7 +40,7 @@
         imf:get-config-name-by-id('stereotype-name-attribute')
         )"/>
     
-    <xsl:template match="imvert:class/imvert:stereotype[@id = 'stereotype-name-union']" priority="1">
+    <xsl:template match="imvert:class/imvert:stereotype[@id = 'stereotype-name-union']">
         <xsl:variable name="attributes" select="../imvert:attributes/imvert:attribute"/>
         
         <xsl:sequence select="."/>
@@ -75,7 +74,7 @@
     </xsl:template>
     
     <!-- keuze attribute heeft oude stereotype "keuze element", omzetten met waarschuwing -->
-    <xsl:template match="imvert:attribute/imvert:stereotype[@id = 'stereotype-name-union-element-DEPRECATED']" priority="1">
+    <xsl:template match="imvert:attribute/imvert:stereotype[@id = 'stereotype-name-union-element-DEPRECATED']">
         <xsl:sequence select="imf:report-warning(..,true(),'Attribute stereotype is deprecated: [1]',imf:get-config-name-by-id('stereotype-name-union-element-DEPRECATED'))"/>
         <xsl:sequence select="."/>
         
@@ -88,7 +87,7 @@
     </xsl:template>
     
     <!-- keuze attribute heeft geen betekenis, use case 2 -->
-    <xsl:template match="imvert:attribute/imvert:stereotype[@id = 'stereotype-name-union']" priority="1">
+    <xsl:template match="imvert:attribute/imvert:stereotype[@id = 'stereotype-name-union']">
         <xsl:sequence select="."/>
         <!-- voeg intern stereotype type -->
         <imvert:stereotype id="stereotype-name-union-for-attributes" origin="system">
@@ -97,7 +96,7 @@
     </xsl:template>
     
     <!-- keuze attribuut heeft betekenis, use case 3 -->
-    <xsl:template match="imvert:attribute/imvert:stereotype[@id = ('stereotype-name-attribute','stereotype-name-attributegroup')]" priority="1">
+    <xsl:template match="imvert:attribute/imvert:stereotype[@id = ('stereotype-name-attribute','stereotype-name-attributegroup')]">
         <xsl:variable name="parent-stereo-id" select="ancestor::imvert:class/imvert:stereotype/@id"/>
         <xsl:sequence select="."/>
         <xsl:if test="$parent-stereo-id = 'stereotype-name-union'">
@@ -106,7 +105,7 @@
     </xsl:template>
     
     <!-- de relatie heeft stereotype "keuze" -->
-    <xsl:template name="association-with-union" match="imvert:association[imvert:stereotype/@id = 'stereotype-name-union']" priority="1">
+    <xsl:template name="association-with-union" match="imvert:association[imvert:stereotype/@id = 'stereotype-name-union']">
         <xsl:copy>
             <xsl:apply-templates select="*[empty(self::imvert:stereotype)]"/>
             <xsl:sequence select="imvert:stereotype"/>
@@ -121,5 +120,14 @@
         <xsl:sequence select="imf:report-warning(..,true(),'Tagged value is deprecated: [1]',.)"/>
         <imvert:value>{if (. = 'Relatie') then 'Relatiesoort leidend' else 'Relatierol leidend'}</imvert:value>
     </xsl:template>
+    
+    <!-- 
+       identity transform
+    -->
+    <xsl:template match="node()|@*">
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*"/>
+        </xsl:copy>
+    </xsl:template>  
     
 </xsl:stylesheet>

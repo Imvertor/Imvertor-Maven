@@ -2,22 +2,22 @@
 <!-- 
  * Copyright (C) 2016 
 -->
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
-    exclude-result-prefixes="#all" 
-    version="2.0">
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    >
     
     <!-- 
-        Validation of the UML only for additional BRO conceptual model rules. 
+        Validation of BRO conceptual models.
     -->
-    
-    <xsl:import href="Imvert2validation-BRO.xsl"/>
+   
+    <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
     <xsl:variable name="registration-object" select="//imvert:class[imvert:name = ('Registratieobject','RegistrationObject')]"/>
 
@@ -49,5 +49,9 @@
         
         <xsl:next-match/>
     </xsl:template>
+    
+    <xsl:template match="node()"> 
+        <xsl:apply-templates/>
+    </xsl:template> 
     
 </xsl:stylesheet>

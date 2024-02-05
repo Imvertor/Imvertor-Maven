@@ -32,15 +32,8 @@
         </imvert:report>
     </xsl:template>
       
-    <!-- 
-        other validation that is required for the immediate XMI translation result. 
-    -->
-    <xsl:template match="*"> 
+    <xsl:template match="node()"> 
         <xsl:apply-templates/>
-    </xsl:template> 
-    
-    <xsl:template match="text()|processing-instruction()"> 
-        <!-- nothing -->
     </xsl:template> 
     
 </xsl:stylesheet>

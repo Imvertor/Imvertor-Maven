@@ -17,17 +17,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
-    exclude-result-prefixes="#all" 
-    version="2.0">
-
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    >
+    
+    <!-- 
+        Validation of KING/VNGR BSM models (module).
+    -->
+        
     <xsl:variable name="requires-alias" select="imf:boolean(imf:get-config-string('cli','stub_requiresalias','yes'))" as="xs:boolean"/>
     
     <xsl:template match="imvert:association[imvert:stereotype/@id = ('stereotype-name-relatiesoort')]">
