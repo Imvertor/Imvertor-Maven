@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <xi:include href="MIM111.xml"/>
+
+    <name>MIM 1.2 tagged values</name>
+    
+    <tagged-values>
+        
+        <tv norm="space" id="CFG-TV-MIMVERSION">
+            <declared-values lang="nl">
+                <value>1.1</value>
+                <value>1.1.0</value>
+                <value>1.1.1</value>
+                <value default="yes">1.2</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-URI">
+            <name lang="nl">URI</name>
+            <name lang="en">URI</name>
+            <desc lang="nl">De identificatie van een modelelement.</desc>
+            <desc lang="en">The identification of a model element.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-uri</catalog>
+            <derive>no</derive>
+            <stereotypes>
+             
+                <!-- alle modelementen: -->
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+              
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo>
+                <stereo minmax="0..1">stereotype-name-generalization</stereo>
+                <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-codelist</stereo>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+              
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-attributes</stereo>
+                <stereo minmax="0..1">stereotype-name-union-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-union-datatypes</stereo>
+                <stereo minmax="0..1">stereotype-name-union-association</stereo>
+                <stereo minmax="0..1">stereotype-name-union-associations</stereo>
+                <stereo minmax="0..1">stereotype-name-union-for-attributes</stereo>
+                
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-BASISURI">
+            <name lang="nl">Basis-URI</name>
+            <name lang="en">Basis-URI</name>
+            <desc lang="nl">De standaard basis-URI voor elk element in dit informatiemodel.</desc>
+            <desc lang="en">The default base URI for each element in this information model.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-basis-uri</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-HEEFDTIJDLIJNREGISTRATIE">
+            <name lang="nl">Heeft tijdlijn registratie</name>
+            <desc lang="nl">Indicatie of voor dit kenmerk een tijdlijn geldigheid bijgehouden wordt en te bevragen is.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-heeft-tijdlijn-registratie</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-DOELFORMAAT">
+            <name lang="nl">Doelformaat</name>
+            <desc lang="nl">Het formaat waarin een waardelijst is gepubliceerd.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-heeft-tijdlijn-registratie</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-DATATYPE">
+            <name lang="nl">Datatype</name>
+            <desc lang="nl">Datatype van de waarden in een waardelijst.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-datatype</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-WAARDEITEM">
+            <name lang="nl">Waarde-item</name>
+            <desc lang="nl">Het item (of element) van de lijst dat de waarde representeert.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-waarde-item</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-PROFIELSPECIFICATIE">
+            <name lang="nl">Profielspecificatie</name>
+            <desc lang="nl">Referentie naar het profiel dat de technische implementatie van de codelijst beschrijft.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-profielspecificatie</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-EENHEID">
+            <name lang="nl">Eenheid</name>
+            <desc lang="nl">Aanduiding van de eenheid die bij een meting of waarneming hoort. De waarde van Eenheid is een waarde uit de lijst gepubliceerd op https://units-of-measurement.org/.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-eenheid</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-MINVALUEINCLUSIVE">
+            <name lang="nl">Minimumwaarde inclusief</name>
+            <name lang="en">Minimum value inclusive</name>
+            <desc lang="nl">Minimumwaarde inclusief (&gt;=) is de ondergrens van het waardebereik voor een attribuutsoort of data element getypeerd met een primitief datatype, inclusief die waarde zelf. De minimumwaarde moet van hetzelfde primitieve datatype zijn als het datatype van het modelelement waar het voor geldt.</desc>
+            <desc lang="en">Minimum value inclusive (&gt;=) is the lower limit of the value range for an attribute type or data element typed with a primitive data type, including that value itself. The minimum value must be of the same primitive data type as the data type of the model element it applies to.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-minimumwaarde-inclusief</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+            </stereotypes>
+        </tv>
+        <tv id="CFG-TV-MINVALUEEXCLUSIVE">
+            <name lang="nl">Minimumwaarde exclusief</name>
+            <name lang="en">Minimum value exclusive</name>
+            <desc lang="nl">Minimumwaarde exclusief (&gt;=) is de ondergrens van het waardebereik voor een attribuutsoort of data element getypeerd met een primitief datatype, exclusief die waarde zelf. De minimumwaarde moet van hetzelfde primitieve datatype zijn als het datatype van het modelelement waar het voor geldt.</desc>
+            <desc lang="en">Minimum value exclusive (&gt;=) is the lower limit of the value range for an attribute type or data element typed with a primitive data type, exclusief that value itself. The minimum value must be of the same primitive data type as the data type of the model element it applies to.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-minimumwaarde-exclusief</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+            </stereotypes>
+        </tv>
+        <tv id="CFG-TV-MAXVALUEINCLUSIVE">
+            <name lang="nl">Maximumwaarde inclusief</name>
+            <name lang="en">Minimum value inclusive</name>
+            <desc lang="nl">Maximumwaarde inclusief (&gt;=) is de bovengrens van het waardebereik voor een attribuutsoort of data element getypeerd met een primitief datatype, inclusief die waarde zelf. De waarde moet van hetzelfde primitieve datatype zijn als het datatype van het modelelement waar het voor geldt.</desc>
+            <desc lang="en">Maximum value inclusive (&gt;=) is the upper limit of the value range for an attribute type or data element typed with a primitive data type, inclusief that value itself. The value must be of the same primitive data type as the data type of the model element it applies to.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-maximumwaarde-inclusief</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+            </stereotypes>
+        </tv>
+        <tv id="CFG-TV-MAXVALUEEXCLUSIVE">
+            <name lang="nl">Maximumwaarde exclusief</name>
+            <name lang="en">Minimum value exclusive</name>
+            <desc lang="nl">Maximumwaarde exclusief (&gt;=) is de bovengrens van het waardebereik voor een attribuutsoort of data element getypeerd met een primitief datatype, exclusief die waarde zelf. De waarde moet van hetzelfde primitieve datatype zijn als het datatype van het modelelement waar het voor geldt.</desc>
+            <desc lang="en">Maximum value exclusive (&gt;=) is the upper limit of the value range for an attribute type or data element typed with a primitive data type, exclusief that value itself. The value must be of the same primitive data type as the data type of the model element it applies to.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-maximumwaarde-exclusief</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-MIXIN">
+            <name lang="nl">Mixin</name>
+            <name lang="en">Mixin</name>
+            <desc lang="nl">Metagegeven om bij een generalisatie aan te geven dat bij een implementatie die geen multiple inheritance ondersteunt de eigenschappen van de superklasse worden overgenomen door de subklasse. De superklasse zelf komt niet in de implementatie voor.</desc>
+            <desc lang="en">Metadata to indicate in a generalization that in an implementation that does not support multiple inheritance, the properties of the superclass are inherited by the subclass. The superclass itself does not appear in the implementation.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-mixin</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-generalization</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+        </tv>
+        
+    </tagged-values>
+    
+</tagset>
