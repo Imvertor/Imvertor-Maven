@@ -25,6 +25,8 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy" 
+    
+    expand-text="yes"
     >
     
     <!-- 
@@ -35,11 +37,20 @@
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
     <!--
-        More rules?
+       Rule: zet mixin tagged value om naar stereotype <<static>>.
     -->
+   
+    <xsl:variable name="sid">stereotype-name-static-generalization</xsl:variable>
     
-    <!--TODO introductie van static / mixin -->
-    
+    <xsl:template match="imvert:class/imvert:supertype">
+        <imvert:supertype>
+            <xsl:apply-templates/>
+            <xsl:if test="imf:get-tagged-value(.,'##CFG-TV-MIXIN') = 'Ja'">
+                <imvert:stereotype id="{$sid}">{imf:get-config-name-by-id($sid)}</imvert:stereotype>
+            </xsl:if>
+        </imvert:supertype>
+    </xsl:template>
+   
     <!-- 
        identity transform
     -->
