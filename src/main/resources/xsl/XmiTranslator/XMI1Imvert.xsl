@@ -32,6 +32,8 @@
     
     xmlns:functx="http://www.functx.com"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy" 
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -408,6 +410,8 @@
                                     </xsl:for-each>
                                 </xsl:for-each>
                                 <xsl:sequence select="imf:create-output-element('imvert:position',imf:get-position-value($generalization,'100'))"/>
+                                <xsl:sequence select="imf:get-constraint-info($generalization)"/>
+                                <xsl:sequence select="imf:fetch-additional-tagged-values($generalization)"/>
                             </imvert:substitution>     
                         </xsl:when>
                         <xsl:otherwise>
@@ -425,6 +429,8 @@
                                     </xsl:for-each>
                                 </xsl:for-each>
                                 <xsl:sequence select="imf:create-output-element('imvert:position',imf:get-position-value($generalization,'100'))"/>
+                                <xsl:sequence select="imf:get-constraint-info($generalization)"/>
+                                <xsl:sequence select="imf:fetch-additional-tagged-values($generalization)"/>
                             </imvert:supertype>
                         </xsl:otherwise>
                     </xsl:choose>
