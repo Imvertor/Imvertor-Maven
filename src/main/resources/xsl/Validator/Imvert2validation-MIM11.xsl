@@ -13,7 +13,7 @@
     >
     
     <!-- 
-        Validation of MIM 1.2 models. 
+        Validation of MIM 1.1 models. 
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
