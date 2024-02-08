@@ -147,6 +147,16 @@
                </xs:restriction>
             </xs:simpleType>
          </xs:element>
+         <xs:element name="family" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Abbreviation indicating a family of specifications. Example: GML.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
          <xs:element name="version" minOccurs="0" maxOccurs="1">
             <xs:annotation>
                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The version of the schema.</xs:documentation>

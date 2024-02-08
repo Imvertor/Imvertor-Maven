@@ -9,6 +9,7 @@
     
     <cs:id>GMLSF</cs:id>
     <cs:shortName>gmlsf</cs:shortName>
+    <cs:family>GML</cs:family>
     <cs:desc>GML Simple Feature Profile</cs:desc>
     <cs:url>http://www.opengis.net/conceptual-schemas/GMLSF</cs:url>
     

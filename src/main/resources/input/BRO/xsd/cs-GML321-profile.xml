@@ -9,6 +9,7 @@
     
     <cs:id>GML3</cs:id>
     <cs:shortName>gml</cs:shortName>
+    <cs:family>GML</cs:family>
     <cs:version>3.2.1</cs:version>
     <cs:phase>3</cs:phase>
     <cs:desc>ISO19107 Geographic information – Spatial schema (Geography Markup Language 3)</cs:desc>

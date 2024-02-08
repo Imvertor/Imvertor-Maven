@@ -352,7 +352,7 @@
             <ep:parameters>
                 <xsl:sequence select="imf:set-common-parameters(.,'interface')"/>
                 <xsl:sequence select="imf:set-parameter('oas-name',imf:get-kenmerk(.,'oasnaam'))"/>
-                <xsl:if test="ancestor::mim:Extern/mim:naam = 'GML'">
+                <xsl:if test="ancestor::mim:Extern/mim-ext:kenmerken/mim-ext:Kenmerk[@naam = 'familie'] = 'GML'">
                     <xsl:sequence select="imf:set-parameter('url',imf:get-geo-url(.))"/>
                 </xsl:if>
             </ep:parameters>

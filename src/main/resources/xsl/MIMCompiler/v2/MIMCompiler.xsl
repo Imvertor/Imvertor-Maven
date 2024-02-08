@@ -628,7 +628,7 @@
       <mim:naam source-id="CFG-TV-PSEUDO-NAME">{$name}</mim:naam>
       <xsl:where-populated>
         <mim-ext:kenmerken>
-          <!-- geef OAS type mee meals kenmerk -->
+          <!-- geef OAS type mee me als kenmerk -->
           <xsl:variable name="oas" select="(//imvert:attribute[imvert:conceptual-schema-type = current()/imvert:conceptual-schema-class-name]/imvert:type-name-oas)[1]"/>
           <xsl:if test="$oas">
             <mim-ext:Kenmerk naam="oasnaam">{$oas}</mim-ext:Kenmerk>

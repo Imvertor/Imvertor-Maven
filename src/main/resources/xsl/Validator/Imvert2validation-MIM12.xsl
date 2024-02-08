@@ -28,7 +28,6 @@
         
         <!--validation-->
        
-        <xsl:sequence select="dlogger:save('$non-mixin-supertypes',$non-mixin-supertypes)"/>  
         <xsl:sequence select="imf:report-error(., 
             $non-mixin-supertypes[2], 
             'Several supertypes [1] are referenced as non-mixin supertype', imf:string-group(for $s in $non-mixin-supertypes/imvert:type-name/@original return $s))"/>
