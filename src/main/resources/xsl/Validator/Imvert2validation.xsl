@@ -707,6 +707,7 @@
             not($collection-classes/imvert:associations/imvert:association/imvert:type-id=$id), 
             'This class does not occur in a collection, but cannot be embedded into the application.')"/>
         -->
+        
         <xsl:next-match/>
     </xsl:template>
     
@@ -891,6 +892,13 @@
         <xsl:sequence select="imf:report-warning(., 
             imvert:stereotype/@id = 'stereotype-name-attributegroup' and not($defining-class/imvert:designation = 'class'), 
             '[1] type must be an UML class', imf:string-group(imf:get-config-stereotypes('stereotype-name-attributegroup'),' or '))"/>
+        
+        <!-- Is het attribuut goed gestereotypeerd? -->
+        <!--TODO alle relaties tussen construct van een bepaald stereotype valideren op basis van primary en context/parent info uit configuratiebestand. Dus als eerste aparte slag na canocalisatie. -->
+        <xsl:variable name="allowed-primary-stereotype-ids" select="$configuration-metamodel-file/stereotypes/stereo[construct = 'attribute' and context/parent-stereo = 'stereotype-name-objecttype' and @primary = 'yes']/@id" as="xs:string*"/>
+        <xsl:sequence select="imf:report-error(., 
+            exists($allowed-primary-stereotype-ids) and not(imvert:stereotype/@id = $allowed-primary-stereotype-ids), 
+            'Attribute must be stereotyped as (any of) [1]', imf:string-group(for $s in $allowed-primary-stereotype-ids return imf:get-config-name-by-id($s)))"/>
         
         <xsl:next-match/>
     </xsl:template>
