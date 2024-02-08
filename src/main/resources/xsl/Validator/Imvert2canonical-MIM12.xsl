@@ -26,6 +26,7 @@
     
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy" 
     
+    exclude-result-prefixes="#all"
     expand-text="yes"
     >
     
