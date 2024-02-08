@@ -88,9 +88,26 @@
             </declared-values>
         </tv>
         
+        <tv norm="space" id="CFG-TV-HEEFDTIJDLIJNGELDIGHEID">
+            <name lang="nl">Heeft tijdlijn geldigheid</name>
+            <desc lang="nl">Indicatie of voor dit kenmerk een tijdlijn geldigheid bijgehouden wordt en te bevragen is.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-heeft-tijdlijn-geldigheid</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+        </tv>
         <tv norm="space" id="CFG-TV-HEEFDTIJDLIJNREGISTRATIE">
             <name lang="nl">Heeft tijdlijn registratie</name>
-            <desc lang="nl">Indicatie of voor dit kenmerk een tijdlijn geldigheid bijgehouden wordt en te bevragen is.</desc>
+            <desc lang="nl">Indicatie of voor dit kenmerk een tijdlijn registratie bijgehouden wordt en te bevragen is.</desc>
             <source>MIM-1.2</source>
             <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-heeft-tijdlijn-registratie</catalog>
             <derive>yes</derive>
