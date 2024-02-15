@@ -1,7 +1,6 @@
 package nl.imvertor.ReleaseComparer;
 
 import java.io.FileWriter;
-import java.io.IOException;
 
 import org.w3c.dom.Element;
 import org.xmlunit.builder.DiffBuilder;
@@ -19,24 +18,6 @@ import nl.imvertor.common.file.XmlFile;
 
 public class XmlComparer {
 
-	public static void main(String[] arguments) throws IOException {
-		
-		try {
-			/* https://github.com/xmlunit/user-guide/wiki/DiffBuilder */
-			
-			//build simple lists of the lines of the two testfiles
-			XmlFile control = new XmlFile("work/tests/source.xml");
-			XmlFile test = new XmlFile("work/tests/target.xml");
-			XmlFile result = new XmlFile("work/tests/result.xml");
-			
-			System.out.println(compare(control, test, result) + " differences found.");
-			
-		} catch (Exception e) {
-			System.err.println(e);
-		}
-
-	}	
-	
 	public static Integer compare(XmlFile controlFile, XmlFile testFile, XmlFile resultFile) throws Exception {
 		/* https://github.com/xmlunit/user-guide/wiki/DiffBuilder */
 		
