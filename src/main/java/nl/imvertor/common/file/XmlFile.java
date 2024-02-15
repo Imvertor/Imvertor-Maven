@@ -25,8 +25,6 @@ import java.io.FileOutputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 import javax.xml.namespace.QName;
@@ -38,14 +36,10 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.output.FileWriterWithEncoding;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.c14n.Canonicalizer;
-import org.custommonkey.xmlunit.DetailedDiff;
-import org.custommonkey.xmlunit.Difference;
-import org.custommonkey.xmlunit.XMLTestCase;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -59,6 +53,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import net.sf.saxon.xpath.XPathFactoryImpl;
+import nl.imvertor.ReleaseComparer.XmlComparer;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.helper.XmlDiff;
@@ -358,78 +353,19 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	}
 	
 	/**
-	 * Compare this control file to the passed test file, store result in file. Return true if files are the same.
-	 * 
-	 * Difference types are listed as constants in 
-	 * <a href="http://xmlunit.sourceforge.net/api/org/custommonkey/xmlunit/DifferenceConstants.html">here</a>
-	 * 
-	 * @param controlXmlPath
-	 * @param testXmlPath
-	 * @param resultPath
-	 * @return
-	 * @throws Exception
-	 */
-	public boolean xmlUnitCompareXML(XmlFile testXmlFile, XmlFile resultFile, Integer maxReported) throws Exception {
-		XmlFile controlXmlFile = this;
-		
-		XMLUnit.setCompareUnmatched(false);
-		XMLTestCase testcase = new Case(this.getName());
-		
-		DetailedDiff myDiff = new DetailedDiff(testcase.compareXML(controlXmlFile.getContent(), testXmlFile.getContent()));
-        
-		@SuppressWarnings("unchecked")
-		List<Difference> allDifferences = myDiff.getAllDifferences();
-        Iterator<Difference> it = allDifferences.iterator();
-        String analysis = "<diffs>";
-        int cnt = 0;
-        while (it.hasNext() && cnt < maxReported) {
-        	Difference d = it.next();
-           	analysis += "<diff"
-        			+ " desc=\"" + safe(d.getDescription()) + "\""
-        			+ ">";
-           	analysis += "<ctrl"
-        			+ " path=\"" + d.getControlNodeDetail().getXpathLocation() + "\""
-        			+ " value=\"" + safe(d.getControlNodeDetail().getValue()) + "\""
-        			+ "/>";
-           	analysis += "<test"
-        			+ " path=\"" + d.getTestNodeDetail().getXpathLocation() + "\""
-        			+ " value=\"" + safe(d.getTestNodeDetail().getValue()) + "\""
-        			+ "/>";
-            analysis += "</diff>";
-            cnt += 1;
-        }
-        analysis += "</diffs>";
-        resultFile.setContent(analysis);
-    	return (allDifferences.size() == 0) ? true: false;
-    }
-	
-	/** 
-	 * Replace special characters in XML string.
-	 * 
-	 * @param s
-	 * @return
-	 */
-	private String safe(String s) {
-     	s = StringUtils.replace(s,"&","&amp;");
-     	s = StringUtils.replace(s,"<","&lt;");
-     	s = StringUtils.replace(s,">","&gt;");
-     	s = StringUtils.replace(s,"\"","&quot;");
-    	return s;
-    }
-	    
-	/**
 	 * Introduce the XmlFile class as a valid JUnit TestCase class.
 	 * 
 	 * @author arjan
 	 *
 	 */
-	private class Case extends XMLTestCase {
+	/*private class Case extends XMLTestCase {
     	
     	public Case(String name) {
             super(name);
         }
     	
-    }	
+    }
+    */	
 	
 	@Override
 	public void error(SAXParseException exception) throws SAXException {
@@ -448,9 +384,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	}
 
 	public static String xmlescape(String s) {
-		s = s.replace("&", "&amp;");
-		s = s.replace("<", "&lt;");
-		return s;
+		return StringEscapeUtils.escapeXml10(s);
 	}
 	
 	/**
@@ -484,7 +418,6 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		// This is because the compare core code is not part of the Imvertor framework, but developed separately.
 		// We therefore do not use the XMLConfiguration approach here.
 		transformer.setXslParm("compare-key", compareKey); // the name or id specifies how teo determine "the same" construct
-	
 		
 		transformer.setXslParm("info-config", infoConfig.toURI().toString());  
 		transformer.setXslParm("info-ctrlpath", this.getCanonicalPath());  
@@ -542,6 +475,47 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		return result;
 	}
 	
+	public boolean compareV2(XmlFile testXmlFile, Configurator configurator) throws Exception {
+		
+		String compareLabel = configurator.getXParm("system/compare-label");
+		String compareKey = configurator.getXParm("cli/comparekey",false);
+		String compareSystemPackages = configurator.getXParm("cli/comparesystempackages",false);
+		if (compareKey == null) compareKey = "name";
+		
+		// create a transformer
+		Transformer transformer = new Transformer();
+		transformer.setExtensionFunction(new ImvertorCompareXML());
+		
+		Boolean valid = true;
+		
+		transformer.setXslParm("compare-key", compareKey); // the name or id specifies how to determine "the same" construct
+		transformer.setXslParm("compare-label", compareLabel);
+		transformer.setXslParm("compare-system-packages", (compareSystemPackages != null) ? compareSystemPackages : "false");
+			
+		// determine temporary files
+		XmlFile controlSimpleFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_CONTROL_SIMPLE_FILE")); // imvertor.20.docrelease.1.1.compare-control-simple.xml
+		XmlFile testSimpleFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_TEST_SIMPLE_FILE")); // imvertor.20.docrelease.1.2.compare-test-simple.xml
+		
+		XmlFile diffXml = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_DIFF_FILE")); // imvertor.20.docrelease.2.compare-diff.xml
+			
+		// maak het eenvoudige/platte vergelijkbare formaat aan 
+		XslFile simpleXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPAREV2_SIMPLE_XSLPATH"));
+		
+		transformer.setXslParm("comparison-role", "ctrl");
+		valid = valid && transformer.transform(this,controlSimpleFile,simpleXsl,null);
+		transformer.setXslParm("comparison-role", "test");
+		valid = valid && transformer.transform(testXmlFile,testSimpleFile,simpleXsl,null);
+		
+		// compare 
+		Integer differences = XmlComparer.compare(controlSimpleFile,testSimpleFile,diffXml);
+		
+		configurator.setXParm("appinfo/compare-differences-" + compareLabel, differences);
+
+		// Build report
+		boolean result = valid && (differences == 0);
+	
+		return result;
+	}
 	/**
 	 * Compare two files based on XML diff REST interface.
 	 * 
