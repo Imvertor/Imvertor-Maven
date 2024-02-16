@@ -34,6 +34,7 @@ import nl.imvertor.HistoryCompiler.HistoryCompiler;
 import nl.imvertor.ImvertCompiler.ImvertCompiler;
 import nl.imvertor.JsonConceptsCompiler.JsonConceptsCompiler;
 import nl.imvertor.JsonSchemaCompiler.JsonSchemaCompiler;
+import nl.imvertor.LDCompiler.LDCompiler;
 import nl.imvertor.MIMCompiler.MIMCompiler;
 import nl.imvertor.ModelHistoryAnalyzer.ModelHistoryAnalyzer;
 import nl.imvertor.OfficeCompiler.OfficeCompiler;

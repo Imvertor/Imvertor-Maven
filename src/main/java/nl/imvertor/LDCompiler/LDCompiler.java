@@ -18,7 +18,7 @@
  *
  */
 
-package nl.imvertor;
+package nl.imvertor.LDCompiler;
 
 import org.apache.log4j.Logger;
 
@@ -33,7 +33,7 @@ public class LDCompiler extends Step {
 	protected static final Logger logger = Logger.getLogger(LDCompiler.class);
 	
 	public static final String STEP_NAME = "LDCompiler";
-	public static final String VC_IDENTIFIER = "$Id: XsdCompiler.java 7509 2016-04-25 13:30:29Z arjan $";
+	public static final String VC_IDENTIFIER = "$Id: TODO $";
 
 	/**
 	 *  run the main translation
