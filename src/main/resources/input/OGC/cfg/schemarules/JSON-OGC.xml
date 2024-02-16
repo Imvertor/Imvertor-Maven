@@ -30,6 +30,11 @@
     <parameter name="json-hal">false</parameter>
     
     <!-- 
+        URL van het metaschema
+    -->
+    <parameter name="bp-metaschema-url">https://json-schema.org/draft/2019-09/schema</parameter> 
+    
+    <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules
         Clause 7.4
         options: 

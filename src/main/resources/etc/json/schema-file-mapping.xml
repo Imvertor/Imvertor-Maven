@@ -1,0 +1,9 @@
+<mapping>
+    <!-- 
+        Dit is versie 2020-12 van json schema.
+        Het is een versie waarin alle gerefereerde schema's zijn samngevoegd.
+        zie https://github.com/orgs/json-schema-org/discussions/231 
+    -->
+    <map url="https://json-schema.org/draft/2019-09/schema">2020-12/schema/gist.json</map> 
+    <map url="https://json-schema.org/draft/2020-12/schema">2020-12/schema/gist.json</map> 
+</mapping>

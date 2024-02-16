@@ -21,9 +21,12 @@
 package nl.imvertor.JsonSchemaCompiler;
 
 import java.io.File;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.NodeList;
 
+import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
@@ -48,6 +51,8 @@ public class JsonSchemaCompiler extends Step {
 	public static final String STEP_NAME = "JsonSchemaCompiler";
 	public static final String VC_IDENTIFIER = "$Id: $";
 
+	private static HashMap<String,String> jsonSchemaFiles = new HashMap<String,String>(); 
+	
 	/**
 	 *  run the main translation
 	 */
@@ -57,7 +62,7 @@ public class JsonSchemaCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
-		runner.info(logger,"Compiling JSON schema");
+		runner.info(logger,"Compiling and validating JSON schema");
 		
 		generate();
 		
@@ -106,8 +111,12 @@ public class JsonSchemaCompiler extends Step {
 		
 		if (succeeds) jsonXmlFile.toJson(jsonFile,true);
 		
-		// Debug: test if json is okay
-		succeeds = succeeds && jsonFile.validate();
+		// Debug: test if json is okay.
+		// het toepasbare metaschema si doorgegeven via xparm 
+		
+		JsonFile metaSchemaFile = jsonSchemaFileByUrl(configurator.getXParm("system/json-metaschema-url"));
+		succeeds = succeeds && jsonFile.isWellformed();
+		succeeds = succeeds && jsonFile.isValid(metaSchemaFile);
 		
 		// pretty print and store to json folder
 		if (succeeds) {
@@ -136,5 +145,22 @@ public class JsonSchemaCompiler extends Step {
 		configurator.setXParm("system/json-schema-created",succeeds);
 		
 		return succeeds;
+	}
+	
+	static JsonFile jsonSchemaFileByUrl(String Url) throws Exception {
+		try { 
+			if (jsonSchemaFiles.isEmpty()) {
+				// lees de mapping in
+				XmlFile f = new XmlFile(Configurator.getInstance().getBaseFolder() + "/etc/json/schema-file-mapping.xml");
+				NodeList maps = f.getDom().getElementsByTagName("map");
+				for (int i = 0; i < maps.getLength(); i++) {
+					jsonSchemaFiles.put(maps.item(i).getAttributes().getNamedItem("url").getNodeValue(), maps.item(i).getTextContent());
+				}
+			}
+			String path = jsonSchemaFiles.get(Url);
+			return new JsonFile(Configurator.getInstance().getBaseFolder() + "/etc/json/" + path); 	
+		} catch (Exception e) {
+			throw new Exception("URL not found in Json schema mapping file: " + Url);
+		}
 	}
 }

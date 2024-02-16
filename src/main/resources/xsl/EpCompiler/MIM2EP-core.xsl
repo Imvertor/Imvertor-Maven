@@ -36,6 +36,7 @@
     <xsl:variable name="bp-req-by-reference-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-by-reference-encodings']"/> 
     <xsl:variable name="bp-req-code-list-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-code-list-encodings']"/> 
     <xsl:variable name="bp-req-additional-requirements-classes" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-additional-requirements-classes']"/> 
+    <xsl:variable name="bp-metaschema-url" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-metaschema-url']"/> <!-- e.g. 'https://json-schema.org/draft/2019-09/schema' -->
     
     <xsl:variable name="domain-packages" select="/mim:Informatiemodel/mim:packages/mim:Domein"/>
     
@@ -54,6 +55,10 @@
     </xsl:template>
     
     <xsl:template match="mim:Informatiemodel">
+        
+        <!-- Geef de metaschema URL door aan de Java json validator -->
+        <xsl:sequence select="imf:set-xparm('system/json-metaschema-url',$bp-metaschema-url)"/>
+        
         <xsl:variable name="body" as="element()">
             <ep:group 
                 xsi:schemaLocation="http://www.imvertor.org/schema/endproduct/v2 {$ep-schema-path}">
@@ -72,6 +77,7 @@
                     <xsl:sequence select="imf:set-parameter('bp-req-by-reference-encodings',$bp-req-by-reference-encodings)"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-code-list-encodings',$bp-req-code-list-encodings)"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-additional-requirements-classes',$bp-req-additional-requirements-classes)"/>
+                    <xsl:sequence select="imf:set-parameter('bp-metaschema-url',$bp-metaschema-url)"/>
                 </ep:parameters>
                 <xsl:sequence select="imf:get-name(.)"/>
                 <xsl:sequence select="imf:get-documentation(.)"/>

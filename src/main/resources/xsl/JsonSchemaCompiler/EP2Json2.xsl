@@ -35,6 +35,8 @@
     <xsl:variable name="bp-req-code-list-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-code-list-encodings')"/>
     <xsl:variable name="bp-req-additional-requirements-classes" select="imf:get-ep-parameter(/ep:group,'bp-req-additional-requirements-classes')"/>
     
+    <xsl:variable name="bp-metaschema-url" select="imf:get-ep-parameter(/ep:group,'bp-meta-schema-url')"/>
+    
     <xsl:variable name="schema-tv-id">{imf:get-ep-parameter(/ep:group,'json-id')}</xsl:variable>
     <xsl:variable name="schema-gen-id">{imf:get-ep-parameter(/ep:group,'namespace')}/{imf:get-ep-parameter(/ep:group,'version')}/{imf:get-ep-parameter(/ep:group,'release')}</xsl:variable>
     
@@ -62,7 +64,7 @@
             <xsl:when test="$bp-req-applies">
                 <j:map>
                     <xsl:sequence select="imf:ep-to-namevaluepair('$comment',$schema-desc)"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('$schema','https://json-schema.org/draft/2019-09/schema')"/>
+                    <xsl:sequence select="imf:ep-to-namevaluepair('$schema',$bp-metaschema-url)"/>
                     <xsl:sequence select="imf:ep-to-namevaluepair('$id',($schema-tv-id,$schema-gen-id)[1])"/>
                     <j:array key="$reqs">
                         <j:string>{imf:get-ep-parameter(.,'bp-req-basic-encodings')}</j:string>
@@ -127,7 +129,7 @@
             <xsl:variable name="nillable" select="imf:get-ep-parameter(.,'nillable') = 'true'"/>
             <xsl:variable name="header">
                 <xsl:if test="not(imf:get-ep-parameter(.,'is-pga') = 'true') and not(imf:get-ep-parameter(.,'is-ppa') = 'true') and not(imf:get-ep-parameter(.,'is-pia') = 'true') and not(imf:get-ep-parameter(.,'is-pva') = 'true')">
-                    <xsl:sequence select="if ($is-anchor) then imf:ep-to-namevaluepair('$anchor',imf:get-type-name(.)) else ()"/>
+                    <xsl:sequence select="if ($is-anchor) then imf:ep-to-namevaluepair('$anchor','.' || imf:get-type-name(.)) else ()"/>
                     <xsl:sequence select="if (ep:name ne $tech-name) then imf:ep-to-namevaluepair('title',ep:name) else ()"/>
                     <xsl:variable name="added-location" select="if (imf:get-ep-parameter(.,'locatie')) then ('; Locatie: ' || imf:get-ep-parameter(.,'locatie')) else ()"/>
                     <xsl:sequence select="imf:ep-to-namevaluepair('description',imf:create-description(.) || $added-location)"/>

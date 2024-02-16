@@ -92,7 +92,7 @@ public class JsonConceptsCompiler extends Step {
 			JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/WORK_JSONCONCEPTS_JSONPATH"));
 			
 			// Debug: test if json is okay
-			succeeds = succeeds && jsonFile.validate();
+			succeeds = succeeds && jsonFile.isWellformed();
 			
 			// pretty print and store to json folder
 			if (succeeds) {
