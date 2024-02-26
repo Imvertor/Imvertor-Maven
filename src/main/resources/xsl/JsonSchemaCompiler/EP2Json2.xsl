@@ -129,7 +129,7 @@
             <xsl:variable name="nillable" select="imf:get-ep-parameter(.,'nillable') = 'true'"/>
             <xsl:variable name="header">
                 <xsl:if test="not(imf:get-ep-parameter(.,'is-pga') = 'true') and not(imf:get-ep-parameter(.,'is-ppa') = 'true') and not(imf:get-ep-parameter(.,'is-pia') = 'true') and not(imf:get-ep-parameter(.,'is-pva') = 'true')">
-                    <xsl:sequence select="if ($is-anchor) then imf:ep-to-namevaluepair('$anchor','.' || imf:get-type-name(.)) else ()"/>
+                    <xsl:sequence select="if ($is-anchor) then imf:ep-to-namevaluepair('$anchor',imf:get-type-name(.)) else ()"/>
                     <xsl:sequence select="if (ep:name ne $tech-name) then imf:ep-to-namevaluepair('title',ep:name) else ()"/>
                     <xsl:variable name="added-location" select="if (imf:get-ep-parameter(.,'locatie')) then ('; Locatie: ' || imf:get-ep-parameter(.,'locatie')) else ()"/>
                     <xsl:sequence select="imf:ep-to-namevaluepair('description',imf:create-description(.) || $added-location)"/>

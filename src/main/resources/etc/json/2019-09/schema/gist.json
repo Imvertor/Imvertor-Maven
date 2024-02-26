@@ -1,15 +1,14 @@
 {
-    "$id": "https://json-schema.org/draft/2020-12/schema",
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://json-schema.org/draft/2019-09/schema",
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
     "title": "Core and Validation specifications meta-schema",
     "$dynamicAnchor": "meta",
     "allOf": [
         {"$ref": "meta/core"},
         {"$ref": "meta/applicator"},
-        {"$ref": "meta/unevaluated"},
         {"$ref": "meta/validation"},
         {"$ref": "meta/meta-data"},
-        {"$ref": "meta/format-annotation"},
+        {"$ref": "meta/format"},
         {"$ref": "meta/content"}
     ],
     "type": [
@@ -35,10 +34,10 @@
         }
     },
     "$defs": {
-        "https://json-schema.org/draft/2020-12/meta/core": {
-            "$id": "https://json-schema.org/draft/2020-12/meta/core",
+        "https://json-schema.org/draft/2019-09/meta/core": {
+            "$id": "https://json-schema.org/draft/2019-09/meta/core",
+            "$recursiveAnchor": true,
             "title": "Core vocabulary meta-schema",
-            "$dynamicAnchor": "meta",
             "type": [
                 "object",
                 "boolean"
@@ -56,19 +55,19 @@
                 },
                 "$anchor": {
                     "type": "string",
-                    "pattern": "^[A-Za-z_][-A-Za-z0-9._]*$"
+                    "pattern": "^[A-Za-z][-A-Za-z0-9.:_]*$"
                 },
                 "$ref": {
                     "type": "string",
                     "format": "uri-reference"
                 },
-                "$dynamicRef": {
+                "$recursiveRef": {
                     "type": "string",
                     "format": "uri-reference"
                 },
-                "$dynamicAnchor": {
-                    "type": "string",
-                    "pattern": "^[A-Za-z_][-A-Za-z0-9._]*$"
+                "$recursiveAnchor": {
+                    "type": "boolean",
+                    "default": false
                 },
                 "$vocabulary": {
                     "type": "object",
@@ -81,73 +80,67 @@
                 "$comment": {"type": "string"},
                 "$defs": {
                     "type": "object",
-                    "additionalProperties": {"$dynamicRef": "#meta"},
+                    "additionalProperties": {"$recursiveRef": "#"},
                     "default": {}
                 }
             }
         },
-        "https://json-schema.org/draft/2020-12/meta/applicator": {
-            "$id": "https://json-schema.org/draft/2020-12/meta/applicator",
+        "https://json-schema.org/draft/2019-09/meta/applicator": {
+            "$id": "https://json-schema.org/draft/2019-09/meta/applicator",
+            "$recursiveAnchor": true,
             "title": "Applicator vocabulary meta-schema",
-            "$dynamicAnchor": "meta",
             "type": [
                 "object",
                 "boolean"
             ],
             "properties": {
-                "prefixItems": {"$ref": "#/$defs/schemaArray"},
-                "items": {"$dynamicRef": "#meta"},
-                "contains": {"$dynamicRef": "#meta"},
-                "additionalProperties": {"$dynamicRef": "#meta"},
+                "additionalItems": {"$recursiveRef": "#"},
+                "unevaluatedItems": {"$recursiveRef": "#"},
+                "items": {
+                    "anyOf": [
+                        {"$recursiveRef": "#"},
+                        {"$ref": "#/$defs/schemaArray"}
+                    ]
+                },
+                "contains": {"$recursiveRef": "#"},
+                "additionalProperties": {"$recursiveRef": "#"},
+                "unevaluatedProperties": {"$recursiveRef": "#"},
                 "properties": {
                     "type": "object",
-                    "additionalProperties": {"$dynamicRef": "#meta"},
+                    "additionalProperties": {"$recursiveRef": "#"},
                     "default": {}
                 },
                 "patternProperties": {
                     "type": "object",
-                    "additionalProperties": {"$dynamicRef": "#meta"},
+                    "additionalProperties": {"$recursiveRef": "#"},
                     "propertyNames": {"format": "regex"},
                     "default": {}
                 },
                 "dependentSchemas": {
                     "type": "object",
-                    "additionalProperties": {"$dynamicRef": "#meta"}
+                    "additionalProperties": {"$recursiveRef": "#"}
                 },
-                "propertyNames": {"$dynamicRef": "#meta"},
-                "if": {"$dynamicRef": "#meta"},
-                "then": {"$dynamicRef": "#meta"},
-                "else": {"$dynamicRef": "#meta"},
+                "propertyNames": {"$recursiveRef": "#"},
+                "if": {"$recursiveRef": "#"},
+                "then": {"$recursiveRef": "#"},
+                "else": {"$recursiveRef": "#"},
                 "allOf": {"$ref": "#/$defs/schemaArray"},
                 "anyOf": {"$ref": "#/$defs/schemaArray"},
                 "oneOf": {"$ref": "#/$defs/schemaArray"},
-                "not": {"$dynamicRef": "#meta"}
+                "not": {"$recursiveRef": "#"}
             },
             "$defs": {
                 "schemaArray": {
                     "type": "array",
                     "minItems": 1,
-                    "items": {"$dynamicRef": "#meta"}
+                    "items": {"$recursiveRef": "#"}
                 }
             }
         },
-        "https://json-schema.org/draft/2020-12/meta/unevaluated": {
-            "$id": "https://json-schema.org/draft/2020-12/meta/unevaluated",
-            "title": "Unevaluated applicator vocabulary meta-schema",
-            "$dynamicAnchor": "meta",
-            "type": [
-                "object",
-                "boolean"
-            ],
-            "properties": {
-                "unevaluatedItems": {"$dynamicRef": "#meta"},
-                "unevaluatedProperties": {"$dynamicRef": "#meta"}
-            }
-        },
-        "https://json-schema.org/draft/2020-12/meta/validation": {
-            "$id": "https://json-schema.org/draft/2020-12/meta/validation",
+        "https://json-schema.org/draft/2019-09/meta/validation": {
+            "$id": "https://json-schema.org/draft/2019-09/meta/validation",
+            "$recursiveAnchor": true,
             "title": "Validation vocabulary meta-schema",
-            "$dynamicAnchor": "meta",
             "type": [
                 "object",
                 "boolean"
@@ -230,10 +223,10 @@
                 }
             }
         },
-        "https://json-schema.org/draft/2020-12/meta/meta-data": {
-            "$id": "https://json-schema.org/draft/2020-12/meta/meta-data",
+        "https://json-schema.org/draft/2019-09/meta/meta-data": {
+            "$id": "https://json-schema.org/draft/2019-09/meta/meta-data",
+            "$recursiveAnchor": true,
             "title": "Meta-data vocabulary meta-schema",
-            "$dynamicAnchor": "meta",
             "type": [
                 "object",
                 "boolean"
@@ -260,10 +253,10 @@
                 }
             }
         },
-        "https://json-schema.org/draft/2020-12/meta/format-annotation": {
-            "$id": "https://json-schema.org/draft/2020-12/meta/format-annotation",
-            "title": "Format vocabulary meta-schema for annotation results",
-            "$dynamicAnchor": "meta",
+        "https://json-schema.org/draft/2019-09/meta/format": {
+            "$id": "https://json-schema.org/draft/2019-09/meta/format",
+            "$recursiveAnchor": true,
+            "title": "Format vocabulary meta-schema",
             "type": [
                 "object",
                 "boolean"
@@ -272,10 +265,10 @@
                 "format": {"type": "string"}
             }
         },
-        "https://json-schema.org/draft/2020-12/meta/content": {
-            "$id": "https://json-schema.org/draft/2020-12/meta/content",
+        "https://json-schema.org/draft/2019-09/meta/content": {
+            "$id": "https://json-schema.org/draft/2019-09/meta/content",
+            "$recursiveAnchor": true,
             "title": "Content vocabulary meta-schema",
-            "$dynamicAnchor": "meta",
             "type": [
                 "object",
                 "boolean"
@@ -283,7 +276,7 @@
             "properties": {
                 "contentMediaType": {"type": "string"},
                 "contentEncoding": {"type": "string"},
-                "contentSchema": {"$dynamicRef": "#meta"}
+                "contentSchema": {"$recursiveRef": "#"}
             }
         }
     }
