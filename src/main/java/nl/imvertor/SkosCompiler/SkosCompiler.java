@@ -24,7 +24,9 @@ import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
+import nl.imvertor.common.file.ShaclFile;
 import nl.imvertor.common.file.SkosFile;
 import nl.imvertor.common.file.XmlFile;
 
@@ -88,8 +90,13 @@ public class SkosCompiler extends Step {
 			SkosFile skosFile = new SkosFile(configurator.getXParm("properties/RESULT_SKOS_FILE_PATH"));
 			
 			if (configurator.isTrue("cli","validateskos",false)) { 
-				// TODO check the shacl approach for details.
-				skosFile.validate(configurator);
+				String skosSchemaUrl = configurator.getXParm("system/skos-schema-url"); // wordt gezet bij het genereren van een SKOS file. 
+				if (skosSchemaUrl != null) {
+					ShaclFile skosSchema = shaclFileByCatalog(skosSchemaUrl);
+					skosFile.validate(configurator, skosSchema); // TODO
+				
+				} else 
+					skosFile.validate(configurator);
 			}
 			// copy to the app folder
 			XmlFile appSkosFile = new XmlFile(skosFolder,"skos.ttl");
@@ -100,5 +107,9 @@ public class SkosCompiler extends Step {
 		return succeeds;
 	}
 	
+	static ShaclFile shaclFileByCatalog(String Url) throws Exception {
+		String path = AnyFile.fileByCatalog(Url);
+		return new ShaclFile(path); 	
+	}
 	
 }

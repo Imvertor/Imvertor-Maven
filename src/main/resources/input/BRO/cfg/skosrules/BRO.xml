@@ -59,6 +59,11 @@
         
     </vocabularies>
     
+    <!-- 
+        URL van de Shacl specificatie voor SBB Skos 
+    -->
+    <parameter name="skos-schema-url">https://github.com/pldn/nederlands-profiel-voor-stelselcatalogi/blob/main/profiles/skos-ap-nl.ttl</parameter> 
+    
     <node-mapping>
         <!-- 
             Alleen de tagged values die hier zijn opgenomen worden omgezet naar een regel in TTL SKOS

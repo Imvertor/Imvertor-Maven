@@ -1,0 +1,7 @@
+<mapping>
+    <!-- 
+        Dit is de lokale plek van het shacl file voor SBB schemas
+    -->
+    <map url="https://github.com/pldn/nederlands-profiel-voor-stelselcatalogi/blob/main/profiles/skos-ap-nl.ttl">skos-ap-nl/skos-ap-nl.ttl</map>
+   
+</mapping>

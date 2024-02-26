@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -50,6 +51,9 @@ import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mozilla.universalchardet.UniversalDetector;
+import org.w3c.dom.NodeList;
+
+import nl.imvertor.common.Configurator;
 
 /**
  * Extension of File, by providing file functions frequently required from any file.
@@ -91,6 +95,8 @@ public class AnyFile extends File  {
 	private BufferedReader lineReader = null;
 	
 	protected String encoding; // default encoding is the system encoding
+	
+	private static HashMap<String,String> MappedFiles = new HashMap<String,String>(); 
 	
 	public String getEncoding() {
 		return (encoding == null) ? System.getProperty("file.encoding") : encoding; 
@@ -650,6 +656,30 @@ public class AnyFile extends File  {
 			return false;
 		}
 		
+	}
+	
+	public static String fileByCatalog(String Url) throws Exception {
+		try { 
+			if (MappedFiles.isEmpty()) {
+				// lees de mapping in
+				String rootPath = Configurator.getInstance().getBaseFolder() + "/etc";
+				AnyFolder folder = new AnyFolder(rootPath);
+				Iterator<String> files = folder.listFilesToVector(true).iterator();
+				while (files.hasNext()) {
+					String path = files.next();
+					if (path.endsWith("catalog.xml")) {
+						XmlFile file = new XmlFile(path);
+						NodeList maps = file.getDom().getElementsByTagName("map");
+						for (int i = 0; i < maps.getLength(); i++) {
+							MappedFiles.put(maps.item(i).getAttributes().getNamedItem("url").getNodeValue(), file.getParent() + "/" + maps.item(i).getTextContent());
+						}	
+					}
+				}
+			}
+			return MappedFiles.get(Url);
+		} catch (Exception e) {
+			throw new Exception("URL not found in any mapping file: " + Url);
+		}
 	}
 }
 

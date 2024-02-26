@@ -114,7 +114,7 @@ public class JsonSchemaCompiler extends Step {
 		// Debug: test if json is okay.
 		// het toepasbare metaschema si doorgegeven via xparm 
 		
-		JsonFile metaSchemaFile = jsonSchemaFileByUrl(configurator.getXParm("system/json-metaschema-url"));
+		JsonFile metaSchemaFile = jsonSchemaFileByCatalog(configurator.getXParm("system/json-metaschema-url"));
 		succeeds = succeeds && jsonFile.isWellformed();
 		succeeds = succeeds && jsonFile.isValid(metaSchemaFile);
 		
@@ -147,20 +147,8 @@ public class JsonSchemaCompiler extends Step {
 		return succeeds;
 	}
 	
-	static JsonFile jsonSchemaFileByUrl(String Url) throws Exception {
-		try { 
-			if (jsonSchemaFiles.isEmpty()) {
-				// lees de mapping in
-				XmlFile f = new XmlFile(Configurator.getInstance().getBaseFolder() + "/etc/json/schema-file-mapping.xml");
-				NodeList maps = f.getDom().getElementsByTagName("map");
-				for (int i = 0; i < maps.getLength(); i++) {
-					jsonSchemaFiles.put(maps.item(i).getAttributes().getNamedItem("url").getNodeValue(), maps.item(i).getTextContent());
-				}
-			}
-			String path = jsonSchemaFiles.get(Url);
-			return new JsonFile(Configurator.getInstance().getBaseFolder() + "/etc/json/" + path); 	
-		} catch (Exception e) {
-			throw new Exception("URL not found in Json schema mapping file: " + Url);
-		}
+	static JsonFile jsonSchemaFileByCatalog(String Url) throws Exception {
+		String path = AnyFile.fileByCatalog(Url);
+		return new JsonFile(path); 	
 	}
 }

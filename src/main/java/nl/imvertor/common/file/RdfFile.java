@@ -90,6 +90,7 @@ public class RdfFile extends AnyFile {
 			 } else if (ext.equals("yml")) {
 				 
 				 // TODO
+				 configurator.getRunner().error(logger,"Not a supported RDF file extension: " + ext,null,"rdf-uns","some-wiki-ref");
 				 
 			 } else 
 				configurator.getRunner().fatal(logger,"Not a known RDF file extension: " + ext,null,"rdf-unk","some-wiki-ref");

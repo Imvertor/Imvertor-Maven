@@ -480,6 +480,10 @@
                 <xsl:for-each select="$shacl-rules//node-mapping">
                     <xsl:apply-templates select="." mode="#current"/>
                 </xsl:for-each>
+                <xsl:for-each-group select="$shacl-rules//parameter" group-by="@name">
+                    <xsl:sort select="current-grouping-key()"/>
+                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                </xsl:for-each-group>
             </shacl-rules>
             
             <skos-rules root="true">
@@ -490,6 +494,10 @@
                 <xsl:for-each select="$skos-rules//node-mapping">
                     <xsl:apply-templates select="." mode="#current"/>
                 </xsl:for-each>
+                <xsl:for-each-group select="$skos-rules//parameter" group-by="@name">
+                    <xsl:sort select="current-grouping-key()"/>
+                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                </xsl:for-each-group>
             </skos-rules>
             
             <translations>

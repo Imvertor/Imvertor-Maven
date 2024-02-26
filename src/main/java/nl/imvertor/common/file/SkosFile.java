@@ -45,21 +45,19 @@ public class SkosFile extends RdfFile {
 	public SkosFile(File file) {
 		super(file);
 	}
-	
-	public void validate(Configurator configurator) throws Exception {
+
+	public void validate(Configurator configurator, ShaclFile shaclSchemaFile) throws Exception {
 		super.parse(configurator);
 		// and parse this file; this is the validation of the model itself 
-		this.parse(configurator);
+		this.parse(configurator, shaclSchemaFile);
+	}
+
+	public void validate(Configurator configurator) throws Exception {
+		parse(configurator, null);
 	}
 	
-	public void parse(Configurator configurator) throws Exception {
-
-		try {
-			
-			// TODO parse...?
-			
-		} catch (Exception e) {
-			throw e;
-		}
+	public void parse(Configurator configurator, ShaclFile shaclSchemaFile) throws Exception {
+		if (shaclSchemaFile != null)
+		   shaclSchemaFile.parse(configurator, this.getAbsolutePath());
 	}
 }

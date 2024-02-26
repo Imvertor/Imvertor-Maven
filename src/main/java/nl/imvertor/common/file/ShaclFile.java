@@ -96,7 +96,9 @@ public class ShaclFile extends RdfFile {
 		
 				// Perform the validation of everything, using the data model
 				// also as the shapes model - you may have them separated
-				ValidationUtil.validateModel(dataModel, dataShape, true); // returns Resource report
+				Configurator.getInstance().getRunner().warn(logger,"Cannot yet validate SKOS result");
+				
+				//ValidationUtil.validateModel(dataModel, dataShape, true); // returns Resource report
 		
 				/* This will return a small report on the status of the model. Format:
 				
