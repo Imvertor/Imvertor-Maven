@@ -29,6 +29,8 @@
     xmlns:ekf="http://EliotKimber/functions"
 
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
+
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all"
     version="3.0">
@@ -55,6 +57,10 @@
     <xsl:variable name="uri-pattern">^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?$</xsl:variable><!-- https://www.rfc-editor.org/rfc/rfc3986#appendix-B -->
     <xsl:variable name="url-pattern">^((?:(?:https?|ftp|gopher|telnet|file|notes|ms-help):(?://|\\\\)(?:www\.)?|www\.)[\w\d:#@%/;$()~_?\+,\-=\\.&amp;]+)$</xsl:variable><!-- https://stackoverflow.com/questions/7107683/regular-expression-for-recognizing-url#7108673 -->
         
+    <xsl:variable name="allow-label" select="false()"/>
+    <xsl:variable name="allow-notation" select="false()"/>
+    <xsl:variable name="allow-narrowerGeneric" select="false()"/>
+    
     <xsl:output method="text"/>
     
     <xsl:template match="/">
@@ -80,8 +86,9 @@
         <xsl:value-of select="concat(
             concat('begrippenkader:', $abbrev,'&#10;'),
             imf:ttl(('a','skos:ConceptScheme')),
-            imf:ttl(('rdfs:label',imf:ttl-value($model-name,'2q'))),
+            if ($allow-label) then imf:ttl(('rdfs:label',imf:ttl-value($model-name,'2q'))) else (),
             imf:ttl(('skos:prefLabel',imf:ttl-value($model-name,'2q','nl'))),
+            imf:ttl(('skos:altLabel',imf:ttl-value($model-name,'2q','nl'))),
             imf:ttl('.'))
             "/>
         
@@ -110,7 +117,7 @@
         <xsl:value-of select="imf:ttl-start($this)"/>
         
         <xsl:value-of select="for $s in imf:get-superclass($this) return imf:ttl(('skosthes:broaderGeneric',imf:ttl-get-uri($s)))"/>
-        <xsl:value-of select="for $s in imf:get-subclasses($this) return imf:ttl(('skosthes:narrowerGeneric',imf:ttl-get-uri($s)))"/>
+        <xsl:value-of select="if ($allow-narrowerGeneric) then for $s in imf:get-subclasses($this) return imf:ttl(('skosthes:narrowerGeneric',imf:ttl-get-uri($s))) else ()"/>
         
         <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
         
@@ -138,7 +145,9 @@
         
         <xsl:value-of select="imf:ttl-start($this)"/>
         
-        <xsl:value-of select="imf:ttl(('skosthes:broaderPartitive',imf:ttl-get-uri($class)))"/>
+        <xsl:variable name="is-enumeration-value" select="$this/../../imvert:designation = 'enumeration'"/>
+        
+        <xsl:value-of select="if (not($is-enumeration-value)) then imf:ttl(('skosthes:broaderPartitive',imf:ttl-get-uri($class))) else ()"/>
         
         <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
         
@@ -203,17 +212,21 @@
         
         <xsl:variable name="is-enumeration" select="$this/imvert:designation = 'enumeration'"/>
         <xsl:variable name="is-enumeration-value" select="$this/../../imvert:designation = 'enumeration'"/>
+        <xsl:variable name="is-attribute" select="$this/../../imvert:designation = 'attribute'"/>
         <xsl:variable name="type" select="if ($is-enumeration) then 'Collection' else 'Concept'"/>
         <xsl:variable name="created" select="imf:create-datum($this/imvert:created)"/>
         <xsl:variable name="modified" select="imf:create-datum($this/imvert:modified)"/>
+        
+        <xsl:variable name="suffix" select="for $class in ($this/ancestor::imvert:class) return ' (' || $class/imvert:name/@original || ')'"/>
         
         <xsl:value-of select="concat(
             imf:ttl-comment(('Construct:',imf:get-display-name($this), concat('(', string-join($this/imvert:stereotype,', ') ,')'))),
             concat(imf:ttl-get-uri($this),'&#10;'),
             imf:ttl(('a',concat($prefixSkos, ':', $type))),
+            if ($allow-label) then imf:ttl(('rdfs:label',imf:ttl-value($name,'2q'))) else (),
             imf:ttl((concat($prefixSkos,':prefLabel'),imf:ttl-value($name,'2q','nl'))),
-            imf:ttl(('rdfs:label',imf:ttl-value($name,'2q'))),
-            if ($is-enumeration or $is-enumeration-value) then imf:ttl((concat($prefixSkos,':notation'),imf:ttl-value($name,'4q','xsd:string'))) else '',
+            imf:ttl((concat($prefixSkos,':altLabel'),imf:ttl-value($name || $suffix,'2q','nl'))),
+            if ($allow-notation) then if ($is-enumeration or $is-enumeration-value) then imf:ttl((concat($prefixSkos,':notation'),imf:ttl-value($name,'4q','xsd:string'))) else '' else (),
             if ($created) then imf:ttl(('dct:created',imf:ttl-value($created,'4q','xsd:date'))) else '',
             if ($modified) then imf:ttl(('dct:modified',imf:ttl-value($modified,'4q','xsd:date'))) else '',
             imf:ttl(('skos:inScheme',concat('begrippenkader:',$abbrev))))
