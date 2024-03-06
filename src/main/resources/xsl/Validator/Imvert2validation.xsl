@@ -1617,7 +1617,6 @@
         <xsl:variable name="compliancy-version" select="(for $m in $metamodel-version-stack return if (starts-with($m,'MIM ')) then $m else ())[1]"/> <!-- lijst van MIM metamodel names. -->
         <xsl:variable name="version" select="imf:get-tagged-value($this,'##CFG-TV-MIMVERSION')"/>
         <xsl:variable name="specified-version" select="'MIM ' || $version"/>
-        <xsl:sequence select="dlogger:save('$val '|| $specified-version,$compliancy-version)"></xsl:sequence>
         <xsl:sequence select="imf:report-warning($this, 
             not($version and ($compliancy-version = $specified-version)), 
             'MIM version [1] does not match the configured version [2]',($specified-version,$compliancy-version))"/>
