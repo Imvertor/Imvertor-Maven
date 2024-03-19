@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import nl.imvertor.common.Configurator;
 
 /**
- * A representation of a Shacl file.
+ * A representation of a Skos file.
  * 
  * @author arjan
  *
