@@ -20,7 +20,7 @@
 
 <!-- 
     This is the kadaster XSD stylesheet for 1.28. It is retained in later releases in order to support the old nilreason aproach. When obsolete, remove.
-    This stylesheet is activated by cli/migratenilreason = 1.28 and 
+    This stylesheet is activated by cli/STUBnilreason = 1.28
 -->
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
