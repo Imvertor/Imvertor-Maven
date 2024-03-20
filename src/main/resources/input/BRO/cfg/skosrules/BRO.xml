@@ -76,7 +76,6 @@
         
         <map id="CFG-TV-ABBREV" type="2q" lang="#all" requires-lang="true">skos:altLabel</map>
         <map id="CFG-TV-CODE" type="2q" lang="#all" requires-lang="false">skos:notation</map>
-        <map id="CFG-TV-DATERECORDED" type="2q" lang="#all" requires-lang="false">dct:created</map>
         <map id="CFG-TV-OWNER" type="2q" lang="#all" requires-lang="false">dct:creator</map>
         <map id="CFG-TV-SOURCE" type="2q" lang="#all" requires-lang="false">dct:source</map>
         

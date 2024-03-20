@@ -71,9 +71,7 @@
             Requires-lang betekent: de taalcode @nl oid moet worden toegevoegd.
         -->
         <map id="CFG-TV-DEFINITION" type="3q" lang="#all" requires-lang="true">skos:definition</map>
-        <map id="CFG-TV-DESCRIPTION" type="3q" lang="#all" requires-lang="true">skos:note</map>
-        
-        <map id="CFG-TV-DATERECORDED" type="2q" lang="#all" requires-lang="false">dct:created</map>
+        <map id="CFG-TV-DESCRIPTION" type="3q" lang="#all" requires-lang="true">skos:scopeNote</map>
         <map id="CFG-TV-SOURCE" type="2q" lang="#all" requires-lang="false">dct:source</map>
         
     </node-mapping>
