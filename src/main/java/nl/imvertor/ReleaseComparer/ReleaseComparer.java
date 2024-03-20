@@ -108,7 +108,7 @@ public class ReleaseComparer extends Step {
 			// als release compare en geen release opgegeven, neem aan dat je met de vorige run wilt vergelijken 
 			String curReleaseString = configurator.getXParm("appinfo/release");
 			String releaseString = configurator.getXParm("cli/comparewith",false);
-			if (releaseString == null) releaseString = curReleaseString;
+			if (releaseString == null || releaseString.equals("unspecified")) releaseString = curReleaseString;
 			
 			// This step succeeds when a release may be made, depending on possible differences in the most recent and current model file 
 			XmlFile oldModelFile = new XmlFile(configurator.getApplicationFolder(releaseString), "etc/system.imvert.xml");
