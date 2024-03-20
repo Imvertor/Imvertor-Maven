@@ -128,9 +128,13 @@ public class XmlComparerFormatter implements ComparisonFormatter {
 			//+ " xpath=\"" + xpath + "\"" 
 			//+ " node=\"" + type + "\"" 
 			+ getNodeprop(attributes, "domain") 
+			+ getNodeprop(attributes, "domain-stereo") 
 			+ getNodeprop(attributes, "class") 
+			+ getNodeprop(attributes, "class-stereo") 
 			+ getNodeprop(attributes, "attass") 
+			+ getNodeprop(attributes, "attass-stereo") 
 			+ getNodeprop(attributes, "property")
+			+ getNodeprop(attributes, "property-stereo")
 			+ getNodeprop(attributes, "value") 
 			+ "/>";
 		

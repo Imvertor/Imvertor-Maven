@@ -139,7 +139,7 @@
     <xsl:function name="local:fetch-release">
         <xsl:param name="this"/>
         <xsl:sequence select="local:create-row($this/imvert:version)"/>
-        <xsl:sequence select="local:create-row($this/imvert:release)"/>
+        <xsl:sequence select="local:create-row($this/imvert:release-REMOVE)"/>
         <xsl:sequence select="local:create-row($this/imvert:phase)"/>
         <xsl:sequence select="local:create-row($this/imvert:documentation-REMOVE)"/>
         <xsl:sequence select="local:create-row($this/imvert:author)"/>
@@ -206,7 +206,8 @@
     <xsl:function name="local:fetch-local-application">
         <xsl:param name="this"/>
         
-        <xsl:sequence select="local:create-row($this/imvert:project)"/>
+        <xsl:sequence select="local:create-row($this/imvert:subpath)"/>
+        <xsl:sequence select="local:create-row($this/imvert:project-REMOVE)"/>
         <xsl:sequence select="local:create-row($this/imvert:generated-REMOVE)"/>
         <xsl:sequence select="local:create-row($this/imvert:generator)"/>
         <xsl:sequence select="local:create-row($this/imvert:exported-REMOVE)"/>
@@ -287,34 +288,37 @@
          </xsl:variable>
          <xsl:element name="{string-join($element-id,'_')}">
              <xsl:for-each select="$element/ancestor-or-self::*">
+                 <xsl:variable name="stereo" select="local:get-stereo(.)"/>
                  <xsl:choose>
                      <xsl:when test="local-name() = 'package'">
                          <xsl:attribute name="domain">{imvert:name/@original}</xsl:attribute>
+                         <xsl:attribute name="domain-stereo">{$stereo}</xsl:attribute>
                      </xsl:when>
                      <xsl:when test="local-name() = 'class'">
                          <xsl:attribute name="class">{imvert:name/@original}</xsl:attribute>
+                         <xsl:attribute name="class-stereo">{$stereo}</xsl:attribute>
                      </xsl:when>
-                     <xsl:when test="local-name() = 'attribute'">
-                         <xsl:attribute name="attass">{imvert:name/@original} (attribute)</xsl:attribute>
-                     </xsl:when>
-                     <xsl:when test="local-name() = 'association'">
-                         <xsl:attribute name="attass">{imvert:name/@original} (association)</xsl:attribute>
+                     <xsl:when test="local-name() = ('attribute','association')">
+                         <xsl:attribute name="attass">{imvert:name/@original}</xsl:attribute>
+                         <xsl:attribute name="attass-stereo">{$stereo}</xsl:attribute>
                      </xsl:when>
                      <xsl:when test="local-name() = ('source','target')">
-                         <xsl:attribute name="attass">{imvert:role/@original} (role)</xsl:attribute>
+                         <xsl:attribute name="attass">{imvert:role/@original}</xsl:attribute>
+                         <xsl:attribute name="attass-stereo">{$stereo}</xsl:attribute>
                      </xsl:when>
                      <!-- TODO rollen -->
                      <xsl:when test="local-name() = ('tagged-value')">
                          <xsl:variable name="value">{imvert:value}</xsl:variable>
-                         <xsl:attribute name="property">tag:{imvert:name/@original}</xsl:attribute>
+                         <xsl:attribute name="property">{imvert:name/@original}</xsl:attribute>
                          <xsl:attribute name="value">{normalize-space($value)}</xsl:attribute>
+                         <xsl:attribute name="property-stereo">TAGGED VALUE</xsl:attribute>
                      </xsl:when>
                      <xsl:when test="not($as-property)">
                          <xsl:attribute name="property"><!--leeg--></xsl:attribute>
                      </xsl:when>
                      <xsl:when test="empty(*)">
                          <xsl:variable name="value">{.}</xsl:variable>
-                         <xsl:attribute name="property">system:{local-name()}</xsl:attribute>
+                         <xsl:attribute name="property">{local-name()}</xsl:attribute>
                          <xsl:attribute name="value">{normalize-space($value)}</xsl:attribute>
                      </xsl:when>
                  </xsl:choose>
@@ -326,6 +330,11 @@
     <xsl:function name="local:get-safe-name" as="xs:string">
         <xsl:param name="name" as="xs:string"/>
         <xsl:value-of select="replace(lower-case($name),'[^a-z0-9]','')"/>
+    </xsl:function>
+    
+    <xsl:function name="local:get-stereo" as="xs:string">
+        <xsl:param name="this" as="element()"/>
+        <xsl:value-of select="string-join($this/imvert:stereotype,', ')"/>
     </xsl:function>
     
 </xsl:stylesheet>

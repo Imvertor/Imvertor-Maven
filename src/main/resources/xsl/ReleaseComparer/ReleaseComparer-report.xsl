@@ -42,11 +42,71 @@
         <xsl:variable name="diff-doc" select="imf:document(imf:get-xparm('properties/WORK_COMPARE_DIFF_FILE'))"/>
         <xsl:sequence select="dlogger:save('$diff-doc',$diff-doc)"/>
         
-        <xsl:variable name="cdiff" select="count($diff-doc/cmps/res)"/>
+        <xsl:variable name="compare-method" select="imf:get-xparm('cli/compare')"/><!-- dat is 'supplier' of 'release' -->
+        <xsl:variable name="supplier-subpath" select="imf:get-xparm('appinfo/supplier-subpath')"/>
+        <xsl:variable name="old-subpath" select="$diff-doc/cmps/res/cmp[1][@property = 'subpath']/@value"/>
+        <xsl:variable name="new-subpath" select="$diff-doc/cmps/res/cmp[2][@property = 'subpath']/@value"/>
+        <xsl:variable name="compare-text">
+            <xsl:choose>
+                <xsl:when test="$old-subpath = $new-subpath">this model and the most recent succesfully built model release</xsl:when>
+                <xsl:when test="$compare-method = 'supplier'">this model and its supplier model <b>{$supplier-subpath}</b></xsl:when>
+                <xsl:when test="not($old-subpath or $new-subpath)">this model and the most recent succesfully built model release</xsl:when> 
+                <xsl:otherwise>models <b>{$old-subpath}</b> and <b>{$new-subpath}</b></xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
+        <xsl:variable name="rows" as="element(tr)*">
+            <xsl:for-each select="$diff-doc/cmps/res/cmp[1]" >
+                <xsl:sort select="@id"/>
+                <xsl:choose>
+                    <xsl:when test="@property = 'subpath'">
+                        <!-- skip -->
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:variable name="type" select="../@type"/>
+                        <tr>
+                            <xsl:choose>
+                                <xsl:when test="$type = 'CHANGED'">
+                                    <td>Changed</td>
+                                    <td><xsl:sequence select="local:show-construct(.,'domain')"/></td>
+                                    <td><xsl:sequence select="local:show-construct(.,'class')"/></td>
+                                    <td><xsl:sequence select="local:show-construct(.,'attass')"/></td>
+                                    <td><xsl:sequence select="local:show-construct(.,'property')"/></td>
+                                    <td>{@value}</td>
+                                    <td>{../cmp[2]/@value}</td>
+                                </xsl:when>
+                                <xsl:when test="$type = 'ADDED'">
+                                    <td>Added</td>
+                                    <td><xsl:sequence select="local:show-construct(.,'domain')"/></td>
+                                    <td><xsl:sequence select="local:show-construct(.,'class')"/></td>
+                                    <td><xsl:sequence select="local:show-construct(.,'attass')"/></td>
+                                    <td><xsl:sequence select="local:show-construct(.,'property')"/></td>
+                                    <td></td>
+                                    <td>{@value}</td>
+                                </xsl:when>
+                                <xsl:when test="$type = 'REMOVED'">
+                                    <td>Removed</td>
+                                    <td><xsl:sequence select="local:show-construct(.,'domain')"/></td>
+                                    <td><xsl:sequence select="local:show-construct(.,'class')"/></td>
+                                    <td><xsl:sequence select="local:show-construct(.,'attass')"/></td>
+                                    <td><xsl:sequence select="local:show-construct(.,'property')"/></td>
+                                    <td></td>
+                                    <td></td>
+                                </xsl:when>
+                            </xsl:choose>
+                        </tr>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </xsl:variable>
+        
+        <xsl:variable name="cdiff" select="count($rows)"/>
+        
         <report>
             <step-display-name>Release comparison</step-display-name>
             <summary>
                 <info label="Comparison">
+                    <xsl:sequence select="imf:report-label('Compare method', $compare-method)"/>
                     <xsl:sequence select="imf:report-label('Number of differences', $cdiff)"/>
                 </info>
             </summary>
@@ -54,56 +114,26 @@
                 <title>Comparison report</title>
                 <info>({$cdiff} differences)</info>
                 <intro>
-                    <p>This report shows all differences found between {x} and {x}.</p>
+                    <p>This report shows {$cdiff} differences found between <xsl:sequence select="$compare-text"/>.</p>
                 </intro>
                 <content>
-                    <table class="tablesorter"> 
-                        <xsl:variable name="rows" as="element(tr)*">
-                            <xsl:for-each select="$diff-doc/cmps/res/cmp[1]" >
-                                <xsl:sort select="@id"/>
-                                <xsl:variable name="type" select="../@type"/>
-                                <tr>
-                                    <xsl:choose>
-                                        <xsl:when test="$type = 'CHANGED'">
-                                            <td>Changed</td>
-                                            <td>{@domain}</td>
-                                            <td>{@class}</td>
-                                            <td>{@attass}</td>
-                                            <td>{local:show-property(@property)}</td>
-                                            <td>{@value}</td>
-                                            <td>{../cmp[2]/@value}</td>
-                                        </xsl:when>
-                                        <xsl:when test="$type = 'ADDED'">
-                                            <td>Added</td>
-                                            <td>{@domain}</td>
-                                            <td>{@class}</td>
-                                            <td>{@attass}</td>
-                                            <td>{local:show-property(@property)}</td>
-                                            <td></td>
-                                            <td>{@value}</td>
-                                        </xsl:when>
-                                        <xsl:when test="$type = 'REMOVED'">
-                                            <td>Removed</td>
-                                            <td>{@domain}</td>
-                                            <td>{@class}</td>
-                                            <td>{@attass}</td>
-                                            <td>{local:show-property(@property)}</td>
-                                            <td></td>
-                                            <td></td>
-                                        </xsl:when>
-                                    </xsl:choose>
-                                </tr>
-                            </xsl:for-each>
-                        </xsl:variable>
-                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'Diff:10,Domain:10,Class:10,Att/Assoc:10,Property:10,Old:25,New:25','compare-info')"/>
-                    </table>
+                    <xsl:choose>
+                        <xsl:when test="$cdiff = 0">
+                            <p><i>No differences.</i></p>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <table class="tablesorter"> 
+                               <xsl:sequence select="imf:create-result-table-by-tr($rows,'Diff:10,Domain:10,Class:10,Att/Assoc:10,Property:10,' || (if ($compare-method = 'supplier') then 'Supplier:25,Client:25' else 'Old:25,New:25'),'compare-info')"/>
+                            </table>           
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </content>
             </page>
             <page>
                 <title>Release notes</title>
                 <info>({$cdiff} differences)</info>
                 <intro>
-                    <p>This report shows all differences found between {x} and {x}. This report is intended to provide ionformation for manually creating <i>release notes</i> on the model.</p>
+                    <p>This report shows {$cdiff} differences found between <xsl:sequence select="$compare-text"/>. This report is intended to provide sufficient information for manually creating <i>release notes</i> on the model.</p>
                 </intro>
                 <content>
                     TODO
@@ -113,14 +143,17 @@
         
     </xsl:template>
     
-    <xsl:function name="local:show-property">
-        <xsl:param name="prop" as="xs:string"/>
-        <xsl:variable name="toks" select="tokenize($prop,':')"/>
-        <xsl:choose>
-            <xsl:when test="$toks[1] = 'system'">{$toks[2]}</xsl:when>
-            <xsl:when test="$toks[1] = 'tag'">Tagged value: {$toks[2]}</xsl:when>
-            <!-- er zijn geen andere, wel kan de waarde leeg zijn -->
-        </xsl:choose>
+    <xsl:function name="local:show-construct" as="item()*">
+        <xsl:param name="this" as="element()?"/>
+        <xsl:param name="type" as="xs:string"/>
+        <xsl:variable name="name" select="$this/@*[local-name() = $type]"/>
+        <xsl:variable name="stereo" select="$this/@*[local-name() = ($type || '-stereo')]"/>
+        <xsl:sequence>
+            <xsl:value-of select="$name"/>
+            <xsl:if test="$stereo">
+                <span class="tid"> ({lower-case($stereo)})</span>
+            </xsl:if>    
+        </xsl:sequence>
     </xsl:function>
-    
+        
 </xsl:stylesheet>

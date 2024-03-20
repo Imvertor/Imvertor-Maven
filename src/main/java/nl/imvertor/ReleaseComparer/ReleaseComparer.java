@@ -104,10 +104,11 @@ public class ReleaseComparer extends Step {
 		Boolean releaseCheck = (cmp != null) && cmp.equals("release");
 		
 		if (releaseCheck) { // a request is made to produce a release comparison
-			String releaseString = configurator.getXParm("cli/comparewith",false);
-			//Boolean release = releaseString != null && !releaseString.equals("00000000");
 			
+			// als release compare en geen release opgegeven, neem aan dat je met de vorige run wilt vergelijken 
 			String curReleaseString = configurator.getXParm("appinfo/release");
+			String releaseString = configurator.getXParm("cli/comparewith",false);
+			if (releaseString == null) releaseString = curReleaseString;
 			
 			// This step succeeds when a release may be made, depending on possible differences in the most recent and current model file 
 			XmlFile oldModelFile = new XmlFile(configurator.getApplicationFolder(releaseString), "etc/system.imvert.xml");
