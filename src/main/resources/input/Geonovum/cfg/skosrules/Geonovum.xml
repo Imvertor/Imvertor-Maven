@@ -26,7 +26,14 @@
     -->
     <vocabularies>
         
-        <base>http://definities.geostandaarden.nl/img/id/conceptscheme/</base>
+        <base>http://definities.geostandaarden.nl/[afkorting]/id/[type]/[naam]</base>
+        <!-- 
+            * afkorting lower case
+            * type bepalen obv:
+                 a skos:Collection = collection
+                 a skos:Concept = concept
+                 a skos:ConceptScheme = conceptscheme
+        -->
         
         <vocabulary>
             <prefix>rdf</prefix>
@@ -52,10 +59,6 @@
             <prefix>xsd</prefix>
             <URI>http://www.w3.org/2001/XMLSchema#</URI>
         </vocabulary> 
-        <vocabulary>
-            <prefix>begrippenkader</prefix>
-            <URI>http://definities.geostandaarden.nl/img/id/conceptscheme/</URI>
-        </vocabulary>        
         
     </vocabularies>
     
