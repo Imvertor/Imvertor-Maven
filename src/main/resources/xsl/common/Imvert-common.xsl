@@ -276,59 +276,74 @@
     
     <xsl:function name="imf:get-construct-name" as="xs:string">
         <xsl:param name="this" as="element()"/>
-
-        <xsl:variable name="precompiled-name" select="$this/@display-name"/>
-        <xsl:choose>
-            <xsl:when test="exists($precompiled-name)">
-                <xsl:value-of select="$precompiled-name"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:variable name="name" select="imf:get-original-names($this)"/>
-                <xsl:variable name="package-names" select="imf:get-original-names($this/ancestor-or-self::imvert:package)"/>
-                <xsl:variable name="class-name" select="imf:get-original-names($this/ancestor-or-self::imvert:class[1])"/>
-                <xsl:variable name="alias" select="$this/imvert:alias"/>
-                <xsl:choose>
-                    <xsl:when test="$this/self::imvert:packages">
-                        <xsl:sequence select="imf:compile-construct-name('(Model: ' || $this/imvert:application || ')',(),(),(),$alias,())"/>
-                    </xsl:when>
-                    <xsl:when test="$this/self::imvert:package">
-                        <xsl:sequence select="imf:compile-construct-name($name,(),(),(),$alias,())"/>
-                    </xsl:when>
-                    <xsl:when test="$this/self::imvert:base">
-                        <xsl:sequence select="imf:compile-construct-name($name,(),(),(),$alias,())"/>
-                    </xsl:when>
-                    <xsl:when test="$this/self::imvert:class">
-                        <xsl:sequence select="imf:compile-construct-name($package-names,$name,(),(),$alias,())"/>
-                    </xsl:when>
-                    <xsl:when test="$this/self::imvert:supertype">
-                        <xsl:sequence select="imf:compile-construct-name($this/imvert:type-package,$this/imvert:type-name,(),(),$alias,())"/>
-                    </xsl:when>
-                    <xsl:when test="$this/self::imvert:attribute">
-                        <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$name,'attrib',$alias,())"/>
-                    </xsl:when>
-                    <xsl:when test="$this/self::imvert:association[not(imvert:name)]">
-                        <xsl:variable name="type" select="concat('[',$this/imvert:type-name,']')"/>
-                        <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$type,imf:get-aggregation($this),$alias,())"/>
-                    </xsl:when>
-                    <xsl:when test="$this/self::imvert:association">
-                        <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$name,imf:get-aggregation($this),$alias,())"/>
-                    </xsl:when>
-                    <xsl:when test="$this/self::imvert:source | $this/self::imvert:target">
-                        <xsl:variable name="assoc" select="$this/.."/>
-                        <xsl:variable name="type" select="concat('[', imf:get-original-names($assoc), ':', $this/imvert:role/@original,']')"/>
-                        <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$type,(),$alias,())"/>
-                    </xsl:when>
-                    <xsl:when test="$this/self::imvert:tagged-value">
-                        <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$name,(),$alias,$this/imvert:name)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:sequence select="imf:compile-construct-name($package-names,$name,local-name($this),(),$alias,())"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:value-of select="imf:compile-construct-name(imf:get-construct-name-frags($this))"/>
     </xsl:function>
     
+    <!-- 
+        Haal een element op met de vorm
+
+        <frags pack="" class="" prop="" kind="" alias="" tv=""/>
+        
+    -->
+    <xsl:function name="imf:get-construct-name-frags" as="element(frags)">
+        <xsl:param name="this" as="element()"/>
+    
+        <xsl:variable name="name" select="imf:get-original-names($this)"/>
+        <xsl:variable name="package-names" select="imf:get-original-names($this/ancestor-or-self::imvert:package)"/>
+        <xsl:variable name="class-name" select="imf:get-original-names($this/ancestor-or-self::imvert:class[1])"/>
+        <xsl:variable name="alias" select="$this/imvert:alias"/>
+        <xsl:choose>
+            <xsl:when test="$this/self::imvert:packages">
+                <frags pack="model:{$this/imvert:application}"/>
+            </xsl:when>
+            <xsl:when test="$this/self::imvert:package">
+                <frags pack="{$name}" alias="{$alias}"/>
+            </xsl:when>
+            <xsl:when test="$this/self::imvert:base">
+                <frags pack="{$name}" alias="{$alias}"/>
+            </xsl:when>
+            <xsl:when test="$this/self::imvert:class">
+                <frags pack="{$package-names}" class="{$name}" alias="{$alias}"/>
+            </xsl:when>
+            <xsl:when test="$this/self::imvert:supertype">
+                <frags pack="{$this/imvert:type-package}" class="{$this/imvert:type-name}" alias="{$alias}"/>
+            </xsl:when>
+            <xsl:when test="$this/self::imvert:attribute">
+                <frags pack="{$package-names}" class="{$class-name}" prop="{$name}" kind="attrib" alias="{$alias}"/>
+            </xsl:when>
+            <xsl:when test="$this/self::imvert:association[not(imvert:name)]">
+                <xsl:variable name="type" select="concat('[',$this/imvert:type-name,']')"/>
+                <frags pack="{$package-names}" class="{$class-name}" prop="{$type}" kind="{imf:get-aggregation($this)}" alias="{$alias}"/>
+            </xsl:when>
+            <xsl:when test="$this/self::imvert:association">
+                <frags pack="{$package-names}" class="{$class-name}" prop="{$name}" kind="{imf:get-aggregation($this)}" alias="{$alias}"/>
+            </xsl:when>
+            <xsl:when test="$this/self::imvert:source | $this/self::imvert:target">
+                <xsl:variable name="assoc" select="$this/.."/>
+                <xsl:variable name="type" select="concat('[', imf:get-original-names($assoc), ':', $this/imvert:role/@original,']')"/>
+                <frags pack="{$package-names}" class="{$class-name}" prop="{$type}" alias="{$alias}" tv=""/>
+            </xsl:when>
+            <xsl:when test="$this/self::imvert:tagged-value">
+                <frags pack="{$package-names}" class="{$class-name}" prop="{$name}" alias="{$alias}" tv="{$this/imvert:name}"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <frags pack="{$package-names}" class="{$class-name}" prop="{local-name($this)}" alias="{$alias}"/>
+            </xsl:otherwise>
+        </xsl:choose>
+                
+    </xsl:function>
+    
+    <!-- 
+        stel de construct name samen op basis van een <frags> element 
+    -->
+    <xsl:function name="imf:compile-construct-name" as="xs:string">
+        <xsl:param name="frags" as="element(frags)"/>
+        <xsl:value-of select="imf:compile-construct-name($frags/@pack,$frags/@class,$frags/@prop,$frags/@kind,$frags/@alias,$frags/@tv)"/>
+    </xsl:function>
+   
+    <!-- 
+        stel de construct name samen op basis van aangeleverde parameters 
+    -->
     <xsl:function name="imf:compile-construct-name" as="xs:string">
         <xsl:param name="package-names" as="xs:string*"/>
         <xsl:param name="class-name" as="xs:string?"/>
@@ -336,12 +351,13 @@
         <xsl:param name="property-kind" as="xs:string?"/> <!-- 'attrib' or 'assoc' or null -->
         <xsl:param name="alias" as="xs:string?"/>
         <xsl:param name="tv-name" as="xs:string?"/>
-        <xsl:variable name="pan" select="if (exists($package-names)) then concat(string-join($package-names,'::'),'::') else ''"/>
-        <xsl:variable name="cln" select="if (exists($class-name)) then $class-name else ''"/>
-        <xsl:variable name="prn" select="if (exists($property-name)) then concat('.',$property-name) else ''"/>
-        <xsl:variable name="prk" select="if (exists($property-kind)) then concat(' (',$property-kind,')') else ''"/>
-        <xsl:variable name="ali" select="if (exists($alias)) then concat(' = ',$alias) else ''"/>
-        <xsl:variable name="tvn" select="if (exists($tv-name)) then concat(' [',$tv-name,']') else ''"/>
+        
+        <xsl:variable name="pan" select="if (imf:exists($package-names)) then concat(string-join($package-names,'::'),'::') else ''"/>
+        <xsl:variable name="cln" select="if (imf:exists($class-name)) then $class-name else ''"/>
+        <xsl:variable name="prn" select="if (imf:exists($property-name)) then concat('.',$property-name) else ''"/>
+        <xsl:variable name="prk" select="if (imf:exists($property-kind)) then concat(' (',$property-kind,')') else ''"/>
+        <xsl:variable name="ali" select="if (imf:exists($alias)) then concat(' = ',$alias) else ''"/>
+        <xsl:variable name="tvn" select="if (imf:exists($tv-name)) then concat(' [',$tv-name,']') else ''"/>
         <xsl:value-of select="concat($pan,$cln,$prn,$prk,$ali,$tvn)"/>
         
         <!--
@@ -633,6 +649,18 @@
         <xsl:sequence select="(for $b in $this return imf:as-boolean($b)) = true()"/><!-- true komt voor in de reeks booleans die wordt afgegeven -->
     </xsl:function>
     
+    <!-- 
+        if any of the items exists and (if string and) not whitespace, return true 
+    -->
+    <xsl:function name="imf:exists" as="xs:boolean">
+        <xsl:param name="this" as="item()*"/>
+        <xsl:sequence select="(for $b in $this return 
+            if ($b instance of xs:string) then 
+              if (normalize-space($b)) then true() else false()
+            else true()
+        ) = true()"/><!-- true komt voor in de reeks booleans die wordt afgegeven -->
+    </xsl:function>
+  
     <!--
         Return all values that are duplicated in sequence passed 
         Credits: http://dnovatchev.wordpress.com/2008/11/13/xpath-2-0-gems-find-all-duplicate-values-in-a-sequence/
@@ -749,12 +777,17 @@
    
     <xsl:function name="imf:get-display-name" as="xs:string">
         <xsl:param name="this" as="node()?"/>
+        <xsl:variable name="precompiled-name" select="$this/@display-name"/>
         <xsl:choose>
-            <xsl:when test="exists($this)">
-                <xsl:variable name="display-name" select="imf:get-construct-name($this)"/>
-                <xsl:value-of select="$display-name"/>
+            <xsl:when test="empty($this)">
+                <xsl:value-of select="'UNKNOWN'"/>
             </xsl:when>
-            <xsl:otherwise>UNKNOWN</xsl:otherwise>
+            <xsl:when test="exists($precompiled-name)">
+                <xsl:value-of select="$precompiled-name"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-construct-name($this)"/>
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
     
@@ -1425,4 +1458,5 @@
         <xsl:sequence select="for $value in $distinct-values return if (count($seq[. = $value]) gt 1) then $value else ()"/>
         
     </xsl:function>
+
 </xsl:stylesheet>
