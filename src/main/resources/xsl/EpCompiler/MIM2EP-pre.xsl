@@ -68,7 +68,9 @@
         <xsl:variable name="relatieklasse" select="mim:relatieklasse/mim:Relatieklasse"/>
         <xsl:variable name="relatie-naam" select="if ($relatierol-leidend) then $relatie/mim:relatierollen/mim:Doel/mim:naam else $relatie/mim:naam"/>
         <mim:Relatiesoort>
-            <mim:naam>{$relatie/mim:naam}</mim:naam>
+            <mim:naam>
+                <xsl:apply-templates select="$relatie/mim:naam"/>
+            </mim:naam>
             <mim:doel>
                 <mim-ref:ObjecttypeRef index="{$relatie/@index}"
                     label="{$relatie-naam}"
@@ -126,6 +128,16 @@
         </xsl:choose>
     </xsl:template>
     
+    <xsl:template match="mim:naam">
+        <xsl:variable name="usable-name" select="imf:extract(.,'[-A-Za-z0-9.:_]')"/>
+        <xsl:if test="$usable-name ne .">
+            <xsl:sequence select="imf:msg('WARNING','Name [1] cannot be used for Json schema construct. Must adapt to [2].',(.,$usable-name))"/>
+        </xsl:if>
+        <mim:naam>
+            <xsl:value-of select="$usable-name"/>
+        </mim:naam>
+    </xsl:template>
+    
     <!-- 
          https://github.com/Geonovum/shapeChangeTest/issues/53
          
@@ -135,7 +147,8 @@
         <xsl:variable name="supers" select="imf:get-mim-supertypes(.)"/>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <xsl:copy-of select="*[not(local-name() = 'waarden')]"/>
+            <xsl:apply-templates select="mim:naam"/>
+            <xsl:copy-of select="*[not(local-name() = ('naam','waarden'))]"/>
             <mim:waarden>
                 <xsl:sequence select="($supers,.)/mim:waarden/mim:Waarde"/>
             </mim:waarden>
