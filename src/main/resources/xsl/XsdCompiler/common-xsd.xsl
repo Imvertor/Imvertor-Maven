@@ -4,6 +4,9 @@
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
+    
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     >
     
     <xsl:variable name="strings-nonempty" select="imf:get-config-xmlschemarules()/parameter[@name='strings-nonempty']"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/52 -->
@@ -376,7 +379,7 @@
 
     <xsl:function name="imf:create-nonempty-constraint" as="item()*">
         <xsl:param name="type" as="xs:string?"/>
-        <xsl:if test="($type=('scalar-string', 'scalar-uri') or not($type)) and imf:boolean($strings-nonempty)">
+        <xsl:if test="($type=('scalar-string', 'xs:string','scalar-uri','xs:anyURI') or not($type)) and imf:boolean($strings-nonempty)">
             <xs:pattern value="\S.*"/> <!-- Note: do not use xs:minLength as this allows for a single space -->
         </xsl:if>
     </xsl:function>
