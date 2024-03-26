@@ -111,8 +111,8 @@
         
         <xsl:value-of select="imf:ttl-start($this)"/>
         
-        <xsl:value-of select="for $s in imf:get-superclass($this) return imf:ttl(('skosthes:broaderGeneric',imf:ttl-get-uri($s,'concept')))"/>
-        <xsl:value-of select="if ($allow-narrowerGeneric) then for $s in imf:get-subclasses($this) return imf:ttl(('skosthes:narrowerGeneric',imf:ttl-get-uri($s,'concept'))) else ()"/>
+        <xsl:value-of select="for $s in imf:get-superclass($this) return imf:ttl(('skos:broader',imf:ttl-get-uri($s,'concept')))"/>
+        <xsl:value-of select="if ($allow-narrowerGeneric) then for $s in imf:get-subclasses($this) return imf:ttl(('skos:narrower',imf:ttl-get-uri($s,'concept'))) else ()"/>
         
         <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
         
