@@ -84,7 +84,6 @@
             imf:ttl(('a','skos:ConceptScheme')),
             if ($allow-label) then imf:ttl(('rdfs:label',imf:ttl-value($model-name,'2q'))) else (),
             imf:ttl(('skos:prefLabel',imf:ttl-value($model-name,'2q','nl'))),
-            imf:ttl(('skos:altLabel',imf:ttl-value($model-name,'2q','nl'))),
             imf:ttl('.'))
             "/>
         
@@ -221,7 +220,7 @@
             imf:ttl(('a',concat($prefixSkos, ':', $type))),
             if ($allow-label) then imf:ttl(('rdfs:label',imf:ttl-value($name,'2q'))) else (),
             imf:ttl((concat($prefixSkos,':prefLabel'),imf:ttl-value($name,'2q','nl'))),
-            imf:ttl((concat($prefixSkos,':altLabel'),imf:ttl-value($name || $suffix,'2q','nl'))),
+            if ($suffix) then imf:ttl((concat($prefixSkos,':altLabel'),imf:ttl-value($name || $suffix,'2q','nl'))) else (),
             if ($allow-notation) then if ($is-enumeration or $is-enumeration-value) then imf:ttl((concat($prefixSkos,':notation'),imf:ttl-value($name,'4q','xsd:string'))) else '' else (),
             if ($created) then imf:ttl(('dct:created',imf:ttl-value($created,'4q','xsd:date'))) else '',
             if ($modified) then imf:ttl(('dct:modified',imf:ttl-value($modified,'4q','xsd:date'))) else '',
