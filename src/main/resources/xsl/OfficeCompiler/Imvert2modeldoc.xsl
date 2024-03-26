@@ -29,6 +29,8 @@
     
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
+    xmlns:local="urn:local"
+    
     exclude-result-prefixes="#all" 
     version="3.0">
 
@@ -630,7 +632,7 @@
             <xsl:variable name="associations" select="imvert:associations/imvert:association"/>
             <xsl:variable name="compositions" select="$associations[imvert:stereotype/@id = ('stereotype-name-association-to-composite')]"/>
           
-            <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="detail"/>
+            <xsl:apply-templates select="imvert:attributes/imvert:attribute[not(imvert:stereotype/@id = 'stereotype-name-attributegroup')]" mode="detail"/>
             <xsl:for-each select="$compositions">
                 <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
                 <xsl:apply-templates select="$defining-class" mode="detail"/>
