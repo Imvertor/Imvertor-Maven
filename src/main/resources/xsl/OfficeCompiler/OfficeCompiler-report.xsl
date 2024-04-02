@@ -82,18 +82,18 @@
                                 <p>The HTML document may be opened in MsWord. 
                                     In order to apply specific styles to the markup, the contents of the MsWord document may be copied to the clipboard, 
                                     and pasted into a template document, or styles from a template document may be applied to the just created MsWord document.</p>
-                                <p>Packaged documentation files are <a href="{concat('../../cat/',$msword-filename)}">here</a>.</p>
+                                <p><a href="{concat('../../cat/',$msword-filename)}">Click here</a> for the packaged documentation files.</p>
                             </div>
                         </xsl:if>
                         <xsl:if test="$respec-filename">
                             <div>
                                 <h1>Respec documentation</h1>
-                                <p>Packaged documentation files are <a href="{concat('../../cat/',$respec-filename)}">here</a>.</p>
+                                <p><a href="{concat('../../cat/',$respec-filename)}">Click here</a> for the packaged documentation file. Use Control-Click to ensure correct rendering of the Respec file.</p>
                             </div>
                         </xsl:if>
                         <div>
                             <h1>External documentation</h1>
-                            <p>Packaged externally compiled documentation files may be found <a href="{concat('../../cat/',$model-respec-filename)}">here</a>.</p>
+                            <p><a href="{concat('../../cat/',$model-respec-filename)}">Click here</a> for the packaged externally compiled documentation. Use Control-Click to ensure correct rendering of the Respec file.</p>
                             <p><i>Please consult your Imvertor provider if the link does not resolve to a valid HTML document.</i></p>
                         </div>
 
