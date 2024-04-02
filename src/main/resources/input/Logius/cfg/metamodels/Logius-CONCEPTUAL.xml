@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <!-- Logius follows MIM 1.1.1 requirements -->
+    
+    <xi:include href="../../../MIM/cfg/metamodels/MIM111.xml"/>
+    
+    <name>Logius CONCEPTUEEL</name>
+    
+    <profiles>
+        <profile lang="nl"> 
+            <id>MEGNL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1.1.1 Logius NL</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>MEGEN</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1.1.1 Logius EN</desc>
+        </profile>
+    </profiles>
+    
+    <features>
+        <feature name="role-based">false</feature>
+        <feature name="allow-multiple-supertypes">false</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+    </features>
+    
+</metamodel>
