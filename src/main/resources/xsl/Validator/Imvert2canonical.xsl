@@ -27,6 +27,8 @@
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy" 
     
+    xmlns:fn="http://www.w3.org/2005/xpath-functions"
+    
     exclude-result-prefixes="#all"
     expand-text="yes"
     >
@@ -363,6 +365,23 @@
                </xsl:otherwise>
            </xsl:choose>
         </xsl:copy>
+    </xsl:template>
+    
+    <!-- 
+        process ImageManager images. / #471
+        example: $imageman://id=1703040472;mdg=Global;name=test1.png;type=Bitmap; 
+    -->
+    <xsl:template match="xhtml:a" mode="copy-html">
+        <xsl:choose>
+            <xsl:when test="starts-with(@href,'$imageman:')">
+                <xsl:variable name="parse" select="analyze-string(@href,'id=(.*?);.*?name=(.*?);')"/>
+                <xsl:variable name="image-name" select="$parse/fn:match/fn:group[@nr = '1'] || '_' || $parse/fn:match/fn:group[@nr = '2']"/>
+                <img src="{$image-name}" origin="imageman" class="image-asset"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="node()|@*" mode="#default mode-tv copy-html">

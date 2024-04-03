@@ -663,6 +663,13 @@
         </xsl:choose>
     </xsl:template>
     
+    <xsl:template match="img[@origin = 'imageman']" mode="windup">
+        <img>
+            <xsl:copy-of select="@*"/>
+            <xsl:attribute name="src" select="imf:insert-image-path(@src)"/>
+            <xsl:apply-templates mode="windup"/>
+        </img>
+    </xsl:template>
     <xsl:template match="section[@level ge '7']" mode="windup">
         <div class="deepheader">
             <xsl:apply-templates select="node()|@*" mode="#current"/>
@@ -687,7 +694,7 @@
         <xsl:for-each select="section[@type = 'IMAGEMAP']">
             <xsl:variable name="diagram-id" select="@id"/>
             <xsl:variable name="diagram" select="$imagemap/imvert-imap:diagram[imvert-imap:id = $diagram-id]"/>
-            <xsl:variable name="diagram-path" select="imf:insert-diagram-path($diagram-id)"/>
+            <xsl:variable name="diagram-path" select="imf:insert-image-path($diagram-id || '.png')"/>
             <xsl:variable name="diagram-name" select="xs:string($diagram/imvert-imap:name)"/>
             <xsl:variable name="diagram-show-caption" select="xs:boolean($diagram/imvert-imap:show-caption)"/>
             <xsl:variable name="diagram-css-class" select="if ($diagram/imvert-imap:purpose = 'CFG-IMG-OVERVIEW') then 'overview' else ''"/>

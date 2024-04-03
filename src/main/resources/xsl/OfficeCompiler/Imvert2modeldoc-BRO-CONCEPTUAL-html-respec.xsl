@@ -73,9 +73,8 @@
         </xsl:comment>
     </xsl:function>
     
-    <xsl:function name="imf:insert-diagram-path">
-        <xsl:param name="diagram-id"/>
-        <xsl:value-of select="concat('data/Images/',$diagram-id,'.png')"/>
-    </xsl:function>
-    
+    <xsl:function name="imf:insert-image-path">
+        <xsl:param name="image-filename"/>
+        <xsl:value-of select="concat('data/Images/',$image-filename)"/>
+    </xsl:function>  
 </xsl:stylesheet>
