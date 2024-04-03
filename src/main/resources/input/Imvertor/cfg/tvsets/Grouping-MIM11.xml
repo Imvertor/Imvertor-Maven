@@ -460,6 +460,16 @@
             </stereotypes>
         </tv>
         
+        <tv norm="space" id="CFG-TV-FAMILY">
+            <name lang="nl">Familie</name>
+            <name lang="en">Family</name>
+            <derive>yes</derive>
+            <desc lang="nl">De groep modellen waartoe dit externe model behoort.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
     
 </tagset>

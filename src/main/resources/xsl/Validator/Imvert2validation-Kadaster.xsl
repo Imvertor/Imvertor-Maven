@@ -17,24 +17,27 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
+    
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
-    exclude-result-prefixes="#all" 
-    version="2.0">
-
+    >
+    
     <!-- 
-        Validation of the UML only for Kadaster rules. 
+        Validation of Kadaster models. 
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
+    
+    <!-- follow guidelines for Kadaster and KING (KK) -->
+    
+    <xsl:include href="Imvert2validation-KK.xsl"/>
     
     <xsl:variable name="application-package" select="//imvert:package[imf:boolean(imvert:is-root-package)]"/>
     <xsl:variable name="domain-package" select="$application-package//imvert:package[imvert:stereotype/@id = (('stereotype-name-domain-package','stereotype-name-view-package'))]"/>
@@ -57,10 +60,6 @@
     <xsl:variable name="id-domain-values" select="for $a in //imvert:attribute[imf:boolean(imvert:is-id)] return imf:get-tagged-value($a,'##CFG-TV-DOMAIN')"/>
     
     <xsl:variable name="is-basemodel" select="$application-package/imvert:stereotype/@id = ('stereotype-name-informatiemodel-package','stereotype-name-base-package')"/>
-    
-    <!-- follow guidelines for Kadaster and KING (KK) -->
-    
-    <xsl:include href="Imvert2validation-KK.xsl"/>
     
     <!-- 
         Document validation; this validates the root (application-)package.
@@ -284,15 +283,8 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <!-- 
-        other validation 
-    -->
-    <xsl:template match="*"> 
+    <xsl:template match="node()"> 
         <xsl:apply-templates/>
     </xsl:template> 
-
-    <xsl:template match="text()|processing-instruction()"> 
-        <!-- nothing -->
-    </xsl:template>
-
+    
 </xsl:stylesheet>

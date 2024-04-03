@@ -17,21 +17,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
-    exclude-result-prefixes="#all" 
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy" 
+    
+    exclude-result-prefixes="#all"
     expand-text="yes"
-    version="3.0"
     >
-
+    
     <!-- 
-          Transform BP UML constructs to canonical UML constructs.
+       Canonization of Kadaster models.
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
@@ -99,7 +99,7 @@
         <imvert:stereotype id="stereotype-name-union-datatypes" origin="system">{imf:get-config-name-by-id('stereotype-name-union-datatypes')}</imvert:stereotype>
     </xsl:template>
     remove?>
-    
+      
     <!-- 
        identity transform
     -->
@@ -107,6 +107,5 @@
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
         </xsl:copy>
-    </xsl:template>    
-    
+    </xsl:template>  
 </xsl:stylesheet>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<skos-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <name>Logius</name>
+  
+    <!-- 
+        Geonovum SBB SKOS rules 
+    -->
+    <vocabularies>
+        
+        <base>http://definities.geostandaarden.nl/[afkorting]/id/[type]/[naam]</base>
+        <!-- 
+            * afkorting lower case
+            * type bepalen obv:
+                 a skos:Collection = collection
+                 a skos:Concept = concept
+                 a skos:ConceptScheme = conceptscheme
+        -->
+        
+        <vocabulary>
+            <prefix>rdf</prefix>
+            <URI>http://www.w3.org/1999/02/22-rdf-syntax-ns#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>rdfs</prefix>
+            <URI>http://www.w3.org/2000/01/rdf-schema#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>skos</prefix>
+            <URI>http://www.w3.org/2004/02/skos/core#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>skosthes</prefix>
+            <URI>http://purl.org/iso25964/skos-thes#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>dct</prefix>
+            <URI>http://purl.org/dc/terms/</URI>
+        </vocabulary> 
+        <vocabulary>
+            <prefix>xsd</prefix>
+            <URI>http://www.w3.org/2001/XMLSchema#</URI>
+        </vocabulary> 
+        
+    </vocabularies>
+    
+    <!-- 
+        URL van de Shacl specificatie voor SBB Skos 
+    -->
+    <parameter name="skos-schema-url">https://github.com/pldn/nederlands-profiel-voor-stelselcatalogi/blob/main/profiles/skos-ap-nl.ttl</parameter> 
+    
+    <node-mapping>
+        <!-- 
+            Alleen de tagged values die hier zijn opgenomen worden omgezet naar een regel in TTL SKOS
+            
+            Requires-lang betekent: de taalcode @nl oid moet worden toegevoegd.
+        -->
+        <map id="CFG-TV-DEFINITION" type="3q" lang="#all" requires-lang="true">skos:definition</map>
+        <map id="CFG-TV-DESCRIPTION" type="3q" lang="#all" requires-lang="true">skos:scopeNote</map>
+        <map id="CFG-TV-SOURCE" type="2q" lang="#all" requires-lang="false">dct:source</map>
+        
+    </node-mapping>
+    
+    
+</skos-rules>

@@ -13,6 +13,8 @@
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all" 
+    expand-text="yes"
+    
     version="3.0">
     
     <xsl:import href="../../common/Imvert-common.xsl"/>
@@ -93,7 +95,7 @@
         <xsl:choose>
             <!-- verwerken van diagrammen -->
             <xsl:when test="@type = 'IMAGEMAPS'">
-               <xsl:call-template name="process-imagemaps"/>     
+                <xsl:call-template name="process-imagemaps"/>     
             </xsl:when>
             <xsl:when test="section[@type = 'IMAGEMAP']"><!-- the type is not IMAGEMAPS -->
                 <section level="{$level}">
@@ -661,6 +663,13 @@
         </xsl:choose>
     </xsl:template>
     
+    <xsl:template match="img[@origin = 'imageman']" mode="windup">
+        <img>
+            <xsl:copy-of select="@*"/>
+            <xsl:attribute name="src" select="imf:insert-image-path(@src)"/>
+            <xsl:apply-templates mode="windup"/>
+        </img>
+    </xsl:template>
     <xsl:template match="section[@level ge '7']" mode="windup">
         <div class="deepheader">
             <xsl:apply-templates select="node()|@*" mode="#current"/>
@@ -685,11 +694,15 @@
         <xsl:for-each select="section[@type = 'IMAGEMAP']">
             <xsl:variable name="diagram-id" select="@id"/>
             <xsl:variable name="diagram" select="$imagemap/imvert-imap:diagram[imvert-imap:id = $diagram-id]"/>
-            <xsl:variable name="diagram-path" select="imf:insert-diagram-path($diagram-id)"/>
+            <xsl:variable name="diagram-path" select="imf:insert-image-path($diagram-id || '.png')"/>
             <xsl:variable name="diagram-name" select="xs:string($diagram/imvert-imap:name)"/>
             <xsl:variable name="diagram-show-caption" select="xs:boolean($diagram/imvert-imap:show-caption)"/>
             <xsl:variable name="diagram-css-class" select="if ($diagram/imvert-imap:purpose = 'CFG-IMG-OVERVIEW') then 'overview' else ''"/>
-            <xsl:variable name="caption-desc" select="content/part[@type='CFG-DOC-DESCRIPTION']/item[2]"/>
+            
+            <xsl:variable name="caption-nodes" select="content/part[@type='CFG-DOC-DESCRIPTION']/item[2]/node()"/>
+            <xsl:variable name="caption-desc-doc">{$caption-nodes}</xsl:variable>
+            <xsl:variable name="caption-desc" select="if (normalize-space($caption-desc-doc)) then normalize-space($caption-desc-doc) else $diagram-name"/>
+            
             <xsl:variable name="map" as="element(map)">
                 <map name="imagemap-{$diagram-id}">
                     <xsl:for-each select="$diagram/imvert-imap:map">
@@ -710,11 +723,12 @@
             <div class="imageinfo {$diagram-css-class}">
                 <xsl:choose>
                     <xsl:when test="not($diagram-show-caption)">
-                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
+                        <xsl:sequence select="$map"/>
                     </xsl:when>
                     <xsl:when test="$diagram-encoding = 'figure'">
                         <figure>
-                            <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+                            <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
                             <figcaption>
                                 <xsl:sequence select="imf:parse-diagram-title($diagram-name)[1]"/> 
                             </figcaption>
@@ -723,12 +737,12 @@
                         <xsl:if test="normalize-space($caption-desc)">    
                             <!--<xsl:text> &#8212; </xsl:text>-->
                             <p>
-                                <xsl:sequence select="$caption-desc/node()"/>
+                                <xsl:sequence select="$caption-nodes"/>
                             </p>
                         </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>
-                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram {$caption-desc}"/>
+                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
                         <xsl:sequence select="$map"/>
                         <!-- create the caption -->
                         <p>
@@ -737,7 +751,7 @@
                             </b>
                             <xsl:if test="normalize-space($caption-desc)">    
                                 <!--<xsl:text> &#8212; </xsl:text>-->
-                                <xsl:sequence select="$caption-desc/node()"/>
+                                <xsl:sequence select="$caption-nodes"/>
                             </xsl:if>
                         </p>    
                     </xsl:otherwise>

@@ -31,12 +31,12 @@
          <metagegeven kardinaliteit="0..1">Regels</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="0..1">Eigenaar</metagegeven><!-- add ext 1.1.1 -->
          <!-- json extensie -->
-         <metagegeven kardinaliteit="0..1">Primaire geometrie</metagegeven>
-         <metagegeven kardinaliteit="0..1">Primaire plaats</metagegeven>
-         <metagegeven kardinaliteit="0..1">Primair moment</metagegeven>
-         <metagegeven kardinaliteit="0..1">Primair interval</metagegeven>
-         <metagegeven kardinaliteit="0..1">InlineOrByReference</metagegeven>
-         <metagegeven kardinaliteit="0..1">Meeteenheid</metagegeven>
+         <metagegeven kardinaliteit="0..1">jsonPrimaryGeometry</metagegeven>
+         <metagegeven kardinaliteit="0..1">jsonPrimaryPlace</metagegeven>
+         <metagegeven kardinaliteit="0..1">jsonPrimaryInstant</metagegeven>
+         <metagegeven kardinaliteit="0..1">jsonPrimaryInterval</metagegeven>
+         <metagegeven kardinaliteit="0..1">inlineOrByReference</metagegeven>
+         <metagegeven kardinaliteit="0..1">Eenheid</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Codelijst</naam>
@@ -50,7 +50,7 @@
          <metagegeven kardinaliteit="1">Datum opname</metagegeven>
          <metagegeven kardinaliteit="0..1">Locatie</metagegeven>
          <!-- json extensie -->
-         <metagegeven kardinaliteit="0..1">Waarde codering type</metagegeven>
+         <metagegeven kardinaliteit="0..1">literalEncodingType</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Constraint</naam>
@@ -98,7 +98,7 @@
          <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
          <!-- json extensie -->
-         <metagegeven kardinaliteit="0..1">Waarde codering type</metagegeven>
+         <metagegeven kardinaliteit="0..1">literalEncodingType</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Enumeratiewaarde</naam>
@@ -389,6 +389,8 @@
          <metagegeven kardinaliteit="1">Mogelijk geen waarde</metagegeven>
          <metagegeven kardinaliteit="1">Identificerend</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Aggregatietype</metagegeven><!-- add 1.1.1 -->
+         <!-- json extensie -->
+         <metagegeven kardinaliteit="0..1">inlineOrByReference</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Relatierol - Relatiesoort leidend</naam>
@@ -412,7 +414,7 @@
          <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
          <!-- json extensie -->
-         <metagegeven kardinaliteit="0..1">InlineOrByReference</metagegeven>
+         <metagegeven kardinaliteit="0..1">inlineOrByReference</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Relatiesoort - Relatiesoort leidend</naam>
@@ -436,7 +438,7 @@
          <metagegeven kardinaliteit="1">Aggregatietype</metagegeven>
          <metagegeven kardinaliteit="1">Relatie eigenaar</metagegeven><!-- add ext 1.1.1 -->
          <!-- json extensie -->
-         <metagegeven kardinaliteit="0..1">InlineOrByReference</metagegeven>
+         <metagegeven kardinaliteit="0..1">inlineOrByReference</metagegeven>
       </modelelement>
       <modelelement>
          <naam>Static liskov</naam>
@@ -567,11 +569,11 @@
          <modelelement kardinaliteit="1">Relatierol - Relatierol leidend</modelelement>
          <modelelement kardinaliteit="0..1">Relatierol - Relatiesoort leidend</modelelement>
          <modelelement kardinaliteit="0..1">Relatiesoort - Relatierol leidend</modelelement>
-         <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
+         <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
          <modelelement kardinaliteit="1">View</modelelement>
       </metagegeven>
       <metagegeven>
-         <naam>Meeteenheid</naam>
+         <naam>Eenheid</naam>
          <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
       </metagegeven>
       <metagegeven>
@@ -679,7 +681,7 @@
          <modelelement kardinaliteit="1">Informatiemodel</modelelement>
       </metagegeven>
       <metagegeven>
-         <naam>InlineOrByReference</naam>
+         <naam>inlineOrByReference</naam>
          <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
          <modelelement kardinaliteit="0..1">Relatiesoort - Relatierol leidend</modelelement>
          <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
@@ -793,19 +795,19 @@
          <modelelement kardinaliteit="0..1">Objecttype</modelelement>
       </metagegeven>
       <metagegeven>
-         <naam>Primaire geometrie</naam>
+         <naam>jsonPrimaryGeometry</naam>
          <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
       </metagegeven>
       <metagegeven>
-         <naam>Primaire plaats</naam>
+         <naam>jsonPrimaryPlace</naam>
          <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
       </metagegeven>
       <metagegeven>
-         <naam>Primair moment</naam>
+         <naam>jsonPrimaryInstant</naam>
          <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
       </metagegeven>
       <metagegeven>
-         <naam>Primair interval</naam>
+         <naam>jsonPrimaryInterval</naam>
          <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
       </metagegeven>
       <metagegeven>
@@ -884,7 +886,7 @@
          <modelelement kardinaliteit="1">Relatiesoort - Relatiesoort leidend</modelelement>
       </metagegeven>
       <metagegeven>
-         <naam>Waarde codering type</naam>
+         <naam>literalEncodingType</naam>
          <modelelement kardinaliteit="0..1">Codelijst</modelelement>
          <modelelement kardinaliteit="0..1">Enumeratie</modelelement>
       </metagegeven>

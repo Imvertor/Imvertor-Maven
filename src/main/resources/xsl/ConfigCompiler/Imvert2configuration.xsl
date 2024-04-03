@@ -453,6 +453,7 @@
                 <xsl:apply-templates select="($doc-rules//show-properties)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//respec-config)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//identifying-attribute-with-context)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//gegevensgroep-attribute-container)[last()]" mode="#current"/>
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="@order" order="ascending"/>
@@ -479,6 +480,10 @@
                 <xsl:for-each select="$shacl-rules//node-mapping">
                     <xsl:apply-templates select="." mode="#current"/>
                 </xsl:for-each>
+                <xsl:for-each-group select="$shacl-rules//parameter" group-by="@name">
+                    <xsl:sort select="current-grouping-key()"/>
+                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                </xsl:for-each-group>
             </shacl-rules>
             
             <skos-rules root="true">
@@ -489,6 +494,10 @@
                 <xsl:for-each select="$skos-rules//node-mapping">
                     <xsl:apply-templates select="." mode="#current"/>
                 </xsl:for-each>
+                <xsl:for-each-group select="$skos-rules//parameter" group-by="@name">
+                    <xsl:sort select="current-grouping-key()"/>
+                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                </xsl:for-each-group>
             </skos-rules>
             
             <translations>

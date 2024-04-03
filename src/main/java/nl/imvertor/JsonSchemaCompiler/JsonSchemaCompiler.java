@@ -21,11 +21,15 @@
 package nl.imvertor.JsonSchemaCompiler;
 
 import java.io.File;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.NodeList;
 
+import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.JsonFile;
 import nl.imvertor.common.file.XmlFile;
@@ -47,6 +51,8 @@ public class JsonSchemaCompiler extends Step {
 	public static final String STEP_NAME = "JsonSchemaCompiler";
 	public static final String VC_IDENTIFIER = "$Id: $";
 
+	private static HashMap<String,String> jsonSchemaFiles = new HashMap<String,String>(); 
+	
 	/**
 	 *  run the main translation
 	 */
@@ -56,7 +62,7 @@ public class JsonSchemaCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
-		runner.info(logger,"Compiling JSON schema");
+		runner.info(logger,"Compiling and validating JSON schema");
 		
 		generate();
 		
@@ -89,20 +95,28 @@ public class JsonSchemaCompiler extends Step {
 		
 		runner.debug(logger,"CHAIN","Generating Json");
 		
+		// check of vorige EP proces goed is afgerond
+		succeeds = succeeds && AnyFile.exists(configurator.getXParm("properties/WORK_EP_XMLPATH",false));
+		
 		// Transform previously generated EP to Json XML
 		if (configurator.getXParm("system/ep-schema-version").equals("1"))
 			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH","properties/WORK_JSONXML_XMLPATH", "properties/IMVERTOR_JSONXML_XSLPATH");
 		else 
 			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH","properties/WORK_JSONXML_XMLPATH", "properties/IMVERTOR_JSONXML2_XSLPATH");
-				
+
 		// convert the json xml to Json.
 		XmlFile jsonXmlFile = new XmlFile(configurator.getXParm("properties/WORK_JSONXML_XMLPATH"));
 		JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/WORK_SCHEMA_JSONPATH"));
 		YamlFile yamlFile = new YamlFile(configurator.getXParm("properties/WORK_SCHEMA_YAMLPATH"));
-		jsonXmlFile.toJson(jsonFile,true);
 		
-		// Debug: test if json is okay
-		succeeds = succeeds && jsonFile.validate();
+		if (succeeds) jsonXmlFile.toJson(jsonFile,true);
+		
+		// Debug: test if json is okay.
+		// het toepasbare metaschema si doorgegeven via xparm 
+		
+		JsonFile metaSchemaFile = jsonSchemaFileByCatalog(configurator.getXParm("system/json-metaschema-url"));
+		succeeds = succeeds && jsonFile.isWellformed();
+		succeeds = succeeds && jsonFile.isValid(metaSchemaFile);
 		
 		// pretty print and store to json folder
 		if (succeeds) {
@@ -110,8 +124,8 @@ public class JsonSchemaCompiler extends Step {
 			jsonFile.toYaml(yamlFile);
 			
 			// copy to the app folder
-			String schemaNameTv  = configurator.getXParm("appinfo/json-document-name");
-			String schemaNameCli = configurator.mergeParms(configurator.getXParm("cli/jsonschemaname"));
+			String schemaNameTv  = configurator.getXParm("appinfo/json-document-name",false);
+			String schemaNameCli = configurator.mergeParms(configurator.getXParm("cli/jsonschemaname",true));
 			String schemaName = (schemaNameTv == null || schemaNameTv.matches("^\s*$")) ? schemaNameCli : schemaNameTv;
 			
 			 // normaliseerd deze naam; volg BP Json conventies
@@ -131,5 +145,10 @@ public class JsonSchemaCompiler extends Step {
 		configurator.setXParm("system/json-schema-created",succeeds);
 		
 		return succeeds;
+	}
+	
+	static JsonFile jsonSchemaFileByCatalog(String Url) throws Exception {
+		String path = AnyFile.fileByCatalog(Url);
+		return new JsonFile(path); 	
 	}
 }

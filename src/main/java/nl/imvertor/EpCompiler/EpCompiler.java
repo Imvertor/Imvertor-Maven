@@ -28,6 +28,7 @@ import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.exceptions.ConfiguratorException;
+import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
 
@@ -83,6 +84,9 @@ public class EpCompiler extends Step {
 		
 		// Create EP
 		if (requiresMIM()) {
+			// check of MIM resultaat beschikbaar is 
+			succeeds = succeeds && AnyFile.exists(configurator.getXParm("properties/WORK_MIMFORMAT_XMLPATH",false));
+			// verwerk MIM naar EP
 			succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH","properties/WORK_EP_XMLPATH_PRE", "properties/IMVERTOR_EP2_XSLPATH_PRE");
 			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH_PRE","properties/WORK_EP_XMLPATH_CORE", "properties/IMVERTOR_EP2_XSLPATH_CORE");
 			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH_CORE","properties/WORK_EP_XMLPATH_FINAL", "properties/IMVERTOR_EP2_XSLPATH_POST");

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <xi:include href="MIM111.xml"/>
+    
+    <name>MIM 1.2</name>
+    
+    <desc lang="en">Metamodel for common constructs in MIM 1.2 models</desc>
+    <desc lang="nl">Metamodel voor gemeenschappelijkheden in MIM 1.2 modellen</desc>
+        
+    <profiles>
+        <profile lang="nl">
+            <id>MIM12NL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1.2 NL</desc> 
+        </profile>
+        <profile lang="en">
+            <id>MIM12EN</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1.2 EN</desc>
+        </profile>
+    </profiles>
+    
+    <stereotypes xml:id="stereotypes">
+        
+        <!-- static is niet meer een primary stereotype -->
+        
+        <stereo id="stereotype-name-static-generalization" primary="no"><!-- https://github.com/Geonovum/MIM-Werkomgeving/issues/195 (niet meer primary) -->
+            <source>MIM-1.2</source>
+        </stereo>
+        
+    </stereotypes>
+    
+    
+</metamodel>

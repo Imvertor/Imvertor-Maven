@@ -17,23 +17,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
-    exclude-result-prefixes="#all" 
-    version="2.0">
-
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    >
+    
     <!-- 
-        Validation of the UML only for KING rules, which follow the BP rules mostly. 
-        This validatiuon may be imported by stylesheets for SIM or UGM that augment the validation rules.
+        Validation of KING/VNGR SIM models.
     -->
     
-    <xsl:import href="Imvert2validation-KING.xsl"/>
+    <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
    
     <!-- TODO what special validations for KING SIM? -->
@@ -48,5 +47,9 @@
         
         <xsl:next-match/>
     </xsl:template>    
+    
+    <xsl:template match="node()"> 
+        <xsl:apply-templates/>
+    </xsl:template> 
     
 </xsl:stylesheet>

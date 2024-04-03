@@ -94,6 +94,10 @@
             <desc lang="en">The type to which an attribute may belong.</desc>
             <desc lang="nl">De soort waartoe een attribuut kan behoren.</desc>
             <construct>attribute</construct>
+            <context>
+                <parent-stereo>stereotype-name-objecttype</parent-stereo>
+                <parent-stereo>stereotype-name-union-attributes</parent-stereo>
+            </context>
         </stereo>
       
         <stereo id="stereotype-name-externekoppeling" primary="yes">

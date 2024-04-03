@@ -81,9 +81,9 @@
         <!-- create frameset -->
         <xsl:result-document href="{$doc-folder-url}index.html">
             <html>
-                <xsl:call-template name="create-html-head">
-                    <xsl:with-param name="title" select="concat('Imvert - ', imf:get-config-string('cli','application','Unknown application'))"/>
-                </xsl:call-template>
+                <title><!-- see #440 -->
+                    <xsl:value-of select="concat('Imvert - ', imf:get-config-string('cli','application','Unknown application'))"/>
+                </title>
                 <frameset cols="20%,80%" title="Imvertor documentation">
                     <frame src="toc/index.html" name="toc" title="Table of contents"/>
                     <frame src="home/index.html" name="contents" title="Contents"/>

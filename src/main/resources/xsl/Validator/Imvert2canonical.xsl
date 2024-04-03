@@ -17,28 +17,30 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-
+    
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
-    
-    xmlns:xhtml="http://www.w3.org/1999/xhtml"
-    
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
-    
-    exclude-result-prefixes="#all" 
-    version="2.0">
 
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy" 
+    
+    xmlns:fn="http://www.w3.org/2005/xpath-functions"
+    
+    exclude-result-prefixes="#all"
+    expand-text="yes"
+    >
+    
     <!-- 
-         Canonization of the input, common to all metamodels.
+       Canonization of MIM models.
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-validation.xsl"/>
     <xsl:import href="../common/extension/extension-parse-wiki.xsl"/>
-    
+        
     <xsl:variable name="chop" select="imf:boolean(imf:get-config-string('cli','chop','no'))"/>
     
     <xsl:output method="xml" encoding="UTF-8"/> 
@@ -363,6 +365,23 @@
                </xsl:otherwise>
            </xsl:choose>
         </xsl:copy>
+    </xsl:template>
+    
+    <!-- 
+        process ImageManager images. / #471
+        example: $imageman://id=1703040472;mdg=Global;name=test1.png;type=Bitmap; 
+    -->
+    <xsl:template match="xhtml:a" mode="copy-html">
+        <xsl:choose>
+            <xsl:when test="starts-with(@href,'$imageman:')">
+                <xsl:variable name="parse" select="analyze-string(@href,'id=(.*?);.*?name=(.*?);')"/>
+                <xsl:variable name="image-name" select="$parse/fn:match/fn:group[@nr = '1'] || '_' || $parse/fn:match/fn:group[@nr = '2']"/>
+                <img src="{$image-name}" origin="imageman" class="image-asset"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="node()|@*" mode="#default mode-tv copy-html">

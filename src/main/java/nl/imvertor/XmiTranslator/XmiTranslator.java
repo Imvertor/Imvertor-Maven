@@ -24,6 +24,9 @@ import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.xsl.extensions.ImvertorBase64Decode;
+import nl.imvertor.common.xsl.extensions.ImvertorCompareXML;
+import nl.imvertor.common.xsl.extensions.expath.ImvertorExpathWriteBinary;
 
 
 /**
@@ -51,7 +54,9 @@ public class XmiTranslator extends Step {
 
 		// create a transformer
 		Transformer transformer = new Transformer();
-		    
+		transformer.setExtensionFunction(new ImvertorBase64Decode());
+		transformer.setExtensionFunction(new ImvertorExpathWriteBinary());
+			    
 	    // transform 
 		boolean succeeds = true;
 		succeeds = succeeds ? transformer.transformStep("system/xmi-file-path", "properties/WORK_BASE_FILE",  "properties/XMI_IMVERTOR_XSLPATH","system/cur-imvertor-filepath") : false ;

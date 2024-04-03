@@ -15,4 +15,10 @@
     -->
     <lists-to-listing>false</lists-to-listing>
     
+    <!-- 
+         Moeten de details van attribuutsoorten uit een gegevensgroeptype alleen worden opgenomen in de sectie voor gegevengroeptypen ('group'), of ook bij de objecten ('object')?
+         Default is: 'object'. 
+     -->
+    <gegevensgroep-attribute-container>group</gegevensgroep-attribute-container>
+
 </doc-rules>

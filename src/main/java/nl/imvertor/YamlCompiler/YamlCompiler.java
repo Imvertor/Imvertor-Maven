@@ -265,7 +265,7 @@ public class YamlCompiler extends Step {
 
 		JsonFile halJsonFile = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
 		// Debug: test if json is okay
-		succeeds = succeeds && halJsonFile.validate();
+		succeeds = succeeds && halJsonFile.isWellformed();
 
 		// STUB: transform json to XML, remove HAL, and serialize back to json.
 		if (succeeds) {
@@ -282,7 +282,7 @@ public class YamlCompiler extends Step {
 			nohalXmlFile.toJson(jsonFile);
 
 			// validate
-			succeeds = succeeds && jsonFile.validate();
+			succeeds = succeeds && jsonFile.isWellformed();
 
 			String schemaName = configurator.getXParm("appinfo/OpenAPI-schema-name");
 

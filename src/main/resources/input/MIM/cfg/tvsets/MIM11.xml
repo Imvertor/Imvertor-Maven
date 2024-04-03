@@ -345,9 +345,8 @@
                 <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
-                <value default="yes">1.1</value>
+                <value>1.1</value>
                 <value default="yes">1.1.0</value>
-                <value default="yes">1.1.1</value>
             </declared-values>
         </tv>
         

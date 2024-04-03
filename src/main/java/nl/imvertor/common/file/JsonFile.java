@@ -3,6 +3,8 @@ package nl.imvertor.common.file;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +16,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.networknt.schema.InputFormat;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.PathType;
+import com.networknt.schema.SchemaLocation;
+import com.networknt.schema.SchemaValidatorsConfig;
+import com.networknt.schema.SpecVersion.VersionFlag;
+import com.networknt.schema.ValidationMessage;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.exceptions.ConfiguratorException;
@@ -25,22 +35,6 @@ public class JsonFile extends AnyFile {
 	protected static final Logger logger = Logger.getLogger(JsonFile.class);
 	
 	private HashMap<String,String> parms = new HashMap<String,String>();
-	
-	public static void main(String[] args) {
-		JsonFile jsonInputFile = new JsonFile("d:\\projects\\validprojects\\BRO\\input\\SKOS-JSON\\aquo-data.json");
-		XmlFile xmlOutputFile = new XmlFile("c:/temp/sample.xml");
-		JsonFile jsonOutputFile = new JsonFile("c:/temp/sample.json");
-		try {
-			jsonInputFile.toXml(xmlOutputFile);
-			jsonOutputFile.setIndent(true);
-			xmlOutputFile.toJson(jsonOutputFile);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("done");
-	
-	}
 	
 	public JsonFile(File file) throws IOException {
 		super(file);
@@ -129,16 +123,15 @@ public class JsonFile extends AnyFile {
      }
     
     /**
-	 * Validate the contents of this file. 
+	 * Check if the Json file is well formed, i.e. can be read by a json parser. 
 	 * 
 	 * When errors occur, return that error message.
 	 * 
-	 * @param jsonString
-	 * @return True when succeeds, no validation errors.
+	 * @return True when succeeds, no formal errors.
 	 * @throws ConfiguratorException 
 	 * @throws IOException 
 	 */
-	public boolean validate() throws IOException, ConfiguratorException {
+	public boolean isWellformed() throws IOException, ConfiguratorException {
 		String jsonString = getContent();
 		try {
 			Matcher m = Pattern.compile("^\\s*?(\\S)").matcher(jsonString);
@@ -153,7 +146,75 @@ public class JsonFile extends AnyFile {
 			else
 				throw new Exception("Unrecognized JSON type: \"" + firstChar + "\"");
 		} catch (Exception e) {
-			Configurator.getInstance().getRunner().error(logger, "Invalid JSON: \"" + e.getMessage() + "\"", null, "", "IJ");
+			Configurator.getInstance().getRunner().error(logger, "Illformed JSON: \"" + e.getMessage() + "\"", null, "", "ILLFJSON");
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Validate the contents of this file. 
+	 * 
+	 * When errors occur, return that error message.
+	 * 
+	 * Try to validate against Json schema specified in content using "$schema".
+	 * 
+	 * See https://github.com/networknt/json-schema-validator for more info.
+	 * 
+	 * @return True when succeeds, no validation errors. When no schema supplied, ........? TODO
+	 * @throws ConfiguratorException 
+	 * @throws IOException 
+	 */
+	public boolean isValid(JsonFile jsonSchemaFile) throws IOException, ConfiguratorException {
+		try {
+			
+			// This creates a schema factory that will use Draft 2012-12 as the default if $schema is not specified
+			// in the schema data. If $schema is specified in the schema data then that schema dialect will be used
+			// instead and this version is ignored.
+			JsonSchemaFactory jsonSchemaFactory = JsonSchemaFactory.getInstance(VersionFlag.V202012, builder -> 
+			    // This creates a mapping from $id which starts with https://www.example.org/ to the retrieval URI classpath:schema/
+			    builder.schemaMappers(schemaMappers -> schemaMappers.mapPrefix("https://www.example.org/", "classpath:schema/"))
+			);
+
+			SchemaValidatorsConfig config = new SchemaValidatorsConfig();
+			// By default JSON Path is used for reporting the instance location and evaluation path
+			config.setPathType(PathType.JSON_POINTER);
+			// By default the JDK regular expression implementation which is not ECMA 262 compliant is used
+			// Note that setting this to true requires including the optional joni dependency
+			// config.setEcma262Validator(true);
+
+			// Due to the mapping the schema will be retrieved from the classpath at classpath:schema/example-main.json.
+			// If the schema data does not specify an $id the absolute IRI of the schema location will be used as the $id.
+			
+			JsonSchema schema = null;
+			if (jsonSchemaFile != null)
+				schema = jsonSchemaFactory.getSchema(jsonSchemaFile.toURI());
+			else 
+				schema = jsonSchemaFactory.getSchema(SchemaLocation.of("https://www.example.org/example-main.json"), config);
+			
+			String input = getContent();
+
+			Set<ValidationMessage> assertions = schema.validate(input, InputFormat.JSON, executionContext -> {
+			    // By default since Draft 2019-09 the format keyword only generates annotations and not assertions
+			    executionContext.getExecutionConfig().setFormatAssertionsEnabled(true);
+			});
+			
+			// geef de eerste melding als fout af
+			Iterator<ValidationMessage> it = assertions.iterator();
+			
+			// Toon alle fouten in het console in debug mode.
+			int cnt = 0;
+			while (it.hasNext()) {
+				ValidationMessage next = it.next();
+				Configurator.getInstance().getRunner().debug(logger, "JSONSCHEMA", "Json schema error: " + next.getMessage());
+				cnt++;
+			}
+			if (cnt != 0)
+				throw new Exception(assertions.iterator().next().getMessage() + " (first of " + cnt  + " errors)");
+			
+			
+		} catch (Exception e) {
+			Configurator.getInstance().getRunner().error(logger, "Invalid JSON: \"" + e.getMessage() + "\"", null, "", "INVJSON");
 			return false;
 		}
 		return true;
@@ -190,4 +251,11 @@ public class JsonFile extends AnyFile {
         String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rawJson);
         setContent(prettyJson);
     }
+    
+    /*
+    static JSONObject loadJsonFromFile(File file) throws FileNotFoundException {
+        Reader reader = new FileReader(file);
+        return new JSONObject(new JSONTokener(reader));
+    }
+    */
 }

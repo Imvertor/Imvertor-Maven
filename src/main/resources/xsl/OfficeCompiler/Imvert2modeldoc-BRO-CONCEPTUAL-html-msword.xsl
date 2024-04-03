@@ -90,9 +90,9 @@
         </xsl:comment>
     </xsl:function>
     
-    <xsl:function name="imf:insert-diagram-path">
-        <xsl:param name="diagram-id"/>
-        <xsl:value-of select="concat('Images/',$diagram-id,'.png')"/>
+    <xsl:function name="imf:insert-image-path">
+        <xsl:param name="image-filename"/>
+        <xsl:value-of select="concat('Images/',$image-filename)"/>
     </xsl:function>
     
     <xsl:function name="imf:create-section-header-name" as="element()">

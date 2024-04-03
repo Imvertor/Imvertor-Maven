@@ -25,6 +25,7 @@
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
+    xmlns:local="urn:local"
     
     xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
     xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
@@ -101,11 +102,12 @@
                 <xsl:variable name="tv-desc" select="($schema/cs:desc)[1]"/>
                 <xsl:variable name="tv-src" select="($schema/cs:source)[1]"/>
                 <xsl:variable name="tv-data" select="($schema/cs:data-location)[1]"/>
+                <xsl:variable name="tv-family" select="($schema/cs:family)[1]"/>
                 
                 <xsl:variable name="ve" select="($map/cs:version)[1]"/>
                 <xsl:variable name="ph" select="($map/cs:phase)[1]"/>
                 
-                <imvert:class origin="system" cs="{$cs}" cn="{$cn}" sn="{$sn}" ve="{$ve}" ph="{$ph}" tv-desc="{$tv-desc}" tv-src="{$tv-src}" tv-data="{$tv-data}">
+                <imvert:class origin="system" cs="{$cs}" cn="{$cn}" sn="{$sn}" ve="{$ve}" ph="{$ph}" tv-desc="{$tv-desc}" tv-src="{$tv-src}" tv-data="{$tv-data}" tv-family="{$tv-family}">
                     <imvert:name original="{$name}">
                         <xsl:value-of select="$name"/>
                     </imvert:name>
@@ -191,27 +193,11 @@
                 <!-- introduceer verplichte tagged values op externe packages -->
                 <imvert:tagged-values>
                     <xsl:apply-templates select="imvert:tagged-values"/>
-                    <imvert:tagged-value origin="system" id="CFG-TV-SOURCE">
-                        <xsl:variable name="trans" select="$configuration-tvset-file//tv[@id = 'CFG-TV-SOURCE']/name"/>
-                        <imvert:name original="{$trans}">{$trans}</imvert:name>
-                        <imvert:value>     
-                            <xsl:value-of select="current-group()[1]/@tv-src"/>
-                        </imvert:value>
-                    </imvert:tagged-value>
-                    <imvert:tagged-value origin="system" id="CFG-TV-DEFINITION">
-                        <xsl:variable name="trans" select="$configuration-tvset-file//tv[@id = 'CFG-TV-DEFINITION']/name"/>
-                        <imvert:name original="{$trans}">{$trans}</imvert:name>
-                        <imvert:value>
-                            <xsl:value-of select="current-group()[1]/@tv-desc"/>
-                        </imvert:value>
-                    </imvert:tagged-value>
-                    <imvert:tagged-value origin="system" id="CFG-TV-DATALOCATION">
-                        <xsl:variable name="trans" select="$configuration-tvset-file//tv[@id = 'CFG-TV-DATALOCATION']/name"/>
-                        <imvert:name original="{$trans}">{$trans}</imvert:name>
-                        <imvert:value>
-                            <xsl:value-of select="current-group()[1]/@tv-data"/>
-                        </imvert:value>
-                    </imvert:tagged-value>
+                    
+                    <xsl:sequence select="local:create-tv(current-group()[1],'CFG-TV-FAMILY','tv-family')"/>
+                    <xsl:sequence select="local:create-tv(current-group()[1],'CFG-TV-SOURCE','tv-src')"/>
+                    <xsl:sequence select="local:create-tv(current-group()[1],'CFG-TV-DEFINITION','tv-desc')"/>
+                    <xsl:sequence select="local:create-tv(current-group()[1],'CFG-TV-DATALOCATION','tv-data')"/>
                 </imvert:tagged-values>
                 <!-- and list all classes -->
                 <xsl:sequence select="for $c in current-group() return if ($c/@type = 'sentinel') then () else $c"/>
@@ -245,4 +231,18 @@
         </xsl:copy>
     </xsl:template>
     
+    <xsl:function name="local:create-tv" as="element()">
+        <xsl:param name="extern" as="element()"/>
+        <xsl:param name="tv-id" as="xs:string"/>
+        <xsl:param name="att-name" as="xs:string"/>
+        <imvert:tagged-value origin="system" id="{$tv-id}">
+            <xsl:variable name="trans" select="$configuration-tvset-file//tv[@id = $tv-id]/name"/>
+            <xsl:variable name="val" select="$extern/@*[local-name() = $att-name]"/>
+            <imvert:name original="{$trans}">{$trans}</imvert:name>
+            <imvert:value original="{$val}">
+                <xsl:value-of select="$val"/>
+            </imvert:value>
+        </imvert:tagged-value>
+        
+    </xsl:function>
 </xsl:stylesheet>

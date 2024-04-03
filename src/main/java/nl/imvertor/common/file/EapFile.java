@@ -87,7 +87,7 @@ public class EapFile extends AnyFile {
 	
 	public void setExportDiagrams(int imageFormat) {
 		if (imageFormat >= 0) {
-			exportDiagrams = 1;
+			exportDiagrams = 2;
 			exportDiagramImage = imageFormat;
 		} else 
 			exportDiagrams = 0;

@@ -88,9 +88,12 @@ public class ImvertorCompareXML extends ExtensionFunctionDefinition {
 			XmlFile diffFile = new XmlFile(((StringValue) arguments[2].head()).getStringValue());		
 			Integer maxReported = (int) ((Int64Value) arguments[3].head()).longValue();
 			try {
+				throw new XPathException("Compare nog niet geschikt voor regressietest");
+				/*
 				Boolean succes = true; 
-				succes = ctrlFile.xmlUnitCompareXML(testFile,diffFile, maxReported);
+				succes = true; // ctrlFile.compareV2(testFile);
 				return BooleanValue.get(succes);
+				*/
 			} catch (Exception e) {
 				throw new XPathException(e);
 			}

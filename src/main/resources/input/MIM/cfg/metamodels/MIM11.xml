@@ -345,7 +345,11 @@
             <construct>attribute</construct>
             <construct>association</construct>
             <context>
-                <!-- allerlei contexten, niet nodig om dat hier verder te specificeren -->
+                <parent-stereo>stereotype-name-objecttype</parent-stereo>
+                <parent-stereo>stereotype-name-composite</parent-stereo>
+                <parent-stereo>stereotype-name-relatieklasse</parent-stereo>
+                <parent-stereo>stereotype-name-domain-package</parent-stereo>
+                <parent-stereo>stereotype-name-view-package</parent-stereo>
             </context>
         </stereo>
 

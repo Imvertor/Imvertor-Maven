@@ -40,11 +40,13 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     
+    <xsl:variable name="infomodel-ids" select="('stereotype-name-informatiemodel-package','stereotype-name-base-package','stereotype-name-application-package')"/>
+    
     <!-- bepaal welke package de applicatie bevat -->
     <xsl:variable name="base-package" select="
         $document-packages[imvert:name=imf:get-normalized-name($application-package-name,'package-name') 
         and 
-        imvert:stereotype/@id = ('stereotype-name-informatiemodel-package','stereotype-name-base-package','stereotype-name-application-package')]"/>
+        imvert:stereotype/@id = $infomodel-ids]"/>
     
     <xsl:variable name="known-package" select="(
         'stereotype-name-domain-package',
@@ -79,7 +81,7 @@
             </imvert:filters>
             <xsl:choose>
                 <xsl:when test="empty($base-package)">
-                    <xsl:sequence select="imf:msg('ERROR','No package [1] defined with stereotype base or application. Is the name valid?',$application-package-name)"/>
+                    <xsl:sequence select="imf:msg('ERROR','No package [1] defined with stereotype any of [2]. Is the name valid?',($application-package-name,imf:string-group(for $id in $infomodel-ids return imf:get-config-name-by-id($id))))"/>
                 </xsl:when>
                 <xsl:when test="empty($base-package/imvert:namespace)">
                     <xsl:sequence select="imf:msg('ERROR','No root namespace defined.')"/>

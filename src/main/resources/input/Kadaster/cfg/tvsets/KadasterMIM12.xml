@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <xi:include href="KadasterMIM111.xml"/>
+    
+    <xi:include href="../../../MIM/cfg/tvsets/MIM12.xml"/>
+    
+    <name>Kadaster MIM 1.2 tagged values</name>
+    
+    <!-- geen aanpassingen -->
+    
+</tagset>

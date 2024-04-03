@@ -32,7 +32,7 @@
     <parameter name="web-scripts">
         ../web/script/jquery/jquery-latest.js;
         ../web/script/tablesorter/jquery.tablesorter.min.js;
-        ../web/script/tablesorter/compare.js;
+        ../web/script/compare/compare.js;
     </parameter> 
     
     <!-- single logo image -->

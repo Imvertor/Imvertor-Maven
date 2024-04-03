@@ -17,19 +17,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
-    exclude-result-prefixes="#all" 
-    version="3.0">
-
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy" 
+    
+    exclude-result-prefixes="#all"
+    expand-text="yes"
+    >
+    
     <!-- 
-          Transform BP UML constructs to canonical UML constructs.
+       Canonization of IHW models.
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>

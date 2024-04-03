@@ -59,6 +59,11 @@
         
     </vocabularies>
     
+    <!-- 
+        URL van de Shacl specificatie voor SBB Skos 
+    -->
+    <parameter name="skos-schema-url">https://github.com/pldn/nederlands-profiel-voor-stelselcatalogi/blob/main/profiles/skos-ap-nl.ttl</parameter> 
+    
     <node-mapping>
         <!-- 
             Alleen de tagged values die hier zijn opgenomen worden omgezet naar een regel in TTL SKOS
@@ -71,7 +76,6 @@
         
         <map id="CFG-TV-ABBREV" type="2q" lang="#all" requires-lang="true">skos:altLabel</map>
         <map id="CFG-TV-CODE" type="2q" lang="#all" requires-lang="false">skos:notation</map>
-        <map id="CFG-TV-DATERECORDED" type="2q" lang="#all" requires-lang="false">dct:created</map>
         <map id="CFG-TV-OWNER" type="2q" lang="#all" requires-lang="false">dct:creator</map>
         <map id="CFG-TV-SOURCE" type="2q" lang="#all" requires-lang="false">dct:source</map>
         

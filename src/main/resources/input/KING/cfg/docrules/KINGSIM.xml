@@ -27,6 +27,12 @@
         <show-caption>yes</show-caption>
     </image-purpose>
     
+    <!-- 
+         Moeten de details van attribuutsoorten uit een gegevensgroeptype alleen worden opgenomen in de sectie voor gegevengroeptypen ('group'), of ook bij de objecten ('object')?
+         Default is: 'object'. 
+     -->
+    <gegevensgroep-attribute-container>object</gegevensgroep-attribute-container>
+
     <doc-rule id="CFG-DOC-NORMNAAM" order="000">
         <name lang="nl">Naam (genormaliseerd)</name>
         <name lang="en">Name (normalized)</name>

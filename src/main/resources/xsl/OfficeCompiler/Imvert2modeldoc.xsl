@@ -29,6 +29,8 @@
     
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
+    xmlns:local="urn:local"
+    
     exclude-result-prefixes="#all" 
     version="3.0">
 
@@ -69,6 +71,8 @@
     <xsl:variable name="has-formal-history" select="exists(//imvert:tagged-value[@id = 'CFG-TV-INDICATIONFORMALHISTORY']/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     
     <xsl:variable name="has-imbroa" select="//imvert:attribute/imvert:stereotype/@id = 'stereotype-name-imbroa'"/>
+    
+    <xsl:variable name="gegevensgroep-attribute-container" select="($configuration-docrules-file/gegevensgroep-attribute-container,'object')[1]"/>
     
     <xsl:template match="/imvert:packages">
         <xsl:sequence select="imf:track('Generating modeldoc',())"/>
@@ -190,7 +194,7 @@
                             <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="detail"/>
                         </section>
                         <section type="DETAILS-CODELIST" include="{$include-detail-sections-by-type}">
-                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="detail"/>
+                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="content"/>
                         </section>
                         <section type="DETAILS-ENUMERATION" include="{$include-detail-sections-by-type}">
                             <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="content"/>
@@ -427,11 +431,12 @@
     
     <xsl:template match="imvert:attribute" mode="short">
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
+        <xsl:variable name="global-or-detail" select="if ($type/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')) then 'detail' else 'global'"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/428 -->
        <part>
            <xsl:sequence select="imf:calculate-node-position(.)"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/> 
            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
-           <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-splice(imvert:baretype)))"/>
+           <xsl:sequence select="imf:create-element('item',imf:create-link($type,$global-or-detail,imf:plugin-splice(imvert:baretype)))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
        </part>
     </xsl:template>
@@ -626,8 +631,8 @@
             
             <xsl:variable name="associations" select="imvert:associations/imvert:association"/>
             <xsl:variable name="compositions" select="$associations[imvert:stereotype/@id = ('stereotype-name-association-to-composite')]"/>
-          
-            <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="detail"/>
+            
+            <xsl:apply-templates select="imvert:attributes/imvert:attribute[not(imvert:stereotype/@id = 'stereotype-name-attributegroup')]" mode="detail"/>  <!-- https://github.com/Imvertor/Imvertor-Maven/issues/428 Niet hier de details van de gegevensgroeptype opnemen -->
             <xsl:for-each select="$compositions">
                 <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
                 <xsl:apply-templates select="$defining-class" mode="detail"/>
@@ -775,11 +780,10 @@
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
         <xsl:variable name="naam" select="imf:get-name($construct,true())"/>
+        
+        <xsl:variable name="is-gegevensgroep" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')"/>
+        <xsl:variable name="in-gegevensgroeptype" select="ancestor::class[imvert:stereotype/@id = ('stereotype-name-composite')]"/>
         <xsl:choose>
-            <xsl:when test="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')">
-                <xsl:apply-templates select="." mode="detail-gegevensgroeptype"/>
-                <xsl:apply-templates select="$defining-class" mode="detail"/>
-            </xsl:when>
             <xsl:when test="imvert:stereotype/@id = ('stereotype-name-referentie-element')">
                 <xsl:apply-templates select="." mode="detail-referentie-element"/>
             </xsl:when>
@@ -791,6 +795,18 @@
             </xsl:when>
             <xsl:when test="imvert:stereotype/@id = ('stereotype-name-data-element')">
                 <xsl:apply-templates select="." mode="detail-dataelement"/>
+            </xsl:when>
+            <xsl:when test="$is-gegevensgroep">
+                <xsl:apply-templates select="." mode="detail-gegevensgroeptype"/>
+                <xsl:choose>
+                    <xsl:when test="$in-gegevensgroeptype and ($gegevensgroep-attribute-container = ('group','both'))">
+                        <xsl:apply-templates select="$defining-class" mode="detail"/>
+                    </xsl:when>
+                    <xsl:when test="not($in-gegevensgroeptype) and ($gegevensgroep-attribute-container = ('object','both'))">
+                        <xsl:apply-templates select="$defining-class" mode="detail"/>
+                    </xsl:when>
+                    <!-- anders niet weergeven -->
+                </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates select="." mode="detail-normal"/>

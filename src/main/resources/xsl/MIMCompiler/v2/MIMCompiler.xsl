@@ -111,7 +111,7 @@
   <xsl:template match="/">
     <xsl:choose>
       <xsl:when test="empty($mim-version)">
-        <xsl:sequence select="imf:message(., 'ERROR', 'MIM serialisation requested on an model is not MIM compliant. No [1] found.', (imf:get-config-name-by-id('CFG-TV-MIMVERSION')))"/>
+        <xsl:sequence select="imf:message(., 'ERROR', 'MIM serialisation requested on a model that is not MIM compliant. No [1] found.', (imf:get-config-name-by-id('CFG-TV-MIMVERSION')))"/>
       </xsl:when>
       <xsl:when test="$native-scalars and $mim11-package-found">
         <xsl:sequence select="imf:message(., 'ERROR', 'Attempt to use native scalars while MIM package is available. Please set [1] to [2].', ('nativescalars','no'))"/>
@@ -371,26 +371,32 @@
     <xsl:where-populated>
       <mim:relatierollen>
         <xsl:where-populated>
+          <xsl:if test="imvert:source/(imvert:name | imvert:role)">
             <mim:Bron>
-              <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
+              <xsl:sequence select="imf:generate-id-attr(imvert:source/imvert:id, false())"/>
               <xsl:for-each select="imvert:source">
                 <xsl:call-template name="genereer-metagegevens">
                   <xsl:with-param name="modelelement-type" select="$rol-type" as="xs:string"/>
                   <xsl:with-param name="modelelement-name" select="imvert:role" as="xs:string?"/>
                 </xsl:call-template>  
+                <xsl:call-template name="extensieKenmerken"/>
               </xsl:for-each>  
-            </mim:Bron>  
+            </mim:Bron> 
+          </xsl:if>
         </xsl:where-populated>
         <xsl:where-populated>
+          <xsl:if test="imvert:target/(imvert:name | imvert:role)">
             <mim:Doel>
-              <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
+              <xsl:sequence select="imf:generate-id-attr(imvert:target/imvert:id, false())"/>
               <xsl:for-each select="imvert:target">
                 <xsl:call-template name="genereer-metagegevens">
                   <xsl:with-param name="modelelement-type" select="$rol-type" as="xs:string"/>
                   <xsl:with-param name="modelelement-name" select="imvert:role" as="xs:string?"/>
-                </xsl:call-template>  
+                </xsl:call-template>
+                <xsl:call-template name="extensieKenmerken"/>
               </xsl:for-each>
             </mim:Doel>  
+          </xsl:if>
         </xsl:where-populated>
       </mim:relatierollen>
     </xsl:where-populated>
@@ -622,7 +628,7 @@
       <mim:naam source-id="CFG-TV-PSEUDO-NAME">{$name}</mim:naam>
       <xsl:where-populated>
         <mim-ext:kenmerken>
-          <!-- geef OAS type mee meals kenmerk -->
+          <!-- geef OAS type mee me als kenmerk -->
           <xsl:variable name="oas" select="(//imvert:attribute[imvert:conceptual-schema-type = current()/imvert:conceptual-schema-class-name]/imvert:type-name-oas)[1]"/>
           <xsl:if test="$oas">
             <mim-ext:Kenmerk naam="oasnaam">{$oas}</mim-ext:Kenmerk>
@@ -1047,8 +1053,8 @@
             </xsl:when>
             <xsl:when test="starts-with($kardinaliteit, '1')">
               <!--
-          <xsl:sequence select="imf:message(., 'WARNING', 'Modelelement [1] of type [2] is missing required metadata [3]', ($modelelement-name, $modelelement-type, .))"/>
-          -->
+              <xsl:sequence select="imf:message(., 'WARNING', 'Modelelement [1] of type [2] is missing required metadata [3]', ($modelelement-name, $modelelement-type, .))"/>
+              -->
               <xsl:apply-templates select="$metagegeven" mode="missing-metadata"/>
             </xsl:when>
             <xsl:otherwise>
@@ -1201,7 +1207,7 @@
     <xsl:param name="tag-id" as="xs:string"/>
     <xsl:choose>
       <xsl:when test="$tag-id = ('CFG-TV-DEFINITION', 'CFG-TV-DESCRIPTION')">
-        <xsl:apply-templates select="for $v in imf:get-most-relevant-compiled-taggedvalue-element($context-node, '##' || $tag-id) return $v/*" mode="xhtml"/>
+        <xsl:apply-templates select="for $v in imf:get-most-relevant-compiled-taggedvalue-element($context-node, '##' || $tag-id) return $v/node()" mode="xhtml"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence select="for $v in imf:get-most-relevant-compiled-taggedvalue-element($context-node, '##' || $tag-id) return normalize-space(string-join($v//text(), ' '))"/>

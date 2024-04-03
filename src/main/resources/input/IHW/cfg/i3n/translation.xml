@@ -6,5 +6,47 @@
     <xi:include href="../../../Imvertor/cfg/i3n/translation.xml"/>
     
     <!-- add or override translations here: -->
+    <item>
+        <key>ATTRIBUTE-FORMAT</key>
+        <trans lang="nl">Attribuuttype</trans>
+        <trans lang="en">Attribute type</trans>
+    </item>
+    <item>
+        <key>DATAELEMENT-FORMAT</key>
+        <trans lang="nl">Attribuuttype</trans>
+        <trans lang="en">Attribute type</trans>
+    </item>
+    <item>
+        <key>UNIONELEMENT-FORMAT</key>
+        <trans lang="nl">Attribuuttype</trans>
+        <trans lang="en">Attribute type</trans>
+    </item>
+    <item>
+        <key>REFERENCEELEMENT-FORMAT</key>
+        <trans lang="nl">Attribuuttype</trans>
+        <trans lang="en">Attribute type</trans>
+    </item>
     
+    <item>
+        <key>ATTRIBUTE-CARD</key>
+        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="en">Cardinality</trans>
+    </item>
+    <item>
+        <key>DATAELEMENT-CARD</key>
+        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="en">Cardinality</trans>
+    </item>
+    <item>
+        <key>UNIONELEMENT-CARD</key>
+        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="en">Cardinality</trans>
+    </item>
+    <item>
+        <key>REFERENCEELEMENT-CARD</key>
+        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="en">Cardinality</trans>
+    </item>
+    
+
 </picklist>

@@ -36,10 +36,13 @@
     <xsl:variable name="bp-req-by-reference-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-by-reference-encodings']"/> 
     <xsl:variable name="bp-req-code-list-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-code-list-encodings']"/> 
     <xsl:variable name="bp-req-additional-requirements-classes" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-additional-requirements-classes']"/> 
+    <xsl:variable name="bp-metaschema-url" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-metaschema-url']"/> <!-- e.g. 'https://json-schema.org/draft/2019-09/schema' -->
     
     <xsl:variable name="domain-packages" select="/mim:Informatiemodel/mim:packages/mim:Domein"/>
     
     <xsl:variable name="relatierol-leidend" select="/mim:Informatiemodel/mim:relatiemodelleringtype = 'Relatierol leidend'"/>
+    
+    <xsl:variable name="annotation-element-names" select="tokenize($configuration-jsonschemarules-file//parameter[@name = 'json-schema-annotations'],'\s+')" as="xs:string*"/>
     
     <xsl:template match="/">
    
@@ -52,6 +55,10 @@
     </xsl:template>
     
     <xsl:template match="mim:Informatiemodel">
+        
+        <!-- Geef de metaschema URL door aan de Java json validator -->
+        <xsl:sequence select="imf:set-xparm('system/json-metaschema-url',$bp-metaschema-url)"/>
+        
         <xsl:variable name="body" as="element()">
             <ep:group 
                 xsi:schemaLocation="http://www.imvertor.org/schema/endproduct/v2 {$ep-schema-path}">
@@ -70,6 +77,7 @@
                     <xsl:sequence select="imf:set-parameter('bp-req-by-reference-encodings',$bp-req-by-reference-encodings)"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-code-list-encodings',$bp-req-code-list-encodings)"/>
                     <xsl:sequence select="imf:set-parameter('bp-req-additional-requirements-classes',$bp-req-additional-requirements-classes)"/>
+                    <xsl:sequence select="imf:set-parameter('bp-metaschema-url',$bp-metaschema-url)"/>
                 </ep:parameters>
                 <xsl:sequence select="imf:get-name(.)"/>
                 <xsl:sequence select="imf:get-documentation(.)"/>
@@ -229,10 +237,12 @@
     </xsl:template>
     
     <xsl:template match="mim:ExterneKoppeling">
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineOrByReference'),'byReference')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Externe koppeling',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-common-parameters(.,'externekoppeling')"/>
+                <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -241,11 +251,13 @@
     </xsl:template>
     
     <xsl:template match="mim:Keuze">
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineOrByReference'),'byreference')[1]"/><!-- we nemen aan dat in keuze objecten de referentie by default op referentie is gebaseerd NB je kunt die niet specificeren op de keuze-relaties -->
         <ep:construct>
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-common-parameters(.,'keuze')"/>
+                <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
@@ -260,21 +272,35 @@
         </ep:choice>
     </xsl:template>
     
+    <!-- 
+        Wanneer meerdere keuze objecten, en effectief alle by reference, dan deze terugbrengen tot één keuzeobject. 
+        Check https://github.com/Geonovum/shapeChangeTest/issues/52 
+    -->
     <xsl:template match="mim:keuzeRelatiedoelen">
-        <ep:choice>
-            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze tussen objecttypen / relatiedoelen',())"/>
-            <xsl:apply-templates select="mim:Relatiedoel/mim-ref:ObjecttypeRef"/>
-        </ep:choice>
+        <xsl:choose>
+            <xsl:when test="$bp-req-by-reference-encodings = '/req/by-reference-link-object'">
+                <!-- breng construct terug tot een sequence van één target object -->
+                <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze tussen objecttypen / relatiedoelen teruggebracht tot één',())"/>
+                <ep:ref href="/known/linkobject">LinkObject</ep:ref>
+            </xsl:when>
+            <xsl:otherwise>
+                <ep:choice>
+                    <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze tussen objecttypen / relatiedoelen',())"/>
+                    <xsl:apply-templates select="mim:Relatiedoel/mim-ref:ObjecttypeRef"/>
+                </ep:choice>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="mim:keuzeAttributen">
-        <ep:choice>
+        <ep:seq>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze tussen Attribuutsoorten',())"/>
             <xsl:apply-templates select="mim:Attribuutsoort"/>
-        </ep:choice>
+        </ep:seq>
     </xsl:template>
     
     <xsl:template match="mim:keuzen/mim-ref:KeuzeRef">
+        <xsl:sequence select="imf:msg-comment(.,'WARNING','The JSON Schema conversion does not fully support the concept of a choice between properties yet. Please check [1]',(@label))"/>
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een pseudo-attribuut dat een keuze tussen attribuutsoorten representeert',())"/>
             <ep:parameters>
@@ -297,7 +323,7 @@
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
-            <xsl:variable name="type" select="lower-case(imf:get-kenmerk(.,'waarde codering type'))"/>
+            <xsl:variable name="type" select="lower-case(imf:get-kenmerk(.,'literalEncodingType'))"/>
             <xsl:variable name="jtype" select="if ($type = ('real','number')) then 'ep:number' else if ($type = ('integer')) then 'ep:integer' else 'ep:string'"/>
             <ep:data-type>{$jtype}</ep:data-type>
         </ep:construct>
@@ -313,9 +339,14 @@
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-supers(.)"/>
-            <xsl:variable name="type" select="lower-case(imf:get-kenmerk(.,'waarde codering type'))"/>
+            <xsl:variable name="type" select="lower-case(imf:get-kenmerk(.,'literalEncodingType'))"/>
             <xsl:variable name="jtype" select="if ($type = ('real','number')) then 'ep:number' else if ($type = ('integer')) then 'ep:integer' else 'ep:string'"/>
             <ep:data-type>{$jtype}</ep:data-type>
+       
+            <!-- https://github.com/Geonovum/shapeChangeTest/issues/53 -->
+            <xsl:variable name="supers" select="imf:get-mim-superclasses(.)"/>
+            <xsl:apply-templates select="$supers/mim:waarden/mim:Waarde"/>
+            
             <xsl:apply-templates select="mim:waarden/mim:Waarde"/>
         </ep:construct>
     </xsl:template>
@@ -327,7 +358,7 @@
             <ep:parameters>
                 <xsl:sequence select="imf:set-common-parameters(.,'interface')"/>
                 <xsl:sequence select="imf:set-parameter('oas-name',imf:get-kenmerk(.,'oasnaam'))"/>
-                <xsl:if test="ancestor::mim:Extern/mim:naam = 'GML'">
+                <xsl:if test="ancestor::mim:Extern/mim-ext:kenmerken/mim-ext:Kenmerk[@naam = 'familie'] = 'GML'">
                     <xsl:sequence select="imf:set-parameter('url',imf:get-geo-url(.))"/>
                 </xsl:if>
             </ep:parameters>
@@ -394,16 +425,19 @@
             Als die er is, dan geldt de default NIET. Maar wel een eventueel lokaal vastgestelde ppa.
             Als die er niet is, dan geldt de DEFAULT wel (en een eventueel lokaal vastgestelde ppa)
         -->
+        <xsl:variable name="requires-pga" select="$bp-req-basic-encodings = ('/req/jsonfg','/req/geojson')"/>
+        <xsl:variable name="requires-ppa" select="$bp-req-basic-encodings = '/req/jsonfg'"/>
         <xsl:variable name="requires-pia" select="$bp-req-basic-encodings = '/req/jsonfg'"/>
+        <xsl:variable name="requires-pva" select="$bp-req-basic-encodings = '/req/jsonfg'"/>
         
         <xsl:variable name="obj" select="if (imf:is-featuretype(../..)) then ../.. else ()"/>
-        <xsl:variable name="pga" select="if ($obj) then if (imf:get-supers-with-pga($obj)) then () else imf:get-primary-geometry-attribute($obj) else ()"/>
-        <xsl:variable name="ppa" select="if ($obj) then if (imf:get-supers-with-ppa($obj)) then () else imf:get-primary-place-attribute($obj) else ()"/>
+        <xsl:variable name="pga" select="if ($obj and $requires-pga) then if (imf:get-supers-with-pga($obj)) then () else imf:get-primary-geometry-attribute($obj) else ()"/>
+        <xsl:variable name="ppa" select="if ($obj and $requires-ppa) then if (imf:get-supers-with-ppa($obj)) then () else imf:get-primary-place-attribute($obj) else ()"/>
         <xsl:variable name="pia" select="if ($obj and $requires-pia) then if (imf:get-supers-with-pia($obj)) then () else imf:get-primary-instant-attribute($obj) else ()"/>
-        <xsl:variable name="pva" select="if ($obj and $requires-pia) then if (imf:get-supers-with-pva($obj)) then () else imf:get-primary-interval-attribute($obj) else ()"/>
-        <xsl:variable name="unit" select="imf:get-kenmerk(.,'meeteenheid')"/>
+        <xsl:variable name="pva" select="if ($obj and $requires-pva) then if (imf:get-supers-with-pva($obj)) then () else imf:get-primary-interval-attribute($obj) else ()"/>
+        <xsl:variable name="unit" select="imf:get-kenmerk(.,'eenheid')"/>
         <xsl:variable name="is-gml-measure-type" select="lower-case(mim:naam) = ('measure', 'length', 'speed', 'angle', 'area', 'volume')"/>
-        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineorbyreference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineOrByReference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
         
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een attribuutsoort',())"/>
@@ -420,7 +454,15 @@
                 <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
                 <xsl:sequence select="imf:set-parameter('unit',$unit)"/><!-- wordt verwerkt in json stap. zie /req/core/iso19103-measure-types -->
             </ep:parameters>
-            <xsl:sequence select="imf:get-name(.)"/>
+            <ep:name>
+                <xsl:choose>
+                    <xsl:when test="mim:naam = $pga/mim:naam">geometry</xsl:when>
+                    <xsl:when test="mim:naam = $ppa/mim:naam">place</xsl:when>
+                    <xsl:when test="mim:naam = $pia/mim:naam">time</xsl:when>
+                    <xsl:when test="mim:naam = $pva/mim:naam">time</xsl:when>
+                    <xsl:otherwise>{imf:get-name(.)}</xsl:otherwise>
+                </xsl:choose>
+            </ep:name>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <ep:initial-value>
@@ -564,17 +606,18 @@
     </xsl:template>
     
     <xsl:template match="mim:Relatiesoort">
-        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineorbyreference'),'byReference')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
+        <xsl:variable name="info-provider" select="if ($relatierol-leidend) then mim:relatierollen/mim:Doel else ."/>
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk($info-provider,'inlineOrByReference'),'byReference')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Relatiesoort',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:set-common-parameters(.,'relatiesoort')"/>
-                <xsl:sequence select="imf:get-nillable(.)"/>
+                <xsl:sequence select="imf:get-nillable($info-provider)"/>
                 <xsl:sequence select="imf:set-parameter('inlineorbyreference',$inlineOrByReference)"/>
             </ep:parameters>
-            <xsl:sequence select="imf:get-name(.)"/>
-            <xsl:sequence select="imf:get-documentation(.)"/>
-            <xsl:sequence select="imf:get-cardinality(if ($relatierol-leidend) then mim:relatierollen/mim:Doel else .)"/>
+            <xsl:sequence select="imf:get-name($info-provider)"/>
+            <xsl:sequence select="imf:get-documentation($info-provider)"/>
+            <xsl:sequence select="imf:get-cardinality($info-provider)"/>
             <ep:seq>
                 <xsl:apply-templates select="mim:doel/mim-ref:ObjecttypeRef | mim:doel/mim-ref:KeuzeRef"/>
             </ep:seq>
@@ -665,11 +708,13 @@
         </xsl:if>
     </xsl:template>
     
+    <?x
     <xsl:template match="ep:min-occurs |ep:max-occurs" mode="remove-empty-elements">
         <xsl:if test=". ne '1'">
             <xsl:next-match/>
         </xsl:if>
     </xsl:template>
+    x?>
     
     <xsl:template match="node()" mode="remove-empty-elements">
         <xsl:copy>
@@ -723,25 +768,20 @@
         </ep:super>
     </xsl:function>
     
+    <!-- 
+        haal de waarde van het mim documentatie element binnen, bijv. mim:definitie, op basis van 'definitie' zoals geconfigureerd.
+    -->
     <xsl:function name="imf:get-documentation" as="element(ep:documentation)*">
         <xsl:param name="this"/>
-        <ep:documentation type="alias">
-            <ep:text>
-                <xsl:value-of select="imf:info($this)/mim:alias"/>
-            </ep:text>  
-        </ep:documentation>
-        <ep:documentation type="definitie">
-            <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:definitie)"/>  
-        </ep:documentation>
-        <ep:documentation type="toelichting">
-            <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:toelichting)"/>  
-        </ep:documentation>
-        <ep:documentation type="voorbeeld">
-            <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:voorbeeld)"/>  
-        </ep:documentation>
-        <ep:documentation type="patroon">
-            <xsl:sequence select="imf:get-note-value(imf:info($this)/mim:patroon)"/>  
-        </ep:documentation>
+        <xsl:variable name="info" select="imf:info($this)"/>
+        <xsl:for-each select="$annotation-element-names">
+            <xsl:variable name="elm-name" select="."/>
+            <ep:documentation type="{$elm-name}">
+                <ep:text>
+                    <xsl:value-of select="$info/*[local-name() = $elm-name]"/>
+                </ep:text>  
+            </ep:documentation>
+        </xsl:for-each>
     </xsl:function>
     
     <xsl:function name="imf:get-data-location" as="element(ep:parameter)?">
@@ -935,8 +975,8 @@
     
     <xsl:function name="imf:get-kenmerk" as="xs:string?">
         <xsl:param name="construct" as="element()"/>
-        <xsl:param name="naam" as="xs:string"/><!-- in lower case -->
-        <xsl:sequence select="$construct/mim-ext:kenmerken/mim-ext:Kenmerk[lower-case(@naam) = $naam]"/>
+        <xsl:param name="naam" as="xs:string"/>
+        <xsl:sequence select="$construct/mim-ext:kenmerken/mim-ext:Kenmerk[lower-case(@naam) = lower-case($naam)]"/>
     </xsl:function>
     
     <xsl:function name="imf:info" as="element()?">
@@ -948,27 +988,27 @@
     <xsl:function name="imf:get-primary-geometry-attribute" as="element(mim:Attribuutsoort)?">
         <xsl:param name="this" as="element(mim:Objecttype)"/>
         <xsl:variable name="geo-atts" select="$this//mim:Attribuutsoort[starts-with(mim:type/mim-ext:ConstructieRef,'GM_')]"/>
-        <xsl:variable name="geo-att1" select="$geo-atts[imf:boolean(imf:get-kenmerk(.,'primaire geometrie'))]"/>
+        <xsl:variable name="geo-att1" select="$geo-atts[imf:boolean(imf:get-kenmerk(.,'jsonPrimaryGeometry'))]"/>
         <xsl:variable name="geo-att2" select="if (count($geo-atts) = 1) then $geo-atts else ()"/>
         <xsl:sequence select="($geo-att1,$geo-att2)[1]"/>
      </xsl:function>
 
     <xsl:function name="imf:get-primary-place-attribute" as="element(mim:Attribuutsoort)?">
         <xsl:param name="this" as="element(mim:Objecttype)"/>
-        <xsl:variable name="att" select="$this//mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primaire plaats'))]"/>
+        <xsl:variable name="att" select="$this//mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'jsonPrimaryPlace'))]"/>
         <xsl:sequence select="$att[1]"/>
     </xsl:function>
     
     <xsl:function name="imf:get-primary-instant-attribute" as="element(mim:Attribuutsoort)?">
         <xsl:param name="this" as="element(mim:Objecttype)"/>
-        <xsl:variable name="att" select="$this//mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primair moment'))]"/>
+        <xsl:variable name="att" select="$this//mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'jsonPrimaryInstant'))]"/>
         <xsl:sequence select="$att[1]"/>
     </xsl:function>
  
-    <xsl:function name="imf:get-primary-interval-attribute" as="element(mim:Attribuutsoort)?">
+    <xsl:function name="imf:get-primary-interval-attribute" as="element(mim:Attribuutsoort)*">
         <xsl:param name="this" as="element(mim:Objecttype)"/>
-        <xsl:variable name="att" select="$this//mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primair interval'))]"/>
-        <xsl:sequence select="$att[1]"/>
+        <xsl:variable name="att" select="$this//mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'jsonPrimaryInterval'))]"/>
+        <xsl:sequence select="$att"/>
     </xsl:function>
     
     <xsl:function name="imf:add-entitytype" as="element()*">
@@ -1006,7 +1046,7 @@
         <xsl:param name="this" as="element()"/>
         
         <xsl:variable name="supers" select="imf:get-mim-superclasses($this)"/>
-        <xsl:variable name="supers-with-pga" select="$supers[mim:attribuutsoorten/mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primaire geometrie'))]]"/>
+        <xsl:variable name="supers-with-pga" select="$supers[mim:attribuutsoorten/mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'jsonPrimaryGeometry'))]]"/>
         
         <xsl:sequence select="$supers-with-pga"/>
     </xsl:function>
@@ -1017,7 +1057,7 @@
         <xsl:param name="this" as="element()"/>
         
         <xsl:variable name="supers" select="imf:get-mim-superclasses($this)"/>
-        <xsl:variable name="supers-with-ppa" select="$supers[mim:attribuutsoorten/mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primaire plaats'))]]"/>
+        <xsl:variable name="supers-with-ppa" select="$supers[mim:attribuutsoorten/mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'jsonPrimaryPlace'))]]"/>
         
         <xsl:sequence select="$supers-with-ppa"/>
     </xsl:function>
@@ -1028,7 +1068,7 @@
         <xsl:param name="this" as="element()"/>
         
         <xsl:variable name="supers" select="imf:get-mim-superclasses($this)"/>
-        <xsl:variable name="supers-with-pia" select="$supers[mim:attribuutsoorten/mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primair moment'))]]"/>
+        <xsl:variable name="supers-with-pia" select="$supers[mim:attribuutsoorten/mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'jsonPrimaryInstant'))]]"/>
         
         <xsl:sequence select="$supers-with-pia"/>
     </xsl:function>
@@ -1039,7 +1079,7 @@
         <xsl:param name="this" as="element()"/>
         
         <xsl:variable name="supers" select="imf:get-mim-superclasses($this)"/>
-        <xsl:variable name="supers-with-pva" select="$supers[mim:attribuutsoorten/mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'primair interval'))]]"/>
+        <xsl:variable name="supers-with-pva" select="$supers[mim:attribuutsoorten/mim:Attribuutsoort[imf:boolean(imf:get-kenmerk(.,'jsonPrimaryInterval'))]]"/>
         
         <xsl:sequence select="$supers-with-pva"/>
     </xsl:function>

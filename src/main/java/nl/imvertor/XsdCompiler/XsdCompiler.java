@@ -58,7 +58,7 @@ public class XsdCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
-		runner.info(logger,"Compiling XML schemas");
+		runner.info(logger,"Compiling and validating XML schemas");
 		
 		String owner = configurator.getXParm("cli/owner");
 		String xmlschemarules = configurator.getXmlSchemarules();

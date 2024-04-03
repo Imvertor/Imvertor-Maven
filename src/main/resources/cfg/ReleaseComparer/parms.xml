@@ -67,17 +67,20 @@
       Thisis a single generic XSLT.
     -->
     <IMVERTOR_COMPARE_CLEAN_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-clean.xsl</IMVERTOR_COMPARE_CLEAN_XSLPATH>
-
+    
     <!-- 
       The XSLT which simplifies the model. 
       generates WORK_COMPARE_*_SIMPLE_FILE
     -->
     <IMVERTOR_COMPARE_SIMPLE_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-simplify.xsl</IMVERTOR_COMPARE_SIMPLE_XSLPATH>
+    <IMVERTOR_COMPAREV2_SIMPLE_XSLPATH>${system/xsl-folder-path}/ReleaseComparer/Imvert2compareV2-simplify.xsl</IMVERTOR_COMPAREV2_SIMPLE_XSLPATH>
     <!-- 
       The XSLT which simplifies the model. 
       generates WORK_COMPARE_*_SIMPLE_FILE
      -->
     <IMVERTOR_COMPARE_LISTING_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-listing.xsl</IMVERTOR_COMPARE_LISTING_XSLPATH>
+    <IMVERTOR_COMPAREV2_LISTING_XSLPATH>${system/xsl-folder-path}/ReleaseComparer/Imvert2compareV2-listing.xsl</IMVERTOR_COMPAREV2_LISTING_XSLPATH>
+    
     <IMVERTOR_COMPARE_XMLDIFF_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-listing-xmldiff.xsl</IMVERTOR_COMPARE_XMLDIFF_XSLPATH>
     <!-- 
         The XML which holds the rules for comparion. This is assumd to be different for each type of metamodel / tagged value set.
@@ -109,7 +112,7 @@
     -->
     <WORK_COMPARE_DIFF_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.2.compare-diff.xml</WORK_COMPARE_DIFF_FILE>
     <!-- 
-      the listing file is the XML format that is suitable for processing by teh compare reporter 
+      the listing file is the XML format that is suitable for processing by the compare reporter 
     -->
     <WORK_COMPARE_LISTING_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.3.compare-listing.xml</WORK_COMPARE_LISTING_FILE>
 

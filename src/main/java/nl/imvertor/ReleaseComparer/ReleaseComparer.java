@@ -90,6 +90,12 @@ public class ReleaseComparer extends Step {
 			
 	}
 	
+	/**
+	 * 
+	 * @param compareMethod Values may be "default" or "V2"
+	 * @return true when comparsion is made
+	 * @throws Exception
+	 */
 	private boolean releaseCompare(String compareMethod) throws Exception {
 		
 		configurator.setXParm("system/compare-label", "release",true);
@@ -98,24 +104,22 @@ public class ReleaseComparer extends Step {
 		Boolean releaseCheck = (cmp != null) && cmp.equals("release");
 		
 		if (releaseCheck) { // a request is made to produce a release comparison
-			String releaseString = configurator.getXParm("cli/comparewith",false);
-			//Boolean release = releaseString != null && !releaseString.equals("00000000");
 			
+			// als release compare en geen release opgegeven, neem aan dat je met de vorige run wilt vergelijken 
 			String curReleaseString = configurator.getXParm("appinfo/release");
+			String releaseString = configurator.getXParm("cli/comparewith",false);
+			if (releaseString == null || releaseString.equals("unspecified")) releaseString = curReleaseString;
 			
 			// This step succeeds when a release may be made, depending on possible differences in the most recent and current model file 
-			XmlFile oldModelFile = new XmlFile(configurator.getApplicationFolder(releaseString), 
-					compareMethod.equals("default") ? "etc/model.imvert.xml" : "etc/model.imvert.xml");
-			XmlFile newModelFile = new XmlFile(
-					compareMethod.equals("default") ? configurator.getXParm("properties/WORK_SCHEMA_FILE") : configurator.getXParm("properties/WORK_SCHEMA_FILE"));
+			XmlFile oldModelFile = new XmlFile(configurator.getApplicationFolder(releaseString), "etc/system.imvert.xml");
+			XmlFile newModelFile = new XmlFile(configurator.getXParm("properties/WORK_EMBELLISH_FILE"));
 		
 			if (oldModelFile.exists()) {
 				if (releaseString.equals(curReleaseString))
 					runner.warn(logger, "Comparing release " + releaseString + " to most recent compilation");
 				else
 					runner.info(logger,"Comparing releases");
-				return 
-					compareMethod.equals("default") ? oldModelFile.compare( newModelFile, configurator) : oldModelFile.compareXMLDiff( newModelFile, configurator); 
+				return oldModelFile.compareV2( newModelFile, configurator); 
 			} else if (releaseString != null ) {
 				runner.error(logger, "Cannot compare releases, because release \"" + releaseString + "\" could not be found");
 				return false;
@@ -127,6 +131,7 @@ public class ReleaseComparer extends Step {
 		return true;
 	}
 	
+	//TODO bijwerken obv releaseCompare
 	private boolean docReleaseCompare(String compareMethod) throws Exception {
 		// Set the compare label; this label is used in temporary file names. eg. docRelease
 		configurator.setXParm("system/compare-label", "documentation",true); 
@@ -135,16 +140,15 @@ public class ReleaseComparer extends Step {
 		String docreleaseString = configurator.getXParm("cli/docrelease",false);
 		Boolean docRelease = docreleaseString != null && !docreleaseString.equals("00000000");
 		
-		// This step succeeds when a release may be made, depending on possible differences in the most recent and current model file 
-		XmlFile oldModelFile = new XmlFile(configurator.getApplicationFolder(), "etc/model.imvert.xml");
-		XmlFile infoSchemaFile = new XmlFile(configurator.getXParm("properties/WORK_SCHEMA_FILE"));
-		
 		if (docRelease) { // a request is made to produce a docrelease
+			// This step succeeds when a release may be made, depending on possible differences in the most recent and current model file 
+			XmlFile oldModelFile = new XmlFile(configurator.getApplicationFolder(), "etc/model.imvert.xml");
+			XmlFile newModelFile = new XmlFile(configurator.getXParm("properties/WORK_EMBELLISH_FILE"));
+			
 			runner.info(logger,"Comparing releases for documentation release");
 			if (oldModelFile.exists()) { 
 				// Check if there's a significant difference between the previous and current release
-				boolean equal = 
-						compareMethod.equals("default") ? oldModelFile.compare( infoSchemaFile, configurator) : oldModelFile.compareXMLDiff( infoSchemaFile, configurator); 
+				boolean equal = oldModelFile.compareV2(newModelFile, configurator); 
 				runner.setMayRelease(equal);
 				if (!equal)
 					runner.error(logger,"This is not a valid documentation release.");
@@ -154,10 +158,11 @@ public class ReleaseComparer extends Step {
 				runner.setMayRelease(false);
 				return false;
 			}	
-			}
-			return true;
+		}
+		return true;
 	}
 	
+	//TODO bijwerken obv releaseCompare
 	private boolean supplierCompare(String compareMethod) throws Exception {
 
 		// Set the compare label; this label is used in temporary file names. eg. docRelease
@@ -175,17 +180,16 @@ public class ReleaseComparer extends Step {
 				runner.warn(logger, "Cannot compare client and supplier, unable to determine subpath for supplier");
 			else if (subpath.length() > 0) {
 
-				String path = configurator.getOutputFolder() + "/applications/" + subpath + "/etc/model.imvert.xml"; // sample format: "c:\applications\green/SampleBase/20130318/etc/system.imvert.xml"
+				String path = configurator.getOutputFolder() + "/applications/" + subpath + "/etc/system.imvert.xml"; // sample format: "c:\applications\green/SampleBase/20130318/etc/system.imvert.xml"
 				
 				XmlFile supplierModelFile = new XmlFile(path);
-				XmlFile clientModelFile = new XmlFile(configurator.getXParm("properties/WORK_SCHEMA_FILE"));
+				XmlFile clientModelFile = new XmlFile(configurator.getXParm("properties/WORK_EMBELLISH_FILE"));
 				
 				if (supplierModelFile.exists()) { 
 					runner.info(logger,"Comparing client and supplier releases");
 					runner.debug(logger,"CHAIN","Client is: " + clientModelFile);
 					runner.debug(logger,"CHAIN","Supplier is: " + supplierModelFile);
-					boolean equal = 
-							compareMethod.equals("default") ? supplierModelFile.compare( clientModelFile, configurator) : supplierModelFile.compareXMLDiff( clientModelFile, configurator); 
+					boolean equal = supplierModelFile.compareV2( clientModelFile, configurator); 
 					if (!equal) 
 						runner.info(logger,"Differences found between client and supplier.");
 				} else {

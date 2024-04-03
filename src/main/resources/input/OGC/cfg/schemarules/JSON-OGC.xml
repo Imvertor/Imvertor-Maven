@@ -30,37 +30,51 @@
     <parameter name="json-hal">false</parameter>
     
     <!-- 
+        URL van het metaschema
+    -->
+    <parameter name="bp-metaschema-url">https://json-schema.org/draft/2019-09/schema</parameter> 
+    
+    <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules
+        Clause 7.4
         options: 
         /req/plain
         /req/geojson
         /req/jsonfg
     -->
-    <parameter name="bp-basic-encodings">/req/plain</parameter><!-- Clause 7.4 -->
+    <parameter name="bp-basic-encodings">/req/plain</parameter>
     
     <!-- 
-        Best Practice for OGC - UML to JSON Encoding Rules
+        Best Practice for OGC - UML to JSON Encoding Rules 
+        Clause 7.8
         options: 
         /req/by-reference-uri
         /req/by-reference-link-object
     -->
-    <parameter name="bp-by-reference-encodings">/req/by-reference-link-object</parameter><!-- Clause 7.8.2 -->
+    <parameter name="bp-by-reference-encodings">/req/by-reference-link-object</parameter>
     
     <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules
+        Clause 7.10
         options: 
         /req/codelists-literal
         /req/codelists-uri
         /req/codelists-link-object
     -->
-    <parameter name="bp-code-list-encodings">/req/codelists-literal</parameter><!-- Clause 7.10.2 -->
+    <parameter name="bp-code-list-encodings">/req/codelists-literal</parameter>
     
     <!-- 
         Best Practice for OGC - UML to JSON Encoding Rules
+        Clause 7.11
         options: 
         /req/entitytype
         none (geen entity type)
     -->
-    <parameter name="bp-additional-requirements-classes">/req/entitytype</parameter><!-- Clause 7.11 -->    
+    <parameter name="bp-additional-requirements-classes">none</parameter>    
+    
+    <!-- 
+        note that /req/union-encodings is not a generic requirement but its value is selected by the MIM construct encountered 
+        See https://github.com/Geonovum/shapeChangeTest/issues/51
+    -->
     
 </jsonschema-rules>

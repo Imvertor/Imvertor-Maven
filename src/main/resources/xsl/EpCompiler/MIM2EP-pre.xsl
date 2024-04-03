@@ -18,71 +18,98 @@
     >
     
     <!-- 
-       Deze stylesheet wwrkt op MIM serialisatie formaat en produceert MIM.
-       
-       Eerste stap:      Omzetten van associatieklassen naar gewone objecttypen, zie https://geonovum.github.io/uml2json/document.html#toc40
+         Deze stylesheet wwrkt op MIM serialisatie formaat en produceert MIM.
+           
+         Dit is een eerste stap in een proces.
+          
+         - Omzetten van associatieklassen naar gewone objecttypen, zie https://geonovum.github.io/uml2json/document.html#toc40
+         - Verwijderen van tweede jsonPrimaryInterval attribuut
+         - Copy-down van enumeratiewaarden in overerving
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-MIM.xsl"/>
+    
+    <xsl:variable name="mim-document" select="/"/>
+    
+    <xsl:variable name="relatierol-leidend" select="/mim:Informatiemodel/mim:relatiemodelleringtype = 'Relatierol leidend'"/>
+    
+    <xsl:variable name="requirement-levels" select="('bp-basic-encodings','bp-by-reference-encodings','bp-code-list-encodings','bp-additional-requirements-classes')" as="xs:string+"/>
+    
+    <xsl:variable name="bp-req-basic-encodings" select="$configuration-jsonschemarules-file//parameter[@name = 'bp-basic-encodings']"/> 
     
     <xsl:template match="/">
-        <xsl:apply-templates mode="assoc-class"/>
+        
+        <xsl:variable name="bp-reqs" select="$configuration-jsonschemarules-file//parameter[@name = $requirement-levels]"/> 
+        <xsl:choose>
+            <xsl:when test="count($bp-reqs) eq 4">
+                <xsl:apply-templates/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg(.,'ERROR','Incomplete Json schema configuration, please supply all of [1]',imf:string-group($requirement-levels))"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        
     </xsl:template>
     
-    <xsl:template match="mim:Domein/mim:objecttypen" mode="assoc-class">
+    <xsl:template match="mim:Domein/mim:objecttypen">
         <mim:objecttypen>
-            <xsl:apply-templates select="*" mode="#current"/>
-            <xsl:apply-templates select="mim:Objecttype/mim:relatiesoorten/mim:Relatiesoort/mim:relatieklasse/mim:Relatieklasse" mode="#current"/>
+            <xsl:apply-templates select="*"/>
+            <xsl:apply-templates select="mim:Objecttype/mim:relatiesoorten/mim:Relatiesoort/mim:relatieklasse/mim:Relatieklasse"/>
         </mim:objecttypen>
     </xsl:template>
     
-    <xsl:template match="mim:relatieklasse" mode="assoc-class">
-        <!-- wodrt in andere context verwerkt -->
+    <xsl:template match="mim:relatieklasse">
+        <!-- wordt in andere context verwerkt -->
     </xsl:template>
     
-    <xsl:template match="mim:Relatiesoort[mim:relatieklasse]" mode="assoc-class">
+    <xsl:template match="mim:Relatiesoort[mim:relatieklasse]">
         <xsl:variable name="relatie" select="."/>
         <xsl:variable name="relatieklasse" select="mim:relatieklasse/mim:Relatieklasse"/>
+        <xsl:variable name="relatie-naam" select="if ($relatierol-leidend) then $relatie/mim:relatierollen/mim:Doel/mim:naam else $relatie/mim:naam"/>
         <mim:Relatiesoort>
-            <mim:naam>{$relatie/mim:naam}</mim:naam>
+            <mim:naam>
+                <xsl:apply-templates select="$relatie/mim:naam"/>
+            </mim:naam>
             <mim:doel>
                 <mim-ref:ObjecttypeRef index="{$relatie/@index}"
-                    label="TODO1"
+                    label="{$relatie-naam}"
                     xlink:href="#{$relatieklasse/@id}">{$relatieklasse/mim:naam}</mim-ref:ObjecttypeRef>
             </mim:doel>
             <mim:relatierollen>
                 <mim:Bron>
-                    <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Bron/*[not(name() = ('mim:kardinaliteit'))]" mode="#current"/>
+                    <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Bron/*[not(name() = ('mim:kardinaliteit'))]"/>
                     <mim:kardinaliteit>1</mim:kardinaliteit>
                 </mim:Bron>
                 <mim:Doel>
-                    <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/*[not(name() = ('mim:kardinaliteit'))]" mode="#current"/>
-                    <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/mim:kardinaliteit" mode="#current"/>
+                    <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/*[not(name() = ('mim:kardinaliteit'))]"/>
+                    <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/mim:kardinaliteit"/>
                 </mim:Doel>
             </mim:relatierollen>
         </mim:Relatiesoort>
     </xsl:template>
     
     <!-- maak een objecttype voor de associatieklasse waarbij deze één in-gaande en één uitgaande relatie heeft -->
-    <xsl:template match="mim:Relatieklasse" mode="assoc-class">
+    <xsl:template match="mim:Relatieklasse">
         <xsl:variable name="relatie" select="../.."/>
         <xsl:variable name="relatieklasse" select="."/>
+        <xsl:variable name="relatie-naam" select="if ($relatierol-leidend) then $relatie/mim:relatierollen/mim:Doel/mim:naam else $relatie/mim:naam"/>
         <mim:Objecttype>
-            <xsl:apply-templates select="$relatieklasse/@*" mode="#current"/>
-            <xsl:apply-templates select="$relatieklasse/*[not(name() = ('mim:relatiesoorten','mim:kardinaliteit'))]" mode="#current"/>
+            <xsl:apply-templates select="$relatieklasse/@*"/>
+            <xsl:apply-templates select="$relatieklasse/*[not(name() = ('mim:relatiesoorten','mim:kardinaliteit'))]"/>
             <mim:relatiesoorten>
-                <xsl:apply-templates select="$relatieklasse/mim:relatiesoorten/mim:Relatiesoort" mode="#current"/>
+                <xsl:apply-templates select="$relatieklasse/mim:relatiesoorten/mim:Relatiesoort"/>
                 <mim:Relatiesoort>
-                    <xsl:apply-templates select="$relatie/mim:naam" mode="#current"/><!-- herhaling van dezelfde naam -->
-                    <xsl:apply-templates select="$relatie/mim:doel" mode="#current"/>
+                    <xsl:apply-templates select="$relatie-naam"/><!-- herhaling van dezelfde naam -->
+                    <xsl:apply-templates select="$relatie/mim:doel"/>
                     <mim:relatierollen>
                         <mim:Bron>
-                            <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Bron/mim:naam" mode="#current"/>
-                            <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Bron/mim:kardinaliteit" mode="#current"/>
+                            <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Bron/mim:naam"/>
+                            <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Bron/mim:kardinaliteit"/>
                         </mim:Bron>
                         <mim:Doel>
-                            <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/mim:naam" mode="#current"/>
-                            <mim:kardinaliteit>1<!--fixed--></mim:kardinaliteit>
+                            <xsl:apply-templates select="$relatie/mim:relatierollen/mim:Doel/mim:naam"/>
+                            <mim:kardinaliteit>1<!--staat vast--></mim:kardinaliteit>
                         </mim:Doel>
                     </mim:relatierollen>
                 </mim:Relatiesoort>
@@ -90,10 +117,49 @@
         </mim:Objecttype>
     </xsl:template>
     
-    <xsl:template match="node() | @*" mode="assoc-class">
+    <xsl:template match="mim:Attribuutsoort">
+        <xsl:choose>
+            <xsl:when test="$bp-req-basic-encodings = '/req/jsonfg' and mim-ext:kenmerken/mim-ext:Kenmerk[@naam = 'jsonPrimaryInterval'] = 'end'">
+                <!-- remove, see https://github.com/Geonovum/shapeChangeTest/issues/27 -->
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="mim:naam">
+        <xsl:variable name="usable-name" select="imf:extract(.,'[-A-Za-z0-9.:_]')"/>
+        <xsl:if test="$usable-name ne .">
+            <xsl:sequence select="imf:msg('WARNING','Name [1] cannot be used for Json schema construct. Must adapt to [2].',(.,$usable-name))"/>
+        </xsl:if>
+        <mim:naam>
+            <xsl:value-of select="$usable-name"/>
+        </mim:naam>
+    </xsl:template>
+    
+    <!-- 
+         https://github.com/Geonovum/shapeChangeTest/issues/53
+         
+         Kopieer de enumeratieve waarden naar subtype.
+    -->
+    <xsl:template match="mim:Enumeratie">
+        <xsl:variable name="supers" select="imf:get-mim-supertypes(.)"/>
         <xsl:copy>
-            <xsl:apply-templates select="node() | @*" mode="#current"/>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates select="mim:naam"/>
+            <xsl:copy-of select="*[not(local-name() = ('naam','waarden'))]"/>
+            <mim:waarden>
+                <xsl:sequence select="($supers,.)/mim:waarden/mim:Waarde"/>
+            </mim:waarden>
         </xsl:copy>
     </xsl:template>
     
+    <xsl:template match="node() | @*">
+        <xsl:copy>
+            <xsl:apply-templates select="node() | @*"/>
+        </xsl:copy>
+    </xsl:template>
+    
+
 </xsl:stylesheet>

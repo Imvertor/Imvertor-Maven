@@ -61,7 +61,7 @@ public class MIMCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
-		runner.info(logger,"Compiling MIM format");
+		runner.info(logger,"Compiling and validating MIM format");
 		
 		boolean succeeds = true;
 		

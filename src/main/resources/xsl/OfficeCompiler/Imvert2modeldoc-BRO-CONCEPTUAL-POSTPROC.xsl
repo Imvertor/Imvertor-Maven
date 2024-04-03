@@ -46,12 +46,12 @@
                 <xsl:variable name="sections" as="element()*">
                     <xsl:apply-templates select="section[@type = 'OVERVIEW-OBJECTTYPE']/section[@type = 'OBJECTTYPE' and not(@name = 'Registratieobject')]"/>
                     <xsl:apply-templates select=".//section[@type = 'DETAIL-COMPOSITE']"/> <!-- omgezet naar objecttypen -->
+                    <xsl:apply-templates select="section[@type = 'OVERVIEW-UNION']/section[@type = 'UNION']"/>
                 </xsl:variable>
                 <xsl:for-each select="$sections">
                     <xsl:sort select="@position" order="ascending" data-type="number"/>
                     <xsl:sequence select="."/>
                 </xsl:for-each>
-                <xsl:apply-templates select="section[@type = 'OVERVIEW-UNION']/section[@type = 'UNION']"/>
             </section>
             <section type="SPECIAL-LISTS">
                 <!-- minder kopjes lijsten -->
@@ -103,33 +103,8 @@
         <!-- remove -->
     </xsl:template>
     
-    <xsl:template match="section[@type = ('UNION')]"><!-- zie de manier waarop objecttypen zijn uitgewerkt -->
-        <xsl:variable name="name" select="@name"/>
-        <xsl:copy>
-            <xsl:apply-templates select="@*"/>
-            <xsl:apply-templates select="content"/>
-            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[@type = 'DETAILS']/section[@name = $name]/section[@type = 'DETAIL-UNIONELEMENT']"/>
-        </xsl:copy>
-    </xsl:template>
-    <xsl:template match="section[@type = ('UNION')]/content">
-        <content>
-            <part type="CFG-DOC-NAAM">
-                <item>Type gegeven</item>
-                <item>Keuze</item>
-            </part>
-            <xsl:apply-templates select="part[@type = 'CFG-DOC-DEFINITIE']"/>
-        </content>
-    </xsl:template>
-    <xsl:template match="section[@type = ('DETAIL-UNIONELEMENT')]/content">
-        <xsl:variable name="aname" select="../@name"/>
-        <xsl:variable name="oname" select="../../@name"/>
-        <content>
-            <part type="CFG-DOC-NAAM">
-                <item>Type gegeven</item>
-                <item>Keuze element van <xsl:value-of select="../../@name"/></item>
-            </part>
-            <xsl:apply-templates select="part[@type = 'CFG-DOC-DEFINITIE']"/>
-        </content>
+    <xsl:template match="section[@type = ('UNION')]">
+        <!-- verwijderd op verzoek https://github.com/Imvertor/Imvertor-Maven/issues/466 -->
     </xsl:template>
     
     <xsl:template match="section[@type = 'DETAIL-COMPOSITE-ATTRIBUTE']">
@@ -439,7 +414,7 @@
                     <item><xsl:value-of select="$context/part[@type = 'CFG-DOC-PATROON']/item[2]/text()"/></item>
                 </part>
             </xsl:when>
-            <xsl:when test="$item-text=('Bepalingscode','NITGCode','Putcode','GUID')">
+            <xsl:when test="$item-text=('Bepalingscode','NITGCode','Putcode','GUID','KvK-nummer')">
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item><xsl:value-of select="$item"/></item>
@@ -489,7 +464,7 @@
                     <item>Organisatie</item>
                 </part>
             </xsl:when>
-            <xsl:when test="$item-text = ('IndicatieJaNee', 'Kwaliteitsregime')">   
+            <xsl:when test="$item-text = ('IndicatieJaNee', 'IndicatieJaNeeOnbekend', 'Kwaliteitsregime')">   
                 <part>
                     <item>&#160;&#160;Naam</item>
                     <item><xsl:value-of select="$item"/></item>

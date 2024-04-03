@@ -17,8 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
@@ -26,9 +25,7 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
-    
-    exclude-result-prefixes="#all" 
-    version="2.0">
+    >
 
     <!-- 
         Validation of the UML. 
@@ -171,18 +168,20 @@
     <!-- all display names of all properties -->
     <xsl:variable name="property-display-names" select="for $p in ($domain-package//imvert:attribute,$domain-package/imvert:association) return imf:get-display-name($p)"/>
     
-    <xsl:variable name="model-is-role-based" select="imf:get-tagged-value(/imvert:packages,'##CFG-TV-IMRELATIONMODELINGTYPE')"/>
+    <xsl:variable name="model-is-role-based" select="imf:get-tagged-value($application-package,'##CFG-TV-IMRELATIONMODELINGTYPE')"/>
     <xsl:variable name="meta-is-role-based" select="if (exists($model-is-role-based)) then ($model-is-role-based = 'Relatierol leidend') else imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/>
     
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
+    <xsl:variable name="metamodel-version-stack" select="tokenize(/imvert:packages/imvert:metamodel,';')" as="xs:string*"/>
+
     <!-- 
         Document validation; this validates the root (application-)package.
       
         Place rules here that focus on the complete specification rather than particular constructs. 
     -->
     <xsl:template match="/imvert:packages">
-        
+  
         <!-- bewaarde de info dat het model rolgebaseerd is of niet -->
         <xsl:sequence select="imf:set-xparm('appinfo/meta-is-role-based',$meta-is-role-based)"/>
    
@@ -230,6 +229,9 @@
         <xsl:sequence select="imf:report-error(., 
             not(normalize-space(imvert:namespace)), 
             'No root namespace defined for application')"/>
+        
+        <xsl:sequence select="imf:check-mimversion(.)"/>
+        
         <xsl:next-match/>
     </xsl:template>
     
@@ -710,6 +712,7 @@
             not($collection-classes/imvert:associations/imvert:association/imvert:type-id=$id), 
             'This class does not occur in a collection, but cannot be embedded into the application.')"/>
         -->
+        
         <xsl:next-match/>
     </xsl:template>
     
@@ -894,6 +897,13 @@
         <xsl:sequence select="imf:report-warning(., 
             imvert:stereotype/@id = 'stereotype-name-attributegroup' and not($defining-class/imvert:designation = 'class'), 
             '[1] type must be an UML class', imf:string-group(imf:get-config-stereotypes('stereotype-name-attributegroup'),' or '))"/>
+        
+        <!-- Is het attribuut goed gestereotypeerd? -->
+        <!--TODO alle relaties tussen construct van een bepaald stereotype valideren op basis van primary en context/parent info uit configuratiebestand. Dus als eerste aparte slag na canocalisatie. -->
+        <xsl:variable name="allowed-primary-stereotype-ids" select="$configuration-metamodel-file/stereotypes/stereo[construct = 'attribute' and context/parent-stereo = 'stereotype-name-objecttype' and @primary = 'yes']/@id" as="xs:string*"/>
+        <xsl:sequence select="imf:report-error(., 
+            exists($allowed-primary-stereotype-ids) and not(imvert:stereotype/@id = $allowed-primary-stereotype-ids), 
+            'Attribute must be stereotyped as (any of) [1]', imf:string-group(for $s in $allowed-primary-stereotype-ids return imf:get-config-name-by-id($s)))"/>
         
         <xsl:next-match/>
     </xsl:template>
@@ -1596,6 +1606,20 @@
         <xsl:sequence select="imf:report-error($this, 
             not(matches($this/imvert:release,$release-pattern)), 
             'Release must be specified and takes the form YYYYMMDD')"/>
+    </xsl:function>
+    
+    <!-- 
+        test of MIM versie overeen komt met verwachte MIM versie 
+        https://github.com/Imvertor/Imvertor-Maven/issues/461 
+    -->
+    <xsl:function name="imf:check-mimversion">
+        <xsl:param name="this"/>
+        <xsl:variable name="compliancy-version" select="(for $m in $metamodel-version-stack return if (starts-with($m,'MIM ')) then $m else ())[1]"/> <!-- lijst van MIM metamodel names. -->
+        <xsl:variable name="version" select="imf:get-tagged-value($this,'##CFG-TV-MIMVERSION')"/>
+        <xsl:variable name="specified-version" select="'MIM ' || $version"/>
+        <xsl:sequence select="imf:report-warning($this, 
+            not($version and ($compliancy-version = $specified-version)), 
+            'MIM version [1] does not match the configured version [2]',($specified-version,$compliancy-version))"/>
     </xsl:function>
     
     <!-- return the elements that are considered to be duplicate of this element -->
