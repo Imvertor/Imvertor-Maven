@@ -32,6 +32,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -217,6 +219,9 @@ public class AnyFile extends File  {
         reader.close();
         return fileData.toString();
 	}
+	public byte[] getBinaryContent() throws IOException {
+		return Files.readAllBytes(Paths.get(getCanonicalPath()));
+	}
 	
 	public void setContent(String s) throws IOException {
 		setContent(s, false);
@@ -228,6 +233,10 @@ public class AnyFile extends File  {
         out.write(s);
         out.flush();
         out.close();
+	}
+	public void setBinaryContent(byte[] bytes) throws IOException {
+		createFile();
+		Files.write(Paths.get(getCanonicalPath()), bytes);
 	}
 
 	public void replaceAll(String oldString, String newString) throws IOException {
