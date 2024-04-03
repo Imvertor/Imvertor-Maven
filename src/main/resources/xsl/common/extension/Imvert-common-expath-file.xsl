@@ -48,4 +48,11 @@
         <xsl:sequence select="file:exists($file-path)"/>
     </xsl:function>
     
+    <xsl:function name="imf:expath-write-binary" as="xs:boolean?">
+        <xsl:param name="file-path" as="xs:string"/>
+        <xsl:param name="base64-content" as="xs:string"/>
+        <xsl:variable name="base64" select="xs:base64Binary($base64-content)"/>
+        <xsl:sequence select="file:write-binary($file-path,$base64)"/>
+    </xsl:function>
+    
 </xsl:stylesheet>
