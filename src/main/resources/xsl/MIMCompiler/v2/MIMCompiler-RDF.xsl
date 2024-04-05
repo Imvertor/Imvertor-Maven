@@ -199,16 +199,12 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   </xsl:template>
   
   <xsl:template match="mim-in:Relatieklasse">
-    <xsl:where-populated>
-      <mim:relatieklasse>
-        <xsl:where-populated>
-          <mim:Relatieklasse rdf:about="{local:get-id(.)}">
-            <xsl:apply-templates select="mim-in:*[xhtml:* or (not(*) and normalize-space())]" mode="metagegeven"/>
-            <xsl:apply-templates select="(mim-in:attribuutsoorten, mim-in:gegevensgroepen, mim-in:constraints)/*" mode="metagegeven"/>
-          </mim:Relatieklasse>  
-        </xsl:where-populated>
-      </mim:relatieklasse>
-    </xsl:where-populated>
+      <xsl:where-populated>
+        <mim:Relatieklasse rdf:about="{local:get-id(.)}">
+          <xsl:apply-templates select="mim-in:*[xhtml:* or (not(*) and normalize-space())]" mode="metagegeven"/>
+          <xsl:apply-templates select="(mim-in:attribuutsoorten, mim-in:gegevensgroepen, mim-in:constraints)/*" mode="metagegeven"/>
+        </mim:Relatieklasse>  
+      </xsl:where-populated>
   </xsl:template>
   
   <xsl:template match="(mim-in:GeneralisatieObjecttypes|mim-in:GeneralisatieDatatypes)[mim-in:supertype/mim-ref:*]">
