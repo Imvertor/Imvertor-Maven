@@ -12,14 +12,14 @@
     
     <profiles>
         <profile lang="nl"> 
-            <id>MEGNL</id>
+            <id>Logius-C-NL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM 1.1.1 Logius NL</desc> 
+            <desc>MIM 1.1.1 Logius Conceptueel NL</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
-            <id>MEGEN</id>
+            <id>Logius-C-EN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM 1.1.1 Logius EN</desc>
+            <desc>MIM 1.1.1 Logius Conceptual EN</desc>
         </profile>
     </profiles>
     
