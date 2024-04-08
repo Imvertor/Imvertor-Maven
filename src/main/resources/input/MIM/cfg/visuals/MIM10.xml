@@ -123,6 +123,9 @@
         <stereo id="stereotype-name-application-package">
             <toolbox category="PACKAGES"/>
         </stereo>
+        <stereo id="stereotype-name-informatiemodel-package">
+            <toolbox category="PACKAGES"/>
+        </stereo>
         <stereo id="stereotype-name-external-package">
             <toolbox category="PACKAGES"/>
         </stereo>
