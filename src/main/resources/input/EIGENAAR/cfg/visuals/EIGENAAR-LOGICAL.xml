@@ -4,11 +4,11 @@
 -->
 <visuals type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <xi:include href="../../../MIM/cfg/visuals/MIM11.xml"/>
-
     <!-- 
-        these visuals specify the basic visual aspects of the UML profile  
+         LOGICAL follows CONCEPTUAL  
     -->
+    <xi:include href="EIGENAAR-CONCEPTUAL.xml"/>
+   
     <name>BRO logical</name>
 
     <desc lang="en">Visuals for BRO logical models</desc>
@@ -17,7 +17,7 @@
     <measures>
         <!-- geen aanpassingen -->
     </measures>
-
+    
     <categories>
         <!-- geen aanpassingen -->
     </categories>
@@ -25,5 +25,5 @@
     <stereos>
         <!-- geen aanpassingen -->
     </stereos>
- 
+    
 </visuals>
