@@ -74,12 +74,27 @@
         <stereo id="stereotype-name-attributegroup">
             <toolbox category="OBJECTS"/>
         </stereo>
-        <stereo id="stereotype-name-union">
+        <stereo id="stereotype-name-union-datatypes">
             <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
             <toolbox category="DATATYPES"/>
         </stereo>
         <stereo id="stereotype-name-union-element">
             <toolbox category="OBJECTS"/>
+        </stereo>
+        <stereo id="stereotype-name-union-for-attributes">
+            <toolbox category="OBJECTS"/>
+        </stereo>
+        <stereo id="stereotype-name-union-attributes">
+            <toolbox category="OBJECTS"/>
+        </stereo>
+        <stereo id="stereotype-name-union-attribute">
+            <toolbox category="OBJECTS"/>
+        </stereo>
+        <stereo id="stereotype-name-union-associations">
+            <toolbox category="RELATIONS"/>
+        </stereo>
+        <stereo id="stereotype-name-union-association">
+            <toolbox category="RELATIONS"/>
         </stereo>
         <stereo id="stereotype-name-enumeration">
             <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
