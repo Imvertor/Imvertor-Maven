@@ -4,8 +4,9 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <!-- Logius follows MIM 1.1.1 requirements -->
+    <!-- Logius follows Imvertor and MIM 1.1.1 requirements -->
     
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM111.xml"/>
     <xi:include href="../../../MIM/cfg/metamodels/MIM111.xml"/>
     
     <name>Logius CONCEPTUEEL</name>
