@@ -21,13 +21,18 @@
 package nl.imvertor.XmiCompiler;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.List;
 
 import javax.xml.xpath.XPathConstants;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.NodeList;
 
+import nl.imvertor.XmiCompiler.XMIImageExporter.Image;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
@@ -273,9 +278,33 @@ public class XmiCompiler extends Step {
 	 */
 	private void cleanXMI(XmlFile xmiFile) throws Exception {
 		
+		// decode alle images uit content naar de Images folder
+		extractImages(xmiFile);
+		
+		// Probeer character fix
 		String c = xmiFile.getContent();
 		if (c.contains("&#5"))
 			xmiFile.setContent(StringUtils.replacePattern(c, "&#5[0-9]{4};", "?"));
+	}
+	
+	private void extractImages(XmlFile xmiFile) throws Exception {
+		XMIImageExporter exporter = new XMIImageExporter();
+		AnyFile tempFile = new AnyFile(File.createTempFile("extractImages.", ".xmi"));
+		tempFile.deleteOnExit();
+		File imageFolder = new File(xmiFile.getParentFile(),"Images");
+		try (FileInputStream xmiFis = new FileInputStream(xmiFile); 
+		     FileOutputStream xmiFos = new FileOutputStream(tempFile)) {
+			List<Image> images = exporter.export(xmiFis, xmiFos);
+			for (Image image: images) {
+				try (FileOutputStream imgFos = new FileOutputStream(new File(imageFolder, image.getImageID() + "_" + image.getName()))) {
+					imgFos.write(image.getData());
+					imgFos.close();
+				}
+			}
+			xmiFis.close();
+			xmiFos.close();
+			tempFile.copyFile(xmiFile);
+		}
 	}
 	
 	private void migrateXMI(XmlFile xmiFile, String mode) throws Exception {

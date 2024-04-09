@@ -268,10 +268,9 @@
                                     </xsl:for-each>
                                 </imvert:package>
                             </xsl:if>
-                            <xsl:variable name="imgs" select="$xmi-document/XMI/XMI.extensions/EAModel.image/EAImage"/>
-                            <xsl:if test="exists($imgs)">
-                                <xsl:apply-templates select="$imgs"/>
-                            </xsl:if>
+                            <?x Images zijn onttrokken aan de XMI in een eerste "streaming" stap in de XMITranslator.
+                            <xsl:apply-templates select="$xmi-document/XMI/XMI.extensions/EAModel.image/EAImage"/>
+                            x?>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:otherwise>
@@ -519,6 +518,7 @@
         </imvert:class>
     </xsl:template>
     
+    <?x Images zijn onttrokken aan de XMI in een eerste "streaming" stap in de XMITranslator. 
     <xsl:template match="EAImage">
         <xsl:variable name="filename" select="concat(@imageID,'_',@name)"/>
         <xsl:variable name="images-folder" select="imf:get-xparm('system/work-xmi-folder-path')"/>
@@ -526,6 +526,7 @@
         <xsl:variable name="encodedString" select="replace(text(),'\s','')"/>
         <xsl:sequence select="ext:imvertorExpathWriteBinary($filepath,$encodedString)"/>
     </xsl:template>
+    x?>
     
     <xsl:template match="*|@*|text()">
       <xsl:apply-templates/>  
