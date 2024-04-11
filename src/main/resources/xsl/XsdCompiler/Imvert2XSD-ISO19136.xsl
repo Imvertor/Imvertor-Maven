@@ -372,6 +372,7 @@
         
         <!-- all classes are element + complex type declaration; except for datatypes (<<datatype>>). -->
         
+        <xsl:variable name="is-choice" select="imvert:stereotype/@id = 'stereotype-name-union-associations'"/>
         <xsl:variable name="is-choice-member" select="$document-classes[imvert:stereotype/@id = ('stereotype-name-union') and imvert:attributes/imvert:attribute/imvert:type-id = $type-id]"/>
         <xsl:variable name="is-complex-datatype" select="imvert:stereotype/@id = ('stereotype-name-complextype')"/>
         <xsl:variable name="is-referencelist" select="imvert:stereotype/@id = ('stereotype-name-referentielijst')"/>
@@ -416,9 +417,9 @@
         
         <xsl:variable name="content" as="element()?">
             <xsl:choose>
-                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-union')">
-                    <!-- attributes of a NEN3610 union, i.e. a choice between classes. The choice is a specialization of a datatype -->
-                    <xsl:variable name="atts">
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-union-attributes')">
+                    <!-- attributes of a NEN3610 union, i.e. a choice between attributes. The choice is a specialization of a datatype -->
+                    <xsl:variable name="atts" as="node()*">
                         <xsl:for-each select="imvert:attributes/imvert:attribute">
                             <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
                             <xsl:variable name="defining-class" select="imf:get-defining-class(.)"/>   
@@ -427,18 +428,18 @@
                             <xsl:variable name="defining-class-is-primitive" select="exists(imvert:primitive)"/>   
                             <xsl:choose>
                                 <xsl:when test="$defining-class-is-datatype or $defining-class-is-primitive">
-                                    <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice member, which is a datatype')"/>
+                                    <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice member (in an attribute choice), which is a datatype')"/>
                                     <xsl:sequence select="imf:create-element-property(.)"/>
                                 </xsl:when>
                                 <xsl:when test="empty($defining-class) and $allow-scalar-in-union">
-                                    <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice member, which is a scalar type')"/>
+                                    <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice member (in an attribute choice), which is a scalar type')"/>
                                     <xsl:sequence select="imf:create-element-property(.)"/>
                                 </xsl:when>
                                 <xsl:when test="empty($defining-class)">
                                     <xsl:sequence select="imf:msg(.,'ERROR', 'Unable to create a union of scalar types',())"/> <!-- IM-291, https://github.com/Imvertor/Imvertor-Maven/issues/44 -->
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice member')"/>
+                                    <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice member (in an attribute choice)')"/>
                                     <xs:element ref="{imf:get-qname($defining-class)}"/>  
                                 </xsl:otherwise>
                             </xsl:choose>
@@ -449,8 +450,29 @@
                             <xs:choice>
                                 <xsl:attribute name="minOccurs" select="if (imvert:min-occurs) then imvert:min-occurs else '1'"/>
                                 <xsl:attribute name="maxOccurs" select="if (imvert:max-occurs) then imvert:max-occurs else '1'"/>
-                                <xsl:sequence select="imf:create-xml-debug-comment(.,'A number of choices')"/>
+                                <xsl:sequence select="imf:create-xml-debug-comment(.,'A number of choices (in an attribute choice)')"/>
                                 <xsl:sequence select="$atts"/>
+                            </xs:choice>
+                        </complex>
+                    </xsl:if>
+                </xsl:when>
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-union-associations')">
+                    <!-- associations in a union, i.e. a choice between classes. The choice is a specialization of a datatype -->
+                    <xsl:variable name="members" as="node()*">
+                        <xsl:for-each select="imvert:associations/imvert:association">
+                            <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
+                            <xsl:variable name="defining-class" select="imf:get-defining-class(.)"/>   
+                            <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice member (in an association choice)')"/>
+                            <xs:element ref="{imf:get-qname($defining-class)}"/>  
+                        </xsl:for-each>
+                    </xsl:variable>
+                    <xsl:if test="$members">
+                        <complex>
+                            <xs:choice>
+                                <xsl:attribute name="minOccurs" select="if (imvert:min-occurs) then imvert:min-occurs else '1'"/>
+                                <xsl:attribute name="maxOccurs" select="if (imvert:max-occurs) then imvert:max-occurs else '1'"/>
+                                <xsl:sequence select="imf:create-xml-debug-comment(.,'A number of choices (in an association choice)')"/>
+                                <xsl:sequence select="$members"/>
                             </xs:choice>
                         </complex>
                     </xsl:if>
@@ -478,16 +500,16 @@
                 <xsl:otherwise>
                     <complex>
                         <!-- XML elements are declared first -->
-                        <xsl:variable name="atts" as="item()*">
+                        <xsl:variable name="members" as="item()*">
                             <xsl:for-each select="imvert:attributes/imvert:attribute[not(imvert:type-name=$xml-attribute-type)] | imvert:associations/imvert:association">
                                 <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
                                 <xsl:sequence select="imf:create-xml-debug-comment(.,'An attribute or association')"/>
                                 <xsl:sequence select="imf:create-element-property(.)"/>
                             </xsl:for-each>
                         </xsl:variable>
-                        <xsl:if test="exists($atts)">
+                        <xsl:if test="exists($members)">
                             <xs:sequence>
-                                <xsl:sequence select="$atts"/>
+                                <xsl:sequence select="$members"/>
                             </xs:sequence>
                         </xsl:if>
                     
@@ -569,6 +591,13 @@
                                     <xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
                                     <xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
                                 </xsl:when>
+                                <xsl:when test="$is-choice">
+                                    <xsl:sequence select="imf:create-xml-debug-comment(.,'Choice')"/>
+                                    <xs:sequence minOccurs="0">
+                                        <xs:element ref="{imf:get-type($type-name,$package-name)}"/>
+                                    </xs:sequence>
+                                    <xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+                                </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:sequence select="imf:create-xml-debug-comment(.,'Datatype')"/>
                                     <!-- a datatype -->
@@ -649,8 +678,13 @@
         <xsl:variable name="basetype-name" select="if ($is-nillable) then imf:get-restriction-basetype-name($this) else ''"/>
         <xsl:variable name="package-name" select="$this/ancestor::imvert:package[last()]/imvert:name"/>
         
-        <xsl:variable name="name" select="$this/imvert:name"/>
+        <!-- 
+             Determine the name of the property. ISO 19136 is role based. When ssociation, use the role name. Else use the property name.
+        -->
+        <xsl:variable name="property-name" select="$this/imvert:name"/>
         <xsl:variable name="target-role-name" select="if ($this/self::imvert:association) then imf:get-ISOrole-info($this)/(imvert:name | imvert:role) else ()"/>
+        <xsl:variable name="name" select="if (normalize-space($target-role-name)) then $target-role-name else $property-name"/>
+        
         <xsl:variable name="found-type" select="if ($this/imvert:type-name) then imf:get-type($this/imvert:type-name,$this/imvert:type-package) else ()"/><!-- let op, het kan zijn dat er geen type mapping beschikbaar is -->
       
         <xsl:variable name="is-any" select="$found-type = '#any'"/>
@@ -1271,13 +1305,8 @@
                 
                 <xsl:sequence select="imf:create-xml-debug-comment($this,'An association')"/>
                 <xs:element minOccurs="{$this/imvert:min-occurs}" maxOccurs="{$this/imvert:max-occurs}">
-                    <!-- 
-                        When no role name specified, use the association name 
-                        This should be rejected by validation
-                    -->
-                    <xsl:variable name="usable-name" select="if (normalize-space($target-role-name)) then $target-role-name else $name"/>
                     
-                    <xsl:attribute name="name" select="$usable-name"/>
+                    <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="nillable" select="if ($is-nillable) then 'true' else 'false'"/>
                     
                     <xsl:choose>
