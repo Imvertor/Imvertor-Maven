@@ -7,11 +7,14 @@ import java.util.Base64;
 import java.util.Base64.Decoder;
 import java.util.List;
 
+import javax.sound.sampled.AudioFormat.Encoding;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+
+import org.apache.commons.lang.CharEncoding;
 
 public class XMIImageExporter {
     
@@ -30,7 +33,7 @@ public class XMIImageExporter {
     do {
       switch (reader.getEventType()) {
       case XMLStreamConstants.START_DOCUMENT:
-        writer.writeStartDocument(reader.getEncoding(), reader.getVersion());
+        writer.writeStartDocument(CharEncoding.UTF_8, reader.getVersion());
         break;
       case XMLStreamConstants.END_DOCUMENT:
         writer.writeEndDocument();
