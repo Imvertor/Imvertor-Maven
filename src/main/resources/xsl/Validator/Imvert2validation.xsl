@@ -969,7 +969,7 @@
         <xsl:variable name="is-combined-identification" select="imf:get-tagged-value($this,'##CFG-TV=GECOMBINEERDEIDENTIFICATIE')"/>
         <xsl:variable name="target-navigable" select="imvert:target/imvert:navigable"/>
         <xsl:variable name="defining-class-is-group" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')"/>
-        
+        <xsl:variable name="is-keuze-relatie" select="imvert:stereotype/@id = 'stereotype-name-union-association'"/> <!-- #473 -->
         <xsl:variable name="applicable-name" select="if ($meta-is-role-based and not($is-choice)) then imvert:target/imvert:role else imvert:name"/>
             
         <!--validation-->
@@ -983,7 +983,7 @@
                     not($is-collection) and $this/imvert:name and not(imf:test-name-convention($this)), 
                     'Association name does not obey convention')"/>
                 <xsl:sequence select="imf:report-error(., 
-                    (not($is-collection) and not($is-process) and not($defining-class-is-group) and empty($association-class-id) and empty($applicable-name)), 
+                    (not($is-collection) and not($is-process) and not($defining-class-is-group) and empty($association-class-id) and empty($applicable-name) and not($is-keuze-relatie)), 
                     'Association without name')"/>
                 <xsl:sequence select="imf:report-error(., 
                     $superclasses/*/imvert:attribute/imvert:name=$name, 
