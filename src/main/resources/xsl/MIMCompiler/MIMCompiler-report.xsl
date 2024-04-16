@@ -43,6 +43,7 @@
                     <xsl:sequence select="imf:report-key-label('MIM version','system','mim-compiler-mim-version')"/>
                     <xsl:sequence select="imf:report-key-label('Formattype','system','mim-compiler-format-type')"/>
                     <xsl:sequence select="imf:report-key-label('Formatter version','system','mim-compiler-format-version')"/>
+                    <xsl:sequence select="imf:report-key-label('Model typering','system','mim-compiler-model-typering')"/>
                 </info>
             </summary>
        </report>

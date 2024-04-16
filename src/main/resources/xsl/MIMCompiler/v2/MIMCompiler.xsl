@@ -215,6 +215,11 @@
       </xsl:document>
     </xsl:variable>
     <xsl:apply-templates select="$intermediate-result" mode="postprocess"/>
+    
+    <!-- typeer dit model tbv report -->
+    <xsl:sequence select="imf:set-xparm('system/mim-compiler-model-typering',
+      $relatiemodelleringtype
+    )"/>
   </xsl:template>
   
   <xsl:template name="domein-of-view">
@@ -571,7 +576,7 @@
               <mim:Relatiedoel>
                 <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
                 <xsl:call-template name="create-ref-element">
-                  <xsl:with-param name="label" select="imvert:name" as="xs:string"/>
+                  <xsl:with-param name="label" select="imvert:name" as="xs:string?"/>
                   <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
                 </xsl:call-template> 
               </mim:Relatiedoel>
