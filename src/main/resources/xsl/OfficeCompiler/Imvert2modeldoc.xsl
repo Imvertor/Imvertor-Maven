@@ -77,7 +77,7 @@
     <xsl:template match="/imvert:packages">
         <xsl:sequence select="imf:track('Generating modeldoc',())"/>
         
-        <book name="{imvert:application}" subpath="{$subpath}" type="{imvert:stereotype}" id="{imvert:id}" generator-version="{$imvertor-version}" generator-date="{$generation-date}">
+        <book name="{imvert:application}" subpath="{$subpath}" type="{imvert:stereotype}" id="{imvert:id}" model-version="{imvert:version}" generator-version="{$imvertor-version}" generator-date="{$generation-date}">
             
             <!-- call a general initialization function -->
             <xsl:sequence select="imf:initialize-modeldoc()"/>
@@ -1619,6 +1619,7 @@
                 <xsl:value-of select="$name"/>
             </xsl:when>
             <xsl:otherwise>
+                <xsl:value-of select="'---'"/>
                 <xsl:sequence select="imf:msg($this,'ERROR','Cannot determine the name of this construct',())"/>
             </xsl:otherwise>
         </xsl:choose>  
