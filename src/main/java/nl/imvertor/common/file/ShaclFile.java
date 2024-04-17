@@ -69,10 +69,24 @@ public class ShaclFile extends RdfFile {
 		this.parse(configurator);
 	}
 	
+	/**
+	 * Valideer een turtle file (well-formedness check). 
+	 * 
+	 * @param configurator De Configurator instance
+	**/
 	public void parse(Configurator configurator) throws Exception {
 		this.parse(configurator, "");
 	}
 	
+	/**
+	 * Valideer een turtle file en lever de fouten op in de vorm van error messages.
+	 * 
+	 * <p>Zie ook https://rdf4j.org/documentation/programming/shacl/
+	 *  
+	 * @param configurator  De Configurator instance
+	 * @param ttlDataFilePath Pad naar het Turtle file
+	 * @throws Exception Een fout die niet betrekking heeft op de validatie van Turtle zelf.
+	 */
 	public void parse(Configurator configurator, String ttlDataFilePath) throws Exception {
 
 		Runner runner = Configurator.getInstance().getRunner();
