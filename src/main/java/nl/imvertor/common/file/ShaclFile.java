@@ -21,19 +21,15 @@
 package nl.imvertor.common.file;
 
 import java.io.File;
-import java.io.StringReader;
+import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 import org.eclipse.rdf4j.common.exception.ValidationException;
-import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.vocabulary.RDF4J;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.rio.RDFFormat;
-import org.eclipse.rdf4j.rio.Rio;
-import org.eclipse.rdf4j.rio.WriterConfig;
-import org.eclipse.rdf4j.rio.helpers.BasicWriterSettings;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
 import org.eclipse.rdf4j.sail.shacl.ShaclSail;
 
@@ -91,31 +87,27 @@ public class ShaclFile extends RdfFile {
 
 		Runner runner = Configurator.getInstance().getRunner();
 		
-	    // Create a SHACL-enabled repository
-        ShaclSail shaclSail = new ShaclSail(new MemoryStore());
+	    ShaclSail shaclSail = new ShaclSail(new MemoryStore());
         
         SailRepository sailRepository = new SailRepository(shaclSail);
         sailRepository.init();
 
-        // Load data into the repository
         try (RepositoryConnection connection = sailRepository.getConnection()) {
         	connection.begin();
         	
-        	// Load shapes
-        	StringReader shaclRules = new StringReader(getContent());
+        	InputStreamReader shaclRulesReader = getReader();
         	
-        	connection.add(shaclRules, "", RDFFormat.TURTLE, RDF4J.SHACL_SHAPE_GRAPH);
+        	connection.add(shaclRulesReader, "", RDFFormat.TURTLE, RDF4J.SHACL_SHAPE_GRAPH);
             connection.commit();
 
             if (!ttlDataFilePath.equals("")) {
             
-	            // Load RDF data
-		        AnyFile dataFile = new AnyFile(ttlDataFilePath);
+	            AnyFile dataFile = new AnyFile(ttlDataFilePath);
 		      
-	            StringReader invalidSampleData = new StringReader(dataFile.getContent());
+	            InputStreamReader dataReader = dataFile.getReader();
 	        	
 	            connection.begin();
-	            connection.add(invalidSampleData, "", RDFFormat.TURTLE);
+	            connection.add(dataReader, "", RDFFormat.TURTLE);
 	            try {
 	                connection.commit();
 	            } catch (RepositoryException exception) {
@@ -128,7 +120,7 @@ public class ShaclFile extends RdfFile {
             }
             
 		} catch (Exception e) {
-			runner.warn(logger, "Shacl validator scheme invalid, cannot validate RDF: " + e.getMessage(),"rdf-parse","some-wiki-ref");
+			runner.warn(logger, "Shacl validator schema file \"" + getName() + "\" invalid, cannot validate RDF. " + e.getMessage(),"rdf-parse","some-wiki-ref");
 		}
 		
 	}
