@@ -25,9 +25,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.transport.PushResult;
-import org.springframework.util.StringUtils;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
@@ -146,7 +146,7 @@ public class OfficeCompiler extends Step {
 		}
 	}
 	private String trim(String urlfrag) {
-		return StringUtils.trimTrailingCharacter(StringUtils.trimLeadingCharacter(urlfrag,'/'),'/');
+		return StringUtils.removeEnd(StringUtils.removeStart(urlfrag,"/"),"/");
 	}
 	
 	/*
