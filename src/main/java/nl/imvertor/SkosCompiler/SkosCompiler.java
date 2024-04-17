@@ -93,7 +93,7 @@ public class SkosCompiler extends Step {
 				String skosSchemaUrl = configurator.getXParm("system/skos-schema-url"); // wordt gezet bij het genereren van een SKOS file. 
 				if (skosSchemaUrl != null) {
 					ShaclFile skosSchema = shaclFileByCatalog(skosSchemaUrl);
-					skosFile.validate(configurator, skosSchema); // TODO
+					skosFile.validate(configurator, skosSchema);
 				
 				} else 
 					skosFile.validate(configurator);
