@@ -13,22 +13,22 @@
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
-@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
 
 skosapnl:
   a owl:Ontology ;
-  rdfs:label "Toepassingsprofiel Nederlandse standaard voor het beschrijven van begrippen in LD"@nl ;
-  owl:versionInfo "0.0.1" .
+  rdfs:label "Toepassingsprofiel Nederlandse standaard voor het beschrijven van begrippen in RDF"@nl ;
+  owl:versionInfo "1.0.0" ;
+  sh:declare [
+    sh:prefix "skos" ;
+    sh:namespace "http://www.w3.org/2004/02/skos/core#"^^xsd:anyURI ;
+  ] .
 
 skosapnl:Concept
   a sh:NodeShape ;
   rdfs:comment "Een abstract idee of notie."@nl, "An idea or notion; a unit of thought."@en ;
   rdfs:label "Begrip"@nl ;
-  sh:property
-    skosapnl:Concept-exactMatch ,
-    skosapnl:Concept-narrowMatch ,
+  sh:property    
     skosapnl:Concept-example ,
-    skosapnl:Concept-relatedMatch ,
     skosapnl:Concept-comment ,
     skosapnl:Concept-source ,
     skosapnl:Concept-hiddenLabel ,
@@ -40,20 +40,28 @@ skosapnl:Concept
     skosapnl:Concept-topConceptOf ,
     skosapnl:Concept-closeMatch ,
     skosapnl:Concept-label ,
-    skosapnl:Concept-narrowerInstantial ,
-    skosapnl:Concept-narrowerPartitive ,
     skosapnl:Concept-editorialNote ,
-    skosapnl:Concept-broaderPartitive ,
     skosapnl:Concept-prefLabel ,
     skosapnl:Concept-historyNote ,
     skosapnl:Concept-altLabel ,
     skosapnl:Concept-changeNote ,
     skosapnl:Concept-scopeNote ,
-    skosapnl:Concept-broaderGeneric ,
     skosapnl:Concept-definition ,
+    skosapnl:Concept-narrowerInstantial ,
+    skosapnl:Concept-exactMatch ,
+    skosapnl:Concept-narrowMatch ,
+    skosapnl:Concept-relatedMatch ,
+    skosapnl:Concept-narrowerPartitive ,
+    skosapnl:Concept-broaderPartitive ,
+    skosapnl:Concept-broaderGeneric ,
     skosapnl:Concept-broaderInstantial ,
     skosapnl:Concept-narrowerGeneric ,
     skosapnl:Concept-broadMatch ;
+  sh:sparql 
+    skosapnl:OrphanConcept ,
+    skosapnl:TopConceptHavingBroader ,
+    skosapnl:UnambiguousNotations ,
+    skosapnl:UniquePreflabelWithinConceptScheme ;
   sh:targetClass skos:Concept .
 
 skosapnl:SourceDocument
@@ -65,8 +73,7 @@ skosapnl:SourceDocument
     skosapnl:SourceDocument-label ,
     skosapnl:SourceDocument-comment ,
     skosapnl:SourceDocument-page ,
-    skosapnl:SourceDocument-bibliographicCitation ,
-    skosapnl:SourceDocument-type .
+    skosapnl:SourceDocument-bibliographicCitation .
 
 skosapnl:Collection
   a sh:NodeShape ;
@@ -128,12 +135,14 @@ skosapnl:Concept-related
   rdfs:label "is gerelateerd aan"@nl ;
   sh:class skos:Concept ;
   sh:description "Een concept met een associatieve semantische relatie"@nl, "Relates a concept to a concept with which there is an associative semantic relationship."@en ;
-  sh:disjoint skos:broaderTransitive ;
+  sh:disjoint skos:broader ;
+  sh:disjoint skos:narrower ;
   sh:group skosapnl:SemanticRelationPropertyGroup ;
   sh:name "has related"@en, "is gerelateerd aan"@nl ;
   sh:order 22 ;
   sh:nodeKind sh:IRI ;
-  sh:path skos:related .
+  sh:severity sh:Warning ;
+  sh:path skos:related  .
 
 skosapnl:Concept-definition
   a sh:PropertyShape ;
@@ -147,7 +156,8 @@ skosapnl:Concept-definition
   sh:name "definitie"@nl ;
   sh:order 10 ;
   sh:nodeKind sh:Literal ;
-  sh:path skos:definition .
+  sh:path skos:definition ;
+  sh:severity sh:Violation .
 
 skosapnl:Concept-narrowerInstantial
   a sh:PropertyShape ;
@@ -158,7 +168,8 @@ skosapnl:Concept-narrowerInstantial
   sh:name "is categorie van"@nl ;
   sh:order 56 ;
   sh:nodeKind sh:IRI ;
-  sh:path isothes:narrowerInstantial .
+  sh:severity sh:Warning ;
+   sh:path isothes:narrowerInstantial .
 
 skosapnl:Concept-changeNote
   a sh:PropertyShape ;
@@ -169,6 +180,7 @@ skosapnl:Concept-changeNote
   sh:order 31 ;
   sh:nodeKind sh:Literal ;
   sh:path skos:changeNote ;
+  sh:severity sh:Warning ;
   sh:datatype rdf:langString .
 
 skosapnl:Concept-broadMatch
@@ -178,22 +190,30 @@ skosapnl:Concept-broadMatch
   sh:description
     "skos:broadMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes."@en ,
     "Used to state a hierarchical mapping link between two conceptual resources in different concept schemes."@en ;
+  sh:disjoint skos:narrowMatch ;
+  sh:disjoint skos:closeMatch ;
+  sh:disjoint skos:exactMatch ;
   sh:disjoint skos:relatedMatch ;
   sh:group skosapnl:MatchingRelationshipsPropertyGroup ;
   sh:name "heeft overeenkomstig bovenliggend"@nl ;
   sh:order 40 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path skos:broadMatch .
 
 skosapnl:Concept-narrowMatch
   a sh:PropertyShape ;
   rdfs:label "heeft overeenkomstig onderliggend"@nl ;
   sh:class skos:Concept ;
+  sh:disjoint skos:broadMatch ;
+  sh:disjoint skos:closeMatch ;
+  sh:disjoint skos:exactMatch ;
   sh:disjoint skos:relatedMatch ;
   sh:group skosapnl:MatchingRelationshipsPropertyGroup ;
   sh:name "heeft overeenkomstig onderliggend"@nl ;
   sh:order 41 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path skos:narrowMatch .
 
 skosapnl:Concept-broader
@@ -207,6 +227,8 @@ skosapnl:Concept-broader
   sh:name "heeft bovenliggend begrip"@nl ;
   sh:order 20 ;
   sh:nodeKind sh:IRI ;
+  sh:disjoint skos:related ;
+  sh:severity sh:Warning ;
   sh:path skos:broader .
   
 skosapnl:Concept-narrower
@@ -220,6 +242,8 @@ skosapnl:Concept-narrower
   sh:name "heeft onderliggend begrip"@nl ;
   sh:order 21 ;
   sh:nodeKind sh:IRI ;
+  sh:disjoint skos:related ;
+  sh:severity sh:Warning ;
   sh:path skos:narrower .
 
 skosapnl:Concept-example
@@ -231,7 +255,9 @@ skosapnl:Concept-example
   sh:name "example"@en, "voorbeeld"@nl ;
   rdfs:label "voorbeeld"@nl ;
   sh:order 35 ;
-  sh:nodeKind sh:IRIOrLiteral ;
+  sh:or ([ sh:datatype rdf:langString ] [ sh:datatype xsd:string ]);
+  sh:nodeKind sh:Literal ;
+  sh:severity sh:Warning ;
   sh:path skos:example .
 
 skosapnl:Concept-narrowerPartitive
@@ -243,6 +269,7 @@ skosapnl:Concept-narrowerPartitive
   sh:name "omvat"@nl ;
   sh:order 54 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path isothes:narrowerPartitive .
 
 skosapnl:Concept-hiddenLabel
@@ -252,8 +279,13 @@ skosapnl:Concept-hiddenLabel
   sh:group skosapnl:LabelsAndDescriptionPropertyGroup ;
   sh:name "zoekterm"@nl ;
   sh:order 2 ;
+  sh:datatype rdf:langString ;
   sh:nodeKind sh:Literal ;
-  sh:path skos:hiddenLabel .
+  sh:severity sh:Warning ;
+  sh:path skos:hiddenLabel ;
+  sh:disjoint 
+    skos:altLabel , 
+    skos:prefLabel .
 
 skosapnl:Concept-relatedMatch
   a sh:PropertyShape ;
@@ -263,8 +295,13 @@ skosapnl:Concept-relatedMatch
   sh:description "Used to state an associative mapping link between two conceptual resources in different concept schemes."@en ;
   sh:group skosapnl:MatchingRelationshipsPropertyGroup ;
   sh:name "is overeenkomstig verwant"@nl ;
+  sh:disjoint skos:broadMatch ;
+  sh:disjoint skos:closeMatch ;
+  sh:disjoint skos:exactMatch ;
+  sh:disjoint skos:narrowMatch ;
   sh:order 44 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path skos:relatedMatch .
 
 skosapnl:Concept-prefLabel
@@ -272,16 +309,17 @@ skosapnl:Concept-prefLabel
   rdfs:label "Voorkeursterm"@nl ;
   sh:datatype rdf:langString ;
   sh:description "The preferred lexical label for a resource, in a given language."@en ;
-  sh:disjoint skos:altLabel, skos:hiddenLabel ;
+  sh:disjoint 
+    skos:altLabel , 
+    skos:hiddenLabel ;
   sh:group skosapnl:LabelsAndDescriptionPropertyGroup ;
   sh:minCount 1 ;
   sh:name "voorkeursterm"@nl ;
   sh:order 0 ;
   sh:path skos:prefLabel ;
   sh:nodeKind sh:Literal ;
-  sh:severity sh:Violation ;
-  sh:message "Een begrip heeft altijd 1 voorkeursterm."@nl ;
-  sh:uniqueLang true .
+  sh:uniqueLang true ;
+  sh:severity sh:Violation .
 
 skosapnl:Concept-broaderPartitive
   a sh:PropertyShape ;
@@ -292,6 +330,7 @@ skosapnl:Concept-broaderPartitive
   sh:name "is onderdeel van"@nl ;
   sh:order 53 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path isothes:broaderPartitive .
 
 skosapnl:Concept-exactMatch
@@ -299,11 +338,15 @@ skosapnl:Concept-exactMatch
   rdfs:label "is exact overeenkomstig"@nl ;
   sh:class skos:Concept ;
   sh:description "Used to link two concepts, indicating a high degree of confidence that the concepts can be used interchangeably across a wide range of information retrieval applications. skos:exactMatch is a transitive property, and is a sub-property of skos:closeMatch."@en ;
-  sh:disjoint skos:broadMatch, skos:relatedMatch ;
+  sh:disjoint skos:broadMatch ;
+  sh:disjoint skos:closeMatch ;
+  sh:disjoint skos:narrowMatch ;
+  sh:disjoint skos:relatedMatch ;
   sh:group skosapnl:MatchingRelationshipsPropertyGroup ;
   sh:name "is exact overeenkomstig"@nl ;
   sh:order 43 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path skos:exactMatch .
 
 skosapnl:Concept-inScheme
@@ -315,6 +358,7 @@ skosapnl:Concept-inScheme
   sh:name "in kader"@nl ;
   sh:order 6 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Violation ;
   sh:path skos:inScheme .
 
 skosapnl:Concept-topConceptOf
@@ -325,18 +369,24 @@ skosapnl:Concept-topConceptOf
   sh:name "is topbegrip van"@nl ;
   sh:order 23 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path skos:topConceptOf .
 
 skosapnl:Concept-altLabel
   a sh:PropertyShape ;
   rdfs:label "alternatieve term"@nl ;
-  sh:description "An alternative lexical label for a resource."@en, "Een alternatieve term voor een begrip is een term die gebruikt kan worden als alternatief voor de voorkeursterm van dit begrip, maar niet de voorkeur heeft."@nl ;
-  sh:disjoint skos:hiddenLabel ;
+  sh:description 
+    "An alternative lexical label for a resource."@en, 
+    "Een alternatieve term voor een begrip is een term die gebruikt kan worden als alternatief voor de voorkeursterm van dit begrip, maar niet de voorkeur heeft."@nl ;
+  sh:disjoint 
+    skos:hiddenLabel ,
+    skos:prefLabel ;
   sh:group skosapnl:LabelsAndDescriptionPropertyGroup ;
   sh:name "alternatieve term"@nl ;
   sh:datatype rdf:langString ;
   sh:order 1 ;
   sh:nodeKind sh:Literal ;
+  sh:severity sh:Warning ;
   sh:path skos:altLabel .
 
 skosapnl:Concept-broaderGeneric
@@ -348,6 +398,7 @@ skosapnl:Concept-broaderGeneric
   sh:name "is specialisatie van"@nl ;
   sh:order 51 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path isothes:broaderGeneric .
 
 skosapnl:Concept-narrowerGeneric
@@ -359,6 +410,7 @@ skosapnl:Concept-narrowerGeneric
   sh:name "is generalisatie van"@nl ;
   sh:order 52 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path isothes:narrowerGeneric .
 
 skosapnl:Concept-historyNote
@@ -370,6 +422,7 @@ skosapnl:Concept-historyNote
   sh:order 33 ;
   sh:datatype rdf:langString ;
   sh:nodeKind sh:Literal ;
+  sh:severity sh:Warning ;
   sh:path skos:historyNote .
 
 skosapnl:Concept-source
@@ -380,6 +433,7 @@ skosapnl:Concept-source
   sh:name "bron"@nl ;
   sh:order 11 ;
   sh:nodeKind sh:BlankNodeOrIRI ;
+  sh:severity sh:Warning ;
   sh:node skosapnl:SourceDocument ;
   sh:path dct:source .
 
@@ -392,6 +446,7 @@ skosapnl:Concept-comment
   sh:order 5 ;
   sh:datatype rdf:langString ;
   sh:nodeKind sh:Literal ;
+  sh:severity sh:Warning ;
   sh:path rdfs:comment .
 
 skosapnl:Concept-editorialNote
@@ -403,6 +458,7 @@ skosapnl:Concept-editorialNote
   sh:datatype rdf:langString ;
   sh:order 32 ;
   sh:nodeKind sh:Literal ;
+  sh:severity sh:Warning ;
   sh:path skos:editorialNote .
 
 skosapnl:Concept-broaderInstantial
@@ -414,6 +470,7 @@ skosapnl:Concept-broaderInstantial
   sh:name "is exemplaar van"@nl ;
   sh:order 55 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path isothes:broaderInstantial .
 
 skosapnl:Concept-scopeNote
@@ -425,6 +482,7 @@ skosapnl:Concept-scopeNote
   sh:datatype rdf:langString ;
   sh:order 34 ;
   sh:nodeKind sh:Literal ;
+  sh:severity sh:Warning ;
   sh:path skos:scopeNote .
 
 skosapnl:Concept-closeMatch
@@ -433,9 +491,14 @@ skosapnl:Concept-closeMatch
   sh:class skos:Concept ;
   sh:description "Used to link two concepts that are sufficiently similar that they can be used interchangeably in some information retrieval applications. In order to avoid the possibility of \"compound errors\" when combining mappings across more than two concept schemes, skos:closeMatch is not declared to be a transitive property."@en ;
   sh:group skosapnl:MatchingRelationshipsPropertyGroup ;
+  sh:disjoint skos:broadMatch ;
+  sh:disjoint skos:exactMatch ;
+  sh:disjoint skos:narrowMatch ;
+  sh:disjoint skos:relatedMatch ;
   sh:name "is vrijwel overeenkomstig"@nl ;
   sh:order 42 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path skos:closeMatch .
 
 skosapnl:Concept-notation
@@ -446,30 +509,33 @@ skosapnl:Concept-notation
   sh:name "code"@nl ;
   sh:order 3 ;
   sh:nodeKind sh:Literal ;
+  sh:severity sh:Warning ;
   sh:path skos:notation .
 
 skosapnl:Concept-label
   a sh:PropertyShape ;
-  rdfs:label "label"@nl ;
-  sh:datatype rdf:langString ;
-  sh:description "Een label voor een object is een voor mensen leesbare naam ter aanduiding van een object."@nl ;
+  rdfs:label "naam"@nl ;
+  sh:datatype xsd:string ;
+  sh:description "Een naam is een voor mensen leesbare term ter aanduiding van het begrip."@nl ;
   sh:group skosapnl:LabelsAndDescriptionPropertyGroup ;
-  sh:name "label"@nl ;
+  sh:name "naam"@nl ;
   sh:order 4 ;
   sh:nodeKind sh:Literal ;
+  sh:severity sh:Warning ;
   sh:path rdfs:label .
 
 skosapnl:SourceDocument-label
   a sh:PropertyShape ;
-  rdfs:label "label"@nl ;
+  rdfs:label "naam"@nl ;
   sh:datatype rdf:langString ;
-  sh:description "Compacte, voor de mens leesbare aanduiding van de bron."@nl ;
+  sh:description "Een naam is een voor mensen leesbare term ter aanduiding van het brondocument."@nl ;
   sh:group skosapnl:LabelsAndDescriptionPropertyGroup ;
   sh:minCount 1 ;
-  sh:name "label"@nl ;
+  sh:name "naam"@nl ;
   sh:order 4 ;
   sh:nodeKind sh:Literal ;
-  sh:path rdfs:label .
+  sh:severity sh:Info ;
+  sh:path dct:title .
 
 skosapnl:SourceDocument-comment
   a sh:PropertyShape ;
@@ -480,6 +546,7 @@ skosapnl:SourceDocument-comment
   sh:name "uitleg"@nl ;
   sh:order 5 ;
   sh:nodeKind sh:Literal ;
+  sh:severity sh:Warning ;
   sh:path rdfs:comment .
 
 skosapnl:SourceDocument-page
@@ -490,42 +557,34 @@ skosapnl:SourceDocument-page
   sh:name "url"@nl ;
   sh:order 7 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path foaf:page .
 
 
 skosapnl:SourceDocument-bibliographicCitation
   a sh:PropertyShape ;
-  rdfs:label "citeertitel"@nl ;
+  rdfs:label "bronverwijzing"@nl ;
   sh:description "Een reeks gegevens waarmee een document of fragment daarvan gevonden kan worden. Er bestaan verschillende citeerstijlen zoals IEEE, APA of MLA."@nl ;
   sh:group skosapnl:LabelsAndDescriptionPropertyGroup ;
-  sh:name "citeertitel"@nl ;
+  sh:name "bronverwijzing"@nl ;
   sh:order 8 ;
   sh:nodeKind sh:Literal ;
   sh:datatype xsd:string ;
+  sh:severity sh:Warning ;
   sh:path dct:bibliographicCitation .
-
-skosapnl:SourceDocument-type
-  a sh:PropertyShape ;
-  rdfs:label "soort bron"@nl ;
-  sh:description "Aanduiding van het type of genre van het brondocument."@nl ;
-  sh:group skosapnl:LabelsAndDescriptionPropertyGroup ;
-  sh:name "soort bron"@nl ;
-  sh:order 9 ;
-  sh:nodeKind sh:IRI ;
-  sh:path dct:type ;
-  sh:class skos:Concept .
 
 skosapnl:Collection-label
   a sh:PropertyShape ;
-  rdfs:label "label"@nl ;
+  rdfs:label "naam"@nl ;
   sh:datatype rdf:langString ;
-  sh:description "Een label voor een object is een voor mensen leesbare naam ter aanduiding van een object."@nl ;
+  sh:description "Een naam is een voor mensen leesbare term ter aanduiding van de collectie."@nl ;
   sh:group skosapnl:LabelsAndDescriptionPropertyGroup ;
   sh:minCount 1 ;
-  sh:name "label"@nl ;
+  sh:name "naam"@nl ;
   sh:order 4 ;
   sh:nodeKind sh:Literal ;
-  sh:path rdfs:label .
+  sh:severity sh:Warning ;
+  sh:path skos:prefLabel .
 
 skosapnl:Collection-member
   a sh:PropertyShape ;
@@ -536,6 +595,7 @@ skosapnl:Collection-member
     "Relateert een collectie aan een begrip dat onderdeel is van deze collectie."@nl ;
   sh:name "bevat"@nl ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path skos:member .
 
 skosapnl:Collection-comment
@@ -544,6 +604,7 @@ skosapnl:Collection-comment
   sh:name "uitleg"@nl, "comment"@en ;
   sh:order 5 ;
   sh:datatype rdf:langString ;
+  sh:severity sh:Warning ;
   sh:path rdfs:comment .
 
 skosapnl:ConceptScheme-hasTopConcept
@@ -557,6 +618,7 @@ skosapnl:ConceptScheme-hasTopConcept
   sh:group skosapnl:SemanticRelationPropertyGroup ;
   sh:order 20 ;
   sh:nodeKind sh:IRI ;
+  sh:severity sh:Warning ;
   sh:path skos:hasTopConcept .
 
 skosapnl:ConceptScheme-comment
@@ -565,16 +627,178 @@ skosapnl:ConceptScheme-comment
   sh:name "uitleg"@nl, "comment"@en ;
   sh:order 5 ;
   sh:datatype rdf:langString ;
+  sh:severity sh:Warning ;
   sh:path rdfs:comment .
 
 skosapnl:ConceptScheme-label
   a sh:PropertyShape ;
-  rdfs:label "label"@nl ;
+  rdfs:label "naam"@nl ;
   sh:datatype rdf:langString ;
-  sh:description "Een label voor een object is een voor mensen leesbare naam ter aanduiding van een object."@nl ;
+  sh:description "Een naam is een voor mensen leesbare term ter aanduiding van het begrippenkader."@nl ;
   sh:group skosapnl:LabelsAndDescriptionPropertyGroup ;
   sh:minCount 1 ;
-  sh:name "label"@nl ;
+  sh:name "naam"@nl ;
   sh:order 4 ;
   sh:nodeKind sh:Literal ;
-  sh:path rdfs:label .
+  sh:severity sh:Warning ;
+  sh:path dct:title .
+
+
+
+## logical constraints
+
+skosapnl:DisjointConceptAndConceptScheme
+  a sh:NodeShape ;
+  sh:targetClass skos:Concept ;
+  sh:sparql [
+    sh:prefixes skosapnl: ;
+    sh:message "Een begrip kan niet ook een begrippenkader zijn."@nl ;
+    sh:select """
+    SELECT $this
+    WHERE {
+      $this a skos:ConceptScheme 
+    }""" ;
+  ] ;
+.
+skosapnl::DisjointConceptAndCollection
+  a sh:NodeShape ;
+  sh:targetSubjectsOf skos:narrower ;
+  sh:targetSubjectsOf skos:broader ;
+  sh:targetSubjectsOf skos:related ;
+  sh:sparql [
+    sh:prefixes skosapnl: ;
+    sh:message "Een begrip kan niet ook een collectie zijn." ;
+    sh:select """
+    SELECT $this
+    WHERE {
+      $this a skos:Collection .
+    }""" ;
+  ] ;
+.
+
+skosapnl:DisjointConceptSchemeAndCollection
+  a sh:NodeShape ;
+  sh:targetObjectsOf skos:topConceptOf ;
+  sh:targetObjectsOf skos:inScheme ;
+  sh:sparql [
+    sh:prefixes skosapnl: ;
+    sh:message "Een begrippenkader kan niet ook een collectie zijn." ;
+    sh:select """
+    SELECT $this
+    WHERE {
+      $this a skos:Collection
+    }""" ;
+  ] ;
+.
+
+skosapnl:MappingRelationsMisuse
+  a sh:NodeShape ;
+  sh:targetSubjectsOf skos:broadMatch ;
+  sh:targetSubjectsOf skos:closeMatch ;
+  sh:targetSubjectsOf skos:exactMatch ;
+  sh:targetSubjectsOf skos:narrowMatch ;
+  sh:targetSubjectsOf skos:relatedMatch ;
+  sh:sparql [
+    sh:prefixes skosapnl: ;
+    sh:message "Harmonisatierelaties mogen niet gebruikt worden tussen begrippen die tot hetzelfde begrippenkader behoren."@nl ;
+    sh:message "Mapping relations should be asserted to concepts being members of different concept schemes"@en ;
+    sh:select """
+    SELECT $this
+    WHERE {
+      $this skos:broadMatch | skos:closeMatch | skos:exactMatch | skos:narrowMatch | skos:relatedMatch ?concept ; 
+        skos:inScheme ?cs .
+      ?concept skos:inScheme ?cs .
+      
+    }""" ;
+  ] ;
+.
+
+skosapnl:SemanticRelations
+  a sh:NodeShape ;
+  sh:targetObjectsOf skos:broader ;
+  sh:targetObjectsOf skos:narrower ;
+  sh:targetObjectsOf skos:related ;
+  sh:targetSubjectsOf skos:broader ;
+  sh:targetSubjectsOf skos:narrower ;
+  sh:targetSubjectsOf skos:related ;
+  sh:targetObjectsOf skos:broadMatch ;
+  sh:targetObjectsOf skos:closeMatch ;
+  sh:targetObjectsOf skos:exactMatch ;
+  sh:targetObjectsOf skos:narrowMatch ;
+  sh:targetObjectsOf skos:relatedMatch ;
+  sh:targetSubjectsOf skos:broadMatch ;
+  sh:targetSubjectsOf skos:closeMatch ;
+  sh:targetSubjectsOf skos:exactMatch ;
+  sh:targetSubjectsOf skos:narrowMatch ;
+  sh:targetSubjectsOf skos:relatedMatch ;
+  sh:sparql [
+    sh:prefixes skosapnl: ;
+    sh:message "Semantische relaties verwijzen altijd van en naar begrippen." ;
+    sh:select """
+    SELECT $this
+    WHERE {
+      FILTER NOT EXISTS { $this a skos:Concept }
+    }""" ;
+  ] ;
+.
+
+skosapnl:UnambiguousNotations 
+  a sh:SPARQLConstraint ;
+  sh:message 
+    "Begrippen binnen een begrippenkader mogen geen codes delen."@nl ,
+    "Duplicate notations within concept scheme"@en ;
+  sh:severity sh:Violation ;
+  sh:prefixes skosapnl: ;
+  sh:select """SELECT $this
+    WHERE {
+      $this skos:notation ?value  .
+      ?other skos:notation ?value .
+      ?this skos:inScheme ?cs .
+      ?other skos:inScheme ?cs .
+      FILTER (?this != ?other)
+    }
+    """ .
+
+skosapnl:UniquePreflabelWithinConceptScheme 
+  a sh:SPARQLConstraint ;
+  sh:message 
+    "Duplicate preffered labels within concept scheme."@en ,
+    "meerdere begrippen met dezelfde voorkeursterm binnen een begrippenkader"@en ;
+  sh:severity sh:Violation ;
+  sh:prefixes skosapnl: ;
+  sh:select """SELECT $this
+    WHERE {
+      $this skos:prefLabel ?value  .
+      ?other skos:prefLabel ?value .
+      ?this skos:inScheme ?cs .
+      ?other skos:inScheme ?cs .
+      FILTER (?this != ?other)
+    }
+    """ .
+skosapnl:TopConceptHavingBroader 
+  a sh:SPARQLConstraint ;
+  sh:prefixes skosapnl: ;
+  sh:message "Een topbegrip mag geen bovenliggende begrippen kennen." ;
+  sh:severity sh:Violation ;
+  sh:select """SELECT $this
+    WHERE {
+      ?this skos:topConceptOf|^skos:hasTopConcept ?cs ; 
+      skos:broader ?other .
+    }
+    """ .
+
+skosapnl:OrphanConcept 
+  a sh:SPARQLConstraint ;
+  sh:prefixes skosapnl: ;
+  sh:message "Het begrip is geen topbegrip maar heeft ook geen bovenliggende of gerelateerde begrippen."@nl ;
+  sh:select """SELECT $this 
+    WHERE {
+      $this a skos:Concept .
+      FILTER NOT EXISTS {
+        ?this skos:topConceptOf|^skos:hasTopConcept ?cs .
+      }
+      FILTER NOT EXISTS {
+      ?this skos:broader | ^skos:broader | skos:narrower | ^skos:narrower | skos:related | ^skos:related ?other .
+      }
+    }""" ;
+  sh:severity sh:Warning .
