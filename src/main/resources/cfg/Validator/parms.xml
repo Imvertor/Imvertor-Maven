@@ -480,6 +480,29 @@
       
       <!-- 
          ======================================================
+         Waterschapshuis 
+         ======================================================
+      -->
+      
+      <!--canonize-->
+      <IMVERTOR_METAMODEL_Waterschapshuis-CONCEPTUAL_CANONICAL_XSLPATH_1>Imvert2canonical.xsl</IMVERTOR_METAMODEL_Waterschapshuis-CONCEPTUAL_CANONICAL_XSLPATH_1>
+      <IMVERTOR_METAMODEL_Waterschapshuis-CONCEPTUAL_CANONICAL_XSLPATH_2>Imvert2canonical-MIM11.xsl</IMVERTOR_METAMODEL_Waterschapshuis-CONCEPTUAL_CANONICAL_XSLPATH_2>
+      <!--validate-->
+      <IMVERTOR_METAMODEL_Waterschapshuis-CONCEPTUAL_VALIDATE_XSLPATH_1>Imvert2validation.xsl</IMVERTOR_METAMODEL_Waterschapshuis-CONCEPTUAL_VALIDATE_XSLPATH_1>
+      <IMVERTOR_METAMODEL_Waterschapshuis-CONCEPTUAL_VALIDATE_XSLPATH_2>Imvert2validation-MIM11.xsl</IMVERTOR_METAMODEL_Waterschapshuis-CONCEPTUAL_VALIDATE_XSLPATH_2>
+      <IMVERTOR_METAMODEL_Waterschapshuis-CONCEPTUAL_VALIDATE_XSLPATH_3>Imvert2validation-MIM111.xsl</IMVERTOR_METAMODEL_Waterschapshuis-CONCEPTUAL_VALIDATE_XSLPATH_3>
+      
+      <!--canonize-->
+      <IMVERTOR_METAMODEL_Waterschapshuis-LOGICAL_CANONICAL_XSLPATH_1>Imvert2canonical.xsl</IMVERTOR_METAMODEL_Waterschapshuis-LOGICAL_CANONICAL_XSLPATH_1>
+      <IMVERTOR_METAMODEL_Waterschapshuis-LOGICAL_CANONICAL_XSLPATH_2>Imvert2canonical-MIM11.xsl</IMVERTOR_METAMODEL_Waterschapshuis-LOGICAL_CANONICAL_XSLPATH_2>
+      <IMVERTOR_METAMODEL_Waterschapshuis-LOGICAL_CANONICAL_XSLPATH_3>Imvert2canonical-MIM111.xsl</IMVERTOR_METAMODEL_Waterschapshuis-LOGICAL_CANONICAL_XSLPATH_3>
+      <!--validate-->
+      <IMVERTOR_METAMODEL_Waterschapshuis-LOGICAL_VALIDATE_XSLPATH_1>Imvert2validation.xsl</IMVERTOR_METAMODEL_Waterschapshuis-LOGICAL_VALIDATE_XSLPATH_1>
+      <IMVERTOR_METAMODEL_Waterschapshuis-LOGICAL_VALIDATE_XSLPATH_2>Imvert2validation-MIM11.xsl</IMVERTOR_METAMODEL_Waterschapshuis-LOGICAL_VALIDATE_XSLPATH_2>
+      <IMVERTOR_METAMODEL_Waterschapshuis-LOGICAL_VALIDATE_XSLPATH_3>Imvert2validation-MIM111.xsl</IMVERTOR_METAMODEL_Waterschapshuis-LOGICAL_VALIDATE_XSLPATH_3>
+      
+      <!-- 
+         ======================================================
          Geonovum 
          ======================================================
       -->

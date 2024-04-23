@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <!-- Waterschapshuis follows Imvertor and MIM 1.1.1 requirements -->
+    
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM111.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM111.xml"/>
+    
+    <name>Waterschapshuis CONCEPTUEEL</name>
+    
+    <profiles>
+        <profile lang="nl"> 
+            <id>Waterschapshuis-C-NL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1.1.1 Waterschapshuis Conceptueel NL</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>Waterschapshuis-C-EN</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1.1.1 Waterschapshuis Conceptual EN</desc>
+        </profile>
+    </profiles>
+    
+    <features>
+        <feature name="role-based">false</feature>
+        <feature name="allow-multiple-supertypes">false</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+    </features>
+    
+</metamodel>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<compare-rules xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- 
+        Waterschapshuis follows MIM
+    --> 
+    <xi:include href="../../../MIM/cfg/comparerules/MIM111.xml"/>
+    
+    <name>Waterschapshuis</name>
+    
+    <!-- for tagged values: -->
+   
+</compare-rules>
