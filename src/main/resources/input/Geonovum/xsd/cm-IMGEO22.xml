@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:Map xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+    
+    <cs:id>IMGEO22</cs:id>
+    <cs:namespace>http://www.geostandaarden.nl/imgeo/2.2</cs:namespace>
+    <!-- Van IMGeo 2.2 is geen formeel schema uitgekomen, maar het IMGeo 2.1.1 SIMPLE XML schema volgt de Nederlandse objectbenaming -->
+    <cs:location>https://register.geostandaarden.nl/gmlapplicatieschema/imgeo/2.1.1/imgeo-simple.xsd</cs:location>
+    <cs:phase>0</cs:phase>
+    <cs:version>2.2</cs:version>
+    <cs:release>20200701</cs:release>
+    <cs:forSchema>
+        <cs-ref:ConceptualSchemaRef xlink:href="#IMGEO"/>
+    </cs:forSchema>
+    <cs:owner>Geonovum</cs:owner>
+    <cs:constructs>
+        <!-- TRANSPORT -->
+        <cs:Construct>
+            <cs:name>Wegdeel</cs:name>
+            <cs:alias>TrafficArea<cs:alias>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>OndersteunendWegdeel</cs:name>
+            <cs:alias>AuxiliaryTrafficArea<cs:alias>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Spoor</cs:name>
+            <cs:alias>Railway<cs:alias>
+        </cs:Construct>
+        <!-- TERREIN -->
+        <cs:Construct>
+            <cs:name>OnbegroeidTerreindeel</cs:name>
+            <cs:alias/>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>BegroeidTerreindeel</cs:name>
+            <cs:alias>PlantCover<cs:alias>
+        </cs:Construct>
+        <!-- WATER -->
+        <cs:Construct>
+            <cs:name>Waterdeel</cs:name>
+            <cs:alias>WaterBody<cs:alias>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>OndersteunendWaterdeel</cs:name>
+            <cs:alias/>
+        </cs:Construct>        
+        <!-- BOUWWERK -->
+        <cs:Construct>
+            <cs:name>Pand</cs:name>
+            <cs:alias>BuildingPart<cs:alias>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>OverigeConstructie</cs:name> <!-- Abstract objecttype -->
+            <cs:alias>OtherConstruction</cs:alias>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>OverigBouwwerk</cs:name>
+            <cs:alias/>
+        </cs:Construct>
+         <cs:Construct>
+            <cs:name>Overbruggingsdeel</cs:name>
+            <cs:alias>BridgeConstructionElement<cs:alias>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Tunneldeel</cs:name>
+            <cs:alias>TunnelPart<cs:alias>
+        </cs:Construct>        
+         <cs:Construct>
+            <cs:name>Kunstwerkdeel</cs:name>
+            <cs:alias/>
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Scheiding</cs:name>
+            <cs:alias/>
+        </cs:Construct>
+        <!-- OVERIGE BGT OBJECTTYPEN -->
+        <cs:Construct>
+            <cs:name>FunctioneelGebied</cs:name>
+            <cs:alias>LandUse</cs:alias>
+        </cs:Construct> 
+        <cs:Construct>
+            <cs:name>OpenbareRuimteLabel</cs:name>
+            <cs:alias/>
+        </cs:Construct> 
+        <cs:Construct>
+            <cs:name>Plaatsbepalingspunt</cs:name>
+            <cs:alias/>
+        </cs:Construct>
+        <!-- IMGEO+ -->
+        <cs:Construct>
+            <cs:name>GebouwInstallatie</cs:name>
+            <cs:alias>BuildingInstallation</cs:alias>
+        </cs:Construct>        
+       <!-- INRICHTINGSELEMENT -->
+        <cs:Construct>
+            <cs:name>Inrichtingselement</cs:name> <!-- Abstract objecttype -->
+            <cs:alias>CityFurniture</cs:alias>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Bak</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Bord</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Installatie</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Kast</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Mast</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Paal</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Put</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Sensor</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Straatmeubilair</cs:name>            
+        </cs:Construct> 
+        <cs:Construct>
+            <cs:name>Waterinrichtingselement</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Waterinrichtingselement</cs:name>            
+        </cs:Construct> 
+        <cs:Construct>
+            <cs:name>Weginrichtingselement</cs:name>            
+        </cs:Construct> 
+        <!-- OVERIGE IMGEO+ OBJECTTYPEN -->
+        <cs:Construct>
+            <cs:name>VegetatieObjectichtingselement</cs:name>            
+        </cs:Construct> 
+        <!-- REGISTRATIEVE GEBIEDEN -->
+        <cs:Construct>
+            <cs:name>RegistratiefGebied</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Buurt</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>OpenbareRuimte</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Stadsdeel</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Waterschap</cs:name>            
+        </cs:Construct>
+        <cs:Construct>
+            <cs:name>Wijk</cs:name>            
+        </cs:Construct>
+</cs:Map>
