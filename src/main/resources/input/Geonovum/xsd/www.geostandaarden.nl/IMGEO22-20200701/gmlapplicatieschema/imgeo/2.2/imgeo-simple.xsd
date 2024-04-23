@@ -1,0 +1,3742 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns:imgeo-s="http://www.geostandaarden.nl/imgeo/2.1/simple/gml31" targetNamespace="http://www.geostandaarden.nl/imgeo/2.1/simple/gml31" xmlns:gml4nl="http://www.geonovum.nl/gml4nl/1.0" xmlns:gml="http://www.opengis.net/gml" version="0.2">
+  <annotation>
+    <appinfo>
+      <gml4nl:ComplianceLevel>1</gml4nl:ComplianceLevel>
+    </appinfo>
+  </annotation>
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <element name="OndersteunendWegdeel" substitutionGroup="gml:_Feature" type="imgeo-s:OndersteunendWegdeelType">
+    <annotation>
+      <documentation>OndersteunendWegdeel: Een deel van de weg dat niet primair bedoeld is voor gebruik door het verkeer.</documentation>
+    </annotation>
+  </element>
+  <complexType name="OndersteunendWegdeelType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element default="false" name="opTalud" type="boolean" minOccurs="0">
+            <annotation>
+              <documentation>Indicatie of het object wel of niet op een hellend vlak ligt.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-functie" type="string">
+            <annotation>
+              <documentation>bgt-functie: Specificatie van de functie van het ondersteunend wegdeel.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-fysiekVoorkomen" type="string">
+            <annotation>
+              <documentation>bgt-fysiekVoorkomen: Mate waarin het ondersteunend wegdeel al of niet verhard is.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-functie" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort ondersteunend wegdeel, nadere classificatie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-fysiekVoorkomen" type="string">
+            <annotation>
+              <documentation>Mate waarin het ondersteunend wegdeel al of niet verhard is, nadere classificatie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="kruinlijn" type="gml:CurvePropertyType">
+            <annotation>
+              <documentation>Lijngeometrie van de hoogstgelegen begrenzing van een kunstmatig aangelegd en onderhouden helling.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Surface" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie in 2.5D.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OndersteunendWegdeelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:OndersteunendWegdeel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Bak" substitutionGroup="gml:_Feature" type="imgeo-s:BakType">
+    <annotation>
+      <documentation>Object met een permanent karakter dat dient om iets in te bergen of te verzamelen.</documentation>
+    </annotation>
+  </element>
+  <complexType name="BakType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Het soort inrichtingselement.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Het soort bak (IMGeo plus-populatie).</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BakPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Bak"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Bord" substitutionGroup="gml:_Feature" type="imgeo-s:BordType">
+    <annotation>
+      <documentation>Een paneel waarop informatie wordt afgebeeld.</documentation>
+    </annotation>
+  </element>
+  <complexType name="BordType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Het soort inrichtingselement.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Het soort bord (IMGeo plus-populatie).</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BordPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Bord"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Overbruggingsdeel" substitutionGroup="gml:_Feature" type="imgeo-s:OverbruggingsdeelType">
+    <annotation>
+      <documentation>Overbruggingsdeel: Onderdeel van een beweegbare of vaste verbinding tussen twee punten, die door water, een weg of anderszins gescheiden zijn, dat essentieel is voor de constructie .</documentation>
+    </annotation>
+  </element>
+  <complexType name="OverbruggingsdeelType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="typeOverbruggingsdeel" type="string">
+            <annotation>
+              <documentation>typeOverbruggingsdeel: Het soort onderdeel van de brugconstructie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="hoortBijTypeOverbrugging" type="string">
+            <annotation>
+              <documentation>Nadere classificatie van de overbrugging waar het overbruggingsdeel een onderdeel van is.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="overbruggingIsBeweegbaar" type="boolean">
+            <annotation>
+              <documentation>Aanduiding of de brug waar het overbruggingsdeel bij hoort al dan niet beweegbaar is.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OverbruggingsdeelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Overbruggingsdeel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="GebouwInstallatie" substitutionGroup="gml:_Feature" type="imgeo-s:GebouwInstallatieType">
+    <annotation>
+      <documentation>GebouwInstallatie: Een component aan de buitenzijde van een gebouw, die het aanzicht van het gebouw mede bepaalt.</documentation>
+    </annotation>
+  </element>
+  <complexType name="GebouwInstallatieType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-typeGebouwInstallatie: Specificatie van het soort gebouwinstallatie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort gebouwinstallatie, indien dit een IMGeo uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometry" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GebouwInstallatiePropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:GebouwInstallatie"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Pand" substitutionGroup="gml:_Feature" type="imgeo-s:PandType">
+    <annotation>
+      <documentation>Pand: Een PAND is de kleinste bij de totstandkoming functioneel en bouwkundig-constructief zelfstandige eenheid die direct en duurzaam met de aarde is verbonden en betreedbaar en afsluitbaar is.</documentation>
+    </annotation>
+  </element>
+  <complexType name="PandType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatieBAGPND" type="string">
+            <annotation>
+              <documentation>De unieke identificatie van het object zoals is toegekend in de BAG-administratie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_1.tekst" type="string">
+            <annotation>
+              <documentation>nummeraanduidingreeks_1.tekst: Tekst voor het label.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_1.positie_1.plaatsingspunt" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>nummeraanduidingreeks_1.positie_1.plaatsingspunt: Coördinaten voor de locatie waar het label moet worden getoond.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_1.positie_1.hoek" type="double">
+            <annotation>
+              <documentation>nummeraanduidingreeks_1.positie_1.hoek: De rotatie van het label bij visualisatie, met de klok mee ten opzichte van de normale tekstrichting.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_1.positie_2.plaatsingspunt" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>nummeraanduidingreeks_1.positie_2.plaatsingspunt: Coördinaten voor de locatie waar het label moet worden getoond.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_1.positie_2.hoek" type="double">
+            <annotation>
+              <documentation>nummeraanduidingreeks_1.positie_2.hoek: De rotatie van het label bij visualisatie, met de klok mee ten opzichte van de normale tekstrichting.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_1.positie_3.plaatsingspunt" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>nummeraanduidingreeks_1.positie_3.plaatsingspunt: Coördinaten voor de locatie waar het label moet worden getoond.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_1.positie_3.hoek" type="double">
+            <annotation>
+              <documentation>nummeraanduidingreeks_1.positie_3.hoek: De rotatie van het label bij visualisatie, met de klok mee ten opzichte van de normale tekstrichting.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_1.identificatieBAGVBOLaagsteHuisnummer" type="string">
+            <annotation>
+              <documentation>nummeraanduidingreeks_1.identificatieBAGVBOLaagsteHuisnummer: Identificatie in de BAG registratie van het verblijfsobject met het laagste huisnummer behorende tot de reeks.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_1.identificatieBAGVBOHoogsteHuisnummer" type="string">
+            <annotation>
+              <documentation>nummeraanduidingreeks_1.identificatieBAGVBOHoogsteHuisnummer: Identificatie in de BAG registratie van het verblijfsobject met het hoogste huisnummer behorende tot de reeks.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_2.tekst" type="string">
+            <annotation>
+              <documentation>nummeraanduidingreeks_2.tekst: Tekst voor het label.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_2.positie_1.plaatsingspunt" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>nummeraanduidingreeks_2.positie_1.plaatsingspunt: Coördinaten voor de locatie waar het label moet worden getoond.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_2.positie_1.hoek" type="double">
+            <annotation>
+              <documentation>nummeraanduidingreeks_2.positie_1.hoek: De rotatie van het label bij visualisatie, met de klok mee ten opzichte van de normale tekstrichting.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_2.positie_2.plaatsingspunt" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>nummeraanduidingreeks_2.positie_2.plaatsingspunt: Coördinaten voor de locatie waar het label moet worden getoond.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_2.positie_2.hoek" type="double">
+            <annotation>
+              <documentation>nummeraanduidingreeks_2.positie_2.hoek: De rotatie van het label bij visualisatie, met de klok mee ten opzichte van de normale tekstrichting.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_2.positie_3.plaatsingspunt" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>nummeraanduidingreeks_2.positie_3.plaatsingspunt: Coördinaten voor de locatie waar het label moet worden getoond.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_2.positie_3.hoek" type="double">
+            <annotation>
+              <documentation>nummeraanduidingreeks_2.positie_3.hoek: De rotatie van het label bij visualisatie, met de klok mee ten opzichte van de normale tekstrichting.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_2.identificatieBAGVBOLaagsteHuisnummer" type="string">
+            <annotation>
+              <documentation>nummeraanduidingreeks_2.identificatieBAGVBOLaagsteHuisnummer: Identificatie in de BAG registratie van het verblijfsobject met het laagste huisnummer behorende tot de reeks.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_2.identificatieBAGVBOHoogsteHuisnummer" type="string">
+            <annotation>
+              <documentation>nummeraanduidingreeks_2.identificatieBAGVBOHoogsteHuisnummer: Identificatie in de BAG registratie van het verblijfsobject met het hoogste huisnummer behorende tot de reeks.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_3.tekst" type="string">
+            <annotation>
+              <documentation>nummeraanduidingreeks_3.tekst: Tekst voor het label.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_3.positie_1.plaatsingspunt" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>nummeraanduidingreeks_3.positie_1.plaatsingspunt: Coördinaten voor de locatie waar het label moet worden getoond.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_3.positie_1.hoek" type="double">
+            <annotation>
+              <documentation>nummeraanduidingreeks_3.positie_1.hoek: De rotatie van het label bij visualisatie, met de klok mee ten opzichte van de normale tekstrichting.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_3.positie_2.plaatsingspunt" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>nummeraanduidingreeks_3.positie_2.plaatsingspunt: Coördinaten voor de locatie waar het label moet worden getoond.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_3.positie_2.hoek" type="double">
+            <annotation>
+              <documentation>nummeraanduidingreeks_3.positie_2.hoek: De rotatie van het label bij visualisatie, met de klok mee ten opzichte van de normale tekstrichting.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_3.positie_3.plaatsingspunt" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>nummeraanduidingreeks_3.positie_3.plaatsingspunt: Coördinaten voor de locatie waar het label moet worden getoond.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_3.positie_3.hoek" type="double">
+            <annotation>
+              <documentation>nummeraanduidingreeks_3.positie_3.hoek: De rotatie van het label bij visualisatie, met de klok mee ten opzichte van de normale tekstrichting.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_3.identificatieBAGVBOLaagsteHuisnummer" type="string">
+            <annotation>
+              <documentation>nummeraanduidingreeks_3.identificatieBAGVBOLaagsteHuisnummer: Identificatie in de BAG registratie van het verblijfsobject met het laagste huisnummer behorende tot de reeks.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nummeraanduidingreeks_3.identificatieBAGVBOHoogsteHuisnummer" type="string">
+            <annotation>
+              <documentation>nummeraanduidingreeks_3.identificatieBAGVBOHoogsteHuisnummer: Identificatie in de BAG registratie van het verblijfsobject met het hoogste huisnummer behorende tot de reeks.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:MultiSurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie grondvlak.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="PandPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Pand"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Buurt" substitutionGroup="gml:_Feature" type="imgeo-s:BuurtType">
+    <annotation>
+      <documentation>Een aaneengesloten gedeelte van een wijk, waarvan de grenzen zoveel mogelijk zijn gebaseerd op topografische elementen.</documentation>
+    </annotation>
+  </element>
+  <complexType name="BuurtType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="naam" type="string">
+            <annotation>
+              <documentation>De benaming van het registratieve gebied.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:MultiSurfacePropertyType">
+            <annotation>
+              <documentation>Multivlakgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element name="buurtcode" type="string">
+            <annotation>
+              <documentation>De code behorende bij de naam van de buurt.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="wijk" type="gml:ReferenceType">
+            <annotation>
+              <documentation>De wijk waarin de buurt gelegen is.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BuurtPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Buurt"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Inrichtingselement" substitutionGroup="gml:_Feature" type="imgeo-s:InrichtingselementType">
+    <annotation>
+      <documentation>Inrichtingselement: Een ruimtelijk object al dan niet ter detaillering dan wel ter inrichting van de overige benoemde ruimtelijke objecten of een ander inrichtingselement.</documentation>
+    </annotation>
+  </element>
+  <complexType name="InrichtingselementType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Het soort inrichtingselement.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="InrichtingselementPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Inrichtingselement"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="FunctioneelGebied" substitutionGroup="gml:_Feature" type="imgeo-s:FunctioneelGebiedType">
+    <annotation>
+      <documentation>Begrensd en benoemd gebied dat door een functionele eenheid beschreven wordt.</documentation>
+    </annotation>
+  </element>
+  <complexType name="FunctioneelGebiedType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element name="bgt-type" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort Functioneel Gebied.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort Functioneel Gebied, indien het een IMGeo uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="naam" type="string">
+            <annotation>
+              <documentation>De benaming van het functionele gebied.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="FunctioneelGebiedPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:FunctioneelGebied"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Installatie" substitutionGroup="gml:_Feature" type="imgeo-s:InstallatieType">
+    <annotation>
+      <documentation>Samenhangend systeem dat een bepaald doel dient.</documentation>
+    </annotation>
+  </element>
+  <complexType name="InstallatieType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Het soort inrichtingselement.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Het soort installatie (IMGeo plus-populatie).</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="InstallatiePropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Installatie"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Kast" substitutionGroup="gml:_Feature" type="imgeo-s:KastType">
+    <annotation>
+      <documentation>Object met een permanent karakter dat dient om iets in te bergen en te beschermen.</documentation>
+    </annotation>
+  </element>
+  <complexType name="KastType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Het soort inrichtingselement.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Het soort kast (IMGeo plus-populatie).</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="KastPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Kast"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Kunstwerkdeel" substitutionGroup="gml:_Feature" type="imgeo-s:KunstwerkdeelType">
+    <annotation>
+      <documentation>Onderdeel van een civiel-technisch werk voor de infrastructuur van wegen, water, spoorbanen, waterkeringen en/of leidingen.</documentation>
+    </annotation>
+  </element>
+  <complexType name="KunstwerkdeelType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element name="bgt-type" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort kunstwerk.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort kunstwerk, indien dit een IMGeo uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:GeometryPropertyType">
+            <annotation>
+              <documentation>Punt-, lijn-, vlak- of multivlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="KunstwerkdeelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Kunstwerkdeel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Mast" substitutionGroup="gml:_Feature" type="imgeo-s:MastType">
+    <annotation>
+      <documentation>Hoge draagconstructie.</documentation>
+    </annotation>
+  </element>
+  <complexType name="MastType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Het soort inrichtingselement.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Het soort mast (IMGeo plus-populatie).</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="MastPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Mast"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="OnbegroeidTerreindeel" substitutionGroup="gml:_Feature" type="imgeo-s:OnbegroeidTerreindeelType">
+    <annotation>
+      <documentation>Kleinste functioneel onafhankelijk stukje van een terrein, dat er binnen het objecttype Terrein van NEN 3610 wordt onderscheiden, zonder aaneengesloten vegetatie.</documentation>
+    </annotation>
+  </element>
+  <complexType name="OnbegroeidTerreindeelType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element name="bgt-fysiekVoorkomen" type="string">
+            <annotation>
+              <documentation>Classificatie van het soort terrein, ingedeeld naar de uiterlijke verschijningsvorm.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" default="false" name="opTalud" type="boolean">
+            <annotation>
+              <documentation>Indicatie of het object wel of niet op een hellend vlak ligt.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-fysiekVoorkomen" type="string">
+            <annotation>
+              <documentation>Nadere classificatie van het soort terrein, ingedeeld naar de uiterlijke verschijningsvorm.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="kruinlijn" type="gml:CurvePropertyType">
+            <annotation>
+              <documentation>Lijngeometrie van de hoogstgelegen begrenzing van een kunstmatig aangelegd en onderhouden helling.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OnbegroeidTerreindeelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:OnbegroeidTerreindeel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="OndersteunendWaterdeel" substitutionGroup="gml:_Feature" type="imgeo-s:OndersteunendWaterdeelType">
+    <annotation>
+      <documentation>Object dat in het kader van de waterhuishouding periodiek gedeeltelijk of geheel met water is bedekt.</documentation>
+    </annotation>
+  </element>
+  <complexType name="OndersteunendWaterdeelType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Specificatie van het soort Water.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort Water, nadere classificatie.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OndersteunendWaterdeelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:OndersteunendWaterdeel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="OngeclassificeerdObject" substitutionGroup="gml:_Feature" type="imgeo-s:OngeclassificeerdObjectType">
+    <annotation>
+      <documentation>Object waarvoor geen bronhouder aangewezen is en/of dat niet nader is geclassificeerd.</documentation>
+    </annotation>
+  </element>
+  <complexType name="OngeclassificeerdObjectType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OngeclassificeerdObjectPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:OngeclassificeerdObject"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="OpenbareRuimte" substitutionGroup="gml:_Feature" type="imgeo-s:OpenbareRuimteType">
+    <annotation>
+      <documentation>Een OPENBARE RUIMTE is een door het bevoegde gemeentelijke orgaan als zodanig aangewezen en van een naam voorziene buitenruimte die binnen één woonplaats is gelegen.</documentation>
+    </annotation>
+  </element>
+  <complexType name="OpenbareRuimteType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="naam" type="string">
+            <annotation>
+              <documentation>De benaming van het registratieve gebied.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:MultiSurfacePropertyType">
+            <annotation>
+              <documentation>Multivlakgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="naamEnIdOpenbareRuimte" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Verwijzing naar het BGT object OpenbareRuimteLabel waarin de BGT identificatie, BAG identificatie, naam en type van de openbare ruimte zijn opgenomen.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OpenbareRuimtePropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:OpenbareRuimte"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="OpenbareRuimteLabel" substitutionGroup="gml:_Feature" type="imgeo-s:OpenbareRuimteLabelType">
+    <annotation>
+      <documentation>Naam en plaatsingspunten van een in de BAG geregistreerde OPENBARE RUIMTE.</documentation>
+    </annotation>
+  </element>
+  <complexType name="OpenbareRuimteLabelType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatieBAGOPR" type="string">
+            <annotation>
+              <documentation>De unieke identificatie van het object zoals is toegekend in de BAG-administratie.</documentation>
+            </annotation>
+          </element>
+          <element name="openbareRuimteNaam.tekst" type="string">
+            <annotation>
+              <documentation>openbareRuimteNaam.tekst: Tekst voor het label.</documentation>
+            </annotation>
+          </element>
+          <element name="openbareRuimteNaam.positie_1.plaatsingspunt" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>openbareRuimteNaam.positie_1.plaatsingspunt: Coördinaten voor de locatie waar het label moet worden getoond.</documentation>
+            </annotation>
+          </element>
+          <element name="openbareRuimteNaam.positie_1.hoek" type="double">
+            <annotation>
+              <documentation>openbareRuimteNaam.positie_1.hoek: De rotatie van het label bij visualisatie, met de klok mee ten opzichte van de normale tekstrichting.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="openbareRuimteNaam.positie_2.plaatsingspunt" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>openbareRuimteNaam.positie_2.plaatsingspunt: Coördinaten voor de locatie waar het label moet worden getoond.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="openbareRuimteNaam.positie_2.hoek" type="double">
+            <annotation>
+              <documentation>openbareRuimteNaam.positie_2.hoek: De rotatie van het label bij visualisatie, met de klok mee ten opzichte van de normale tekstrichting.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="openbareRuimteNaam.positie_3.plaatsingspunt" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>openbareRuimteNaam.positie_3.plaatsingspunt: Coördinaten voor de locatie waar het label moet worden getoond.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="openbareRuimteNaam.positie_3.hoek" type="double">
+            <annotation>
+              <documentation>openbareRuimteNaam.positie_3.hoek: De rotatie van het label bij visualisatie, met de klok mee ten opzichte van de normale tekstrichting.</documentation>
+            </annotation>
+          </element>
+          <element name="openbareRuimteType" type="string">
+            <annotation>
+              <documentation>De aard van de als zodanig benoemde OPENBARE RUIMTE.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OpenbareRuimteLabelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:OpenbareRuimteLabel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="OverigBouwwerk" substitutionGroup="gml:_Feature" type="imgeo-s:OverigBouwwerkType">
+    <annotation>
+      <documentation>Met de aarde verbonden duurzaam bouwwerk, dat niet valt onder de definities van een pand of kunstwerk.</documentation>
+    </annotation>
+  </element>
+  <complexType name="OverigBouwwerkType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element name="bgt-type" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort overig bouwwerk.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort overig bouwwerk, indien dit een IMGeo uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:GeometryPropertyType">
+            <annotation>
+              <documentation>Punt-, lijn-, vlak- of multivlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OverigBouwwerkPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:OverigBouwwerk"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="OverigeScheiding" substitutionGroup="gml:_Feature" type="imgeo-s:OverigeScheidingType">
+    <annotation>
+      <documentation>Kunstmatig, meestal lineair obstakel met een werende functie, met kleinere afmetingen dan toegestaan voor opname in de BGT.</documentation>
+    </annotation>
+  </element>
+  <complexType name="OverigeScheidingType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort overige scheiding.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:GeometryPropertyType">
+            <annotation>
+              <documentation>Punt-, lijn-, vlak- of multivlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OverigeScheidingPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:OverigeScheiding"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Paal" substitutionGroup="gml:_Feature" type="imgeo-s:PaalType">
+    <annotation>
+      <documentation>Langwerpig stuk hout, ijzer, steen enz., dat in de grond staat.</documentation>
+    </annotation>
+  </element>
+  <complexType name="PaalType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Het soort inrichtingselement.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Het soort paal (IMGeo plus-populatie).</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="hectometeraanduiding" type="string">
+            <annotation>
+              <documentation>Code van de paal die kan worden gebruikt voor afstandsaanduiding, zoals bij hectometerpaaltjes en dijkpalen.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="PaalPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Paal"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Plaatsbepalingspunt" substitutionGroup="gml:_Feature" type="imgeo-s:PlaatsbepalingspuntType">
+    <annotation>
+      <documentation>Punt dat is ingemeten en vervolgens gebruikt is bij en onderdeel uitmaakt van de begrenzing van BGT objecten.</documentation>
+    </annotation>
+  </element>
+  <complexType name="PlaatsbepalingspuntType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="nauwkeurigheid" type="integer">
+            <annotation>
+              <documentation>Gerealiseerde geometrische nauwkeurigheid van de geometrie van het object ten opzichte van de werkelijkheid, uitgedrukt in centimeters.</documentation>
+            </annotation>
+          </element>
+          <element name="datumInwinning" type="date">
+            <annotation>
+              <documentation>Datum waarop het punt is ingewonnen.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="inwinnendeInstantie" type="string">
+            <annotation>
+              <documentation>De organisatie die namens de bronhouder het object inwint.</documentation>
+            </annotation>
+          </element>
+          <element name="inwinningsmethode" type="string">
+            <annotation>
+              <documentation>De wijze waarop het punt is ingewonnen.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="PlaatsbepalingspuntPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Plaatsbepalingspunt"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="BegroeidTerreindeel" substitutionGroup="gml:_Feature" type="imgeo-s:BegroeidTerreindeelType">
+    <annotation>
+      <documentation>BegroeidTerreindeel: Kleinste functioneel onafhankelijk stukje van een terrein dat er binnen het objecttype Terrein van NEN 3610 wordt onderscheiden, met aaneengesloten vegetatie.</documentation>
+    </annotation>
+  </element>
+  <complexType name="BegroeidTerreindeelType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" default="false" name="opTalud" type="boolean">
+            <annotation>
+              <documentation>Indicatie of het object wel of niet op een hellend vlak ligt.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-fysiekVoorkomen" type="string">
+            <annotation>
+              <documentation>bgt-fysiekVoorkomen: Classificatie van het vegetatiedek, ingedeeld naar soort vegetatie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-fysiekVoorkomen" type="string">
+            <annotation>
+              <documentation>Nadere classificatie van het vegetatiedek, ingedeeld naar soort vegetatie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0MultiSurface" type="gml:MultiSurfacePropertyType">
+            <annotation>
+              <documentation>Multivlakgeometrie in 2.5D.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="kruinlijn" type="gml:CurvePropertyType">
+            <annotation>
+              <documentation>Lijngeometrie van de hoogstgelegen begrenzing van een kunstmatig aangelegd en onderhouden helling.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BegroeidTerreindeelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:BegroeidTerreindeel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Put" substitutionGroup="gml:_Feature" type="imgeo-s:PutType">
+    <annotation>
+      <documentation>Gegraven of geboorde kokervormige diepte waarin zich (vloei)stoffen bevinden.</documentation>
+    </annotation>
+  </element>
+  <complexType name="PutType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Het soort inrichtingselement.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Het soort put (IMGeo plus-populatie).</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="PutPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Put"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Spoor" substitutionGroup="gml:_Feature" type="imgeo-s:SpoorType">
+    <annotation>
+      <documentation>Spoor: De as van het spoor, dat wil zeggen het midden van twee stalen staven op een onderling vaste afstand, waarover trein, tram, of sneltram rijdt.</documentation>
+    </annotation>
+  </element>
+  <complexType name="SpoorType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-functie" type="string">
+            <annotation>
+              <documentation>functie: Specificatie van het soort gebruik van het spoor.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-functie" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort gebruik van het spoor, indien dit een IMGeo uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Curve" type="gml:CurvePropertyType">
+            <annotation>
+              <documentation>Lijngeometrie in 2.5D.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:CurvePropertyType">
+            <annotation>
+              <documentation>Lijngeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SpoorPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Spoor"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Scheiding" substitutionGroup="gml:_Feature" type="imgeo-s:ScheidingType">
+    <annotation>
+      <documentation>Kunstmatig, meestal lineair obstakel met een werende functie.</documentation>
+    </annotation>
+  </element>
+  <complexType name="ScheidingType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element name="bgt-type" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort scheiding.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort scheiding, indien dit een IMGeo uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:GeometryPropertyType">
+            <annotation>
+              <documentation>Punt-, lijn-, vlak- of multivlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ScheidingPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Scheiding"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Sensor" substitutionGroup="gml:_Feature" type="imgeo-s:SensorType">
+    <annotation>
+      <documentation>Apparaat voor de meting van een fysieke grootheid (bijv. temperatuur, licht, druk, elektriciteit).</documentation>
+    </annotation>
+  </element>
+  <complexType name="SensorType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Het soort inrichtingselement.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Het soort sensor (IMGeo plus-populatie).</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:GeometryPropertyType">
+            <annotation>
+              <documentation>Punt- of lijngeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:GeometryPropertyType">
+            <annotation>
+              <documentation>Punt- of lijngeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SensorPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Sensor"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="VegetatieObject" substitutionGroup="gml:_Feature" type="imgeo-s:VegetatieObjectType">
+    <annotation>
+      <documentation>VegetatieObject: Solitair vegetatieobject of lijn- of vlakvormige groep gelijksoortige vegetatieobjecten met een beperkte omvang.</documentation>
+    </annotation>
+  </element>
+  <complexType name="VegetatieObjectType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: De specificatie van het soort vrijstaand vegetatieobject.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>De specificatie van het soort vrijstaand vegetatieobject.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometry" type="gml:GeometryPropertyType">
+            <annotation>
+              <documentation>Punt-, lijn-, of vlakgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:GeometryPropertyType">
+            <annotation>
+              <documentation>Punt-, lijn-, of vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="VegetatieObjectPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:VegetatieObject"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Stadsdeel" substitutionGroup="gml:_Feature" type="imgeo-s:StadsdeelType">
+    <annotation>
+      <documentation>Deel van een stad, wijk.</documentation>
+    </annotation>
+  </element>
+  <complexType name="StadsdeelType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="naam" type="string">
+            <annotation>
+              <documentation>De benaming van het registratieve gebied.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:MultiSurfacePropertyType">
+            <annotation>
+              <documentation>Multivlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="StadsdeelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Stadsdeel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Straatmeubilair" substitutionGroup="gml:_Feature" type="imgeo-s:StraatmeubilairType">
+    <annotation>
+      <documentation>Een ruimtelijk object ter inrichting van de openbare ruimte.</documentation>
+    </annotation>
+  </element>
+  <complexType name="StraatmeubilairType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Het soort inrichtingselement.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Het soort straatmeubilair (IMGeo plus-populatie).</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Puntgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="StraatmeubilairPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Straatmeubilair"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Wegdeel" substitutionGroup="gml:_Feature" type="imgeo-s:WegdeelType">
+    <annotation>
+      <documentation>Wegdeel: Kleinste functioneel onafhankelijk stukje van een NEN 3610 Weg met gelijkblijvende, homogene eigenschappen en relaties en primair bedoeld voor gebruik door weg-, spoor- en vliegverkeer te land.</documentation>
+    </annotation>
+  </element>
+  <complexType name="WegdeelType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-functie" type="string">
+            <annotation>
+              <documentation>bgt-functie: Specificatie van het hoofdgebruiksdoel van het wegdeel.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-functie" type="string">
+            <annotation>
+              <documentation>Specificatie van het hoofdgebruiksdoel van het wegdeel, nadere classificatie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" default="false" name="opTalud" type="boolean">
+            <annotation>
+              <documentation>Indicatie of het object wel of niet op een hellend vlak ligt.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-fysiekVoorkomen" type="string">
+            <annotation>
+              <documentation>bgt-fysiekVoorkomen: Mate waarin het wegdeel al of niet verhard is.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-fysiekVoorkomen" type="string">
+            <annotation>
+              <documentation>Mate waarin het wegdeel al of niet verhard is, nadere classificatie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="kruinlijn" type="gml:CurvePropertyType">
+            <annotation>
+              <documentation>Lijngeometrie van de hoogstgelegen begrenzing van een kunstmatig aangelegd en onderhouden helling.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Surface" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie in 2.5D.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="WegdeelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Wegdeel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Tunneldeel" substitutionGroup="gml:_Feature" type="imgeo-s:TunneldeelType">
+    <annotation>
+      <documentation>Tunneldeel: Onderdeel van een kunstmatig aangelegde, kokervormige onderdoorgang dat essentieel is voor de constructie.</documentation>
+    </annotation>
+  </element>
+  <complexType name="TunneldeelType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="TunneldeelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Tunneldeel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Waterdeel" substitutionGroup="gml:_Feature" type="imgeo-s:WaterdeelType">
+    <annotation>
+      <documentation>Kleinste functioneel onafhankelijk stukje water met gelijkblijvende, homogene eigenschappen en relaties dat er binnen het objecttype Water van NEN 3610 wordt onderscheiden en dat permanent met water bedekt is.</documentation>
+    </annotation>
+  </element>
+  <complexType name="WaterdeelType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Specificatie van het soort Water.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Specificatie van het soort Water, nadere classificatie.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="WaterdeelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Waterdeel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Waterinrichtingselement" substitutionGroup="gml:_Feature" type="imgeo-s:WaterinrichtingselementType">
+    <annotation>
+      <documentation>Een ruimtelijk object ter inrichting van het water.</documentation>
+    </annotation>
+  </element>
+  <complexType name="WaterinrichtingselementType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Het soort inrichtingselement.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Het soort waterinrichtingselement (IMGeo plus-populatie).</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:GeometryPropertyType">
+            <annotation>
+              <documentation>Punt- of lijngeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:GeometryPropertyType">
+            <annotation>
+              <documentation>Punt- of lijngeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="WaterinrichtingselementPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Waterinrichtingselement"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Waterschap" substitutionGroup="gml:_Feature" type="imgeo-s:WaterschapType">
+    <annotation>
+      <documentation>Regionaal gebied onder het bestuur van een overheidsinstantie (waterschap) die tot taak heeft de waterhuishouding in dit gebied te regelen.</documentation>
+    </annotation>
+  </element>
+  <complexType name="WaterschapType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="naam" type="string">
+            <annotation>
+              <documentation>De benaming van het registratieve gebied.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:MultiSurfacePropertyType">
+            <annotation>
+              <documentation>Multivlakgeometrie.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="WaterschapPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Waterschap"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Weginrichtingselement" substitutionGroup="gml:_Feature" type="imgeo-s:WeginrichtingselementType">
+    <annotation>
+      <documentation>Een ruimtelijk object dat dient voor de inrichting van de openbare weg.</documentation>
+    </annotation>
+  </element>
+  <complexType name="WeginrichtingselementType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bgt-type" type="string">
+            <annotation>
+              <documentation>bgt-type: Het soort inrichtingselement.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-type" type="string">
+            <annotation>
+              <documentation>Het soort weginrichtingselement (IMGeo plus-populatie).</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:GeometryPropertyType">
+            <annotation>
+              <documentation>Punt-, lijn of vlakgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lod0Geometrie" type="gml:GeometryPropertyType">
+            <annotation>
+              <documentation>Punt-, lijn- of vlakgeometrie in 2.5D op level of detail 0.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="WeginrichtingselementPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Weginrichtingselement"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Wijk" substitutionGroup="gml:_Feature" type="imgeo-s:WijkType">
+    <annotation>
+      <documentation>Een aaneengesloten gedeelte van het grondgebied van een gemeente, waarvan de grenzen zoveel mogelijk zijn gebaseerd op sociaalgeografische kenmerken.</documentation>
+    </annotation>
+  </element>
+  <complexType name="WijkType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="objectBeginTijd" type="date">
+            <annotation>
+              <documentation>objectBeginTijd: Datum waarop het object bij de bronhouder is ontstaan.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="objectEindTijd" type="date">
+            <annotation>
+              <documentation>objectEindTijd: Datum waarop het object bij de bronhouder niet meer geldig is.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.namespace" type="string">
+            <annotation>
+              <documentation>identificatie.namespace: Unieke verwijzing naar een registratie van objecten.</documentation>
+            </annotation>
+          </element>
+          <element name="identificatie.lokaalID" type="string">
+            <annotation>
+              <documentation>identificatie.lokaalID: Unieke identificatiecode binnen een registratie.</documentation>
+            </annotation>
+          </element>
+          <element name="tijdstipRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen door de bronhouder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="eindRegistratie" type="dateTime">
+            <annotation>
+              <documentation>Eind van de periode waarop deze instantie van het object geldig is bij de bronhouder. Wanneer deze waarde niet is ingevuld is de instantie nog geldig.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="LV-publicatiedatum" type="dateTime">
+            <annotation>
+              <documentation>Tijdstip waarop deze instantie van het object is opgenomen in de landelijke voorziening.</documentation>
+            </annotation>
+          </element>
+          <element name="bronhouder" type="string">
+            <annotation>
+              <documentation>De bronhoudercode van het object.</documentation>
+            </annotation>
+          </element>
+          <element name="inOnderzoek" type="boolean">
+            <annotation>
+              <documentation>Een aanduiding waarmee wordt aangegeven dat een onderzoek wordt uitgevoerd naar de juistheid van een of meer gegevens van het betreffende object.</documentation>
+            </annotation>
+          </element>
+          <element name="relatieveHoogteligging" type="integer">
+            <annotation>
+              <documentation>Aanduiding voor de relatieve hoogte van het object</documentation>
+            </annotation>
+          </element>
+          <element default="bestaand" name="bgt-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="plus-status" type="string">
+            <annotation>
+              <documentation>De status gekoppeld aan de levenscyclus van een geo-object, indien dit een uitbreiding van de populatie betreft.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="naam" type="string">
+            <annotation>
+              <documentation>De benaming van het registratieve gebied.</documentation>
+            </annotation>
+          </element>
+          <element name="geometrie2d" type="gml:MultiSurfacePropertyType">
+            <annotation>
+              <documentation>Multivlakgeometrie.</documentation>
+            </annotation>
+          </element>
+          <element name="wijkcode" type="string">
+            <annotation>
+              <documentation>De code behorende bij de naam van de wijk.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="stadsdeel" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Het stadsdeel waarin de wijk gelegen is.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="WijkPropertyType">
+    <sequence minOccurs="0">
+      <element ref="imgeo-s:Wijk"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+</schema>

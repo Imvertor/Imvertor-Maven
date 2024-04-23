@@ -14,5 +14,5 @@
     <xi:include href="../../NEN3610/xsd/www.geonovum.nl/ls-NEN3610-2022-20220616.xml"/>
 
     <xi:include href="../../Geonovum/xsd/www.geostandaarden.nl/ls-IMGEO211-20130329.xml"/>
-    
+    <xi:include href="../../Geonovum/xsd/www.geostandaarden.nl/ls-IMGEO22-20200701.xml"/>
 </local-schemas>

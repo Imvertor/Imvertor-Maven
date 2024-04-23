@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchema xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+    
+    <cs:id>IMGEO</cs:id>
+    <cs:shortName>IMGEO</cs:shortName>
+    <cs:version>22</cs:version>
+    <cs:phase>3</cs:phase>
+    <cs:desc>In de Basisregistratie Grootschalige Topografie (BGT|IMGeo) standaarden is vastgelegd hoe overheidsorganisaties de inrichting van de buitenruimte - wegen, sloten, groenvoorziening, verkeerslichten - in Nederland digitaal vastleggen. De wettelijk verplichte BGT standaarden vormen de kern van het informatiemodel geografie (IMGeo).</cs:desc>
+    <cs:source>Geonovum</cs:source>
+    <cs:data-location>https://docs.geostandaarden.nl/imgeo/</cs:data-location>
+    <cs:url>http://www.geonovum.nl/conceptual-schemas/bgt-imgeo</cs:url>
+    <cs:catalogUrl>https://geonovum.github.io/IMGeo-objectenhandboek/[entry]</cs:catalogUrl>    
+</cs:ConceptualSchema>
+
