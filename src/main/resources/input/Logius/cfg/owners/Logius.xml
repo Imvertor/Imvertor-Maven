@@ -97,4 +97,12 @@
         This is a set defined by this owner which may be referenced as [system/collapse-key-set] as the value of -messagecollapsekeys 
     -->  
     <parameter name="message-collapse-keys">TV1NSBRF2 NAFFA NAFF1 TCBR1</parameter>
+    
+    <!-- 
+        Wordt een diagram geplaatst binnen <figure> (met figcaption) of (default) gewoon in een <img>? 
+        Options:
+        - figure
+        - img
+    -->
+    <parameter name="diagram-encoding">figure</parameter>
 </project-owner>
