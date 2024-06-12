@@ -14,7 +14,7 @@
             <cs-ref:MapRef xlink:href="#MIM111"/>
             <cs-ref:MapRef xlink:href="#IMGEO211"/>
             <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
-            <?x <cs-ref:MapRef xlink:href="#CITYGML"/> x?>
+            <cs-ref:MapRef xlink:href="#INSPIRE-HYDRONETWORK"/>
             <cs-ref:MapRef xlink:href="#IHW-GENERIEK"/>
          </cs:use>
       </cs:Mapping>
@@ -26,7 +26,7 @@
          <xi:include href="../../Kadaster/xsd/cs-GML322PROFILE.xml"/><!-- implements ConceptualSchema GML322 -->
          <xi:include href="../../Geonovum/xsd/cs-IMGEO211.xml"/><!-- implements ConceptualSchema IMGEO -->
          <xi:include href="../../NEN3610/xsd/cs-NEN3610-2022.xml"/><!-- implements ConceptualSchema NEN3610-->
-         <?x <xi:include href="../../OGC/xsd/cs-CityGML.xml"/><!-- implements ConceptualSchema CityGML--> x?>
+         <xi:include href="../../INSPIRE/xsd/cs-INSPIRE.xml"/>
          
          <cs:ConceptualSchema>
             <cs:id>IHW</cs:id>
@@ -41,7 +41,7 @@
          <xi:include href="../../Kadaster/xsd/cm-GML322PROFILE.xml"/><!-- implements Map #GML322PROFILE -->
          <xi:include href="../../Geonovum/xsd/cm-IMGEO211.xml"/><!-- implements Map #IMGEO -->
          <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/><!-- implements Map #NEN3610 -->
-         <?x <xi:include href="../../OGC/xsd/cm-CityGML.xml"/><!-- implements Map #CITYGML --> x?>
+         <xi:include href="../../INSPIRE/xsd/cm-INSPIRE-HYDRONETWORK.xml"/>
          
          <cs:Map>
             <cs:id>IHW-GENERIEK</cs:id>
@@ -117,6 +117,7 @@
                </cs:Construct>
             </cs:constructs>
          </cs:Map>
+        
       </cs:ConceptualSchemasComponents>
    </cs:components>
 </cs:ConceptualSchemas>
