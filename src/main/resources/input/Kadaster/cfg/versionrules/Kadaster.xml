@@ -16,6 +16,8 @@
             <format lang="#all">ANY</format>
             <desc lang="en">Versions must be specified as some informative string, no spaces.</desc>
             <pattern>\S+</pattern>
+            <example>1.0</example>
+            <example>2.2.1</example>
             <fragment group="1" required="yes">
                 <name lang="#all">Version</name>
                 <desc lang="en"></desc>
