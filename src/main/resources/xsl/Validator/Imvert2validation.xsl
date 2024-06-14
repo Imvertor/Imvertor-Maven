@@ -1587,7 +1587,7 @@
         
         <xsl:sequence select="imf:report-error($this, 
             not(matches($this/imvert:version,$cfg-version-pattern)), 
-            'Version [1] must take the form [2] consisting of [3]', ($this/imvert:version, imf:string-group($cfg-version/pattern), imf:string-group($cfg-version/fragment/name)))"/>
+            'Version [1] must consist of [3] (and match regular expression: [2])', ($this/imvert:version, imf:string-group($cfg-version/pattern), imf:string-group($cfg-version/fragment/name)))"/>
     </xsl:function>
   
     <xsl:function name="imf:check-phase">
