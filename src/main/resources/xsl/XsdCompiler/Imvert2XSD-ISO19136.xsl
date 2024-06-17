@@ -1017,7 +1017,7 @@
                 </xs:element>
             </xsl:when>
             <xsl:when test="$is-gml-measure">
-                <xsl:variable name="uom" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-UNITOFMEASURE')"/>
+                <xsl:variable name="uom" select="(imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-EENHEID'),imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-UNITOFMEASURE'))[1]"/><!-- MIM12 -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
