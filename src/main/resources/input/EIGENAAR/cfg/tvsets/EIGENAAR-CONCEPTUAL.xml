@@ -4,11 +4,11 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <!-- EIGENAAR follows Imvertor and MIM 1.1.1 requirements -->
+    <!-- EIGENAAR follows Imvertor and MIM 1.2 requirements -->
     
-    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM111.xml"/>
-    <xi:include href="../../../MIM/cfg/tvsets/MIM111.xml"/>
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM12.xml"/>
+    <xi:include href="../../../MIM/cfg/tvsets/MIM12.xml"/>
     
-    <name>EIGENAAR CONCEPTUEEL</name>
+    <name>EIGENAAR CONCEPTUEEL MIM 1.2</name>
     
 </tagset>
