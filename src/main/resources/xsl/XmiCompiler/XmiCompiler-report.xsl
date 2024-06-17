@@ -51,12 +51,10 @@
                     <xsl:sequence select="imf:report-key-label('Debug mode', 'cli','debugmode')"/>
                     <xsl:sequence select="imf:report-key-label('Forced compilation', 'cli','forcecompile')"/>
                 </info>
-                <info label="Application">
+                <info label="Model">
                     <xsl:sequence select="imf:report-key-label('Application', 'cli','application')"/>
                     <xsl:sequence select="imf:report-key-label('Owner', 'cli','owner')"/>
                     <xsl:sequence select="imf:report-key-label('Project', 'cli','project')"/>
-                </info>
-                <info label="Model">
                     <xsl:sequence select="imf:report-key-label('Metamodel', 'cli','metamodel')"/>
                     <xsl:sequence select="imf:report-key-label('Language', 'cli','language')"/>
                 </info>
