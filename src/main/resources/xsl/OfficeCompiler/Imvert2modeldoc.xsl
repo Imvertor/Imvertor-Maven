@@ -1244,7 +1244,8 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-AANDUIDINGSTRIJDIGHEIDNIETIGHEID'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-UNITOFMEASURE'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-UNITOFMEASURE'))"/>
+                    <xsl:variable name="uom" select="(imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-EENHEID'),imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-UNITOFMEASURE'))[1]"/><!-- MIM12 -->
+                    <xsl:sequence select="imf:create-part-2(.,$uom)"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-MINVALUEINCLUSIVE'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MINVALUEINCLUSIVE'))"/>
