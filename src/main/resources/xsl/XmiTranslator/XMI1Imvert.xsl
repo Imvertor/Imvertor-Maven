@@ -287,7 +287,9 @@
         
         <xsl:variable name="package-name" select="@name" as="xs:string"/>
         <xsl:variable name="package-id" select="@xmi.id" as="xs:string"/>
-        <xsl:variable name="namespace" select="imf:get-alias(.,'P')"/>
+        <xsl:variable name="namespace-1.1" select="imf:get-alias(.,'P')"/>
+        <xsl:variable name="namespace-1.2" select="imf:get-profile-tagged-value(.,'basis-uri',())"/>
+        <xsl:variable name="namespace" select="($namespace-1.2,$namespace-1.1)[1]"/>
         <xsl:variable name="metamodel" select="string-join($configuration,' ')"/>
         <xsl:variable name="model-level" select="imf:get-profile-tagged-value(.,'level','compact')"/>
         
@@ -297,7 +299,7 @@
         <!-- is this the application package? -->
         <xsl:variable name="is-root-package" select=". is $root-package"/>
 
-        <xsl:sequence select="if ($is-root-package) then imf:set-config-string('appinfo','application-alias',imf:get-alias(.,'P')) else ()"/>
+        <xsl:sequence select="if ($is-root-package) then imf:set-config-string('appinfo','root-namespace',$namespace) else ()"/>
         <xsl:sequence select="if ($is-root-package) then imf:set-config-string('appinfo','release',imf:get-profile-tagged-value(.,'release')[1]) else ()"/>
         
         <imvert:package>
@@ -319,7 +321,6 @@
             </xsl:for-each>
             <xsl:for-each select="UML:Namespace.ownedElement/UML:Package[not(imf:is-diagram-package(.))]">
                 <xsl:sort select="imf:compile-sort-key(.)"/>
-                <!--<xsl:sort select="imf:get-alias(.,'P')"/>-->
                 <xsl:apply-templates select=".">
                     <xsl:with-param name="parent-is-derived" select="$is-derived"/>
                 </xsl:apply-templates>

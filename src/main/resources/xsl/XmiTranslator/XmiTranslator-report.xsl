@@ -45,6 +45,7 @@
             <summary>
                 <info label="XMI Translation">
                     <xsl:sequence select="imf:report-label('Status', concat(count($errors), ' errors'))"/>
+                    <xsl:sequence select="imf:report-key-label('Base-URI', 'appinfo','root-namespace')"/>
                 </info>
             </summary>
             <xsl:if test="exists($messages)">
