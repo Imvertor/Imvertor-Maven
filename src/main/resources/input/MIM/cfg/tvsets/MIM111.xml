@@ -129,8 +129,6 @@
         
         <tv norm="space" id="CFG-TV-MIMVERSION">
             <declared-values lang="nl">
-                <value>1.1</value>
-                <value>1.1.0</value>
                 <value default="yes">1.1.1</value>
             </declared-values>
         </tv>

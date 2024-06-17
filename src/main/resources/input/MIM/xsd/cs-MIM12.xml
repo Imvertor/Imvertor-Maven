@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchema xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+    
+    <!-- conceptual schema for MIM 1.2 -->
+    <cs:id>MIM12</cs:id>
+    <cs:shortName>mim12</cs:shortName>
+    <cs:version>1.2</cs:version>
+    <cs:phase>3</cs:phase>
+    <cs:desc>De primitieve datatypen zoals vastgesteld in de MIM 1.2 specificatie</cs:desc>
+    <cs:source>MIM</cs:source>
+    <cs:data-location>https://docs.geostandaarden.nl/mim/</cs:data-location>
+    <!-- all including conceptual schemas should include the prefix http://www.geonovum.nl/conceptual-schemas/ in their configuration! -->
+    <cs:url>http://www.geonovum.nl/conceptual-schemas/MIM12</cs:url>
+    <cs:catalogUrl>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/[entry]</cs:catalogUrl>
+    
+</cs:ConceptualSchema>
+            
