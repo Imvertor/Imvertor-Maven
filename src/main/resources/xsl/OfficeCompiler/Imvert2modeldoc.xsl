@@ -1250,8 +1250,14 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-MINVALUEINCLUSIVE'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MINVALUEINCLUSIVE'))"/>
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-MINVALUEEXCLUSIVE'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MINVALUEEXCLUSIVE'))"/>
+                </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-MAXVALUEINCLUSIVE'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MAXVALUEINCLUSIVE'))"/>
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-MAXVALUEEXCLUSIVE'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MAXVALUEEXCLUSIVE'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEKARDINALITEIT'">
                     <xsl:variable name="min" select="$relation/imvert:min-occurs"/>
