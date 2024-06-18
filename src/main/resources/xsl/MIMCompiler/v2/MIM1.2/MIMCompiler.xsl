@@ -751,6 +751,11 @@
     </mim:definitie>
   </xsl:template>
   
+  <xsl:template match="metagegeven[. = 'Doelformaat']">
+    <xsl:param name="context" as="element()"/>
+    <mim:doelformaat source-id="CFG-TV-DOELFORMAAT">{imf:tagged-values($context, 'CFG-TV-DOELFORMAAT')}</mim:doelformaat>
+  </xsl:template>
+  
   <xsl:template match="metagegeven[. = 'Formeel patroon']">
     <xsl:param name="context" as="element()"/>
     <mim:formeelPatroon source-id="CFG-TV-FORMALPATTERN">{imf:tagged-values($context, 'CFG-TV-FORMALPATTERN')}</mim:formeelPatroon>
@@ -936,6 +941,11 @@
     <xsl:param name="context" as="element()"/>
     <mim:populatie source-id="CFG-TV-POPULATION">{imf:tagged-values($context, 'CFG-TV-POPULATION')}</mim:populatie>
   </xsl:template>
+ 
+  <xsl:template match="metagegeven[. = 'Profielspecificatie']">
+    <xsl:param name="context" as="element()"/>
+    <mim:profielspecificatie source-id="CFG-TV-PROFIELSPECIFICATIE">{imf:tagged-values($context, 'CFG-TV-PROFIELSPECIFICATIE')}</mim:profielspecificatie>
+  </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Relatie eigenaar']">
     <xsl:param name="context" as="element()"/>
@@ -1042,6 +1052,11 @@
   <xsl:template match="metagegeven[. = 'Unieke aanduiding']">
     <xsl:param name="context" as="element()"/>
     <!-- TODO -->
+  </xsl:template>
+  
+  <xsl:template match="metagegeven[. = 'Waarde-item']">
+    <xsl:param name="context" as="element()"/>
+      <mim:waardeItem source-id="CFG-TV-WAARDEITEM">{imf:tagged-values($context, 'CFG-TV-WAARDEITEM')}</mim:waardeItem>
   </xsl:template>
   
   <xsl:template match="mim:*" mode="missing-metadata">

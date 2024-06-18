@@ -319,6 +319,9 @@
             <ep:parameters>
                 <xsl:sequence select="imf:set-common-parameters(.,'codelijst')"/>
                 <xsl:sequence select="imf:set-parameter('locatie',mim:locatie)"/>
+                <xsl:sequence select="imf:set-parameter('doelformaat',mim:doelformaat)"/>
+                <xsl:sequence select="imf:set-parameter('profielspecificatie',mim:profielspecificatie)"/>
+                <xsl:sequence select="imf:set-parameter('waarde-item',mim:waardeItem)"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-name(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>

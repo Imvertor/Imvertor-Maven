@@ -59,9 +59,9 @@
          <!-- json extensie -->
          <metagegeven kardinaliteit="0..1">literalEncodingType</metagegeven>
          <metagegeven kardinaliteit="0..1">Doelformaat</metagegeven><!-- add 1.2 -->
-         <metagegeven kardinaliteit="1">Identificatie</metagegeven><!-- add 1.2 -->
-         <metagegeven kardinaliteit="0..1">Profielspecificatie</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="0..1">Waarde-item</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="0..1">Profielspecificatie</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="1">Identificatie</metagegeven><!-- add 1.2 -->
       </modelelement>
       <modelelement>
          <naam>Constraint</naam>
