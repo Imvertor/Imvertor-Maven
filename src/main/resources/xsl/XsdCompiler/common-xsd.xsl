@@ -141,6 +141,8 @@
         
         <xsl:variable name="min-v" select="imf:get-facet-min-value($this)"/>
         <xsl:variable name="max-v" select="imf:get-facet-max-value($this)"/>
+        <xsl:variable name="min-v-ex" select="imf:get-facet-minex-value($this)"/>
+        <xsl:variable name="max-v-ex" select="imf:get-facet-maxex-value($this)"/>
         
         <xsl:variable name="is-integer" select="$primitive-type = ('xs:integer')"/>
         <xsl:variable name="is-decimal" select="$primitive-type = ('xs:decimal')"/>
@@ -167,11 +169,20 @@
             <xsl:when test="exists($min-v) and exists($min-l) and $is-numeric">
                 <xs:minInclusive value="{$min-v}"/>
                 <xs:minLength value="{$min-l}"/>
-                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, minimum value and length, for [1]',$primitive-type)"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, minimum value inclusive, and length, for [1]',$primitive-type)"/>
+            </xsl:when>
+            <xsl:when test="exists($min-v-ex) and exists($min-l) and $is-numeric">
+                <xs:minExclusive value="{$min-v-ex}"/>
+                <xs:minLength value="{$min-l}"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, minimum value exclusive and length, for [1]',$primitive-type)"/>
             </xsl:when>
             <xsl:when test="exists($min-v) and $is-numeric">
                 <xs:minInclusive value="{$min-v}"/>
-                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, minimum value, for [1]',$primitive-type)"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, minimum value inclusive, for [1]',$primitive-type)"/>
+            </xsl:when>
+            <xsl:when test="exists($min-v-ex) and $is-numeric">
+                <xs:minInclusive value="{$min-v-ex}"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, minimum value exclusive, for [1]',$primitive-type)"/>
             </xsl:when>
             <xsl:when test="exists($min-l) and $is-integer">
                 <?x <xs:minInclusive value="{math:pow(10,$min-l - 1)}"/> x?>
@@ -186,11 +197,20 @@
             <xsl:when test="exists($max-v) and exists($max-l) and $is-numeric">
                 <xs:maxInclusive value="{$max-v}"/>
                 <xs:maxLength value="{$max-l}"/>
-                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, maximum value and length, for [1]',$primitive-type)"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, maximum value inclusive, and length, for [1]',$primitive-type)"/>
+            </xsl:when>
+            <xsl:when test="exists($max-v-ex) and exists($max-l) and $is-numeric">
+                <xs:maxExclusive value="{$max-v-ex}"/>
+                <xs:maxLength value="{$max-l}"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, maximum value exclusive, and length, for [1]',$primitive-type)"/>
             </xsl:when>
             <xsl:when test="exists($max-v) and $is-numeric">
                 <xs:maxInclusive value="{$max-v}"/>
-                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, maximum value, for [1]',$primitive-type)"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, maximum value inclusive, for [1]',$primitive-type)"/>
+            </xsl:when>
+            <xsl:when test="exists($max-v-ex) and $is-numeric">
+                <xs:maxExclusive value="{$max-v-ex}"/>
+                <xsl:sequence select="imf:create-xml-debug-comment($this,'Facet on numeric, maximum value exclusive, for [1]',$primitive-type)"/>
             </xsl:when>
             <xsl:when test="exists($max-l) and $is-integer">
                 <xs:totalDigits value="{$max-l}"/>
