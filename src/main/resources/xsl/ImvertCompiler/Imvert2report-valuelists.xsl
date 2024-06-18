@@ -69,7 +69,7 @@
         <xsl:variable name="url-origin" select="if ($my-location) then 'attribute' else 'list'"/>
         <tr>
             <td>
-                <!-- wat is de naam van het type waardenlijst? -->
+                <!-- wat is de naam van het type waardelijst? -->
                 <xsl:sequence select="imf:get-construct-name(.)"/>
             </td>
             <td>

@@ -826,7 +826,7 @@
   <!-- Codelijst -->
   <xs:element name="Codelijst" type="mim:Codelijst">
     <xs:annotation>
-      <xs:documentation>Een lijst met een opsomming van de toegestane/mogelijke domeinwaarden, welke buiten het model in een externe waardenlijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast worden of uitgebreid worden of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie).</xs:documentation>
+      <xs:documentation>Een lijst met een opsomming van de toegestane/mogelijke domeinwaarden, welke buiten het model in een externe waardelijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast worden of uitgebreid worden of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie).</xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:complexType name="Codelijst">
@@ -870,7 +870,7 @@
           </xs:element>
           <xs:element name="locatie" type="xs:string">
             <xs:annotation>
-              <xs:documentation>De verwijzing (URL) naar de locatie van de bijbehorende schema’s met waardenlijsten.</xs:documentation>
+              <xs:documentation>De verwijzing (URL) naar de locatie van de bijbehorende schema’s met waardelijsten.</xs:documentation>
             </xs:annotation>
           </xs:element>
           <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
@@ -882,7 +882,7 @@
   <!-- Referentielijst -->
   <xs:element name="Referentielijst" type="mim:Referentielijst">
     <xs:annotation>
-      <xs:documentation>De representatie van een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort, die buiten het model in een externe waardenlijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast, uitgebreid, of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie). De representatie bevat een aantal kenmerken, die overgenomen zijn van de specificatie van de externe waardelijst.</xs:documentation>
+      <xs:documentation>De representatie van een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort, die buiten het model in een externe waardelijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast, uitgebreid, of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie). De representatie bevat een aantal kenmerken, die overgenomen zijn van de specificatie van de externe waardelijst.</xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:complexType name="Referentielijst">
@@ -926,7 +926,7 @@
           </xs:element>
           <xs:element name="locatie" type="xs:string">
             <xs:annotation>
-              <xs:documentation>De verwijzing (URL) naar de locatie van de bijbehorende schema’s met waardenlijsten.</xs:documentation>
+              <xs:documentation>De verwijzing (URL) naar de locatie van de bijbehorende schema’s met waardelijsten.</xs:documentation>
             </xs:annotation>
           </xs:element>
           <xs:element name="referentieElementen" minOccurs="0">

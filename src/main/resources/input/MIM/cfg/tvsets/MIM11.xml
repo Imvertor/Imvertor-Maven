@@ -44,7 +44,7 @@
         <tv norm="space" id="CFG-TV-DATALOCATION">
             <name lang="nl">Locatie</name>
             <name lang="en">Location</name>
-            <desc lang="nl">MIM 1.1: Als het type van het attribuutsoort een waardenlijst is, dan wordt hier de locatie waar deze te vinden is opgegeven.</desc>
+            <desc lang="nl">MIM 1.1: Als het type van het attribuutsoort een waardelijst is, dan wordt hier de locatie waar deze te vinden is opgegeven.</desc>
             <desc lang="en">MIM 1.1: If the type of the attribute type is a list of values, the location where it can be found is specified here.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-locatie</catalog>
@@ -52,7 +52,7 @@
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-view-package</stereo>
                 <stereo minmax="1..1">stereotype-name-external-package</stereo>
-                <stereo minmax="0..1">stereotype-name-codelist</stereo><!-- locatie kan op attribuut of de waardenlijst worden gezet; apart de validatie implementeren -->
+                <stereo minmax="0..1">stereotype-name-codelist</stereo><!-- locatie kan op attribuut of de waardelijst worden gezet; apart de validatie implementeren -->
                 <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>

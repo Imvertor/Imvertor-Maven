@@ -91,7 +91,7 @@
             <desc lang="nl">
                De locatie waar informatie over de gegevens van een construct te vinden zijn. 
                 Wanneer het een external of view package betreft: De verwijzing naar de locatie van het bijbehorende informatiemodel 
-                waar dit package een representatie van is. In alle andere gevallen moet het een waardenlijst betreffen. 
+                waar dit package een representatie van is. In alle andere gevallen moet het een waardelijst betreffen. 
                 Het gaat dan om de verwijzing naar de plek waar de waarden beschikbaar worden gesteld.
                 De verwijzing heeft de vorm van een URI conform een gekozen URI strategie.
             </desc>
