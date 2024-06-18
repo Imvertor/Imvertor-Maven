@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metamodel 
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-   xsi:noNamespaceSchemaLocation="../../../etc/xsd/metamodel/metamodel.xsd">
+   xsi:noNamespaceSchemaLocation="../../../../etc/xsd/metamodel/metamodel.xsd">
    <modelelementen>
       <modelelement>
          <naam>Attribuutsoort</naam>
@@ -17,6 +17,10 @@
          <metagegeven kardinaliteit="0..1">Lengte</metagegeven>
          <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
          <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
+         <metagegeven kardinaliteit="0..1">Maximumwaarde exclusief</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="0..1">Minimumwaarde exclusief</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="0..1">Maximumwaarde inclusief</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="0..1">Minimumwaarde inclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="1">Indicatie materiële historie</metagegeven>
          <metagegeven kardinaliteit="1">Indicatie formele historie</metagegeven>
          <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
@@ -40,10 +44,6 @@
          <metagegeven kardinaliteit="0..1">Heeft tijdlijn geldigheid</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="0..1">Heeft tijdlijn registratie</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="1">Identificatie</metagegeven><!-- add 1.2 -->
-         <metagegeven kardinaliteit="0..1">Maximumwaarde exclusief</metagegeven><!-- add 1.2 -->
-         <metagegeven kardinaliteit="0..1">Minimumwaarde exclusief</metagegeven><!-- add 1.2 -->
-         <metagegeven kardinaliteit="0..1">Maximumwaarde inclusief</metagegeven><!-- add 1.2 -->
-         <metagegeven kardinaliteit="0..1">Minimumwaarde inclusief</metagegeven><!-- add 1.2 -->
       </modelelement>
       <modelelement>
          <naam>Codelijst</naam>
@@ -82,14 +82,14 @@
          <metagegeven kardinaliteit="0..1">Lengte</metagegeven>
          <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
          <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
-         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
-         <!--<metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven> vervangen in 1.2 -->
-         <!--<metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven> vervangen in 1.2 -->
-         <metagegeven kardinaliteit="1">Identificatie</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="0..1">Maximumwaarde exclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="0..1">Minimumwaarde exclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="0..1">Maximumwaarde inclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="0..1">Minimumwaarde inclusief</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
+         <!--<metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven> vervangen in 1.2 -->
+         <!--<metagegeven kardinaliteit="0..1">Minimumwaarde</metagegeven> vervangen in 1.2 -->
+         <metagegeven kardinaliteit="1">Identificatie</metagegeven><!-- add 1.2 -->
       </modelelement>
       <modelelement>
          <naam>Datatype</naam>
@@ -374,9 +374,14 @@
          <metagegeven kardinaliteit="0..1">Lengte</metagegeven>
          <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
          <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
+         <metagegeven kardinaliteit="0..1">Maximumwaarde exclusief</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="0..1">Minimumwaarde exclusief</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="0..1">Maximumwaarde inclusief</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="0..1">Minimumwaarde inclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
          <metagegeven kardinaliteit="0..1">Identificerend</metagegeven>
          <metagegeven kardinaliteit="0..1">Eenheid</metagegeven><!-- add 1.2 (was extensie) -->
+         <metagegeven kardinaliteit="1">Identificatie</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="1">Identificatie</metagegeven><!-- add 1.2 -->
       </modelelement>
       <modelelement>
@@ -841,6 +846,18 @@
       </metagegeven>
       -->
       <metagegeven>
+         <naam>Maximumwaarde inclusief</naam><!-- aangepast in MIM 1.2 -->
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Data element</modelelement>
+         <modelelement kardinaliteit="0..1">Referentie element</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Maximumwaarde exclusief</naam><!-- nieuw in MIM 1.2 -->
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Data element</modelelement>
+         <modelelement kardinaliteit="0..1">Referentie element</modelelement>
+      </metagegeven>
+      <metagegeven>
          <naam>MIM extensie</naam>
          <modelelement kardinaliteit="0..1">Informatiemodel</modelelement>
       </metagegeven>
@@ -865,6 +882,18 @@
          <modelelement kardinaliteit="0..1">Primitief datatype</modelelement>
       </metagegeven>
       -->
+      <metagegeven>
+         <naam>Minimumwaarde inclusief</naam><!-- aangepast in MIM 1.2 -->
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Data element</modelelement>
+         <modelelement kardinaliteit="0..1">Referentie element</modelelement>
+      </metagegeven>
+      <metagegeven>
+         <naam>Minimumwaarde exclusief</naam><!-- nieuw in MIM 1.2 -->
+         <modelelement kardinaliteit="0..1">Attribuutsoort</modelelement>
+         <modelelement kardinaliteit="0..1">Data element</modelelement>
+         <modelelement kardinaliteit="0..1">Referentie element</modelelement>
+      </metagegeven>
       <metagegeven>
          <naam>Mogelijk geen waarde</naam>
          <modelelement kardinaliteit="1">Attribuutsoort</modelelement>

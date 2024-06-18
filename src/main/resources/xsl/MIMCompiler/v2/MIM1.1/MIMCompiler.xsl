@@ -57,8 +57,8 @@
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   <xsl:variable name="add-xlink-id" select="true()"/>
   
-  <xsl:import href="../../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
-  <xsl:import href="../../common/Imvert-common-derivation.xsl" use-when="$runs-in-imvertor-context"/>
+  <xsl:import href="../../../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
+  <xsl:import href="../../../common/Imvert-common-derivation.xsl" use-when="$runs-in-imvertor-context"/>
   
   <xsl:variable name="mim-model" as="document-node(element(metamodel))">
     <xsl:sequence select="document('MIM' || $mim-version || '-model.xml')"/>  

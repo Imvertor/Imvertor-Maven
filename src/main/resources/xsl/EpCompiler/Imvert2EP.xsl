@@ -453,8 +453,10 @@
         ep:seq | 
         ep:min-length | 
         ep:max-length | 
-        ep:min-value | 
-        ep:max-value | 
+        ep:min-value-inclusive | 
+        ep:max-value-inclusive | 
+        ep:min-value-exclusive | 
+        ep:max-value-exclusive | 
         ep:pattern | 
         ep:formal-pattern | 
         ep:alias | 
@@ -598,12 +600,18 @@
     <xsl:function name="imf:get-props" as="element()*">
         <xsl:param name="this"/>
         
-        <ep:min-value>
+        <ep:min-value-inclusive>
             <xsl:value-of select="imf:tagged-value($this,'CFG-TV-MINVALUEINCLUSIVE')"/>
-        </ep:min-value>
-        <ep:max-value>
+        </ep:min-value-inclusive>
+        <ep:min-value-exclusive>
+            <xsl:value-of select="imf:tagged-value($this,'CFG-TV-MINVALUEEXCLUSIVE')"/>
+        </ep:min-value-exclusive>
+        <ep:max-value-inclusive>
             <xsl:value-of select="imf:tagged-value($this,'CFG-TV-MAXVALUEINCLUSIVE')"/>
-        </ep:max-value>
+        </ep:max-value-inclusive>
+        <ep:max-value-exclusive>
+            <xsl:value-of select="imf:tagged-value($this,'CFG-TV-MAXVALUEEXCLUSIVE')"/>
+        </ep:max-value-exclusive>
         
         <xsl:variable name="len" select="tokenize(imf:tagged-value($this,'CFG-TV-LENGTH'),'\.+')"/>
         <ep:min-length>

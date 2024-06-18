@@ -84,12 +84,13 @@ public class EpCompiler extends Step {
 		
 		// Create EP
 		if (requiresMIM()) {
+			String mimVersion = configurator.getXParm("system/mim-compiler-mim-version");
 			// check of MIM resultaat beschikbaar is 
 			succeeds = succeeds && AnyFile.exists(configurator.getXParm("properties/WORK_MIMFORMAT_XMLPATH",false));
 			// verwerk MIM naar EP
-			succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH","properties/WORK_EP_XMLPATH_PRE", "properties/IMVERTOR_EP2_XSLPATH_PRE");
-			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH_PRE","properties/WORK_EP_XMLPATH_CORE", "properties/IMVERTOR_EP2_XSLPATH_CORE");
-			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH_CORE","properties/WORK_EP_XMLPATH_FINAL", "properties/IMVERTOR_EP2_XSLPATH_POST");
+			succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH","properties/WORK_EP_XMLPATH_PRE", "properties/IMVERTOR_EP2_" + mimVersion + "_XSLPATH_PRE");
+			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH_PRE","properties/WORK_EP_XMLPATH_CORE", "properties/IMVERTOR_EP2_" + mimVersion + "_XSLPATH_CORE");
+			succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH_CORE","properties/WORK_EP_XMLPATH_FINAL", "properties/IMVERTOR_EP2_" + mimVersion + "_XSLPATH_POST");
 		} else 
 			succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_EP_XMLPATH_FINAL", "properties/IMVERTOR_EP_XSLPATH");
 	

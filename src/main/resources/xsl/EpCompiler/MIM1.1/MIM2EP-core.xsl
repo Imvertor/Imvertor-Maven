@@ -21,9 +21,9 @@
        Deze stylesheet wwrkt op MIM serialisatie formaat.
     -->
     
-    <xsl:import href="../common/Imvert-common.xsl"/>
-    <xsl:import href="../common/packs/pack-strip.xsl"/>
-    <xsl:import href="reorder-ep-structure.xsl"/>
+    <xsl:import href="../../common/Imvert-common.xsl"/>
+    <xsl:import href="../../common/packs/pack-strip.xsl"/>
+    <xsl:import href="../reorder-ep-structure.xsl"/>
     
     <!-- TODO derivation, moet dat in MIM serialisatie worden opgelost? -->
    

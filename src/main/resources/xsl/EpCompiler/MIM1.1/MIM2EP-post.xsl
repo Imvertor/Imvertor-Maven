@@ -18,7 +18,7 @@
     expand-text="yes"
     >
     
-    <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../../common/Imvert-common.xsl"/>
 
     <xsl:variable name="bp-req-basic-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-basic-encodings')"/>
     <xsl:variable name="bp-req-by-reference-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-by-reference-encodings')"/>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0"   
+  targetNamespace="http://www.geostandaarden.nl/mim/mim-ref/1.0" 
+  elementFormDefault="qualified" 
+  attributeFormDefault="unqualified" 
+  version="1.0.0">
+  
+  <xs:annotation>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/uri">https://docs.geostandaarden.nl/mim/TODO-schemainfo-1.0.0</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/version">1.0.0</xs:appinfo>
+  </xs:annotation>
+  
+  <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+  
+  <xs:element name="ObjecttypeRef" type="mim-ref:RefType"/>
+  <xs:element name="GegevensgroeptypeRef" type="mim-ref:RefType"/>
+  <xs:element name="AttribuutsoortRef" type="mim-ref:RefType"/>
+  <xs:element name="GegevensgroepRef" type="mim-ref:RefType"/>
+  <xs:element name="DatatypeRef" type="mim-ref:RefType"/>
+  <!--
+  <xs:element name="GestructureerdDatatypeRef" type="mim-ref:RefType"/>
+  <xs:element name="PrimitiefDatatypeRef" type="mim-ref:RefType"/>
+  <xs:element name="EnumeratieRef" type="mim-ref:RefType"/>
+  <xs:element name="CodelijstRef" type="mim-ref:RefType"/>
+  <xs:element name="ReferentielijstRef" type="mim-ref:RefType"/>
+  -->
+  <xs:element name="RelatieklasseRef" type="mim-ref:RefType"/>
+  <xs:element name="KeuzeRef" type="mim-ref:RefType"/>
+  
+  <xs:complexType name="RefType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="label" type="xs:string" use="optional"/>
+        <xs:attribute name="index" type="xs:integer" use="optional"/>
+        <xs:attribute ref="xlink:href" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+</xs:schema>

@@ -91,6 +91,12 @@ public class MIMCompiler extends Step {
 		
 		runner.debug(logger,"CHAIN","Generating MIM format");
 		
+		String mcv = configurator.getXParm("system/mim-compliancy-version", false); // major.minor: wordt bepaald op basis van de actieve configuratie.
+		String mv = configurator.getXParm("appinfo/mim-model-version", false); // major.minor: wordt bepaald op basis van de actieve configuratie.
+		String mimVersion = (mv != null && mv.startsWith("1.1")) ? "1.1" : mv; // de versie opgegeven in het model is bepalend voor het mim serialisatie formaat
+		
+		transformer.setXslParm("mim-version", mimVersion);
+		
 		String mfv = configurator.getXParm("cli/mimformatversion", false);
 		String mimFormatterVersion = (mfv != null && mfv.equals("v1")) ? "v1" : "v2";
 				
@@ -105,10 +111,10 @@ public class MIMCompiler extends Step {
 		String xslFileParam;
 		switch (mimFormatType) {
 		case "legacy": 
-			xslFileParam = "properties/IMVERTOR_MIMFORMAT_" + mimFormatterVersion + "_LEGACY_XSLPATH";
+			xslFileParam = "properties/IMVERTOR_MIMFORMAT_" + mimFormatterVersion + "_" + mimVersion + "_LEGACY_XSLPATH";
 			break;
 		default:
-			xslFileParam = "properties/IMVERTOR_MIMFORMAT_" + mimFormatterVersion + "_XSLPATH";
+			xslFileParam = "properties/IMVERTOR_MIMFORMAT_" + mimFormatterVersion + "_" + mimVersion + "_XSLPATH";
 			break;
 		}
 		
@@ -116,11 +122,6 @@ public class MIMCompiler extends Step {
 			transformer.setXslParm("generate-readable-ids", "false");
 			transformer.setXslParm("generate-all-ids", "true");
 		}
-		
-		String mv = configurator.getXParm("cli/mimversion", false);
-		String mimVersion = (mv != null && mv.equals("1.1")) ? "1.1" : "1.1"; // TODO implementeer 1.1.1
-		
-		transformer.setXslParm("mim-version", mimVersion);
 		
 		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_MIMFORMAT_XMLPATH", xslFileParam); //TODO must relocate generation of WORK_LISTS_FILE to a EMBELLISH step.
 		
@@ -130,7 +131,7 @@ public class MIMCompiler extends Step {
 		*/
 		
 		if (isRDFType) {
-			succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", "properties/WORK_MIMFORMAT_RDFPATH", "properties/IMVERTOR_MIMFORMAT_" + mimFormatterVersion + "_RDF_XSLPATH");
+			succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", "properties/WORK_MIMFORMAT_RDFPATH", "properties/IMVERTOR_MIMFORMAT_" + mimFormatterVersion + "_" + mimVersion + "_RDF_XSLPATH");
 		}
 		
 		// store to mim folder
@@ -147,8 +148,8 @@ public class MIMCompiler extends Step {
 			
 			if (!mimFormatType.equals("legacy")) {
 				/* Copy the MIM XML Schema directory: */
-				File xslDir = new File(configurator.getXslPath(configurator.getParm("properties", "IMVERTOR_MIMFORMAT_" + mimFormatterVersion + "_XSLPATH"))).getParentFile();
-				File xsdSourceFolder = new File(xslDir, "../../../etc/xsd/MIMformat/" + mimFormatterVersion);
+				File xslDir = new File(configurator.getXslPath(configurator.getParm("properties", "IMVERTOR_MIMFORMAT_" + mimFormatterVersion + "_" + mimVersion + "_XSLPATH"))).getParentFile();
+				File xsdSourceFolder = new File(xslDir, "../../../../etc/xsd/MIMformat/" + mimFormatterVersion);
 				File xsdTargetFolder = new File(xmlFolder, "xsd");
 				FileUtils.copyDirectory(xsdSourceFolder, xsdTargetFolder);
 			

@@ -27,8 +27,8 @@
          - Copy-down van enumeratiewaarden in overerving
     -->
     
-    <xsl:import href="../common/Imvert-common.xsl"/>
-    <xsl:import href="../common/Imvert-common-MIM.xsl"/>
+    <xsl:import href="../../common/Imvert-common.xsl"/>
+    <xsl:import href="../../common/Imvert-common-MIM.xsl"/>
     
     <xsl:variable name="mim-document" select="/"/>
     

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mim:Objecttype xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0"
+ xmlns:mim="http://www.geostandaarden.nl/mim/mim-core/1.2"
+ xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0"
+ xmlns:xhtml="http://www.w3.org/1999/xhtml"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.geostandaarden.nl/mim/mim-core/1.2 ../MIMFORMAT_Mim_relatiesoort.xsd" id="id1">
+    <mim:naam>naam</mim:naam>
+    <mim:herkomst>herkomst</mim:herkomst>
+    <mim:definitie>definitie</mim:definitie>
+    <mim:herkomstDefinitie>herkomstDefinitie</mim:herkomstDefinitie>
+    <mim:datumOpname>2022-01-01</mim:datumOpname>
+    <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
+    <mim:relatiesoorten>
+        <mim:Relatiesoort>
+            <mim:naam>relatiesoort</mim:naam>
+            <mim:herkomst>herkomst</mim:herkomst>
+            <mim:definitie>definitie</mim:definitie>
+            <mim:herkomstDefinitie>herkomstDefinitie</mim:herkomstDefinitie>
+            <mim:datumOpname>2022-01-01</mim:datumOpname>
+            <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+            <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+            <mim:kardinaliteit>0..1</mim:kardinaliteit>
+            <mim:kardinaliteitBron>1</mim:kardinaliteitBron>
+            <mim:authentiek>false</mim:authentiek>
+            <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
+            <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+            <mim:identificerend>false</mim:identificerend>
+            <mim:unidirectioneel>true</mim:unidirectioneel>
+            <mim:aggregatietype>Gedeeld</mim:aggregatietype>
+            <mim:doel>
+                <mim-ref:ObjecttypeRef xlink:href="relatiesoort1.xml"/>
+            </mim:doel>
+            <mim:relatierollen>
+                <mim:Bron>
+                    <mim:naam>naam</mim:naam>
+                    <mim:herkomst></mim:herkomst>
+                    <mim:definitie>definitie</mim:definitie>
+                    <mim:herkomstDefinitie></mim:herkomstDefinitie>
+                    <mim:datumOpname></mim:datumOpname>
+                </mim:Bron>
+                <mim:Doel>
+                    <mim:naam>naam</mim:naam>
+                    <mim:herkomst></mim:herkomst>
+                    <mim:definitie>definitie</mim:definitie>
+                    <mim:herkomstDefinitie></mim:herkomstDefinitie>
+                    <mim:datumOpname></mim:datumOpname>
+                </mim:Doel>
+            </mim:relatierollen>
+        </mim:Relatiesoort>
+    </mim:relatiesoorten>
+</mim:Objecttype>

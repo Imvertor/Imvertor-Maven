@@ -45,7 +45,7 @@
       <xs:sequence>
         <xs:element name="constructietype" type="xs:string"/>
         <xs:any 
-          namespace="http://www.geostandaarden.nl/mim/mim-core/1.0 http://www.geostandaarden.nl/mim/mim-ref/1.0 http://www.geostandaarden.nl/mim/mim-ext/1.0"
+          namespace="http://www.geostandaarden.nl/mim/mim-core/1.2 http://www.geostandaarden.nl/mim/mim-ref/1.0 http://www.geostandaarden.nl/mim/mim-ext/1.0"
           minOccurs="0"
           maxOccurs="unbounded"
           processContents="lax"/>
