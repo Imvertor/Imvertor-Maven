@@ -16,6 +16,7 @@
             <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
             <?x <cs-ref:MapRef xlink:href="#CITYGML"/> x?>
             <cs-ref:MapRef xlink:href="#IHW-GENERIEK"/>
+           <cs-ref:MapRef xlink:href="#INSPIRE-HYDRONETWORK"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
@@ -41,6 +42,7 @@
          <xi:include href="../../Kadaster/xsd/cm-GML322PROFILE.xml"/><!-- implements Map #GML322PROFILE -->
          <xi:include href="../../Geonovum/xsd/cm-IMGEO211.xml"/><!-- implements Map #IMGEO -->
          <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/><!-- implements Map #NEN3610 -->
+         <xi:include href="../../INSPIRE/xsd/cm-INSPIRE-HYDRONETWORK.xml"/><!-- implements Map #Inspire Hydronetwork -->
          <?x <xi:include href="../../OGC/xsd/cm-CityGML.xml"/><!-- implements Map #CITYGML --> x?>
          
          <cs:Map>
