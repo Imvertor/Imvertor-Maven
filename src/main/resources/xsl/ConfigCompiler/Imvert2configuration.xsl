@@ -107,27 +107,17 @@
         </xsl:variable>
         <xsl:sequence select="$config-compact"/>
         
-        <xsl:sequence select="dlogger:save('config',$config-compact)"></xsl:sequence>
-       
         <!-- set some global configuration info -->
         <xsl:variable name="proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy','stereotype-name-prd-proxy'), false())"/>
         <xsl:sequence select="imf:set-config-string('system','supports-proxy',if ($proxy = '#unknown') then 'no' else 'yes')"/>
         
-        <xsl:variable name="okeys" select="$config-compact/config//project-owner/parameter[@name = 'message-collapse-keys'][last()]"/>
+        <xsl:variable name="okeys" select="$config-compact/project-owner/parameter[@name = 'message-collapse-keys'][last()]"/>
         <xsl:sequence select="imf:set-config-string('system','message-collapse-keys',$okeys)"/>
         <xsl:variable name="keys" select="imf:merge-parms(imf:get-config-string('cli','messagecollapsekeys'))"/>
         <xsl:sequence select="imf:set-config-string('appinfo','message-collapse-keys',$keys)"/>
         
         <xsl:variable name="mim-compliancy-version" select="(for $m in $config-compact/prologue/metamodels/metamodel return if (starts-with($m,'MIM ')) then $m else ())[1]"/> <!-- lijst van MIM metamodel names, de eerste is de gekozen metamodel versie -->
         <xsl:sequence select="imf:set-config-string('system','mim-compliancy-version',substring-after($mim-compliancy-version,'MIM '))"/>
-        
-        <?x
-        <xsl:result-document href="file:/c:/temp/config.xml">
-            <debug>
-                <xsl:sequence select="imf:document($configuration-metamodel-name,true())"></xsl:sequence>
-            </debug>
-        </xsl:result-document>
-        x?>
         
         <!-- signal if not using the latest release or a nightly build (or other feature branch build) of imvertor -->
         <xsl:variable name="crx" select="imf:get-config-string('run','version')"/>
