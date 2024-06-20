@@ -42,6 +42,12 @@
          <tip>Yes if SKOS RDF must be validated after it has been generated</tip>
          <required>false</required>
       </cli-parm> 
+      <cli-parm>
+         <name>skosusealias</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the alias should be used, when available, to create the SKOS concept URI</tip>
+         <required>false</required>
+      </cli-parm> 
       
    </cli-parms>
   

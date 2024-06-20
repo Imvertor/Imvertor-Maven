@@ -47,6 +47,7 @@
     <xsl:variable name="str1quot">'</xsl:variable>
     <xsl:variable name="apos">'</xsl:variable>
     
+    <xsl:variable name="use-alias-for-uri" select="imf:boolean(imf:get-xparm('cli/skosusealias','no'))"/>
     <xsl:variable name="abbrev" select="imf:get-xparm('appinfo/model-abbreviation','UNKNOWN')"/>
     <xsl:variable name="model-name" select="/imvert:packages/imvert:application"/>
     <xsl:variable name="prefixSkos" select="'skos'"/>
@@ -63,6 +64,8 @@
     <xsl:output method="text"/>
     
     <xsl:template match="/">
+       
+        <xsl:sequence select="dlogger:save('use',$use-alias-for-uri)"/>
         
         <!-- Geef de Skos schema URL door aan de Java json validator -->
         <xsl:variable name="skos-schema-url" select="$configuration-skosrules-file//parameter[@name = 'skos-schema-url']"/> <!-- shacl spec for this type of SKOS -->
@@ -341,9 +344,11 @@
         
         <xsl:variable name="namefrags" select="imf:get-construct-name-frags($construct)"/>
         <xsl:variable name="domain" select="imf:for-uri($namefrags/@pack)"/><!-- wordt vooralsnog niet gebruikt in de SKOS URI's -->
-        <xsl:variable name="construct" select="imf:for-uri($namefrags/@class)"/>
+        <xsl:variable name="class" select="imf:for-uri($namefrags/@class)"/>
         <xsl:variable name="property" select="imf:for-uri($namefrags/@prop)"/>
-        <xsl:variable name="alias-or-name" select="imf:for-uri(($namefrags/@alias,$namefrags/@name)[normalize-space(.)][1])"/>
+        <xsl:variable name="alias-or-name" select="imf:for-uri(if ($use-alias-for-uri) then ($namefrags/@alias,$namefrags/@name)[normalize-space(.)][1] else $namefrags/@name)"/>
+        
+        <xsl:sequence select="dlogger:save(imf:get-display-name($construct),$alias-or-name)"/>
         
         <xsl:variable name="frags" as="element(frag)+">
             <frag key="alias-or-name" value="{$alias-or-name}"/>
@@ -355,7 +360,7 @@
                     <frag key="naam" value="{imf:for-uri(substring-after($namefrags/@pack,'model:'))}"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <frag key="naam" value="{$construct}{if ($property != '') then '/' else ''}{$property}"/>
+                    <frag key="naam" value="{$class}{if ($property != '') then '/' else ''}{$property}"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
