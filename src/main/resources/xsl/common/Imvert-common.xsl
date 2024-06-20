@@ -282,7 +282,7 @@
     <!-- 
         Haal een element op met de vorm
 
-        <frags pack="" class="" prop="" kind="" alias="" tv=""/>
+        <frags name="" pack="" class="" prop="" kind="" alias="" tv=""/>
         
     -->
     <xsl:function name="imf:get-construct-name-frags" as="element(frags)">
@@ -294,40 +294,40 @@
         <xsl:variable name="alias" select="$this/imvert:alias"/>
         <xsl:choose>
             <xsl:when test="$this/self::imvert:packages">
-                <frags pack="model:{$this/imvert:application}"/>
+                <frags name="{$name}" pack="model:{$this/imvert:application}"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:package">
-                <frags pack="{$name}" alias="{$alias}"/>
+                <frags name="{$name}"  pack="{$name}" alias="{$alias}"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:base">
-                <frags pack="{$name}" alias="{$alias}"/>
+                <frags name="{$name}"  pack="{$name}" alias="{$alias}"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:class">
-                <frags pack="{$package-names}" class="{$name}" alias="{$alias}"/>
+                <frags name="{$name}"  pack="{$package-names}" class="{$name}" alias="{$alias}"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:supertype">
-                <frags pack="{$this/imvert:type-package}" class="{$this/imvert:type-name}" alias="{$alias}"/>
+                <frags name="{$name}"  pack="{$this/imvert:type-package}" class="{$this/imvert:type-name}" alias="{$alias}"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:attribute">
-                <frags pack="{$package-names}" class="{$class-name}" prop="{$name}" kind="attrib" alias="{$alias}"/>
+                <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{$name}" kind="attrib" alias="{$alias}"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:association[not(imvert:name)]">
                 <xsl:variable name="type" select="concat('[',$this/imvert:type-name,']')"/>
-                <frags pack="{$package-names}" class="{$class-name}" prop="{$type}" kind="{imf:get-aggregation($this)}" alias="{$alias}"/>
+                <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{$type}" kind="{imf:get-aggregation($this)}" alias="{$alias}"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:association">
-                <frags pack="{$package-names}" class="{$class-name}" prop="{$name}" kind="{imf:get-aggregation($this)}" alias="{$alias}"/>
+                <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{$name}" kind="{imf:get-aggregation($this)}" alias="{$alias}"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:source | $this/self::imvert:target">
                 <xsl:variable name="assoc" select="$this/.."/>
                 <xsl:variable name="type" select="concat('[', imf:get-original-names($assoc), ':', $this/imvert:role/@original,']')"/>
-                <frags pack="{$package-names}" class="{$class-name}" prop="{$type}" alias="{$alias}" tv=""/>
+                <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{$type}" alias="{$alias}" tv=""/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:tagged-value">
-                <frags pack="{$package-names}" class="{$class-name}" prop="{$name}" alias="{$alias}" tv="{$this/imvert:name}"/>
+                <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{$name}" alias="{$alias}" tv="{$this/imvert:name}"/>
             </xsl:when>
             <xsl:otherwise>
-                <frags pack="{$package-names}" class="{$class-name}" prop="{local-name($this)}" alias="{$alias}"/>
+                <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{local-name($this)}" alias="{$alias}"/>
             </xsl:otherwise>
         </xsl:choose>
                 
@@ -1130,7 +1130,7 @@
     
     <xsl:function name="imf:get-original-names">
         <xsl:param name="elements" as="element()*"/>
-        <xsl:sequence select="for $this in $elements return ($this/imvert:name/@original,$this/imvert:found-name)[1]"/>
+        <xsl:sequence select="for $this in $elements return ($this/imvert:name/@original,$this/imvert:found-name,$this/imvert:application)[1]"/>
     </xsl:function>
     
     <!-- 

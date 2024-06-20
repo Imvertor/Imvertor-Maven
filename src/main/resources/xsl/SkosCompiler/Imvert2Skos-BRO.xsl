@@ -343,9 +343,12 @@
         <xsl:variable name="domain" select="imf:for-uri($namefrags/@pack)"/><!-- wordt vooralsnog niet gebruikt in de SKOS URI's -->
         <xsl:variable name="construct" select="imf:for-uri($namefrags/@class)"/>
         <xsl:variable name="property" select="imf:for-uri($namefrags/@prop)"/>
+        <xsl:variable name="alias-or-name" select="imf:for-uri(($namefrags/@alias,$namefrags/@name)[normalize-space(.)][1])"/>
         
         <xsl:variable name="frags" as="element(frag)+">
-            <frag key="afkorting" value="{lower-case($abbrev)}"/>
+            <frag key="alias-or-name" value="{$alias-or-name}"/>
+            <frag key="alias" value="{($namefrags/@alias,'NOALIAS')[1]}"/>
+            <frag key="afkorting" value="{(lower-case($abbrev),'NOABBREV')[1]}"/>
             <frag key="type" value="{$type}"/>
             <xsl:choose>
                 <xsl:when test="$type = 'conceptscheme'">
