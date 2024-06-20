@@ -1178,6 +1178,9 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-NAAM'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-name($this,true()))"/>
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-ALIAS'">
+                    <xsl:sequence select="imf:create-part-2(.,$this/imvert:alias)"/>
+                </xsl:when>
                 <!-- 
                     remainder is specified on target or relation, as may be the case 
                 -->

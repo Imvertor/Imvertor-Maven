@@ -126,6 +126,30 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-EXTERNEKOPPELING</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-ALIAS" order="015">
+        <name lang="nl">Alias</name>
+        <name lang="en">Alias</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
+            
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-UNION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-EXTERNEKOPPELING</level>
+        </levels>
+    </doc-rule>
     <doc-rule id="CFG-DOC-BEGRIP" order="020">
         <name lang="nl">Begrip</name>
         <name lang="en">Concept</name>
@@ -150,7 +174,6 @@
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-EXTERNEKOPPELING</level>
         </levels>
     </doc-rule>
-    <?insert alias ?>
     <doc-rule id="CFG-DOC-ALTERNATIEVENAAM" order="030">
         <name lang="nl">Alternatieve naam</name>
         <name lang="en">Alternative name</name>

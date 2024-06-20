@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="MIM111.xml"/>
+  
+    <name>MIM12</name>
+    
+    <desc>MIM 1.2 requirements on documentation. 
+        See also <a href="https://docs.geostandaarden.nl/mim/def-st-mim-20240613//">the MIM 1.2 standard</a>.</desc>
+    
+    <!-- TODO bepaal de relatie met MIM111 en plaats afwijkingen hier. -->
+    
+</doc-rules>
