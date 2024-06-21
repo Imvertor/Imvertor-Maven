@@ -536,6 +536,7 @@
           <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0"/>
           <xs:element name="datumOpname" type="xs:string"/>
           <xs:element name="locatie" type="xs:string"/>
+          <xs:element name="doelformaat" type="xs:string" minOccurs="0"/>
           <xs:element name="minimumwaardeInclusief" type="xs:string" minOccurs="0"/>
           <xs:element name="maximumwaardeInclusief" type="xs:string" minOccurs="0"/>
           <xs:element name="minimumwaardeExclusief" type="xs:string" minOccurs="0"/>
