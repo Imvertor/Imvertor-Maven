@@ -97,7 +97,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-HEEFDTIJDLIJNGELDIGHEID">
+        <tv norm="space" id="CFG-TV-HEEFTTIJDLIJNGELDIGHEID">
             <name lang="nl">Heeft tijdlijn geldigheid</name>
             <desc lang="nl">Indicatie of voor dit kenmerk een tijdlijn geldigheid bijgehouden wordt en te bevragen is.</desc>
             <source>MIM-1.2</source>
@@ -114,7 +114,7 @@
                 <value default="yes">Nee</value>
             </declared-values>
         </tv>
-        <tv norm="space" id="CFG-TV-HEEFDTIJDLIJNREGISTRATIE">
+        <tv norm="space" id="CFG-TV-HEEFTTIJDLIJNREGISTRATIE">
             <name lang="nl">Heeft tijdlijn registratie</name>
             <desc lang="nl">Indicatie of voor dit kenmerk een tijdlijn registratie bijgehouden wordt en te bevragen is.</desc>
             <source>MIM-1.2</source>

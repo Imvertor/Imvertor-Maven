@@ -67,8 +67,8 @@
     <xsl:variable name="reveal-composition-name" select="imf:boolean($configuration-docrules-file/reveal-composition-name)"/>
     <xsl:variable name="show-properties" select="($configuration-docrules-file/show-properties,'config')[1]"/>
     
-    <xsl:variable name="has-material-history" select="exists(//imvert:tagged-value[@id = 'CFG-TV-INDICATIONMATERIALHISTORY']/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
-    <xsl:variable name="has-formal-history" select="exists(//imvert:tagged-value[@id = 'CFG-TV-INDICATIONFORMALHISTORY']/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
+    <xsl:variable name="has-material-history" select="exists(//imvert:tagged-value[@id = ('CFG-TV-INDICATIONMATERIALHISTORY','CFG-TV-HEEFTTIJDLIJNGELDIGHEID')]/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
+    <xsl:variable name="has-formal-history" select="exists(//imvert:tagged-value[@id = ('CFG-TV-INDICATIONFORMALHISTORY','CFG-TV-HEEFTTIJDLIJNREGISTRATIE')]/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     
     <xsl:variable name="has-imbroa" select="//imvert:attribute/imvert:stereotype/@id = 'stereotype-name-imbroa'"/>
     
@@ -1240,6 +1240,12 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEFORMELEHISTORIE'">
                     <xsl:sequence select="if ($has-formal-history) then imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-INDICATIONFORMALHISTORY')) else ()"/>
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-HEEFTTIJDLIJNGELDIGHEID'">
+                    <xsl:sequence select="if ($has-material-history) then imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-HEEFTTIJDLIJNGELDIGHEID')) else ()"/>
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-HEEFTTIJDLIJNREGISTRATIE'">
+                    <xsl:sequence select="if ($has-formal-history) then imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-HEEFTTIJDLIJNREGISTRATIE')) else ()"/>
+                </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEINONDERZOEK'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-INDICATIEINONDERZOEK'))"/>
                 </xsl:when>
@@ -1398,6 +1404,32 @@
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-POSITIONELEJUISTHEID'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-POSITIONELEJUISTHEID'))"/>   
+                </xsl:when>
+                
+                <!-- MIM 1.2 additions: -->
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-DOELFORMAAT'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DOELFORMAAT'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-EENHEID'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-EENHEID'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-IDENTIFICATIE'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-IDENTIFICATIE'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-MAXIMUMWAARDEEXCLUSIEF'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MAXVALUEEXCLUSIVE'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-MINIMUMWAARDEEXCLUSIEF'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MINVALUEEXCLUSIVE'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-MIXIN'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MIXIN'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-PROFIELSPECIFICATIE'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-PROFIELSPECIFICATIE'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-WAARDEITEM'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-WAARDEITEM'))"/>   
                 </xsl:when>
                 
                 <xsl:otherwise>
