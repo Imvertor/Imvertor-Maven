@@ -171,8 +171,6 @@
     <xsl:variable name="model-is-role-based" select="imf:get-tagged-value($application-package,'##CFG-TV-IMRELATIONMODELINGTYPE')"/>
     <xsl:variable name="meta-is-role-based" select="if (exists($model-is-role-based)) then ($model-is-role-based = 'Relatierol leidend') else imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/>
     
-    <xsl:variable name="mim-version" select="imf:get-tagged-value($application-package,'##CFG-TV-MIMVERSION')"/>
-    
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
     <!-- 
@@ -184,7 +182,6 @@
   
         <!-- bewaarde de info dat het model rolgebaseerd is of niet -->
         <xsl:sequence select="imf:set-xparm('appinfo/meta-is-role-based',$meta-is-role-based)"/>
-        <xsl:sequence select="imf:set-xparm('appinfo/mim-model-version',$mim-version)"/>
         
         <imvert:report>
             
@@ -230,8 +227,6 @@
         <xsl:sequence select="imf:report-error(., 
             not(normalize-space(imvert:namespace)), 
             'No root namespace defined for application')"/>
-        
-        <xsl:sequence select="imf:check-mimversion(.)"/>
         
         <xsl:next-match/>
     </xsl:template>
@@ -1607,19 +1602,6 @@
         <xsl:sequence select="imf:report-error($this, 
             not(matches($this/imvert:release,$release-pattern)), 
             'Release must be specified and takes the form YYYYMMDD')"/>
-    </xsl:function>
-    
-    <!-- 
-        test of MIM versie overeen komt met verwachte MIM versie 
-        https://github.com/Imvertor/Imvertor-Maven/issues/461 
-    -->
-    <xsl:function name="imf:check-mimversion">
-        <xsl:param name="this"/>
-        <xsl:variable name="compliancy-version" select="imf:get-xparm('system/mim-compliancy-version')"/>
-        <xsl:variable name="model-version" select="imf:get-xparm('appinfo/mim-model-version')"/>
-        <xsl:sequence select="imf:report-warning($this, 
-            not($mim-version and starts-with($model-version,$compliancy-version)), 
-            'MIM version [1] does not match the configured version [2]',($model-version,$compliancy-version))"/>
     </xsl:function>
     
     <!-- return the elements that are considered to be duplicate of this element -->
