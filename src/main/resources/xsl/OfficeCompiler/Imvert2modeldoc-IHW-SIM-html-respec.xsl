@@ -50,7 +50,7 @@
             <body>
                 <section id="abstract">
                     <p>
-                        Samenvatting conceptueel model..... INSERT HERE
+                       Dit is een conceptueel model van IHW.
                     </p>
                 </section>
                 <section id="sotd">
@@ -58,19 +58,7 @@
                         Deze documentatie van het conceptueel model is laatst bijgewerkt op <xsl:value-of select="imf:format-dateTime(current-dateTime())"/>.
                     </p>
                 </section>
-                <section id="prologue" class="informative" level="1">
-                    <h1>Proloog</h1>
-                    <p>
-                        Proloog conceptueel model hier.
-                    </p>
-                </section>
                 <xsl:apply-templates select="chapter"/><!-- calls upon the standard template for chapters such as CAT and REF -->
-                <section id="epilogue" class="informative" level="1">
-                    <h1>Epiloog</h1>
-                    <p>
-                        Epiloog conceptueel model hier.
-                    </p>
-                </section>
             </body>
         </html>
     </xsl:template>
