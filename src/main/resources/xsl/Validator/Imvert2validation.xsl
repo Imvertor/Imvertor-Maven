@@ -243,7 +243,7 @@
     <xsl:template match="imvert:package[imf:member-of(.,$domain-package)]" priority="101">
         <xsl:sequence select="imf:track('Validating package [1]',imvert:name)"/>
         
-        <xsl:variable name="c" select="imf:check-unique-name(imvert:class)"/>
+        <xsl:variable name="c" select="imf:check-unique-name(.//imvert:class)"/>
         <xsl:sequence select="imf:report-error(., 
             $unique-normalized-class-names = 'domain' and exists($c), 
             'Multiple constructs with same name [1] found in domain [2]', 
