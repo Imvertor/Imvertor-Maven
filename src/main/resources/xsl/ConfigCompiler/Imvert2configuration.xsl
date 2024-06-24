@@ -266,8 +266,6 @@
                         </scalar>
                     </xsl:for-each-group>
                 </scalars>
-       
-                <xsl:apply-templates select="($metamodel//composition-direction-source)[last()]" mode="#current"/>
                 
                 <naming>
                     <xsl:for-each-group select="$metamodel//naming/*" group-by="local-name()">
