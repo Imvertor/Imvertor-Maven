@@ -20,7 +20,7 @@
 
   <!-- Relatiesoort: -->
   <xs:element name="Relatiesoort" type="mim:Relatiesoort">
-    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringtype == "Relatierol leidend" -->
+    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringstype == "Relatierol leidend" -->
   </xs:element>
   <xs:complexType name="Relatiesoort">
     <xs:sequence>
@@ -64,7 +64,7 @@
 
   <!-- Relatierol: -->
   <xs:complexType name="Relatierol">
-    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringtype == "Relatierol leidend" -->
+    <!-- Relatierol is leidend (alternatief 2); relatiemodelleringstype == "Relatierol leidend" -->
     <xs:sequence>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>

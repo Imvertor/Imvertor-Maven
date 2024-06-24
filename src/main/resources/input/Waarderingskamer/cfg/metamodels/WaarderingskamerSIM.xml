@@ -47,6 +47,7 @@
       If this is reversed (as is discussied in Task #487339), set this parameter to "part", otherwise set to "whole" (default).
    -->  
    <composition-direction-source>part</composition-direction-source>
+   <supertype-must-be-abstract>no</supertype-must-be-abstract>
    
    <naming>
       <package>

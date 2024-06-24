@@ -39,8 +39,8 @@ commentaar toegevoegd. Dat is alleen bij de éérste opkomst van een contructie 
    <mim:informatiemodeltype>Conceptueel</mim:informatiemodeltype>
    <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-informatiedomein-->
    <mim:informatiedomein>detailhandel</mim:informatiedomein>
-   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringtype-->
-   <mim:relatiemodelleringtype>Relatierol leidend</mim:relatiemodelleringtype>
+   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringstype-->
+   <mim:relatiemodelleringstype>Relatierol leidend</mim:relatiemodelleringstype>
    <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-mim-versie-->
    <mim:MIMVersie>1.1.1</mim:MIMVersie>
    <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-mim-taal-->

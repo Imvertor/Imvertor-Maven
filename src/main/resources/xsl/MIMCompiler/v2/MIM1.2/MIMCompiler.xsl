@@ -85,7 +85,7 @@
   <xsl:variable name="classes" select="$preprocessed-xml//imvert:class" as="element(imvert:class)*"/>
   <xsl:variable name="attributes" select="$preprocessed-xml//imvert:attribute" as="element(imvert:attribute)*"/>
   <xsl:variable name="associations" select="$preprocessed-xml//imvert:association" as="element(imvert:association)*"/>
-  <xsl:variable name="relatiemodelleringtype" select="if ($meta-is-role-based) then 'Relatierol leidend' else 'Relatiesoort leidend'" as="xs:string"/>
+  <xsl:variable name="relatiemodelleringstype" select="if ($meta-is-role-based) then 'Relatierol leidend' else 'Relatiesoort leidend'" as="xs:string"/>
   
   <xsl:variable name="mim12-primitive-datatypes-uc-names" select="for $n in $configuration-metamodel-file/scalars/scalar[imf:is-mim-construct(.)]/name return upper-case($n)" as="xs:string+"/>
   <xsl:variable name="mim12-package-found" select="/imvert:packages/imvert:package/imvert:name = 'MIM12'"/>
@@ -219,7 +219,7 @@
     
     <!-- typeer dit model tbv report -->
     <xsl:sequence select="imf:set-xparm('system/mim-compiler-model-typering',
-      $relatiemodelleringtype
+      $relatiemodelleringstype
     )"/>
   </xsl:template>
   
@@ -952,9 +952,9 @@
     <!-- Via embedding -->
   </xsl:template>
   
-  <xsl:template match="metagegeven[. = 'Relatiemodelleringtype']">
+  <xsl:template match="metagegeven[. = 'Relatiemodelleringstype']">
     <xsl:param name="context" as="element()"/>
-    <mim:relatiemodelleringtype source-id="CFG-TV-PSEUDO-RELATIONMODELLING">{$relatiemodelleringtype}</mim:relatiemodelleringtype>
+    <mim:relatiemodelleringstype source-id="CFG-TV-PSEUDO-RELATIONMODELLING">{$relatiemodelleringstype}</mim:relatiemodelleringstype>
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Specificatie formeel']">

@@ -40,7 +40,7 @@
     
     <xsl:variable name="domain-packages" select="/mim:Informatiemodel/mim:packages/mim:Domein"/>
     
-    <xsl:variable name="relatierol-leidend" select="/mim:Informatiemodel/mim:relatiemodelleringtype = 'Relatierol leidend'"/>
+    <xsl:variable name="relatierol-leidend" select="/mim:Informatiemodel/mim:relatiemodelleringstype = 'Relatierol leidend'"/>
     
     <xsl:variable name="annotation-element-names" select="tokenize($configuration-jsonschemarules-file//parameter[@name = 'json-schema-annotations'],'\s+')" as="xs:string*"/>
     

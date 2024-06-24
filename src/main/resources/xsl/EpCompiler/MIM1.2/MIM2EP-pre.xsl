@@ -32,7 +32,7 @@
     
     <xsl:variable name="mim-document" select="/"/>
     
-    <xsl:variable name="relatierol-leidend" select="/mim:Informatiemodel/mim:relatiemodelleringtype = 'Relatierol leidend'"/>
+    <xsl:variable name="relatierol-leidend" select="/mim:Informatiemodel/mim:relatiemodelleringstype = 'Relatierol leidend'"/>
     
     <xsl:variable name="requirement-levels" select="('bp-basic-encodings','bp-by-reference-encodings','bp-code-list-encodings','bp-additional-requirements-classes')" as="xs:string+"/>
     

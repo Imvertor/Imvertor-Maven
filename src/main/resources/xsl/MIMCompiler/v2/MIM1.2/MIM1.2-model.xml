@@ -160,7 +160,7 @@
          <metagegeven kardinaliteit="0..*">Patroon</metagegeven>
          <metagegeven kardinaliteit="0..*">Populatie</metagegeven>
          <metagegeven kardinaliteit="0..*">Relatie eigenaar</metagegeven>
-         <metagegeven kardinaliteit="0..*">Relatiemodelleringtype</metagegeven>
+         <metagegeven kardinaliteit="0..*">Relatiemodelleringstype</metagegeven>
          <metagegeven kardinaliteit="0..*">Specificatie formeel</metagegeven>
          <metagegeven kardinaliteit="0..*">Specificatie tekst</metagegeven>
          <metagegeven kardinaliteit="0..*">Subtype</metagegeven>
@@ -269,7 +269,7 @@
          <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Informatiemodel type</metagegeven>
          <metagegeven kardinaliteit="1">Informatiedomein</metagegeven>
-         <metagegeven kardinaliteit="1">Relatiemodelleringtype</metagegeven>
+         <metagegeven kardinaliteit="1">Relatiemodelleringstype</metagegeven>
          <metagegeven kardinaliteit="1">MIM versie</metagegeven>
          <metagegeven kardinaliteit="0..1">MIM extensie</metagegeven>
          <metagegeven kardinaliteit="0..1">MIM extensie versie</metagegeven>
@@ -985,7 +985,7 @@
          <modelelement kardinaliteit="0..1">Relatiesoort - Relatiesoort leidend</modelelement>
       </metagegeven>
       <metagegeven>
-         <naam>Relatiemodelleringtype</naam>
+         <naam>Relatiemodelleringstype</naam>
          <modelelement kardinaliteit="1">Informatiemodel</modelelement>
       </metagegeven>
       <metagegeven>

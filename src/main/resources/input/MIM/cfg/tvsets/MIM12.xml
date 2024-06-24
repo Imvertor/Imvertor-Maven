@@ -248,6 +248,22 @@
             </declared-values>
         </tv>
         
+        <!-- zie https://github.com/Imvertor/Imvertor-Maven/issues/377 introductie van tussen-s -->
+        
+        <tv norm="space" id="CFG-TV-IMRELATIONMODELINGTYPE">
+            <name lang="nl">Relatiemodelleringstype</name>
+            <desc lang="nl">MIM 1.2: Aanduiding van een in MIM gedefinieerd alternatief voor een modelleringswijze, en welke keuze hierbij is gemaakt.</desc>
+            <desc lang="en">MIM 1.2: Indication of an alternative to a modeling method defined in MIM, and which choice has been made.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringstype</catalog>
+        </tv>
+        <pseudo-tv norm="space" id="CFG-TV-PSEUDO-RELATIONMODELLING">
+            <name lang="nl">Pseudo relatiemodelleringstype</name>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringstype</catalog>
+        </pseudo-tv>
+        
+        
     </tagged-values>
     
 </tagset>
