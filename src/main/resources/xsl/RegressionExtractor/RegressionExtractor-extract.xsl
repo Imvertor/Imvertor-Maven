@@ -88,7 +88,6 @@
                 process the XSD's 
             -->
             <xsl:when test="starts-with($path, 'work/xsd/')">
-                <xsl:sequence select="dlogger:save('XSD test',$path)"/>
                 <xsl:copy>
                     <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
                     <xsl:apply-templates mode="mode-intermediate-xsd"/>
@@ -97,7 +96,6 @@
            
             <!-- process the EA profile -->
             <xsl:when test="starts-with($path, 'work/ea/')">
-                <xsl:sequence select="dlogger:save('EA test',$path)"/>
                 <xsl:copy>
                     <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
                     <xsl:apply-templates mode="mode-intermediate-eaprofile"/>

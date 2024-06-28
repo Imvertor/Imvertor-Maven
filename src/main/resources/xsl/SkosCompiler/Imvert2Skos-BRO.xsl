@@ -65,8 +65,6 @@
     
     <xsl:template match="/">
        
-        <xsl:sequence select="dlogger:save('use',$use-alias-for-uri)"/>
-        
         <!-- Geef de Skos schema URL door aan de Java json validator -->
         <xsl:variable name="skos-schema-url" select="$configuration-skosrules-file//parameter[@name = 'skos-schema-url']"/> <!-- shacl spec for this type of SKOS -->
         <xsl:sequence select="imf:set-xparm('system/skos-schema-url',$skos-schema-url)"/>
@@ -347,8 +345,6 @@
         <xsl:variable name="class" select="imf:for-uri($namefrags/@class)"/>
         <xsl:variable name="property" select="imf:for-uri($namefrags/@prop)"/>
         <xsl:variable name="alias-or-name" select="imf:for-uri(if ($use-alias-for-uri) then ($namefrags/@alias,$namefrags/@name)[normalize-space(.)][1] else $namefrags/@name)"/>
-        
-        <xsl:sequence select="dlogger:save(imf:get-display-name($construct),$alias-or-name)"/>
         
         <xsl:variable name="frags" as="element(frag)+">
             <frag key="alias-or-name" value="{$alias-or-name}"/>

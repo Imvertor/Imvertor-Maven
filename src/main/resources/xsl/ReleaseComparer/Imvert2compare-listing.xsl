@@ -37,7 +37,6 @@
     <xsl:import href="compare/xsl/Imvert/Imvert2compare-report-horizontal.xsl"/>
     
     <xsl:function name="imf:get-compare-listing">
-        <xsl:sequence select="dlogger:save('$diff-doc','default')"/>
         <report>
             <step-display-name>Release comparison</step-display-name>
             

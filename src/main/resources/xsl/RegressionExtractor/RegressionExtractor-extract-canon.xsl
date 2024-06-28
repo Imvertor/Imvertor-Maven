@@ -66,38 +66,31 @@
     <xsl:template match="/"> <!-- let op! deze extractor wordt aangeroepen op cw:file root elementen! -->
         <xsl:variable name="path" select="replace($file-path, '\\','/')"/>
         
-        <xsl:sequence select="dlogger:save('Path ' || $file-type,$path)"></xsl:sequence>
-        
         <xsl:choose>
             <!--
                 process the XSD's 
             -->
             <xsl:when test="starts-with($path, '/xsd/') and $file-type = 'xsd'">
-                <xsl:sequence select="dlogger:save('XSD test',$path)"/>
                 <xsl:apply-templates mode="mode-intermediate-xsd"/>
             </xsl:when>
             
             <!-- process the EA profile -->
             <xsl:when test="starts-with($path, '/ea/') and $file-type = 'xml'">
-                <xsl:sequence select="dlogger:save('EA test',$path)"/>
                 <xsl:apply-templates mode="mode-intermediate-eaprofile"/>
             </xsl:when>
             
             <!-- process the config profile -->
             <xsl:when test="$path = '/etc/config.xml'">
-                <xsl:sequence select="dlogger:save('Config test',$path)"/>
                 <xsl:apply-templates mode="mode-intermediate-config"/>
             </xsl:when>
             
             <!-- process the metamodel -->
             <xsl:when test="$path = '/etc/metamodel.xml'">
-                <xsl:sequence select="dlogger:save('Metamodel test',$path)"/>
                 <xsl:apply-templates mode="mode-intermediate-metamodel"/>
             </xsl:when>
             
             <!-- process the parms -->
             <xsl:when test="$path = '/etc/parms.xml'">
-                <xsl:sequence select="dlogger:save('Parms test',$path)"/>
                 <xsl:apply-templates mode="mode-intermediate-parms"/>
             </xsl:when>
             

@@ -148,7 +148,6 @@
         Check https://github.com/Geonovum/shapeChangeTest/issues/52 
     -->
     <xsl:template match="ep:construct[imf:get-ep-parameter(.,'use') = 'keuze' and imf:get-ep-parameter(ep:seq/ep:construct,'use') = 'objecttype']">
-        <xsl:sequence select="dlogger:save('keuze',.)"></xsl:sequence>
         <xsl:choose>
             <xsl:when test="$bp-req-by-reference-encodings = '/req/by-reference-link-object'">
                 <!-- breng construct terug tot een sequence van één target object -->
