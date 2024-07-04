@@ -123,6 +123,10 @@
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-ATTRIBUTES',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
+            <xsl:when test="@type = 'SHORT-CONSTRAINTS'">
+                <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-CONSTRAINTS',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
             <xsl:when test="@type = 'SHORT-UNIONELEMENTS'">
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-UNIONELEMENTS',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>

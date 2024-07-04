@@ -219,6 +219,8 @@
             <!-- hier alle relaties; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:associations" mode="short"/>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
+            <!-- hier alle constraints; als ingebedde tabel -->
+            <xsl:apply-templates select="imvert:constraints" mode="short"/>
         </section>
     </xsl:template>
 
@@ -234,6 +236,8 @@
             <!-- hier alle relaties; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:associations" mode="short"/>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
+            <!-- hier alle constraints; als ingebedde tabel -->
+            <xsl:apply-templates select="imvert:constraints" mode="short"/>
         </section>
        
     </xsl:template>
@@ -249,7 +253,11 @@
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
             <!-- hier alle type relaties -->
             <xsl:apply-templates select="." mode="type-relations"/>
+            <!-- hier alle constraints; als ingebedde tabel -->
+            <xsl:apply-templates select="imvert:constraints" mode="short"/>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
+            <!-- hier alle constraints; als ingebedde tabel -->
+            <xsl:apply-templates select="imvert:constraints" mode="short"/>
         </section>
     </xsl:template>
    
@@ -262,6 +270,8 @@
             </content>
             <!-- hier alle attributen; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
+            <!-- hier alle constraints; als ingebedde tabel -->
+            <xsl:apply-templates select="imvert:constraints" mode="short"/>
             <!-- hier alle type relaties -->
             <xsl:apply-templates select="." mode="type-relations"/>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
@@ -322,6 +332,8 @@
             <xsl:apply-templates select="imvert:attributes" mode="gegevensgroeptype"/>
             <!-- hier alle relaties; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:associations" mode="gegevensgroeptype"/>
+            <!-- hier alle constraints; als ingebedde tabel -->
+            <xsl:apply-templates select="imvert:constraints" mode="short"/>
         </section>
     </xsl:template>
 
@@ -427,6 +439,18 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:if>
+    </xsl:template>
+    
+    <xsl:template match="imvert:constraints" mode="short">
+        <section type="SHORT-CONSTRAINTS">
+            <content>
+                <itemtype/>
+                <itemtype type="CONSTRAINT-NAME"/>
+                <itemtype type="CONSTRAINT-NATURAL"/>
+                <!-- and add rows -->
+                <xsl:apply-templates select="imvert:constraint" mode="#current"/>
+            </content>
+        </section>
     </xsl:template>
     
     <xsl:template match="imvert:attribute" mode="short">
@@ -624,6 +648,14 @@
         </part>
     </xsl:template>
     
+    <xsl:template match="imvert:constraint" mode="short">
+        <part>
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
+            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imvert:name))"/> 
+            <xsl:sequence select="imf:create-element('item',imf:get-constraint-frags(imvert:definition)[1])"/>
+        </part>
+    </xsl:template>
+    
     <!-- Stel detailinfo samen voor een objecttype, relatieklasse, enumeratie -->
     <xsl:template match="imvert:class" mode="detail">
         <section name="{imf:get-name(.,true())}" type="{imvert:stereotype[1]}" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
@@ -641,7 +673,7 @@
             <xsl:apply-templates select="($associations except $compositions)" mode="detail">
                 <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
             </xsl:apply-templates>       
-        
+            <xsl:apply-templates select="imvert:constraints/imvert:constraint" mode="detail"/> 
         </section>
     </xsl:template>
     
@@ -976,6 +1008,16 @@
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
         
+    </xsl:template>
+    
+    <xsl:template match="imvert:constraint" mode="detail">
+        <xsl:variable name="construct" select="../.."/>
+        <section name="{imf:get-name(.,false())}" type="DETAIL-CONSTRAINT" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
+            <content>
+                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-CONSTRAINT')"/>
+            </content>
+        </section>       
     </xsl:template>
     
     <xsl:function name="imf:get-formatted-tagged-value" as="item()*">        
@@ -1431,6 +1473,12 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-WAARDEITEM'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-WAARDEITEM'))"/>   
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-CONSTRAINT-NATURAL'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-constraint-frags($this/imvert:definition)[1])"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-CONSTRAINT-OCL'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-constraint-frags($this/imvert:definition)[2])"/>   
+                </xsl:when>
                 
                 <xsl:otherwise>
                     <xsl:sequence select="imf:msg($this,'FATAL','No such document rule: [1]',$doc-rule-id)"/>
@@ -1453,6 +1501,18 @@
                 <xsl:value-of select="concat($min, ' .. ', $max)"/>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-constraint-frags" as="xs:string*">
+        <xsl:param name="constraint" as="xs:string?"/>
+        <xsl:if test="$constraint">
+            <xsl:analyze-string select="$constraint" regex="^\s*(/\*(.*?)\*/)?(.*)$">
+                <xsl:matching-substring>
+                    <xsl:value-of select="regex-group(2)"/>
+                    <xsl:value-of select="regex-group(3)"/>
+                </xsl:matching-substring>
+            </xsl:analyze-string>
+        </xsl:if>
     </xsl:function>
     
     <xsl:function name="imf:authentiek-is-derived">
@@ -1661,7 +1721,7 @@
                 <xsl:value-of select="$name"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="'---'"/>
+                <xsl:value-of select="'-noname-'"/>
                 <xsl:sequence select="imf:msg($this,'ERROR','Cannot determine the name of this construct',())"/>
             </xsl:otherwise>
         </xsl:choose>  
