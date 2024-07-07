@@ -2,7 +2,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
-    version="2.0">
+    version="3.0">
     
     <xsl:output method="text" indent="no"/>
     
@@ -14,12 +14,12 @@
         <xsl:sequence select="imf:line('processingmode_metastage',$metastage)"/>
         
         <xsl:variable name="owner-sheet" select="."/>
-        <xsl:variable name="config-columns" select="row[@nr='1']/cell[. = 'Config']/@nr"/>
-        <xsl:variable name="name-column"  select="row[@nr='1']/cell[. = 'Name']/@nr"/><!-- fixed: the property name -->
-        <xsl:variable name="required-column"  select="row[@nr='1']/cell[. = 'Required']/@nr"/><!-- fixed: TRUE or FALSE -->
-        <xsl:variable name="static-column"  select="row[@nr='1']/cell[. = 'Static']/@nr"/><!-- any value of the property should not be altered. -->
+        <xsl:variable name="config-columns" select="for $c in row[@nr='1']/cell[. = 'Config'] return imf:get-cell-id($c)"/>
+        <xsl:variable name="name-column"  select="imf:get-cell-id(row[@nr='1']/cell[. = 'Name'])"/><!-- fixed: the property name -->
+        <xsl:variable name="required-column"  select="imf:get-cell-id(row[@nr='1']/cell[. = 'Required'])"/><!-- fixed: WAAR/TRUE or ONWAAR/FALSE -->
+        <xsl:variable name="static-column"  select="imf:get-cell-id(row[@nr='1']/cell[. = 'Static'])"/><!-- any value of the property should not be altered. -->
         
-        <xsl:variable name="metastage-column"  select="row[@nr='2']/cell[@nr = $config-columns and . = $metastage]/@nr"/>
+        <xsl:variable name="metastage-column"  select="imf:get-cell-id(row[@nr='2']/cell[imf:get-cell-id(.) = $config-columns and . = $metastage])"/>
         
         <xsl:choose>
             <xsl:when test="empty($metastage-column)">
@@ -28,11 +28,10 @@
         </xsl:choose>
 
         <xsl:for-each select="row[xs:integer(@nr) ge 3]">
-            <xsl:variable name="name" select="cell[@nr = $name-column]"/>
-            <xsl:variable name="required" select="cell[@nr = $required-column] = 'TRUE'"/>
-            <xsl:variable name="static" select="cell[@nr = $static-column]"/>
-            <xsl:variable name="metastage" select="cell[@nr = $metastage-column]"/>
-            
+            <xsl:variable name="name" select="cell[imf:get-cell-id(.) = $name-column]"/>
+            <xsl:variable name="required" select="cell[imf:get-cell-id(.) = $required-column] = '1'"/><!-- WAAR/TRUE = 1 -->
+            <xsl:variable name="static" select="cell[imf:get-cell-id(.) = $static-column]"/>
+            <xsl:variable name="metastage" select="cell[imf:get-cell-id(.) = $metastage-column]"/>
             <xsl:variable name="value" select="($metastage,$static)[1]"/>
             <xsl:variable name="effective-value" select="if ($value) then $value else if ($required) then '(unspecified)' else ()"/>
             <xsl:sequence select="imf:line($name,$effective-value)"/>
@@ -48,6 +47,9 @@
         <xsl:param name="key"/>
         <xsl:param name="value"/>
         <xsl:choose>
+            <xsl:when test="$key[2]">
+                <xsl:message select="$key"/>
+            </xsl:when>
             <xsl:when test="exists($value)">
                 <xsl:value-of select="concat($key,' = ', $value,'&#10;')"/>
             </xsl:when>
@@ -57,4 +59,8 @@
         </xsl:choose>
     </xsl:function>
     
+    <xsl:function name="imf:get-cell-id" as="xs:string?">
+        <xsl:param name="cell" as="element(cell)?"/>
+        <xsl:value-of select="if ($cell) then $cell/@nr || $cell/@ch else ()"/>
+    </xsl:function>
 </xsl:stylesheet>
