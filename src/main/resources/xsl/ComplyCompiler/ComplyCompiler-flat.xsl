@@ -161,8 +161,10 @@
             <xsl:sequence select="imf:create-element('cp:type',$datatype)"/>  
             <xsl:sequence select="imf:create-element('cp:pattern',if (exists(ep:formeel-patroon)) then ep:formeel-patroon else if (ep:fraction-digits) then $digit-pattern else ())"/>
             <xsl:sequence select="imf:create-element('cp:patterndesc',ep:patroon)"/>
-            <xsl:sequence select="imf:create-element('cp:mininclusive',ep:min-value)"/>
-            <xsl:sequence select="imf:create-element('cp:maxinclusive',ep:max-value)"/>
+            <xsl:sequence select="imf:create-element('cp:mininclusive',ep:min-value-inclusive)"/>
+            <xsl:sequence select="imf:create-element('cp:maxinclusive',ep:max-value-inclusive)"/>
+            <xsl:sequence select="imf:create-element('cp:minexclusive',ep:min-value-exclusive)"/>
+            <xsl:sequence select="imf:create-element('cp:maxexclusive',ep:max-value-exclusive)"/>
             <xsl:sequence select="imf:create-element('cp:minlength',ep:min-length)"/>
             <xsl:sequence select="imf:create-element('cp:maxlength',(ep:length,ep:max-length)[1])"/>
            

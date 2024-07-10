@@ -4,16 +4,16 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="../../../MIM/cfg/tvsets/MIM111.xml"/>
+    <xi:include href="../../../MIM/cfg/tvsets/MIM12.xml"/>
     
-    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM111.xml"/>
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM12.xml"/>
     
     <xi:include href="Geonovum.xml"/><!-- toegevoegde tagged values voor alle typen infomodellen -->
     
-    <name>Geonovum MIM111 CM</name>
+    <name>Geonovum MIM12 CM</name>
     
-    <desc lang="en">Tagset for Geonovum extensions in CM</desc>
-    <desc lang="nl">Tags voor Geonovum uitbreidingen in CM</desc>
+    <desc lang="nl">Tags voor Geonovum uitbreidingen op MIM 1.2</desc>
+    <desc lang="en">Tagset for Geonovum extensions on MIM 1.2</desc>
     
     <tagged-values>
         

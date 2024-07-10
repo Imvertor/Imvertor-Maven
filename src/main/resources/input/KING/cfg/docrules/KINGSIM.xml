@@ -383,6 +383,16 @@
         <name lang="en">MinInclusive</name>
         <levels>
             <level show="implied" compile="single" format="math">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-DATAELEMENT</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MINVALUEEXCLUSIVE" order="250">
+        <name lang="nl">Minimumwaarde (excl)</name>
+        <name lang="en">MinExclusive</name>
+        <levels>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-REFERENCEELEMENT</level>
             <level show="implied" compile="single" format="math">DISPLAY-DETAIL-DATAELEMENT</level>
         </levels>
     </doc-rule>
@@ -391,6 +401,16 @@
         <name lang="en">MaxInclusive</name>
         <levels>
             <level show="implied" compile="single" format="math">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-DATAELEMENT</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MAXVALUEEXCLUSIVE" order="260">
+        <name lang="nl">Maximumwaarde</name>
+        <name lang="en">MaxExclusive</name>
+        <levels>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-REFERENCEELEMENT</level>
             <level show="implied" compile="single" format="math">DISPLAY-DETAIL-DATAELEMENT</level>
         </levels>
     </doc-rule>

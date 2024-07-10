@@ -4,22 +4,23 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <!-- EIGENAAR follows MIM 1.1.1 requirements -->
+    <!-- EIGENAAR follows Imvertor and MIM 1.2 requirements -->
     
-    <xi:include href="../../../MIM/cfg/metamodels/MIM111.xml"/>
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM12.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM12.xml"/>
     
-    <name>EIGENAAR CONCEPTUEEL</name>
+    <name>EIGENAAR CONCEPTUEEL MIM1.2</name>
     
     <profiles>
         <profile lang="nl"> 
             <id>MEGNL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM 1.1.1 EIGENAAR NL</desc> 
+            <desc>MIM 1.2 EIGENAAR NL</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
             <id>MEGEN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM 1.1.1 EIGENAAR EN</desc>
+            <desc>MIM 1.2 EIGENAAR EN</desc>
         </profile>
     </profiles>
     

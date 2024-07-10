@@ -4,12 +4,13 @@
 -->
 <visuals type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <xi:include href="../../../MIM/cfg/visuals/MIM11.xml"/>
+    <xi:include href="../../../Imvertor/cfg/visuals/Grouping.xml"/>
+    <xi:include href="../../../MIM/cfg/visuals/MIM111.xml"/>
 
     <!-- 
         these visuals specify the basic visual aspects of the UML profile  
     -->
-    <name>BRO MIM 1.1</name>
+    <name>BRO MIM 1.1.1</name>
 
     <desc lang="en">Visuals for Logius modellen</desc>
     <desc lang="nl">Visuele aspecten van Logius modellen</desc>
@@ -23,7 +24,33 @@
     </categories>
     
     <stereos>
-        <!-- geen aanpassingen -->
+        <stereo id="stereotype-name-relatieklasse">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+        </stereo>
+        <stereo id="stereotype-name-composite">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+        </stereo>
+        <stereo id="stereotype-name-union-datatypes">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+        </stereo>
+        <stereo id="stereotype-name-enumeration">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+        </stereo>
+        <stereo id="stereotype-name-simpletype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+        </stereo>
+        <stereo id="stereotype-name-complextype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+        </stereo>
+        <stereo id="stereotype-name-objecttype">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+        </stereo>
+        <stereo id="stereotype-name-referentielijst">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+        </stereo>
+        <stereo id="stereotype-name-codelist">
+            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+        </stereo>
     </stereos>
  
 </visuals>

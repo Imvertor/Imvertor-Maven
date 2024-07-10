@@ -25,7 +25,7 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
     exclude-result-prefixes="#all"
-    version="2.0">
+    version="3.0">
     
     <!-- 
          Reporting stylesheet for XSD compiler
@@ -124,12 +124,9 @@
                 <xsl:when test="$schemarules = 'XML-RWS'">
                     <status/>
                     <summary>
-                        <xsl:sequence select="imf:report-label('Schemas', '(TODO RWS)')"/>
+                        <xsl:sequence select="imf:report-label('XML Schemas', '(TODO RWS)')"/>
                     </summary>
                 </xsl:when>
-                <xsl:otherwise>
-                    <xsl:sequence select="imf:msg('FATAL','No such schemarules: [1]', $schemarules)"/>
-                </xsl:otherwise>
             </xsl:choose>
        </report>
     </xsl:template>

@@ -18,13 +18,26 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" id="CFG-TV-URI">
-            <name lang="nl">URI</name>
-            <name lang="en">URI</name>
+        <tv norm="space" id="CFG-TV-TEKSTOPMAAK">
+            <name lang="nl">Tekstopmaak</name>
+            <name lang="en">Text format</name>
+            <desc lang="nl">De specificatie van de opmaak van een tekstuele beschrijving in het model.</desc>
+            <desc lang="en">The specification of the layout of a textual description in the model.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-tekstopmaak</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-IDENTIFICATIE">
+            <name lang="nl">Identificatie</name>
+            <name lang="en">Identification</name>
             <desc lang="nl">De identificatie van een modelelement.</desc>
             <desc lang="en">The identification of a model element.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-uri</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-identificatie</catalog>
             <derive>no</derive>
             <stereotypes>
              
@@ -74,7 +87,7 @@
             <desc lang="nl">De standaard basis-URI voor elk element in dit informatiemodel.</desc>
             <desc lang="en">The default base URI for each element in this information model.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-basis-uri</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-basis-uri</catalog>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
@@ -82,17 +95,13 @@
                 <stereo minmax="0..1">stereotype-name-external-package</stereo>
                 <stereo minmax="0..1">stereotype-name-view-package</stereo>
             </stereotypes>
-            <declared-values lang="nl">
-                <value>Ja</value>
-                <value default="yes">Nee</value>
-            </declared-values>
         </tv>
         
-        <tv norm="space" id="CFG-TV-HEEFDTIJDLIJNGELDIGHEID">
+        <tv norm="space" id="CFG-TV-HEEFTTIJDLIJNGELDIGHEID">
             <name lang="nl">Heeft tijdlijn geldigheid</name>
             <desc lang="nl">Indicatie of voor dit kenmerk een tijdlijn geldigheid bijgehouden wordt en te bevragen is.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-heeft-tijdlijn-geldigheid</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-heeft-tijdlijn-geldigheid</catalog>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
@@ -105,11 +114,11 @@
                 <value default="yes">Nee</value>
             </declared-values>
         </tv>
-        <tv norm="space" id="CFG-TV-HEEFDTIJDLIJNREGISTRATIE">
+        <tv norm="space" id="CFG-TV-HEEFTTIJDLIJNREGISTRATIE">
             <name lang="nl">Heeft tijdlijn registratie</name>
             <desc lang="nl">Indicatie of voor dit kenmerk een tijdlijn registratie bijgehouden wordt en te bevragen is.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-heeft-tijdlijn-registratie</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-heeft-tijdlijn-registratie</catalog>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
@@ -127,21 +136,11 @@
             <name lang="nl">Doelformaat</name>
             <desc lang="nl">Het formaat waarin een waardelijst is gepubliceerd.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-heeft-tijdlijn-registratie</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-heeft-tijdlijn-registratie</catalog>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-codelist</stereo>
-            </stereotypes>
-        </tv>
-        
-        <tv norm="space" id="CFG-TV-DATATYPE">
-            <name lang="nl">Datatype</name>
-            <desc lang="nl">Datatype van de waarden in een waardelijst.</desc>
-            <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-datatype</catalog>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
             </stereotypes>
         </tv>
         
@@ -149,10 +148,10 @@
             <name lang="nl">Waarde-item</name>
             <desc lang="nl">Het item (of element) van de lijst dat de waarde representeert.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-waarde-item</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-waarde-item</catalog>
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+                <stereo minmax="0..1">stereotype-name-codelist</stereo>
             </stereotypes>
         </tv>
         
@@ -160,10 +159,10 @@
             <name lang="nl">Profielspecificatie</name>
             <desc lang="nl">Referentie naar het profiel dat de technische implementatie van de codelijst beschrijft.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-profielspecificatie</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-profielspecificatie</catalog>
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+                <stereo minmax="0..1">stereotype-name-codelist</stereo>
             </stereotypes>
         </tv>
         
@@ -171,7 +170,7 @@
             <name lang="nl">Eenheid</name>
             <desc lang="nl">Aanduiding van de eenheid die bij een meting of waarneming hoort. De waarde van Eenheid is een waarde uit de lijst gepubliceerd op https://units-of-measurement.org/.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-eenheid</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-eenheid</catalog>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -185,7 +184,7 @@
             <desc lang="nl">Minimumwaarde inclusief (&gt;=) is de ondergrens van het waardebereik voor een attribuutsoort of data element getypeerd met een primitief datatype, inclusief die waarde zelf. De minimumwaarde moet van hetzelfde primitieve datatype zijn als het datatype van het modelelement waar het voor geldt.</desc>
             <desc lang="en">Minimum value inclusive (&gt;=) is the lower limit of the value range for an attribute type or data element typed with a primitive data type, including that value itself. The minimum value must be of the same primitive data type as the data type of the model element it applies to.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-minimumwaarde-inclusief</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-minimumwaarde-inclusief</catalog>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -198,7 +197,7 @@
             <desc lang="nl">Minimumwaarde exclusief (&gt;=) is de ondergrens van het waardebereik voor een attribuutsoort of data element getypeerd met een primitief datatype, exclusief die waarde zelf. De minimumwaarde moet van hetzelfde primitieve datatype zijn als het datatype van het modelelement waar het voor geldt.</desc>
             <desc lang="en">Minimum value exclusive (&gt;=) is the lower limit of the value range for an attribute type or data element typed with a primitive data type, exclusief that value itself. The minimum value must be of the same primitive data type as the data type of the model element it applies to.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-minimumwaarde-exclusief</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-minimumwaarde-exclusief</catalog>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -211,7 +210,7 @@
             <desc lang="nl">Maximumwaarde inclusief (&gt;=) is de bovengrens van het waardebereik voor een attribuutsoort of data element getypeerd met een primitief datatype, inclusief die waarde zelf. De waarde moet van hetzelfde primitieve datatype zijn als het datatype van het modelelement waar het voor geldt.</desc>
             <desc lang="en">Maximum value inclusive (&gt;=) is the upper limit of the value range for an attribute type or data element typed with a primitive data type, inclusief that value itself. The value must be of the same primitive data type as the data type of the model element it applies to.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-maximumwaarde-inclusief</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-maximumwaarde-inclusief</catalog>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -224,7 +223,7 @@
             <desc lang="nl">Maximumwaarde exclusief (&gt;=) is de bovengrens van het waardebereik voor een attribuutsoort of data element getypeerd met een primitief datatype, exclusief die waarde zelf. De waarde moet van hetzelfde primitieve datatype zijn als het datatype van het modelelement waar het voor geldt.</desc>
             <desc lang="en">Maximum value exclusive (&gt;=) is the upper limit of the value range for an attribute type or data element typed with a primitive data type, exclusief that value itself. The value must be of the same primitive data type as the data type of the model element it applies to.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-maximumwaarde-exclusief</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-maximumwaarde-exclusief</catalog>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -238,7 +237,7 @@
             <desc lang="nl">Metagegeven om bij een generalisatie aan te geven dat bij een implementatie die geen multiple inheritance ondersteunt de eigenschappen van de superklasse worden overgenomen door de subklasse. De superklasse zelf komt niet in de implementatie voor.</desc>
             <desc lang="en">Metadata to indicate in a generalization that in an implementation that does not support multiple inheritance, the properties of the superclass are inherited by the subclass. The superclass itself does not appear in the implementation.</desc>
             <source>MIM-1.2</source>
-            <catalog>https://docs.geostandaarden.nl/mim/cv-st-mim-20231018/#metagegeven-mixin</catalog>
+            <catalog>https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-mixin</catalog>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-generalization</stereo>
@@ -248,6 +247,22 @@
                 <value default="yes">Nee</value>
             </declared-values>
         </tv>
+        
+        <!-- zie https://github.com/Imvertor/Imvertor-Maven/issues/377 introductie van tussen-s -->
+        
+        <tv norm="space" id="CFG-TV-IMRELATIONMODELINGTYPE">
+            <name lang="nl">Relatiemodelleringstype</name>
+            <desc lang="nl">MIM 1.2: Aanduiding van een in MIM gedefinieerd alternatief voor een modelleringswijze, en welke keuze hierbij is gemaakt.</desc>
+            <desc lang="en">MIM 1.2: Indication of an alternative to a modeling method defined in MIM, and which choice has been made.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringstype</catalog>
+        </tv>
+        <pseudo-tv norm="space" id="CFG-TV-PSEUDO-RELATIONMODELLING">
+            <name lang="nl">Pseudo relatiemodelleringstype</name>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringstype</catalog>
+        </pseudo-tv>
+        
         
     </tagged-values>
     

@@ -295,7 +295,7 @@
     
     <item>
         <key>CHAPTER-LISTS</key>
-        <trans lang="nl">Inhoud van waardenlijsten</trans>
+        <trans lang="nl">Inhoud van waardelijsten</trans>
         <trans lang="en">Contents of value lists</trans>
     </item>
     <item>
@@ -415,6 +415,11 @@
         <trans lang="en">AttributeType details</trans>
     </item>
     <item>
+        <key>DETAIL-CONSTRAINT</key>
+        <trans lang="nl">Constraint details</trans>
+        <trans lang="en">Constraint details</trans>
+    </item>
+    <item>
         <key>DETAIL-ASSOCIATION</key>
         <trans lang="nl">Relatiesoort details</trans>
         <trans lang="en">AssociationType</trans>
@@ -486,6 +491,7 @@
         <trans lang="nl">Attribuutsoort</trans>
         <trans lang="en">AttributeType</trans>
     </item>
+    
     <item>
         <key>ASSOCIATION</key>
         <key>RELATIESOORT</key>
@@ -507,6 +513,11 @@
         <key>SHORT-ASSOCIATIONS</key>
         <trans lang="nl">Overzicht relaties</trans>
         <trans lang="en">Overview of associations</trans>
+    </item>
+    <item>
+        <key>SHORT-CONSTRAINTS</key>
+        <trans lang="nl">Overzicht constraints</trans>
+        <trans lang="en">Constraints overview</trans>
     </item>
     <item>
         <key>SHORT-TYPERELATIONS</key>
@@ -591,6 +602,16 @@
         <trans lang="en">Mult</trans>
     </item>
     
+    <item>
+        <key>CONSTRAINT-NAME</key>
+        <trans lang="nl">Naam</trans>
+        <trans lang="en">Name</trans>
+    </item>
+    <item>
+        <key>CONSTRAINT-NATURAL</key>
+        <trans lang="nl">Uitleg</trans>
+        <trans lang="en">Explanation</trans>
+    </item>
     <item>
         <key>ASSOCIATION-NAME</key>
         <trans lang="nl">Relatienaam met kardinaliteiten</trans>

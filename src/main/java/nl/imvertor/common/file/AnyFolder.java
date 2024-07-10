@@ -29,7 +29,7 @@ import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.RegExUtils;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Transformer;
@@ -349,7 +349,7 @@ public class AnyFolder extends AnyFile {
 	}
 	
 	private String cleanXmlPI(String xmlString) {
-		return StringUtils.removePattern(xmlString, XmlFile.xmlPiRegex);
+		return RegExUtils.removePattern(xmlString, XmlFile.xmlPiRegex);
 	}
 	
 	/*

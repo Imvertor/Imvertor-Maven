@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:mim="http://www.geostandaarden.nl/mim/mim-core/1.1"
-    xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0"
-    xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0"
     
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:ep="http://www.imvertor.org/schema/endproduct/v2"
@@ -18,7 +15,7 @@
     expand-text="yes"
     >
     
-    <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../../common/Imvert-common.xsl"/>
 
     <xsl:variable name="bp-req-basic-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-basic-encodings')"/>
     <xsl:variable name="bp-req-by-reference-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-by-reference-encodings')"/>
@@ -148,7 +145,6 @@
         Check https://github.com/Geonovum/shapeChangeTest/issues/52 
     -->
     <xsl:template match="ep:construct[imf:get-ep-parameter(.,'use') = 'keuze' and imf:get-ep-parameter(ep:seq/ep:construct,'use') = 'objecttype']">
-        <xsl:sequence select="dlogger:save('keuze',.)"></xsl:sequence>
         <xsl:choose>
             <xsl:when test="$bp-req-by-reference-encodings = '/req/by-reference-link-object'">
                 <!-- breng construct terug tot een sequence van één target object -->

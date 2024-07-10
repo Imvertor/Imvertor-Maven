@@ -72,12 +72,15 @@
             </head>
             <body>
                 <p>
+                    Model type 
                     <xsl:value-of select="@type"/>
-                    :
+                    : Name 
                     <xsl:value-of select="@name"/>
-                    :
+                    : Version
+                    <xsl:value-of select="@model-version"/>
+                    : Imvertor
                     <xsl:value-of select="@generator-version"/>
-                    :
+                    : At
                     <xsl:value-of select="@generator-date"/>
                 </p>
                 <p>

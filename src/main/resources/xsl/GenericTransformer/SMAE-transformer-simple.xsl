@@ -93,7 +93,7 @@
       </li>
   </xsl:template>
    
-  <!-- waarden uit een waardenlijst -->
+  <!-- waarden uit een waardelijst -->
   <xsl:template match="*[*:code | *:waarde]">
     <li>
       <xsl:sequence select="imf:fetch-label(.)"/>

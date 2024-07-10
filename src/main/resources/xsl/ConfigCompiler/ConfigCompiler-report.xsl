@@ -393,7 +393,6 @@
     
     <xsl:template match="/config/translations" mode="translations">
 
-        <xsl:sequence select="dlogger:save('translations template',.)"></xsl:sequence>
         <div>
             <h2>Translations of included constructs</h2>
             <xsl:variable name="rows" as="element(tr)*">

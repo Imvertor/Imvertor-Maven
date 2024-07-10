@@ -10,7 +10,7 @@
       <cs:Mapping>
          <cs:name>NEN3610_GML322</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM111"/>
+            <cs-ref:MapRef xlink:href="#MIM12"/>
             <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
             <cs-ref:MapRef xlink:href="#GML322"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
@@ -21,14 +21,14 @@
    <cs:components>
       <cs:ConceptualSchemasComponents>
          
-         <xi:include href="../../MIM/xsd/cs-MIM111.xml"/>
+         <xi:include href="../../MIM/xsd/cs-MIM12.xml"/>
          <xi:include href="../../NEN3610/xsd/cs-NEN3610-2022.xml"/>
          <xi:include href="../../OGC/xsd/cs-GML322.xml"/>
          <xi:include href="../../OGC/xsd/cs-GMLSF.xml"/>
          
          <!--maps:-->
          
-         <xi:include href="../../MIM/xsd/cm-MIM111.xml"/>
+         <xi:include href="../../MIM/xsd/cm-MIM12.xml"/>
          <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/>
          <xi:include href="../../OGC/xsd/cm-GML322.xml"/>
          <xi:include href="../../OGC/xsd/cm-GMLSF.xml"/>

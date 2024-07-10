@@ -4,22 +4,23 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <!-- Logius follows MIM 1.1.1 requirements -->
+    <!-- Logius follows Imvertor and MIM 1.1.1 requirements -->
     
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM111.xml"/>
     <xi:include href="../../../MIM/cfg/metamodels/MIM111.xml"/>
     
     <name>Logius CONCEPTUEEL</name>
     
     <profiles>
         <profile lang="nl"> 
-            <id>MEGNL</id>
+            <id>Logius-C-NL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM 1.1.1 Logius NL</desc> 
+            <desc>MIM 1.1.1 Logius Conceptueel NL</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
-            <id>MEGEN</id>
+            <id>Logius-C-EN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM 1.1.1 Logius EN</desc>
+            <desc>MIM 1.1.1 Logius Conceptual EN</desc>
         </profile>
     </profiles>
     

@@ -56,5 +56,9 @@
         </levels>
     </doc-rule>
     
+    <doc-rule id="CFG-DOC-INDICATIEKARDINALITEIT" order="170">
+        <name lang="nl">Kardinaliteit</name>
+        <name lang="en">Multiplicity</name>
+    </doc-rule>
     
 </doc-rules>

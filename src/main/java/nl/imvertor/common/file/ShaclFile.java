@@ -21,16 +21,20 @@
 package nl.imvertor.common.file;
 
 import java.io.File;
+import java.io.InputStreamReader;
 
-import org.apache.jena.atlas.RuntimeIOException;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.riot.RiotException;
-import org.apache.jena.util.FileUtils;
 import org.apache.log4j.Logger;
-import org.topbraid.shacl.validation.ValidationUtil;
-import org.topbraid.spin.util.JenaUtil;
+import org.eclipse.rdf4j.common.exception.ValidationException;
+import org.eclipse.rdf4j.model.vocabulary.RDF4J;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
+import org.eclipse.rdf4j.sail.shacl.ShaclSail;
 
 import nl.imvertor.common.Configurator;
+import nl.imvertor.common.Runner;
 
 /**
  * A representation of a Shacl file.
@@ -44,8 +48,8 @@ public class ShaclFile extends RdfFile {
 	private static final long serialVersionUID = 1L;
 	protected static final Logger logger = Logger.getLogger(ShaclFile.class);
 	
-	private Model dataShape;
-	private Model dataModel;
+	/*private Model dataShape;
+	private Model dataModel;*/
 	
 	public ShaclFile(String pathname) {
 		super(pathname);
@@ -61,67 +65,62 @@ public class ShaclFile extends RdfFile {
 		this.parse(configurator);
 	}
 	
+	/**
+	 * Valideer een turtle file (well-formedness check). 
+	 * 
+	 * @param configurator De Configurator instance
+	**/
 	public void parse(Configurator configurator) throws Exception {
-
-		try {
-			// Load the main data model
-			dataShape = JenaUtil.createMemoryModel();
-			dataShape.read(this.getFileInputStream(), "",
-					FileUtils.langTurtle);
-			
-		} catch (RuntimeIOException ie) {
-			configurator.getRunner().error(logger,"Jena IO error: " + ie.getMessage());
-			
-		} catch (RiotException re) {
-			configurator.getRunner().error(logger,re.getMessage());
-			
-		} catch (Exception e) {
-			throw e;
-		}
-		
+		this.parse(configurator, "");
 	}
-
+	
+	/**
+	 * Valideer een turtle file en lever de fouten op in de vorm van error messages.
+	 * 
+	 * <p>Zie ook https://rdf4j.org/documentation/programming/shacl/
+	 *  
+	 * @param configurator  De Configurator instance
+	 * @param ttlDataFilePath Pad naar het Turtle file
+	 * @throws Exception Een fout die niet betrekking heeft op de validatie van Turtle zelf.
+	 */
 	public void parse(Configurator configurator, String ttlDataFilePath) throws Exception {
 
-		parse(configurator);
-		// if the model is read okay, parse the TTL data file passed.
+		Runner runner = Configurator.getInstance().getRunner();
 		
-		if (configurator.getRunner().succeeds()) {
-			try {
-				
-				dataModel = JenaUtil.createMemoryModel();
-				RdfFile dataFile = new RdfFile(ttlDataFilePath);
-				dataModel.read(dataFile.getFileInputStream(), "",
-						FileUtils.langTurtle);
-		
-				// Perform the validation of everything, using the data model
-				// also as the shapes model - you may have them separated
-				Configurator.getInstance().getRunner().warn(logger,"Cannot yet validate SKOS result");
-				
-				//ValidationUtil.validateModel(dataModel, dataShape, true); // returns Resource report
-		
-				/* This will return a small report on the status of the model. Format:
-				
-					@base          <http://example.org/random> .
-					@prefix ex:    <http://example.org#> .
-					@prefix owl:   <http://www.w3.org/2002/07/owl#> .
-					@prefix uml:   <http://bp4mc2.org/def/uml#> .
-					@prefix sh:    <http://www.w3.org/ns/shacl#> .
-					@prefix kkg:   <http://bp4mc2.org/def/kkg/id/begrip> .
-					@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
-					
-					[ a            sh:ValidationReport ;
-					  sh:conforms  true
-					] .
-				*/
-				//ModelPrinter.get().print(report.getModel());
-				
-			} catch (RiotException re) {
-				configurator.getRunner().error(logger,re.getMessage());
-				
-			} catch (Exception e) {
-				throw e;
-			}
+	    ShaclSail shaclSail = new ShaclSail(new MemoryStore());
+        
+        SailRepository sailRepository = new SailRepository(shaclSail);
+        sailRepository.init();
+
+        try (RepositoryConnection connection = sailRepository.getConnection()) {
+        	connection.begin();
+        	
+        	InputStreamReader shaclRulesReader = getReader();
+        	
+        	connection.add(shaclRulesReader, "", RDFFormat.TURTLE, RDF4J.SHACL_SHAPE_GRAPH);
+            connection.commit();
+
+            if (!ttlDataFilePath.equals("")) {
+            
+	            AnyFile dataFile = new AnyFile(ttlDataFilePath);
+		      
+	            InputStreamReader dataReader = dataFile.getReader();
+	        	
+	            connection.begin();
+	            connection.add(dataReader, "", RDFFormat.TURTLE);
+	            try {
+	                connection.commit();
+	            } catch (RepositoryException exception) {
+	                Throwable cause = exception.getCause();
+	                if (cause instanceof ValidationException) {
+	                	runner.error(logger, "Shacl validator reports RDF error: " + exception.getMessage());
+	                } else 
+	                    throw exception;
+	            }
+            }
+            
+		} catch (Exception e) {
+			runner.warn(logger, "Shacl validator schema file \"" + getName() + "\" invalid, cannot validate RDF. " + e.getMessage(),"rdf-parse","some-wiki-ref");
 		}
 		
 	}

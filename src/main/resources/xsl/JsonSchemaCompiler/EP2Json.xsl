@@ -221,8 +221,8 @@
                             <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Datatype [1]',$n)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
-                            <xsl:sequence select="imf:ep-to-namevaluepair('minValue',ep:min-value)"/>
-                            <xsl:sequence select="imf:ep-to-namevaluepair('maxValue',ep:max-value)"/>
+                            <xsl:sequence select="imf:ep-to-namevaluepair('minValue',ep:min-value-inclusive)"/>
+                            <xsl:sequence select="imf:ep-to-namevaluepair('maxValue',ep:max-value-inclusive)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('minLength',ep:min-length)"/>
                             <!-- <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',ep:max-length)"/> TODO lennart -->
                             <xsl:sequence select="imf:ep-to-namevaluepair('pattern',ep:formal-pattern)"/>

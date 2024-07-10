@@ -37,6 +37,8 @@
             <name lang="#all">Nonempty</name>
             <desc lang="en">Versions must be non-empty.</desc>
             <pattern>.+</pattern>
+            <example>1.0</example>
+            <example>2.2.1</example>
             <fragment group="1" required="yes">
                 <name lang="#all">Version (not empty)</name>
             </fragment>

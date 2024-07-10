@@ -14,8 +14,10 @@
         <version id="CFG-VERSION-MMB">
             <name lang="#all">MajorMinorBugfix</name>
             <format lang="#all">ANY</format>
-            <desc lang="en">Versions must be specified as some informative string, no spaces.</desc>
-            <pattern>\S+</pattern>
+            <desc lang="en">Versions must be specified as some informative string.</desc>
+            <pattern>\S.*</pattern>
+            <example>1.0</example>
+            <example>Juli 2024</example>
             <fragment group="1" required="yes">
                 <name lang="#all">Version</name>
                 <desc lang="en"></desc>

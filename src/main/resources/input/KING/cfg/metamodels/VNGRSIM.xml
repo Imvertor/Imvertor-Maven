@@ -40,12 +40,6 @@
       </profile>
    </profiles>
    
-   <!-- 
-      The normal direction of the composition is from Whole to Part (source to target). 
-      If this is reversed (as is discussied in Task #487339), set this parameter to "part", otherwise set to "whole" (default).
-   -->  
-   <composition-direction-source>part</composition-direction-source>
-   
    <naming>
       <package>
          <format>AsIs</format>

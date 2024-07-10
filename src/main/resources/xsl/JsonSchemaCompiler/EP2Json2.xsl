@@ -426,8 +426,10 @@
                         </xsl:choose>
                         <xsl:sequence select="if ($unit) then imf:ep-to-namevaluepair('unit',$unit) else ()"/><!-- /req/core/iso19103-measure-types -->
                         <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('minimum',ep:min-value)"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('maximum',ep:max-value)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('minimum',ep:min-value-inclusive)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('maximum',ep:max-value-inclusive)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMinimum',ep:min-value-exclusive)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMaximum',ep:max-value-exclusive)"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('minLength',ep:min-length)"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',ep:max-length)"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('pattern',(ep:formal-pattern,imf:map-datapattern-to-ep-type(ep:data-type))[1])"/>

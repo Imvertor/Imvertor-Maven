@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<jsonschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <name>EIGENAAR standard settings for Json schema's</name>
+    
+    <desc lang="nl">Standaard instellingen voor het verwerken van EIGENAAR MIM modellen tot JSON schema's</desc>
+    <desc lang="en">Standard settings for processing EIGENAAR MIM models to JSON schemas</desc>
+    
+    <parameter name="bp-additional-requirements-classes"><!--/req/entitytype-->none</parameter><!-- Clause 7.11 --> 
+    
+    <parameter name="json-schema-annotations"><!-- alias definitie toelichting voorbeeld patroon --></parameter><!-- mim element namen! -->
+    
+    <!-- 
+        MIM requirement
+        
+        Moeten referentielijsten worden opgenomen als een enkele waarde (zo mogelijk op basis van het is-id attribuut) of als een lijst van waarden, één per data element? 
+        
+        options: 
+        single
+        multiple
+    -->
+    <parameter name="mim-referentielijst-waarde">single</parameter>
+    
+</jsonschema-rules>

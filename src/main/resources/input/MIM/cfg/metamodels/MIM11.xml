@@ -102,7 +102,7 @@
             <name lang="nl">Codelijst</name>
             <name lang="en">Codelist</name>
             <desc lang="en">TODO</desc>
-            <desc lang="nl">MIM11: De representatie van een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort, die buiten het model in een externe waardenlijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast, uitgebreid, of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie). De representatie bevat geen kenmerken, voor alle kenmerken wordt verwezen naar de specificatie van de externe waardelijst.</desc>
+            <desc lang="nl">MIM11: De representatie van een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort, die buiten het model in een externe waardelijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast, uitgebreid, of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie). De representatie bevat geen kenmerken, voor alle kenmerken wordt verwezen naar de specificatie van de externe waardelijst.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#codelijst</catalog>
             <construct>datatype</construct>
@@ -258,7 +258,7 @@
             <name lang="nl">Referentielijst</name>
             <name lang="en">Referencelist</name>
             <desc lang="en">TODO</desc>
-            <desc lang="nl">MIM11: De representatie van een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort, die buiten het model in een externe waardenlijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast, uitgebreid, of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie). De representatie bevat een aantal kenmerken, die overgenomen zijn van de specificatie van de externe waardelijst.</desc>
+            <desc lang="nl">MIM11: De representatie van een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort, die buiten het model in een externe waardelijst worden beheerd. De domeinwaarden in de lijst kunnen in de loop van de tijd aangepast, uitgebreid, of verwijderd worden, zonder dat het informatiemodel aangepast wordt (in tegenstelling tot bij een enumeratie). De representatie bevat een aantal kenmerken, die overgenomen zijn van de specificatie van de externe waardelijst.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#referentielijst</catalog>
             <construct>datatype</construct>

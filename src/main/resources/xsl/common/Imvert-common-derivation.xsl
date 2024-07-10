@@ -384,6 +384,7 @@
 		<xsl:variable name="maxl" select="if ($this/imvert:max-length) then ($minl || '..' || $this/imvert:max-length) else ()"/>
 		<xsl:sequence select="for $c in ($maxl, imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-LENGTH'))[1] return normalize-space($c)"/>
 	</xsl:function>
+	
 	<xsl:function name="imf:get-facet-min-value" as="xs:string?">
 		<xsl:param name="this" as="element()"/>
 		<xsl:sequence select="for $c in imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-MINVALUEINCLUSIVE') return normalize-space($c)"/>
@@ -391,5 +392,13 @@
 	<xsl:function name="imf:get-facet-max-value" as="xs:string?">
 		<xsl:param name="this" as="element()"/>
 		<xsl:sequence select="for $c in imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-MAXVALUEINCLUSIVE') return normalize-space($c)"/>
+	</xsl:function>
+	<xsl:function name="imf:get-facet-minex-value" as="xs:string?">
+		<xsl:param name="this" as="element()"/>
+		<xsl:sequence select="for $c in imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-MINVALUEEXCLUSIVE') return normalize-space($c)"/>
+	</xsl:function>
+	<xsl:function name="imf:get-facet-maxex-value" as="xs:string?">
+		<xsl:param name="this" as="element()"/>
+		<xsl:sequence select="for $c in imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-MAXVALUEEXCLUSIVE') return normalize-space($c)"/>
 	</xsl:function>
 </xsl:stylesheet>

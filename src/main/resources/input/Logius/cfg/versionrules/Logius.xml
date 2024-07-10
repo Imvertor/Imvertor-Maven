@@ -15,6 +15,8 @@
             <name lang="#all">MajorMinorBugfix</name>
             <desc lang="en">Versions must be specified as 99.99.99 or 99.99 (major, minor, bugfix).</desc>
             <pattern>(\d+)\.(\d+)(.(\d+))?</pattern>
+            <example>1.0</example>
+            <example>2.2.1</example>
             <fragment group="1" required="yes">
                 <name lang="#all">Major version</name>
                 <desc lang="en"></desc>

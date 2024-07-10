@@ -173,8 +173,6 @@
     
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
-    <xsl:variable name="metamodel-version-stack" select="tokenize(/imvert:packages/imvert:metamodel,';')" as="xs:string*"/>
-
     <!-- 
         Document validation; this validates the root (application-)package.
       
@@ -184,7 +182,7 @@
   
         <!-- bewaarde de info dat het model rolgebaseerd is of niet -->
         <xsl:sequence select="imf:set-xparm('appinfo/meta-is-role-based',$meta-is-role-based)"/>
-   
+        
         <imvert:report>
             
             <xsl:attribute name="release" select="imf:get-config-string('appinfo','release')"/>
@@ -230,8 +228,6 @@
             not(normalize-space(imvert:namespace)), 
             'No root namespace defined for application')"/>
         
-        <xsl:sequence select="imf:check-mimversion(.)"/>
-        
         <xsl:next-match/>
     </xsl:template>
     
@@ -247,7 +243,7 @@
     <xsl:template match="imvert:package[imf:member-of(.,$domain-package)]" priority="101">
         <xsl:sequence select="imf:track('Validating package [1]',imvert:name)"/>
         
-        <xsl:variable name="c" select="imf:check-unique-name(imvert:class)"/>
+        <xsl:variable name="c" select="imf:check-unique-name(.//imvert:class)"/>
         <xsl:sequence select="imf:report-error(., 
             $unique-normalized-class-names = 'domain' and exists($c), 
             'Multiple constructs with same name [1] found in domain [2]', 
@@ -969,7 +965,7 @@
         <xsl:variable name="is-combined-identification" select="imf:get-tagged-value($this,'##CFG-TV=GECOMBINEERDEIDENTIFICATIE')"/>
         <xsl:variable name="target-navigable" select="imvert:target/imvert:navigable"/>
         <xsl:variable name="defining-class-is-group" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')"/>
-        
+        <xsl:variable name="is-keuze-relatie" select="imvert:stereotype/@id = 'stereotype-name-union-association'"/> <!-- #473 -->
         <xsl:variable name="applicable-name" select="if ($meta-is-role-based and not($is-choice)) then imvert:target/imvert:role else imvert:name"/>
             
         <!--validation-->
@@ -983,7 +979,7 @@
                     not($is-collection) and $this/imvert:name and not(imf:test-name-convention($this)), 
                     'Association name does not obey convention')"/>
                 <xsl:sequence select="imf:report-error(., 
-                    (not($is-collection) and not($is-process) and not($defining-class-is-group) and empty($association-class-id) and empty($applicable-name)), 
+                    (not($is-collection) and not($is-process) and not($defining-class-is-group) and empty($association-class-id) and empty($applicable-name) and not($is-keuze-relatie)), 
                     'Association without name')"/>
                 <xsl:sequence select="imf:report-error(., 
                     $superclasses/*/imvert:attribute/imvert:name=$name, 
@@ -1587,7 +1583,7 @@
         
         <xsl:sequence select="imf:report-error($this, 
             not(matches($this/imvert:version,$cfg-version-pattern)), 
-            'Version [1] must take the form [2] consisting of [3]', ($this/imvert:version, imf:string-group($cfg-version/pattern), imf:string-group($cfg-version/fragment/name)))"/>
+            'Version [1] must be a sequence of [3] (examples: [2])', ($this/imvert:version, imf:string-group($cfg-version/example), imf:string-group($cfg-version/fragment/name)))"/>
     </xsl:function>
   
     <xsl:function name="imf:check-phase">
@@ -1606,20 +1602,6 @@
         <xsl:sequence select="imf:report-error($this, 
             not(matches($this/imvert:release,$release-pattern)), 
             'Release must be specified and takes the form YYYYMMDD')"/>
-    </xsl:function>
-    
-    <!-- 
-        test of MIM versie overeen komt met verwachte MIM versie 
-        https://github.com/Imvertor/Imvertor-Maven/issues/461 
-    -->
-    <xsl:function name="imf:check-mimversion">
-        <xsl:param name="this"/>
-        <xsl:variable name="compliancy-version" select="(for $m in $metamodel-version-stack return if (starts-with($m,'MIM ')) then $m else ())[1]"/> <!-- lijst van MIM metamodel names. -->
-        <xsl:variable name="version" select="imf:get-tagged-value($this,'##CFG-TV-MIMVERSION')"/>
-        <xsl:variable name="specified-version" select="'MIM ' || $version"/>
-        <xsl:sequence select="imf:report-warning($this, 
-            not($version and ($compliancy-version = $specified-version)), 
-            'MIM version [1] does not match the configured version [2]',($specified-version,$compliancy-version))"/>
     </xsl:function>
     
     <!-- return the elements that are considered to be duplicate of this element -->

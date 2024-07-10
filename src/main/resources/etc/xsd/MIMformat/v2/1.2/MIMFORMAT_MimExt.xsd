@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0" 
+  targetNamespace="http://www.geostandaarden.nl/mim/mim-ext/1.0" 
+  elementFormDefault="qualified" 
+  attributeFormDefault="unqualified" 
+  version="1.0.0">
+
+  <xs:annotation>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/uri">https://docs.geostandaarden.nl/mim/TODO-schemainfo-1.0.0</xs:appinfo>
+    <xs:appinfo source="http://www.geostandaarden.nl/mim/schema-info/version">1.0.0</xs:appinfo>
+  </xs:annotation>
+  
+  <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+
+  <xs:element name="ConstructieRef" type="mim-ext:RefType"/>
+  <xs:element name="kenmerken">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Kenmerk" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="naam" type="xs:string"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="constructies">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="mim-ext:Constructie" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Constructie">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="constructietype" type="xs:string"/>
+        <xs:any 
+          namespace="http://www.geostandaarden.nl/mim/mim-core/1.2 http://www.geostandaarden.nl/mim/mim-ref/1.0 http://www.geostandaarden.nl/mim/mim-ext/1.0"
+          minOccurs="0"
+          maxOccurs="unbounded"
+          processContents="lax"/>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string" use="optional"/>
+      <xs:attribute name="index" type="xs:integer" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+    
+  <xs:complexType name="RefType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="index" type="xs:integer" use="optional"/>
+        <xs:attribute name="label" type="xs:string" use="optional"/>
+        <xs:attribute ref="xlink:href" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+</xs:schema>

@@ -104,6 +104,7 @@
         
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(., 
+            ($name ne 'GM_SENTINEL') and
             not(../imvert:stereotype = 'ENUM') and
             not(matches($name,'^[A-Za-z0-9\-\.]+$')), 
             'Name [1] has unsupported characters', (.))"/>
@@ -125,10 +126,11 @@
     <xsl:template match="imvert:class[not(imf:boolean(imvert:abstract))]" priority="10">
         <!-- setup -->
         <xsl:variable name="subtypes" select="imf:get-subclasses(.)"/>
+        <xsl:variable name="supertype-must-be-abstract" select="imf:boolean($configuration-metamodel-file//features/feature[@name='supertype-must-be-abstract'])"/>
         
         <!-- validate -->
         <xsl:sequence select="imf:report-error(., 
-            exists($subtypes), 
+            $supertype-must-be-abstract and exists($subtypes), 
             'Supertypes must be abstract', ())"/>
         
         <xsl:next-match/>

@@ -30,8 +30,6 @@
     <name>KINGUGM</name>
     
     <desc lang="en">Metamodel for KING/VNG exchange models: uitwisseling gegevensmodel</desc>
-  
-    <composition-direction-source>part</composition-direction-source>
     
     <model-designation>LOGICAL</model-designation>
     

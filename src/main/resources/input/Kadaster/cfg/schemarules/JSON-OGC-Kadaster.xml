@@ -43,4 +43,13 @@
     -->
     <parameter name="mim-referentielijst-waarde">single</parameter>
     
+    <!-- 
+        Best Practice for OGC - UML to JSON Encoding Rules 
+        Clause 7.8
+        options: 
+        /req/by-reference-uri
+        /req/by-reference-link-object
+    -->
+    <parameter name="bp-by-reference-encodings">/req/by-reference-uri</parameter>
+    
 </jsonschema-rules>

@@ -102,27 +102,22 @@
             <xsl:sequence select="$tree-includes"/>
         </xsl:result-document>
         
-        <xsl:variable name="config-compact">
+        <xsl:variable name="config-compact" as="element(config)">
             <xsl:apply-templates select="$config-raw" mode="finish-config"/>
         </xsl:variable>
         <xsl:sequence select="$config-compact"/>
-       
+        
         <!-- set some global configuration info -->
         <xsl:variable name="proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy','stereotype-name-prd-proxy'), false())"/>
         <xsl:sequence select="imf:set-config-string('system','supports-proxy',if ($proxy = '#unknown') then 'no' else 'yes')"/>
         
-        <xsl:variable name="okeys" select="$config-compact/config//project-owner/parameter[@name = 'message-collapse-keys'][last()]"/>
+        <xsl:variable name="okeys" select="$config-compact/project-owner/parameter[@name = 'message-collapse-keys'][last()]"/>
         <xsl:sequence select="imf:set-config-string('system','message-collapse-keys',$okeys)"/>
         <xsl:variable name="keys" select="imf:merge-parms(imf:get-config-string('cli','messagecollapsekeys'))"/>
         <xsl:sequence select="imf:set-config-string('appinfo','message-collapse-keys',$keys)"/>
         
-        <?x
-        <xsl:result-document href="file:/c:/temp/config.xml">
-            <debug>
-                <xsl:sequence select="imf:document($configuration-metamodel-name,true())"></xsl:sequence>
-            </debug>
-        </xsl:result-document>
-        x?>
+        <xsl:variable name="mim-compliancy-version" select="(for $m in $config-compact/prologue/metamodels/metamodel return if (starts-with($m,'MIM ')) then $m else ())[1]"/> <!-- lijst van MIM metamodel names, de eerste is de gekozen metamodel versie -->
+        <xsl:sequence select="imf:set-config-string('system','mim-compliancy-version',substring-after($mim-compliancy-version,'MIM '))"/>
         
         <!-- signal if not using the latest release or a nightly build (or other feature branch build) of imvertor -->
         <xsl:variable name="crx" select="imf:get-config-string('run','version')"/>
@@ -271,8 +266,6 @@
                         </scalar>
                     </xsl:for-each-group>
                 </scalars>
-       
-                <xsl:apply-templates select="($metamodel//composition-direction-source)[last()]" mode="#current"/>
                 
                 <naming>
                     <xsl:for-each-group select="$metamodel//naming/*" group-by="local-name()">

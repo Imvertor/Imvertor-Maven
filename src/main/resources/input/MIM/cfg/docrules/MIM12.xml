@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="MIM111.xml"/>
+  
+    <name>MIM12</name>
+    
+    <desc>MIM 1.2 requirements on documentation. 
+        See also <a href="https://docs.geostandaarden.nl/mim/def-st-mim-20240613//">the MIM 1.2 standard</a>.</desc>
+    
+    <doc-rule id="CFG-DOC-DOELFORMAAT" order="300">
+        <name lang="nl">Doelformaat</name>
+        <name lang="en">Target format</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+        </levels>
+    </doc-rule>
+
+    <doc-rule id="CFG-DOC-EENHEID" order="145">
+        <name lang="nl">Eenheid</name>
+        <name lang="en">Unit</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCEELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-IDENTIFICATIE" order="015">
+        <name lang="nl">Identificatie</name>
+        <name lang="en">Identification</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ENUMERATION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-UNION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-HEEFTTIJDLIJNGELDIGHEID" order="150">
+        <name lang="nl">Heeft tijdlijn geldigheid</name>
+        <name lang="en">Has timeline validity</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-HEEFTTIJDLIJNREGISTRATIE" order="160">
+        <name lang="nl">Heeft tijdlijn registratie</name>
+        <name lang="en">Has timeline registration</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-MINIMUMWAARDEEXCLUSIEF" order="147">
+        <name lang="nl">Minimum waarde (exclusief)</name>
+        <name lang="en">Minimum value (eclusive)</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCEELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-DATAELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-MAXIMUMWAARDEEXCLUSIEF" order="148">
+        <name lang="nl">Maximum waarde (exclusief)</name>
+        <name lang="en">Maximum value (eclusive)</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCEELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-DATAELEMENT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-MIXIN" order="010">
+        <name lang="nl">Mixin</name>
+        <name lang="en">Mixin</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-GENERALISATION</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-PROFIELSPECIFICATIE" order="310">
+        <name lang="nl">Profielspecificatie</name>
+        <name lang="en">Profile specification</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-WAARDEITEM" order="320">
+        <name lang="nl">Waarde-item</name>
+        <name lang="en">Value-item</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+        </levels>
+    </doc-rule>
+    
+</doc-rules>
