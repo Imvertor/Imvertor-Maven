@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../MIM/cfg/docrules/MIM12.xml"/>
+    
+    <xi:include href="Kadaster-MIMEXT-1.xml"/>
+    
+    <name>Kadaster-MIM-11</name>
+    
+    <desc>Documentatie regels voor Kadaster MIM 1.1</desc>
+    
+</doc-rules>

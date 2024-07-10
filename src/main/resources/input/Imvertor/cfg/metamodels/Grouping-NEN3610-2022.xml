@@ -4,7 +4,7 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="Grouping-MIM111.xml"/>
+    <xi:include href="Grouping-MIM11.xml"/>
     
     <name>Grouping for NEN3610:2022</name>
     

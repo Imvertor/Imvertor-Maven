@@ -52,16 +52,19 @@
   <xsl:param name="generate-all-ids" select="'false'" as="xs:string"/>
   <xsl:param name="add-generated-id" select="'false'" as="xs:string"/>
   
-  <xsl:variable name="mim-version" select="for $v in imf:tagged-values-not-traced(/imvert:packages, 'CFG-TV-MIMVERSION') return if ($v = '1.1') then '1.1.1' else $v" as="xs:string?"/>
-  
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   <xsl:variable name="add-xlink-id" select="true()"/>
   
   <xsl:import href="../../../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
   <xsl:import href="../../../common/Imvert-common-derivation.xsl" use-when="$runs-in-imvertor-context"/>
   
-  <xsl:variable name="mim-model" as="document-node(element(metamodel))">
-    <xsl:sequence select="document('MIM' || $mim-version || '-model.xml')"/>  
+  <xsl:variable name="mim-version" select="imf:tagged-values-not-traced(/imvert:packages, 'CFG-TV-MIMVERSION')" as="xs:string?"/>
+  
+  <xsl:variable name="mim-model" as="document-node(element(metamodel))?">
+    <xsl:try>
+      <xsl:sequence select="document('MIM' || $mim-version || '-model.xml')"/>  
+      <xsl:catch><!-- empty sequence--></xsl:catch>
+    </xsl:try>
   </xsl:variable>
   
   <xsl:variable name="stylesheet-code">MIMCOMPILER</xsl:variable>
@@ -112,6 +115,9 @@
     <xsl:choose>
       <xsl:when test="empty($mim-version)">
         <xsl:sequence select="imf:message(., 'ERROR', 'MIM serialisation requested on a model that is not MIM compliant. No [1] found.', (imf:get-config-name-by-id('CFG-TV-MIMVERSION')))"/>
+      </xsl:when>
+      <xsl:when test="empty($mim-model)">
+        <xsl:sequence select="imf:message(., 'ERROR', 'MIM version [1] not supported for MIM serialisation version [2]', ($mim-version,imf:get-xparm('cli/mimformatversion')))"/>
       </xsl:when>
       <xsl:when test="$native-scalars and $mim11-package-found">
         <xsl:sequence select="imf:message(., 'ERROR', 'Attempt to use native scalars while MIM package is available. Please set [1] to [2].', ('nativescalars','no'))"/>

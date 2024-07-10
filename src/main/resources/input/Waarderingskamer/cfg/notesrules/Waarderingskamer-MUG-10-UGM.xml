@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../KING/cfg/notesrules/KINGBSM.xml"/>
+    
+    <name>Waarderingskamer UGM</name>
+    
+    <desc>WaarderingskamerUGM assumes descriptions to be the default.</desc>
+    
+    <notes-rule lang="nl" default="Omschrijving">
+        <section title="Omschrijving" tagged-value="CFG-TV-DESCRIPTION">
+            <!-- no labels -->
+        </section>
+    </notes-rule>
+    
+</notes-rules>

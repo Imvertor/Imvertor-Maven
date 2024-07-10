@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <name>Geonovum-MIMEXT-1</name>
+    
+    <profiles>
+        <profile lang="nl"> 
+            <id>MCGGNL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM Geonovum Grouping NL</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>MCGGEN</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM Geonovum Grouping EN</desc>
+        </profile>
+    </profiles>
+    
+    <naming>
+        <package>
+            <format>AsIs</format>
+        </package>
+        <class>
+            <format>AsIs</format>
+        </class>
+        <property>
+            <format>AsIs</format>
+        </property>
+        <!-- tv conventions as defined elsewhere -->
+    </naming>
+    
+    <features>
+        <feature name="allow-multiple-supertypes">true</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+        <feature name="unique-normalized-class-names">domain</feature>
+        <feature name="role-based">true</feature>
+    </features>
+    
+</metamodel>

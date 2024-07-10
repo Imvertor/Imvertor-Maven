@@ -55,8 +55,8 @@
                     <xsl:sequence select="imf:report-key-label('Application', 'cli','application')"/>
                     <xsl:sequence select="imf:report-key-label('Owner', 'cli','owner')"/>
                     <xsl:sequence select="imf:report-key-label('Project', 'cli','project')"/>
-                    <xsl:sequence select="imf:report-key-label('Metamodel', 'cli','metamodel')"/>
                     <xsl:sequence select="imf:report-key-label('Language', 'cli','language')"/>
+                    <xsl:sequence select="imf:report-key-label('Metamodel used', 'appinfo','metamodel-name-and-version')"/>
                 </info>
                 
                 <!-- specific -->

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="Logius.xml"/>
+    
+    <name>Logius-MIM-12-CONCEPTUAL</name>
+    
+    <desc>Logius specific requirements on conceptual documentation.</desc>
+    
+     
+</doc-rules>

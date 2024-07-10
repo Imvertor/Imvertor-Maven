@@ -6,7 +6,7 @@
     <!-- 
         Logius follows MIM
     --> 
-    <xi:include href="../../../MIM/cfg/comparerules/MIM111.xml"/>
+    <xi:include href="../../../MIM/cfg/comparerules/MIM11.xml"/>
     
     <name>Logius</name>
     

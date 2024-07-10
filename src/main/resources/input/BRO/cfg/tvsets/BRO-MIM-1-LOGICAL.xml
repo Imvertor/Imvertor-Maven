@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="../../../Geonovum/cfg/tvsets/Geonovum-MIM-1-NEN36102022.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM12.xml"/>
+    
+    <xi:include href="BRO.xml"/>
+    
+    <name>BRO-MIM-1-LOGICAL</name>
+    
+    <desc lang="nl">Gebaseerd op NEN3610:2022</desc>
+    <desc lang="en">Based on NEN3610:2022</desc>
+    
+</tagset>

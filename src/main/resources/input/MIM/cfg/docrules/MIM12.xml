@@ -4,7 +4,7 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="MIM111.xml"/>
+    <xi:include href="MIM11.xml"/>
   
     <name>MIM12</name>
     
@@ -119,6 +119,23 @@
         <name lang="en">Value-item</name>
         <levels>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-CONSTRAINT-NATURAL" order="400">
+        <name lang="nl">Natuurlijke taal</name>
+        <name lang="en">Natural language</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-CONSTRAINT</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-CONSTRAINT</level>
+        </levels>
+    </doc-rule>
+  
+    <doc-rule id="CFG-DOC-CONSTRAINT-OCL" order="410">
+        <name lang="nl">OCL</name>
+        <name lang="en">OCL</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-CONSTRAINT</level>
         </levels>
     </doc-rule>
     

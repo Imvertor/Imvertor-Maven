@@ -3,7 +3,7 @@
  * Copyright (C) 
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-  
+
     <name>Waterschapshuis</name>
     
     <desc>Waterschapshuis specific requirements on documentation.</desc>

@@ -33,20 +33,20 @@
       <cli-parm>
          <name>notesrules</name>
          <arg>name</arg>
-         <tip>Name of the configuration folder for notes rules</tip>
-         <required>true</required>
+         <tip>Name of the configuration folder for notes rules. If omitted, assume metamodel name and version as extracted from the supplied model.</tip>
+         <required>false</required>
       </cli-parm> 
       <cli-parm>
          <name>tvset</name>
          <arg>name</arg>
-         <tip>Name of the configuration folder for tagged value set definitions</tip>
-         <required>true</required>
+         <tip>Name of the configuration folder for tagged value set definitions. If omitted, assume metamodel name and version as extracted from the supplied model.</tip>
+         <required>false</required>
       </cli-parm> 
       <cli-parm>
          <name>metamodel</name>
          <arg>name</arg>
-         <tip>Name of metamodel used in UML model</tip>
-         <required>true</required>
+         <tip>Name of metamodel used in UML model. If omitted, assume metamodel name and version as extracted from the supplied model.</tip>
+         <required>false</required>
       </cli-parm> 
       <cli-parm>
          <name>createeaprofile</name>
@@ -59,7 +59,32 @@
          <arg>yes|no</arg>
          <tip>Should an EA toolbox be generated?</tip>
          <required>false</required>
-      </cli-parm> 
+      </cli-parm>
+      
+      <cli-parm>
+         <name>metamodelname</name>
+         <arg>name</arg>
+         <tip>Name of the metamodel. When this is a MIM model, specify MIM</tip>
+         <required>false</required>
+      </cli-parm>
+      <cli-parm>
+         <name>metamodelversion</name>
+         <arg>version-number</arg>
+         <tip>Version of the metamodel. When this is a MIM model, specify the MIM version</tip>
+         <required>false</required>
+      </cli-parm>
+      <cli-parm>
+         <name>metamodelextension</name>
+         <arg>name</arg>
+         <tip>Name of the extension on the metamodel. When this is a MIM model, specify the MIM extension name</tip>
+         <required>false</required>
+      </cli-parm>
+      <cli-parm>
+         <name>metamodelextensionversion</name>
+         <arg>version-number</arg>
+         <tip>Version of the extension on the metamodel. When this is a MIM model, specify the MIM extension version</tip>
+         <required>false</required>
+      </cli-parm>
       
    </cli-parms>
    
@@ -79,10 +104,9 @@
    <system>
       <configuration-owner-web-folder>${system/inp-folder-path}/cfg/owners/web</configuration-owner-web-folder>
       <configuration-owner-file>${system/inp-folder-path}/cfg/owners/${cli/owner}.xml</configuration-owner-file>
-      <configuration-tvset-file>${system/inp-folder-path}/cfg/tvsets/${cli/tvset}.xml</configuration-tvset-file>
       <configuration-xmlschemarules-file>${system/inp-folder-path}/cfg/schemarules/XML-${cli/createxmlschemavariant}.xml</configuration-xmlschemarules-file>
       <configuration-jsonschemarules-file>${system/inp-folder-path}/cfg/schemarules/JSON-${cli/createjsonschemavariant}.xml</configuration-jsonschemarules-file>
-      <configuration-metamodel-file>${system/inp-folder-path}/cfg/metamodels/${cli/metamodel}.xml</configuration-metamodel-file>
+      
    </system>
    
 </config>

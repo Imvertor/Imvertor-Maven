@@ -11,7 +11,7 @@
          <cs:name>NEN3610_GML322PROFILE_ENV</cs:name>
          <cs:use>
             <cs-ref:MapRef xlink:href="#MIM11"/>
-            <cs-ref:MapRef xlink:href="#MIM111KAD"/><!-- volg 1.1.1 ipv 1.1 -->
+            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
             <cs-ref:MapRef xlink:href="#NEN3610"/>
             <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
@@ -23,8 +23,8 @@
       <cs:Mapping>
          <cs:name>NEN36102022_GML322</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM111"/>
-            <cs-ref:MapRef xlink:href="#MIM111KAD"/>
+            <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
             <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
             <cs-ref:MapRef xlink:href="#GML322"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
@@ -33,18 +33,18 @@
       <cs:Mapping>
          <cs:name>NEN36102022_GML322PROFILE</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM111"/>
-            <cs-ref:MapRef xlink:href="#MIM111KAD"/>
+            <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
             <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
             <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
          </cs:use>
       </cs:Mapping>
       <cs:Mapping>
-         <cs:name>MIM111_GML322_ENV</cs:name>
+         <cs:name>MIM11_GML322_ENV</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM111"/>
-            <cs-ref:MapRef xlink:href="#MIM111KAD"/>
+            <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
             <cs-ref:MapRef xlink:href="#GML322"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
             <cs-ref:MapRef xlink:href="#ENVPROD"/>
@@ -53,10 +53,10 @@
          </cs:use>
       </cs:Mapping>
       <cs:Mapping>
-         <cs:name>MIM111_GML322PROFILE_ENV</cs:name>
+         <cs:name>MIM11_GML322PROFILE_ENV</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM111"/>
-            <cs-ref:MapRef xlink:href="#MIM111KAD"/>
+            <cs-ref:MapRef xlink:href="#MIM11"/>
+            <cs-ref:MapRef xlink:href="#MIM11KAD"/>
             <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
             <cs-ref:MapRef xlink:href="#ENVPROD"/>
@@ -67,7 +67,7 @@
       <cs:Mapping>
          <cs:name>UMLMETA</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#MIM111"/>
+            <cs-ref:MapRef xlink:href="#MIM11"/>
             <cs-ref:MapRef xlink:href="#UMLMETA"/>
          </cs:use>
       </cs:Mapping>
@@ -78,7 +78,6 @@
          <xi:include href="../../OMG/xsd/cs-UMLMETA.xml"/><!-- implements UML model -->
          
          <xi:include href="../../MIM/xsd/cs-MIM11.xml"/>
-         <xi:include href="../../MIM/xsd/cs-MIM111.xml"/><!-- implements ConceptualSchema MIM111 -->
          
          <xi:include href="../../OGC/xsd/cs-GML322.xml"/>
          <xi:include href="../../OGC/xsd/cs-GMLSF.xml"/>
@@ -87,7 +86,7 @@
          <xi:include href="../../Kadaster/xsd/cs-ENVPROC.xml"/>
          <xi:include href="../../Kadaster/xsd/cs-ENVLOG.xml"/>
          <xi:include href="../../Kadaster/xsd/cs-ENVPROD.xml"/>
-         <xi:include href="../../Kadaster/xsd/cs-MIM111KAD.xml"/><!-- implements ConceptualSchema MIM111KAD -->
+         <xi:include href="../../Kadaster/xsd/cs-MIM11KAD.xml"/><!-- implements ConceptualSchema MIM111KAD -->
          
          <xi:include href="../../NEN3610//xsd/cs-NEN3610.xml"/>
          <xi:include href="../../NEN3610//xsd/cs-NEN3610-2022.xml"/>
@@ -99,7 +98,6 @@
          <xi:include href="../../OMG/xsd/cm-UMLMETA.xml"/><!-- implements Map #UMLMETA -->
 
          <xi:include href="../../MIM/xsd/cm-MIM11.xml"/>
-         <xi:include href="../../MIM/xsd/cm-MIM111.xml"/><!-- implements Map #MIM111 -->
          
          <xi:include href="../../OGC/xsd/cm-GML322.xml"/>
          <xi:include href="../../OGC/xsd/cm-GMLSF.xml"/>
@@ -108,7 +106,7 @@
          <xi:include href="../../Kadaster/xsd/cm-ENVPROC.xml"/>
          <xi:include href="../../Kadaster/xsd/cm-ENVLOG.xml"/>
          <xi:include href="../../Kadaster/xsd/cm-ENVPROD.xml"/>
-         <xi:include href="../../Kadaster/xsd/cm-MIM111KAD.xml"/>
+         <xi:include href="../../Kadaster/xsd/cm-MIM11KAD.xml"/>
          
          <xi:include href="../../NEN3610/xsd/cm-NEN3610.xml"/>
          <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/>

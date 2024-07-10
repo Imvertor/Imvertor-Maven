@@ -243,11 +243,26 @@
         </imvert:position>
     </xsl:template>
     
-    <!-- add an @original attibute to maintain original value before canonization -->
+    <!-- 
+        add an @original attibute to maintain original value before canonization 
+        eg.
+        <imvert:phase original="concept">0</imvert:phase>
+    -->
     <xsl:template match="imvert:phase">
         <xsl:copy>
             <xsl:attribute name="original" select="."/>
-            <xsl:value-of select="."/>
+            <xsl:variable name="found-value" select="normalize-space(lower-case(.))"/>
+            <xsl:choose>
+                <xsl:when test="$found-value = '1.0'">1</xsl:when> 
+                <xsl:when test="$found-value = ('concept','klad')">0</xsl:when> 
+                <xsl:when test="$found-value = ('draft','voorstel')">1</xsl:when> 
+                <xsl:when test="$found-value = ('finaldraft','final draft', 'eindvoorstel')">2</xsl:when> 
+                <xsl:when test="$found-value = ('final','gereed')">3</xsl:when>
+                <xsl:when test="$found-value = ('superseded','vervallen','vervangen')">3</xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="imf:compute-phase(.)"/>
+                </xsl:otherwise> 
+            </xsl:choose>
         </xsl:copy>
     </xsl:template>
     

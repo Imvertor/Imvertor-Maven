@@ -41,12 +41,12 @@
     <xsl:import href="Imvert2configuration-speed-analyzer.xsl"/>
     
     <xsl:variable name="configuration-owner-doc" select="imf:document($configuration-owner-name,true())"/>
-    <xsl:variable name="configuration-metamodel-doc" select="imf:document($configuration-metamodel-name,true())"/>
-    <xsl:variable name="configuration-tvset-doc" select="imf:document($configuration-tvset-name,true())"/>
-    <xsl:variable name="configuration-notesrules-doc" select="imf:document($configuration-notesrules-name,true())"/>
-    <xsl:variable name="configuration-docrules-doc" select="imf:document($configuration-docrules-name,true())"/>
+    <xsl:variable name="configuration-metamodel-doc" select="imf:document($configuration-metamodel-name)"/>
+    <xsl:variable name="configuration-tvset-doc" select="imf:document($configuration-tvset-name)"/>
+    <xsl:variable name="configuration-notesrules-doc" select="imf:document($configuration-notesrules-name)"/>
+    <xsl:variable name="configuration-docrules-doc" select="imf:document($configuration-docrules-name)"/>
     <xsl:variable name="configuration-versionrules-doc" select="imf:document($configuration-versionrules-name,true())"/>
-    <xsl:variable name="configuration-visuals-doc" select="imf:document($configuration-visuals-name,true())"/>
+    <xsl:variable name="configuration-visuals-doc" select="imf:document($configuration-visuals-name)"/>
     
     <xsl:variable name="configuration-xmlschemarules-doc" select="imf:document($configuration-xmlschemarules-name)"/><!-- not required -->
     <xsl:variable name="configuration-jsonschemarules-doc" select="imf:document($configuration-jsonschemarules-name)"/><!-- not required -->
@@ -66,14 +66,36 @@
     <xsl:variable name="configuration-shaclrules-file" select="imf:prepare-config($configuration-shaclrules-doc)"/><!-- not required -->
     <xsl:variable name="configuration-skosrules-file" select="imf:prepare-config($configuration-skosrules-doc)"/><!-- not required -->
     
-    <xsl:variable name="metamodel-name" select="imf:get-normalized-name(imf:get-config-string('cli','metamodel'),'system-name')"/>
-    <xsl:variable name="tvset-name" select="imf:get-normalized-name(imf:get-config-string('cli','tvset'),'system-name')"/>
-   
     <xsl:variable name="translations" as="element(trans)*">
         <xsl:sequence select="imf:prepare-translations($configuration-metamodel-doc)"/>
         <xsl:sequence select="imf:prepare-translations($configuration-tvset-doc)"/>
     </xsl:variable>
-    
+
+    <xsl:template match="/" priority="10">
+        <!-- 
+            Meld wanneer een van de vereiste metamodel files niet beschikbaar is 
+        -->
+        <xsl:variable name="r" as="xs:integer*">
+            <xsl:sequence select="if (empty($configuration-metamodel-doc)) then imf:msg('ERROR','Metamodel not available: [1]',imf:get-reportable-config-path($configuration-metamodel-name)) else 1"/>
+            <xsl:sequence select="if (empty($configuration-tvset-doc)) then imf:msg('ERROR','Tvset not available: [1]',imf:get-reportable-config-path($configuration-tvset-name)) else 1"/>
+            <xsl:sequence select="if (empty($configuration-notesrules-doc)) then imf:msg('ERROR','Notesrules not available: [1]',imf:get-reportable-config-path($configuration-notesrules-name)) else 1"/>
+            <xsl:sequence select="if (empty($configuration-docrules-doc)) then imf:msg('ERROR','Docrules not available: [1]',imf:get-reportable-config-path($configuration-docrules-name)) else 1"/>
+            <xsl:sequence select="if (empty($configuration-visuals-doc)) then imf:msg('ERROR','Visuals not available: [1]',imf:get-reportable-config-path($configuration-visuals-name)) else 1"/>
+        </xsl:variable>
+       
+        <xsl:choose>
+            <xsl:when test="count($r) = 5">
+                <xsl:next-match/>
+            </xsl:when>
+            <xsl:otherwise>
+                <config>
+                    <xsl:comment>Error reading metamodel files</xsl:comment>
+                    <xsl:sequence select="$configuration-owner-file"/>
+                </config>
+            </xsl:otherwise>
+        </xsl:choose>            
+    </xsl:template>
+ 
     <xsl:template match="/">
         <!--<xsl:apply-templates select="/" mode="speed-analyzer"/>-->
        
