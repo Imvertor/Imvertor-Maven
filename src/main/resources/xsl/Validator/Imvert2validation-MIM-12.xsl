@@ -12,20 +12,13 @@
     
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy" 
     >
-
+    
     <!-- 
         Validation of MIM 1.2 models. 
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
-    
-    <xsl:template match="/imvert:packages">
-        <imvert:report>
-            <!-- process the application package -->
-            <xsl:apply-templates select="imvert:package[imf:boolean(imvert:is-root-package)]"/>
-        </imvert:report>
-    </xsl:template>
     
     <xsl:template match="imvert:class">
         <!--setup-->
@@ -34,7 +27,7 @@
         <xsl:variable name="non-mixin-supertypes" select="$supertypes[not(imvert:stereotype/@id = 'stereotype-name-static-generalization')]"/>
         
         <!--validation-->
-       
+        
         <xsl:sequence select="imf:report-error(., 
             $non-mixin-supertypes[2], 
             'Several supertypes [1] are referenced as non-mixin supertype', imf:string-group(for $s in $non-mixin-supertypes/imvert:type-name/@original return $s))"/>
@@ -44,21 +37,5 @@
     <xsl:template match="node()"> 
         <xsl:apply-templates/>
     </xsl:template> 
-    
-    <?x
-    <!-- 
-        test of MIM versie overeen komt met verwachte MIM versie 
-        https://github.com/Imvertor/Imvertor-Maven/issues/461 
-    -->
-    <xsl:function name="imf:check-mimversion">
-        <xsl:param name="this"/>
-        <xsl:variable name="mim-version" select="imf:get-tagged-value($application-package,'##CFG-TV-MIMVERSION')"/>
-        <xsl:variable name="compliancy-version" select="imf:get-xparm('system/mim-compliancy-version')"/>
-        <xsl:variable name="model-version" select="imf:get-xparm('appinfo/mim-model-version')"/>
-        <xsl:sequence select="imf:report-warning($this, 
-            not($mim-version and starts-with($model-version,$compliancy-version)), 
-            'MIM version [1] does not match the configured version [2]',($model-version,$compliancy-version))"/>
-    </xsl:function>
-    x?>
     
 </xsl:stylesheet>
