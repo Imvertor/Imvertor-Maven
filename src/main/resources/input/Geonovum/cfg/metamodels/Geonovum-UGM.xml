@@ -18,7 +18,7 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <xi:include href="../../../KING/cfg/metamodels/KINGUGM.xml"/>
+    <xi:include href="../../../KING/cfg/metamodels/KING-MUG-1-UGM.xml"/>
 
     <name>Geonovum UGM</name>
     

@@ -20,16 +20,16 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
     <!-- KING refines grouping -->
-    <xi:include href="KINGGrouping.xml"/>
+    <xi:include href="KING-Grouping.xml"/>
 
     <!--
         applications using this metamodel may reference cross-meta Tagged values taken from SIM
     -->
-    <xi:include href="KINGUGM-cross-SIM.xml"/>
+    <xi:include href="KING-MUG-1-UGM-cross-SIM.xml"/>
 
-    <xi:include href="KINGBSM-cross-SIM-and-UGM.xml"/>
+    <xi:include href="KING-MUG-1-BSM-cross-SIM-and-UGM.xml"/>
 
-    <name>KINGUGM</name>
+    <name>KING-MUG-1-UGM</name>
 
     <tagged-values>
 

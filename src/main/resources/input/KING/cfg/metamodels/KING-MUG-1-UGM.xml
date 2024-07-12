@@ -27,7 +27,7 @@
     
     <xi:include href="../../../BP/cfg/metamodels/BP-scalar.xml"/>
 
-    <name>KINGUGM</name>
+    <name>KING-MIM-1-UGM</name>
     
     <desc lang="en">Metamodel for KING/VNG exchange models: uitwisseling gegevensmodel</desc>
     

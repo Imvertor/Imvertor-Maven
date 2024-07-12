@@ -20,7 +20,7 @@
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
    <!-- TODO ga uit van UGM maar alleen de pacakge struktuur wijkt enigzins af. Dit anders oplossen?-->
-   <xi:include href="KINGUGM.xml"/>
+   <xi:include href="KING-MUG-1-UGM.xml"/>
    
    <name>KINGBSM</name>
    

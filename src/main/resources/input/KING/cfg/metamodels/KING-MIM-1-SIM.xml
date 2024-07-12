@@ -24,10 +24,10 @@
     -->
    
    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+ 
+   <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM111.xml"/>
    
-   <xi:include href="KINGSIM-scalar.xml"/> 
-
-   <name>KINGSIM</name>
+   <name>KING-MIM-1-SIM</name>
    
    <desc lang="en">Metamodel for KING/VNG information models: semantisch informatiemodel</desc>
    
@@ -66,6 +66,12 @@
    </naming>
    
    <scalars>
+      <scalar id="scalar-mime-content">
+         <!-- redmine #487940 , zie o.a. RGBZ ENKELVOUDIG INFORMATIEOBJECT.inhoud -->
+         <name lang="nl">MIME-Content</name>
+         <name lang="en">MIME-Content</name>
+         <type-map formal-lang="xs">string</type-map>
+      </scalar>
       <scalar id="scalar-day">
          <name lang="nl">DAG</name>
          <name lang="en">DAY</name>
@@ -95,6 +101,12 @@
          <name lang="nl">Gegevensgroeptype_proxy</name>
          <desc lang="en">A proxy is TODO</desc>
          <construct>class</construct>
+      </stereo>
+      <stereo id="stereotype-name-attgrp-proxy" primary="yes">
+         <name lang="nl">Gegevensgroep_proxy</name>
+         <name lang="en">AttributeGroupProxy</name>
+         <desc lang="en">A proxy is TODO</desc>
+         <construct>attribute</construct>
       </stereo>
       
    </stereotypes>

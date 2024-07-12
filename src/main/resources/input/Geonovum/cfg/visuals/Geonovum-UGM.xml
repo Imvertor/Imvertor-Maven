@@ -4,7 +4,7 @@
 -->
 <visuals type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <xi:include href="../../../KING/cfg/visuals/KINGUGM.xml"/>
+    <xi:include href="../../../KING/cfg/visuals/KING-MUG-10-UGM.xml"/>
 
     <!-- 
         these visuals specify the basic visual aspects of the UML profile  

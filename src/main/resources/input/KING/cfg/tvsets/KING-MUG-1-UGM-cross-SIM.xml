@@ -18,7 +18,7 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <name>KINGUGM CROSS SIM</name>
+    <name>KING-MUG-1-UGM-cross-SIM</name>
     <tagged-values>
         <!-- this is the cross-meta specification for SIM tagged values used in UGM systems -->
 

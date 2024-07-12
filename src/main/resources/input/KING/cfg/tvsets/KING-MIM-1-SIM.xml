@@ -23,11 +23,7 @@
     
     <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM11.xml"/>
 
-    <?x
-    <xi:include href="VNGRBSM-cross-SIM-and-UGM.xml"/>
-    x?>
-    
-    <name>VNGRSIM</name>
+    <name>KING-MIM-1-SIM</name>
     <tagged-values>
 
         <tv norm="space" id="CFG-TV-AANDUIDINGSTRIJDIGHEIDNIETIGHEID">

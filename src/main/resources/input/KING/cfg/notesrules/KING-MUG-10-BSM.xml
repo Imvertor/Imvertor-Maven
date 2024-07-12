@@ -4,9 +4,9 @@
 -->
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="KINGUGM.xml"/>
+    <xi:include href="KING-MUG-10-UGM.xml"/>
     
-    <name>KINGBSM</name>
+    <name>KING-MUG-10-BSM</name>
     
     <desc>KINGBSM follows UGM conventions.</desc>
     

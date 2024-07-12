@@ -4,10 +4,10 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="KINGSIM.xml"/>
+    <xi:include href="KING-MIM-11-SIM.xml"/>
     
-    <name>KING UGM</name>
+    <name>KING-MUG-10-BSM</name>
     
-    <desc>KING UGM specific requirements on documentation.</desc>
+    <desc>KING BSM specific requirements on documentation.</desc>
     
 </doc-rules>

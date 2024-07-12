@@ -22,7 +22,7 @@
     <!-- 
         Volgt VNGR
     -->
-    <xi:include href="../../../KING/cfg/metamodels/KINGUGM.xml"/>
+    <xi:include href="../../../KING/cfg/metamodels/KING-MUG-1-UGM.xml"/>
 
     <name>Waarderingskamer UGM</name>
     

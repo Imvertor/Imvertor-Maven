@@ -9,7 +9,7 @@
     -->
     <xi:include href="../../../Imvertor/cfg/tvsets/Grouping.xml"/>
     
-    <name>Grouping for KING</name>
+    <name>KING-Grouping</name>
   
     <desc lang="en">Deviations and additions to generic grouping for KING metamodels.</desc>  
    
