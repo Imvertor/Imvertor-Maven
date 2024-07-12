@@ -443,7 +443,7 @@
             <notes-rules root="true">
                 <xsl:variable name="notes-rules" select="notes-rules"/> 
                 <xsl:apply-templates select="imf:distinct($notes-rules//notes-format)[last()]" mode="#current"/>
-                <xsl:apply-templates select="imf:distinct($notes-rules//notes-rule[@lang=($language,'#all')])" mode="#current"/>
+                <xsl:apply-templates select="imf:distinct(($notes-rules//notes-rule[@lang=($language,'#all')])[last()])" mode="#current"/>
             </notes-rules>
             
             <version-rules root="true">
