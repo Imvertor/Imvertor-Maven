@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <name>KING-MUG-1-BSM-cross-SIM-and-UGM</name>
+    <tagged-values>
+        <!-- this is the cross-meta specification for SIM tagged values used in UGM and BSM systems -->
+        
+        <tv norm="space" id="CFG-TV-RELEASE">
+            <desc lang="nl">Dit bevat de releasedatum in het format yyyymmdd . De releasedatum wordt mede gebruikt om een model, koppelvlak of bericht uniek te identificeren in Imvertor.</desc>
+            <examples>
+                <example lang="nl">20170901</example>
+            </examples>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SUPPLIERPROJECT">
+            <desc lang="nl">Dit bevat de naam van project waarbinnen het suppliermodel waarvan een model hergebruik maakt is opgenomen. Er zijn meerdere waardes mogelijk, gescheiden door een ; (puntkomma) . Volgorde moet corresponderen met die in Supplier-name en Supplier-release. Alleen opnemen wanneer van afleiding sprake is.</desc>
+            <examples>
+                <example lang="nl">RSGB;IMztc</example>
+            </examples>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SUPPLIERNAME">
+            <desc lang="nl">Dit bevat de naam van het suppliermodel waarvan een model hergebruik maakt. Er zijn meerdere waardes mogelijk, gescheiden door een ; (puntkomma) Volgorde moet corresponderen met die in Supplier-project en Supplier-release. Alleen opnemen wanneer van afleiding sprake is.</desc>
+            <examples>
+                <example lang="nl">SIM;SIM</example>
+            </examples>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SUPPLIERRELEASE">
+            <desc lang="nl">Dit bevat de releasedatum in het format yyyymmdd van het suppliermodel  waarvan een model hergebruik maakt. Er zijn meerdere waardes mogelijk, gescheiden door een ; (puntkomma) . Volgorde moet corresponderen met die in supplier-name en supplier-project. Alleen opnemen wanneer van afleiding sprake is.</desc>
+            <examples>
+                <example lang="nl">20170901;20170801</example>
+            </examples>
+        </tv>
+
+    </tagged-values>
+</tagset>

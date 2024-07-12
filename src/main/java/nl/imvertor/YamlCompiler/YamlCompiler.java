@@ -54,8 +54,6 @@ public class YamlCompiler extends Step {
 			generateKING();
 		} else if (jsonschemarules.equals("JSON-KennisnetBSM")) {
 			generateKING();
-		} else if (jsonschemarules.equals("JSON-KNBBSM")) {
-			generateKING();
 		} else if (jsonschemarules.equals("JSON-Waarderingskamer")) {
 			generateKING();
 		} else

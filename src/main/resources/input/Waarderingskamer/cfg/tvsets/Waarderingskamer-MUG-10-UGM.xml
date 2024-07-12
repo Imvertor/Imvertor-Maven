@@ -22,7 +22,7 @@
     <!-- 
         WK volgt VNGR
     -->
-    <xi:include href="../../../KING/cfg/tvsets/KINGUGM.xml"/>
+    <xi:include href="../../../KING/cfg/tvsets/KING-MUG-1-UGM.xml"/>
 
     <name>Waarderingskamer UGM</name>
     

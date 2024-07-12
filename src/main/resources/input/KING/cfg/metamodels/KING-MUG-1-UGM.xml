@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <!-- 
+        this metamodel is subject to standard Grouping conventions 
+    -->
+    
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping.xml"/>
+    
+    <xi:include href="../../../BP/cfg/metamodels/BP-scalar.xml"/>
+
+    <name>KING-MIM-1-UGM</name>
+    
+    <desc lang="en">Metamodel for KING/VNG exchange models: uitwisseling gegevensmodel</desc>
+    
+    <model-designation>LOGICAL</model-designation>
+    
+    <profiles>
+        <profile lang="nl"> 
+            <id>MUGNL</id>
+            <release>1.0</release>
+            <desc>VNGR MUG+Grouping NL</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>MUGEN</id>
+            <release>1.0</release>
+            <desc>VNGR MUG+Grouping EN</desc>
+        </profile>
+    </profiles>
+    
+    <naming>
+        <package>
+            <format>AsIs</format>
+        </package>
+        <class>
+            <format>AsIs</format>
+        </class>
+        <property>
+            <format>AsIs</format>
+        </property>
+        <tv>
+            <format>Upperstart</format> <!-- first character must be upper case. -->
+        </tv>
+        <element>
+            <format>LowerCamel</format>
+        </element>
+    </naming>
+    
+    <features>
+        <feature name="role-based">false</feature>
+        <feature name="allow-multiple-supertypes">false</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+        <feature name="unique-normalized-class-names">model</feature>
+    </features>
+    
+    <scalars>
+        <scalar id="scalar-day">
+            <name lang="nl">DAG</name>
+            <name lang="en">DAY</name>
+            <type-map formal-lang="xs">gDay</type-map>
+        </scalar>
+        <scalar id="scalar-month">
+            <name lang="nl">MAAND</name>
+            <name lang="en">MONTH</name>
+            <type-map formal-lang="xs">gMonth</type-map>
+        </scalar>
+        <scalar id="scalar-string">
+            <name lang="nl">CHARACTERSTRING</name>
+            <name lang="en">CHARACTERSTRING</name>
+            <type-map formal-lang="xs">string</type-map>
+        </scalar>
+    </scalars>
+    
+    <stereotypes xml:id="stereotypes">
+
+        <stereo id="stereotype-name-relatieklasse" primary="yes">
+            <name lang="nl">Relatie-entiteit</name>
+            <name lang="en">Relation entity</name>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+        </stereo>
+       
+        <stereo id="stereotype-name-composite" primary="yes">
+            <name lang="en">Group</name>
+            <name lang="nl">Groep</name>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+        </stereo>
+        <stereo id="stereotype-name-attribute" primary="yes">
+            <name lang="en">Element</name>
+            <name lang="nl">Element</name>
+            <desc lang="nl">TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+        <stereo id="stereotype-name-relatiesoort" primary="yes">
+            <name lang="en">Relation</name>
+            <name lang="nl">Relatie</name>
+            <desc lang="nl">TODO</desc>
+            <construct>association</construct>
+        </stereo>
+        <stereo id="stereotype-name-externekoppeling" primary="yes">
+            <name lang="nl">Externe koppeling</name>
+            <name lang="en">External link</name>
+            <desc lang="nl">TODO</desc>
+            <construct>association</construct>
+        </stereo>
+        <!-- IM-215 -->
+        <stereo id="stereotype-name-data-element" primary="yes">
+            <name lang="nl">Data element</name>
+            <name lang="en">Data element</name>
+            <desc lang="nl">TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+
+        <!-- SIM association-to-composite vervalt-->
+      
+        <stereo id="stereotype-name-union" primary="yes">
+            <name lang="en">Union</name>
+            <name lang="nl">Union</name>
+            <desc lang="nl">TODO</desc>
+            <construct>datatype</construct>
+        </stereo>
+        <stereo id="stereotype-name-union-element" primary="yes">
+            <name lang="en">Union element</name>
+            <name lang="nl">Union element</name>
+            <desc lang="nl">TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+
+        <stereo id="stereotype-name-enumeration" primary="yes">
+            <name lang="en">Enumeration</name>
+            <name lang="nl">Enumeration</name>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+            <construct>datatype</construct>
+            <construct>enumeration</construct>
+        </stereo>
+        <stereo id="stereotype-name-enum" primary="yes">
+            <name lang="en">Enum</name>
+            <name lang="nl">Enum</name>
+            <desc lang="nl">TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+        <stereo id="stereotype-name-simpletype" primary="yes">
+            <name lang="en">Datatype</name>
+            <name lang="nl">Datatype</name>
+            <desc lang="nl">TODO</desc>
+            <construct>datatype</construct>
+        </stereo>
+        <stereo id="stereotype-name-complextype" primary="yes">
+            <name lang="en">Complex datatype</name>
+            <name lang="nl">Complex datatype</name>
+            <desc lang="nl">TODO</desc>
+            <construct>datatype</construct>
+        </stereo>
+        <!-- a imvert:stereotype value -->
+        <stereo id="stereotype-name-objecttype" primary="yes">
+            <name lang="en">Entity type</name>
+            <name lang="nl">Entiteittype</name>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-referentielijst" primary="yes">
+            <name lang="nl">Tabel-entiteit</name>
+            <name lang="en">Table-entity</name>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+            <construct>datatype</construct>
+        </stereo>
+        <stereo id="stereotype-name-referentie-element" primary="yes">
+            <name lang="nl">Tabel Element</name>
+            <name lang="en">Table Element</name>
+            <desc lang="nl">Een eigenschap van een referentielijst.</desc>
+            <construct>attribute</construct>
+        </stereo>
+
+        <!-- BP codelist wordt niet gebruikt -->
+        
+        <stereo id="stereotype-name-composite-id">
+            <name lang="en">Isid</name>
+            <name lang="nl">Isid</name>
+            <desc lang="nl">TODO</desc>
+            <construct>association</construct>
+        </stereo>
+        
+        <!-- Groep compositie is deprecated en komt na het afronden van de invoering MIM te vervallen. -->
+        <stereo id="stereotype-name-association-to-composite" primary="yes">
+            <name lang="en">Group composition</name>
+            <name lang="nl">Groep compositie</name>
+            <desc lang="nl">
+            </desc>
+            <construct>association</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-attributegroup" primary="yes">
+            <name lang="nl">Gegevensgroep</name>
+            <name lang="en">AttributeGroup</name>
+            <desc lang="nl">
+                Een typering van een groep van gelijksoortige gegevens die voor een objecttype van toepassing is 
+                en waarbij het type een Groep is.
+            </desc>
+            <construct>attribute</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-simpletype" primary="yes">
+            <name lang="nl">Primitief datatype</name>
+            <name lang="en">PrimitiveDatatype</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl"></desc>
+            <construct>primitivetype</construct>
+        </stereo>
+        
+    </stereotypes>
+    
+</metamodel>

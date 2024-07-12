@@ -1313,7 +1313,9 @@
                     <xsl:when test="$this/self::imvert:class">
                         <xsl:choose>
                             <xsl:when test="$stereotype=imf:get-config-stereotype-names('class')"/>
+                            <xsl:when test="$stereotype=imf:get-config-stereotype-names('associationclass')"/>
                             <xsl:when test="$stereotype=imf:get-config-stereotype-names('datatype')"/>
+                            <xsl:when test="$stereotype=imf:get-config-stereotype-names('enumeration')"/>
                             <xsl:otherwise>
                                 <xsl:value-of select="$stereotype"/>
                             </xsl:otherwise>

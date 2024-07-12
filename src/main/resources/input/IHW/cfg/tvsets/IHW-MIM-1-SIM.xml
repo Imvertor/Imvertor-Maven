@@ -20,7 +20,7 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- IHW follows VNGR requirements -->
-    <xi:include href="../../../KING/cfg/tvsets/VNGRSIM.xml"/>
+    <xi:include href="../../../KING/cfg/tvsets/KING-MIM-1-SIM.xml"/>
     
     <name>IHW SIM tvsets</name>
     
