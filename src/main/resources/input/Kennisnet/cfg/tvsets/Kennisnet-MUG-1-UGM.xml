@@ -20,7 +20,7 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
    
     <!-- Kennisnet follows VNG -->
-    <xi:include href="../../../KING/cfg/tvsets/KINGUGM.xml"/>
+    <xi:include href="../../../KING/cfg/tvsets/KING-MUG-1-UGM.xml"/>
 
     <name>Kennisnet UGM TV-sets</name>
         

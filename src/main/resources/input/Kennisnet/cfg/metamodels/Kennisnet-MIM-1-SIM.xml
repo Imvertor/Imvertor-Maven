@@ -20,7 +20,7 @@
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
    <!-- Kennisnet follows MIM requirements -->
-   <xi:include href="../../../KING/cfg/metamodels/VNGRSIM.xml"/>
+   <xi:include href="../../../KING/cfg/metamodels/KING-MIM-1-SIM.xml"/>
 
    <name>Kennisnet SIM</name>
    

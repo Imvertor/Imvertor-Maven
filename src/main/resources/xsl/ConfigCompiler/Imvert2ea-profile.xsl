@@ -236,6 +236,7 @@
                 <xsl:when test="$construct = 'attribute'">Attribute</xsl:when>
                 <xsl:when test="$construct = 'package'">Package</xsl:when>
                 <xsl:when test="$construct = 'class'">Class</xsl:when>
+                <xsl:when test="$construct = 'associationclass'">AssociationClass</xsl:when>
                 <xsl:when test="$construct = 'datatype'">DataType</xsl:when>
                 <xsl:when test="$construct = 'association'">Association</xsl:when>
                 <xsl:when test="$construct = 'enumeration'">Enumeration</xsl:when>
@@ -249,16 +250,39 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <Apply type="{$type}"/>
+       
         <xsl:choose>
+            <xsl:when test="$construct = 'package'">
+                <Apply type="{$type}">
+                    <Property name="URI" value=""/>
+                </Apply>
+            </xsl:when>
+            <xsl:when test="$construct = 'generalization'">
+                <Apply type="{$type}">
+                    <Property name="isSubstitutable" value=""/>
+                    <Property name="direction" value="Source -&gt; Destination"/>
+                </Apply>
+            </xsl:when>
+            <xsl:when test="$construct = 'associationclass'">
+                <Apply type="{$type}">
+                    <Property name="direction" value="Source -&gt; Destination"/>
+                </Apply>
+            </xsl:when>
+            <xsl:when test="$construct = 'association'">
+                <Apply type="{$type}">
+                    <Property name="compositionKind" value="none"/>
+                    <Property name="direction" value="Source -&gt; Destination"/>
+                </Apply>
+            </xsl:when>
             <xsl:when test="$construct = 'associationend'">
                 <Apply type="Property"/>
                 <Property name="isReference" value="false"/>
             </xsl:when>
             <xsl:otherwise>
-                <!-- geen aanvullingen -->
+                <Apply type="{$type}"/>
             </xsl:otherwise>
         </xsl:choose>
+        
     </xsl:function>
     
     <xsl:function name="imf:map-measure" as="xs:string">

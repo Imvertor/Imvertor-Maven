@@ -25,7 +25,7 @@
     
     <xi:include href="../../../Geonovum/cfg/tvsets/NEN3610.xml"/>
     
-    <name>RWS</name>
+    <name>DSO</name>
     
 </tagset>
 

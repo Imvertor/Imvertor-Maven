@@ -106,7 +106,6 @@
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#codelijst</catalog>
             <construct>datatype</construct>
-            <construct>enumeration</construct>
             <context>
                 <parent-stereo>stereotype-name-domain-package</parent-stereo>
                 <parent-stereo>stereotype-name-view-package</parent-stereo>
@@ -199,7 +198,6 @@
             <desc lang="nl">MIM11: Een datatype waarvan de mogelijke waarden limitatief zijn opgesomd in een statische lijst.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#enumeratie</catalog>
-            <construct>datatype</construct>
             <construct>enumeration</construct>
             <context>
                 <parent-stereo>stereotype-name-domain-package</parent-stereo>
@@ -304,7 +302,7 @@
             <desc lang="nl">MIM11: Een relatiesoort met eigenschappen.</desc>
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#relatieklasse</catalog>
-            <construct>class</construct>
+            <construct>associationclass</construct>
             <context>
                 <parent-stereo>stereotype-name-domain-package</parent-stereo>
                 <parent-stereo>stereotype-name-view-package</parent-stereo>

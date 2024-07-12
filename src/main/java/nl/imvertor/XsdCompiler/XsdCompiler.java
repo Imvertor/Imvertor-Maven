@@ -74,12 +74,6 @@ public class XsdCompiler extends Step {
 					supplyExternalSchemas();
 					done = true;
 				} 
-		 }  if (owner.equals("KOOP")) {
-		 		if (xmlschemarules.equals("XML-Kadaster")) {
-					generateXsdKadaster();
-					supplyExternalSchemas();
-					done = true;
-				} 
 		 } else if (owner.equals("Geonovum")) {
 				if (xmlschemarules.equals("XML-ISO19136")) {
 					generateXsdISO19136();
@@ -90,8 +84,7 @@ public class XsdCompiler extends Step {
 					supplyExternalSchemas();
 					done = true;
 				} 
-		} 
-		 else if (owner.equals("Kadaster")) {
+		} else if (owner.equals("Kadaster")) {
 			if (xmlschemarules.equals("XML-ISO19136")) {
 				generateXsdISO19136();
 				supplyExternalSchemas();
@@ -140,26 +133,6 @@ public class XsdCompiler extends Step {
 				done = true;
 			} 
 		}
-		/*
-		 else if (owner.equals("RWS")) {
-			if (xmlschemarules.equals("XML-RWS-L")) {
-				generateUgmXsdKING();
-				done = true;
-			} else if (xmlschemarules.equals("XML-RWS-B")) {
-				generateBsmXsdKING();
-				done = true;
-			} if (xmlschemarules.equals("XML-ISO19136")) {
-				generateXsdISO19136();
-				done = true;
-			} 		
-		} else if (owner.equals("KOOP")) {
-			if (xmlschemarules.equals("XML-ISO19136")) {
-				generateXsdISO19136();
-				supplyExternalSchemas();
-				done = true;
-			} 		
-		} 
-		*/
 			
         if (!done) 
         	runner.error(logger,"Schemarules " + xmlschemarules + " not implemented for owner " + owner);

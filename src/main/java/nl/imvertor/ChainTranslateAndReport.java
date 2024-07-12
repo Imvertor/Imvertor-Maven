@@ -120,7 +120,7 @@ public class ChainTranslateAndReport {
 		
 		    configurator.save();
 		   
-		    String model = configurator.getXParm("cli/project") +"/"+ configurator.getXParm("cli/application");
+		    String model = configurator.getXParm("cli/owner") +"/"+ configurator.getXParm("cli/project") +"/"+ configurator.getXParm("cli/application");
 		   
 		    configurator.getRunner().info(logger,"Processing application " + model);
 		    configurator.getRunner().setDebug();
@@ -283,8 +283,9 @@ public class ChainTranslateAndReport {
 			configurator.getRunner().windup();
 			
 			String metamodel = configurator.getXParm("appinfo/metamodel-name-and-version");
-		    
-			configurator.getRunner().info(logger, "Done, job \"" + System.getProperty("job.id") + "\" for model \"" + model + "\" using metamodel \""+ metamodel + "\" " + (succeeds ? "succeeds" : "fails") + " in " + configurator.runtimeForDisplay());
+			String release = model + "/" + configurator.getXParm("appinfo/subpath");
+			    
+			configurator.getRunner().info(logger, "Done, job \"" + System.getProperty("job.id") + "\" release \"" + release + "\" using metamodel \""+ metamodel + "\" " + (succeeds ? "succeeds" : "fails") + " in " + configurator.runtimeForDisplay());
 		    if (configurator.getSuppressWarnings() && configurator.getRunner().hasWarnings())
 		    	configurator.getRunner().info(logger, "** Warnings have been suppressed");
 		    
