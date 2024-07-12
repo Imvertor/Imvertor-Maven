@@ -73,7 +73,7 @@
                 Een relatiesoort waarover gegevens over de relatie tussen twee soorten objecten (in de 	vorm van een derde soort object) worden vastgelegd.
                 Voorbeeld: relatieklasse OUDER-KIND RELATIE, relatieklasse FUNCTIONARIS
             </desc>
-            <construct>class</construct>
+            <construct>associationclass</construct>
         </stereo>
        
         <stereo id="stereotype-name-composite" primary="yes">
