@@ -676,7 +676,7 @@ public class Configurator {
 			// This is a regular run, processing an Imvert file. 
 			
 			// record the metamodel used
-			metamodel = getParm(workConfiguration,"cli","metamodel",false);
+			metamodel = getParm(workConfiguration,"appinfo","metamodel",false);
 			metamodel = (metamodel == null) ? DEFAULT_METAMODEL : metamodel;
 			
 			// schema rules used

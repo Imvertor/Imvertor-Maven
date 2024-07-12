@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../MIM/cfg/notesrules/MIM10-ISO.xml"/>
+    
+    <name>BRO-MIM-11-CONCEPTUAL</name>
+    
+    <notes-format>markdown</notes-format><!-- plain, markdown, mediawiki -->
+    
+    <notes-rule lang="nl">
+        <section title="Regels" tagged-value="CFG-TV-RULES">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
+    
+    <notes-rule lang="nl">
+        <section title="Regels IMBRO/A" tagged-value="CFG-TV-RULES-IMBROA">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
+ 
+    <notes-rule lang="nl">
+        <section title="Domein IMBRO/A" tagged-value="CFG-TV-DOMAIN-IMBROA">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
+    
+    <notes-rule lang="nl">
+        <section title="Reden geen waarde" tagged-value="CFG-TV-EXPLAINNOVALUE">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
+    
+    <notes-rule lang="nl">
+        <section title="Populatie" tagged-value="CFG-TV-POPULATION">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
+    
+    
+</notes-rules>

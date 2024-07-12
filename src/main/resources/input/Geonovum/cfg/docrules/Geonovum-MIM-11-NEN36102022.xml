@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../NEN3610/cfg/docrules/NEN3610-2022.xml"/>
+   
+    <xi:include href="Geonovum-MIMEXT1.xml"/>
+    
+    <name>Geonovum NEN3610</name>
+    
+    <desc>Geonovum specific requirements on documentation for NEN3610:2022 models.</desc>
+    
+    <!-- no specific rules yet -->
+    
+</doc-rules>

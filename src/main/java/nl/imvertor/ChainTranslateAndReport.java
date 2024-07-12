@@ -121,7 +121,7 @@ public class ChainTranslateAndReport {
 		    configurator.save();
 		   
 		    String model = configurator.getXParm("cli/project") +"/"+ configurator.getXParm("cli/application");
-		    
+		   
 		    configurator.getRunner().info(logger,"Processing application " + model);
 		    configurator.getRunner().setDebug();
 		    
@@ -132,15 +132,15 @@ public class ChainTranslateAndReport {
 		    (new RunInitializer()).run();
 		    
 		    try {
-		    	
-		    	// Build the configuration file
-			    succeeds = succeeds && (new ConfigCompiler()).run();
-			 
-			    Transformer.setMayProfile(true);
-			    
+		    	   
 			    // Create the XMI file from EAP or other sources
 			    succeeds = succeeds && (new XmiCompiler()).run();
 				
+			    // Build the configuration file
+			    succeeds = succeeds && (new ConfigCompiler()).run();
+			 
+			    Transformer.setMayProfile(true);
+			 
 			    // Translate XMI to Imvertor format
 			    succeeds = succeeds && (new XmiTranslator()).run();
 				
@@ -281,7 +281,10 @@ public class ChainTranslateAndReport {
 			configurator.windup();
 			
 			configurator.getRunner().windup();
-			configurator.getRunner().info(logger, "Done, job \"" + System.getProperty("job.id") + "\" for model \"" + model + "\" " + (succeeds ? "succeeds" : "fails") + " in " + configurator.runtimeForDisplay());
+			
+			String metamodel = configurator.getXParm("appinfo/metamodel-name-and-version");
+		    
+			configurator.getRunner().info(logger, "Done, job \"" + System.getProperty("job.id") + "\" for model \"" + model + "\" using metamodel \""+ metamodel + "\" " + (succeeds ? "succeeds" : "fails") + " in " + configurator.runtimeForDisplay());
 		    if (configurator.getSuppressWarnings() && configurator.getRunner().hasWarnings())
 		    	configurator.getRunner().info(logger, "** Warnings have been suppressed");
 		    

@@ -7,7 +7,7 @@
     <!-- 
         Geonovum NEN3610:2022 follows MIM111
     --> 
-    <xi:include href="../../../MIM/cfg/tvsets/MIM111.xml"/>
+    <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
     
     <name>Geonovum NEN3610:2022</name>
     <desc lang="en">Tagset for NEN3610:2022 conformant MIM10-ISO extensions</desc>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="../../../MIM/cfg/metamodels/MIM12.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM12.xml"/>
+    
+    <xi:include href="Geonovum-MIMEXT-1.xml"/>
+
+    <name>Geonovum-MIM-1-LOGICAL</name>
+    
+</metamodel>

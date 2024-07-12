@@ -21,7 +21,7 @@
     <!-- 
         Kadaster specific LD rules 
     -->
-    <xi:include href="KadasterMIM11.xml"/>
+    <xi:include href="Kadaster-MIM-11.xml"/>
   
     <name>Kadaster</name>
   

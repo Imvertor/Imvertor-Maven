@@ -6,7 +6,7 @@
     <!-- 
         Waterschapshuis follows MIM
     --> 
-    <xi:include href="../../../MIM/cfg/comparerules/MIM111.xml"/>
+    <xi:include href="../../../MIM/cfg/comparerules/MIM12.xml"/>
     
     <name>Waterschapshuis</name>
     

@@ -4,7 +4,7 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../MIM/cfg/docrules/MIM111.xml"/>
+    <xi:include href="../../../MIM/cfg/docrules/MIM11.xml"/>
     
     <name>NEN3610:2022</name>
     

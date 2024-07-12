@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../MIM/cfg/notesrules/MIM10-ISO.xml"/>
+    
+    <name>Kadaster MIM 1.0</name>
+  
+    <desc>Kadaster allows a few markers to occur in notes field.</desc>
+    
+    <notes-format>markdown</notes-format><!-- plain, markdown, mediawiki -->
+    
+    <notes-rule lang="en" default="Definition">
+        <!-- when nothing marked, assume Definition -->
+        
+        <section title="Definition" tagged-value="CFG-TV-DEFINITION">
+            <label title="URI"/> <!-- Dit moet dan feitelijk de enige waarde zjn. Het verwijst naar het LDT. -->
+        </section>
+        <section title="Description" tagged-value="CFG-TV-DESCRIPTION">
+            <label title="URI"/>
+        </section>
+        <section title="Concept" tagged-value="CFG-TV-CONCEPT" process="lines">
+            <!-- content is URI; may be several lines where each line holds a TV value  -->
+        </section>
+        <section title="Explanation" tagged-value="CFG-TV-EXPLANATION" process="lines"/>
+        
+    </notes-rule>
+    
+    <notes-rule lang="nl" default="Definitie">
+        <section title="Definitie" tagged-value="CFG-TV-DEFINITION">
+            <label title="URI"/>
+        </section>
+        <section title="Toelichting" tagged-value="CFG-TV-DESCRIPTION">
+            <label title="URI"/>
+        </section>
+        <section title="Begrip" tagged-value="CFG-TV-CONCEPT" process="lines">
+            <!-- content is URI; may be several lines where each line holds a TV value  -->
+        </section>
+        <section title="Uitleg" tagged-value="CFG-TV-EXPLANATION" process="lines"/>
+    </notes-rule>
+    
+</notes-rules>

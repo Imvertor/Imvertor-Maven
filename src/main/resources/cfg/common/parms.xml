@@ -184,8 +184,8 @@
       <cli-parm>
          <name>visuals</name>
          <arg>name</arg>
-         <tip>Name of the visuals file</tip>
-         <required>true</required>
+         <tip>Name of the visuals file. If omitted, assume metamodel name and version as extracted from the supplied model.</tip>
+         <required>false</required>
       </cli-parm>
       <cli-parm>
          <name>xlinkversion</name>
@@ -240,16 +240,16 @@
    <system>
       <configuration-owner-web-folder>${system/inp-folder-path}/cfg/owners/web</configuration-owner-web-folder>
       <configuration-owner-file>${system/inp-folder-path}/cfg/owners/${cli/owner}.xml</configuration-owner-file>
-      <configuration-tvset-file>${system/inp-folder-path}/cfg/tvsets/${cli/tvset}.xml</configuration-tvset-file>
+      <configuration-tvset-file>${system/inp-folder-path}/cfg/tvsets/${appinfo/tvset}.xml</configuration-tvset-file>
       <configuration-xmlschemarules-file>${system/inp-folder-path}/cfg/schemarules/XML-${cli/createxmlschemavariant}.xml</configuration-xmlschemarules-file>
       <configuration-jsonschemarules-file>${system/inp-folder-path}/cfg/schemarules/JSON-${cli/createjsonschemavariant}.xml</configuration-jsonschemarules-file>
-      <configuration-notesrules-file>${system/inp-folder-path}/cfg/notesrules/${cli/notesrules}.xml</configuration-notesrules-file>
-      <configuration-docrules-file>${system/inp-folder-path}/cfg/docrules/${cli/docrules}.xml</configuration-docrules-file>
+      <configuration-notesrules-file>${system/inp-folder-path}/cfg/notesrules/${appinfo/notesrules}.xml</configuration-notesrules-file>
+      <configuration-docrules-file>${system/inp-folder-path}/cfg/docrules/${appinfo/docrules}.xml</configuration-docrules-file>
       <configuration-versionrules-file>${system/inp-folder-path}/cfg/versionrules/${cli/versionrules}.xml</configuration-versionrules-file>
-      <configuration-visuals-file>${system/inp-folder-path}/cfg/visuals/${cli/visuals}.xml</configuration-visuals-file>
+      <configuration-visuals-file>${system/inp-folder-path}/cfg/visuals/${appinfo/visuals}.xml</configuration-visuals-file>
       <configuration-shaclrules-file>${system/inp-folder-path}/cfg/shaclrules/${cli/shaclrules}.xml</configuration-shaclrules-file>
       <configuration-skosrules-file>${system/inp-folder-path}/cfg/skosrules/${cli/skosrules}.xml</configuration-skosrules-file>
-      <configuration-metamodel-file>${system/inp-folder-path}/cfg/metamodels/${cli/metamodel}.xml</configuration-metamodel-file>
+      <configuration-metamodel-file>${system/inp-folder-path}/cfg/metamodels/${appinfo/metamodel}.xml</configuration-metamodel-file>
       <configuration-i3n-file>${system/inp-folder-path}/cfg/i3n/translation.xml</configuration-i3n-file>
    </system>
    

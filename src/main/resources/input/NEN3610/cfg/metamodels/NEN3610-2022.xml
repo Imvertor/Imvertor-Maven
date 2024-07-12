@@ -20,12 +20,12 @@
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- Geonovum NEN3610 follows MIM111 requirements -->
-    <xi:include href="../../../MIM/cfg/metamodels/MIM111.xml"/>
+    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
    
     <name>NEN3610:2022</name>
     
     <desc lang="en">
-        Metamodel for NEN3610:2022 extensions to the MIM 1.1.1 metamodel.
+        Metamodel for NEN3610:2022 extensions to the MIM 1.1 metamodel.
         Standard at https://www.geonovum.nl/geo-standaarden/nen-3610-basismodel-voor-informatiemodellen/basismodel-geo-informatie-nen3610.
     </desc>
     

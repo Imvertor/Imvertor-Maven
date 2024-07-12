@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <!-- EIGENAAR follows Imvertor and MIM 1.* requirements -->
+    
+    <xi:include href="../../../MIM/cfg/metamodels/MIM12.xml"/>
+   
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM12.xml"/>
+    
+    <name>EIGENAAR-MIM-1-CONCEPTUAL</name>
+    
+    <profiles>
+        <profile lang="nl"> 
+            <id>MEGNL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1 EIGENAAR NL</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>MEGEN</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1 EIGENAAR EN</desc>
+        </profile>
+    </profiles>
+    
+    <features>
+        <feature name="role-based">false</feature>
+        <feature name="allow-multiple-supertypes">false</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+    </features>
+    
+</metamodel>

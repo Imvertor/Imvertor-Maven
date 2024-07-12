@@ -214,7 +214,9 @@ public class XmiCompiler extends Step {
 				succeeds = succeeds ? transformer.transformStep("system/xmi-export-file-path", "system/xmi-file-path",  "properties/XMI_COMPACT_XSLPATH") : false ;
 			}
 		}
-					
+		
+		runner.info(logger,"Metamodel name is " + configurator.getXParm("appinfo/metamodel-name-and-version"));
+		
 		configurator.setStepDone(STEP_NAME);
 		
 		// save any changes to the work configuration for report and future steps

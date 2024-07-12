@@ -68,7 +68,7 @@ public class ConfigCompiler  extends Step {
 		Boolean p = configurator.isTrue(configurator.getXParm("cli/createeaprofile",false));
 		Boolean q = configurator.isTrue(configurator.getXParm("cli/createeatoolbox",false));
 		
-		if (p | q) {
+		if (succeeds && (p | q)) {
 			AnyFolder eaFolder = new AnyFolder(configurator.getXParm("system/work-ea-folder-path"));
 			XmlFile tempProfileFile = new XmlFile(configurator.getXParm("properties/WORK_EAPROFILE_FILE"));
 			if (p) {

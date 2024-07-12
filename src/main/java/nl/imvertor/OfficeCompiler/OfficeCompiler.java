@@ -70,7 +70,7 @@ public class OfficeCompiler extends Step {
 	 */
 	public void generateOfficeReport() throws Exception {
 		String op = configurator.getXParm("cli/createoffice");
-		String mm = configurator.getXParm("cli/metamodel");
+		String dr = configurator.getXParm("appinfo/docrules");
 		
 		if (op.equals("html")) {
 			runner.info(logger,"Creating documentation");
@@ -86,18 +86,18 @@ public class OfficeCompiler extends Step {
 			// first step has no sequence number.
 						
 			/*
-			succeeds = succeeds ? transformer.transformStep("properties/WORK_LISTS_FILE","properties/WORK_MODELDOC_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_XSLPATH") : false;
+			succeeds = succeeds ? transformer.transformStep("properties/WORK_LISTS_FILE","properties/WORK_MODELDOC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_XSLPATH") : false;
 			*/
 			int i = 1;
 			while (true) {
-				String xslname = "IMVERTOR_METAMODEL_" + mm + "_MODELDOC_XSLPATH" + ((i == 1) ? "" : ("_" + i));
+				String xslname = "IMVERTOR_METAMODEL_" + dr + "_MODELDOC_XSLPATH" + ((i == 1) ? "" : ("_" + i));
 				String outname = "WORK_MODELDOC_FILE" + ((i == 1) ? "" : ("_" + i));
 				if (configurator.getParm("properties", xslname, false) != null) {
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/" + outname, "properties/" + xslname, "system/cur-imvertor-filepath") : false ;
 					i += 1;
 				} else if (i == 0) {
 					// first canonization is required: for each metamodel a primary canonization must be configured 
-					runner.error(logger,"No such supported metamodel or invalid modeldoc configuration: " + mm);
+					runner.error(logger,"No such supported docrules or invalid modeldoc configuration: " + dr);
 					break;
 				} else
 					break;
@@ -111,7 +111,7 @@ public class OfficeCompiler extends Step {
 				String fn = configurator.mergeParms(template);
 			
 				if (vr.contains("msword")) {
-					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_MSWORD_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_MSWORD_XSLPATH") : false;
+					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_MSWORD_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_MSWORD_XSLPATH") : false;
 					if (succeeds) processDoc(fn,"msword.html","appinfo/msword-documentation-filename","properties/WORK_MSWORD_FILE","none");
 					// copy along the msword template file (docm), if any, but do not pass to git/ftp
 					String path = configurator.getXParm("system/configuration-owner-msword-folder",false);
@@ -125,12 +125,12 @@ public class OfficeCompiler extends Step {
 					if (configurator.isTrue("cli","fullrespec", false)) {
 						// process complete report
 						transformer.setXslParm("catalog-only", "false");
-						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_RESPEC_XSLPATH") : false;
+						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_RESPEC_XSLPATH") : false;
 						if (succeeds) processDoc(fn,"respec.full.html","appinfo/full-respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
 					}
 					// process catalog only, save as HTML
 					transformer.setXslParm("catalog-only", "true");
-					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_RESPEC_XSLPATH") : false;
+					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_RESPEC_XSLPATH") : false;
 					if (succeeds) processDoc(fn,"respec.html","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE",configurator.getXParm("cli/passoffice",false));
 					// process catalog only, save as XHTML
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_MODELDOC_RESPEC_XSLPATH") : false;

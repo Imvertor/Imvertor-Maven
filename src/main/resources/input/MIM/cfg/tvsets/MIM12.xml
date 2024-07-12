@@ -3,21 +3,22 @@
  * Copyright (C) 
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <xi:include href="MIM111.xml"/>
-
+    <xi:include href="MIM11.xml"/>
+    
+    <xi:include href="MIM12-extension.xml"/>
+    
     <name>MIM 1.2 tagged values</name>
     
     <tagged-values>
         
         <tv norm="space" id="CFG-TV-MIMVERSION">
             <declared-values lang="nl">
+                <value>1.0</value>
                 <value>1.1</value>
-                <value>1.1.0</value>
-                <value>1.1.1</value>
                 <value default="yes">1.2</value>
             </declared-values>
         </tv>
-        
+
         <tv norm="space" id="CFG-TV-TEKSTOPMAAK">
             <name lang="nl">Tekstopmaak</name>
             <name lang="en">Text format</name>

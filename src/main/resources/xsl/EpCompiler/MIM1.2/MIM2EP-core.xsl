@@ -45,7 +45,8 @@
     <xsl:variable name="annotation-element-names" select="tokenize($configuration-jsonschemarules-file//parameter[@name = 'json-schema-annotations'],'\s+')" as="xs:string*"/>
     
     <xsl:template match="/">
-   
+        <xsl:sequence select="dlogger:save('$bp 2name',$configuration-jsonschemarules-name)"></xsl:sequence>
+        <xsl:sequence select="dlogger:save('$bp 2file',$configuration-jsonschemarules-file)"></xsl:sequence>
        <xsl:variable name="step-1" as="element(ep:group)">
             <xsl:apply-templates select="/mim:Informatiemodel"/>    
         </xsl:variable>
