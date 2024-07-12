@@ -73,7 +73,7 @@
                         <xsl:sequence select="imf:report-label('Schemas', '(TODO ISO19136)')"/>
                     </summary>
                 </xsl:when>
-                <xsl:when test="$schemarules = ('XML-KINGUGM','XML-KINGBSM', 'XML-RWS-L', 'XML-RWS-B')">
+                <xsl:when test="$schemarules = ('XML-KINGUGM','XML-KINGBSM')">
                     <xsl:variable name="berichten-table" select="imf:create-berichten-table($berichten-infoset/berichten/*)"/>
                     <status/>
                     <summary>
@@ -120,12 +120,6 @@
                         </content>
                     </page>
                                     
-                </xsl:when>
-                <xsl:when test="$schemarules = 'XML-RWS'">
-                    <status/>
-                    <summary>
-                        <xsl:sequence select="imf:report-label('XML Schemas', '(TODO RWS)')"/>
-                    </summary>
                 </xsl:when>
             </xsl:choose>
        </report>
