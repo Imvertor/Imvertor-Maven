@@ -22,15 +22,15 @@
         <!-- TRANSPORT -->
         <cs:Construct>
             <cs:name>Wegdeel</cs:name>
-            <cs:alias>TrafficArea<cs:alias>
+            <cs:alias>TrafficArea</cs:alias>
         </cs:Construct>
         <cs:Construct>
             <cs:name>OndersteunendWegdeel</cs:name>
-            <cs:alias>AuxiliaryTrafficArea<cs:alias>
+            <cs:alias>AuxiliaryTrafficArea</cs:alias>
         </cs:Construct>
         <cs:Construct>
             <cs:name>Spoor</cs:name>
-            <cs:alias>Railway<cs:alias>
+            <cs:alias>Railway</cs:alias>
         </cs:Construct>
         <!-- TERREIN -->
         <cs:Construct>
@@ -39,12 +39,12 @@
         </cs:Construct>
         <cs:Construct>
             <cs:name>BegroeidTerreindeel</cs:name>
-            <cs:alias>PlantCover<cs:alias>
+            <cs:alias>PlantCover</cs:alias>
         </cs:Construct>
         <!-- WATER -->
         <cs:Construct>
             <cs:name>Waterdeel</cs:name>
-            <cs:alias>WaterBody<cs:alias>
+            <cs:alias>WaterBody</cs:alias>
         </cs:Construct>
         <cs:Construct>
             <cs:name>OndersteunendWaterdeel</cs:name>
@@ -53,7 +53,7 @@
         <!-- BOUWWERK -->
         <cs:Construct>
             <cs:name>Pand</cs:name>
-            <cs:alias>BuildingPart<cs:alias>
+            <cs:alias>BuildingPart</cs:alias>
         </cs:Construct>
         <cs:Construct>
             <cs:name>OverigeConstructie</cs:name> <!-- Abstract objecttype -->
@@ -63,13 +63,13 @@
             <cs:name>OverigBouwwerk</cs:name>
             <cs:alias/>
         </cs:Construct>
-         <cs:Construct>
+        <cs:Construct>
             <cs:name>Overbruggingsdeel</cs:name>
-            <cs:alias>BridgeConstructionElement<cs:alias>
+            <cs:alias>BridgeConstructionElement</cs:alias>
         </cs:Construct>
         <cs:Construct>
             <cs:name>Tunneldeel</cs:name>
-            <cs:alias>TunnelPart<cs:alias>
+            <cs:alias>TunnelPart</cs:alias>
         </cs:Construct>        
          <cs:Construct>
             <cs:name>Kunstwerkdeel</cs:name>
@@ -161,4 +161,5 @@
         <cs:Construct>
             <cs:name>Wijk</cs:name>            
         </cs:Construct>
+    </cs:constructs>
 </cs:Map>
