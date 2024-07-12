@@ -108,5 +108,10 @@
 		<xsl:variable name="cfg-phase" select="$cfg-phases[(level,name) = $phase]"/>
 		<xsl:value-of select="if ($cfg-phase/level) then $cfg-phase/level else $phase"/>
 	</xsl:function>
+
+	<xsl:function name="imf:record-validation-rule" as="empty-sequence()">
+		<xsl:param name="rule-name" as="xs:string"/>
+		<xsl:sequence select="ext:imvertorTrack('Validation ' || $rule-name)" xmlns:ext="http://www.imvertor.org/xsl/extensions"/>
+	</xsl:function>
 	
 </xsl:stylesheet>

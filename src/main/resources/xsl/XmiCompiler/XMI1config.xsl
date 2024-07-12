@@ -30,25 +30,108 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
+    xmlns:local="urn:local"
+    
     exclude-result-prefixes="#all"
-    version="2.0">
+    version="3.0">
     
     <xsl:import href="../common/Imvert-common.xsl"/>
    
     <xsl:variable name="stylesheet-code">CNF</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
-    <!-- Fetch some info from raw XMI and store to parms.xml -->
+    <!-- 
+      Fetch some info from raw XMI and store to parms.xml 
+    
+      Fiks aangepast op basis van de discussie #503
+    -->
  
-      <xsl:template match="/">
+    <xsl:template match="/">
+      
+      <!-- 
+        als MIM model, bewaar dan de versie
+      -->
+      <xsl:variable name="mim-version" select="local:value((//UML:TaggedValue[@tag = ('MIM versie','MIM version')])[1]/@value)"/>
+      
+      <!-- 
+        de MIM metamodel versie en extensie is opgegeven als tagged value, of meegeleverd als cli
+      -->
+      <xsl:variable name="metamodel-owner" select="imf:get-xparm('cli/owner')"/>
+      <xsl:variable name="metamodel-version" select="local:value(($mim-version,imf:get-xparm('cli/metamodelversion')))"/>
+      <xsl:variable name="metamodel-extension" select="local:value(((//UML:TaggedValue[lower-case(@tag) = ('mim extensie','mim extension')])[1]/@value,imf:get-xparm('cli/metamodelextension')))"/>
+      <xsl:variable name="metamodel-extension-version" select="local:value(((//UML:TaggedValue[lower-case(@tag) = ('mim extensie versie','mim extension version')])[1]/@value,imf:get-xparm('cli/metamodelextensionversion')))"/>
+      <xsl:variable name="metamodel-name" select="if (exists($mim-version)) then 'MIM' else imf:get-xparm('cli/metamodelname')"/>
+      
+      <!-- 
+        metamodel naam is:
+        metamodel naam + metamodel versie + extensie naam + extensie versie
         
-        <!--x
-        <xsl:variable name="language-model" select="//UML:TaggedValue[@tag='LANGUAGE']/@value"/>
-        <xsl:sequence select="imf:set-config-string('system','language-model',($language-model,$cli-language)[1])"/>
-        x-->
-
-        <!-- no presets yet -->
+        Bij validatie, forceer dat als het metamodel MIM versie 1.* is, dat e.e.a. dan verwerkt wordt met MIM 1.2 (de meest recente minor versie) -->
+      -->
+      
+      <xsl:variable name="validation-version" select="if (substring-before($metamodel-version,'.') eq '1') then '1' else $metamodel-version"/>
+      
+      <xsl:variable name="metamodel-name-and-version" select="if ($metamodel-name) then local:compact((
+        $metamodel-owner,
+        $metamodel-name, 
+        $metamodel-version,
+        $metamodel-extension, 
+        $metamodel-extension-version
+        )) else ()"/>
+      
+      <xsl:variable name="validation-name-and-version" select="if ($metamodel-name) then local:compact((
+        $metamodel-owner,
+        $metamodel-name, 
+        $validation-version,
+        $metamodel-extension, 
+        $metamodel-extension-version
+        )) else ()"/>
+      
+      <!-- 
+        Bewaar deze uitgelezen waarden als appinfo 
+      -->
+      <xsl:sequence select="imf:set-config-string('appinfo','metamodel-name',$metamodel-name)"/>
+      <xsl:sequence select="imf:set-config-string('appinfo','metamodel-version',$metamodel-version)"/>
+      <xsl:sequence select="imf:set-config-string('appinfo','metamodel-validation-version',$validation-version)"/>
+      <xsl:sequence select="imf:set-config-string('appinfo','metamodel-extension',$metamodel-extension)"/>
+      <xsl:sequence select="imf:set-config-string('appinfo','metamodel-name-and-version',$metamodel-name-and-version)"/>
+      
+      <!--
+        De namen van de volgende input config files kunnen worden opgegeven. 
+        Deze bepalen de keuze voor de configuratie bestanden.
+        Als mogelijk dan gebruiken we de formele naam+versie zoals gelezen vanuit het aangeboden model.
         
+        Zie #503
+      -->
+      <xsl:sequence select="imf:set-xparm('appinfo/metamodel',($validation-name-and-version, imf:get-xparm('cli/metamodel'))[1])"/>
+      <xsl:sequence select="imf:set-xparm('appinfo/tvset',($validation-name-and-version, imf:get-xparm('cli/tvset'))[1])"/>
+      <xsl:sequence select="imf:set-xparm('appinfo/visuals',($metamodel-name-and-version, imf:get-xparm('cli/visuals'))[1])"/>
+      <xsl:sequence select="imf:set-xparm('appinfo/notesrules',($metamodel-name-and-version, imf:get-xparm('cli/notesrules'))[1])"/>
+      <xsl:sequence select="imf:set-xparm('appinfo/docrules',($metamodel-name-and-version, imf:get-xparm('cli/docrules'))[1])"/>
+      
     </xsl:template>
     
+    <!-- geef een naam als Kadaster-MIM-11 terug -->
+  
+  <xsl:function name="local:compact" as="xs:string">
+    <xsl:param name="values" as="xs:string*"/>
+    <xsl:value-of select="string-join(for $v in $values return imf:normalize-space(imf:extract($v,'[A-Za-z0-9]+')),'-')"/>
+  </xsl:function>
+  
+  <xsl:function name="local:value" as="xs:string?">
+    <xsl:param name="values" as="xs:string*"/>
+    <xsl:sequence select="(for $v in $values return imf:normalize-space(tokenize($v,'#')[1]))[1]"/>
+  </xsl:function>
+  
+  <!-- Geef de genormaliseerde string af als het niet de lege string is. Anders niks. -->
+    <xsl:function name="imf:normalize-space" as="xs:string?">
+      <xsl:param name="string" as="xs:string?"/>
+      <xsl:variable name="ns" select="normalize-space($string)"/>
+      <xsl:if test="$ns">
+        <xsl:value-of select="$ns"/>
+      </xsl:if>
+    </xsl:function>
+  
 </xsl:stylesheet>

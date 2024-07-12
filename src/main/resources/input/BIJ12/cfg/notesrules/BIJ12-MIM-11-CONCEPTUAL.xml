@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../Geonovum/cfg/notesrules/Geonovum-MIM-11-CONCEPTUAL.xml"/>
+    
+    <name>BIJ12-MIM-1-CONCEPTUAL</name>
+    
+</notes-rules>

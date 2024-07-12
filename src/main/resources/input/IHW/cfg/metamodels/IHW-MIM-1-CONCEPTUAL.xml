@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM11.xml"/>
+    
+    <name>IHW-MIM-1-CONCEPTUAL</name>
+    
+    <!-- 
+        release 0.9.5
+        - aanpassing van EA profile, #332
+    --> 
+    <profiles>
+        <profile lang="nl"> 
+            <id>IMCNL</id>
+            <release>0.9.5</release>
+            <desc>MIM IHW Grouping NL</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>IMCEN</id>
+            <release>0.9.5</release>
+            <desc>MIM IHW Grouping EN</desc>
+        </profile>
+    </profiles>
+    
+    <scalars xml:id="scalars">
+        <scalar id="scalar-real">
+            <type-map formal-lang="xs">float</type-map>
+            <fraction-digits>false</fraction-digits>
+            <max-length>false</max-length>
+            <source>IHW</source>
+        </scalar>
+    </scalars>   
+    
+</metamodel>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="../../../Geonovum/cfg/metamodels/Geonovum-MIM-1-NEN36102022.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-NEN3610-2022.xml"/>
+    
+    <name>IHW-MIM-1-LOGICAL</name>
+    
+    <profiles>
+        <profile lang="nl"> 
+            <id>NBGNL</id>
+            <release>0.9.5</release>
+            <desc>NEN3610 BRO Grouping NL</desc> 
+        </profile>
+        <profile lang="en">
+            <id>NBGEN</id>
+            <release>0.9.5</release>
+            <desc>NEN3610 BRO Grouping EN</desc>
+        </profile>
+    </profiles>
+    
+    <naming>
+        <!-- package conventions as defined elsewhere -->
+        <class>
+            <format>AsIs</format>
+        </class>
+        <property>
+            <format>AsIs</format>
+        </property>
+        <!-- tv conventions as defined elsewhere -->
+    </naming>
+    
+    <features>
+        <feature name="allow-multiple-supertypes">false</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+        <feature name="unique-normalized-class-names">domain</feature>
+        <feature name="role-based">true</feature>
+    </features>
+    
+</metamodel>

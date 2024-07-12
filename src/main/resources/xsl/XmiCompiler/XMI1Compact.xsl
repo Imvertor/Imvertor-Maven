@@ -47,8 +47,10 @@
     
     <xsl:variable name="known-classes" select="$model-package//UML:Class"/>
     
+    <?x
     <xsl:variable name="ms" select="imf:get-xmi-stereotype($model-package)"/>
     <xsl:variable name="es" select="imf:get-config-stereotypes(('stereotype-name-informatiemodel-package','stereotype-name-base-package','stereotype-name-application-package'))"/>
+    x?>
     
     <xsl:template match="/XMI">
         <xsl:copy>
@@ -61,9 +63,11 @@
                     <xsl:when test="$model-package/@name ne $application-package-name">
                         <xsl:sequence select="imf:msg('ERROR','Unexpected application package found: [1], expected [2]', ($model-package/@name, $application-package-name))"/>
                     </xsl:when>
+                    <?x
                     <xsl:when test="not($ms = $es)">
                         <xsl:sequence select="imf:msg('ERROR','Application package [1] has unexpected stereotype [2], expected: [3]', ($model-package/@name, $ms, imf:string-group($es)))"/>
                     </xsl:when>
+                    x?>
                     <xsl:when test="count($model-package) ne 1">
                         <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>
                     </xsl:when>

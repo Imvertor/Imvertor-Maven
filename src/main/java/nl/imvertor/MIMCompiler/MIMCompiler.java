@@ -92,7 +92,7 @@ public class MIMCompiler extends Step {
 		runner.debug(logger,"CHAIN","Generating MIM format");
 		
 		String mcv = configurator.getXParm("system/mim-compliancy-version", false); // major.minor: wordt bepaald op basis van de actieve configuratie.
-		String mv = configurator.getXParm("appinfo/mim-model-version", false); // major.minor: wordt bepaald op basis van de actieve configuratie.
+		String mv = configurator.getXParm("appinfo/metamodel-version", false); // major.minor: wordt bepaald op basis van de actieve configuratie.
 		String mimVersion = (mv != null && mv.startsWith("1.1")) ? "1.1" : mv; // de versie opgegeven in het model is bepalend voor het mim serialisatie formaat
 		
 		transformer.setXslParm("mim-version", mimVersion);

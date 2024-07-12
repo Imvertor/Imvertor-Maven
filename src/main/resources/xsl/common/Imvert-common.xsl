@@ -1450,4 +1450,9 @@
         
     </xsl:function>
 
+    <xsl:function name="imf:get-reportable-config-path">
+        <xsl:param name="subpath"/>
+        <xsl:value-of select="substring-after(imf:file-to-url($subpath),'/input/')"/>
+    </xsl:function>
+    
 </xsl:stylesheet>
