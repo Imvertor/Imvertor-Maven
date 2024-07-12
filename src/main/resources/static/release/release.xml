@@ -1,8 +1,8 @@
 <release-info>
     <release>
         <artifact>Imvertor</artifact>
-        <major-minor>Nightly-build</major-minor>
-        <bugfix>15</bugfix>
+        <major-minor>4.1</major-minor>
+        <bugfix>1</bugfix>
         <notice>Copyright (C) 2016-2024 Dienst voor het Kadaster en de openbare registers.
             This program comes with ABSOLUTELY NO WARRANTY; for details pass -help program.
             This is free software, and you are welcome to redistribute it
