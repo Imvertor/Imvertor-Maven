@@ -51,9 +51,10 @@
     <xsl:template match="/">
       
       <!-- 
-        als MIM model, bewaar dan de versie
+        Als MIM model, bewaar dan de versie zoals opgegeven in het model. 
+        Dit is een signaal dat het een MIM model betreft.
       -->
-      <xsl:variable name="mim-version" select="local:value((//UML:TaggedValue[@tag = ('MIM versie','MIM version')])[1]/@value)"/>
+      <xsl:variable name="mim-version" select="local:value((//UML:TaggedValue[lower-case(@tag) = ('mim versie','mim version')])[1]/@value)"/>
       
       <!-- 
         de MIM metamodel versie en extensie is opgegeven als tagged value, of meegeleverd als cli
@@ -70,13 +71,14 @@
         
         Bij validatie, forceer dat als het metamodel MIM versie 1.* is, dat e.e.a. dan verwerkt wordt met MIM 1.2 (de meest recente minor versie) -->
       -->
-      
-      <xsl:variable name="validation-version" select="if (substring-before($metamodel-version,'.') eq '1') then '1' else $metamodel-version"/>
+      <xsl:variable name="toks" select="tokenize($metamodel-version,'\.')"/>
+      <xsl:variable name="minor-version" select="if ($toks[2]) then $toks[1] || '.' || $toks[2] else $metamodel-version"/>
+      <xsl:variable name="major-version" select="if ($toks[2]) then $toks[1] else $metamodel-version"/>
       
       <xsl:variable name="metamodel-name-and-version" select="if ($metamodel-name) then local:compact((
         $metamodel-owner,
         $metamodel-name, 
-        $metamodel-version,
+        $minor-version,
         $metamodel-extension, 
         $metamodel-extension-version
         )) else ()"/>
@@ -84,7 +86,7 @@
       <xsl:variable name="validation-name-and-version" select="if ($metamodel-name) then local:compact((
         $metamodel-owner,
         $metamodel-name, 
-        $validation-version,
+        $major-version,
         $metamodel-extension, 
         $metamodel-extension-version
         )) else ()"/>
@@ -93,8 +95,8 @@
         Bewaar deze uitgelezen waarden als appinfo 
       -->
       <xsl:sequence select="imf:set-config-string('appinfo','metamodel-name',$metamodel-name)"/>
-      <xsl:sequence select="imf:set-config-string('appinfo','metamodel-version',$metamodel-version)"/>
-      <xsl:sequence select="imf:set-config-string('appinfo','metamodel-validation-version',$validation-version)"/>
+      <xsl:sequence select="imf:set-config-string('appinfo','metamodel-version',$minor-version)"/>
+      <xsl:sequence select="imf:set-config-string('appinfo','metamodel-validation-version',$major-version)"/>
       <xsl:sequence select="imf:set-config-string('appinfo','metamodel-extension',$metamodel-extension)"/>
       <xsl:sequence select="imf:set-config-string('appinfo','metamodel-name-and-version',$metamodel-name-and-version)"/>
       
@@ -115,17 +117,17 @@
     
     <!-- geef een naam als Kadaster-MIM-11 terug -->
   
-  <xsl:function name="local:compact" as="xs:string">
-    <xsl:param name="values" as="xs:string*"/>
-    <xsl:value-of select="string-join(for $v in $values return imf:normalize-space(imf:extract($v,'[A-Za-z0-9]+')),'-')"/>
-  </xsl:function>
-  
-  <xsl:function name="local:value" as="xs:string?">
-    <xsl:param name="values" as="xs:string*"/>
-    <xsl:sequence select="(for $v in $values return imf:normalize-space(tokenize($v,'#')[1]))[1]"/>
-  </xsl:function>
-  
-  <!-- Geef de genormaliseerde string af als het niet de lege string is. Anders niks. -->
+    <xsl:function name="local:compact" as="xs:string">
+      <xsl:param name="values" as="xs:string*"/>
+      <xsl:value-of select="string-join(for $v in $values return imf:normalize-space(imf:extract($v,'[A-Za-z0-9]+')),'-')"/>
+    </xsl:function>
+    
+    <xsl:function name="local:value" as="xs:string?">
+      <xsl:param name="values" as="xs:string*"/>
+      <xsl:sequence select="(for $v in $values return imf:normalize-space(tokenize($v,'#')[1]))[1]"/>
+    </xsl:function>
+    
+    <!-- Geef de genormaliseerde string af als het niet de lege string is. Anders niks. -->
     <xsl:function name="imf:normalize-space" as="xs:string?">
       <xsl:param name="string" as="xs:string?"/>
       <xsl:variable name="ns" select="normalize-space($string)"/>

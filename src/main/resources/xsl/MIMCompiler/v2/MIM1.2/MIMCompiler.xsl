@@ -52,8 +52,7 @@
   <xsl:param name="generate-all-ids" select="'false'" as="xs:string"/>
   <xsl:param name="add-generated-id" select="'false'" as="xs:string"/>
   
-  <xsl:variable name="mim-compliancy-version" select="imf:get-xparm('system/mim-compliancy-version')"/>
-  <xsl:variable name="mim-version" select="imf:tagged-values-not-traced(/imvert:packages, 'CFG-TV-MIMVERSION')" as="xs:string?"/>
+  <xsl:variable name="mim-version" select="imf:get-xparm('appinfo/metamodel-version')" as="xs:string?"/>
   
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   <xsl:variable name="add-xlink-id" select="true()"/>
