@@ -98,6 +98,7 @@
       <xsl:sequence select="imf:set-config-string('appinfo','metamodel-version',$minor-version)"/>
       <xsl:sequence select="imf:set-config-string('appinfo','metamodel-validation-version',$major-version)"/>
       <xsl:sequence select="imf:set-config-string('appinfo','metamodel-extension',$metamodel-extension)"/>
+      <xsl:sequence select="imf:set-config-string('appinfo','metamodel-extension-version',$metamodel-extension-version)"/>
       <xsl:sequence select="imf:set-config-string('appinfo','metamodel-name-and-version',$metamodel-name-and-version)"/>
       
       <!--
