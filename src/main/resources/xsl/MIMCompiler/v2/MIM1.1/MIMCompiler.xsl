@@ -58,7 +58,7 @@
   <xsl:import href="../../../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
   <xsl:import href="../../../common/Imvert-common-derivation.xsl" use-when="$runs-in-imvertor-context"/>
   
-  <xsl:variable name="mim-version" select="imf:tagged-values-not-traced(/imvert:packages, 'CFG-TV-MIMVERSION')" as="xs:string?"/>
+  <xsl:variable name="mim-version" select="imf:get-xparm('appinfo/metamodel-version')" as="xs:string?"/><!-- dit is de minor version -->
   
   <xsl:variable name="mim-model" as="document-node(element(metamodel))?">
     <xsl:try>
