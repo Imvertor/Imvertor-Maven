@@ -393,6 +393,7 @@
             </stereotypes>
             <declared-values lang="nl">
                 <value>1.0</value>
+                <value>1.1.1</value>
                 <value default="yes">1.1</value>
             </declared-values>
         </tv>
