@@ -283,7 +283,7 @@ public class ChainTranslateAndReport {
 			configurator.getRunner().windup();
 			
 			String metamodel = configurator.getXParm("appinfo/metamodel-name-and-version");
-			String release = model + "/" + configurator.getXParm("appinfo/subpath");
+			String release = configurator.getXParm("cli/owner") +"/" + configurator.getXParm("appinfo/subpath");
 			    
 			configurator.getRunner().info(logger, "Done, job \"" + System.getProperty("job.id") + "\" release \"" + release + "\" using metamodel \""+ metamodel + "\" " + (succeeds ? "succeeds" : "fails") + " in " + configurator.runtimeForDisplay());
 		    if (configurator.getSuppressWarnings() && configurator.getRunner().hasWarnings())
