@@ -138,8 +138,8 @@
         <xsl:variable name="keys" select="imf:merge-parms(imf:get-config-string('cli','messagecollapsekeys'))"/>
         <xsl:sequence select="imf:set-config-string('appinfo','message-collapse-keys',$keys)"/>
         
-        <xsl:variable name="mim-configured-version" select="(for $m in $config-compact/prologue/metamodels/metamodel return if (starts-with($m,'MIM ')) then $m else ())[1]"/> <!-- lijst van MIM metamodel names, de eerste is de gekozen metamodel versie -->
-        <xsl:sequence select="imf:set-config-string('system','mim-configured-version',substring-after($mim-configured-version,'MIM '))"/>
+        <xsl:variable name="metamodel-configured-version" select="(for $m in $config-compact/prologue/metamodels/metamodel return if (starts-with($m,'MIM ')) then $m else ())[1]"/> <!-- lijst van MIM metamodel names, de eerste is de gekozen metamodel versie -->
+        <xsl:sequence select="imf:set-config-string('appinfo','metamodel-configured-version',substring-after($metamodel-configured-version,'MIM '))"/>
         
         <!-- signal if not using the latest release or a nightly build (or other feature branch build) of imvertor -->
         <xsl:variable name="crx" select="imf:get-config-string('run','version')"/>

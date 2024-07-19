@@ -32,7 +32,7 @@
                 https://github.com/Imvertor/Imvertor-Maven/issues/461 
             -->
             <xsl:variable name="mim-version" select="imf:get-tagged-value($application-package,'##CFG-TV-MIMVERSION')"/><!-- zoals in model opgenomen -->
-            <xsl:variable name="configured-version" select="imf:get-xparm('system/mim-configured-version')"/><!-- zoals in de configuratie opgegeven -->
+            <xsl:variable name="configured-version" select="imf:get-xparm('appinfo/metamodel-configured-version')"/><!-- zoals in de configuratie opgegeven -->
             <xsl:variable name="tv-name" select="imf:get-config-name-by-id('CFG-TV-MIMVERSION')"/>
             
             <xsl:sequence select="imf:report-warning(., 

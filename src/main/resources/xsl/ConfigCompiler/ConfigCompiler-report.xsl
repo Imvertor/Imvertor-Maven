@@ -117,11 +117,19 @@
         <xsl:variable name="rows" as="element(tr)*">
             <tr>
                 <td>Metamodel</td>
-                <td>{imf:get-xparm('appinfo/metamodel-name')} {imf:get-xparm('appinfo/metamodel-version')}</td>
+                <td>{imf:get-xparm('appinfo/metamodel-name')} {imf:get-xparm('appinfo/metamodel-minor-version')}</td>
+            </tr>
+            <tr>
+                <td>Specified metamodel version</td>
+                <td>{imf:get-xparm('appinfo/metamodel-specified-version')}</td>
+            </tr>
+            <tr>
+                <td>Configured metamodel version</td>
+                <td>{imf:get-xparm('appinfo/metamodel-configured-version')}</td>
             </tr>
             <tr>
                 <td>Validate by metamodel version</td>
-                <td>{imf:get-xparm('appinfo/metamodel-validation-version')}</td>
+                <td>{imf:get-xparm('appinfo/metamodel-major-version')}</td>
             </tr>
             <tr>
                 <td>Extension</td>

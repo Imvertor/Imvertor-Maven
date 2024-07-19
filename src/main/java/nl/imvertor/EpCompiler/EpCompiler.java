@@ -84,7 +84,7 @@ public class EpCompiler extends Step {
 		
 		// Create EP
 		if (requiresMIM()) {
-			String mimVersion = configurator.getXParm("appinfo/metamodel-version");
+			String mimVersion = configurator.getXParm("appinfo/metamodel-minor-version");
 			// check of MIM resultaat beschikbaar is 
 			succeeds = succeeds && AnyFile.exists(configurator.getXParm("properties/WORK_MIMFORMAT_XMLPATH",false));
 			// verwerk MIM naar EP
