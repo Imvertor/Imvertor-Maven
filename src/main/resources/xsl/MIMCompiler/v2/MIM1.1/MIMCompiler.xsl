@@ -149,12 +149,16 @@
   
   <xsl:template match="@xlink:href[string-length(.) ge 32]" mode="postprocess">
     <xsl:attribute name="xlink:href" namespace="http://www.w3.org/1999/xlink">
+      <xsl:variable name="elm" select="key('key-mim-construct-by-id', substring(., 2), root())"/>
       <xsl:choose>
+        <xsl:when test="empty($elm)">
+          <xsl:sequence select="imf:message(.., 'ERROR', 'No such id [1]', (substring(., 2)))"/>
+        </xsl:when>
         <xsl:when test="$generate-readable-ids = 'true'">
-          <xsl:value-of select="'#' || imf:create-id(key('key-mim-construct-by-id', substring(., 2), root()))"/>
+          <xsl:value-of select="'#' || imf:create-id($elm)"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="'#' || imf:clean-id(key('key-mim-construct-by-id', substring(., 2), root())/@id)"/>
+          <xsl:value-of select="'#' || imf:clean-id($elm/@id)"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:attribute>
@@ -609,7 +613,7 @@
   </xsl:template>
   
   <xsl:template match="imvert:package[imvert:stereotype/@id = 'stereotype-name-external-package']">
-    <xsl:if test="not(starts-with(imvert:name,'MIM11'))">
+    <xsl:if test="not(imvert:name = ('MIM11'))">
       <mim:Extern source-id="{imvert:stereotype/@id}">
         <xsl:sequence select="imf:generate-index(.)"/>
         <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
