@@ -52,17 +52,19 @@
   <xsl:param name="generate-all-ids" select="'false'" as="xs:string"/>
   <xsl:param name="add-generated-id" select="'false'" as="xs:string"/>
   
-  <xsl:variable name="mim-compliancy-version" select="imf:get-xparm('system/mim-compliancy-version')"/>
-  <xsl:variable name="mim-version" select="imf:tagged-values-not-traced(/imvert:packages, 'CFG-TV-MIMVERSION')" as="xs:string?"/>
-  
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   <xsl:variable name="add-xlink-id" select="true()"/>
   
   <xsl:import href="../../../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
   <xsl:import href="../../../common/Imvert-common-derivation.xsl" use-when="$runs-in-imvertor-context"/>
   
-  <xsl:variable name="mim-model" as="document-node(element(metamodel))">
-    <xsl:sequence select="document('MIM' || $mim-version || '-model.xml')"/>  
+  <xsl:variable name="mim-version" select="imf:get-xparm('appinfo/metamodel-minor-version')" as="xs:string?"/><!-- dit is de minor version -->
+  
+  <xsl:variable name="mim-model" as="document-node(element(metamodel))?">
+    <xsl:try>
+      <xsl:sequence select="document('MIM' || $mim-version || '-model.xml')"/>  
+      <xsl:catch><!-- empty sequence--></xsl:catch>
+    </xsl:try>
   </xsl:variable>
   
   <xsl:variable name="stylesheet-code">MIMCOMPILER</xsl:variable>
@@ -114,6 +116,9 @@
       <xsl:when test="empty($mim-version)">
         <xsl:sequence select="imf:message(., 'ERROR', 'MIM serialisation requested on a model that is not MIM compliant. No [1] found.', (imf:get-config-name-by-id('CFG-TV-MIMVERSION')))"/>
       </xsl:when>
+      <xsl:when test="empty($mim-model)">
+        <xsl:sequence select="imf:message(., 'ERROR', 'MIM version [1] not supported for MIM serialisation version [2]', ($mim-version,imf:get-xparm('cli/mimformatversion')))"/>
+      </xsl:when>
       <xsl:when test="$native-scalars and $mim12-package-found">
         <xsl:sequence select="imf:message(., 'ERROR', 'Attempt to use native scalars while MIM package is available. Please set [1] to [2].', ('nativescalars','no'))"/>
       </xsl:when>
@@ -144,12 +149,16 @@
   
   <xsl:template match="@xlink:href[string-length(.) ge 32]" mode="postprocess">
     <xsl:attribute name="xlink:href" namespace="http://www.w3.org/1999/xlink">
+      <xsl:variable name="elm" select="key('key-mim-construct-by-id', substring(., 2), root())"/>
       <xsl:choose>
+        <xsl:when test="empty($elm)">
+          <xsl:sequence select="imf:message(.., 'ERROR', 'No such id [1]', (substring(., 2)))"/>
+        </xsl:when>
         <xsl:when test="$generate-readable-ids = 'true'">
-          <xsl:value-of select="'#' || imf:create-id(key('key-mim-construct-by-id', substring(., 2), root()))"/>
+          <xsl:value-of select="'#' || imf:create-id($elm)"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="'#' || imf:clean-id(key('key-mim-construct-by-id', substring(., 2), root())/@id)"/>
+          <xsl:value-of select="'#' || imf:clean-id($elm/@id)"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:attribute>
@@ -604,7 +613,7 @@
   </xsl:template>
   
   <xsl:template match="imvert:package[imvert:stereotype/@id = 'stereotype-name-external-package']">
-    <xsl:if test="not(starts-with(imvert:name,'MIM12'))">
+    <xsl:if test="not(imvert:name = ('MIM12'))">
       <mim:Extern source-id="{imvert:stereotype/@id}">
         <xsl:sequence select="imf:generate-index(.)"/>
         <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>

@@ -27,7 +27,8 @@
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all"
-    version="2.0">
+    expand-text="yes"
+    version="3.0">
     
     <!-- 
          report on configuration
@@ -63,6 +64,10 @@
                         Note that any specification included will be overridden by any specification of an including configuration.</p>
                 </intro>
                 <content>
+                    <div>
+                        <h1>Metamodel version info</h1>
+                        <xsl:apply-templates select="." mode="versions"/>
+                    </div>
                     <div>
                         <h1>Configuration dependencies</h1>
                         <xsl:apply-templates select="$configuration-tree-file/*" mode="tree"/>
@@ -108,6 +113,36 @@
         </report>
     </xsl:template>
 
+    <xsl:template match="/config" mode="versions">
+        <xsl:variable name="rows" as="element(tr)*">
+            <tr>
+                <td>Metamodel</td>
+                <td>{imf:get-xparm('appinfo/metamodel-name')} {imf:get-xparm('appinfo/metamodel-minor-version')}</td>
+            </tr>
+            <tr>
+                <td>Specified metamodel version</td>
+                <td>{imf:get-xparm('appinfo/metamodel-specified-version')}</td>
+            </tr>
+            <tr>
+                <td>Configured metamodel version</td>
+                <td>{imf:get-xparm('appinfo/metamodel-configured-version')}</td>
+            </tr>
+            <tr>
+                <td>Validate by metamodel version</td>
+                <td>{imf:get-xparm('appinfo/metamodel-major-version')}</td>
+            </tr>
+            <tr>
+                <td>Extension</td>
+                <td>{imf:get-xparm('appinfo/metamodel-extension')} {imf:get-xparm('appinfo/metamodel-extension-version')}</td>
+            </tr>
+            <tr>
+                <td>Full name</td>
+                <td>{imf:get-xparm('appinfo/metamodel-name-and-version')}</td>
+            </tr>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'parameter:30,value:70','table-versions')"/>
+    </xsl:template>
+    
     <xsl:template match="/config" mode="owner">
         <xsl:variable name="rows" as="element(tr)*">
             <xsl:for-each select="$configuration-owner-file/parameter">
