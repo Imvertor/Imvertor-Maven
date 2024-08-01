@@ -4,7 +4,7 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../KING/cfg/docrules/KING-MUG-10-UGM.xml"/>
+    <xi:include href="../../../KING/cfg/docrules/KING-MBG-10-UGM.xml"/>
     
     <name>Waarderingskamer UGM</name>
     

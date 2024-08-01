@@ -19,11 +19,9 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
    
-    <!-- 
-        WK volgt VNGR
-    -->
-    <xi:include href="../../../KING/cfg/tvsets/KING-MUG-1-UGM.xml"/>
+    <!-- Kennisnet follows VNG -->
+    <xi:include href="../../../KING/cfg/tvsets/KING-MBG-1-UGM.xml"/>
 
-    <name>Waarderingskamer UGM</name>
-    
+    <name>Kennisnet UGM TV-sets</name>
+        
 </tagset>

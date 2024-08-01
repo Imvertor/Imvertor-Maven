@@ -17,11 +17,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-   
-    <!-- Kennisnet follows VNG -->
-    <xi:include href="../../../KING/cfg/tvsets/KING-MUG-1-UGM.xml"/>
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <!-- 
+        Volgt VNGR
+    -->
+    <xi:include href="../../../KING/cfg/metamodels/KING-MBG-1-UGM.xml"/>
 
-    <name>Kennisnet UGM TV-sets</name>
+    <name>Waarderingskamer UGM</name>
+    
+    <desc lang="en">Metamodel for Waarderingskamer exchange models: uitwisseling gegevensmodel</desc>
+  
+    <profiles>
+        <profile lang="nl"> 
+            <id>WKUGMNL</id>
+            <release>1.1</release>
+            <desc>WKUGM Grouping NL</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>WKUGMEN</id>
+            <release>1.1</release>
+            <desc>WKUGM Grouping EN</desc>
+        </profile>
+    </profiles>
         
-</tagset>
+</metamodel>

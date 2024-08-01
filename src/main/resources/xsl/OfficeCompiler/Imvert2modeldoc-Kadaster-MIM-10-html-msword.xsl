@@ -9,7 +9,7 @@
     exclude-result-prefixes="#all" 
     version="2.0">
     
-    <xsl:import href="Imvert2modeldoc-KING-MUG-11-UGM-html-msword.xsl"/>
+    <xsl:import href="Imvert2modeldoc-KING-MBG-11-UGM-html-msword.xsl"/>
     
     <xsl:output method="html" indent="yes" omit-xml-declaration="yes"/>
     

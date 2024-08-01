@@ -4,10 +4,10 @@
 -->
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../KING/cfg/notesrules/KING-MBG-10-BSM.xml"/>
+    <xi:include href="KING-MBG-10-UGM.xml"/>
     
-    <name>Kennisnet BSM</name>
+    <name>KING-MBG-10-BSM</name>
     
-    <desc>Kennisnet BSM follows UGM conventions.</desc>
+    <desc>KINGBSM follows UGM conventions.</desc>
     
 </notes-rules>

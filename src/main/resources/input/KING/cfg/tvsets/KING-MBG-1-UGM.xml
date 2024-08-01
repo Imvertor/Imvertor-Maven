@@ -25,11 +25,11 @@
     <!--
         applications using this metamodel may reference cross-meta Tagged values taken from SIM
     -->
-    <xi:include href="KING-MUG-1-UGM-cross-SIM.xml"/>
+    <xi:include href="KING-MBG-1-UGM-cross-SIM.xml"/>
 
-    <xi:include href="KING-MUG-1-BSM-cross-SIM-and-UGM.xml"/>
+    <xi:include href="KING-MBG-1-BSM-cross-SIM-and-UGM.xml"/>
 
-    <name>KING-MUG-1-UGM</name>
+    <name>KING-MBG-1-UGM</name>
 
     <tagged-values>
 
