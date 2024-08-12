@@ -72,7 +72,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
     mim-in:PrimitiefDatatype|mim-in:GestructureerdDatatype|mim-in:Enumeratie|mim-in:Referentielijst|mim-in:Codelijst|mim-in:DataElement|mim-in:Enumeratiewaarde|
     mim-in:ReferentieElement|mim-in:Constraint|mim-in:Keuze|mim-in:ExterneKoppeling|mim-in:Interface"> <!-- mim-in:Relatieklasse mim-in:Relatiesoort -->
     <xsl:element name="mim:{local-name()}">
-      <xsl:attribute name="rdf:about" namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" select="local:get-id(.)"/>  
+      <xsl:attribute name="rdf:about" select="local:get-id(.)"/>  
       <xsl:apply-templates select="mim-in:*[xhtml:* or (not(*) and normalize-space())]" mode="metagegeven"/>
       <xsl:apply-templates select="(mim-in:packages|mim-in:datatypen|mim-in:objecttypen|mim-in:gegevensgroeptypen|mim-in:keuzen|mim-in:interfaces|mim-in:attribuutsoorten|
         mim-in:gegevensgroepen|mim-in:externeKoppelingen|mim-in:constraints|mim-in:dataElementen|mim-in:enumeratiewaarden|mim-in:referentieElementen|mim-in:relatiedoelen|
@@ -165,16 +165,18 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
     <mim:relatiedoel rdf:resource="{local:get-id-from-href(mim-ref:*/@xlink:href)}"/>
   </xsl:template>
   
-  <xsl:template match="mim-in:RelatiesoortRelatiesoortLeidend|mim-in:RelatiesoortRelatierolLeidend">
-    <mim:Relatiesoort rdf:about="{local:get-id(.)}">
-      <xsl:apply-templates select="mim-in:*[xhtml:* or (not(*) and normalize-space())]" mode="metagegeven"/>
-      <mim:bron rdf:resource="{local:get-id((ancestor::mim-in:Objecttype[1]|ancestor::mim-ext:Constructie[1])[1])}"/>
-      <mim:doel rdf:resource="{local:get-id-from-href(mim-in:doel/mim-ref:*/@xlink:href)}"/>
-      <xsl:apply-templates select="(mim-in:relatierolBron, mim-in:relatierolDoel, mim-in:relatieklasse)/*"/>
-    </mim:Relatiesoort>
+  <xsl:template match="mim-in:Relatiesoort">
+    <xsl:where-populated>
+      <mim:Relatiesoort rdf:about="{local:get-id(.)}">
+        <xsl:apply-templates select="mim-in:*[xhtml:* or (not(*) and normalize-space())]" mode="metagegeven"/>
+        <mim:bron rdf:resource="{local:get-id((ancestor::mim-in:Objecttype[1]|ancestor::mim-ext:Constructie[1])[1])}"/>
+        <mim:doel rdf:resource="{local:get-id-from-href(mim-in:doel/mim-ref:*/@xlink:href)}"/>
+        <xsl:apply-templates select="(mim-in:relatierolBron, mim-in:relatierolDoel, mim-in:relatieklasse)/*"/>
+      </mim:Relatiesoort>
+    </xsl:where-populated>
   </xsl:template>
   
-  <xsl:template match="mim-in:RelatierolBron">
+  <xsl:template match="mim-in:RelatierolBron"><!-- TODO bestaat niet meer -->
     <xsl:where-populated>
       <mim:relatierol>
         <xsl:where-populated>
@@ -186,7 +188,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
     </xsl:where-populated>
   </xsl:template>
   
-  <xsl:template match="mim-in:RelatierolDoel">
+  <xsl:template match="mim-in:RelatierolDoel"><!-- TODO bestaat niet meer -->
     <xsl:where-populated>
       <mim:relatierol>
         <xsl:where-populated>
@@ -198,13 +200,15 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
     </xsl:where-populated>
   </xsl:template>
   
-  <xsl:template match="mim-in:Relatieklasse">
-      <xsl:where-populated>
+  <xsl:template match="mim-in:Relatieklasse"><!-- TODO plat slaan -->
+     <?x 
+     <xsl:where-populated>
         <mim:Relatieklasse rdf:about="{local:get-id(.)}">
           <xsl:apply-templates select="mim-in:*[xhtml:* or (not(*) and normalize-space())]" mode="metagegeven"/>
           <xsl:apply-templates select="(mim-in:attribuutsoorten, mim-in:gegevensgroepen, mim-in:constraints)/*" mode="metagegeven"/>
         </mim:Relatieklasse>  
-      </xsl:where-populated>
+     </xsl:where-populated>
+     x?>
   </xsl:template>
   
   <xsl:template match="(mim-in:GeneralisatieObjecttypes|mim-in:GeneralisatieDatatypes)[mim-in:supertype/mim-ref:*]">
