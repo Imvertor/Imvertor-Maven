@@ -30,13 +30,15 @@
         'stereotype-name-interface',
         'stereotype-name-enumeration')"/>
     
+    <xsl:variable name="root-package" select="/*/imvert:package[imf:boolean(imvert:is-root-package)]"/>
+    <xsl:variable name="is-role-based" select="imf:get-tagged-value($root-package,'##CFG-TV-IMRELATIONMODELINGTYPE') = 'Relatierol leidend'"/>
     <!-- 
         Document validation; this validates the root (application-)package.
     -->
     <xsl:template match="/imvert:packages">
         <imvert:report>
             <!-- process the application package -->
-            <xsl:apply-templates select="imvert:package[imf:boolean(imvert:is-root-package)]"/>
+            <xsl:apply-templates select="$root-package"/>
         </imvert:report>
     </xsl:template>
     
@@ -126,9 +128,10 @@
 
         <xsl:variable name="properties" select="(
             imvert:attributes/imvert:attribute,
-            imvert:associations/imvert:association,
-            imvert:associations/imvert:association/imvert:target/imvert:role
-        )"/>
+            imvert:associations/imvert:association[not($is-role-based)],
+            imvert:associations/imvert:association[$is-role-based]/imvert:source/imvert:role,
+            imvert:associations/imvert:association[$is-role-based]/imvert:target/imvert:role
+            )"/>
         <xsl:variable name="properties-dups" select="imf:find-duplicate-strings($properties/imvert:name/@original)"/>
         
         <xsl:sequence select="imf:report-validation(., 
