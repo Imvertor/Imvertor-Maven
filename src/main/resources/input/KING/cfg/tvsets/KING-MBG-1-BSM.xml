@@ -19,9 +19,9 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="KING-MUG-1-UGM.xml"/>
+    <xi:include href="KING-MBG-1-UGM.xml"/>
     
-    <name>KING-MUG-1-BSM</name>
+    <name>KING-MBG-1-BSM</name>
     
     <tagged-values>
         

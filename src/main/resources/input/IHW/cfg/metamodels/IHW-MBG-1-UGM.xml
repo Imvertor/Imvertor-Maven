@@ -24,7 +24,7 @@
     -->
     
     <!-- IHW follows MIM requirements -->
-    <xi:include href="../../../KING/cfg/metamodels/KING-MUG-1-UGM.xml"/>
+    <xi:include href="../../../KING/cfg/metamodels/KING-MBG-1-UGM.xml"/>
 
     <name>IHW UGM</name>
     

@@ -17,28 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+   
+    <!-- IHW follows VNGR requirements -->
+    <xi:include href="../../../KING/cfg/tvsets/KING-MBG-1-UGM.xml"/>
     
-    <!-- 
-        Volgt VNGR
-    -->
-    <xi:include href="../../../KING/cfg/metamodels/KING-MUG-1-UGM.xml"/>
-
-    <name>Waarderingskamer UGM</name>
+    <name>IHW UGM tvsets</name>
     
-    <desc lang="en">Metamodel for Waarderingskamer exchange models: uitwisseling gegevensmodel</desc>
-  
-    <profiles>
-        <profile lang="nl"> 
-            <id>WKUGMNL</id>
-            <release>1.1</release>
-            <desc>WKUGM Grouping NL</desc> 
-        </profile>
-        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
-            <id>WKUGMEN</id>
-            <release>1.1</release>
-            <desc>WKUGM Grouping EN</desc>
-        </profile>
-    </profiles>
-        
-</metamodel>
+    <tagged-values>
+        <!-- geen eigen tagged values -->    
+    </tagged-values>
+    
+</tagset>
