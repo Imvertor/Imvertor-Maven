@@ -98,7 +98,7 @@
         <xsl:sequence select="imf:report-validation(., 
             exists($allowed-parent-stereotypes) and not($parent-stereotypes/@id = $allowed-parent-stereotypes), 
             $context-signaltype,
-            'Attribute with stereotype [1] must not appear here, but within (any of) [2]', (imf:string-group($stereotypes),imf:string-group(for $s in $allowed-parent-stereotypes return imf:get-config-name-by-id($s))))"/>
+            'Attribute with stereotype [1] must not appear here, but as attribute of (any of) [2]', (imf:string-group($stereotypes),imf:string-group(for $s in $allowed-parent-stereotypes return imf:get-config-name-by-id($s))))"/>
         
         <!-- #400 -->
         <xsl:sequence select="imf:report-validation(., 
