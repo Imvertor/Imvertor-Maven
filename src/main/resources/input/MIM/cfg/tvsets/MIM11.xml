@@ -505,12 +505,34 @@
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-herkomst-definitie</catalog>
             <derive>yes</derive>
             <stereotypes>
-                 <stereo minmax="1..1">stereotype-name-objecttype</stereo>
-                 <stereo minmax="1..1">stereotype-name-attribute</stereo>
-                 <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
-                 <stereo minmax="0..1">stereotype-name-composite</stereo>
-                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
-                 <stereo minmax="0..1">stereotype-name-relation-role</stereo>
+                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="1..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="1..1">stereotype-name-complextype</stereo>
+                <stereo minmax="1..1">stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+                <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo><!-- TODO mim111 wordt deze bug hersteld -->
+                <stereo minmax="1..1">stereotype-name-external-package</stereo>
+                <stereo minmax="1..1">stereotype-name-view-package</stereo>
+                
+                <!-- mim 1.1.1 adaptions: -->
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="1..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
         </tv>
         
