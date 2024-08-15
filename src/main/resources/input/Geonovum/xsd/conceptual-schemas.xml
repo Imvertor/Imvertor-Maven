@@ -230,6 +230,10 @@
                   <cs:name>WaterAppurtenanceTypeValue</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
+               <cs:Construct>
+                  <cs:name>AppurtenanceTypeValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
                
                <cs:Construct>
                   <cs:name>ElectricityCable</cs:name>
