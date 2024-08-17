@@ -215,7 +215,7 @@ public class XmiCompiler extends Step {
 			}
 		}
 		
-		runner.info(logger,"Metamodel name is " + configurator.getXParm("appinfo/metamodel-name-and-version"));
+		runner.info(logger,"Metamodel name is " + configurator.getXParm("appinfo/metamodel-name-and-version",false));
 		
 		configurator.setStepDone(STEP_NAME);
 		
