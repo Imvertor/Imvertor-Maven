@@ -338,6 +338,7 @@
                 <value default="yes">Authentiek</value>
                 <value>Basisgegeven</value>
                 <value>Landelijk kerngegeven</value>
+                <value>Gemeentelijk kerngegeven</value>
                 <value>Wettelijk gegeven</value>
                 <value>Overig</value>
             </declared-values>
@@ -345,6 +346,7 @@
                 <value default="yes">TODO-Authentiek</value>
                 <value>TODO-Basisgegeven</value>
                 <value>TODO-Landelijk kerngegeven</value>
+                <value>TODO-Gemeentelijk kerngegeven</value>
                 <value>TODO-Wettelijk gegeven</value>
                 <value>TODO-Overig</value>
             </declared-values>
