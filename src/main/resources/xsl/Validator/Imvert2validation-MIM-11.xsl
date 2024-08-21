@@ -10,6 +10,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     >
     
     <!-- 
@@ -129,18 +131,18 @@
     
     <xsl:template match="imvert:class" priority="20">
 
-        <xsl:variable name="properties" select="(
-            imvert:attributes/imvert:attribute,
-            imvert:associations/imvert:association[not($is-role-based)],
+        <xsl:variable name="names" select="(
+            imvert:attributes/imvert:attribute/imvert:name,
+            imvert:associations/imvert:association[not($is-role-based)]/imvert:name,
             imvert:associations/imvert:association[$is-role-based]/imvert:source/imvert:role,
             imvert:associations/imvert:association[$is-role-based]/imvert:target/imvert:role
             )"/>
-        <xsl:variable name="properties-dups" select="imf:find-duplicate-strings($properties/imvert:name/@original)"/>
+        <xsl:variable name="names-dups" select="imf:find-duplicate-strings($names/@original)"/>
         
         <xsl:sequence select="imf:report-validation(., 
-            $unique-normalized-association-names and exists($properties-dups), 
+            $unique-normalized-association-names and exists($names-dups), 
             $context-signaltype,
-            'Several properties with same name found: [1]', imf:string-group($properties-dups))"/>
+            'Several properties with same name found: [1]', imf:string-group($names-dups))"/>
         
         <xsl:next-match/>
     </xsl:template>     
