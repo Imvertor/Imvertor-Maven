@@ -39,7 +39,7 @@
         <feature name="allow-scalar-in-union">true</feature>
         <feature name="unique-normalized-class-names">domain</feature>
         <feature name="role-based">true</feature>
-        <feature name="unique-normalized-association-names">no</feature>
+        <feature name="unique-normalized-association-names">yes</feature>
     </features>
     
     <!-- <stereotypes>
