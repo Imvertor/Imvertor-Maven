@@ -32,6 +32,9 @@
     
     <xsl:variable name="root-package" select="/*/imvert:package[imf:boolean(imvert:is-root-package)]"/>
     <xsl:variable name="is-role-based" select="imf:get-tagged-value($root-package,'##CFG-TV-IMRELATIONMODELINGTYPE') = 'Relatierol leidend'"/>
+   
+    <xsl:variable name="unique-normalized-association-names" select="imf:boolean($configuration-metamodel-file//features/feature[@name='unique-normalized-association-names'])"/>
+    
     <!-- 
         Document validation; this validates the root (application-)package.
     -->
@@ -135,7 +138,7 @@
         <xsl:variable name="properties-dups" select="imf:find-duplicate-strings($properties/imvert:name/@original)"/>
         
         <xsl:sequence select="imf:report-validation(., 
-            exists($properties-dups), 
+            $unique-normalized-association-names and exists($properties-dups), 
             $context-signaltype,
             'Several properties with same name found: [1]', imf:string-group($properties-dups))"/>
         

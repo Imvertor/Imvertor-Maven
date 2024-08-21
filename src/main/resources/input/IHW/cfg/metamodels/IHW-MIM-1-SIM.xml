@@ -48,4 +48,8 @@
       </profile>
    </profiles>
    
+   <features>
+      <feature name="unique-normalized-association-names">no</feature>
+   </features>
+   
 </metamodel>
