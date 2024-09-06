@@ -33,7 +33,7 @@
     <!-- 
         collect the codelist and enumeration contents in a separate section?
     -->
-    <lists-to-listing>false</lists-to-listing>
+    <lists-to-listing>true</lists-to-listing>
     
     <!-- which sections to include in the modeldoc? --> 
     <include-overview-section-level>no</include-overview-section-level>
