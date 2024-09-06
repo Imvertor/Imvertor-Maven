@@ -366,7 +366,8 @@
     
     <xsl:function name="imf:normalize-ttl-string">
         <xsl:param name="string"/>
-        <xsl:value-of select="normalize-space(replace(replace(replace(replace($string,'\\','\\\\'),'&#10;','\\n'),'&quot;','\\&quot;'),$apos,concat('\\',$apos)))"/>
+        <xsl:variable name="result" select="replace(replace($string,'&quot;','\\&quot;'),$apos,concat('\\',$apos))"/>
+        <xsl:value-of select="$result"/>
     </xsl:function>
   
     <xsl:function name="imf:for-uri">
