@@ -153,6 +153,12 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
     <mim:type rdf:resource="{local:get-id-from-href(@xlink:href)}"/>
   </xsl:template>
   
+  <xsl:template match="mim-in:type/mim-in:Datatype" mode="metagegeven">
+    <mim:type>
+      <xsl:element name="mim:{.}"/>
+    </mim:type>
+  </xsl:template>
+  
   <xsl:template match="mim-in:keuzen/mim-ref:KeuzeRef" mode="metagegeven">
     <mim:keuze rdf:resource="{local:get-id-from-href(@xlink:href)}"/>
   </xsl:template>
