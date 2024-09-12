@@ -154,6 +154,8 @@ public class Configurator {
 	private XparmLogger xParmLogger; // keeps track of the sequence of parameters set by the chain. A debugging tool.
 	private XsltCallLogger xsltCallLogger; // keeps track of the XSLT calls. A debugging tool.
 	
+	private Integer maxWarnings = 1000;
+	
 	private Configurator()  {
 		
 		runner = new Runner();
@@ -208,7 +210,8 @@ public class Configurator {
 			String ee = getServerProperty("ea.enabled"); // true or false; false typically on server environment; see redmine #487932
 			eaEnabled = (ee == null || !ee.equals("false"));
 			
-			
+			String mw = getServerProperty("max.warnings");
+			maxWarnings = (mw != null) ? Integer.parseInt(mw) : 1000; 
 			
 		} catch (Exception e) {
 			System.err.println("Invalid configuration: " + e.getMessage());
@@ -1366,6 +1369,10 @@ public class Configurator {
 
 	public boolean isEaEnabled() {
 		return eaEnabled;
+	}
+
+	public Integer maxWarnings() {
+		return maxWarnings;
 	}
 	/**
 	 * Merge parameters into a string, parameters taken by default from appinfo section of the parms.xml; otherwise use [group/name] syntax.
