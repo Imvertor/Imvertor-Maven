@@ -68,49 +68,49 @@
             <source>MIMEXT-1.1.0</source>
         </tv>
         
-        <tv norm="space" id="CFG-TV-DEFINITION">
+        <tv id="CFG-TV-DEFINITION">
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-DATERECORDED">
+        <tv id="CFG-TV-DATERECORDED">
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-SOURCE">
+        <tv id="CFG-TV-SOURCE">
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
+        <tv id="CFG-TV-SOURCEOFDEFINITION">
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-CONCEPT">
+        <tv id="CFG-TV-CONCEPT">
             <stereotypes>
                 <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-QUALITY">
+        <tv id="CFG-TV-QUALITY">
             <stereotypes>
                 <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-POPULATION">
+        <tv id="CFG-TV-POPULATION">
             <stereotypes>
                 <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-DESCRIPTION">
+        <tv id="CFG-TV-DESCRIPTION">
             <stereotypes>
                 <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
             </stereotypes>
