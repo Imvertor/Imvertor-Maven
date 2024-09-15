@@ -210,7 +210,7 @@ public class Configurator {
 			String ee = getServerProperty("ea.enabled"); // true or false; false typically on server environment; see redmine #487932
 			eaEnabled = (ee == null || !ee.equals("false"));
 			
-			String mw = getServerProperty("max.warnings");
+			String mw = getServerProperty("max.warnings", false);
 			maxWarnings = (mw != null) ? Integer.parseInt(mw) : 1000; 
 			
 		} catch (Exception e) {
