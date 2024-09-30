@@ -24,7 +24,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:mim-in="http://www.geostandaarden.nl/mim/mim-core/1.2" 
-  xmlns:mim="https://modellen.mim-standaard.nl/def/mim/#" 
+  xmlns:mim="http://modellen.mim-standaard.nl/def/mim/#" 
   xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0"
   xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0"
   xmlns:local="urn:local"
