@@ -43,40 +43,22 @@
       <!-- result files -->
       <RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE>${system/work-imvert-folder-path}/imvertor.25.3.2.xsd-migrate.xml</RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE>
       
-      <RESULT_YAMLHEADER_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.01.yaml-header.yml</RESULT_YAMLHEADER_FILE_PATH>   
-      <RESULT_YAMLBODY_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.02.yaml-body.json</RESULT_YAMLBODY_FILE_PATH>   
-      <RESULT_YAMLBODY_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.03.yaml-body2.json</RESULT_YAMLBODY_FILE_PATH2>
-      <RESULT_YAML_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.04.yaml.yml</RESULT_YAML_FILE_PATH2>
-
-         <!-- creating yaml-body using saxon -->
-      <RESULT_JSONMAPPING_4_BODY_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.05.jsonmapping4body.xml</RESULT_JSONMAPPING_4_BODY_FILE_PATH>
-      <RESULT_JSONMAPPING_4_BODY_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.06.jsonmapping4body2.xml</RESULT_JSONMAPPING_4_BODY_FILE_PATH2>
-      <RESULT_JSON_4_BODY_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.07.json4body.json</RESULT_JSON_4_BODY_FILE_PATH>
-      <RESULT_JSON_4_BODY_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.08.json4body2.json</RESULT_JSON_4_BODY_FILE_PATH2>
-      <RESULT_YAML_4_BODY_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.09.yaml4body.yml</RESULT_YAML_4_BODY_FILE_PATH>
+      <!-- creating yaml-body using saxon -->
+      <RESULT_JSONMAPPING_4_BODY_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.01.jsonmapping4body.xml</RESULT_JSONMAPPING_4_BODY_FILE_PATH>
+      <RESULT_JSONMAPPING_4_BODY_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.02.jsonmapping4body2.xml</RESULT_JSONMAPPING_4_BODY_FILE_PATH2>
+      <RESULT_JSON_4_BODY_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.03.json4body.json</RESULT_JSON_4_BODY_FILE_PATH>
+      <RESULT_JSON_4_BODY_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.04.json4body2.json</RESULT_JSON_4_BODY_FILE_PATH2>
+      <RESULT_YAML_4_BODY_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.05.yaml4body.yml</RESULT_YAML_4_BODY_FILE_PATH>
    
          <!-- creating yaml-header using saxon -->
-      <RESULT_JSONMAPPING_4_HEADER_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.10.jsonmapping4header.xml</RESULT_JSONMAPPING_4_HEADER_FILE_PATH>
-      <RESULT_JSON_4_HEADER_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.11.json4header.json</RESULT_JSON_4_HEADER_FILE_PATH>
-      <RESULT_YAML_4_HEADER_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.12.yaml4header.yml</RESULT_YAML_4_HEADER_FILE_PATH>
+      <RESULT_JSONMAPPING_4_HEADER_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.06.jsonmapping4header.xml</RESULT_JSONMAPPING_4_HEADER_FILE_PATH>
+      <RESULT_JSON_4_HEADER_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.07.json4header.json</RESULT_JSON_4_HEADER_FILE_PATH>
+      <RESULT_YAML_4_HEADER_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.08.yaml4header.yml</RESULT_YAML_4_HEADER_FILE_PATH>
 
-      <RESULT_YAML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.13.yaml.yml</RESULT_YAML_FILE_PATH>
-      
-         <!-- For debug purposes -->
-         <RESULT_JSONMAPPING_4_BODY_FILE_PATH3>${system/work-imvert-folder-path}/imvertor.80.14.jsonbody2jsonmapping4debug.xml</RESULT_JSONMAPPING_4_BODY_FILE_PATH3>
-         <RESULT_YAML_4_HEADER_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.15.yamlheader2json4debug.json</RESULT_YAML_4_HEADER_FILE_PATH2>   
-         <RESULT_JSONMAPPING_4_JSONHEADER_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.16.jsonheader2jsonmapping4debug.xml</RESULT_JSONMAPPING_4_JSONHEADER_FILE_PATH>
-      
-      
-       <!--RESULT_YAMLHEADER2_FILE_PATH>${system/work-imvert-folder-path}/imvertor.36.1.yaml-header.yml</RESULT_YAMLHEADER2_FILE_PATH>   
-      <RESULT_YAMLBODY2_FILE_PATH>${system/work-imvert-folder-path}/imvertor.36.2.yaml-body.yml</RESULT_YAMLBODY2_FILE_PATH>   
-      <RESULT_YAML_FILE2_PATH>${system/work-imvert-folder-path}/imvertor.36.3.yaml.yml</RESULT_YAML_FILE2_PATH-->   
+      <RESULT_YAML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.09.yaml.yml</RESULT_YAML_FILE_PATH>
       
       <RESULT_YAML_APPLICATION_FOLDER>${system/work-yaml-folder-path}</RESULT_YAML_APPLICATION_FOLDER>
       
-      <!--IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH>Imvert2Yaml-header.xsl</IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH>
-      <IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH>Imvert2Yaml-body.xsl</IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH-->
-
       <IMVERTOR_METAMODEL_KINGBSM_OPENAPI_MIGRATE_XSLPATH>Imvert2OpenAPI-KING-BSM-migrate.xsl</IMVERTOR_METAMODEL_KINGBSM_OPENAPI_MIGRATE_XSLPATH>
       
       <IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH alias="EPROUGH">Imvert2OpenAPI-KING-create-endproduct-rough-structure.xsl</IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH>
