@@ -36,21 +36,18 @@
    <properties>
    
       <!-- intermediate result files -->
-      
       <ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.70.rough-OpenAPI-endproduct-xml.xml</ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH>
       <RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.71.OpenAPI-endproduct-xml.xml</RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH>   
       
-      <!-- result files -->
-      <RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE>${system/work-imvert-folder-path}/imvertor.25.3.2.xsd-migrate.xml</RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE>
-      
-      <!-- creating yaml-body using saxon -->
+      <!-- VNG Realisatie (formerly KING) -->
+      <!-- creating yaml-body using mapping files -->
       <RESULT_JSONMAPPING_4_BODY_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.01.jsonmapping4body.xml</RESULT_JSONMAPPING_4_BODY_FILE_PATH>
       <RESULT_JSONMAPPING_4_BODY_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.02.jsonmapping4body2.xml</RESULT_JSONMAPPING_4_BODY_FILE_PATH2>
       <RESULT_JSON_4_BODY_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.03.json4body.json</RESULT_JSON_4_BODY_FILE_PATH>
       <RESULT_JSON_4_BODY_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.04.json4body2.json</RESULT_JSON_4_BODY_FILE_PATH2>
       <RESULT_YAML_4_BODY_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.05.yaml4body.yml</RESULT_YAML_4_BODY_FILE_PATH>
    
-         <!-- creating yaml-header using saxon -->
+      <!-- creating yaml-header using mapping files -->
       <RESULT_JSONMAPPING_4_HEADER_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.06.jsonmapping4header.xml</RESULT_JSONMAPPING_4_HEADER_FILE_PATH>
       <RESULT_JSON_4_HEADER_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.07.json4header.json</RESULT_JSON_4_HEADER_FILE_PATH>
       <RESULT_YAML_4_HEADER_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.08.yaml4header.yml</RESULT_YAML_4_HEADER_FILE_PATH>
@@ -58,26 +55,28 @@
       <RESULT_YAML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.09.yaml.yml</RESULT_YAML_FILE_PATH>
       
       <RESULT_YAML_APPLICATION_FOLDER>${system/work-yaml-folder-path}</RESULT_YAML_APPLICATION_FOLDER>
-      
-      <IMVERTOR_METAMODEL_KINGBSM_OPENAPI_MIGRATE_XSLPATH>Imvert2OpenAPI-KING-BSM-migrate.xsl</IMVERTOR_METAMODEL_KINGBSM_OPENAPI_MIGRATE_XSLPATH>
-      
+
+      <!-- xsl files -->
       <IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH alias="EPROUGH">Imvert2OpenAPI-KING-create-endproduct-rough-structure.xsl</IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH alias="EPXML">Imvert2OpenAPI-KING-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH>
       
-      <IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH>Imvert2Yaml-header.xsl</IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH>
-      <IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH>Imvert2Yaml-body.xsl</IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH>
       <IMVERTOR_METAMODEL_KING_EP4JSONMAPPING_4BODY_XSLPATH>Imvert2XML-4-JSON-body-mapping.xsl</IMVERTOR_METAMODEL_KING_EP4JSONMAPPING_4BODY_XSLPATH>
       <IMVERTOR_METAMODEL_KING_EP4JSONMAPPING_4HEADER_XSLPATH>Imvert2XML-4-JSON-header-mapping.xsl</IMVERTOR_METAMODEL_KING_EP4JSONMAPPING_4HEADER_XSLPATH>
 
       <!-- Kadaster -->
+      <!-- result files -->
+      <RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE>${system/work-imvert-folder-path}/imvertor.25.3.2.xsd-migrate.xml</RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE>
+      
       <RESULT_METAMODEL_NEN3610_BSM_MIGRATE>${system/work-imvert-folder-path}/imvertor.25.3.1.nen3610-migrate.xml</RESULT_METAMODEL_NEN3610_BSM_MIGRATE>
       <IMVERTOR_METAMODEL_NEN3610_BSM_MIGRATE_XSLPATH>Imvert2OpenAPI-NEN3610-BSM-migrate.xsl</IMVERTOR_METAMODEL_NEN3610_BSM_MIGRATE_XSLPATH>
-      
+
       <WORK_JSON_HAL_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.1.hal.xml</WORK_JSON_HAL_FILE_PATH>   
       <WORK_JSON_NOHAL_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.2.nohal.xml</WORK_JSON_NOHAL_FILE_PATH>   
       <RESULT_JSON_NOHAL_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.3.nohal.json</RESULT_JSON_NOHAL_FILE_PATH>   
       <IMVERTOR_JSON_NOHAL_XSLPATH>Json2NoHal.xsl</IMVERTOR_JSON_NOHAL_XSLPATH>
-      
+
+      <IMVERTOR_METAMODEL_KINGBSM_OPENAPI_MIGRATE_XSLPATH>Imvert2OpenAPI-KING-BSM-migrate.xsl</IMVERTOR_METAMODEL_KINGBSM_OPENAPI_MIGRATE_XSLPATH>
+      <IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH>Imvert2Yaml-body.xsl</IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH>
       
    </properties>
    
