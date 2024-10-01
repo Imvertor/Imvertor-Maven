@@ -70,6 +70,7 @@
       <RESULT_METAMODEL_NEN3610_BSM_MIGRATE>${system/work-imvert-folder-path}/imvertor.25.3.1.nen3610-migrate.xml</RESULT_METAMODEL_NEN3610_BSM_MIGRATE>
       <IMVERTOR_METAMODEL_NEN3610_BSM_MIGRATE_XSLPATH>Imvert2OpenAPI-NEN3610-BSM-migrate.xsl</IMVERTOR_METAMODEL_NEN3610_BSM_MIGRATE_XSLPATH>
 
+      <RESULT_YAMLBODY_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.02.yaml-body.json</RESULT_YAMLBODY_FILE_PATH>   
       <WORK_JSON_HAL_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.1.hal.xml</WORK_JSON_HAL_FILE_PATH>   
       <WORK_JSON_NOHAL_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.2.nohal.xml</WORK_JSON_NOHAL_FILE_PATH>   
       <RESULT_JSON_NOHAL_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.3.nohal.json</RESULT_JSON_NOHAL_FILE_PATH>   
