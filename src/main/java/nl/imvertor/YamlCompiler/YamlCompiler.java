@@ -106,61 +106,18 @@ public class YamlCompiler extends Step {
 		transformer.setXslParm("json-version","3.0");
 		succeeds = succeeds && transformer.transformStep("properties/ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH");
 
-//		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLHEADER_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH");
-//		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLBODY_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH");
-
 		// Next 2 lines are for generating json and yaml using a json mapping file
 		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_JSONMAPPING_4_BODY_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_EP4JSONMAPPING_4BODY_XSLPATH");
 		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_JSONMAPPING_4_HEADER_FILE_PATH","properties/IMVERTOR_METAMODEL_KING_EP4JSONMAPPING_4HEADER_XSLPATH");
 
 		transformer.setXslParm("json-version","2.0");
-//		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLBODY_FILE_PATH2", "properties/IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH");
 
 		// Next line is for generating json using a json mapping file
 		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_JSONMAPPING_4_BODY_FILE_PATH2", "properties/IMVERTOR_METAMODEL_KING_EP4JSONMAPPING_4BODY_XSLPATH");
 		
-		// This is the code for the old way of generating yaml en json schema's
-/**		if (succeeds) {
-*			// concatenate
-*			YamlFile headerFile = new YamlFile(configurator.getXParm("properties/RESULT_YAMLHEADER_FILE_PATH"));
-*			JsonFile bodyFile = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
-*					 //bodyFile.prettyPrint();
-*			YamlFile yamlFile = new YamlFile(configurator.getXParm("properties/RESULT_YAML_FILE_PATH2"));
-*			JsonFile bodyFile2 = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH2"));
-*				 	 //bodyFile2.prettyPrint();
-*	
-*			// validate
-*			String hc = headerFile.getContent();
-*			succeeds = succeeds && YamlFile.validate(hc);
-*			succeeds = succeeds && bodyFile.toYaml(yamlFile);
-*			String bc = yamlFile.getContent();
-*			
-*			// in all cases copy results to app folder
-*			yamlFile.setContent(hc + "\n" + bc);
-*			
-*			// convert for debug purposes the Yaml file generated in line 111 to a Json-mapping file.
-*			JsonFile headerJSONFile = new JsonFile(configurator.getXParm("properties/RESULT_YAML_4_HEADER_FILE_PATH2"));
-*			XmlFile jsonXmlMappingFile4header = new XmlFile(configurator.getXParm("properties/RESULT_JSONMAPPING_4_JSONHEADER_FILE_PATH"));
-*			
-*			headerFile.toJson(headerJSONFile);
-*			headerJSONFile.toXml(jsonXmlMappingFile4header);
-*		
-*			//String schemaName = configurator.getXParm("appinfo/OpenAPI-schema-name");
-*		
-*			// copy to the app folder
-*			AnyFile appYamlFile = new AnyFile(yamlFolder,"openapi.yaml");
-*			AnyFile appJsonFile = new AnyFile(yamlFolder,"openapi.json");
-*			AnyFile appJson2File = new AnyFile(yamlFolder,"openapi_draft04.json");
-*			yamlFile.copyFile(appYamlFile);
-*			bodyFile.copyFile(appJsonFile);
-*			bodyFile2.copyFile(appJson2File);
-*		} 
-*/
-		// This is the latest code for the more solid way of generating yaml and json schema's
+		// This is the code for generating yaml and json schema's
 		if (succeeds) {
 	
-//			AnyFolder appFolder = new AnyFolder(configurator.getXParm("system/work-app-folder-path"));
-
 			// convert the json xml to Json without schema reference and than to yaml.
 			XmlFile xmlMappingFileBody = new XmlFile(configurator.getXParm("properties/RESULT_JSONMAPPING_4_BODY_FILE_PATH"));
 			JsonFile jsonFileBody = new JsonFile(configurator.getXParm("properties/RESULT_JSON_4_BODY_FILE_PATH"));
@@ -184,12 +141,6 @@ public class YamlCompiler extends Step {
 			xmlMappingFileHeader.toJson(jsonFileHeader);
 			jsonFileHeader.toYaml(yamlFileHeader);
 
-			// convert for debug purposes the Json file generated in line 112 to a Json-mapping file.
-//			JsonFile jsonbodyFile = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
-//			XmlFile xmlMappingFileBody3 = new XmlFile(configurator.getXParm("properties/RESULT_JSONMAPPING_4_BODY_FILE_PATH3"));
-
-//			jsonbodyFile.toXml(xmlMappingFileBody3);
-			
 			// validate
 			String hc = yamlFileHeader.getContent();
 			String bc = yamlFileBody.getContent();
