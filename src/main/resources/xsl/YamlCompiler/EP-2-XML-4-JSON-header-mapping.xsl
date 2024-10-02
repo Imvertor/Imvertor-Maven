@@ -446,71 +446,7 @@
 												<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
 											</xsl:call-template>
 										</xsl:variable>
-										<xsl:choose>
-											<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
-												<j:map>
-													<j:string key="in">path</j:string>
-													<j:string key="name"><xsl:value-of select="ep:name" /></j:string>
-													<xsl:variable name="documentation">
-														<xsl:apply-templates select="ep:documentation"/>
-													</xsl:variable>
-													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-													</xsl:if>
-													<j:boolean key="required">true</j:boolean>
-													<j:map key="schema">
-														<xsl:sequence select="imf:generateRef(concat($standard-json-gemeente-components-url,ep:type-name))"/>
-													</j:map>
-												</j:map>
-											</xsl:when>
-											<xsl:when test="ep:data-type">
-												<j:map>
-													<j:string key="in">path</j:string>
-													<j:string key="name"><xsl:value-of select="ep:name" /></j:string>
-													<xsl:variable name="documentation">
-														<xsl:apply-templates select="ep:documentation"/>
-													</xsl:variable>
-													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-													</xsl:if>
-													<j:boolean key="required">true</j:boolean>
-													<j:map key="schema">
-														<j:string key="type"><xsl:value-of select="$datatype" /></j:string>
-														<xsl:variable name="format">
-															<xsl:call-template name="deriveFormat">
-																<xsl:with-param name="incomingType" select="$incomingType"/>
-															</xsl:call-template>
-														</xsl:variable>
-														<xsl:variable name="facets">
-															<xsl:call-template name="deriveFacets">
-																<xsl:with-param name="incomingType" select="$incomingType"/>
-															</xsl:call-template>
-														</xsl:variable>
-														<xsl:sequence select="$format"/>
-														<xsl:sequence select="$facets"/>
-													</j:map>
-													<xsl:if test="ep:example">
-														<j:string key="example"><xsl:value-of select="ep:example"/></j:string>
-													</xsl:if>
-												</j:map>
-											</xsl:when>
-											<xsl:when test="ep:type-name">
-												<j:map>
-													<j:string key="in">path</j:string>
-													<j:string key="name"><xsl:value-of select="ep:name" /></j:string>
-													<xsl:variable name="documentation">
-														<xsl:apply-templates select="ep:documentation"/>
-													</xsl:variable>
-													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-													</xsl:if>
-													<j:boolean key="required">true</j:boolean>
-													<j:map key="schema">
-														<xsl:sequence select="imf:generateRef(concat('#/components/schemas/',ep:type-name))"/>
-													</j:map>
-												</j:map>
-											</xsl:when>
-										</xsl:choose>
+										<xsl:sequence select="imf:create-parameter('path',ep:name,'true',.,$incomingType,$datatype,'not-applicable')"/>
 									</xsl:when>
 									<xsl:when test="empty(@path) or @path = 'false'">
 										<xsl:if test="$debugging">
@@ -583,29 +519,7 @@
 													<xsl:sequence select="imf:generateRef(concat($standard-yaml-parameters-url,'api-version'))"/>
 												</j:map>
 											</xsl:when>
-											<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
-												<xsl:variable name="required">
-													<xsl:choose>
-														<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
-														<xsl:otherwise>false</xsl:otherwise>
-													</xsl:choose>
-												</xsl:variable>
-												<j:map>
-													<j:string key="in">query</j:string>
-													<j:string key="name"><xsl:value-of select="translate(ep:name/@original,'.','_')" /></j:string>
-													<xsl:variable name="documentation">
-														<xsl:apply-templates select="ep:documentation"/>
-													</xsl:variable>
-													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-													</xsl:if>
-													<j:boolean key="required"><xsl:value-of select="$required"/></j:boolean>
-													<j:map key="schema">
-														<xsl:sequence select="imf:generateRef(concat($standard-json-gemeente-components-url,ep:type-name))"/>
-													</j:map>
-												</j:map>
-											</xsl:when>
-											<xsl:when test="ep:data-type">
+											<xsl:otherwise>
 												<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
 												<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
 												<xsl:variable name="datatype">
@@ -620,81 +534,8 @@
 														<xsl:otherwise>false</xsl:otherwise>
 													</xsl:choose>
 												</xsl:variable>
-												<j:map>
-													<j:string key="in">query</j:string>
-													<j:string key="name"><xsl:value-of select="translate(ep:name/@original,'.','_')" /></j:string>
-													<xsl:variable name="documentation">
-														<xsl:apply-templates select="ep:documentation"/>
-													</xsl:variable>
-													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-													</xsl:if>
-													<j:boolean key="required"><xsl:value-of select="$required"/></j:boolean>
-													<j:map key="schema">
-														<j:string key="type"><xsl:value-of select="$datatype" /></j:string>
-														<xsl:variable name="format">
-															<xsl:call-template name="deriveFormat">
-																<xsl:with-param name="incomingType" select="$incomingType"/>
-															</xsl:call-template>
-														</xsl:variable>
-														<xsl:variable name="facets">
-															<xsl:call-template name="deriveFacets">
-																<xsl:with-param name="incomingType" select="$incomingType"/>
-															</xsl:call-template>
-														</xsl:variable>
-														<xsl:sequence select="$format"/>
-														<xsl:sequence select="$facets"/>
-													</j:map>
-													<xsl:if test="ep:example">
-														<j:string key="example"><xsl:value-of select="ep:example"/></j:string>
-													</xsl:if>
-												</j:map>
-											</xsl:when>
-											<xsl:when test="$type-name != '' and $message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']">
-												<!-- Deze when is voor het afhandelen van request parameters die gebruik maken van lokale datatypen. -->
-												<xsl:variable name="required">
-													<xsl:choose>
-														<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
-														<xsl:otherwise>false</xsl:otherwise>
-													</xsl:choose>
-												</xsl:variable>
-												<j:map>
-													<j:string key="in">query</j:string>
-													<j:string key="name"><xsl:value-of select="translate(ep:name/@original,'.','_')" /></j:string>
-													<xsl:variable name="documentation">
-														<xsl:apply-templates select="ep:documentation"/>
-													</xsl:variable>
-													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-													</xsl:if>
-													<j:boolean key="required"><xsl:value-of select="$required"/></j:boolean>
-													<j:map key="schema">
-														<xsl:apply-templates select="$message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']" mode="simpletype-class"/>
-													</j:map>
-												</j:map>
-											</xsl:when>
-											<xsl:when test="ep:type-name">
-												<xsl:variable name="required">
-													<xsl:choose>
-														<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
-														<xsl:otherwise>false</xsl:otherwise>
-													</xsl:choose>
-												</xsl:variable>
-												<j:map>
-													<j:string key="in">query</j:string>
-													<j:string key="name"><xsl:value-of select="translate(ep:name/@original,'.','_')" /></j:string>
-													<xsl:variable name="documentation">
-														<xsl:apply-templates select="ep:documentation"/>
-													</xsl:variable>
-													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-													</xsl:if>
-													<j:boolean key="required"><xsl:value-of select="$required"/></j:boolean>
-													<j:map key="schema">
-														<xsl:sequence select="imf:generateRef(concat('#/components/schemas/',ep:type-name))"/>
-													</j:map>
-												</j:map>
-											</xsl:when>
+												<xsl:sequence select="imf:create-parameter('query',translate(ep:name/@original,'.','_'),$required,.,$incomingType,$datatype,$type-name)"/>
+											</xsl:otherwise>
 										</xsl:choose>
 									</xsl:when>
 								</xsl:choose>
@@ -994,92 +835,17 @@
 												<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
 											</xsl:call-template>
 										</xsl:variable>
-										<xsl:choose>
-											<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
-												<j:map>
-													<j:string key="in">path</j:string>
-													<j:string key="name"><xsl:value-of select="ep:name" /></j:string>
-													<xsl:variable name="documentation">
-														<xsl:apply-templates select="ep:documentation"/>
-													</xsl:variable>
-													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-													</xsl:if>
-													<j:boolean key="required">true</j:boolean>
-													<j:map key="schema">
-														<xsl:sequence select="imf:generateRef(concat($standard-json-gemeente-components-url,ep:type-name))"/>
-													</j:map>
-												</j:map>
-											</xsl:when>
-											<!--							<xsl:when test="upper-case(ep:name) = 'UUID'">
-										<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
-									</xsl:when> -->
-											<xsl:when test="ep:data-type">
-												<j:map>
-													<j:string key="in">path</j:string>
-													<j:string key="name"><xsl:value-of select="ep:name" /></j:string>
-													<xsl:variable name="documentation">
-														<xsl:apply-templates select="ep:documentation"/>
-													</xsl:variable>
-													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-													</xsl:if>
-													<j:boolean key="required">true</j:boolean>
-													<j:map key="schema">
-														<j:string key="type"><xsl:value-of select="$datatype" /></j:string>
-														<xsl:variable name="format">
-															<xsl:call-template name="deriveFormat">
-																<xsl:with-param name="incomingType" select="$incomingType"/>
-															</xsl:call-template>
-														</xsl:variable>
-														<xsl:variable name="facets">
-															<xsl:call-template name="deriveFacets">
-																<xsl:with-param name="incomingType" select="$incomingType"/>
-															</xsl:call-template>
-														</xsl:variable>
-														<xsl:sequence select="$format"/>
-														<xsl:sequence select="$facets"/>
-													</j:map>
-													<xsl:if test="ep:example">
-														<j:string key="example"><xsl:value-of select="ep:example"/></j:string>
-													</xsl:if>
-												</j:map>
-											</xsl:when>
-											<xsl:when test="ep:type-name">
-												<j:map>
-													<j:string key="in">path</j:string>
-													<j:string key="name"><xsl:value-of select="ep:name" /></j:string>
-													<xsl:variable name="documentation">
-														<xsl:apply-templates select="ep:documentation"/>
-													</xsl:variable>
-													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-													</xsl:if>
-													<j:boolean key="required">true</j:boolean>
-													<j:map key="schema">
-														<xsl:sequence select="imf:generateRef(concat('#/components/schemas/',ep:type-name))"/>
-													</j:map>
-												</j:map>
-											</xsl:when>
-										</xsl:choose>
+										<xsl:sequence select="imf:create-parameter('path',ep:name,'true',.,$incomingType,$datatype,'not-applicable')"/>
 									</xsl:when>
 									<xsl:when test="empty(@path) or @path = 'false'">
-										<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
-										<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
-										<xsl:variable name="datatype">
-											<xsl:call-template name="deriveDataType">
-												<xsl:with-param name="incomingType" select="$incomingType"/>
-												<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
-											</xsl:call-template>
-										</xsl:variable>
+										<xsl:if test="$debugging">
+											<xsl:sequence select="imf:generateDebugInfo('Debuglocatie-01000b',.)"/>
+										</xsl:if>
 										<xsl:variable name="type-name">
 											<xsl:if test="ep:type-name">
 												<xsl:value-of select="ep:type-name"/>
 											</xsl:if>
 										</xsl:variable>
-										<xsl:if test="$debugging">
-											<xsl:sequence select="imf:generateDebugInfo('Debuglocatie-01000b',.)"/>
-										</xsl:if>
 										<xsl:choose>
 											<xsl:when test="upper-case(ep:name) = 'PAGESIZE'">
 												<j:map>
@@ -1116,55 +882,21 @@
 												</j:map>
 											</xsl:when>
 											<xsl:otherwise>
+												<xsl:variable name="incomingType" select="lower-case(ep:data-type)"/>
+												<xsl:variable name="incomingTypeName" select="lower-case(ep:type-name)"/>
+												<xsl:variable name="datatype">
+													<xsl:call-template name="deriveDataType">
+														<xsl:with-param name="incomingType" select="$incomingType"/>
+														<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
+													</xsl:call-template>
+												</xsl:variable>
 												<xsl:variable name="required">
 													<xsl:choose>
 														<xsl:when test="not(empty(ep:min-occurs)) and ep:min-occurs > 0">true</xsl:when>
 														<xsl:otherwise>false</xsl:otherwise>
 													</xsl:choose>
 												</xsl:variable>
-												<j:map>
-													<j:string key="in">query</j:string>
-													<j:string key="name"><xsl:value-of select="translate(ep:name/@original,'.','_')" /></j:string>
-													<xsl:variable name="documentation">
-														<xsl:apply-templates select="ep:documentation"/>
-													</xsl:variable>
-													<xsl:if test="$documentation!=''">
-														<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-													</xsl:if>
-													<j:boolean key="required"><xsl:value-of select="$required"/></j:boolean>
-													<j:map key="schema">
-														<xsl:choose>
-															<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
-																<xsl:sequence select="imf:generateRef(concat($standard-json-gemeente-components-url,ep:type-name))"/>
-															</xsl:when>
-															<xsl:when test="ep:data-type">
-																<j:string key="type"><xsl:value-of select="$datatype" /></j:string>
-																<xsl:variable name="format">
-																	<xsl:call-template name="deriveFormat">
-																		<xsl:with-param name="incomingType" select="$incomingType"/>
-																	</xsl:call-template>
-																</xsl:variable>
-																<xsl:variable name="facets">
-																	<xsl:call-template name="deriveFacets">
-																		<xsl:with-param name="incomingType" select="$incomingType"/>
-																	</xsl:call-template>
-																</xsl:variable>
-																<xsl:sequence select="$format"/>
-																<xsl:sequence select="$facets"/>
-															</xsl:when>
-															<xsl:when test="$type-name != '' and $message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']">
-																<!-- Deze when is voor het afhandelen van request parameters die gebruik maken van lokale datatypen. -->
-																<xsl:apply-templates select="$message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']" mode="simpletype-class"/> 
-															</xsl:when>
-															<xsl:when test="ep:type-name">
-																<xsl:sequence select="imf:generateRef(concat('#/components/schemas/',ep:type-name))"/>
-															</xsl:when>
-														</xsl:choose>
-													</j:map>
-													<xsl:if test="ep:example">
-														<j:string key="example"><xsl:value-of select="ep:example"/></j:string>
-													</xsl:if>
-												</j:map>
+												<xsl:sequence select="imf:create-parameter('query',translate(ep:name/@original,'.','_'),$required,.,$incomingType,$datatype,$type-name)"/>
 											</xsl:otherwise>
 										</xsl:choose>
 									</xsl:when>
@@ -1407,74 +1139,7 @@
 										<xsl:with-param name="incomingTypeName" select="$incomingTypeName"/>
 									</xsl:call-template>
 								</xsl:variable>
-								<xsl:choose>
-									<xsl:when test="ep:outside-ref=('VNGR','VNG-GENERIEK')">
-										<j:map>
-											<j:string key="in">path</j:string>
-											<j:string key="name"><xsl:value-of select="ep:name" /></j:string>
-											<xsl:variable name="documentation">
-												<xsl:apply-templates select="ep:documentation"/>
-											</xsl:variable>
-											<xsl:if test="$documentation!=''">
-												<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-											</xsl:if>
-											<j:boolean key="required">true</j:boolean>
-											<j:map key="schema">
-												<xsl:sequence select="imf:generateRef(concat($standard-json-gemeente-components-url,ep:type-name))"/>
-											</j:map>
-										</j:map>
-									</xsl:when>
-		<!--							<xsl:when test="upper-case(ep:name) = 'UUID'">
-										<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'uuid&quot;')"/>
-									</xsl:when> -->
-									<xsl:when test="ep:data-type">
-										<j:map>
-											<j:string key="in">path</j:string>
-											<j:string key="name"><xsl:value-of select="ep:name" /></j:string>
-											<xsl:variable name="documentation">
-												<xsl:apply-templates select="ep:documentation"/>
-											</xsl:variable>
-											<xsl:if test="$documentation!=''">
-												<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-											</xsl:if>
-											<j:boolean key="required">true</j:boolean>
-											<j:map key="schema">
-												<j:string key="type"><xsl:value-of select="$datatype" /></j:string>
-												<xsl:variable name="format">
-													<xsl:call-template name="deriveFormat">
-														<xsl:with-param name="incomingType" select="$incomingType"/>
-													</xsl:call-template>
-												</xsl:variable>
-												<xsl:variable name="facets">
-													<xsl:call-template name="deriveFacets">
-														<xsl:with-param name="incomingType" select="$incomingType"/>
-													</xsl:call-template>
-												</xsl:variable>
-												<xsl:sequence select="$format"/>
-												<xsl:sequence select="$facets"/>
-											</j:map>
-											<xsl:if test="ep:example">
-												<j:string key="example"><xsl:value-of select="ep:example"/></j:string>
-											</xsl:if>
-										</j:map>
-									</xsl:when>
-									<xsl:when test="ep:type-name">
-										<j:map>
-											<j:string key="in">path</j:string>
-											<j:string key="name"><xsl:value-of select="ep:name" /></j:string>
-											<xsl:variable name="documentation">
-												<xsl:apply-templates select="ep:documentation"/>
-											</xsl:variable>
-											<xsl:if test="$documentation!=''">
-												<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
-											</xsl:if>
-											<j:boolean key="required">true</j:boolean>
-											<j:map key="schema">
-												<xsl:sequence select="imf:generateRef(concat('#/components/schemas/',ep:type-name))"/>
-											</j:map>
-										</j:map>
-									</xsl:when>
-								</xsl:choose>
+								<xsl:sequence select="imf:create-parameter('path',ep:name,'true',.,$incomingType,$datatype,'not-applicable')"/>
 							</xsl:for-each>
 						</j:array>
 					</xsl:if>
@@ -1513,6 +1178,7 @@
 		<xsl:variable name="facets">
 			<xsl:call-template name="deriveFacets">
 				<xsl:with-param name="incomingType" select="$incomingType"/>
+				<xsl:with-param name="context-item" select="."/>
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:sequence select="$format"/>
@@ -2174,26 +1840,27 @@
 	
 	<xsl:template name="deriveFacets">
         <xsl:param name="incomingType"/>
+		<xsl:param name="context-item"/>
         
   		<!-- Some types can have one or more facets which restrict the allowed value. -->
        <xsl:choose>
 	       	<xsl:when test="$incomingType = 'string'">
-				<xsl:if test="ep:pattern">
-					<j:string key="pattern">^<xsl:value-of select="ep:pattern"/>$</j:string>
+	       		<xsl:if test="$context-item/ep:pattern">
+	       			<j:string key="pattern">^<xsl:value-of select="$context-item/ep:pattern"/>$</j:string>
 				</xsl:if>
-	       		<xsl:if test="ep:max-length">
-	       			<j:number key="maxLength"><xsl:value-of select="ep:max-length"/></j:number>
+	       		<xsl:if test="$context-item/ep:max-length">
+	       			<j:number key="maxLength"><xsl:value-of select="$context-item/ep:max-length"/></j:number>
 	       		</xsl:if>
-	       		<xsl:if test="ep:min-length and empty(ep:pattern)">
-	       			<j:number key="minLength"><xsl:value-of select="ep:min-length"/></j:number>
+	       		<xsl:if test="$context-item/ep:min-length and empty($context-item/ep:pattern)">
+	       			<j:number key="minLength"><xsl:value-of select="$context-item/ep:min-length"/></j:number>
 	       		</xsl:if>
 	       	</xsl:when>
 	       	<xsl:when test="$incomingType = ('integer','real','decimal')">
-	       		<xsl:if test="ep:min-value">
-	       			<j:number key="minimum"><xsl:value-of select="ep:min-value"/></j:number>
+	       		<xsl:if test="$context-item/ep:min-value">
+	       			<j:number key="minimum"><xsl:value-of select="$context-item/ep:min-value"/></j:number>
 	       		</xsl:if>
-	       		<xsl:if test="ep:max-value">
-	       			<j:number key="maximum"><xsl:value-of select="ep:max-value"/></j:number>
+	       		<xsl:if test="$context-item/ep:max-value">
+	       			<j:number key="maximum"><xsl:value-of select="$context-item/ep:max-value"/></j:number>
 	       		</xsl:if>
 	       	</xsl:when>
 	       	<xsl:when test="$incomingType = 'year'">
@@ -2421,5 +2088,62 @@
 			</j:map>
 		</xsl:if>
 		
+	</xsl:function>
+	
+	<xsl:function name="imf:create-parameter" as="item()*">
+		<xsl:param name="parameter-type" as="xs:string"/>
+		<xsl:param name="parameter-name" as="xs:string"/>
+		<xsl:param name="parameter-required" as="xs:string"/>
+		<xsl:param name="parameter-element" as="element()"/>
+		<xsl:param name="incomingType" as="xs:string"/> 
+		<xsl:param name="datatype" as="xs:string"/>
+		<xsl:param name="type-name" as="xs:string"/>
+		
+		<j:map>
+			<j:string key="in"><xsl:value-of select="$parameter-type"/></j:string>
+			<j:string key="name"><xsl:value-of select="$parameter-name" /></j:string>
+			<xsl:variable name="documentation">
+				<xsl:apply-templates select="$parameter-element/ep:documentation"/>
+			</xsl:variable>
+			<xsl:if test="$documentation!=''">
+				<j:string key="description"><xsl:sequence select="replace($documentation, '^\s+|\s+$', '')"/></j:string>
+			</xsl:if>
+			<xsl:if test="$parameter-required != ''">
+				<j:boolean key="required"><xsl:value-of select="$parameter-required"/></j:boolean>
+			</xsl:if>
+			<j:map key="schema">
+				<xsl:choose>
+					<xsl:when test="$parameter-element/ep:outside-ref=('VNGR','VNG-GENERIEK')">
+						<xsl:sequence select="imf:generateRef(concat($standard-json-gemeente-components-url,$parameter-element/ep:type-name))"/>
+					</xsl:when>
+					<xsl:when test="$parameter-element/ep:data-type">
+						<j:string key="type"><xsl:value-of select="$datatype" /></j:string>
+						<xsl:variable name="format">
+							<xsl:call-template name="deriveFormat">
+								<xsl:with-param name="incomingType" select="$incomingType"/>
+							</xsl:call-template>
+						</xsl:variable>
+						<xsl:variable name="facets">
+							<xsl:call-template name="deriveFacets">
+								<xsl:with-param name="incomingType" select="$incomingType"/>
+								<xsl:with-param name="context-item" select="$parameter-element"/>
+							</xsl:call-template>
+						</xsl:variable>
+						<xsl:sequence select="$format"/>
+						<xsl:sequence select="$facets"/>
+					</xsl:when>
+					<xsl:when test="$type-name !='not-applicable' and $type-name != '' and $message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']">
+						<!-- Deze when is voor het afhandelen van request parameters die gebruik maken van lokale datatypen. -->
+						<xsl:apply-templates select="$message-sets//ep:message-set/ep:construct[ep:tech-name=$type-name and ep:parameters/ep:parameter[ep:name = 'type']/ep:value = 'simpletype-class']" mode="simpletype-class"/> 
+					</xsl:when>
+					<xsl:when test="$parameter-element/ep:type-name">
+						<xsl:sequence select="imf:generateRef(concat('#/components/schemas/',$parameter-element/ep:type-name))"/>
+					</xsl:when>
+				</xsl:choose>
+			</j:map>
+			<xsl:if test="$parameter-element/ep:example and not($parameter-element/ep:outside-ref=('VNGR','VNG-GENERIEK')) and $parameter-element/ep:data-type">
+				<j:string key="example"><xsl:value-of select="$parameter-element/ep:example"/></j:string>
+			</xsl:if>
+		</j:map>
 	</xsl:function>
 </xsl:stylesheet>
