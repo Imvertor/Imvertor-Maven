@@ -61,4 +61,11 @@
         <name lang="en">Multiplicity</name>
     </doc-rule>
     
+    <!--
+        Include incoming associations in the short overview?
+        Wilko Quak: Deze regel heb ik in overleg met Paul Jannsen toegevoegd met de volgende redenering: Inkomende
+         relaties zijn geen eigenschap van het objecttype dus hebben geen betekenis, er gebeurt niets mee.
+    -->
+    <include-incoming-associations>no</include-incoming-associations>
+    
 </doc-rules>
