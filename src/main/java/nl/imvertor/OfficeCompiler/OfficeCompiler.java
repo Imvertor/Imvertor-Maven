@@ -36,6 +36,9 @@ import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.FtpFolder;
+import nl.imvertor.common.file.WordFile;
+import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.file.ZipFile;
 import nl.imvertor.common.git.ResourcePusher;
 
 public class OfficeCompiler extends Step {
@@ -135,6 +138,31 @@ public class OfficeCompiler extends Step {
 					// process catalog only, save as XHTML
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_MODELDOC_RESPEC_XSLPATH") : false;
 					if (succeeds) processDoc(fn,"respec.catalog.xhtml","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
+					
+					// De laatste output is de XHTML catalogus; die staat centraal in documentor.
+					
+					// als documentor info beschikbaar is, dan uitpakken en omzetten naar xhtml met Pandoc
+					String mdf = configurator.getXParm("cli/documentorfile",false);
+					if (mdf != null) {
+						AnyFile docFile = new AnyFile(mdf);
+						boolean isFolder = docFile.isDirectory();
+						boolean isZip = docFile.getExtension().equals("zip");
+						if (isZip) {
+							runner.debug(logger,"CHAIN","Extracting documentor files");
+							// alles uitpakken naar de workfolder
+							AnyFolder docFolder = new AnyFolder(configurator.getWorkFolder("documentor"));
+							if (docFolder.isDirectory()) docFolder.deleteDirectory();
+							ZipFile zipFile = new ZipFile(docFile);
+							zipFile.decompress(docFolder);
+							// ga door deze files heen en zet ze om naar XHTML
+							Iterator<String> it = docFolder.listFilesToVector(false).iterator();
+							while (it.hasNext()) {
+								AnyFile f = new AnyFile(it.next());
+								if (f.getExtension().equals("docx"))
+									succeeds = succeeds ? transformDocx(f) : false ;
+							}
+						}
+					}
 				}
 			} else {
 				runner.error(logger,"No (valid) office variant specified: " + vr.toString());
@@ -246,5 +274,16 @@ public class OfficeCompiler extends Step {
 		} catch (Exception e) {
 			runner.error(logger, "Error pushing files to remote repository https://github.com" + gitpath + ": " + e.getMessage(),e);
 		}
+	}
+	
+	private boolean transformDocx(AnyFile mswordFile) throws Exception {
+		//TODO
+		
+		WordFile infile = new WordFile(mswordFile);
+		XmlFile outfile = new XmlFile(mswordFile.getCanonicalPath() + ".xhtml");
+		
+		infile.toXhtmlFile(outfile);
+		
+		return true;
 	}
 }

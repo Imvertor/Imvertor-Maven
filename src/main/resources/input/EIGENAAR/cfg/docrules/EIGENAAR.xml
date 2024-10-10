@@ -48,7 +48,7 @@
     <!-- 
         Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
     -->
-    <respec-config>https://armatiek.nl/respec-profiles/w3c/profile/respec-w3c-common.js</respec-config>
+    <respec-config>https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js</respec-config>
     
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
