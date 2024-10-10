@@ -1040,7 +1040,7 @@ public class Configurator {
 			String optionName = e.nextElement().toString();
 			String value = properties.getProperty(optionName);
 			// process file properties in context of the current file
-			if (optionName.equals("umlfile") | optionName.equals("zipfile") | optionName.equals("hisfile") | optionName.equals("modeldocfile")) {
+			if (optionName.equals("umlfile") | optionName.equals("zipfile") | optionName.equals("hisfile") | optionName.equals("documentorfile")) {
 				File parent = (new File(filePath)).getParentFile();
 				if (AnyFile.isAbsolutePath(value))
 					value = (new File(value)).getCanonicalPath();

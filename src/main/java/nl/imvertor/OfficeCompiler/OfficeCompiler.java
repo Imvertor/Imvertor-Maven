@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.transport.PushResult;
@@ -37,10 +36,10 @@ import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.FtpFolder;
+import nl.imvertor.common.file.WordFile;
+import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.ZipFile;
 import nl.imvertor.common.git.ResourcePusher;
-import nl.imvertor.common.helper.OsExecutor;
-import nl.imvertor.common.helper.OsExecutor.OsExecutorResultHandler;
 
 public class OfficeCompiler extends Step {
 
@@ -141,15 +140,18 @@ public class OfficeCompiler extends Step {
 					if (succeeds) processDoc(fn,"respec.catalog.xhtml","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
 					
 					// De laatste output is de XHTML catalogus; die staat centraal in documentor.
-					/*
+					
 					// als documentor info beschikbaar is, dan uitpakken en omzetten naar xhtml met Pandoc
-					AnyFile docFile = new AnyFile(configurator.getXParm("cli/modeldocfile",false));
-					if (docFile != null) {
+					String mdf = configurator.getXParm("cli/documentorfile",false);
+					if (mdf != null) {
+						AnyFile docFile = new AnyFile(mdf);
 						boolean isFolder = docFile.isDirectory();
 						boolean isZip = docFile.getExtension().equals("zip");
 						if (isZip) {
+							runner.debug(logger,"CHAIN","Extracting documentor files");
 							// alles uitpakken naar de workfolder
-							AnyFolder docFolder = new AnyFolder(configurator.getWorkFolder("modeldoc"));
+							AnyFolder docFolder = new AnyFolder(configurator.getWorkFolder("documentor"));
+							if (docFolder.isDirectory()) docFolder.deleteDirectory();
 							ZipFile zipFile = new ZipFile(docFile);
 							zipFile.decompress(docFolder);
 							// ga door deze files heen en zet ze om naar XHTML
@@ -161,7 +163,6 @@ public class OfficeCompiler extends Step {
 							}
 						}
 					}
-					*/
 				}
 			} else {
 				runner.error(logger,"No (valid) office variant specified: " + vr.toString());
@@ -277,6 +278,11 @@ public class OfficeCompiler extends Step {
 	
 	private boolean transformDocx(AnyFile mswordFile) throws Exception {
 		//TODO
+		
+		WordFile infile = new WordFile(mswordFile);
+		XmlFile outfile = new XmlFile(mswordFile.getCanonicalPath() + ".xhtml");
+		
+		infile.toXhtmlFile(outfile);
 		
 		return true;
 	}

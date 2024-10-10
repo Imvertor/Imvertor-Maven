@@ -133,6 +133,14 @@
          <tip>Yes if codelists and reference lists that have a location must be read dynamically from that location and included in the model documentation.</tip>
          <required>false</required>
       </cli-parm> 
+    
+      <cli-parm>
+         <name>modeldocfile</name>
+         <arg>filepath</arg>
+         <tip>Path to the folder or zipfile holding the modeldoc files, i.e. profile and MsWord files and images used to create a full Respec.</tip>
+         <required>false</required>
+         <type>file</type>
+      </cli-parm> 
       
    </cli-parms>
    <properties>

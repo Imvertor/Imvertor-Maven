@@ -1,5 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-    
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  version="3.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
@@ -8,63 +7,128 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+
     exclude-result-prefixes="#all" 
-    version="2.0">
+    expand-text="yes">
+    
+    
+    <!-- 
+        Deze opzet volgt de Logius ReSpec template instructies
+        
+        Zie https://github.com/Logius-standaarden/ReSpec-template
+    -->
     
     <xsl:import href="common/Imvert2modeldoc-html-respec.xsl"/>
     
+    <xsl:param name="catalog-only">false</xsl:param>
+    
     <!-- this owner generates respec files with all info stored in that file. -->
     
+    <xsl:variable name="owner-js-url" select="imf:file-to-url(imf:get-xparm('system/inp-folder-path') || '/cfg/docrules/documentor/js/owner.js')"/>
+    <xsl:variable name="owner-icon-url" select="imf:file-to-url(imf:get-xparm('system/inp-folder-path') || '/cfg/docrules/documentor/img/logo.ico')"/>
+    <xsl:variable name="owner-css-url" select="imf:file-to-url(imf:get-xparm('system/inp-folder-path') || '/cfg/docrules/documentor/css/owner.css')"/>
+    <xsl:variable name="owner-config-url" select="$configuration-docrules-file/respec-config"/>
+    
+    <!--TODO deze info vanuit documentor of vanauit imvertor properties halen --> 
+    <xsl:variable name="owner-name" select="imf:get-xparm('cli/owner')"/>
+    <xsl:variable name="user-name" select="imf:get-xparm('cli/userid') || ', ' || imf:get-xparm('cli/owner')"/>
+    <xsl:variable name="owner-url" select="'http://your.site/'"/>
+    <xsl:variable name="draft-url" select="'http://some.place'"/>
+    
+    <xsl:variable name="catalog">
+        <xsl:apply-templates select="/book/chapter"/><!-- calls upon the standard template for chapters such as CAT and REF -->
+    </xsl:variable>
+    
     <xsl:template match="/book">
-        <html>
-            <head>
-                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-                <title>
-                    <xsl:value-of select="concat('Catalogus: ',@name)"/>
-                </title>
-                <script src="{$configuration-docrules-file/respec-config}" class="remove"/>
-                <script class="remove">
-                    var respecConfig = {
-                        specStatus: "ED",
-                        editors: [{
-                            name: "<xsl:value-of select="imf:get-xparm('cli/userid')"/>, <xsl:value-of select="imf:get-xparm('cli/owner')"/>",
-                            url: "http://your.site/",
-                        }],
-                        edDraftURI: "http://some.place",
-                        shortName: "msgdoc",
-                        maxTocLevel: 4
-                    };
-                </script>
-                <style type="text/css">
-                   /* none additional yet */
-                </style>
-            </head>
-            <body>
-                <section id="abstract">
-                    <p>
-                        Samenvatting..... INSERT HERE
-                    </p>
-                </section>
-                <section id="sotd">
-                    <p>
-                        This documentation is updated at .... INSERT HERE
-                    </p>
-                </section>
-                <section id="prologue" class="informative" level="1">
-                    <h1>Prologue</h1>
-                    <p>
-                        Intro here........
-                    </p>
-                </section>
-                <xsl:apply-templates select="chapter"/><!-- calls upon the standard template for chapters such as CAT and REF -->
-                <section id="epilogue" class="informative" level="1">
-                    <h1>Epilogue</h1>
-                    <p>
-                        Last remarks here........
-                    </p>
-                </section>
-            </body>
-        </html>
+        <xsl:sequence select="dlogger:save('$catalog-only',$catalog-only)"></xsl:sequence>
+        <xsl:choose>
+            <xsl:when test="imf:boolean($catalog-only)">
+                <xsl:sequence select="$catalog"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <html>
+                    <head>
+                        <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+                        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+                        
+                        <!-- verplicht: inrichten op iedere owner -->
+                        <script src="{$owner-js-url}" class="remove"/>
+                        
+                        <!-- TODO verplicht: samenstellen op basis van MsWord properties table. Let op: veel props zijn gedefinieerd in de owner.js -->
+                        <script class="remove"><![CDATA[
+                            var respecConfig = {{
+                                specStatus: "ED",
+                                specType: "IM",
+                                editors: [{{
+                                    name: "{$user-name}",
+                                    url: "{$owner-url}"
+                                }}],
+                                edDraftURI: "{$draft-url}",
+                                shortName: "v1.0.0",
+                                publishVersion: "Versie 1.0.0",
+                                previousPublishVersie: "Versie 0.9.9"
+                                
+                                // meer specifieke waarden voor settings kunnen hier worden opgenomen, bijv. maxTocLevel aanpassen. 
+                            }};
+                        ]]></script>
+                        
+                        <!-- zorg ervoor dat eerst de specs voor de hele organisatie worden geladen, en daarna die van de analist -->
+                        <script class="remove"><![CDATA[ 
+                            respecConfig = {{...organisationConfig, ...respecConfig}}
+                        ]]></script>
+                        
+                        <title>
+                            <xsl:value-of select="concat('Catalogus: ',@name)"/><!-- TODO vanuit msword -->
+                        </title>
+                        
+                        <!-- logo van de organisatie opnemen -->
+                        <link href="{$owner-icon-url}" rel="shortcut icon" type="image/x-icon" />
+                        
+                        <!-- fixed: volg Logius -->
+                        <script src="{$owner-config-url}" class="remove" async="async"/>
+                        
+                        <!-- De volgende style is noodzakelijk voor de werking van imagemaps. -->
+                        <link href="{$owner-css-url}" rel="stylesheet" />
+                    </head>
+                    
+                    <body>
+                        <xsl:choose>
+                            <!-- als de documentor bestanden zijn opgeleverd en verwerkt -->
+                            <xsl:when test="false()">
+                                
+                            </xsl:when>
+                            <!-- als geen documentor bestanden zijn opgeleverd en verwerkt -->
+                            <xsl:otherwise>
+                                <section id="abstract">
+                                    <p>
+                                        Samenvatting ...
+                                    </p>
+                                </section>
+                                <section id="sotd">
+                                    <p>
+                                        This documentation is updated at ...
+                                    </p>
+                                </section>
+                                <section id="prologue" class="informative" level="1">
+                                    <h1>Prologue</h1>
+                                    <p>
+                                        Intro here ...
+                                    </p>
+                                </section>
+                                <xsl:sequence select="$catalog"/>
+                                <section id="epilogue" class="informative" level="1">
+                                    <h1>Epilogue</h1>
+                                    <p>
+                                        Last remarks here ...
+                                    </p>
+                                </section>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </body>
+                </html>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:function name="imf:insert-chapter-intro" as="item()*">
