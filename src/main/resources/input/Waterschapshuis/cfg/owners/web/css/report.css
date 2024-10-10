@@ -155,3 +155,8 @@ img.home-logo {
     font-weight:bold;
     color: red;
 }
+th, td {
+    text-align: left;
+    text-align: start;
+    vertical-align: super;
+}
