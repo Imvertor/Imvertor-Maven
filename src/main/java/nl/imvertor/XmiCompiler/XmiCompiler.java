@@ -294,6 +294,7 @@ public class XmiCompiler extends Step {
 		AnyFile tempFile = new AnyFile(File.createTempFile("extractImages.", ".xmi"));
 		tempFile.deleteOnExit();
 		File imageFolder = new File(xmiFile.getParentFile(),"Images");
+		if (!imageFolder.exists()) imageFolder.mkdir(); // issue #553
 		try (FileInputStream xmiFis = new FileInputStream(xmiFile); 
 		     FileOutputStream xmiFos = new FileOutputStream(tempFile)) {
 			List<Image> images = exporter.export(xmiFis, xmiFos);
