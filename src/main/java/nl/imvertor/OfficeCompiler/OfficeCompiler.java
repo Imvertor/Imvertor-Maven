@@ -139,28 +139,46 @@ public class OfficeCompiler extends Step {
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_MODELDOC_RESPEC_XSLPATH") : false;
 					if (succeeds) processDoc(fn,"respec.catalog.xhtml","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
 					
-					// De laatste output is de XHTML catalogus; die staat centraal in documentor.
-					
-					// als documentor info beschikbaar is, dan uitpakken en omzetten naar xhtml met Pandoc
-					String mdf = configurator.getXParm("cli/documentorfile",false);
-					if (mdf != null) {
+					if (succeeds) {
+						// De laatste output is de XHTML catalogus; die staat centraal in documentor.
+						
+						// als documentor info beschikbaar is, dan uitpakken en omzetten naar xhtml met Pandoc
+						String mdf = configurator.getXParm("cli/documentorfile",false);
+						if (mdf == null) return;
+						
+						// Er is documentor input in de vorm van modeldocs meegeleverd.
+						
+						// Maak een workfolder aan
+						AnyFolder workFolder = new AnyFolder(configurator.getWorkFolder("documentor"));
+						if (workFolder.isDirectory()) workFolder.deleteDirectory();
+						
+						// check het type modeldoc. In development: folder, in productie: zipfile
 						AnyFile docFile = new AnyFile(mdf);
-						boolean isFolder = docFile.isDirectory();
 						boolean isZip = docFile.getExtension().equals("zip");
 						if (isZip) {
 							runner.debug(logger,"CHAIN","Extracting documentor files");
 							// alles uitpakken naar de workfolder
-							AnyFolder docFolder = new AnyFolder(configurator.getWorkFolder("documentor"));
-							if (docFolder.isDirectory()) docFolder.deleteDirectory();
 							ZipFile zipFile = new ZipFile(docFile);
-							zipFile.decompress(docFolder);
+							zipFile.decompress(workFolder);
 							// ga door deze files heen en zet ze om naar XHTML
-							Iterator<String> it = docFolder.listFilesToVector(false).iterator();
-							while (it.hasNext()) {
+							Iterator<String> it = workFolder.listFilesToVector(false).iterator();
+							while (it.hasNext() && succeeds) {
 								AnyFile f = new AnyFile(it.next());
 								if (f.getExtension().equals("docx"))
 									succeeds = succeeds ? transformDocx(f) : false ;
 							}
+						} else {
+							runner.debug(logger,"CHAIN","Copying documentor files");
+							// alles kopieren naar de workfolder
+							(new AnyFolder(docFile)).copy(workFolder);
+						}
+						
+						// workfolder is gemaakt; alle MsWord bestanden omzetten naar XHTML
+						Iterator<String> it = workFolder.listFilesToVector(true).iterator();
+						while (it.hasNext()) {
+							AnyFile f = new AnyFile(it.next());
+							if (f.getExtension().equals("docx"))
+								succeeds = succeeds ? transformDocx(f) : false ;
 						}
 					}
 				}
@@ -277,13 +295,8 @@ public class OfficeCompiler extends Step {
 	}
 	
 	private boolean transformDocx(AnyFile mswordFile) throws Exception {
-		//TODO
-		
 		WordFile infile = new WordFile(mswordFile);
 		XmlFile outfile = new XmlFile(mswordFile.getCanonicalPath() + ".xhtml");
-		
-		infile.toXhtmlFile(outfile);
-		
-		return true;
+		return infile.toXhtmlFile(outfile);
 	}
 }
