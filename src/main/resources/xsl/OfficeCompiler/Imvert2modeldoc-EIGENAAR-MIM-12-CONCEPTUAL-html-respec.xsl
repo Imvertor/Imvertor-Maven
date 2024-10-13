@@ -52,6 +52,9 @@
                         <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
                         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
                         
+                        <!-- optioneel: een diagram renderer (https://github.com/w3c/respec-mermaid) -->
+                        <script src="https://cdn.jsdelivr.net/gh/digitalbazaar/respec-mermaid@1.0.1/dist/main.js" class="remove"></script>
+                        
                         <!-- verplicht: inrichten op iedere owner -->
                         <script src="{$owner-js-url}" class="remove"/>
                         

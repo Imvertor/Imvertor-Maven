@@ -22,9 +22,13 @@ package nl.imvertor.common.file;
 
 import java.io.File;
 
+import org.apache.commons.exec.CommandLine;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Configurator;
+import nl.imvertor.common.Runner;
+import nl.imvertor.common.helper.OsExecutor;
+import nl.imvertor.common.helper.OsExecutor.OsExecutorResultHandler;
 
 public class WordFile extends AnyFile {
 
@@ -49,13 +53,49 @@ public class WordFile extends AnyFile {
 	 * @param filePath
 	 * @throws Exception 
 	 */
-	public void toXhtmlFile(File outFile) throws Exception {
+	public boolean toXhtmlFile(File outFile) throws Exception {
 		
-		//TODO Hier de immplementatie van Pandoc omzetting naar XHTML.
+		Configurator configurator = Configurator.getInstance();
+		Runner runner = configurator.getRunner();
+		boolean debugging = runner.getDebug("DOCUMENTOR");
+				
+		// Implementatie van Pandoc omzetting naar XHTML.
 		
-		//STUB
-		XmlFile stubFile = new XmlFile(Configurator.getInstance().getBaseFolder() + "/resources/etc/xhtml/test1.xhtml");
-		stubFile.copyFile(outFile);
+		OsExecutor osExecutor = new OsExecutor();
+		
+		String toolloc = (new AnyFile(configurator.getServerProperty("documentor.msword.transformer"))).getCanonicalPath(); // location of the tool
+		long osExecutorJobTimeout = Long.parseLong(configurator.getServerProperty("documentor.msword.transformer.timeout")); // location of the tool
+		boolean osExecutorInBackground = false;
+		
+		runner.info(logger, "Reading: " + this.getName());
+		
+		OsExecutorResultHandler osExecutorResult = null;
+		
+		/*
+		 * Dit batch file doet het volgende
+		 * - Bereid MsWord voor door roep o.a. pandoc aan en corrigeert allerlei 
+		 */
+		CommandLine commandLine = new CommandLine(toolloc + "\\documentor.bat"); // TODO: *nix
+		commandLine.addArgument(this.getName()); // the docx file
+		commandLine.addArgument(toolloc); // the tool folder
+		commandLine.addArgument(this.getParent()); // The work folder
+		commandLine.addArgument(debugging ? "true" : "false"); // debugging?
+			
+		try {
+			osExecutorResult = osExecutor.osexec(commandLine, osExecutorJobTimeout, osExecutorInBackground);
+			osExecutorResult.waitFor();
+			// assume the msword file * is transformed to *.xhtml
+			configurator.setXParm("appinfo/documentor-transformation-result", outFile.getName(),false);
+			return true;
+			
+		} catch (Exception e) {
+			if (osExecutorResult != null)
+				runner.error(logger, "Documentor exit value " + osExecutorResult.getExitValue() + ". " + osExecutorResult.getException().getMessage());
+			else 
+				runner.error(logger, e.getMessage());
+		}
+		return false;
+		
 	}
 	
 }
