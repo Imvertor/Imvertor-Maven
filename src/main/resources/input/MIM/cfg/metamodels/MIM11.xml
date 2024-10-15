@@ -51,6 +51,7 @@
         <feature name="allow-scalar-in-union">false<!-- specify in concrete metamodel: true|false --></feature>
         <feature name="unique-normalized-class-names">domain<!-- specify in concrete metamodel: model|domain --></feature>
         <feature name="supports-baretype-transformation">false<!-- specify in concrete metamodel: true|false --></feature><!-- transformation of AN2 to string, length 2 -->
+        <feature name="unique-normalized-association-names">yes</feature>
     </features>
     
     <stereotypes xml:id="stereotypes">

@@ -16,12 +16,12 @@
         <profile lang="nl"> 
             <id>Waterschapshuis-C-NL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM 1.1 Waterschapshuis Conceptueel NL</desc> 
+            <desc>MIM 1.2 Waterschapshuis Conceptueel NL</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
             <id>Waterschapshuis-C-EN</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM 1.1 Waterschapshuis Conceptual EN</desc>
+            <desc>MIM 1.2 Waterschapshuis Conceptual EN</desc>
         </profile>
     </profiles>
     

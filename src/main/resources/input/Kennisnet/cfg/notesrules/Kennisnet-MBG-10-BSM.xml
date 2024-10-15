@@ -4,7 +4,7 @@
 -->
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../KING/cfg/notesrules/KING-MUG-10-BSM.xml"/>
+    <xi:include href="../../../KING/cfg/notesrules/KING-MBG-10-BSM.xml"/>
     
     <name>Kennisnet BSM</name>
     

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ *
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <!-- KING refines grouping -->
+    <xi:include href="KING-Grouping.xml"/>
+
+    <!--
+        applications using this metamodel may reference cross-meta Tagged values taken from SIM
+    -->
+    <xi:include href="KING-MBG-1-UGM-cross-SIM.xml"/>
+
+    <xi:include href="KING-MBG-1-BSM-cross-SIM-and-UGM.xml"/>
+
+    <name>KING-MBG-1-UGM</name>
+
+    <tagged-values>
+
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIEMATCHGEGEVEN">
+            <name lang="nl">Indicatie matchgegeven</name>
+            <derive>yes</derive>
+            <desc lang="nl">Indicatie dat het gegeven noodzakelijk is voor het kunnen identificeren van een object. Heeft alleen een toepassing binnen StUF schema's.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+        </tv>
+
+
+
+        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONAUTHENTIC">
+            <name lang="nl">Indicatie authentiek</name>
+            <derive>yes</derive>
+            <desc lang="nl">Aanduiding of het een authentiek gegeven (attribuutsoort) betreft. </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+         </tv>
+
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
+            <name lang="nl">Indicatie materiële historie</name>
+            <desc lang="nl">Voorziening waarmee aangegeven kan worden of materiële historie van toepassing is op de constructie.</desc>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort-->
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo><!--SIM Gegevensgroep-->
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo><!--SIM Relatiesoort-->
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+                <value>Zie groep</value>
+                <value>N.v.t.</value>
+                <value>Ja, zie regels</value>
+            </declared-values>
+        </tv>
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
+            <name lang="nl">Indicatie formele historie</name>
+            <desc lang="nl">Voorziening waarmee aangegeven kan worden of formele historie van toepassing is op de constructie.</desc>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort-->
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo><!--SIM Gegevensgroep-->
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo><!--SIM Relatiesoort-->
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+                <value>Zie groep</value>
+                <value>N.v.t.</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" id="CFG-TV-INDICATIEINONDERZOEK">
+            <name lang="nl">Indicatie in onderzoek</name>
+            <derive>yes</derive><!-- UGM mag op supplier terugvallen, maar SIM is niet een supplier voor deze config, dus expliciet de naam opnemen.-->
+            <desc lang="nl">De indicatie of te bevragen is dat er twijfel is of is geweest aan de juistheid van de attribuutwaarde en dat een onderzoek wordt of is uitgevoerd naar de juistheid van de attribuutwaarde. </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" validate="" rules="" id="CFG-TV-VERKORTEALIAS">
+            <name lang="nl">Verkorte alias</name>
+            <name lang="en">Short alias</name>
+            <derive>no</derive>
+            <desc lang="nl">Verkorte alias is een korte naam, die uiteindelijk gekoppeld is aan een namespace in XML schema.
+                In feite is het dus een technisch configuratie-element. Heeft alleen een toepassing binnen StUF schema's.</desc>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-PATTERN">
+            <name lang="nl">Patroon</name>
+            <name lang="en">Pattern</name>
+            <derive>no</derive>
+            <desc lang="nl">Beschrijving van het gegevenspatroon van een element. Dit kan de basis zijn voor een reguliere expressie.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-FORMALPATTERN">
+            <name lang="nl">Formeel patroon</name>
+            <name lang="en">Formal pattern</name>
+            <derive>no</derive>
+            <desc lang="nl">Formele notatie in de vorm van een reguliere expressie van het gegevenspatroon van een element.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="compact" id="CFG-TV-VOIDABLE">
+            <name lang="nl">Mogelijk geen waarde</name>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
+            <desc lang="nl">Indicatie waarmee wordt aangegeven dat het gegeven ook geen waarde kan hebben.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort -->
+                <stereo minmax="0..1">stereotype-name-composite</stereo><!-- SIM: Gegevensgroeptype -->
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo><!-- SIM: Relatiesoort  -->
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-MAXLENGTH">
+            <name lang="nl">Lengte</name>
+            <desc lang="nl">De maximale lengte die een attribuut kan hebben.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-MINLENGTH">
+            <name lang="nl">Minimum lengte</name>
+            <desc lang="nl">De minimale lengte die een attribuut moet hebben.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-MINVALUEINCLUSIVE">
+            <name lang="nl">Minimum waarde (inclusief)</name>
+            <desc lang="nl">De minimale waarde (inclusief) dat een attribuut moet hebben</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-MAXVALUEINCLUSIVE">
+            <name lang="nl">Maximum waarde (inclusief)</name>
+            <desc lang="nl">De maximale waarde (inclusief) dat een attribuut mag hebben.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="note" id="CFG-TV-DESCRIPTION">
+            <name lang="nl">Toelichting</name>
+            <name lang="en">Description</name>
+            <derive>yes</derive>
+            <desc lang="nl">Aanvullende beschrijving van het construct met de bedoeling dat te verduidelijken.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space"  id="CFG-TV-SUBSETLABEL">
+            <name lang="nl">Restriction identifier</name>
+            <name lang="en">Restriction identifier</name>
+            <desc lang="nl">Een label dat aan een construct kan worden toegekend om onderscheid mogelijk te maken tussen aangescherpte constructs die afgeleid zijn van eenzelfde construct. Heeft alleen een functie bij het genereren van StUF schema's.</desc>
+            <desc lang="en">A label assigned to any construct to be used for disambiguation in subset (restriction) constructs.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-association-to-composite</stereo><!-- deprecated -->
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+            </stereotypes>
+        </tv>
+
+        <!-- TODO PATCH, must be removed! -->
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIEKERNGEGEVEN">
+            <name lang="nl">Indicatie kerngegeven</name>
+            <desc lang="nl">Indicatie om aan te kunnen geven of een gegeven deel uit maakt van de matchgegevens. Een groep van gegevens waarmee een entiteit gevonden kan worden. Heeft alleen een toepassing binnen StUF schema's. Deprecated.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-NAMEPLURAL">
+            <name lang="nl">Naam in meervoud</name>
+            <desc lang="nl">
+                Voorziening om een entiteit een meervoudsnaam te kunnen geven. Deze wordt gebruikt als propertynaam van een entiteit in het yaml bestand.
+            </desc>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-TARGETROLEPLURAL">
+            <name lang="nl">Target role in meervoud</name>
+            <desc lang="nl">
+                Voorziening om de target role een meervoudsnaam te kunnen geven. Deze wordt gebruikt als propertynaam van een relatie in het yaml bestand.
+            </desc>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv id="CFG-TV-GROUPNAME">
+            <name lang="nl">Groepsnaam</name>
+            <name lang="en">Groupname</name>
+            <desc lang="nl">
+                Voorziening om een groep aangepaste naam te kunnen geven.
+            </desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+            </stereotypes>
+        </tv>
+
+        <!-- specify that UGM uses markdown notes fields -->
+        <tv id="CFG-TV-DEFINITION" norm="note">
+            <!-- none additional -->
+        </tv>
+        <tv id="CFG-TV-DESCRIPTION" norm="note">
+            <!-- none additional -->
+        </tv>
+
+        <tv norm="space" id="CFG-TV-ENDPOINTAVAILABLE">
+            <name lang="nl">Endpoint beschikbaar</name>
+            <desc lang="nl">
+                Voorziening waarmee kan worden aangegeven dat er voor een entiteit al dan niet een resource endpoint beschikbaar is.
+            </desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-EXAMPLE">
+            <name lang="nl">Example</name>
+            <name lang="en">Example</name>
+            <desc lang="nl">Voorbeeldwaarde van een property.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv id="CFG-TV-SOURCE" cross-meta="SIM">
+            <name lang="nl">Herkomst</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-ISDERIVED">
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+            </stereotypes>
+        </tv>
+
+    </tagged-values>
+</tagset>

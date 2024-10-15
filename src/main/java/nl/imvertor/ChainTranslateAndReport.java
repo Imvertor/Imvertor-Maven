@@ -190,7 +190,7 @@ public class ChainTranslateAndReport {
 				    	succeeds = (new ImvertCompiler()).run();
 				    
 		    		// generate the MIM format from Imvertor embellish format
-			    	if (succeeds && configurator.isTrue("cli","createmimformat",false))
+			    	if (succeeds && (configurator.isTrue("cli","createmimformat",false) || configurator.isTrue("cli","createjsonschema",false)))
 			    		succeeds = (new MIMCompiler()).run();
 				
 			    	// generate the Stelselcatalogus CSV

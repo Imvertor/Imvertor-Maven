@@ -10,10 +10,10 @@
 
     <xi:include href="Waterschapshuis-MIM-12-CONCEPTUAL.xml"/>
 
-    <name>BRO logical</name>
+    <name>Waterschapshuis-MIM-12-CONCEPTUAL</name>
 
-    <desc lang="en">Visuals for BRO logical models</desc>
-    <desc lang="nl">Visuele aspecten van BRO logische modellen</desc>
+    <desc lang="en">Visuals for Waterschapshuis logical models</desc>
+    <desc lang="nl">Visuele aspecten van Waterschapshuis logische modellen</desc>
     
     <measures>
         <!-- geen aanpassingen -->

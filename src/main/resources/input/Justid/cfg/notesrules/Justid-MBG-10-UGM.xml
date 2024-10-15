@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../KING/cfg/notesrules/KING-MBG-10-UGM.xml"/>
+    
+    <name>Justid-MBG-10-UGM</name>
+    
+    
+</notes-rules>

@@ -84,16 +84,6 @@
           </cs:xsdTypes>
        </cs:Construct>
        <cs:Construct>
-          <cs:name>GM_AbstractFeatureMemberType</cs:name>
-          <cs:sentinel>false</cs:sentinel>
-          <cs:xsdTypes>
-             <cs:XsdType>
-                <cs:name>AbstractFeatureMemberType</cs:name>
-                <cs:primitive>false</cs:primitive>
-             </cs:XsdType>
-          </cs:xsdTypes>
-       </cs:Construct>
-       <cs:Construct>
           <cs:name>GM_AbstractGML</cs:name>
           <cs:sentinel>false</cs:sentinel>
           <cs:xsdTypes>

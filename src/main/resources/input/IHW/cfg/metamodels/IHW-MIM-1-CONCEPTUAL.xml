@@ -35,5 +35,9 @@
             <source>IHW</source>
         </scalar>
     </scalars>   
+   
+    <features>
+        <feature name="unique-normalized-association-names">no</feature>
+    </features>
     
 </metamodel>

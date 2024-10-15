@@ -48,7 +48,7 @@
     <xsl:variable name="apos">'</xsl:variable>
     
     <xsl:variable name="use-alias-for-uri" select="imf:boolean(imf:get-xparm('cli/skosusealias','no'))"/>
-    <xsl:variable name="abbrev" select="imf:get-xparm('appinfo/model-abbreviation','UNKNOWN')"/>
+    <xsl:variable name="abbrev" select="lower-case(imf:get-xparm('appinfo/model-abbreviation','no-abbreviation'))"/>
     <xsl:variable name="model-name" select="/imvert:packages/imvert:application"/>
     <xsl:variable name="prefixSkos" select="'skos'"/>
     <xsl:variable name="baseurl" select="$configuration-skosrules-file/vocabularies/base"/>
@@ -348,8 +348,8 @@
         
         <xsl:variable name="frags" as="element(frag)+">
             <frag key="alias-or-name" value="{$alias-or-name}"/>
-            <frag key="alias" value="{($namefrags/@alias,'NOALIAS')[1]}"/>
-            <frag key="afkorting" value="{(lower-case($abbrev),'NOABBREV')[1]}"/>
+            <frag key="alias" value="{($namefrags/@alias,'NO-ALIAS')[1]}"/>
+            <frag key="afkorting" value="{$abbrev}"/>
             <frag key="type" value="{$type}"/>
             <xsl:choose>
                 <xsl:when test="$type = 'conceptscheme'">
@@ -366,7 +366,8 @@
     
     <xsl:function name="imf:normalize-ttl-string">
         <xsl:param name="string"/>
-        <xsl:value-of select="normalize-space(replace(replace(replace(replace($string,'\\','\\\\'),'&#10;','\\n'),'&quot;','\\&quot;'),$apos,concat('\\',$apos)))"/>
+        <xsl:variable name="result" select="replace(replace($string,'&quot;','\\&quot;'),$apos,concat('\\',$apos))"/>
+        <xsl:value-of select="$result"/>
     </xsl:function>
   
     <xsl:function name="imf:for-uri">

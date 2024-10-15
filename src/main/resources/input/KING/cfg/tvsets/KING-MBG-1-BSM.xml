@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="KING-MBG-1-UGM.xml"/>
+    
+    <name>KING-MBG-1-BSM</name>
+    
+    <tagged-values>
+        
+        <tv norm="space" id="CFG-TV-INTERFACE-NAME">
+            <name lang="nl">Koppelvlak-naam</name>
+            <desc lang="nl">De naam van het koppelvlak.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-PROJECT-URL">
+            <name lang="nl">project_url</name>
+            <desc lang="nl">Url van het bij het koppelvlak horende GitHub project.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-E-MAIL-KV-ADMINISTRATOR">
+            <name lang="nl">beheerder_email</name>
+            <desc lang="nl">e-Mailadres van de beheerder van het koppelvlak.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        
+        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONAUTHENTIC">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIEINONDERZOEK">
+            <name lang="nl">Indicatie in onderzoek</name>
+            <derive>yes</derive><!-- BSM mag op supplier  terugvallen-->
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="compact"  rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+         </tv>
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+       </tv>
+        
+        <tv norm="space"  rules="NOC" id="CFG-TV-FUNCTIEBERICHTRELATIE">
+            <name lang="nl">Functie berichtrelatie</name>
+            <derive>no</derive>
+            <desc lang="nl">Geeft het karakter aan van de berichtrelatie. Heeft alleen een functie bij StUF schema generatie.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-berichtrelatie</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>update</value>
+                <value>selectie</value>
+                <value default="yes">antwoord</value>
+            </declared-values>
+        </tv>
+        <tv norm="space"  rules="NOC" id="CFG-TV-FUNCTIEENTITEITRELATIE">
+            <name lang="nl">Functie entiteitrelatie</name>
+            <derive>no</derive>
+            <desc lang="nl">Geeft het karakter aan van de entiteitrelatie. Heeft alleen een functie bij StUF schema generatie.</desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-entiteitrelatie</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>entiteit</value>
+            </declared-values>
+        </tv>
+        
+        <tv id="CFG-TV-VERKORTEALIAS">
+            <derive>yes</derive>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-FORMALPATTERN">
+            <derive>yes</derive> <!-- mag worden overgenomen vanuit UGM -->
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-BERICHTCODE">
+            <name lang="nl">Berichtcode</name>
+            <desc lang="nl">Code waarmee de aard van een bericht uniek geidentificeerd kan worden.</desc>
+            <derive>no</derive>
+            <inherit>yes</inherit>
+            <stereotypes>
+                <?x stereo minmax="1..1" lang="nl">Berichttype</stereo x?>
+                <stereo minmax="1..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-getberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-deleteberichttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Bv01</value>
+                <!--  een bevestigingsbericht als functionele asynchrone respons -->
+                <value>Bv02</value>
+                <!--  een bevestigingsbericht als functionele synchrone respons op een synchroon bericht -->
+                <value>Bv03</value>
+                <!--  een bevestigingsbericht als technische synchrone respons op een asynchroon bericht waarbij het bericht op basis van berichtstuurgegevens verwerkbaar wordt geacht -->
+                <value>Bv04</value>
+                <!--  een OAS deletebericht -->
+                <value>De01</value>
+                <!--  een bevestigingsbericht als technische synchrone respons op een asynchroon bericht, dat een check op verwerkbaarheid op basis van de berichtstuurgegevens ontkent -->
+                <value>Di01</value>
+                <!--  een asynchroon inkomend vrij bericht -->
+                <value>Di02</value>
+                <!--  een synchroon inkomend vrij bericht -->
+                <value>Du01</value>
+                <!--  een asynchroon uitgaand vrij bericht (respons op een Di01) -->
+                <value>Du02</value>
+                <!--  een synchroon uitgaand vrij bericht (respons op een Di02) -->
+                <value>Fo01</value>
+                <!--  een foutbericht als functionele asynchrone respons -->
+                <value>Fo02</value>
+                <!--  een foutbericht als functionele synchrone respons -->
+                <value>Fo03</value>
+                <!--  een json+hal response op een GET bericht voor een collection met pagination, met expand. -->
+                <value>Gc01</value>
+                <!--  een json+hal response op een GET bericht voor een collection zonder pagination, met expand. -->
+                <value>Gc02</value>
+                <!--  een json+hal response op een GET bericht voor een collection met pagination, zonder expand. -->
+                <value>Gr01</value>
+                <!--  een json+hal response op een GET bericht voor een resource zonder pagination, zonder expand. -->
+                <value>La01</value>
+                <!--  een synchroon antwoordbericht met alleen actuele gegevens -->
+                <value>La02</value>
+                <!--  een asynchroon antwoordbericht met alleen actuele gegevens -->
+                <value>La03</value>
+                <!--  een synchroon antwoordbericht met de gegevens op peiltijdstip zoals nu bekend in de registratie -->
+                <value>La04</value>
+                <!--  een asynchroon antwoordbericht met de gegevens op peiltijdstip zoals nu bekend in de registratie -->
+                <value>La05</value>
+                <!--  een synchroon antwoordbericht met de gegevens op peiltijdstip zoals bekend in de registratie op peiltijdstip formele historie -->
+                <value>La06</value>
+                <!--  een asynchroon antwoordbericht met de gegevens op peiltijdstip zoals bekend in de registratie op peiltijdstip formele historie -->
+                <value>La07</value>
+                <!--  een synchroon antwoordbericht met materiële historie voor de gevraagde objecten op entiteitniveau -->
+                <value>La08</value>
+                <!--  een asynchroon antwoordbericht met materiële historie voor de gevraagde objecten op entiteitniveau -->
+                <value>La09</value>
+                <!--  een synchroon antwoordbericht met materiële en formele historie voor de gevraagde objecten op entiteitniveau -->
+                <value>La10</value>
+                <!--  een asynchroon antwoordbericht met materiële en formele historie voor de gevraagde objecten op entiteitniveau -->
+                <value>La11</value>
+                <!--  een synchroon antwoordbericht met materiële historie voor de gevraagde objecten op groepniveau -->
+                <value>La12</value>
+                <!--  een asynchroon antwoordbericht met materiële historie voor de gevraagde objecten op groepniveau -->
+                <value>La13</value>
+                <!--  een synchroon antwoordbericht met materiële en formele historie voor de gevraagde objecten op groepniveau -->
+                <value>La14</value>
+                <!--  een asynchroon antwoordbericht met materiële en formele historie voor de gevraagde objecten op groepniveau -->
+                <value>Lk01</value>
+                <!--  een asynchroon kennisgevingbericht zonder toekomstmutaties -->
+                <value>Lk02</value>
+                <!--  een synchroon kennisgevingbericht zonder toekomstmutaties -->
+                <value>Lk03</value>
+                <!--  een asynchroon samengesteld kennisgevingbericht -->
+                <value>Lk04</value>
+                <!--  een synchroon samengesteld kennisgevingbericht -->
+                <value>Lk05</value>
+                <!--  een asynchroon kennisgevingbericht met een toekomstmutatie -->
+                <value>Lk06</value>
+                <!--  een synchroon kennisgevingbericht met een toekomstmutatie -->
+                <value>Lv01</value>
+                <!--  een synchroon vraagbericht naar de actuele gegevens -->
+                <value>Lv02</value>
+                <!--  een asynchroon vraagbericht naar de actuele gegevens -->
+                <value>Lv03</value>
+                <!--  een synchroon vraagbericht naar de gegevens op peiltijdstip zoals nu bekend in de registratie -->
+                <value>Lv04</value>
+                <!--  een asynchroon vraagbericht naar de gegevens op peiltijdstip zoals nu bekend in de registratie -->
+                <value>Lv05</value>
+                <!--  een synchroon vraagbericht naar de gegevens op peiltijdstip zoals bekend in de registratie op peiltijdstip formele historie -->
+                <value>Lv06</value>
+                <!--  een asynchroon vraagbericht naar de gegevens op peiltijdstip zoals bekend in de registratie op peiltijdstip formele historie -->
+                <value>Lv07</value>
+                <!--  een synchroon vraagbericht naar materiële historie voor de gevraagde objecten op entiteitniveau -->
+                <value>Lv08</value>
+                <!--  een asynchroon vraagbericht naar materiële historie voor de gevraagde objecten op entiteitniveau -->
+                <value>Lv09</value>
+                <!--  een synchroon vraagbericht naar materiële en formele historie voor de gevraagde objecten op entiteitniveau -->
+                <value>Lv10</value>
+                <!--  een asynchroon vraagbericht naar materiële en formele historie voor de gevraagde objecten op entiteitniveau -->
+                <value>Lv11</value>
+                <!--  een synchroon vraagbericht naar materiële historie voor de gevraagde objecten op groepniveau -->
+                <value>Lv12</value>
+                <!--  een asynchroon vraagbericht naar materiële historie voor de gevraagde objecten op groepniveau -->
+                <value>Lv13</value>
+                <!--  een synchroon vraagbericht naar materiële en formele historie voor de gevraagde objecten op groepniveau -->
+                <value>Lv14</value>
+                <!--  een REST patchbericht -->
+                <value>Pa01</value>
+                <!--  een REST postbericht -->
+                <value>Po01</value>
+                <!--  een REST putbericht -->
+                <value>Pu01</value>
+                <!--  een asynchroon vraagbericht naar materiële en formele historie voor de gevraagde objecten op groepniveau -->
+                <value>Sa01</value>
+                <!--  een asynchroon synchronisatiebericht voor de actuele gegevens -->
+                <value>Sa02</value>
+                <!--  een synchroon synchronisatiebericht voor de actuele gegevens -->
+                <value>Sa03</value>
+                <!--  een asynchroon bericht dat vraagt om een asynchroon synchronisatiebericht voor de actuele gegevens -->
+                <value>Sa04</value>
+                <!--  een synchroon bericht dat vraagt om een synchroon synchronisatiebericht voor de actuele gegevens -->
+                <value>Sh01</value>
+                <!--  een asynchroon synchronisatiebericht voor de actuele en de historische gegevens -->
+                <value>Sh02</value>
+                <!--  een synchroon synchronisatiebericht voor de actuele en de historische gegevens -->
+                <value>Sh03</value>
+                <!--  een asynchroon bericht dat vraagt om een asynchroon synchronisatiebericht voor de actuele en historische gegevens -->
+                <value>Sh04</value>
+                <!--  een synchroon bericht dat vraagt om een synchroon synchronisatiebericht voor de actuele en historische gegevens -->
+                <value>Tr01</value>
+                <!--  een triggerbericht -->
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SORT">
+            <name lang="nl">Sort</name>
+            <desc lang="nl">
+                Indicatie waarmee wordt aangegeven of de request parameter 'Sort' moet worden opgenomen in het bericht. 
+            </desc>
+            <derive>no</derive>
+            <inherit>no</inherit>
+            <stereotypes>
+                <!-- bericht typen -->
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+                <?x <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo> ?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <!-- Sort in request parameters YAML opnemen. -->
+                <value>true</value>
+                <!-- Sort niet in request parameters YAML opnemen. -->
+                <value>false</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-GROUPING">
+            <name lang="nl">Grouping</name>
+            <desc lang="nl">Indicatie waarmee wordt aangegeven of de response meerdere resultaten kan teruggeven (collection) of slechts 1 resultaat (resource).</desc>
+            <derive>no</derive>
+            <inherit>no</inherit>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+                <?x <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo> ?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <!-- Grouping is binnen json niet van toepassing, het betreft immers maar een enkele resource. -->
+                <value>resource</value>
+                <!-- Grouping is binnen json wel van toepassing, het kunnen meerdere resources zijn. -->
+                <value>collection</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-PAGE">
+            <name lang="nl">Page</name>
+            <desc lang="nl">Indicatie waarmee wordt aangegeven of de response geschikt moet zijn voor hal+json pagination. 
+                Natuurlijk alleen van toepassing als de serialisatie ook hal+json is.</desc>
+            <derive>no</derive>
+            <inherit>no</inherit>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+                <?x <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo> ?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <!-- Pagination is binnen json van toepassing op het bericht. -->
+                <value>true</value>
+                <!-- Pagination is binnen json niet van toepassing op het bericht. -->
+                <value>false</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-VOORWAARDE">
+            <name lang="nl">Voorwaarde</name>
+            <desc lang="nl">Opnemen ter documentatie van een bericht.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-TRIGGER">
+            <name lang="nl">Trigger</name>
+            <desc lang="nl">Opnemen ter documentatie van een bericht.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-DIRECTGEVOLG">
+            <name lang="nl">Direct gevolg</name>
+            <desc lang="nl">Opnemen ter documentatie van een bericht.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-BIJZONDERHEDEN">
+            <name lang="nl">Bijzonderheden</name>
+            <desc lang="nl">Opnemen ter documentatie van een bericht.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-SERVICENAME">
+            <name lang="nl">servicename</name>
+            <desc lang="nl">OperationId van de OAS3 service.</desc>
+            <derive>no</derive>
+            <inherit>yes</inherit>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo>                
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-RELEASE">
+            <name lang="nl">Release</name>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SUPPLIERPROJECT">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-SUPPLIERNAME">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-SUPPLIERPACKAGENAME">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-SUPPLIERRELEASE">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-POSITION"><!-- origin="system"; in aanvulling op grouping! -->
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-entiteitrelatie</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-ISDERIVED">
+            <stereotypes>
+                <!-- bericht typen -->
+                <stereo minmax="1..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo>
+ 
+                <stereo minmax="1..1">stereotype-name-getberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-deleteberichttype</stereo>
+                
+                <stereo minmax="1..1">stereotype-name-padtype</stereo>
+
+                <stereo minmax="1..1">stereotype-name-entiteitrelatie</stereo>
+                <stereo minmax="1..1">stereotype-name-berichtrelatie</stereo>
+                <stereo minmax="1..1">stereotype-name-padrelatie</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-EMPTYENUMERATIONALLOWED">
+            <name lang="nl">Lege enumeration toegestaan</name>
+            <desc lang="nl">
+                Geeft aan of er aan elke enumeratie simpleType ook een lege enumeratie toegevoegd moet worden.
+                Standaard wordt dit mee gegenereerd. Kan zowel op Koppelvlak niveau als op enumeration niveau worden 
+                gedefinieerd waarbij die op attribuutniveau die op op Koppelvlak niveau overrulled. 
+                Heeft alleen een functie bij het genereren van StUF schema's.
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Ja</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-NOVALUEALLOWED">
+            <name lang="nl">noValue toegestaan</name>
+            <desc lang="nl">
+                Geeft aan of het StUF:noValue attribute in de XML-schema's mee gegenereerd wordt.
+                Standaard wordt dit mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+                Heeft alleen een functie bij het genereren van StUF schema's.
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Ja</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-E-TYPESALLOWED">
+            <name lang="nl">e-types genereren</name>
+            <desc lang="nl">
+                Geeft aan of de -e complexTypes in de XML-schema's mee gegenereerd moeten worden.
+                Standaard worden deze mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd.
+                Heeft alleen een functie bij het genereren van StUF schema's.
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Ja</value>
+            </declared-values>
+        </tv>
+             
+        <tv norm="space" id="CFG-TV-TIJDVAKGELDIGHEIDALLOWED">
+            <name lang="nl">tijdvakGeldigheid genereren</name>
+            <desc lang="nl">
+                Geeft aan of en zo ja hoe in de XML-schema's de 'tijdvakGeldigheid' elementen worden mee gegenereerd.
+                Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+                Heeft alleen een functie bij het genereren van StUF schema's.
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Optioneel</value>
+                <value>Verplicht</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-TIJDSTIPREGISTRATIEALLOWED">
+            <name lang="nl">tijdstipRegistratie genereren</name>
+            <desc lang="nl">
+                Geeft aan of en zo ja hoe in de XML-schema's de 'tijdstipRegistratie' elementen worden mee gegenereerd.
+                Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd.
+                Heeft alleen een functie bij het genereren van StUF schema's.
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Optioneel</value>
+                <value>Verplicht</value>
+            </declared-values>
+        </tv>
+ 
+ 
+        <tv norm="space" id="CFG-TV-EXTRAELEMENTENALLOWED">
+            <name lang="nl">extraElementen genereren</name>
+            <desc lang="nl">
+                Geeft aan of er in de XML-schema's 'extraElementen' elementen moeten worden mee gegenereerd.
+                Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd.
+                Heeft alleen een functie bij het genereren van StUF schema's.
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Ja</value>
+            </declared-values>
+        </tv>
+
+ 
+        <tv norm="space" id="CFG-TV-AANVULLENDEELEMENTENALLOWED">
+            <name lang="nl">aanvullendeElementen genereren</name>
+            <desc lang="nl">
+                Geeft aan of er in de XML-schema's 'aanvullendeElementen' elementen moeten worden mee gegenereerd.
+                Standaard worden deze optioneel mee gegenereerd. Kan alleen op  Koppelvlak niveau worden gedefinieerd. 
+                Heeft alleen een functie bij het genereren van StUF schema's.
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Ja</value>
+            </declared-values>
+        </tv>
+        <!-- 
+           Definition
+        -->
+        <tv id="CFG-TV-DEFINITION">
+            <name lang="nl">Definitie</name>
+            <name lang="en">Definition</name>
+            <desc lang="nl">De beschrijving van de betekenis van de construct zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie of informatiemodel.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-CUSTOMPATHFACET">
+            <name lang="nl">custom_path_facet</name>
+            <name lang="en">custom_path_facet</name>
+            <desc lang="nl">Het deel van de messagenaam dat niet uit het model afgeled kan worden. 
+                Om de messagenaam toch te kunnen verifieren tegen het model wordt daar eerst de custom_path_facet uit verwijderd. 
+                Deze tv mag ‘/’ (slashes) bevatten maar niet aan het begin en eind.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-padtype</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-TAG">
+            <name lang="nl">tag</name>
+            <desc lang="nl">Naam waarmee een aantal gerelateerde berichten gegroepeerd worden.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-getberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-deleteberichttype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-SERIALISATION">
+            <name lang="nl">serialisatie</name>
+            <desc lang="nl">Het JSON formaat waarin het koppelvlak uitgevoerd moet worden.</desc>
+            <derive>no</derive>
+            <inherit>no</inherit>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>hal+json</value>
+                <value>json</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" id="CFG-TV-INSERTDESCRIPTIONFROM">
+            <name lang="nl">toelichting opnemen vanaf</name>
+            <desc lang="nl">Het model vanaf waar de toelichting moet worden opgenomen.</desc>
+            <derive>no</derive>
+            <inherit>no</inherit>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">SIM</value>
+                <value>UGM</value>
+                <value>BSM</value>
+            </declared-values>
+        </tv>
+    </tagged-values>
+</tagset>
+

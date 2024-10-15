@@ -24,12 +24,13 @@
         <!--setup-->
         
         <xsl:variable name="supertypes" select="imvert:supertype"/>
+        <xsl:variable name="allow-multiple-supertypes" select="imf:boolean($configuration-metamodel-file//features/feature[@name='allow-multiple-supertypes'])"/>
         <xsl:variable name="non-mixin-supertypes" select="$supertypes[not(imvert:stereotype/@id = 'stereotype-name-static-generalization')]"/>
         
         <!--validation-->
         
         <xsl:sequence select="imf:report-error(., 
-            $non-mixin-supertypes[2], 
+            not($allow-multiple-supertypes) and $non-mixin-supertypes[2], 
             'Several supertypes [1] are referenced as non-mixin supertype', imf:string-group(for $s in $non-mixin-supertypes/imvert:type-name/@original return $s))"/>
         
     </xsl:template>
