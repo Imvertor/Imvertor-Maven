@@ -25,10 +25,12 @@
     
     <!-- this owner generates respec files with all info stored in that file. -->
     
-    <xsl:variable name="owner-js-url" select="imf:file-to-url(imf:get-xparm('system/inp-folder-path') || '/cfg/docrules/documentor/js/owner.js')"/>
+    <xsl:variable name="owner-config-js-url" select="imf:file-to-url(imf:get-xparm('system/inp-folder-path') || '/cfg/docrules/documentor/js/owner.js')"/>
+    <xsl:variable name="owner-local-js-url" select="imf:file-to-url(imf:get-xparm('system/inp-folder-path') || '/cfg/docrules/documentor/js/local.js')"/>
     <xsl:variable name="owner-icon-url" select="imf:file-to-url(imf:get-xparm('system/inp-folder-path') || '/cfg/docrules/documentor/img/logo.ico')"/>
     <xsl:variable name="owner-css-url" select="imf:file-to-url(imf:get-xparm('system/inp-folder-path') || '/cfg/docrules/documentor/css/owner.css')"/>
-    <xsl:variable name="owner-config-url" select="$configuration-docrules-file/respec-config"/>
+    
+    <xsl:variable name="owner-respec-config-url" select="$configuration-docrules-file/respec-config"/>
     
     <!--TODO deze info vanuit documentor of vanauit imvertor properties halen --> 
     <xsl:variable name="owner-name" select="imf:get-xparm('cli/owner')"/>
@@ -55,8 +57,8 @@
                         <!-- optioneel: een diagram renderer (https://github.com/w3c/respec-mermaid) -->
                         <script src="https://cdn.jsdelivr.net/gh/digitalbazaar/respec-mermaid@1.0.1/dist/main.js" class="remove"></script>
                         
-                        <!-- verplicht: inrichten op iedere owner -->
-                        <script src="{$owner-js-url}" class="remove"/>
+                        <!-- verplicht: inrichten op iedere owner. Definieert organisationConfig. -->
+                        <script src="{$owner-config-js-url}" class="remove"/>
                         
                         <!-- TODO verplicht: samenstellen op basis van MsWord properties table. Let op: veel props zijn gedefinieerd in de owner.js -->
                         <script class="remove"><![CDATA[
@@ -81,6 +83,11 @@
                             respecConfig = {{...organisationConfig, ...respecConfig}}
                         ]]></script>
                         
+                        <!-- 
+                            De volgende javascript is de complete Reespec, in lijn met nationale regels (Logius).
+                        -->
+                        <script src="{$owner-respec-config-url}" class="remove" async="async"/>
+                      
                         <title>
                             <xsl:value-of select="concat('Catalogus: ',@name)"/><!-- TODO vanuit msword -->
                         </title>
@@ -88,10 +95,16 @@
                         <!-- logo van de organisatie opnemen -->
                         <link href="{$owner-icon-url}" rel="shortcut icon" type="image/x-icon" />
                         
-                        <!-- fixed: volg Logius -->
-                        <script src="{$owner-config-url}" class="remove" async="async"/>
-                        
-                        <!-- De volgende style is noodzakelijk voor de werking van imagemaps. -->
+                        <!-- 
+                            De volgende javascript is een toevoeging aan de respec config van owner en dit model.
+                            Deze mag bestaande javascript constructies NIET overschrijven.
+                        -->
+                        <script src="{$owner-local-js-url}" class="remove" async="async"/>
+
+                        <!-- 
+                            De volgende style is een toevoeging aan de base.css van Logius.
+                            Deze mag bestaande CSS constructies overschrijven.
+                        -->
                         <link href="{$owner-css-url}" rel="stylesheet" />
                     </head>
                     
