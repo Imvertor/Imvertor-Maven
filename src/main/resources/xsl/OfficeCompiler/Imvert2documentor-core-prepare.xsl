@@ -1,36 +1,24 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"
-  
+    
     xmlns:local="urn:local"
-    xmlns:ext="http://zoekservice.overheid.nl/extensions"  
-    xmlns:ser="http://www.armatiek.com/xslweb/functions/serialize"
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger"
+    xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:dynfunc="http://www.armatiek.com/xslweb/functions/dynfunc"
-    xmlns:err="http://www.w3.org/2005/xqt-errors"
-    xmlns:utils="https://koop.overheid.nl/namespaces/utils"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
     
-    xmlns:req="http://www.armatiek.com/xslweb/request"
-    xmlns:zip="http://www.armatiek.com/xslweb/functions/zip"
-    xmlns:file="http://expath.org/ns/file"
-    xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-    xmlns:output="http://www.w3.org/2010/xslt-xquery-serialization"
-    xmlns:config="http://www.armatiek.com/xslweb/configuration"
-    xmlns:webapp="http://www.armatiek.com/xslweb/functions/webapp"
-    
-    xmlns:log="http://www.armatiek.com/xslweb/functions/log"
+    exclude-result-prefixes="#all"
     
     expand-text="yes"
     >
     
-    <xsl:import href="../common/common.xsl"/>
+    <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="Imvert2documentor-common.xsl"/>
+    
+    <xsl:output method="xml" indent="no"/>
     
     <xsl:template match="/">
         
         <xsl:try>
             <documentor>
-                
-                <xsl:sequence select="dlogger:init(true())"/>
-                <xsl:sequence select="local:log('info: Documentor on ' || $module,'start')"/>
                 
                 <xsl:sequence select="local:log('section: Prepare',/)"/>
                 
@@ -40,26 +28,6 @@
                 
                 <xsl:sequence select="local:log('info: owner-folder-path',$owner-folder-path)"/>
                 <xsl:sequence select="local:log('info: module-work-folder-path',$module-work-folder-path)"/>
-                
-                <!--
-                    initialiseer het properties tabelletje.
-                -->
-                <xsl:variable name="props" as="element(prop)+">
-                    <prop key="Documentor datetime">{current-dateTime()}</prop>
-                </xsl:variable>
-                <xsl:sequence select="webapp:set-attribute('props',$props)"/>
-                
-                <!-- 
-                    Verwijder alle andere tijdelijke bestanden uit eerdere test-run 
-                -->
-                <xsl:sequence select="local:folder-cleanup()"/>
-                
-                <!-- 
-                    Als de module folder al/nog bestaat, verwijder/maak leeg
-                -->
-                <xsl:if test="file:exists($module-work-folder-path)">
-                    <xsl:sequence select="file:delete($module-work-folder-path,true())"/>      
-                </xsl:if>
                 
                 <xsl:sequence select="file:create-dir($module-work-folder-path || '')"/>      
                 <xsl:sequence select="file:create-dir($module-work-folder-path || '/img-store')"/>      

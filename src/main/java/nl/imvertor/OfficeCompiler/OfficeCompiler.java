@@ -151,6 +151,10 @@ public class OfficeCompiler extends Step {
 						// Maak een workfolder aan
 						AnyFolder workFolder = new AnyFolder(configurator.getWorkFolder("documentor"));
 						if (workFolder.isDirectory()) workFolder.deleteDirectory();
+						configurator.setXParm("documentor/modeldoc-workfolder",workFolder.getCanonicalPath());
+						AnyFolder moduleFolder = new AnyFolder(workFolder,"module");
+						if (moduleFolder.isDirectory()) moduleFolder.deleteDirectory();
+						configurator.setXParm("documentor/modeldoc-modulefolder",moduleFolder.getCanonicalPath());
 						
 						// check het type modeldoc. In development: folder, in productie: zipfile
 						AnyFile docFile = new AnyFile(mdf);
@@ -160,27 +164,27 @@ public class OfficeCompiler extends Step {
 							// alles uitpakken naar de workfolder
 							ZipFile zipFile = new ZipFile(docFile);
 							zipFile.decompress(workFolder);
-							// ga door deze files heen en zet ze om naar XHTML
-							Iterator<String> it = workFolder.listFilesToVector(false).iterator();
-							while (it.hasNext() && succeeds) {
-								AnyFile f = new AnyFile(it.next());
-								if (f.getExtension().equals("docx"))
-									succeeds = succeeds ? transformDocx(f) : false ;
-							}
 						} else {
 							runner.debug(logger,"CHAIN","Copying documentor files");
 							// alles kopieren naar de workfolder
 							(new AnyFolder(docFile)).copy(workFolder);
 						}
 						
-						// workfolder is gemaakt; alle MsWord bestanden omzetten naar XHTML
-						Iterator<String> it = workFolder.listFilesToVector(true).iterator();
-						while (it.hasNext()) {
-							AnyFile f = new AnyFile(it.next());
-							if (f.getExtension().equals("docx"))
-								succeeds = succeeds ? transformDocx(f) : false ;
-						}
+						// maak een kopie van alle files in de workfolder en verzamel deze in de modulefolder.
+						copyFilesToModulefolder(workFolder + "/sections", true);
+						copyFilesToModulefolder(workFolder + "/sections/img-store", true);
+						copyFilesToModulefolder(workFolder + "/modeldoc/sections", true);
+						copyFilesToModulefolder(workFolder + "/modeldoc/sections/img-store", true);
+						copyFilesToModulefolder(workFolder + "/modeldoc", false);
+						copyFilesToModulefolder(workFolder + "/modeldoc/img-store", false);
+											
 					}
+					// de files zijn uitgelezen en omgezet naar XHTML
+					// nu de bestanden integreren, start bij het masterdoc.
+					
+					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","documentor/masterdoc-path", "properties/IMVERTOR_DOCUMENTOR_CORESCANNER_XSLPATH","system/cur-imvertor-filepath") : false;
+					
+					
 				}
 			} else {
 				runner.error(logger,"No (valid) office variant specified: " + vr.toString());
@@ -297,6 +301,33 @@ public class OfficeCompiler extends Step {
 	private boolean transformDocx(AnyFile mswordFile) throws Exception {
 		WordFile infile = new WordFile(mswordFile);
 		XmlFile outfile = new XmlFile(mswordFile.getCanonicalPath() + ".xhtml");
-		return infile.toXhtmlFile(outfile);
+		
+		Transformer transformer = new Transformer();
+		
+		boolean succeeds = true;
+		
+		if (infile.toXhtmlFile(outfile)) {
+			// transfomeer die XHTML naar iets bruikbaars, extraheer ook meteen respec properties
+			transformer.setXslParm("msword-file-path", outfile.getCanonicalPath());
+			transformer.setXslParm("msword-file-name", outfile.getNameNoExtension());
+			configurator.setXParm("system/cur-imvertor-filepath", outfile.getCanonicalPath());
+			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_FILEPREPARE_FILE", "properties/IMVERTOR_DOCUMENTOR_FILEPREPARE_XSLPATH","system/cur-imvertor-filepath") : false;
+			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE", "properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_XSLPATH","system/cur-imvertor-filepath") : false;
+		}
+		return succeeds;
+	}
+	
+	private boolean copyFilesToModulefolder(String workSubFolderPath, boolean recurse) throws Exception {
+		
+		// workfolder is gemaakt; alle MsWord bestanden omzetten naar XHTML
+		AnyFolder workSubFolder = new AnyFolder(workSubFolderPath);
+		Iterator<String> it = workSubFolder.listFilesToVector(recurse).iterator();
+		boolean succeeds = true;
+		while (it.hasNext()) {
+			AnyFile f = new AnyFile(it.next());
+			if (f.getExtension().equals("docx") && !StringUtils.startsWith(f.getName(),"~")) // als msword file open staat in dev mode de buffer niet verwerken
+				succeeds = succeeds ? transformDocx(f) : false ;
+		}
+		return succeeds;
 	}
 }
