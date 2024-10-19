@@ -40,7 +40,7 @@
     <xsl:include href="report-profiles.xsl"/>
     <xsl:include href="report-xsltcalls.xsl"/>
     
-    <xsl:variable name="error-count" select="imf:get-config-string('system','error-count')"/>
+    <xsl:variable name="error-count" select="imf:get-config-string('appinfo','error-count')"/>
     <xsl:variable name="warning-count" select="imf:get-config-string('system','warning-count')"/>
     <xsl:variable name="status-message" select="imf:get-config-string('appinfo','status-message')"/>
     
