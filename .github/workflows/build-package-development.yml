@@ -1,0 +1,90 @@
+name: Build and Package development branch
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - Development
+  release:
+    types: [created]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: Development
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+        settings-path: ${{ github.workspace }} # location for the settings.xml file
+
+    - name: Maven Clean
+      run: mvn clean
+
+    - name: Maven Install
+      run: mvn install
+      
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+
+    - name: Extract Maven project groupId
+      run: echo "maven_groupId=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.groupId}' --non-recursive exec:exec)" >> "$GITHUB_ENV"
+    - name: Extract Maven project artifactId
+      run: echo "maven_artifactId=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec)" >> "$GITHUB_ENV"
+    - name: Extract Maven project version
+      run: echo "maven_version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> "$GITHUB_ENV"
+      
+    - name: Show extracted Maven project groupId, artifactId, version
+      run: printf '%s\n' "$maven_groupId" "$maven_artifactId" "$maven_version"
+
+    - name: Delete package or package version
+      uses: actions/github-script@v7
+      id: delete-package-version
+      with:
+        script: |
+          const packageName = process.env.maven_groupId + '.' + process.env.maven_artifactId 
+          const org = context.repo.owner 
+          const versionInfo = await github.rest.packages.getAllPackageVersionsForPackageOwnedByOrg({
+            package_type: 'maven',
+            package_name: packageName,
+            org: org,
+          })
+          
+          const versions = versionInfo.data
+          for (const version of versions) {
+            if (version.name == process.env.maven_version) {
+              /* This version is the maven version we want to delete: */
+              if (versions.length == 1) {
+                /* This version is the last version of the package so we have to delete the complete package: */
+                await github.rest.packages.deletePackageForOrg({
+                  package_type: 'maven',
+                  package_name: packageName,
+                  org: context.repo.owner,
+                });
+              } else {
+                /* Remove this version from the package: */
+                await github.rest.packages.deletePackageVersionForOrg({
+                  package_type: 'maven',
+                  package_name: packageName,
+                  org: context.repo.owner,
+                  package_version_id: version.id,
+                });
+              }
+              break;
+            }
+          }
+
+    - name: Publish to GitHub Packages Apache Maven
+      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
