@@ -35,7 +35,7 @@
     <xsl:variable name="bp-req-code-list-encodings" select="imf:get-ep-parameter(/ep:group,'bp-req-code-list-encodings')"/>
     <xsl:variable name="bp-req-additional-requirements-classes" select="imf:get-ep-parameter(/ep:group,'bp-req-additional-requirements-classes')"/>
     
-    <xsl:variable name="bp-metaschema-url" select="imf:get-ep-parameter(/ep:group,'bp-meta-schema-url')"/>
+    <xsl:variable name="bp-metaschema-url" select="imf:get-ep-parameter(/ep:group,'bp-metaschema-url')"/>
     
     <xsl:variable name="schema-tv-id">{imf:get-ep-parameter(/ep:group,'json-id')}</xsl:variable>
     <xsl:variable name="schema-gen-id">{imf:get-ep-parameter(/ep:group,'namespace')}/{imf:get-ep-parameter(/ep:group,'version')}/{imf:get-ep-parameter(/ep:group,'release')}</xsl:variable>
