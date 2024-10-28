@@ -186,7 +186,7 @@ public class Transformer {
 
 		String task = "Transforming";
 		
-		configurator.getRunner().debug(logger,"CHAIN",task + " " + infile.getCanonicalPath() + " using " + xslfile.getName());
+		configurator.getRunner().debug(logger,"CHAIN",task + " " + (new AnyFile(infile)).getRelativePath(configurator.getWorkFolder()) + " using " + (new AnyFile(xslfile)).getRelativePath(configurator.getBaseFolder()));
 		
 		stylesheetIdentifier  = Configurator.getStylesheetIdentifier(xslfile);
 		
