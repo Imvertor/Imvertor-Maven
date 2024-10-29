@@ -389,7 +389,7 @@
                 <xsl:sequence select="imf:report-warning($this, 
                     $min eq 1 and empty($applicable-values),
                     'Tagged value [1] not specified but required for [2]',($tv-name,imf:string-group($selected-stereotype)))"/>
-                <xsl:sequence select="imf:report-warning($this, 
+                <xsl:sequence select="imf:report-error($this, 
                     count($applicable-values) gt $max,
                     'Tagged value [1] specified too many times for [2]',($tv-name,imf:string-group($selected-stereotype)))"/>
          
