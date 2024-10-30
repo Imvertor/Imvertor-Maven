@@ -25,24 +25,12 @@
     <xsl:function name="pack:process-catalog" as="element()">
         <xsl:param name="catalog-path" as="xs:string"/>
         
-        <xsl:variable name="cat-xhtml" as="element()?">
-            <xsl:choose>
-                <xsl:when test="ends-with($catalog-path,'.xhtml')">
-                    <xsl:sequence select="imf:document($catalog-path)/*"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <?TODO parse html extensuion implemeneteren, file read text implementeren
-                        <xsl:variable name="cat-string" select="'&lt;body&gt;' || file:read-text($catalog-path) || '&lt;/body&gt;'"/> <!-- let op, de catalogus heeft twee top <section>s. Vandaar de wrapper <body> -->
-                        <xsl:sequence select="util:parse-html($cat-string)/*"/>
-                    ?>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>     
-        <xsl:sequence select="local:log('$cat-xhtml',$cat-xhtml)"/>
+        <xsl:variable name="cat-xhtml-doc" select="imf:document($catalog-path)/*"/>
+        <xsl:sequence select="local:log('$cat-xhtml',$cat-xhtml-doc)"/>
         <div>
             <xsl:choose>
-                <xsl:when test="$cat-xhtml">
-                    <xsl:apply-templates select="$cat-xhtml" mode="pack:process-catalog"/>             
+                <xsl:when test="$cat-xhtml-doc">
+                    <xsl:apply-templates select="$cat-xhtml-doc" mode="pack:process-catalog"/>             
                 </xsl:when>
                 <xsl:otherwise>
                     <error>Cannot read catalog</error>
