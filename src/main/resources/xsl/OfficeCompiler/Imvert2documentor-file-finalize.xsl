@@ -5,6 +5,8 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     
+    exclude-result-prefixes="#all"
+    
     expand-text="yes"
     >
     <xsl:import href="../common/Imvert-common.xsl"/>
@@ -21,6 +23,7 @@
     <xsl:template match="/"> <!-- een <document> -->
 
         <xsl:sequence select="local:log('section: file-finalize',/)"/>
+        
         <document name="{$msword-file-name}" auto="auto">
             <xsl:comment select="current-dateTime()"/>
             <xsl:apply-templates select="/document/html/body/node()"/>

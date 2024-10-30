@@ -4,9 +4,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>Imvertor</groupId>
-  <artifactId>Imvertor</artifactId>
-  <version>1-SNAPSHOT</version>
+  <groupId>nl.imvertor</groupId>
+  <artifactId>imvertor</artifactId>
+  <version>0.9.9</version>
   <name>Imvertor</name>
 
   <description>Imvertor under Maven</description>
@@ -14,6 +14,7 @@
   <!-- ASL = The Apache Software License, Version 2.0, http://www.apache.org/licenses/LICENSE-2.0.txt -->
   <!-- MSL = mozilla license, https://www.mozilla.org/en-US/MPL/2.0/ -->
   <!-- ESL = Eclipse software license, http://www.eclipse.org/legal/epl-v10.html -->
+
 
 	<repositories>
 	  <repository>
@@ -220,15 +221,10 @@
       <version>1.8.0-beta2</version>
     </dependency>
 
-    <!-- non-mavenized depencies below; dependency on enterprise architect should be removed -->
-    <!-- note that they might have to distributed seperately due to copyright issues -->
     <dependency>
       <groupId>enterprise.architect</groupId>
       <artifactId>java-api</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${env.EAPATH}/eaapi.jar</systemPath>
-      <!-- systemPath>C:\Program Files (x86)\Sparx Systems\EA\Java API\eaapi.jar</systemPath -->
+      <version>1.0.0</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.json/json -->
@@ -237,7 +233,7 @@
       <artifactId>json</artifactId>
       <version>20231013</version>
     </dependency>
-
+    
     <!-- https://mvnrepository.com/artifact/de.odysseus.staxon/staxon -->
     <dependency>
       <groupId>de.odysseus.staxon</groupId>
@@ -410,7 +406,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.5.1</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -418,7 +414,10 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <!--
               <finalName>Imvertor-1-SNAPSHOT-jar-with-dependencies</finalName>
+              -->
+              <minimizeJar>true</minimizeJar>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>nl.imvertor.ChainTranslateAndReport</mainClass>
@@ -426,6 +425,36 @@
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
               </transformers>
               <filters>
+                <filter>
+                  <artifact>org.eclipse.birt.runtime.3_7_1:org.apache.xerces</artifact>
+                  <includes>
+                    <include>**</include>
+                  </includes>
+                </filter>
+                <filter>
+                  <artifact>com.fasterxml.woodstox:woodstox-core</artifact>
+                  <includes>
+                    <include>**</include>
+                  </includes>
+                </filter>
+                <filter>
+                  <artifact>org.codehaus.woodstox:woodstox-core-asl</artifact>
+                  <includes>
+                    <include>**</include>
+                  </includes>
+                </filter>
+                <filter>
+                  <artifact>commons-jxpath:commons-jxpath</artifact>
+                  <includes>
+                    <include>**</include>
+                  </includes>
+                </filter>
+                <filter>
+                  <artifact>log4j:log4j</artifact>
+                  <includes>
+                    <include>**</include>
+                  </includes>
+                </filter>
                 <filter>
                   <artifact>*:*</artifact>
                   <excludes>
@@ -440,8 +469,40 @@
         </executions>
       </plugin>
       
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <id>install-external</id>
+            <phase>clean</phase>
+            <configuration>
+              <file>${project.basedir}/lib/eaapi.jar</file>
+              <repositoryLayout>default</repositoryLayout>
+              <groupId>enterprise.architect</groupId>
+              <artifactId>java-api</artifactId>
+              <version>1.0.0</version>
+              <packaging>jar</packaging>
+              <generatePom>true</generatePom>
+            </configuration>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
     </plugins>
   </build>
+  
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/imvertor/imvertor-maven</url>
+    </repository>
+  </distributionManagement>
 
   <url>http://www.imvertor.org/</url>
 </project>

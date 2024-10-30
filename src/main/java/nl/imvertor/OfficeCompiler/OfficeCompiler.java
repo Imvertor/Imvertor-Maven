@@ -40,6 +40,7 @@ import nl.imvertor.common.file.WordFile;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.ZipFile;
 import nl.imvertor.common.git.ResourcePusher;
+import nl.imvertor.common.xsl.extensions.ImvertorCalculateHashlabel;
 
 public class OfficeCompiler extends Step {
 
@@ -47,6 +48,9 @@ public class OfficeCompiler extends Step {
 	
 	public static final String STEP_NAME = "OfficeCompiler";
 	public static final String VC_IDENTIFIER = "$Id: OfficeCompiler.java 7457 2016-03-05 08:43:43Z arjan $";
+	
+	private AnyFolder workFolder;
+	private AnyFolder moduleFolder;
 	
 	public boolean run() throws Exception{
 		
@@ -78,6 +82,7 @@ public class OfficeCompiler extends Step {
 		if (op.equals("html")) {
 			runner.info(logger,"Creating documentation");
 			Transformer transformer = new Transformer();
+			transformer.setExtensionFunction(new ImvertorCalculateHashlabel());
 			
 			boolean succeeds = true;
 			
@@ -148,12 +153,15 @@ public class OfficeCompiler extends Step {
 						
 						// Er is documentor input in de vorm van modeldocs meegeleverd.
 						
-						// Maak een workfolder aan
-						AnyFolder workFolder = new AnyFolder(configurator.getWorkFolder("documentor"));
-						if (workFolder.isDirectory()) workFolder.deleteDirectory();
+						// Maak de workfolder en de module folder aan
+						workFolder = new AnyFolder(configurator.getWorkFolder("documentor"));
+						if (workFolder.isDirectory()) workFolder.deleteDirectory(); 
+						workFolder.mkdir();
 						configurator.setXParm("documentor/modeldoc-workfolder",workFolder.getCanonicalPath());
-						AnyFolder moduleFolder = new AnyFolder(workFolder,"module");
+						
+						moduleFolder = new AnyFolder(workFolder,"module");
 						if (moduleFolder.isDirectory()) moduleFolder.deleteDirectory();
+						moduleFolder.mkdir();
 						configurator.setXParm("documentor/modeldoc-modulefolder",moduleFolder.getCanonicalPath());
 						
 						// check het type modeldoc. In development: folder, in productie: zipfile
@@ -170,20 +178,27 @@ public class OfficeCompiler extends Step {
 							(new AnyFolder(docFile)).copy(workFolder);
 						}
 						
+						// zet alle respec documenten klaar (cf prepare-respec)
+						
+						//TODO
+						
 						// maak een kopie van alle files in de workfolder en verzamel deze in de modulefolder.
+						copyFilesToModulefolder(workFolder + "/modeldoc", true);
 						copyFilesToModulefolder(workFolder + "/sections", true);
-						copyFilesToModulefolder(workFolder + "/sections/img-store", true);
-						copyFilesToModulefolder(workFolder + "/modeldoc/sections", true);
-						copyFilesToModulefolder(workFolder + "/modeldoc/sections/img-store", true);
-						copyFilesToModulefolder(workFolder + "/modeldoc", false);
-						copyFilesToModulefolder(workFolder + "/modeldoc/img-store", false);
-											
+						copyFilesToModulefolder(workFolder + "/profile", true);
+														
 					}
 					// de files zijn uitgelezen en omgezet naar XHTML
-					// nu de bestanden integreren, start bij het masterdoc.
-					
-					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","documentor/masterdoc-path", "properties/IMVERTOR_DOCUMENTOR_CORESCANNER_XSLPATH","system/cur-imvertor-filepath") : false;
-					
+					// nu de bestanden integreren, start bij het masterdoc, als dat er is -- masterdoc wordt bepaald bij het scannen van de files..
+					String masterdocPath = configurator.getXParm("documentor/masterdoc-path",false);
+					succeeds = succeeds ? masterdocPath != null : false;
+					// kopieer het masterdoc naar de imvertor workfolder
+					if (succeeds) {
+						(new AnyFile(masterdocPath)).copyFile(configurator.getXParm("properties/IMVERTOR_DOCUMENTOR_CORESCANNER_FILE"));
+						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_CORESCANNER_FILE", "properties/IMVERTOR_DOCUMENTOR_CORESCANNER_XSLPATH","system/cur-imvertor-filepath") : false;
+						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_COREMODES_FILE", "properties/IMVERTOR_DOCUMENTOR_COREMODES_XSLPATH","system/cur-imvertor-filepath") : false;
+						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE", "properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_XSLPATH","system/cur-imvertor-filepath") : false;
+					}
 					
 				}
 			} else {
@@ -313,6 +328,8 @@ public class OfficeCompiler extends Step {
 			configurator.setXParm("system/cur-imvertor-filepath", outfile.getCanonicalPath());
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_FILEPREPARE_FILE", "properties/IMVERTOR_DOCUMENTOR_FILEPREPARE_XSLPATH","system/cur-imvertor-filepath") : false;
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE", "properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_XSLPATH","system/cur-imvertor-filepath") : false;
+			// vervang het file met de aangepaste XHTML file
+			(new AnyFile(configurator.getXParm("properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE"))).copyFile(outfile);
 		}
 		return succeeds;
 	}
@@ -321,13 +338,38 @@ public class OfficeCompiler extends Step {
 		
 		// workfolder is gemaakt; alle MsWord bestanden omzetten naar XHTML
 		AnyFolder workSubFolder = new AnyFolder(workSubFolderPath);
-		Iterator<String> it = workSubFolder.listFilesToVector(recurse).iterator();
-		boolean succeeds = true;
-		while (it.hasNext()) {
-			AnyFile f = new AnyFile(it.next());
-			if (f.getExtension().equals("docx") && !StringUtils.startsWith(f.getName(),"~")) // als msword file open staat in dev mode de buffer niet verwerken
-				succeeds = succeeds ? transformDocx(f) : false ;
-		}
-		return succeeds;
+		if (workSubFolder.isDirectory()) {
+			// eerste slag: alle docx files transformeren naar standaard XHTML vorm.
+			Iterator<String> it1 = workSubFolder.listFilesToVector(recurse).iterator();
+			boolean succeeds = true;
+			while (it1.hasNext()) {
+				AnyFile f = new AnyFile(it1.next());
+				if (!StringUtils.startsWith(f.getName(),"~") && f.getExtension().equals("docx")) 
+					succeeds = succeeds ? transformDocx(f) : false ;
+			}
+			// tweede slag: alles kopieren naar module folder
+			Iterator<String> it2 = workSubFolder.listFilesToVector(recurse).iterator();
+			while (it2.hasNext()) {
+				AnyFile f = new AnyFile(it2.next());
+				String fileName = f.getName();
+				String fileUri = f.toURI().toString();
+				
+				// beperk het aantal files dat een rol kan spelen in de verwerking. Kopieer die niet door naar de module folder. 
+				if (f.isFile() && !StringUtils.contains(fileUri,"/dat/")) {
+					AnyFile moduleFile = new AnyFile(moduleFolder + "/" + fileName);
+					if (StringUtils.endsWith(fileName,".docx.xhtml") || StringUtils.endsWith(fileName,".png") ||StringUtils.endsWith(fileName,".jpg")) {
+						if (moduleFile.isFile()) {
+							runner.error(logger, "Duplicate file name in documentor input: " + fileName);
+							succeeds = false;
+						} else 
+							f.copyFile(moduleFile);
+					}
+				}
+			}
+	
+			return succeeds;
+		} else
+			return false;
 	}
+	
 }

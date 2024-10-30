@@ -23,7 +23,10 @@
     <xsl:template match="/">
         <xsl:sequence select="local:log('section: file-prepare',/)"/>
         
-        <xsl:if test="contains($msword-file-url,'/modeldoc/')">
+        <xsl:variable name="file-toks" select="tokenize($msword-file-url,'/')"/>
+        
+        <xsl:sequence select="local:log('$file-toks',$file-toks)"/>
+        <xsl:if test="$file-toks[count($file-toks) - 2] eq 'modeldoc'">
             <xsl:sequence select="imf:set-xparm('documentor/masterdoc-name',$msword-file-name)"/>
             <xsl:sequence select="imf:set-xparm('documentor/masterdoc-path',$msword-file-path)"/>
         </xsl:if>
@@ -75,7 +78,9 @@
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:sequence select="local:log('prop-' || $key,$val)"></xsl:sequence>
-                <xsl:sequence select="imf:set-xparm('documentor/prop-' || $key,string-join($val,';'))"/>
+                <!-- sommige properties kunnen meermaals voorkomen. Leg dat hier vast. -->
+                <xsl:variable name="overwrite" select="not($key = ('editor','more?'))"/>
+                <xsl:sequence select="imf:set-xparm('documentor/prop-' || $key,string-join($val,';'),$overwrite)"/>
             </xsl:for-each>
             
         </document>
