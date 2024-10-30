@@ -99,7 +99,11 @@
                     <div>
                         <h1>Conceptual schemas</h1>
                         <xsl:apply-templates select="." mode="metamodel-cs"/>
-                    </div>       
+                    </div> 
+                    <div>
+                        <h1>Documentation rules</h1>
+                        <xsl:apply-templates select="." mode="docrules"/>
+                    </div> 
                     <div>
                         <h1>Visuals</h1>
                         <xsl:apply-templates select="." mode="metamodel-visuals"/>
@@ -316,6 +320,30 @@
         </div>
     </xsl:template>
     
+    <xsl:template match="/config" mode="docrules">
+        <div>
+            <h2>Documentation rules</h2>
+            
+            <xsl:variable name="rows" as="element(tr)*">
+                <xsl:for-each select="$configuration-docrules-file//doc-rule">
+                    <xsl:sort select="xs:integer(@order)"/>
+                    <tr>
+                        <td>
+                            <xsl:sequence select="imf:show-name(.,position() != last())"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="@order"/>
+                        </td>
+                        <td>
+                            <xsl:sequence select="imf:get-src(name[1])"/>
+                        </td>
+                    </tr>
+                </xsl:for-each>
+            </xsl:variable>
+            <xsl:sequence select="imf:create-result-table-by-tr($rows,'label:40,order:20,config:40','table-docrules')"/>
+        </div>
+    </xsl:template>
+  
     <xsl:template match="config" mode="tree">
         <ul>
             <xsl:apply-templates select="includes" mode="tree"/>

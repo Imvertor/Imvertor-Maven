@@ -20,15 +20,6 @@
         </levels>
     </doc-rule>
 
-    <doc-rule id="CFG-DOC-EENHEID" order="145">
-        <name lang="nl">Eenheid</name>
-        <name lang="en">Unit</name>
-        <levels>
-            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCEELEMENT</level>
-            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ATTRIBUTE</level>
-        </levels>
-    </doc-rule>
-    
     <doc-rule id="CFG-DOC-IDENTIFICATIE" order="015">
         <name lang="nl">Identificatie</name>
         <name lang="en">Identification</name>
@@ -78,23 +69,57 @@
         </levels>
     </doc-rule>
     
-    <doc-rule id="CFG-DOC-MINIMUMWAARDEEXCLUSIEF" order="147">
-        <name lang="nl">Minimum waarde (exclusief)</name>
-        <name lang="en">Minimum value (eclusive)</name>
+    <doc-rule id="CFG-DOC-EENHEID" order="115">
+        <name lang="nl">Eenheid</name>
+        <name lang="en">Unit</name>
         <levels>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCEELEMENT</level>
-            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-DATAELEMENT</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ATTRIBUTE</level>
         </levels>
     </doc-rule>
     
-    <doc-rule id="CFG-DOC-MAXIMUMWAARDEEXCLUSIEF" order="148">
-        <name lang="nl">Maximum waarde (exclusief)</name>
-        <name lang="en">Maximum value (eclusive)</name>
+    <doc-rule id="CFG-DOC-UNITOFMEASURE" order="115">
+        <name lang="nl">Meeteenheid</name>
+        <name lang="en">Unit of measure</name>
         <levels>
-            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-REFERENCEELEMENT</level>
-            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-DATAELEMENT</level>
-            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-MINVALUEINCLUSIVE" order="141">
+        <name lang="nl">Minimumwaarde inclusief</name>
+        <name lang="en">MinInclusive</name>
+        <levels>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-DATAELEMENT</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MINVALUEEXCLUSIVE" order="142">
+        <name lang="nl">Minimumwaarde exclusief</name>
+        <name lang="en">MinExclusive</name>
+        <levels>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-DATAELEMENT</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MAXVALUEINCLUSIVE" order="143">
+        <name lang="nl">Maximumwaarde inclusief</name>
+        <name lang="en">MaxInclusive</name>
+        <levels>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-DATAELEMENT</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MAXVALUEEXCLUSIVE" order="144">
+        <name lang="nl">Maximumwaarde exclusief</name>
+        <name lang="en">MaxExclusive</name>
+        <levels>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="math">DISPLAY-DETAIL-DATAELEMENT</level>
         </levels>
     </doc-rule>
     
