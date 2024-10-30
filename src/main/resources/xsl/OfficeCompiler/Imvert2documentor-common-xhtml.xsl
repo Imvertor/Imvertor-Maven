@@ -99,8 +99,8 @@
                     <xsl:variable name="imgs" select="$page//image"/>
                     <xsl:variable name="hash" select="imf:calculate-hash($raw[2])"/>
                     <xsl:variable name="img-name" select="'img_hash_' || $hash || '.' || local:get-extension-for-mime($raw[1])"/>
-                    <xsl:variable name="img-src" select="'img-store/' || $img-name"/>
-                    <xsl:variable name="img-path" select="imf:get-xparm('system/work-app-folder-path') || '/cat/img-store/' || $img-name"/>
+                    <xsl:variable name="img-src" select="'Images-store/' || $img-name"/>
+                    <xsl:variable name="img-path" select="imf:get-xparm('system/work-app-folder-path') || '/cat/Images-store/' || $img-name"/>
                     
                     <!-- save there -->
                     <xsl:try>
