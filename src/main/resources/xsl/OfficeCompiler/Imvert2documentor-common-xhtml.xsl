@@ -100,17 +100,19 @@
                     <xsl:variable name="hash" select="imf:calculate-hash($raw[2])"/>
                     <xsl:variable name="img-name" select="'img_hash_' || $hash || '.' || local:get-extension-for-mime($raw[1])"/>
                     <xsl:variable name="img-src" select="'img-store/' || $img-name"/>
-                    <xsl:variable name="img-path" select="$module-work-folder-path || '/img-store/' || $img-name"/>
+                    <xsl:variable name="img-path" select="imf:get-xparm('system/work-app-folder-path') || '/cat/img-store/' || $img-name"/>
                     
                     <!-- save there -->
-                    <?TODO expath file write binary implementeren in imvertor
                     <xsl:try>
-                        <xsl:sequence select="file:write-binary($img-path,xs:base64Binary($raw[2]))"/> 
+                        <xsl:sequence xmlns:ext="http://www.imvertor.org/xsl/extensions" select="ext:imvertorExpathWriteBinary($img-path,$raw[2])"/> 
+                        <!--TODO 
+                            toevoegen aan expath extensions, en die ook (allemaal) testen
+                            nb expath vraag niet om string maar om een xs:base64Binary dus xs:base64Binary($raw[2])
+                        -->
                         <xsl:catch xmlns:err="http://www.w3.org/2005/xqt-errors">
                             <xsl:message select="'Error reading binary data for ' || $img-name || ': ' || $err:description"/>
                         </xsl:catch>          
                     </xsl:try>
-                    x?>
                     
                     <!-- determine the size from style, e.g. width:4.74861in;height:0.74028in -->
                     <xsl:variable name="dims" as="xs:string*">

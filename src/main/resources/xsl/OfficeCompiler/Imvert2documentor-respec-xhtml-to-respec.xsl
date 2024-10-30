@@ -37,181 +37,15 @@
    
         <xsl:sequence select="local:log('section: Create Respec',/)"/>
    
-        <document>
-            <xsl:copy-of select="@*"/>
-            
-            <xsl:variable name="respec-result" as="element(html)">
-            <?x
-        
-            <xsl:variable name="document-config" select="local:compact(local:get-prop('Document config'))"/> 
-
-            <html lang="nl" dir="ltr"><!-- TODO afhankelijk van de echte taal. let op, Respec leest dit @lang uit! -->
-                <head>
-                    <title>
-                        <xsl:value-of select="$title"/>
-                    </title>
-                    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-                    <script class='remove'>
-                        <xsl:variable name="respec-profile" select="local:file-list($module-work-folder-path || '/profile', false(), 'respec-*.js')"/><!-- bijv. 'respec-waarderingskamer.js' -->
-                        <xsl:choose>
-                            <xsl:when test="exists($respec-profile)">
-                                <xsl:attribute name="src">profile/{$respec-profile}</xsl:attribute>
-                                <info>Gebruik het lokale profiel: {$respec-profile}</info>
-                            </xsl:when>
-                            <xsl:when test="$document-config ='w3c'">
-                                <xsl:attribute name="src">https://armatiek.nl/respec-profiles/w3c/profile/respec-w3c-common.js</xsl:attribute><!-- common is verouderd maar voldoet. zie https://github.com/w3c/respec/wiki/respec-w3c-common-migration-guide
-                                 -->
-                                <info>Gebruik het W3C profiel</info>
-                            </xsl:when>
-                            <xsl:when test="$document-config ='geonovum'">
-                                <xsl:attribute name="src">https://tools.geostandaarden.nl/respec/builds/respec-geonovum.js</xsl:attribute>
-                                <info>Gebruik het Geonovum profiel</info>
-                            </xsl:when>
-                            <xsl:when test="$document-config ='armatiek'">
-                                <xsl:attribute name="src">https://armatiek.nl/respec-profiles/armatiek/profile/respec-armatiek.js</xsl:attribute>
-                                <info>Gebruik het Armatiek profiel</info>
-                            </xsl:when>
-                            <xsl:when test="$document-config ='mimcommunity'">
-                                <xsl:attribute name="src">https://armatiek.nl/respec-profiles/mimcommunity/profile/respec-mimcommunity.js</xsl:attribute>
-                                <info>Gebruik het MIM Community profiel</info>
-                            </xsl:when>
-                            <xsl:when test="$document-config ='waarderingskamer'">
-                                <xsl:attribute name="src">profile/respec-waarderingskamer.js</xsl:attribute>
-                                <info>Gebruik het Waarderingskamer profiel</info>
-                            </xsl:when>
-                            <xsl:when test="$document-config ='kadaster'">
-                                <xsl:attribute name="src">profile/respec-kadaster.js</xsl:attribute>
-                                <info>Gebruik het Kadaster profiel</info>
-                            </xsl:when>
-                            <xsl:when test="$document-config ='bij12'">
-                                <xsl:attribute name="src">profile/respec-bij12.js</xsl:attribute>
-                                <info>Gebruik het Bij12 profiel</info>
-                            </xsl:when>
-                            <xsl:when test="$document-config ='eigenaar'">
-                                <xsl:attribute name="src">profile/respec-eigenaar.js</xsl:attribute>
-                                <info>Gebruik het EIGENAAR profiel</info>
-                            </xsl:when>
-                            <xsl:when test="not(normalize-space($document-config))">
-                                <error loc="{$msword-file-subpath}">Geen veld met naam "Document config" opgegeven</error>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <error loc="{$msword-file-subpath}">Geen bekende waarde voor "Document config" veld:: <xsl:value-of select="$document-config"/></error>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </script>
-                    <script class='remove'>
-                        <xsl:variable name="tree" as="element(x:map)*">
-                            <x:map>
-                                <x:string key='specStatus'>
-                                    <xsl:value-of select="local:get-prop(('Spec status','Document status'))"/>
-                                </x:string>
-                                <x:string key='specType'>
-                                    <xsl:value-of select="local:get-prop(('Spec type','Document type'))"/>
-                                </x:string>
-                                <x:array key='editors'>
-                                    <xsl:for-each select="local:get-prop('Editor',true())">
-                                        <x:map>
-                                            <x:string key="name">
-                                                <xsl:value-of select="prop[@key = 'Name']"/>
-                                            </x:string>
-                                            <x:string key="url">
-                                                <xsl:value-of select="prop[@key = 'URL']"/>
-                                            </x:string>
-                                        </x:map> 
-                                    </xsl:for-each>
-                                </x:array>    
-                                <x:string key='edDraftURI'>
-                                    <xsl:value-of select="local:get-prop('Draft URI')"/>
-                                </x:string>
-                                <x:string key='latestVersion'>
-                                    <xsl:value-of select="local:get-prop('Latest publish URI')"/>
-                                </x:string>
-                                <x:string key='prevED'>
-                                    <xsl:value-of select="local:get-prop('Previous publish URI')"/>
-                                </x:string>
-                                <x:string key='prevRecURI'>
-                                    <xsl:value-of select="local:get-prop('Previous publish URI')"/>
-                                </x:string>
-                                <x:string key='shortName'>
-                                    <xsl:value-of select="local:get-prop('Short name')"/>
-                                </x:string>
-                                <x:string key='addSectionLinks'>
-                                    <xsl:value-of select="local:respec-boolean(local:get-prop('Section links'))"/>
-                                </x:string>
-                                <x:string key='maxTocLevel'>
-                                    <xsl:value-of select="local:get-prop('TOC levels')"/>
-                                </x:string>
-                                <x:string key='license'>
-                                    <xsl:value-of select="local:get-prop('License')"/>
-                                </x:string>
-                                <x:string key='subtitle'>
-                                    <xsl:value-of select="$subtitle"/>
-                                </x:string>
-                                <x:string key='lint'>
-                                    <xsl:value-of select="local:respec-boolean(local:get-prop('Lint'))"/><!-- https://respec.org/docs/#lint -->
-                                </x:string>
-                                <x:string key='pubDomain'>
-                                    <xsl:value-of select="local:get-prop(('Publication domain','Document store'))"/>
-                                </x:string>
-                                
-                                <!-- als deze datums zijn  opgegeven worden de URI's opgebouwd conform de vaste opzet bijv. https://docs.geostandaarden.nl/cvgg/def-im-img-20221025/ -->
-                                <x:string key='modificationDate'>
-                                    <xsl:value-of select="local:get-prop(('Modification date'))"/>
-                                </x:string>
-                                <x:string key='previousPublishDate'>
-                                    <xsl:value-of select="local:get-prop(('Previous publish date'))"/><!-- https://respec.org/docs/#previousPublishDate -->
-                                </x:string>
-                                <x:string key='publishDate'>
-                                    <xsl:value-of select="local:get-prop(('Date','Publish date'))"/>
-                                </x:string>
-                                
-                            </x:map>
-                        </xsl:variable>
-                        var respecConfig = <xsl:sequence select="xml-to-json($tree)"/>;
-                    </script>
-                         <!--
-                            e.g. 
-                            var respecConfig = {
-                                specStatus: "ED",
-                                editors: [{
-                                    name: "Arjan Loeffen, Armatiek BV",
-                                    url: "http://www.armatiek.nl/",
-                                }],
-                                edDraftURI: "http://some.github.repo",
-                                shortName: "testdoc"
-                            };
-                        -->
+            <xsl:variable name="respec-result" as="element()*">
+   
+                <document>
+                    <xsl:copy-of select="@*"/>
+                    <xsl:copy-of select="stage"/>
+                    <stage>xhtml-to-respec</stage>
                     
-                    <link rel="stylesheet" type="text/css" href="web/css/default-documentor.css" />
-                    <link rel="stylesheet" type="text/css" href="web/css/klant-documentor.css" />
-                    
-                    <script src="web/js/default-documentor.js" />
-                    <script src="web/js/klant-documentor.js" />
-                    
-                    <xsl:if test="local:boolean(local:get-prop('Hypothesis'))">
-                        <script type="text/javascript" xsl:expand-text="no"><![CDATA[
-                            var suppressHypothesis = false;
-                            var query = window.location.search.substring(1);
-                            var vars = query.split('&');
-                            for (var i=0; i<vars.length; i++) {
-                                var pair = vars[i].split('=');
-                                if (decodeURIComponent(pair[0]).toLowerCase() == 'suppresshypothesis' && decodeURIComponent(pair[1]) == 'true') {
-                                    suppressHypothesis = true;
-                                    break;
-                                }
-                            }
-                            if (!suppressHypothesis) {
-                                document.write(unescape('%3Cscript src="https://hypothes.is/embed.js" async %3E%3C/script%3E'));
-                            }
-                        ]]></script>
-                    </xsl:if>
-                    
-                </head>
-                <body>
-                    
-        x?>
-            
                     <xsl:variable name="errors" select="//error"/>
+                    
                     <xsl:if test="$errors">
                         <section type="documentor-messages">
                             <h1>Documentor rapport</h1>
@@ -231,6 +65,7 @@
                             </div>
                         </section>
                     </xsl:if>
+                    <?x
                     <xsl:choose>
                         <xsl:when test="not($document-config)">
                             <section type="documentor-messages">
@@ -238,25 +73,30 @@
                                 <p>Configuratie incompleet. Heeft jouw start-document bovenin een voldoende complete tabel met eigenschappen?</p>
                                 <p>Het start-document is {$master-docx}.</p>
                                 
-                                <?x TODO eigenschappen weergeven
                                 <p>Eigenschappen voor zover bekend:</p>
                                 <table>
-                                    <xsl:for-each select="$props">
-                                        <tr><td>{@key}</td><td>{.}</td></tr>
+                                    <!-- lees de props uit vanuit parms.xml -->
+                                    <xsl:variable name="parms" select="imf:document(imf:get-xparm('system/work-folder-path') || '/parms.xml')"/>
+                                    <xsl:for-each select="$parms/config/documentor/*">
+                                        <xsl:if test="starts-with(local-name(.),'prop-')">
+                                            <tr><td>{substring-after(local-name(.),'prop-')}</td><td>{.}</td></tr>
+                                        </xsl:if>
                                     </xsl:for-each>                            
                                 </table>
-                                x?>
                             </section>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:apply-templates select="/document/(error|info|page)"/>
                         </xsl:otherwise>
                     </xsl:choose>
+                    x?>
+                    <xsl:apply-templates select="/document/(error|info|page)"/>
+                </document>    
             </xsl:variable>        
+        
             <xsl:variable name="resolved" select="local:respec-resolve($respec-result)"/>
             
             <xsl:sequence select="$resolved"/>
-        </document> 
         
     </xsl:template>    
    
@@ -353,28 +193,18 @@
     
     <!-- TODO include catalog kan een parameter waarde hebben. Nu nog even "all" maar wordt "model" en "lists" -->
     <xsl:template match="include-catalog">
-        <xsl:variable name="xhtml-catalog-file-name" select="local:file-list($imvertor-cat-path,false(),'*.'|| $module || '.catalog.xhtml')"/>
-        <xsl:variable name="html-catalog-file-name" select="local:file-list($imvertor-cat-path,false(),'*.'|| $module || '.html')"/>
-        <xsl:variable name="catalog-file-name" select="($xhtml-catalog-file-name,$html-catalog-file-name)[1]"/>
-        <xsl:sequence select="local:log('catalog file path',$imvertor-cat-path || '/' || $catalog-file-name)"/>
-        
+        <xsl:variable name="catalog-file-name" select="imf:get-xparm('system/officename-resolved') || '.respec.catalog.xhtml'"/>
+        <xsl:variable name="imvertor-catalog-path" select="imf:get-xparm('system/work-app-folder-path') || '/cat/' || $catalog-file-name"/>
         <xsl:choose>
-            <xsl:when test="not(imf:document-available($imvertor-cat-path))">
-                <error loc="TODO $msword-file-subpath">Geen Imvertor applicatie folder aangetroffen</error>
-            </xsl:when>
-            <xsl:when test="empty($catalog-file-name)">
-                <error loc="TODO $msword-file-subpath">Geen catalogus aangetroffen</error>
-            </xsl:when>
             <xsl:when test="$insert-cat-by-data-include">
                 <info>Catalogus ingelinkt: {$catalog-file-name}</info>
                 <div data-include="{$catalog-file-name}" data-include-replace="true"/>
             </xsl:when>
             <xsl:otherwise>
                 <info>Catalogus ingevoegd: {$catalog-file-name}</info>
-                <xsl:apply-templates select="pack:xml-clean(pack:process-catalog($imvertor-cat-path || '/' || $catalog-file-name)/*:html/*:body/*)"/>
+                <xsl:apply-templates select="pack:xml-clean(pack:process-catalog($imvertor-catalog-path)/html/body/*)"/>
             </xsl:otherwise>
         </xsl:choose>
-        
     </xsl:template>
     
     <xsl:template match="text()">
@@ -390,7 +220,7 @@
     
     <xsl:function name="local:get-abbr" as="xs:string">
         <xsl:param name="key"/>
-        <xsl:value-of select="local:get-prop('Abbreviations')/prop[@key = $key]"/><!-- een property in een property -->
+        <xsl:value-of select="local:get-prop('Abbreviations')"/><!-- TODO een property in een property -->
     </xsl:function>
     
     <xsl:function name="local:boolean" as="xs:boolean">
@@ -421,9 +251,9 @@
     <!-- 
        Resolve errors and such.
      -->
-    <xsl:function name="local:respec-resolve" as="element(html)">
-        <xsl:param name="doc" as="element(html)"/>
-        <xsl:variable name="resolved" as="element(html)">
+    <xsl:function name="local:respec-resolve" as="element(document)">
+        <xsl:param name="doc" as="element(document)"/>
+        <xsl:variable name="resolved" as="element(document)">
             <xsl:apply-templates select="$doc" mode="local:respec-resolve"/>
         </xsl:variable>
         <xsl:sequence select="$resolved"/>

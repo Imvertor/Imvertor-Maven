@@ -84,7 +84,7 @@
                         ]]></script>
                         
                         <!-- 
-                            De volgende javascript is de complete Reespec, in lijn met nationale regels (Logius).
+                            De volgende javascript is de complete Respec, in lijn met nationale regels (Logius).
                         -->
                         <script src="{$owner-respec-config-url}" class="remove" async="async"/>
                       
@@ -111,8 +111,9 @@
                     <body>
                         <xsl:choose>
                             <!-- als de documentor bestanden zijn opgeleverd en verwerkt -->
-                            <xsl:when test="false()">
-                                
+                            <xsl:when test="imf:get-xparm('documentor/masterdoc-name')">
+                                <xsl:sequence select="dlogger:save('file',imf:document(imf:get-xparm('properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE')))"></xsl:sequence>
+                                <xsl:sequence select="imf:document(imf:get-xparm('properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE'))/document/section"/>
                             </xsl:when>
                             <!-- als geen documentor bestanden zijn opgeleverd en verwerkt -->
                             <xsl:otherwise>

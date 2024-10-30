@@ -41,6 +41,7 @@ import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.ZipFile;
 import nl.imvertor.common.git.ResourcePusher;
 import nl.imvertor.common.xsl.extensions.ImvertorCalculateHashlabel;
+import nl.imvertor.common.xsl.extensions.expath.ImvertorExpathWriteBinary;
 
 public class OfficeCompiler extends Step {
 
@@ -83,7 +84,8 @@ public class OfficeCompiler extends Step {
 			runner.info(logger,"Creating documentation");
 			Transformer transformer = new Transformer();
 			transformer.setExtensionFunction(new ImvertorCalculateHashlabel());
-			
+			transformer.setExtensionFunction(new ImvertorExpathWriteBinary());
+				
 			boolean succeeds = true;
 			
 			// append codelists and reference lists to imvertor file when referenced and when required.
@@ -97,10 +99,12 @@ public class OfficeCompiler extends Step {
 			succeeds = succeeds ? transformer.transformStep("properties/WORK_LISTS_FILE","properties/WORK_MODELDOC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_XSLPATH") : false;
 			*/
 			int i = 1;
+			String lastModeldocFile = "";
 			while (true) {
 				String xslname = "IMVERTOR_METAMODEL_" + dr + "_MODELDOC_XSLPATH" + ((i == 1) ? "" : ("_" + i));
 				String outname = "WORK_MODELDOC_FILE" + ((i == 1) ? "" : ("_" + i));
 				if (configurator.getParm("properties", xslname, false) != null) {
+					lastModeldocFile = configurator.getXParm("properties/" + outname); // onthoud welk file als laatste in de reeks is gegenereerd
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/" + outname, "properties/" + xslname, "system/cur-imvertor-filepath") : false ;
 					i += 1;
 				} else if (i == 0) {
@@ -118,6 +122,8 @@ public class OfficeCompiler extends Step {
 				String template = configurator.getXParm("cli/officename"); // e.g. resolved [project-name]-[application-name]-[phase]-[release]
 				String fn = configurator.mergeParms(template);
 			
+				configurator.setXParm("system/officename-resolved", fn); // resolved, dus bijv. CM-Testmodel-1-20231114
+				
 				if (vr.contains("msword")) {
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_MSWORD_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_MSWORD_XSLPATH") : false;
 					if (succeeds) processDoc(fn,"msword.html","appinfo/msword-documentation-filename","properties/WORK_MSWORD_FILE","none");
@@ -128,28 +134,17 @@ public class OfficeCompiler extends Step {
 						if (mswordFolder.isDirectory()) 
 							mswordFolder.copy(new AnyFolder(configurator.getXParm("system/work-cat-folder-path") + "/msword"));
 					}
-				}
+				}//msword
 				if (vr.contains("respec")) {
-					if (configurator.isTrue("cli","fullrespec", false)) {
-						// process complete report
-						transformer.setXslParm("catalog-only", "false");
-						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_RESPEC_XSLPATH") : false;
-						if (succeeds) processDoc(fn,"respec.full.html","appinfo/full-respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
-					}
-					// process catalog only, save as HTML
-					transformer.setXslParm("catalog-only", "true");
-					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_RESPEC_XSLPATH") : false;
-					if (succeeds) processDoc(fn,"respec.html","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE",configurator.getXParm("cli/passoffice",false));
+		
 					// process catalog only, save as XHTML
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_MODELDOC_RESPEC_XSLPATH") : false;
 					if (succeeds) processDoc(fn,"respec.catalog.xhtml","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
 					
-					if (succeeds) {
-						// De laatste output is de XHTML catalogus; die staat centraal in documentor.
-						
-						// als documentor info beschikbaar is, dan uitpakken en omzetten naar xhtml met Pandoc
-						String mdf = configurator.getXParm("cli/documentorfile",false);
-						if (mdf == null) return;
+					// als documentor info beschikbaar is, dan uitpakken en omzetten naar xhtml met Pandoc
+					String mdf = configurator.getXParm("cli/documentorfile",false);
+					
+					if (succeeds && !(mdf == null)) {
 						
 						// Er is documentor input in de vorm van modeldocs meegeleverd.
 						
@@ -187,20 +182,36 @@ public class OfficeCompiler extends Step {
 						copyFilesToModulefolder(workFolder + "/sections", true);
 						copyFilesToModulefolder(workFolder + "/profile", true);
 														
+						// de files zijn uitgelezen en omgezet naar XHTML
+						// nu de bestanden integreren, start bij het masterdoc, als dat er is -- masterdoc wordt bepaald bij het scannen van de files..
+						String masterdocPath = configurator.getXParm("documentor/masterdoc-path",false);
+						succeeds = succeeds ? masterdocPath != null : false;
+						// kopieer het masterdoc naar de imvertor workfolder
+						if (succeeds) {
+							(new AnyFile(masterdocPath)).copyFile(configurator.getXParm("properties/IMVERTOR_DOCUMENTOR_CORESCANNER_FILE"));
+							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_CORESCANNER_FILE", "properties/IMVERTOR_DOCUMENTOR_CORESCANNER_XSLPATH","system/cur-imvertor-filepath") : false;
+							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_COREMODES_FILE", "properties/IMVERTOR_DOCUMENTOR_COREMODES_XSLPATH","system/cur-imvertor-filepath") : false;
+							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE", "properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_XSLPATH","system/cur-imvertor-filepath") : false;
+						}
 					}
-					// de files zijn uitgelezen en omgezet naar XHTML
-					// nu de bestanden integreren, start bij het masterdoc, als dat er is -- masterdoc wordt bepaald bij het scannen van de files..
-					String masterdocPath = configurator.getXParm("documentor/masterdoc-path",false);
-					succeeds = succeeds ? masterdocPath != null : false;
-					// kopieer het masterdoc naar de imvertor workfolder
+					configurator.setXParm("system/cur-imvertor-filepath", lastModeldocFile);
+					
 					if (succeeds) {
-						(new AnyFile(masterdocPath)).copyFile(configurator.getXParm("properties/IMVERTOR_DOCUMENTOR_CORESCANNER_FILE"));
-						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_CORESCANNER_FILE", "properties/IMVERTOR_DOCUMENTOR_CORESCANNER_XSLPATH","system/cur-imvertor-filepath") : false;
-						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_COREMODES_FILE", "properties/IMVERTOR_DOCUMENTOR_COREMODES_XSLPATH","system/cur-imvertor-filepath") : false;
-						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE", "properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_XSLPATH","system/cur-imvertor-filepath") : false;
+						// we hebben nu het hele document in respec format, met daarin de catalogus. Plaats dit document als body van het Respec resultaat document.
+						if (configurator.isTrue("cli","fullrespec", false)) {
+							// process complete report
+							transformer.setXslParm("catalog-only", "false");
+							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_RESPEC_XSLPATH") : false;
+							if (succeeds) processDoc(fn,"respec.full.html","appinfo/full-respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
+						}
+						
+						// process catalog only, save as HTML
+						transformer.setXslParm("catalog-only", "true");
+						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_RESPEC_XSLPATH") : false;
+						if (succeeds) processDoc(fn,"respec.html","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE",configurator.getXParm("cli/passoffice",false));
 					}
 					
-				}
+				}//respec
 			} else {
 				runner.error(logger,"No (valid) office variant specified: " + vr.toString());
 				succeeds = false;
