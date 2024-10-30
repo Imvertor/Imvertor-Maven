@@ -34,9 +34,7 @@
         <xsl:sequence select="local:log('$integrated',$integrated)"/>
      
         <xsl:sequence select="$integrated"/>
-        
-        <xsl:sequence select="local:log('$integrated',$integrated)"/>
-    
+       
     </xsl:template>
     
     <!-- 
@@ -45,6 +43,8 @@
     <xsl:function name="local:integrate" as="element(document)">
         <xsl:param name="doc-name" as="xs:string"/>
         <xsl:param name="docs-processed" as="xs:string*"/>
+        
+        <xsl:variable name="doc-path" select="$module-work-folder-path || '/' || $doc-name || '.xhtml'"/>
         
         <xsl:sequence select="local:log('Integrating report file',$doc-path)"/>
         <xsl:variable name="doc" select="imf:document($doc-path)/document" as="element(document)?"/>
