@@ -15,8 +15,8 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="Imvert2documentor-common.xsl"/>
-    <xsl:import href="documentor-modes/mode-default.xsl"/>
-    <xsl:import href="documentor-modes/mode-primer.xsl"/>
+    <xsl:import href="Imvert2documentor-mode-default.xsl"/>
+    <xsl:import href="Imvert2documentor-mode-primer.xsl"/>
     
     <xsl:template match="/">
     
