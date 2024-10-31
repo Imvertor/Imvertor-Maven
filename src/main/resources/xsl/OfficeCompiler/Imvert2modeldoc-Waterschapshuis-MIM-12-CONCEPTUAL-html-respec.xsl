@@ -16,7 +16,7 @@
     <!-- this owner generates respec files with all info stored in that file. -->
     
     <xsl:template match="/book">
-        <html>
+        <html lang="{$language}">
             <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <title>
