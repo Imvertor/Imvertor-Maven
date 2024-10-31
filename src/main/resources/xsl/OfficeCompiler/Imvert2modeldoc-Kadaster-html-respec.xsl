@@ -24,7 +24,7 @@
                 <xsl:sequence select="$catalog"/>
             </xsl:when>
             <xsl:otherwise>
-                <html>
+                <html lang="{$language}">
                     <head>
                         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                         <title>

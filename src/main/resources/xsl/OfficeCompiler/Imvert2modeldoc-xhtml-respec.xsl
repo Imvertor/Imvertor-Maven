@@ -19,7 +19,7 @@
         <xsl:variable name="catalog" as="element(section)*">
             <xsl:apply-templates select="chapter"/><!-- calls upon the standard template for chapters such as CAT and REF -->
         </xsl:variable>
-        <html>
+        <html lang="{$language}">
             <body>
                 <xsl:sequence select="$catalog"/> 
             </body>

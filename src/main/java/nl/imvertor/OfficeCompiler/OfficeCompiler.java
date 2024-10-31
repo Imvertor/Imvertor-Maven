@@ -178,9 +178,9 @@ public class OfficeCompiler extends Step {
 						//TODO
 						
 						// maak een kopie van alle files in de workfolder en verzamel deze in de modulefolder.
-						copyFilesToModulefolder(workFolder + "/modeldoc", true);
-						copyFilesToModulefolder(workFolder + "/sections", true);
-						copyFilesToModulefolder(workFolder + "/profile", true);
+						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/modeldoc", true) : false;
+						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/sections", true) : false;
+						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/profile", true) : false;
 														
 						// de files zijn uitgelezen en omgezet naar XHTML
 						// nu de bestanden integreren, start bij het masterdoc, als dat er is -- masterdoc wordt bepaald bij het scannen van de files..

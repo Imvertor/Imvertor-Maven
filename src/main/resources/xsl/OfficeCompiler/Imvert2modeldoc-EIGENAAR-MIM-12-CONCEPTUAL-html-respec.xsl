@@ -49,7 +49,7 @@
                 <xsl:sequence select="$catalog"/>
             </xsl:when>
             <xsl:otherwise>
-                <html>
+                <html lang="{$language}">
                     <head>
                         <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
                         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -63,7 +63,7 @@
                         <!-- TODO verplicht: samenstellen op basis van MsWord properties table. Let op: veel props zijn gedefinieerd in de owner.js -->
                         <script class="remove"><![CDATA[
                             var respecConfig = {{
-                                specStatus: "ED",
+                                specStatus: "IO",
                                 specType: "IM",
                                 editors: [{{
                                     name: "{$user-name}",
