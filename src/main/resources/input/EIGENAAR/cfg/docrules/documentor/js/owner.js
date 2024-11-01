@@ -4,7 +4,7 @@ var organisationConfig = {
     
     nl_organisationStylesURL: "https://gitdocumentatie.logius.nl/publicatie/respec/style/",
     
-    nl_organisationPublishURL: "https://vng-realisatie.github.io/publicatie",
+    nl_organisationPublishURL: "https://eigenaar.nl/publicatie",
     
     // Het hier gedefinieerde logo wordt helemaal bovenaan het Respec document aan de rechterzijde geplaatst.
     // Er is voor gekozen de 'width' property niet te gebruiken waardoor het logo automatisch in de juiste verhoudingen wordt geplaatst.
@@ -14,7 +14,7 @@ var organisationConfig = {
         alt: "Logo-EIGENAAR",
         id: "Logo-EIGENAAR",
         height: 77,
-        url: "https://www.EIGENAAR.nl",
+        url: "https://EIGENAAR.nl",
     }],
 
    // De hier gedefinieerde variabelen kunnen door ze nogmaals in de config.js te plaatsen overruled worden.  
