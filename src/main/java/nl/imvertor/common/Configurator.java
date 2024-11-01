@@ -247,6 +247,10 @@ public class Configurator {
 	public AnyFolder getWorkFolder() {
 		return workFolder;
 	}
+	
+	public AnyFolder getInputFolder() {
+		return inputFolder;
+	}
 
 	public AnyFolder getWorkFolder(String subfolderName) {
 		return new AnyFolder(workFolder,subfolderName);

@@ -54,11 +54,8 @@
                         <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
                         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
                         
-                        <!-- optioneel: een diagram renderer (https://github.com/w3c/respec-mermaid) -->
-                        <script src="https://cdn.jsdelivr.net/gh/digitalbazaar/respec-mermaid@1.0.1/dist/main.js" class="remove"></script>
-                        
                         <!-- verplicht: inrichten op iedere owner. Definieert organisationConfig. -->
-                        <script src="{$owner-config-js-url}" class="remove"/>
+                        <script src="documentor/js/owner.js" class="remove"/>
                         
                         <!-- TODO verplicht: samenstellen op basis van MsWord properties table. Let op: veel props zijn gedefinieerd in de owner.js -->
                         <script class="remove"><![CDATA[
@@ -93,19 +90,19 @@
                         </title>
                         
                         <!-- logo van de organisatie opnemen -->
-                        <link href="{$owner-icon-url}" rel="shortcut icon" type="image/x-icon" />
+                        <link href="documentor/img/logo.ico" rel="shortcut icon" type="image/x-icon" />
                         
                         <!-- 
                             De volgende javascript is een toevoeging aan de respec config van owner en dit model.
                             Deze mag bestaande javascript constructies NIET overschrijven.
                         -->
-                        <script src="{$owner-local-js-url}" class="remove" async="async"/>
+                        <script src="documentor/js/local.js" class="remove" async="async"/>
 
                         <!-- 
                             De volgende style is een toevoeging aan de base.css van Logius.
                             Deze mag bestaande CSS constructies overschrijven.
                         -->
-                        <link href="{$owner-css-url}" rel="stylesheet" />
+                        <link href="documentor/css/local.css" rel="stylesheet" />
                     </head>
                     
                     <body>
