@@ -25,13 +25,13 @@
    <cli-parms>
       <cli-parm>
          <name>createoffice</name>
-         <arg>html|doc|none</arg>
+         <arg>html | doc | none</arg>
          <tip>Create a documentation file in plain HTML, MsWord, or Respec format. By default, create none.</tip>
          <required>false</required>
       </cli-parm> 
       <cli-parm>
          <name>createofficevariant</name>
-         <arg>msword/respec</arg>
+         <arg>msword | respec | documentor</arg>
          <tip>Specify the type of office file. Multiple formats are allowed, separate list by whitespace.</tip>
          <required>When createoffice is set to html</required>
       </cli-parm>

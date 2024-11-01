@@ -58,20 +58,70 @@
                         <script src="documentor/js/owner.js" class="remove"/>
                         
                         <!-- TODO verplicht: samenstellen op basis van MsWord properties table. Let op: veel props zijn gedefinieerd in de owner.js -->
+                        
+                        <xsl:variable name="respec-parms" as="element(parms)">
+                            <parms>
+                                <parm respec-name="specStatus" parms-name="prop-publicatiestatus">{if (imf:get-xparm('appinfo/phase') ne '3') then 'IG' else 'IO'}</parm>
+                                <parm respec-name="specType" parms-name="prop-publicatietype">{if (imf:boolean(imf:get-xparm('documentor/catalog-included'))) then 'IM' else 'RP'}</parm>
+                                <parm respec-name="subtitle" parms-name="prop-subtitel"/>
+                                <parm respec-name="edDraftURI" parms-name="prop-concepturi" type="uri"/>
+                                <parm respec-name="shortName" parms-name="prop-kortenaam">{imf:get-xparm('appinfo/model-abbreviation',())}</parm>
+                                <parm respec-name="publishVersion" parms-name="prop-publicatieversie">{imf:get-xparm('appinfo/version',())}</parm>
+                                <parm respec-name="publishDate" parms-name="prop-publicatiedatum" type="date">{imf:get-xparm('run/start',())}</parm>
+                                <parm respec-name="previousPublishVersion" parms-name="prop-vorigepublicatieversie"/>
+                                <parm respec-name="previousPublishDate" parms-name="prop-vorigepublicatiedatum" type="date"/>
+                                <parm respec-name="abbreviations" parms-name="prop-afkortingen" type="abbrev"/>
+                                <parm respec-name="addSectionLinks" parms-name="prop-voegsectielinkstoe" type="boolean">true</parm>
+                                <parm respec-name="latestVersion" parms-name="prop-meestrecenteversie"/>
+                                <parm respec-name="prevED" parms-name="prop-TODOprevED"/>
+                                <parm respec-name="prevRecURI" parms-name="prop-TODOprevRecURI" type="uri"/>
+                                <parm respec-name="maxTocLevel" parms-name="prop-inhoudsopgaveniveaus" type="integer">4</parm>
+                                <parm respec-name="license" parms-name="prop-licentie"/>
+                                <parm respec-name="lint" parms-name="prop-lint" type="boolean"/>
+                                <parm respec-name="pubDomain" parms-name="prop-publicatiedomein"/>
+                                <parm respec-name="modificationDate" parms-name="prop-aanpassingsdatum" type="date"/>
+                            </parms>
+                        </xsl:variable>
+                            
+                        <xsl:variable name="respec-config" as="xs:string*">
+                            <xsl:for-each select="$respec-parms/parm">
+                                <xsl:variable name="specified" select="imf:get-xparm('documentor/' || @parms-name,())"/>
+                                <xsl:variable name="default" select="node()"/>
+                                <xsl:variable name="value" select="($specified,$default)[1]"/>
+                                <xsl:if test="$value">
+                                    <xsl:choose>
+                                        <xsl:when test="@type = 'date'">
+                                            <xsl:text>{@respec-name} : "{$value}",&#10;</xsl:text>
+                                        </xsl:when>
+                                        <xsl:when test="@type = 'integer'">
+                                            <xsl:text>{@respec-name} : {$value},&#10;</xsl:text>
+                                        </xsl:when>
+                                        <xsl:when test="@type = 'uri'">
+                                            <xsl:text>{@respec-name} : "{$value}",&#10;</xsl:text>
+                                        </xsl:when>
+                                        <xsl:when test="@type = 'abbrev'">
+                                            
+                                        </xsl:when>
+                                        <xsl:when test="@type = 'boolean'">
+                                            <xsl:text>{@respec-name} : {if (imf:boolean($value)) then 'true' else 'false'},&#10;</xsl:text>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:text>{@respec-name} : "{$value}",&#10;</xsl:text>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:if>
+                            </xsl:for-each>
+                        </xsl:variable>
+                      
+                        <xsl:sequence select="dlogger:save('$respec-parms',$respec-parms)"/>
+                        <xsl:sequence select="dlogger:save('$respec-config',$respec-config)"/>
                         <script class="remove"><![CDATA[
                             var respecConfig = {{
-                                specStatus: "IO",
-                                specType: "IM",
+                                {$respec-config}
                                 editors: [{{
-                                    name: "{$user-name}",
-                                    url: "{$owner-url}"
+                                    name: "TODOeditors_name",
+                                    url: "TODOeditors_url"
                                 }}],
-                                edDraftURI: "{$draft-url}",
-                                shortName: "v1.0.0",
-                                publishVersion: "Versie 1.0.0",
-                                previousPublishVersie: "Versie 0.9.9"
-                                
-                                // meer specifieke waarden voor settings kunnen hier worden opgenomen, bijv. maxTocLevel aanpassen. 
                             }};
                         ]]></script>
                         
@@ -85,9 +135,7 @@
                         -->
                         <script src="{$owner-respec-config-url}" class="remove" async="async"/>
                       
-                        <title>
-                            <xsl:value-of select="concat('Catalogus: ',@name)"/><!-- TODO vanuit msword -->
-                        </title>
+                        <title>{imf:get-xparm('documentor/prop-titel')}</title>
                         
                         <!-- logo van de organisatie opnemen -->
                         <link href="documentor/img/logo.ico" rel="shortcut icon" type="image/x-icon" />

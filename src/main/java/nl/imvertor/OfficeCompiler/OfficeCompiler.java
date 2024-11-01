@@ -117,7 +117,7 @@ public class OfficeCompiler extends Step {
 			
 			// variants may be "office" or "respec"
 			Vector<String> vr = Configurator.split(configurator.getXParm("cli/createofficevariant"),"\\s+");
-			if (vr.contains("msword") || vr.contains("respec")) {
+			if (vr.contains("msword") || vr.contains("respec") || vr.contains("documentor")) {
 			
 				String template = configurator.getXParm("cli/officename"); // e.g. resolved [project-name]-[application-name]-[phase]-[release]
 				String fn = configurator.mergeParms(template);
@@ -135,7 +135,7 @@ public class OfficeCompiler extends Step {
 							mswordFolder.copy(new AnyFolder(configurator.getXParm("system/work-cat-folder-path") + "/msword"));
 					}
 				}//msword
-				if (vr.contains("respec")) {
+				if (vr.contains("respec") || vr.contains("documentor")) {
 		
 					// process catalog only, save as XHTML
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_MODELDOC_RESPEC_XSLPATH") : false;
@@ -144,7 +144,12 @@ public class OfficeCompiler extends Step {
 					// als documentor info beschikbaar is, dan uitpakken en omzetten naar xhtml met Pandoc
 					String mdf = configurator.getXParm("cli/documentorfile",false);
 					
-					if (succeeds && !(mdf == null)) {
+					if (mdf == null && vr.contains("documentor")) { 
+						runner.warn(logger, "Documentor processing requested but no modeldoc folder passed");
+						succeeds = false;
+					}
+				
+					if (succeeds && vr.contains("documentor")) {
 						
 						// Er is documentor input in de vorm van modeldocs meegeleverd.
 						
@@ -173,15 +178,19 @@ public class OfficeCompiler extends Step {
 							(new AnyFolder(docFile)).copy(workFolder);
 						}
 						
-						// maak een kopie van alle files in de workfolder en verzamel deze in de modulefolder.
-						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/modeldoc", true) : false;
+						// maak een kopie van alle *relevante* files in de workfolder en verzamel deze in de modulefolder.
+						String modelName = configurator.getXParm("appinfo/original-application-name");
+						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/modeldoc/" + modelName, true) : false;
 						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/sections", true) : false;
 						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/profile", true) : false;
 														
 						// de files zijn uitgelezen en omgezet naar XHTML
 						// nu de bestanden integreren, start bij het masterdoc, als dat er is -- masterdoc wordt bepaald bij het scannen van de files..
 						String masterdocPath = configurator.getXParm("documentor/masterdoc-path",false);
-						succeeds = succeeds ? masterdocPath != null : false;
+						if (masterdocPath == null) { 
+							runner.warn(logger, "Documentor processing requested but no modeldoc file \"" + modelName + "/" + modelName + ".docx\" found");
+							succeeds = false;
+						}
 						// kopieer het masterdoc naar de imvertor workfolder
 						if (succeeds) {
 							(new AnyFile(masterdocPath)).copyFile(configurator.getXParm("properties/IMVERTOR_DOCUMENTOR_CORESCANNER_FILE"));
@@ -358,7 +367,7 @@ public class OfficeCompiler extends Step {
 			boolean succeeds = true;
 			while (it1.hasNext()) {
 				AnyFile f = new AnyFile(it1.next());
-				if (!StringUtils.startsWith(f.getName(),"~") && f.getExtension().equals("docx")) 
+				if (!StringUtils.startsWith(f.getName(),"~") && f.getExtension().equals("docx"))
 					succeeds = succeeds ? transformDocx(f) : false ;
 			}
 			// tweede slag: alles kopieren naar module folder

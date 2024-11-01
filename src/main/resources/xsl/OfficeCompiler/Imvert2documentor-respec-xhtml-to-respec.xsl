@@ -26,9 +26,6 @@
 
     <xsl:output method="xml" indent="no"/>
     
-    <xsl:variable name="title" select="/document/title"/>
-    <xsl:variable name="subtitle" select="/document/subtitle"/>
-    
     <xsl:variable name="insert-cat-by-data-include" select="false()"/><!-- TODO instelbaar? -->
     
     <xsl:variable name="master-docx" select="/document/@name" as="xs:string"/>
@@ -37,66 +34,69 @@
    
         <xsl:sequence select="local:log('section: Create Respec',/)"/>
    
-            <xsl:variable name="respec-result" as="element()*">
-   
-                <document>
-                    <xsl:copy-of select="@*"/>
-                    <xsl:copy-of select="stage"/>
-                    <stage>xhtml-to-respec</stage>
-                    
-                    <xsl:variable name="errors" select="//error"/>
-                    
-                    <xsl:if test="$errors">
-                        <section type="documentor-messages">
-                            <h1>Documentor rapport</h1>
-                            <p>Documentor heeft {count($errors)} fout(en) aangetroffen.</p>
-                            <div>
-                                <table>
-                                    <xsl:for-each select="$errors">
-                                        <tr>
-                                            <td>{@loc}</td>
-                                            <td>{.}</td>
-                                        </tr>
-                                    </xsl:for-each>
-                                </table>
-                                <p>Zoek hieronder naar:</p>
-                                <div class="FOUT"><span>FOUT!</span> Melding</div>
-                                <p>Verwerkt op <xsl:value-of select="format-dateTime(current-dateTime(), '[Y0001]-[M01]-[D01] om [H01]:[m01]:[s01]')"/></p>
-                            </div>
-                        </section>
-                    </xsl:if>
-                    <?x
-                    <xsl:choose>
-                        <xsl:when test="not($document-config)">
-                            <section type="documentor-messages">
-                                <h1>Documentor moet stoppen</h1>
-                                <p>Configuratie incompleet. Heeft jouw start-document bovenin een voldoende complete tabel met eigenschappen?</p>
-                                <p>Het start-document is {$master-docx}.</p>
-                                
-                                <p>Eigenschappen voor zover bekend:</p>
-                                <table>
-                                    <!-- lees de props uit vanuit parms.xml -->
-                                    <xsl:variable name="parms" select="imf:document(imf:get-xparm('system/work-folder-path') || '/parms.xml')"/>
-                                    <xsl:for-each select="$parms/config/documentor/*">
-                                        <xsl:if test="starts-with(local-name(.),'prop-')">
-                                            <tr><td>{substring-after(local-name(.),'prop-')}</td><td>{.}</td></tr>
-                                        </xsl:if>
-                                    </xsl:for-each>                            
-                                </table>
-                            </section>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:apply-templates select="/document/(error|info|page)"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    x?>
-                    <xsl:apply-templates select="/document/(error|info|page)"/>
-                </document>    
-            </xsl:variable>        
+        <xsl:sequence select="imf:set-xparm('documentor/prop-titel',./div/title)"/>
+        <xsl:sequence select="imf:set-xparm('documentor/prop-subtitel',./div/subtitle)"/>
         
-            <xsl:variable name="resolved" select="local:respec-resolve($respec-result)"/>
-            
-            <xsl:sequence select="$resolved"/>
+        <xsl:variable name="respec-result" as="element()*">
+
+            <document>
+                <xsl:copy-of select="@*"/>
+                <xsl:copy-of select="stage"/>
+                <stage>xhtml-to-respec</stage>
+                
+                <xsl:variable name="errors" select="//error"/>
+                
+                <xsl:if test="$errors">
+                    <section type="documentor-messages">
+                        <h1>Documentor rapport</h1>
+                        <p>Documentor heeft {count($errors)} fout(en) aangetroffen.</p>
+                        <div>
+                            <table>
+                                <xsl:for-each select="$errors">
+                                    <tr>
+                                        <td>{@loc}</td>
+                                        <td>{.}</td>
+                                    </tr>
+                                </xsl:for-each>
+                            </table>
+                            <p>Zoek hieronder naar:</p>
+                            <div class="FOUT"><span>FOUT!</span> Melding</div>
+                            <p>Verwerkt op <xsl:value-of select="format-dateTime(current-dateTime(), '[Y0001]-[M01]-[D01] om [H01]:[m01]:[s01]')"/></p>
+                        </div>
+                    </section>
+                </xsl:if>
+                <?x
+                <xsl:choose>
+                    <xsl:when test="not($document-config)">
+                        <section type="documentor-messages">
+                            <h1>Documentor moet stoppen</h1>
+                            <p>Configuratie incompleet. Heeft jouw start-document bovenin een voldoende complete tabel met eigenschappen?</p>
+                            <p>Het start-document is {$master-docx}.</p>
+                            
+                            <p>Eigenschappen voor zover bekend:</p>
+                            <table>
+                                <!-- lees de props uit vanuit parms.xml -->
+                                <xsl:variable name="parms" select="imf:document(imf:get-xparm('system/work-folder-path') || '/parms.xml')"/>
+                                <xsl:for-each select="$parms/config/documentor/*">
+                                    <xsl:if test="starts-with(local-name(.),'prop-')">
+                                        <tr><td>{substring-after(local-name(.),'prop-')}</td><td>{.}</td></tr>
+                                    </xsl:if>
+                                </xsl:for-each>                            
+                            </table>
+                        </section>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:apply-templates select="/document/(error|info|page)"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+                x?>
+                <xsl:apply-templates select="/document/(error|info|page)"/>
+            </document>    
+        </xsl:variable>        
+    
+        <xsl:variable name="resolved" select="local:respec-resolve($respec-result)"/>
+        
+        <xsl:sequence select="$resolved"/>
         
     </xsl:template>    
    
@@ -205,6 +205,8 @@
                 <xsl:apply-templates select="pack:xml-clean(pack:process-catalog($imvertor-catalog-path)/html/body/*)"/>
             </xsl:otherwise>
         </xsl:choose>
+        <!-- onthoud dat een catalogus is opgevraag, en dat het dus een informatiemodel betreft -->
+        <xsl:sequence select="imf:set-xparm('documentor/catalog-included','true')"/>
     </xsl:template>
     
     <xsl:template match="text()">
