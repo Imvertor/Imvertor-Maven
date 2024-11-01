@@ -173,10 +173,6 @@ public class OfficeCompiler extends Step {
 							(new AnyFolder(docFile)).copy(workFolder);
 						}
 						
-						// zet alle respec documenten klaar (cf prepare-respec)
-						
-						//TODO
-						
 						// maak een kopie van alle files in de workfolder en verzamel deze in de modulefolder.
 						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/modeldoc", true) : false;
 						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/sections", true) : false;
@@ -192,6 +188,13 @@ public class OfficeCompiler extends Step {
 							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_CORESCANNER_FILE", "properties/IMVERTOR_DOCUMENTOR_CORESCANNER_XSLPATH","system/cur-imvertor-filepath") : false;
 							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_COREMODES_FILE", "properties/IMVERTOR_DOCUMENTOR_COREMODES_XSLPATH","system/cur-imvertor-filepath") : false;
 							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE", "properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_XSLPATH","system/cur-imvertor-filepath") : false;
+						}
+						if (succeeds) {
+							// kopieer documentor configuratie naar de cat folder
+							AnyFolder source = new AnyFolder(configurator.getInputFolder() + "/cfg/docrules/documentor");
+							AnyFolder target = new AnyFolder(configurator.getWorkFolder() + "/app/cat/documentor");
+							target.mkdirs();
+							source.copy(target);	
 						}
 					}
 					configurator.setXParm("system/cur-imvertor-filepath", lastModeldocFile);

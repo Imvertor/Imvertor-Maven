@@ -1,5 +1,5 @@
 /* hier de algemene CSS voor deze eigenaar */
 
 th, td {
-    vertical-align: baseline;
+    vertical-align: baseline !important;
 }
