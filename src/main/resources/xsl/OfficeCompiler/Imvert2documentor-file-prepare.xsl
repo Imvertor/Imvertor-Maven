@@ -69,18 +69,22 @@
                     <xsl:choose>
                         <xsl:when test="td[2]/p">
                             <xsl:for-each select="td[2]/p">
-                                <xsl:sequence select="local:get-keyval(.)"/>
+                                <xsl:value-of select="local:get-keyval(.)"/>
                             </xsl:for-each>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:sequence select="local:get-keyval(td[2])"/>
+                            <xsl:value-of select="local:get-keyval(td[2])"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:sequence select="local:log('prop-' || $key,$val)"></xsl:sequence>
                 <!-- sommige properties kunnen meermaals voorkomen. Leg dat hier vast. -->
-                <xsl:variable name="overwrite" select="not($key = ('editor','more?'))"/>
-                <xsl:sequence select="imf:set-xparm('documentor/prop-' || $key,string-join($val,';'),$overwrite)"/>
+                <xsl:variable name="overwrite" select="not($key = ('auteur','redacteur','vorigeredacteur','github','afkorting','logo','alternatiefformaat','more?'))"/>
+                <xsl:variable name="value" select="string-join($val,'[sep1]')"/>
+                <xsl:sequence select="imf:set-xparm('documentor/prop-' || $key,$value,$overwrite)"/>
+                <xsl:if test="not($overwrite)">
+                    <xsl:sequence select="imf:set-xparm('documentor/prop-' || $key || '-list',string-join((imf:get-xparm('documentor/prop-' || $key || '-list'),$value),'[sep2]'))"/>
+                </xsl:if>
             </xsl:for-each>
             
         </document>
@@ -288,11 +292,7 @@
         <xsl:choose>
             <xsl:when test="matches($string,$kv-pat)">
                 <xsl:analyze-string select="$string" regex="{$kv-pat}">
-                    <xsl:matching-substring>
-                        <prop key="{regex-group(1)}">
-                            <xsl:value-of select="regex-group(2)"/>
-                        </prop>
-                    </xsl:matching-substring>
+                    <xsl:matching-substring>{regex-group(1)}:{regex-group(2)}</xsl:matching-substring>
                 </xsl:analyze-string>
             </xsl:when>
             <xsl:otherwise>
