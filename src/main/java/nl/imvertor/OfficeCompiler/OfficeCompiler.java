@@ -199,11 +199,16 @@ public class OfficeCompiler extends Step {
 							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE", "properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_XSLPATH","system/cur-imvertor-filepath") : false;
 						}
 						if (succeeds) {
-							// kopieer documentor configuratie naar de cat folder
-							AnyFolder source = new AnyFolder(configurator.getInputFolder() + "/cfg/docrules/documentor");
+							// kopieer documentor configuratie naar de cat folder. Eerst de standaard "Imvertor" files, en daaroverheen de owner files.
 							AnyFolder target = new AnyFolder(configurator.getWorkFolder() + "/app/cat/documentor");
 							target.mkdirs();
-							source.copy(target);	
+							AnyFolder imvertorFolder = new AnyFolder(configurator.getBaseFolder(), "input" + File.separator + "Imvertor/cfg/docrules/documentor");
+							imvertorFolder.copy(target);
+							AnyFolder ownerFolder = new AnyFolder(configurator.getInputFolder() + "/cfg/docrules/documentor");
+							if (ownerFolder.isDirectory()) 
+								ownerFolder.copy(target);
+							else
+								runner.warn(logger, "Documentor has not been configured for \""+ configurator.getXParm("cli/owner") +"\". Please contact your system administrator.");
 						}
 					}
 					configurator.setXParm("system/cur-imvertor-filepath", lastModeldocFile);

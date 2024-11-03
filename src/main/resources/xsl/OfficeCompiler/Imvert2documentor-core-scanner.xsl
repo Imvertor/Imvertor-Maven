@@ -22,9 +22,9 @@
             Integreren. 
             Start bij het document dat in /Report/modeldoc staat, dus bijv. voor Bakstenen basismodel is dat: /Report/modeldoc/Bakstenen basismodel/*.docx"
         -->
-        <xsl:sequence select="local:log('section: Scanner',/)"/>
-        
         <xsl:variable name="masterdoc-name" select="imf:get-xparm('documentor/masterdoc-name')"/> <!-- bijv. Bakstenen conceptueel model.docx -->
+
+        <xsl:sequence select="local:log('section: Scanner on ' || $masterdoc-name,())"/>
         
         <!-- 
             stel het geintegreerde document samen. Dat zit in de <document> wrapper; het betreft XHTML, Leapinlist delivery, Solr docs etc.
@@ -46,7 +46,6 @@
         
         <xsl:variable name="doc-path" select="$module-work-folder-path || '/' || $doc-name || '.xhtml'"/>
         
-        <xsl:sequence select="local:log('Integrating report file',$doc-path)"/>
         <xsl:variable name="doc" select="imf:document($doc-path)/document" as="element(document)?"/>
         
         <document name="{$doc-name}">

@@ -1,0 +1,25 @@
+/* hier de default CSS voor deze owner */
+
+th, td {
+    vertical-align: top;
+}
+th>p, td>p {
+    margin: 0 0 1em;
+}
+table {
+    width: 100%;
+}
+.deepheader {
+    margin-top: 1em;
+}
+.supplier {
+    color: gray;
+}
+.supplier::after {
+    content: " - ";
+}
+.image-asset {
+     max-width: 100%;
+     width: auto;
+     height: auto;
+}
