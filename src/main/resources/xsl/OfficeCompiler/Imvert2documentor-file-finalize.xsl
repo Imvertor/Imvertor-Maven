@@ -22,7 +22,7 @@
     
     <xsl:template match="/"> <!-- een <document> -->
 
-        <xsl:sequence select="local:log('section: file-finalize',/)"/>
+        <xsl:sequence select="local:log('section: file-finalize ' || $msword-file-name,/)"/>
         
         <document name="{$msword-file-name}" auto="auto">
             <xsl:comment select="current-dateTime()"/>

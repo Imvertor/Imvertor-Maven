@@ -7,6 +7,7 @@
     
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
+    xmlns:pack="http://www.armatiek.nl/functions/pack"
     
     xmlns:fn="http://www.w3.org/2005/xpath-functions"
     
@@ -18,15 +19,22 @@
     version="3.0">
     
     <xsl:import href="../../common/Imvert-common.xsl"/>
+    <xsl:import href="Imvert2documentor-respec-pack-complete-respec.xsl"/>
+    <xsl:import href="Imvert2documentor-respec-pack-simple-respec.xsl"/>
     
     <xsl:output method="html" indent="yes" omit-xml-declaration="yes"/>
+    
+    <xsl:param name="catalog-only">false</xsl:param>
     
     <xsl:variable name="stylesheet-code">OFFICE-RESPEC</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
     <!-- 
-        create a Respec HTML representation of the section structure 
+        Deze opzet volgt de Logius ReSpec template instructies
+        
+        Zie https://github.com/Logius-standaarden/ReSpec-template
     -->
+    
     <xsl:variable name="subpath" select="/book/@subpath"/>
     
     <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
@@ -39,6 +47,30 @@
     <xsl:variable name="meta-is-role-based" select="imf:boolean(imf:get-xparm('appinfo/meta-is-role-based'))"/>
     
     <xsl:variable name="diagram-encoding" select="imf:get-config-parameter('diagram-encoding',false())"/><!-- #326 als figure, of als img met tekst eronder -->
+    
+    <xsl:template match="book" mode="respec-type">
+        <xsl:choose>
+            <!-- 
+                Moet alleen alleen de catalogus worden opgebouwd? 
+                Let op: dat gebeurt maar één keer en een volgende keer wordt dit resultaat ingelezen door de respec packs 
+            -->
+            <xsl:when test="imf:boolean($catalog-only)">
+                <xsl:apply-templates select="chapter"/><!-- calls upon the standard template for chapters such as CAT and REF -->
+            </xsl:when>
+            <!-- 
+                Is documentor actief, d.w.z. is er een masterdoc gevonden?
+            -->
+            <xsl:when test="imf:get-xparm('documentor/masterdoc-name')">
+                <xsl:sequence select="pack:complete-respec(.)"/>
+            </xsl:when>
+            <!--
+                Genereer een bogus wrapper als simpel voorbeeld van een respec document 
+            -->
+            <xsl:otherwise>
+                <xsl:sequence select="pack:simple-respec(.)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
     
     <xsl:template match="/book">
         <xsl:sequence select="imf:track('Generating HTML',())"/>

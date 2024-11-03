@@ -45,9 +45,9 @@
     
     <show-properties>config</show-properties> <!-- config, all, compact -->
     
-    <!-- 
+    <!--
         Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
     -->
-    <respec-config>https://armatiek.nl/respec-profiles/w3c/profile/respec-w3c-common.js</respec-config>
-    
+    <respec-config>https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js</respec-config>
+        
 </doc-rules>

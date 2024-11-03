@@ -21,11 +21,10 @@
     <xsl:variable name="msword-file-url" select="imf:file-to-url($msword-file-path)"/>
     
     <xsl:template match="/">
-        <xsl:sequence select="local:log('section: file-prepare',/)"/>
+        <xsl:sequence select="local:log('section: file-prepare ' || $msword-file-name,/)"/>
         
         <xsl:variable name="file-toks" select="tokenize($msword-file-url,'/')"/>
         
-        <xsl:sequence select="local:log('$file-toks',$file-toks)"/>
         <xsl:if test="$file-toks[count($file-toks) - 2] eq 'modeldoc'">
             <xsl:sequence select="imf:set-xparm('documentor/masterdoc-name',$msword-file-name)"/>
             <xsl:sequence select="imf:set-xparm('documentor/masterdoc-path',$msword-file-path)"/>
@@ -52,9 +51,11 @@
                 <xsl:apply-templates select="$resolved-body-pre" mode="resolve-ext"/>
             </xsl:variable>
             
+            <?x
             <xsl:sequence select="local:log('$resolved-body-norm',$resolved-body-norm)"/>
             <xsl:sequence select="local:log('$resolved-body-pre',$resolved-body-pre)"/>
             <xsl:sequence select="local:log('$resolved-body-ext',$resolved-body-ext)"/>
+            x?>
             
             <xsl:sequence select="$resolved-body-ext"/>
             
@@ -62,28 +63,28 @@
                 lees alle properties uit uit de eerste tabel, als die er is 
             -->
             <xsl:sequence select="imf:set-xparm('documentor/prop-documentordatetime',current-dateTime())"/>
-            <xsl:sequence select="local:log('table',name($resolved-body-ext))"></xsl:sequence>
             <xsl:for-each select="$resolved-body-ext/body/table[1]/tbody/tr">
                 <xsl:variable name="key" select="local:compact(td[1])"/>
-                <xsl:variable name="val" as="item()*">
-                    <xsl:choose>
-                        <xsl:when test="td[2]/p">
-                            <xsl:for-each select="td[2]/p">
-                                <xsl:value-of select="local:get-keyval(.)"/>
-                            </xsl:for-each>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="local:get-keyval(td[2])"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <xsl:sequence select="local:log('prop-' || $key,$val)"></xsl:sequence>
-                <!-- sommige properties kunnen meermaals voorkomen. Leg dat hier vast. -->
-                <xsl:variable name="overwrite" select="not($key = ('auteur','redacteur','vorigeredacteur','github','afkorting','logo','alternatiefformaat','more?'))"/>
-                <xsl:variable name="value" select="string-join($val,'[sep1]')"/>
-                <xsl:sequence select="imf:set-xparm('documentor/prop-' || $key,$value,$overwrite)"/>
-                <xsl:if test="not($overwrite)">
-                    <xsl:sequence select="imf:set-xparm('documentor/prop-' || $key || '-list',string-join((imf:get-xparm('documentor/prop-' || $key || '-list'),$value),'[sep2]'))"/>
+                <xsl:if test="$key"><!-- sla lege rows over -->
+                    <xsl:variable name="val" as="item()*">
+                        <xsl:choose>
+                            <xsl:when test="td[2]/p">
+                                <xsl:for-each select="td[2]/p">
+                                    <xsl:value-of select="local:get-keyval(.)"/>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="local:get-keyval(td[2])"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:variable>
+                    <!-- sommige properties kunnen meermaals voorkomen. Leg dat hier vast. -->
+                    <xsl:variable name="overwrite" select="not($key = ('auteur','redacteur','vorigeredacteur','github','afkorting','logo','alternatiefformaat','more?'))"/>
+                    <xsl:variable name="value" select="string-join($val,'[sep1]')"/>
+                    <xsl:sequence select="imf:set-xparm('documentor/prop-' || $key,$value,$overwrite)"/>
+                    <xsl:if test="not($overwrite)">
+                        <xsl:sequence select="imf:set-xparm('documentor/prop-' || $key || '-list',string-join((imf:get-xparm('documentor/prop-' || $key || '-list'),$value),'[sep2]'))"/>
+                    </xsl:if>
                 </xsl:if>
             </xsl:for-each>
             

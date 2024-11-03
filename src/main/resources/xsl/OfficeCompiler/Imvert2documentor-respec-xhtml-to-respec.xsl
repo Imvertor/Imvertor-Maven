@@ -106,7 +106,10 @@
     
     <xsl:template match="page">
         <section>
-            <xsl:apply-templates select="node()|@*"/> 
+            <xsl:apply-templates select="node()|@*"/>
+            <xsl:if test="@id = 'abstract' and imf:boolean(imf:get-xparm('documentor/prop-toonimvertorinfo'))">
+                <p class="imvertor-info">Release: {imf:get-xparm('appinfo/release-name')} / Imvertor: {imf:get-xparm('run/version')} / Mode: {imf:get-xparm('documentor/prop-module')}</p>
+            </xsl:if>
         </section>
     </xsl:template>
     

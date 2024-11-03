@@ -13,6 +13,9 @@
     
     <xsl:import href="common/Imvert2modeldoc-html-respec.xsl"/>
     
+    <xsl:template match="/book">
+        <xsl:apply-templates select="." mode="respec-type"/>
+    </xsl:template>
     
     <xsl:function name="imf:insert-chapter-intro" as="item()*">
         <xsl:param name="chapter" as="element(chapter)"/>

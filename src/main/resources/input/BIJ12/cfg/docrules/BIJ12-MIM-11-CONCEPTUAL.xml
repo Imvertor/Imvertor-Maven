@@ -20,5 +20,10 @@
          Default is: 'object'. 
      -->
     <gegevensgroep-attribute-container>group</gegevensgroep-attribute-container>
-
+    
+    <!--
+        Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
+    -->
+    <respec-config>https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js</respec-config>
+    
 </doc-rules>

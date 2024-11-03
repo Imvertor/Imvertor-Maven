@@ -1,0 +1,10 @@
+/* hier de default CSS voor door Imvertor gegenereerde Respec */
+
+th, td {
+    vertical-align: baseline !important;
+}
+
+.imvertor-info {
+    color: gray;
+    font-size: 80%;
+}

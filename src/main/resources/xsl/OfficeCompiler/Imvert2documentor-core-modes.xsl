@@ -20,7 +20,6 @@
     
     <xsl:template match="/">
     
-        <xsl:sequence select="dlogger:save('module',imf:get-xparm('documentor/prop-module'))"></xsl:sequence>
         <xsl:choose>
             <xsl:when test="imf:get-xparm('documentor/prop-module') eq 'Primer'">
                 <xsl:sequence select="pack:mode-primer(/document)"/>
