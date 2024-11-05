@@ -1,0 +1,10 @@
+/* hier de algemene CSS voor deze eigenaar */
+
+th, td {
+    vertical-align: baseline !important;
+}
+
+.imvertor-info {
+    color: gray;
+    font-size: 80%;
+}
