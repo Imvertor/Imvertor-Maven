@@ -1,5 +1,5 @@
 /* 
- * standard color blueish = #664207
+ * standard color blueish = #005695
  */
 body {
 	background-color: #FFFFFF;
@@ -69,14 +69,14 @@ span.value {
 }
 h1 {
     font-size: 1.5em;
-    color: #664207;
+    color: #005695;
 }
 h2 {
     font-size: 1em;
-    color: #664207;
+    color: #005695;
 }
 a {
-    color: #664207;
+    color: #005695;
     text-decoration: none;
 }
 a:hover {
@@ -97,7 +97,7 @@ tr.cmp-system {
 .overview {
     font-weight: bold;
     color: white;
-    background-color: #664207;
+    background-color: #005695;
     padding: 0.5em 2em;
     border-radius: 0.5em;
 }
@@ -121,7 +121,7 @@ img.overview-logo {
 .home-block {
     font-weight: bold;
     color: white;
-    background-color: #664207;
+    background-color: #005695;
     padding: 2em 2em;
     border-radius: 1em;
 }
