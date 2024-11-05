@@ -350,6 +350,8 @@
         <xsl:param name="title"/>
         <img src="{imf:get-config-parameter('web-logo')}" class="overview-logo"/>
         <div class="overview-title">
+            <xsl:value-of select="imf:get-xparm('cli/owner')"/>
+            <br/>
             <xsl:value-of select="$title"/>
         </div>
         <div  class="overview">
@@ -363,6 +365,8 @@
         <xsl:param name="title"></xsl:param>
         <img src="{imf:get-config-parameter('web-logo-big')}" class="home-logo"/>
         <div class="home-title">
+            <xsl:value-of select="imf:get-xparm('cli/owner')"/>
+            <br/>
             <xsl:value-of select="$title"/>
         </div>
         <div class="home-block">

@@ -131,6 +131,23 @@
                     respecConfig = {{...organisationConfig, ...respecConfig}}
                 ]]></script>
                 
+                <xsl:if test="imf:boolean(imf:get-xparm('documentor/prop-hypothesis'))">
+                    <script><![CDATA[
+                            var suppressHypothesis = false;
+                            var query = window.location.search.substring(1);
+                            var vars = query.split('&');
+                            for (var i=0; i<vars.length; i++) {{
+                                var pair = vars[i].split('=');
+                                if (decodeURIComponent(pair[0]).toLowerCase() == 'suppresshypothesis' && decodeURIComponent(pair[1]) == 'true') {{
+                                    suppressHypothesis = true;
+                                    break;
+                                }}
+                            }}
+                            if (!suppressHypothesis)
+                                document.write(unescape('%3Cscript src="https://hypothes.is/embed.js" async %3E%3C/script%3E'));
+                        ]]></script>
+                </xsl:if>
+                
                 <!-- 
                     De volgende javascript is de complete Respec, in lijn met nationale regels (Logius).
                 -->

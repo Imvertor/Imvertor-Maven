@@ -30,10 +30,22 @@
     
     <xsl:variable name="master-docx" select="/document/@name" as="xs:string"/>
    
+    <xsl:variable name="abbreviations" as="element(abbr)*">
+        <xsl:variable name="abbrs" select="imf:get-xparm('documentor/prop-afkortingen')"/>
+        <xsl:for-each select="tokenize($abbrs,'\[sep1\]')">
+            <xsl:analyze-string select="." regex="^(.*?):(.*?)$">
+                <xsl:matching-substring>
+                    <abbr title="{normalize-space(regex-group(2))}">{normalize-space(regex-group(1))}</abbr>
+                </xsl:matching-substring>
+            </xsl:analyze-string>
+        </xsl:for-each>
+    </xsl:variable>
+   
     <xsl:template match="/document">
    
         <xsl:sequence select="local:log('section: Create Respec',/)"/>
-   
+        <xsl:sequence select="local:log('$abbreviations',$abbreviations)"/>
+        
         <xsl:sequence select="imf:set-xparm('documentor/prop-titel',./div/title)"/>
         <xsl:sequence select="imf:set-xparm('documentor/prop-subtitel',./div/subtitle)"/>
         
@@ -108,7 +120,7 @@
         <section>
             <xsl:apply-templates select="node()|@*"/>
             <xsl:if test="@id = 'abstract' and imf:boolean(imf:get-xparm('documentor/prop-toonimvertorinfo'))">
-                <p class="imvertor-info">Release: {imf:get-xparm('appinfo/release-name')} / Imvertor: {imf:get-xparm('run/version')} / Mode: {imf:get-xparm('documentor/prop-module')}</p>
+                <p class="imvertor-info">Release: {imf:get-xparm('appinfo/release-name')} / Imvertor: {imf:get-xparm('run/version')} / Module: {(imf:get-xparm('documentor/prop-module'),'Default')[1]}</p>
             </xsl:if>
         </section>
     </xsl:template>
@@ -181,13 +193,11 @@
     <!-- overrides import -->
 
     <xsl:template match="span[@data-custom-style = 'abbrevchar']">
-        <xsl:variable name="text" select="local:get-abbr(.)"/>
-        <xsl:if test="not(normalize-space($text))">
-            <span class="TODO">ABBREV? </span>
+        <xsl:variable name="abbr" select="$abbreviations[. = normalize-space(current())]"/>
+        <xsl:if test="empty($abbr)">
+            <span class="TODO">ABBREV? {.}</span>
         </xsl:if>
-        <abbr title="{$text}">
-            <xsl:apply-templates/>
-        </abbr>    
+        <xsl:sequence select="$abbr"/>    
     </xsl:template>
     
     <xsl:template match="outline">
@@ -222,11 +232,6 @@
             </xsl:non-matching-substring>
         </xsl:analyze-string>
     </xsl:template>
-    
-    <xsl:function name="local:get-abbr" as="xs:string">
-        <xsl:param name="key"/>
-        <xsl:value-of select="local:get-prop('Abbreviations')"/><!-- TODO een property in een property -->
-    </xsl:function>
     
     <xsl:function name="local:boolean" as="xs:boolean">
         <xsl:param name="value" as="xs:string?"/>
