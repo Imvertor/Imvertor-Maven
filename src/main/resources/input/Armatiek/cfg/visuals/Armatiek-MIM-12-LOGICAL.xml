@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<visuals type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <!-- 
+         LOGICAL follows CONCEPTUAL  
+    -->
+    <xi:include href="Armatiek-MIM-12-CONCEPTUAL.xml"/>
+   
+    <name>Armatiek-MIM-12-LOGICAL</name>
+    
+</visuals>

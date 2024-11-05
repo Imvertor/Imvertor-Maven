@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchemas xmlns:xlink="http://www.w3.org/1999/xlink"
+                      xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+                      xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+                      xmlns:xi="http://www.w3.org/2001/XInclude"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210
+                      ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+   <cs:mappings>
+      <cs:Mapping>
+         <cs:name>NEN3610_GML322</cs:name>
+         <cs:use>
+            <cs-ref:MapRef xlink:href="#MIM12"/>
+            <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
+            <cs-ref:MapRef xlink:href="#GML322"/>
+            <cs-ref:MapRef xlink:href="#GMLSF"/>
+         </cs:use>
+      </cs:Mapping>
+   </cs:mappings>
+   
+   <cs:components>
+      <cs:ConceptualSchemasComponents>
+         
+         <xi:include href="../../MIM/xsd/cs-MIM12.xml"/>
+         <xi:include href="../../NEN3610/xsd/cs-NEN3610-2022.xml"/>
+         <xi:include href="../../OGC/xsd/cs-GML322.xml"/>
+         <xi:include href="../../OGC/xsd/cs-GMLSF.xml"/>
+         
+         <!--maps:-->
+         
+         <xi:include href="../../MIM/xsd/cm-MIM12.xml"/>
+         <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/>
+         <xi:include href="../../OGC/xsd/cm-GML322.xml"/>
+         <xi:include href="../../OGC/xsd/cm-GMLSF.xml"/>
+         
+      </cs:ConceptualSchemasComponents>
+   </cs:components>
+</cs:ConceptualSchemas>

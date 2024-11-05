@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <name>Armatiek</name>
+    
+    <desc>Armatiek specific requirements on documentation.</desc>
+    
+    <link-by>NAME</link-by><!-- link by EAID or NAME -->
+    
+    <!--
+        Where to show the explanation? (at-bottom or as-row)
+    -->
+    <explanation-location>at-bottom</explanation-location>
+    
+    <!-- 
+        Append the role name at end of the association name? 
+    --> 
+    <append-role-name>no</append-role-name>
+    
+    <!--
+        Determine the type of any diagram image by suffix, i.e. the diagram name after "-" as in "Objecttypen  – overzicht" 
+    -->
+    <diagram-type-strategy>suffix</diagram-type-strategy>
+    
+    <!--
+        Include incoming associations in the short overview?
+    -->
+    <include-incoming-associations>yes</include-incoming-associations>
+    
+    <!--
+        Show the gegevensgroep type name in the attribute listings?
+    -->
+    <reveal-composition-name>yes</reveal-composition-name>
+    
+    <!-- 
+        collect the codelist and enumeration contents in a separate section?
+    -->
+    <lists-to-listing>true</lists-to-listing>
+    
+    <!-- which sections to include in the modeldoc? --> 
+    <include-overview-section-level>no</include-overview-section-level>
+    <include-detail-section-level>yes</include-detail-section-level>
+    <include-overview-sections-by-type>yes</include-overview-sections-by-type>
+    <include-detail-sections-by-type>yes</include-detail-sections-by-type>
+    
+    <!-- 
+        Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
+    -->
+    <respec-config>https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js</respec-config>
+    
+    <image-purpose id="CFG-IMG-OVERVIEW">
+        <name lang="nl">Overzichtsdiagram</name>
+        <name lang="en">Overview diagram</name>
+        <!-- markers are placed after the name of the diagram, as in "Sample simple constructs - overzicht" -->
+        <marker lang="nl">overzicht</marker>
+        <marker lang="en">overview</marker>
+        <show-caption>yes</show-caption>
+    </image-purpose>
+    
+    <image-purpose id="CFG-IMG-DETAIL">
+        <name lang="nl">Detaildiagram</name>
+        <name lang="en">Detail diagram</name>
+        <marker lang="nl">detail</marker>
+        <marker lang="en">detail</marker>
+        <show-caption>yes</show-caption>
+    </image-purpose>
+       
+</doc-rules>
