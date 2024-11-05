@@ -13,7 +13,7 @@ var organisationConfig = {
         src: "documentor/img/logo.png",
         alt: "Logo-Armatiek",
         id: "Logo-Armatiek",
-        height: 77,
+        height: 40,
         url: "https://armatiek.nl",
     }],
 

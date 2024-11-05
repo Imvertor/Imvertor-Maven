@@ -44,7 +44,12 @@
                     <parms>
                         
                         <parm respec-name="specStatus" parms-name="prop-publicatiestatus">{if (imf:get-xparm('appinfo/phase') eq '3') then 'IG' else 'IO'}</parm>
-                        <parm respec-name="specType" parms-name="prop-publicatietype">{if (imf:boolean(imf:get-xparm('documentor/catalog-included'))) then 'IM' else 'RP'}</parm>
+                        <parm respec-name="specType" parms-name="prop-publicatietype">{
+                            (
+                                imf:get-xparm('documentor/prop-documenttype',()),
+                                if (imf:boolean(imf:get-xparm('documentor/catalog-included'))) then 'IM' else 'base'
+                            )[1]
+                        }</parm>
                         <parm respec-name="subtitle" parms-name="prop-subtitel"/>
                         <parm respec-name="edDraftURI" parms-name="prop-concepturi" type="uri"/>
                         <parm respec-name="shortName" parms-name="prop-kortenaam">{imf:get-xparm('appinfo/model-abbreviation',())}</parm>
