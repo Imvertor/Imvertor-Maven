@@ -70,7 +70,7 @@
         <show-caption>no</show-caption>
     </image-purpose>
 
-    <doc-rule id="CFG-DOC-NORMNAAM">
+    <doc-rule id="CFG-DOC-NORMNAAM" order="000">
         <name lang="nl">Naam (genormaliseerd)</name>
         <name lang="en">Name (normalized)</name>
         <levels>
@@ -78,7 +78,7 @@
         </levels>
     </doc-rule>
     
-    <doc-rule id="CFG-DOC-NAAM" order="000">
+    <doc-rule id="CFG-DOC-NAAM" order="005">
         <!-- 
             you may specify @lang on the name; in that case, that name will appear in documentation for that language.
         -->
