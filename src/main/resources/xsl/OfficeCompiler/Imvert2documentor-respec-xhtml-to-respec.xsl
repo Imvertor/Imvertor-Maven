@@ -46,6 +46,9 @@
         <xsl:sequence select="local:log('section: Create Respec',/)"/>
         <xsl:sequence select="local:log('$abbreviations',$abbreviations)"/>
         
+        <!-- geef via deze documentor property aan java proces door waar het respec-config file is geplaatst -->
+        <xsl:sequence select="imf:set-xparm('documentor/respec-config',$configuration-docrules-file/respec-config)"/>
+        
         <xsl:sequence select="imf:set-xparm('documentor/prop-titel',./div/title)"/>
         <xsl:sequence select="imf:set-xparm('documentor/prop-subtitel',./div/subtitle)"/>
         

@@ -19,7 +19,7 @@
     <!--
         Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
     -->
-    <respec-config>https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js</respec-config>
+    <respec-config>respec-nlgov</respec-config> <!-- gecachte versie van https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js -->
     
     <doc-rule id="CFG-DOC-INDICATIEINONDERZOEK" order="185">
         <name lang="nl">Indicatie in onderzoek</name>

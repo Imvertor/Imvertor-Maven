@@ -183,7 +183,7 @@ public class OfficeCompiler extends Step {
 						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/modeldoc/" + modelName, true, true) : false;
 						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/sections", true, false) : false;
 						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/profile", true, false) : false;
-														
+						
 						// de files zijn uitgelezen en omgezet naar XHTML
 						// nu de bestanden integreren, start bij het masterdoc, als dat er is -- masterdoc wordt bepaald bij het scannen van de files..
 						String masterdocPath = configurator.getXParm("documentor/masterdoc-path",false);
@@ -209,6 +209,11 @@ public class OfficeCompiler extends Step {
 								ownerFolder.copy(target);
 							else
 								runner.warn(logger, "Documentor has not been configured for \""+ configurator.getXParm("cli/owner") +"\". Please contact your system administrator.");
+							// kopieer de gecachte versie van de respec config javascript naar de js folder 
+							
+							AnyFolder cacheFolder = new AnyFolder(configurator.getBaseFolder() + "/etc/respec/cache/" + configurator.getXParm("documentor/respec-config")); 
+							AnyFolder jsFolder = new AnyFolder(target + "/js");
+							cacheFolder.copy(jsFolder);
 						}
 					}
 					configurator.setXParm("system/cur-imvertor-filepath", lastModeldocFile);

@@ -48,6 +48,6 @@
     <!--
         Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
     -->
-    <respec-config>https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js</respec-config>
-        
+    <respec-config>respec-nlgov</respec-config> <!-- gecachte versie van https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js -->
+    
 </doc-rules>
