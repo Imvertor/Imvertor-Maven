@@ -49,8 +49,8 @@
     <!--
         Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
     -->
-    <respec-config>https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js</respec-config>
-        
+    <respec-config>respec-nlgov</respec-config> <!-- gecachte versie van https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js -->
+    
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>

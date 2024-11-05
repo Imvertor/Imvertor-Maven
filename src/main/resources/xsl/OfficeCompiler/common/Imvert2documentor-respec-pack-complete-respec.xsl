@@ -21,7 +21,7 @@
         Zie https://github.com/Logius-standaarden/ReSpec-template
     -->
     
-    <xsl:variable name="owner-respec-config-url" select="$configuration-docrules-file/respec-config"/>
+    <xsl:variable name="respec-config-filename" select="$configuration-docrules-file/respec-config"/>
     
     <xsl:function name="pack:complete-respec" as="item()*">
         <xsl:param name="book" as="item()*"/>
@@ -156,7 +156,7 @@
                 <!-- 
                     De volgende javascript is de complete Respec, in lijn met nationale regels (Logius).
                 -->
-                <script src="{$owner-respec-config-url}" class="remove" async="async"/>
+                <script src="documentor/js/{$respec-config-filename}.js" class="remove" async="async"/>
                 
                 <title>{imf:get-xparm('documentor/prop-titel')}</title>
                 
