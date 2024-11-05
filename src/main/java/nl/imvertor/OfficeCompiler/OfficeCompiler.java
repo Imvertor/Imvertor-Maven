@@ -180,9 +180,9 @@ public class OfficeCompiler extends Step {
 						
 						// maak een kopie van alle *relevante* files in de workfolder en verzamel deze in de modulefolder.
 						String modelName = configurator.getXParm("appinfo/original-application-name");
-						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/modeldoc/" + modelName, true) : false;
-						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/sections", true) : false;
-						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/profile", true) : false;
+						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/modeldoc/" + modelName, true, true) : false;
+						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/sections", true, false) : false;
+						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/profile", true, false) : false;
 														
 						// de files zijn uitgelezen en omgezet naar XHTML
 						// nu de bestanden integreren, start bij het masterdoc, als dat er is -- masterdoc wordt bepaald bij het scannen van de files..
@@ -362,7 +362,7 @@ public class OfficeCompiler extends Step {
 		return succeeds;
 	}
 	
-	private boolean copyFilesToModulefolder(String workSubFolderPath, boolean recurse) throws Exception {
+	private boolean copyFilesToModulefolder(String workSubFolderPath, boolean recurse, boolean mustExist) throws Exception {
 		
 		// workfolder is gemaakt; alle MsWord bestanden omzetten naar XHTML
 		AnyFolder workSubFolder = new AnyFolder(workSubFolderPath);
@@ -397,7 +397,7 @@ public class OfficeCompiler extends Step {
 	
 			return succeeds;
 		} else
-			return false;
+			return !mustExist;
 	}
 	
 }
