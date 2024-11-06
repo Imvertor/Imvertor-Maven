@@ -12,5 +12,9 @@
     <!-- grouping translations -->
     
     <xi:include href="translation-grouping.xml"/>
-       
+    
+    <!-- documentor translations -->
+    
+    <xi:include href="translation-documentor.xml"/>
+    
 </picklist>
