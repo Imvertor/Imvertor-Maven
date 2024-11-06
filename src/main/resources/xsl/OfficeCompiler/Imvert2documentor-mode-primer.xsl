@@ -451,6 +451,9 @@
         <xsl:apply-templates select="$document" mode="pack:mode-primer"/>
     </xsl:function>
     
+    <!-- 
+        in primer mode is een letop characterstring opgevat als een referentie naar metagegeven-* sectie in het hoofddocument
+    -->
     <xsl:template match="span[@class = 'letop']" mode="pack:mode-primer">
         <xsl:variable name="metagegeven" select="normalize-space(.)"/>
         <xsl:variable name="ref-metagegeven" select="replace(normalize-space(lower-case($metagegeven)),'\s','-')"/>

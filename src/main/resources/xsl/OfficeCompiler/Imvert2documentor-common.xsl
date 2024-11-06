@@ -32,7 +32,7 @@
         <xsl:param name="string" as="xs:string?"/>
         <xsl:param name="language" as="xs:string?"/>
         <xsl:param name="default" as="xs:string?"/>
-        <xsl:sequence select="$string"/><!-- TODO vertaal conform imvertor os -->
+        <xsl:sequence select="imf:translate-i3n('DOCUMENTOR-' || upper-case($string),$language,$default)"/>
     </xsl:function>
     <xsl:function name="local:translate-i3n" as="xs:string">
         <xsl:param name="string" as="xs:string?"/>
