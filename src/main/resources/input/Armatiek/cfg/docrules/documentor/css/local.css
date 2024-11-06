@@ -4,6 +4,10 @@ th, td {
     vertical-align: baseline !important;
 }
 
+th {
+    font-weight: normal;
+}
+
 .imvertor-info {
     color: gray;
     font-size: 80%;
