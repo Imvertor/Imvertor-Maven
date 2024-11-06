@@ -10,6 +10,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     >
     
     <!-- 
@@ -30,13 +32,18 @@
         'stereotype-name-interface',
         'stereotype-name-enumeration')"/>
     
+    <xsl:variable name="root-package" select="/*/imvert:package[imf:boolean(imvert:is-root-package)]"/>
+    <xsl:variable name="is-role-based" select="imf:get-tagged-value($root-package,'##CFG-TV-IMRELATIONMODELINGTYPE') = 'Relatierol leidend'"/>
+   
+    <xsl:variable name="unique-normalized-association-names" select="imf:boolean($configuration-metamodel-file//features/feature[@name='unique-normalized-association-names'])"/>
+    
     <!-- 
         Document validation; this validates the root (application-)package.
     -->
     <xsl:template match="/imvert:packages">
         <imvert:report>
             <!-- process the application package -->
-            <xsl:apply-templates select="imvert:package[imf:boolean(imvert:is-root-package)]"/>
+            <xsl:apply-templates select="$root-package"/>
         </imvert:report>
     </xsl:template>
     
@@ -93,10 +100,11 @@
         
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
         
+        <!-- #524 -->
         <xsl:sequence select="imf:report-validation(., 
             exists($allowed-parent-stereotypes) and not($parent-stereotypes/@id = $allowed-parent-stereotypes), 
             $context-signaltype,
-            'Attribute with stereotype [1] must not appear here, expecting (any of) [2]', (imf:string-group($stereotypes),imf:string-group(for $s in $allowed-parent-stereotypes return imf:get-config-name-by-id($s))))"/>
+            'Attribute with stereotype [1] must not appear here. It can only appear as attribute of (any of) [2]', (imf:string-group($stereotypes),imf:string-group(for $s in $allowed-parent-stereotypes return imf:get-config-name-by-id($s))))"/>
         
         <!-- #400 -->
         <xsl:sequence select="imf:report-validation(., 
@@ -124,17 +132,18 @@
     
     <xsl:template match="imvert:class" priority="20">
 
-        <xsl:variable name="properties" select="(
-            imvert:attributes/imvert:attribute,
-            imvert:associations/imvert:association,
-            imvert:associations/imvert:association/imvert:target/imvert:role
-        )"/>
-        <xsl:variable name="properties-dups" select="imf:find-duplicate-strings($properties/imvert:name/@original)"/>
+        <xsl:variable name="names" select="(
+            imvert:attributes/imvert:attribute/imvert:name,
+            imvert:associations/imvert:association[not($is-role-based)]/imvert:name,
+            imvert:associations/imvert:association[$is-role-based]/imvert:source/imvert:role,
+            imvert:associations/imvert:association[$is-role-based]/imvert:target/imvert:role
+            )"/>
+        <xsl:variable name="names-dups" select="imf:find-duplicate-strings($names/@original)"/>
         
         <xsl:sequence select="imf:report-validation(., 
-            exists($properties-dups), 
+            $unique-normalized-association-names and exists($names-dups), 
             $context-signaltype,
-            'Several properties with same name found: [1]', imf:string-group($properties-dups))"/>
+            'Several properties with same name found: [1]', imf:string-group($names-dups))"/>
         
         <xsl:next-match/>
     </xsl:template>     

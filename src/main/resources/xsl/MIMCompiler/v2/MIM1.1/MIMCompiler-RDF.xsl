@@ -71,8 +71,8 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   <xsl:template match="mim-in:Informatiemodel|mim-in:Domein|mim-in:View|mim-in:Extern|mim-in:Attribuutsoort|mim-in:Objecttype|mim-in:Gegevensgroep|mim-in:Gegevensgroeptype|
     mim-in:PrimitiefDatatype|mim-in:GestructureerdDatatype|mim-in:Enumeratie|mim-in:Referentielijst|mim-in:Codelijst|mim-in:DataElement|mim-in:Enumeratiewaarde|
     mim-in:ReferentieElement|mim-in:Constraint|mim-in:Keuze|mim-in:ExterneKoppeling|mim-in:Interface"> <!-- mim-in:Relatieklasse mim-in:Relatiesoort -->
-    <xsl:element name="mim:{local-name()}" namespace="http://www.geostandaarden.nl/mim/informatiemodel#">
-      <xsl:attribute name="rdf:about" namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" select="local:get-id(.)"/>  
+    <xsl:element name="mim:{local-name()}">
+      <xsl:attribute name="rdf:about" select="local:get-id(.)"/>  
       <xsl:apply-templates select="mim-in:*[xhtml:* or (not(*) and normalize-space())]" mode="metagegeven"/>
       <xsl:apply-templates select="(mim-in:packages|mim-in:datatypen|mim-in:objecttypen|mim-in:gegevensgroeptypen|mim-in:keuzen|mim-in:interfaces|mim-in:attribuutsoorten|
         mim-in:gegevensgroepen|mim-in:externeKoppelingen|mim-in:constraints|mim-in:dataElementen|mim-in:enumeratiewaarden|mim-in:referentieElementen|mim-in:relatiedoelen|
@@ -219,7 +219,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
     <xsl:variable name="html">
       <xsl:apply-templates mode="xhtml"/>
     </xsl:variable>
-    <xsl:element name="mim:{local-name()}" namespace="http://www.geostandaarden.nl/mim/informatiemodel#">{serialize($html, $output-parameters)}</xsl:element>
+    <xsl:element name="mim:{local-name()}">{serialize($html, $output-parameters)}</xsl:element>
   </xsl:template>
   
   <xsl:template match="xhtml:*" mode="xhtml" priority="10">
@@ -236,7 +236,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   <xsl:template match="text()[not(normalize-space())]" mode="xhtml"/>
     
   <xsl:template match="mim-in:*[not(*) and normalize-space()]" mode="metagegeven" priority="0.1">
-    <xsl:element name="mim:{local-name()}" namespace="http://www.geostandaarden.nl/mim/informatiemodel#">
+    <xsl:element name="mim:{local-name()}">
       <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>

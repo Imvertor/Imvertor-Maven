@@ -1,6 +1,7 @@
 package nl.imvertor.ReleaseComparer;
 
 import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
 
 import org.w3c.dom.Element;
 import org.xmlunit.builder.DiffBuilder;
@@ -60,7 +61,7 @@ public class XmlComparer {
 		// Get differences
         Iterable<Difference> differences = myDiff.getDifferences();
 
-        FileWriter myWriter = new FileWriter(resultFile);
+        FileWriter myWriter = new FileWriter(resultFile,StandardCharsets.UTF_8);
         myWriter.write("<cmps>");
 	        
         Integer count = 0;

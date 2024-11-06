@@ -146,23 +146,35 @@ public class Messenger extends SequenceWriter {
 	 */
 	public void writeMsg(String src, String type, String name, String text, String id, String wiki) {
 		if (exists(src) && exists(type) && exists(text)) {
+			Integer mw = Configurator.getInstance().maxWarnings();
 			XMLConfiguration cfg = Configurator.getInstance().getXmlConfiguration();
 			if (cfg != null) { 
 				int messageIndex = cfg.getMaxIndex("messages/message") + 2;   // -1 when no messages.
-				cfg.addProperty("messages/message", "");
-				cfg.addProperty("messages/message[" + messageIndex + "]/src", src);
-				cfg.addProperty("messages/message[" + messageIndex + "]/type", type);
-				cfg.addProperty("messages/message[" + messageIndex + "]/name", name);
-				cfg.addProperty("messages/message[" + messageIndex + "]/text", text);
-				// split up the message 
-				Matcher m = messagePattern.matcher(text);
-				if (m.matches()) {
-					cfg.addProperty("messages/message[" + messageIndex + "]/stepname", m.group(1));
-					cfg.addProperty("messages/message[" + messageIndex + "]/stepconstruct", m.group(2));
-					cfg.addProperty("messages/message[" + messageIndex + "]/steptext", m.group(3));
+				if (messageIndex == (mw + 1) && type.equals("WARNING")) {
+					cfg.addProperty("messages/message", "");
+					cfg.addProperty("messages/message[" + messageIndex + "]/src", "/system");
+					cfg.addProperty("messages/message[" + messageIndex + "]/type", "WARNING");
+					cfg.addProperty("messages/message[" + messageIndex + "]/name", name);
+					cfg.addProperty("messages/message[" + messageIndex + "]/text", "More than "+ mw +" warnings, skipping remainder");
+					return;
+				} else if (messageIndex > (mw + 1) && type.equals("WARNING"))
+					return;
+			    else {
+					cfg.addProperty("messages/message", "");
+					cfg.addProperty("messages/message[" + messageIndex + "]/src", src);
+					cfg.addProperty("messages/message[" + messageIndex + "]/type", type);
+					cfg.addProperty("messages/message[" + messageIndex + "]/name", name);
+					cfg.addProperty("messages/message[" + messageIndex + "]/text", text);
+					// split up the message 
+					Matcher m = messagePattern.matcher(text);
+					if (m.matches()) {
+						cfg.addProperty("messages/message[" + messageIndex + "]/stepname", m.group(1));
+						cfg.addProperty("messages/message[" + messageIndex + "]/stepconstruct", m.group(2));
+						cfg.addProperty("messages/message[" + messageIndex + "]/steptext", m.group(3));
+					}
+					if (id != null) cfg.addProperty("messages/message[" + messageIndex + "]/id", id);
+					cfg.addProperty("messages/message[" + messageIndex + "]/wiki", (wiki != null) ? wiki : "NOWIKI");
 				}
-				if (id != null) cfg.addProperty("messages/message[" + messageIndex + "]/id", id);
-				cfg.addProperty("messages/message[" + messageIndex + "]/wiki", (wiki != null) ? wiki : "NOWIKI");
 			}
 		}
 	}

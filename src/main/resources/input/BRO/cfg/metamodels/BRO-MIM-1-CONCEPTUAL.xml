@@ -45,6 +45,7 @@
         <feature name="allow-multiple-supertypes">true</feature>
         <feature name="allow-scalar-in-union">true</feature>
         <feature name="role-based">true</feature>
+        <feature name="unique-normalized-association-names">yes</feature>
     </features>
  
     <stereotypes>

@@ -876,12 +876,12 @@
     <xsl:function name="imf:get-props" as="element()*">
         <xsl:param name="this"/>
         
-        <ep:min-value>
+        <ep:min-value-inclusive>
             <xsl:value-of select="imf:get-kenmerk($this,'minimumwaarde')"/>
-        </ep:min-value>
-        <ep:max-value>
+        </ep:min-value-inclusive>
+        <ep:max-value-inclusive>
             <xsl:value-of select="imf:get-kenmerk($this,'maximumwaarde')"/>
-        </ep:max-value>
+        </ep:max-value-inclusive>
         <ep:min-length>
             <xsl:value-of select="imf:get-kenmerk($this,'minimumlengte')"/>
         </ep:min-length>

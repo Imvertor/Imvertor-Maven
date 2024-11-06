@@ -10,6 +10,8 @@
     
     <xi:include href="Geonovum-MIMEXT-1.xml"/><!-- toegevoegde tagged values voor alle typen infomodellen -->
     
+    <xi:include href="Geonovum-BP-Json.xml"/>
+    
     <name>Geonovum-MIM-1-LOGICAL</name>
     
     <desc lang="en">Tagset for Geonovum extensions in LM</desc>

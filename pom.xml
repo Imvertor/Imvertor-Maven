@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>nl.imvertor</groupId>
   <artifactId>imvertor</artifactId>
-  <version>4.1.0</version>
+  <version>4.2.0</version>
   <name>Imvertor</name>
 
   <description>Imvertor under Maven</description>
@@ -14,6 +14,7 @@
   <!-- ASL = The Apache Software License, Version 2.0, http://www.apache.org/licenses/LICENSE-2.0.txt -->
   <!-- MSL = mozilla license, https://www.mozilla.org/en-US/MPL/2.0/ -->
   <!-- ESL = Eclipse software license, http://www.eclipse.org/legal/epl-v10.html -->
+
 
 	<repositories>
 	  <repository>
@@ -232,7 +233,7 @@
       <artifactId>json</artifactId>
       <version>20231013</version>
     </dependency>
-
+    
     <!-- https://mvnrepository.com/artifact/de.odysseus.staxon/staxon -->
     <dependency>
       <groupId>de.odysseus.staxon</groupId>

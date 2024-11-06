@@ -27,30 +27,39 @@
     <stereos>
         <stereo id="stereotype-name-relatieklasse">
             <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+            <toolbox category="RELATIONS"/>
         </stereo>
         <stereo id="stereotype-name-composite">
             <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+            <toolbox category="OBJECTS"/>
         </stereo>
         <stereo id="stereotype-name-union-datatypes">
             <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+            <toolbox category="DATATYPES"/>
         </stereo>
         <stereo id="stereotype-name-enumeration">
             <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+            <toolbox category="DATATYPES"/>
         </stereo>
         <stereo id="stereotype-name-simpletype">
             <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+            <toolbox category="DATATYPES"/>
         </stereo>
         <stereo id="stereotype-name-complextype">
             <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+            <toolbox category="DATATYPES"/>
         </stereo>
         <stereo id="stereotype-name-objecttype">
             <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+            <toolbox category="OBJECTS"/>
         </stereo>
         <stereo id="stereotype-name-referentielijst">
             <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+            <toolbox category="DATATYPES"/>
         </stereo>
         <stereo id="stereotype-name-codelist">
             <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+            <toolbox category="DATATYPES"/>
         </stereo>
     </stereos>
  

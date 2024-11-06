@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../KING/cfg/docrules/KING-MBG-10-UGM.xml"/>
+    
+    <xi:include href="IHW.xml"/>
+    
+    <name>IHW UGM</name>
+    
+    <desc>IHW UGM specific requirements on documentation.</desc>
+    
+</doc-rules>

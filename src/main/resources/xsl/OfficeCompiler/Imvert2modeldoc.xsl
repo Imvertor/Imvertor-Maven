@@ -1068,7 +1068,8 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="tv-element" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
-                <xsl:sequence select="imf:get-clean-documentation-string(imf:get-tv-value($tv-element))"/>
+                <xsl:variable name="tv-value" select="imf:get-tv-value($tv-element)"/>
+                <xsl:sequence select="if ($tv-value) then imf:get-clean-documentation-string($tv-value) else ()"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -1457,12 +1458,6 @@
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-IDENTIFICATIE'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-IDENTIFICATIE'))"/>   
-                </xsl:when>
-                <xsl:when test="$doc-rule-id = 'CFG-DOC-MAXIMUMWAARDEEXCLUSIEF'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MAXVALUEEXCLUSIVE'))"/>   
-                </xsl:when>
-                <xsl:when test="$doc-rule-id = 'CFG-DOC-MINIMUMWAARDEEXCLUSIEF'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MINVALUEEXCLUSIVE'))"/>   
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-MIXIN'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MIXIN'))"/>   

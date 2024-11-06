@@ -96,8 +96,8 @@
             </declared-values>
         </tv>
         <tv norm="space" id="CFG-TV-UNITOFMEASURE">
-            <name lang="nl">Eenheid</name>
-            <name lang="en">Unit</name>
+            <name lang="nl">Meeteenheid</name>
+            <name lang="en">Unit of measure</name>
             <desc lang="nl">TODO</desc>
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
