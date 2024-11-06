@@ -202,7 +202,7 @@ public class OfficeCompiler extends Step {
 							// kopieer documentor configuratie naar de cat folder. Eerst de standaard "Imvertor" files, en daaroverheen de owner files.
 							AnyFolder target = new AnyFolder(configurator.getWorkFolder() + "/app/cat/documentor");
 							target.mkdirs();
-							AnyFolder imvertorFolder = new AnyFolder(configurator.getBaseFolder(), "input" + File.separator + "Imvertor/cfg/docrules/documentor");
+							AnyFolder imvertorFolder = new AnyFolder(configurator.getBaseFolder(), "input" + File.separator + "Imvertor/cfg/docrules/documentor"); // waaronder default.css en default.js
 							imvertorFolder.copy(target);
 							AnyFolder ownerFolder = new AnyFolder(configurator.getInputFolder() + "/cfg/docrules/documentor");
 							if (ownerFolder.isDirectory()) 

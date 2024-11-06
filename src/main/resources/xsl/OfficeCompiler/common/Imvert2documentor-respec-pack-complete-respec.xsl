@@ -38,7 +38,7 @@
                 <!-- verplicht: inrichten op iedere owner. Definieert organisationConfig. -->
                 <script src="documentor/js/owner.js" class="remove"/>
                 
-                <!-- TODO verplicht: samenstellen op basis van MsWord properties table. Let op: veel props zijn gedefinieerd in de owner.js -->
+                <!-- samenstellen op basis van MsWord properties table. Let op: veel props zijn gedefinieerd in de owner.js -->
                 
                 <xsl:variable name="respec-parms" as="element(parms)">
                     <parms>
@@ -166,13 +166,17 @@
                 <!-- 
                     De volgende javascript is een toevoeging aan de respec config van owner en dit model.
                     Deze mag bestaande javascript constructies NIET overschrijven.
+                    NB Default is onttrokken aan owner = Imvertor
                 -->
+                <script src="documentor/js/default.js" class="remove" async="async"/>
                 <script src="documentor/js/local.js" class="remove" async="async"/>
                 
                 <!-- 
                     De volgende style is een toevoeging aan de base.css van Logius.
                     Deze mag bestaande CSS constructies overschrijven.
+                    NB Default is onttrokken aan owner = Imvertor
                 -->
+                <link href="documentor/css/default.css" rel="stylesheet" />
                 <link href="documentor/css/local.css" rel="stylesheet" />
             </head>
             
