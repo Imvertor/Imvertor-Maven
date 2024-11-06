@@ -515,10 +515,11 @@
         een link naar een internet locatie: altijd naar een eigen nieuw window 
     -->
     <xsl:template match="a[@href and not(starts-with(@href,'#'))]" mode="pack:mode-primer">
+        <xsl:variable name="toks" select="tokenize(@href,'#')"/>
         <xsl:choose>
-            <xsl:when test="starts-with(@href,'https://docs.geostandaarden.nl/mim/mim/')">
-                <xsl:variable name="href" select="if (imf:get-xparm('documentor/prop-mimversion') = '1.1') then 'https://docs.geostandaarden.nl/mim/vv-st-mim-20200225/' else 'https://docs.geostandaarden.nl/mim/def-st-mim-20220217/'"/>
-                <a href="{$href}" target="PRIMER">
+            <xsl:when test="starts-with($toks[1],'https://docs.geostandaarden.nl/mim/mim/')">
+                <xsl:variable name="href" select="imf:get-xparm('documentor/prop-mimurl')"/>
+                <a href="{$href}#{$toks[2]}" target="PRIMER">
                     <xsl:apply-templates select="node()" mode="#current"/>
                     <xsl:text> </xsl:text>
                     <span class="logo mim"/>
