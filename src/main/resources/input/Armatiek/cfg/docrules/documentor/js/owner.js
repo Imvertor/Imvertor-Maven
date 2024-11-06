@@ -86,7 +86,7 @@ var organisationConfig = {
     },
 	
     licenses: {
-        cc0: {
+        "cc0": {
             name: "Creative Commons 0 Public Domain Dedication",
             short: "CC0",
             url: "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -127,4 +127,18 @@ var organisationConfig = {
             date: "June 2013"
         },
     },
+    
+    lint: {
+	    "a11y": true,
+	    "check-punctuation": false,
+	    "informative-dfn": false,
+	    "local-refs-exist": true,
+	    "no-captionless-tables": true,
+	    "no-headingless-sections": true,
+	    "no-http-props": true,
+	    "no-unused-dfns": true,
+	    "no-unused-vars": true,
+	    "privsec-section": false,
+	    "wpt-tests-exist": false
+	}
 }
