@@ -491,7 +491,7 @@
                 <xsl:when test="$is-metagegeven and $col-nr = 1">
                     <xsl:variable name="metagegeven" select="normalize-space(.)"/>
                     <xsl:variable name="ref-metagegeven" select="replace(normalize-space(lower-case($metagegeven)),'\s','-')"/>
-                    <a id="metagegeven-{$ref-metagegeven}" origin="system"/>
+                    <span id="metagegeven-{$ref-metagegeven}" origin="system"/>
                     <xsl:apply-templates select="node()" mode="#current"/>
                 </xsl:when>
                 <xsl:when test="$is-metagegeven and $col-nr = 2">
