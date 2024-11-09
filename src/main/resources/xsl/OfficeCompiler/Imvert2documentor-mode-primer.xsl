@@ -581,6 +581,7 @@
     </xsl:template>
     
     <xsl:template match="extension" mode="pack:mode-primer">
+        <xsl:sequence select="imf:msg('ERROR','Unknown file extension [1]. Processing [2]',(string(@key), ancestor-or-self::document[1]/@name))"/>
         <error loc="{ancestor-or-self::document[1]/@name}">Geen bekende extensie: {@key}</error>
     </xsl:template>
     

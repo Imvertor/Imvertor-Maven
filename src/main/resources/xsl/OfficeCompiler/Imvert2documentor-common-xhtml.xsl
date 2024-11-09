@@ -110,7 +110,7 @@
                             nb expath vraag niet om string maar om een xs:base64Binary dus xs:base64Binary($raw[2])
                         -->
                         <xsl:catch xmlns:err="http://www.w3.org/2005/xqt-errors">
-                            <xsl:message select="'Error reading binary data for ' || $img-name || ': ' || $err:description"/>
+                            <xsl:sequence select="imf:msg('ERROR','Cannot read binary data for [1]. Error is: [2]',($img-name,$err:description))"/>
                         </xsl:catch>          
                     </xsl:try>
                     
@@ -131,7 +131,7 @@
                     
                 </xsl:when>
                 <xsl:otherwise>
-                    <img src="img/{@src}"  style="max-width: 100%; width: auto; height: auto;"/>
+                    <img src="inc/{@src}"  style="max-width: 100%; width: auto; height: auto;"/>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:apply-templates select="caption"/>
@@ -187,6 +187,7 @@
             <xsl:when test="$mimetype = 'image/jpeg'">jpg</xsl:when>
             <xsl:when test="$mimetype = 'image/png'">png</xsl:when>
             <xsl:otherwise>
+                <xsl:sequence select="imf:msg('ERROR','Unrecognized mimetype [1]',$mimetype)"/>
                 <error>UNRECOGNIZED MIMETYPE: {$mimetype}</error>
             </xsl:otherwise>
         </xsl:choose>

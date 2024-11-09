@@ -18,7 +18,7 @@
     
     <!-- verwerk de voorbereide XHTML en maak er een vorm van die kan worden verwerk voor meerdere kanalen. --> 
     
-    <xsl:variable name="sections" select="//*:section[@metadata-id]"/>
+    <xsl:variable name="sections" select="//*:section"/>
     
     <xsl:template match="/"> <!-- een <document> -->
 
@@ -67,6 +67,7 @@
                 </image>
             </xsl:when>
             <xsl:otherwise>
+                <xsl:sequence select="imf:msg('ERROR','Image without source, at [1]\. Processing [2]',($msword-file-name,preceding::title)[1])"/>
                 <error loc="{$msword-file-name}">Plaatje zonder bron, in: {(preceding::title)[1]}</error>
             </xsl:otherwise>
         </xsl:choose>
@@ -187,12 +188,16 @@
         <xsl:variable name="note" select="$section/ol/li[@id = $name]"/>
         <xsl:choose>
             <xsl:when test="empty($note)">
+                <xsl:sequence select="imf:msg('ERROR','Footnote [1] does not exists. Processing [2]',($name, $msword-file-name))"/>
                 <error loc="{$msword-file-name}">Deze noot bestaat niet: {$name}</error>
             </xsl:when>
             <xsl:otherwise>
                 <note>
                     <xsl:attribute name="type" select="if ($note/div/@data-custom-style = 'endnotetext') then 'endnote' else 'footnote'"/>
-                    <xsl:apply-templates select="local:content($note)"/>
+                    <xsl:variable name="content">
+                        <xsl:apply-templates select="local:content($note)"/>
+                    </xsl:variable>
+                    <xsl:value-of select="$content"/> <!-- wordt als tooltip opgenomen in respec -->
                 </note>
             </xsl:otherwise>
         </xsl:choose>
@@ -269,6 +274,7 @@
         <xsl:variable name="cols-found" select="*/tr[1]/td"/>
        
         <xsl:if test="exists($cols-specified) and (count($cols-specified) ne count($cols-found))">
+            <xsl:sequence select="imf:msg('ERROR','Number of columns in [1] specification and columns found is not the same. Processing [2]',('table: matrix', $msword-file-name))"/>
             <error loc="{$msword-file-name}">Aantal kolommen in <b>table: matrix</b> specificatie en kolommen aangetroffen is niet hetzelfde</error>
         </xsl:if>
      

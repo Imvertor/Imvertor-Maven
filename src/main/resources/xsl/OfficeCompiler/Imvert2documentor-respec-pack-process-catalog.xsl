@@ -33,6 +33,7 @@
                     <xsl:apply-templates select="$cat-xhtml-doc" mode="pack:process-catalog"/>             
                 </xsl:when>
                 <xsl:otherwise>
+                    <xsl:sequence select="imf:msg('ERROR','Cannot read catalog [1].[2]',(imf:filespec($catalog-path,'NE')))"/>
                     <error>Cannot read catalog</error>
                 </xsl:otherwise>
             </xsl:choose>
@@ -89,6 +90,7 @@
                 <img class="image-asset" src="assets/{$file}"/>
             </xsl:when>
             <xsl:when test="$file and $filetype = 'unknown'">
+                <xsl:sequence select="imf:msg('ERROR','Unrecognized or unsupported file extension [1]',($fileext))"/>
                 <b>ERROR: UNKNOWN FILE EXTENSION: "{$fileext}"</b>
             </xsl:when>
             <xsl:otherwise>

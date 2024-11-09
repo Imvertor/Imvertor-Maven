@@ -58,8 +58,8 @@
                     </xsl:apply-templates>    
                 </xsl:when>
                 <xsl:otherwise>
+                    <xsl:sequence select="imf:msg('ERROR','Cannot find MsWord file [1]',$doc-name)"/>
                     <error loc="(scanner)">Geen MsWord bestand "{$doc-name}" aangetroffen.</error>
-                    <xsl:sequence select="local:log('error: Geen MsWord bestand',$doc-path)"/>
                 </xsl:otherwise>
             </xsl:choose>
         </document>
@@ -70,6 +70,7 @@
         <xsl:variable name="doc-name" select="."/>
         <xsl:choose>
             <xsl:when test="$docs-processed = $doc-name">
+                <xsl:sequence select="imf:msg('ERROR','Cannot process document [1] twice',$doc-name)"/>
                 <error loc="(scanner)">Dit document is al verwerkt: "{$doc-name}"</error>            
             </xsl:when>
             <xsl:otherwise>

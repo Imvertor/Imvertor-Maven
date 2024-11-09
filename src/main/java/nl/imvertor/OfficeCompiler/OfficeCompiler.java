@@ -180,9 +180,8 @@ public class OfficeCompiler extends Step {
 						
 						// maak een kopie van alle *relevante* files in de workfolder en verzamel deze in de modulefolder.
 						String modelName = configurator.getXParm("appinfo/original-application-name");
-						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/modeldoc/" + modelName, true, true) : false;
-						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/sections", true, false) : false;
-						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/profile", true, false) : false;
+						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/modeldoc/" + modelName, modelName, true, true) : false;
+						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/sections", modelName, true, false) : false;
 						
 						// de files zijn uitgelezen en omgezet naar XHTML
 						// nu de bestanden integreren, start bij het masterdoc, als dat er is -- masterdoc wordt bepaald bij het scannen van de files..
@@ -199,6 +198,7 @@ public class OfficeCompiler extends Step {
 							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE", "properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_XSLPATH","system/cur-imvertor-filepath") : false;
 						}
 						if (succeeds) {
+							
 							// kopieer documentor configuratie naar de cat folder. Eerst de standaard "Imvertor" files, en daaroverheen de owner files.
 							AnyFolder target = new AnyFolder(configurator.getWorkFolder() + "/app/cat/documentor");
 							target.mkdirs();
@@ -209,8 +209,8 @@ public class OfficeCompiler extends Step {
 								ownerFolder.copy(target);
 							else
 								runner.warn(logger, "Documentor has not been configured for \""+ configurator.getXParm("cli/owner") +"\". Please contact your system administrator.");
-							// kopieer de gecachte versie van de respec config javascript naar de js folder 
 							
+							// kopieer de gecachte versie van de respec config javascript naar de js folder 
 							AnyFolder cacheFolder = new AnyFolder(configurator.getBaseFolder() + "/etc/respec/cache/" + configurator.getXParm("documentor/respec-config")); 
 							AnyFolder jsFolder = new AnyFolder(target + "/js");
 							cacheFolder.copy(jsFolder);
@@ -367,17 +367,22 @@ public class OfficeCompiler extends Step {
 		return succeeds;
 	}
 	
-	private boolean copyFilesToModulefolder(String workSubFolderPath, boolean recurse, boolean mustExist) throws Exception {
+	private boolean copyFilesToModulefolder(String workSubFolderPath, String modelName, boolean recurse, boolean mustExist) throws Exception {
 		
 		// workfolder is gemaakt; alle MsWord bestanden omzetten naar XHTML
 		AnyFolder workSubFolder = new AnyFolder(workSubFolderPath);
+		workSubFolderPath = workSubFolder.getCanonicalPath(); // forward slash correctie
 		if (workSubFolder.isDirectory()) {
 			// eerste slag: alle docx files transformeren naar standaard XHTML vorm.
 			Iterator<String> it1 = workSubFolder.listFilesToVector(recurse).iterator();
 			boolean succeeds = true;
 			while (it1.hasNext()) {
-				AnyFile f = new AnyFile(it1.next());
-				if (!StringUtils.startsWith(f.getName(),"~") && f.getExtension().equals("docx"))
+				String path = it1.next();
+				AnyFile f = new AnyFile(path);
+				Boolean isMasterDoc = f.getParent().equals(workSubFolderPath) && f.getName().equals(modelName + ".docx");
+				String fileUri = f.toURI().toString();
+				// Kies de te verwerken bestanden: het moet een docx file zijn, het is de masterdoc of het is een lokaal subdocument. Sla alle msword werkbestanden over. 
+				if (f.getExtension().equals("docx") && (isMasterDoc || StringUtils.contains(fileUri,"/sections/")) && !StringUtils.startsWith(f.getName(),"~"))
 					succeeds = succeeds ? transformDocx(f) : false ;
 			}
 			// tweede slag: alles kopieren naar module folder
@@ -387,10 +392,13 @@ public class OfficeCompiler extends Step {
 				String fileName = f.getName();
 				String fileUri = f.toURI().toString();
 				
-				// beperk het aantal files dat een rol kan spelen in de verwerking. Kopieer die niet door naar de module folder. 
-				if (f.isFile() && !StringUtils.contains(fileUri,"/dat/")) {
-					AnyFile moduleFile = new AnyFile(moduleFolder + "/" + fileName);
-					if (StringUtils.endsWith(fileName,".docx.xhtml") || StringUtils.endsWith(fileName,".png") ||StringUtils.endsWith(fileName,".jpg")) {
+				// Kopieer de msword resultaten en de include files naar de module folder. 
+				if (f.isFile()) {
+					Boolean isWordFile = StringUtils.endsWith(fileName,".docx.xhtml");
+					Boolean isIncludeFile = StringUtils.contains(fileUri,"/include/");
+					if (isWordFile || isIncludeFile) {
+						String filepath = (isWordFile) ? moduleFolder + "/" + fileName : configurator.getWorkFolder() + "/app/cat/inc/" + fileName;
+						AnyFile moduleFile = new AnyFile(filepath);
 						if (moduleFile.isFile()) {
 							runner.error(logger, "Duplicate file name in documentor input: " + fileName);
 							succeeds = false;

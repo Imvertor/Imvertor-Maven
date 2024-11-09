@@ -8,6 +8,8 @@
     xmlns:x="http://www.w3.org/2005/xpath-functions"
     xmlns:pack="http://www.armatiek.nl/functions/pack"
    
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+   
     exclude-result-prefixes="#all"
     
     expand-text="yes"
@@ -187,10 +189,24 @@
         </span>
     </xsl:template>
     
-    <xsl:template match="a[starts-with(@href,'http://#')]">
-        <a href="#{substring-after(@href,'http://#')}">
-            <xsl:apply-templates/>
-        </a>
+    <xsl:template match="a">
+        <xsl:choose>
+            <xsl:when test="starts-with(@href,'http://#')">
+                <a href="#{substring-after(@href,'http://#')}">
+                    <xsl:apply-templates/>
+                </a>
+            </xsl:when>
+            <xsl:when test="starts-with(@href,'include/download/')">
+                <xsl:variable name="filename" select="tokenize(@href,'/')[last()]"/>
+                <a href="inc/{$filename}">
+                    <xsl:apply-templates/>
+                </a>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+            
     </xsl:template>
     
     <!-- overrides import -->

@@ -18,12 +18,6 @@
         <xsl:apply-templates select="$document" mode="pack:mode-default"/>
     </xsl:function>
    
-    <?x
-    <xsl:template match="extension" mode="pack:mode-default">
-        <error loc="{ancestor-or-self::document[1]/@name}">Geen bekende extensie: {@key}</error>
-    </xsl:template>
-    x?>
-    
     <xsl:template match="node()|@*"  mode="pack:mode-default">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*" mode="#current"/>

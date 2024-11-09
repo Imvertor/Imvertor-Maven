@@ -220,6 +220,7 @@
                 </xsl:analyze-string>
             </xsl:when>
             <xsl:otherwise>
+                <xsl:sequence select="imf:msg('ERROR','Metadata format [1] not recognized. Processing [2]',($firstpar, $msword-file-name))"/>
                 <error loc="{$msword-file-name}">Metadata formaat niet herkend: {$firstpar}</error>
             </xsl:otherwise>
         </xsl:choose>
@@ -261,6 +262,7 @@
                 </xsl:choose>
             </xsl:matching-substring>
             <xsl:non-matching-substring>
+                <xsl:sequence select="imf:msg('ERROR','Extension format [1] not recognized. Processing [2]',($ext, $msword-file-name))"/>
                 <error loc="{$msword-file-name}">Extension formaat niet herkend: {$ext}</error>
             </xsl:non-matching-substring>
         </xsl:analyze-string>
@@ -280,6 +282,7 @@
                     <xsl:sequence select="local:get-metadata-attributes($following)"/>
                 </xsl:when>
                 <xsl:otherwise>
+                    <xsl:sequence select="imf:msg('ERROR','Invalid or unknown metadata key [1]. Processing [2]',(string($following/@key), $msword-file-name))"/>
                     <error>Invalid or unknown metadata key: {$following/@key}</error>
                 </xsl:otherwise>
             </xsl:choose>
