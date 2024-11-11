@@ -51,8 +51,8 @@
         <!-- geef via deze documentor property aan java proces door waar het respec-config file is geplaatst -->
         <xsl:sequence select="imf:set-xparm('documentor/respec-config',$configuration-docrules-file/respec-config)"/>
         
-        <xsl:sequence select="imf:set-xparm('documentor/prop-titel',./div/title)"/>
-        <xsl:sequence select="imf:set-xparm('documentor/prop-subtitel',./div/subtitle)"/>
+        <xsl:sequence select="imf:set-xparm('documentor/prop-titel',./title)"/>
+        <xsl:sequence select="imf:set-xparm('documentor/prop-subtitel',./subtitle)"/>
         
         <xsl:variable name="respec-result" as="element()*">
 

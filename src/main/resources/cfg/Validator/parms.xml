@@ -48,6 +48,12 @@
          <required>true</required>
       </cli-parm> 
       <cli-parm>
+         <name>allowemptymodel</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the model or any model domain may be empty; this is feasible in development phases</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
          <name>stub_requiresalias</name>
          <arg>yes|no</arg>
          <tip>No if aliases for objects and relations should not be tested (STUB)</tip>

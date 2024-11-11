@@ -22,7 +22,7 @@
     <xsl:import href="Imvert2documentor-respec-pack-complete-respec.xsl"/>
     <xsl:import href="Imvert2documentor-respec-pack-simple-respec.xsl"/>
     
-    <xsl:output method="html" indent="yes" omit-xml-declaration="yes"/>
+    <xsl:output method="html" indent="no" omit-xml-declaration="yes"/>
     
     <xsl:param name="catalog-only">false</xsl:param>
     

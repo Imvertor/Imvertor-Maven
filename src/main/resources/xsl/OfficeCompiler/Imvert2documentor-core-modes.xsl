@@ -18,6 +18,8 @@
     <xsl:import href="Imvert2documentor-mode-default.xsl"/>
     <xsl:import href="Imvert2documentor-mode-primer.xsl"/>
     
+    <xsl:output method="xml" indent="no"/>
+    
     <xsl:template match="/">
     
         <xsl:choose>

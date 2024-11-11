@@ -75,7 +75,7 @@
     </xsl:template>
     
     <xsl:template match="code/line">
-       <xsl:next-match/><!-- geen speciale acties -->
+        <xsl:value-of select="replace(.,'\n',' ') || '&#10;'"/>
     </xsl:template>
     
     <!-- == images == -->
