@@ -215,6 +215,7 @@
         <xsl:variable name="abbr" select="$abbreviations[. = normalize-space(current())]"/>
         <xsl:if test="empty($abbr)">
             <span class="TODO">ABBREV? {.}</span>
+            <xsl:sequence select="imf:msg('WARNING','Abbreviation [1] cannot be resolved',.)"/>
         </xsl:if>
         <xsl:sequence select="$abbr"/>    
     </xsl:template>

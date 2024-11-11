@@ -75,10 +75,7 @@
     </xsl:template>
     
     <xsl:template match="code/line">
-        <xsl:apply-templates/>
-        <xsl:if test="position() != last()">
-            <xsl:value-of select="'&#10;'"/>
-        </xsl:if> 
+       <xsl:next-match/><!-- geen speciale acties -->
     </xsl:template>
     
     <!-- == images == -->

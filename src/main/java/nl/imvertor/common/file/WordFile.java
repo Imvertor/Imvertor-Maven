@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Runner;
+import nl.imvertor.common.Transformer;
 import nl.imvertor.common.helper.OsExecutor;
 import nl.imvertor.common.helper.OsExecutor.OsExecutorResultHandler;
 
@@ -98,4 +99,30 @@ public class WordFile extends AnyFile {
 		
 	}
 	
+	/*
+	 * Uitlezen van msword gaat niet altijd goed; in preserveSpace secties worden leading blanks niet goed verwerkt. Vervang deze door harde spaties.
+	 */
+	public boolean correctCodeSpaces() throws Exception{
+		Configurator configurator = Configurator.getInstance();
+		try {
+			ZipFile thisFile = new ZipFile(this);
+			AnyFolder tempFolder = configurator.getWorkFolder("documentor/msword");
+			thisFile.decompress(tempFolder);
+			// run stylesheet om de spaties in code vast te zetten
+			XmlFile wordFile = new XmlFile(tempFolder,"/word/document.xml");
+			XmlFile outFile = new XmlFile(tempFolder,"/word/document.xml.transformed");
+			XslFile xslFile = new XslFile(configurator.getBaseFolder() + "/xsl/OfficeCompiler/Imvert2documentor-msword-fixes.xsl");
+			Transformer transformer = new Transformer();
+			transformer.transform(wordFile, outFile, xslFile, "filefix");
+			// zet het resultaat van de transformatie op de plek van het input document
+			outFile.copyFile(wordFile);
+			outFile.delete();
+			// Maak het MdWord bestand opnieuw aan door de tijdelijke folder weer te zippen.
+			thisFile.compress(tempFolder);
+			return true;
+		} catch (Exception e) {
+			configurator.getRunner().error(logger,"Cannot fix MsWord program code fragment(s)",e);
+			return false;
+		}
+	}
 }

@@ -115,7 +115,6 @@ public class OfficeCompiler extends Step {
 					break;
 			}
 			
-			// variants may be "office" or "respec"
 			Vector<String> vr = Configurator.split(configurator.getXParm("cli/createofficevariant"),"\\s+");
 			if (vr.contains("msword") || vr.contains("respec") || vr.contains("documentor")) {
 			
@@ -354,8 +353,12 @@ public class OfficeCompiler extends Step {
 		
 		boolean succeeds = true;
 		
-		if (infile.toXhtmlFile(outfile)) {
-			// transfomeer die XHTML naar iets bruikbaars, extraheer ook meteen respec properties
+		succeeds = succeeds ? infile.correctCodeSpaces() : false;
+		
+		succeeds = succeeds? infile.toXhtmlFile(outfile) : false;
+				
+		if (succeeds) {
+			// transformeer die XHTML naar iets bruikbaars, extraheer ook meteen respec properties
 			transformer.setXslParm("msword-file-path", outfile.getCanonicalPath());
 			transformer.setXslParm("msword-file-name", outfile.getNameNoExtension());
 			configurator.setXParm("system/cur-imvertor-filepath", outfile.getCanonicalPath());

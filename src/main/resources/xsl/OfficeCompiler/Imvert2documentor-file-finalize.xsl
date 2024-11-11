@@ -137,7 +137,7 @@
             <xsl:apply-templates select="node()"/>
         </box>
     </xsl:template>
-    <xsl:template match="span[@data-custom-style = 'quotechar' or @type = 'Quote']">
+    <xsl:template match="span[@data-custom-style = ('quotechar','citaatchar') or @type = 'Quote']">
        <span class="quote" label="{local:translate-i3n('quote',local:get-lang(.),())}">
            <xsl:apply-templates select="node()"/>
        </span>
