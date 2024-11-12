@@ -4,12 +4,12 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../MIM/cfg/docrules/MIM11.xml"/>
+    <xi:include href="../../../MIM/cfg/docrules/MIM12.xml"/>
     
     <xi:include href="IHW.xml"/>
     
-    <name>IHW-MIM-11-CONCEPTUAL</name>
+    <name>IHW-MIM-12-CONCEPTUAL</name>
     
     <desc>IHW specific requirements on documentation.</desc>
-   
+    
 </doc-rules>
