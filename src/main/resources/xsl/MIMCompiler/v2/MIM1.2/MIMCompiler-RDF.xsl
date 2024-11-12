@@ -70,13 +70,13 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   
   <xsl:template match="mim-in:Informatiemodel|mim-in:Domein|mim-in:View|mim-in:Extern|mim-in:Attribuutsoort|mim-in:Objecttype|mim-in:Gegevensgroep|mim-in:Gegevensgroeptype|
     mim-in:PrimitiefDatatype|mim-in:GestructureerdDatatype|mim-in:Enumeratie|mim-in:Referentielijst|mim-in:Codelijst|mim-in:DataElement|mim-in:Enumeratiewaarde|
-    mim-in:ReferentieElement|mim-in:Constraint|mim-in:Keuze|mim-in:ExterneKoppeling|mim-in:Interface|mim-in:Relatiesoort|mim-in:Bron|mim-in:Doel|mim-in:Relatieklasse">
+    mim-in:ReferentieElement|mim-in:Constraint|mim-in:Keuze|mim-in:ExterneKoppeling|mim-in:Interface|mim-in:Relatiesoort|mim-in:Bron|mim-in:Doel|mim-in:Relatieklasse|mim-in:GeneralisatieObjecttypen|mim-in:GeneralisatieDatatypen">
     <xsl:element name="mim:{local-name()}">
       <xsl:attribute name="rdf:about" select="local:get-id(.)"/>  
       <xsl:apply-templates select="mim-in:*[xhtml:* or (not(*) and normalize-space())]" mode="metagegeven"/>
       <xsl:apply-templates select="(mim-in:packages|mim-in:datatypen|mim-in:objecttypen|mim-in:gegevensgroeptypen|mim-in:keuzen|mim-in:interfaces|mim-in:attribuutsoorten|mim-in:relatiesoorten|mim-in:relatierollen|mim-in:relatieklasse|
         mim-in:gegevensgroepen|mim-in:externeKoppelingen|mim-in:constraints|mim-in:dataElementen|mim-in:enumeratiewaarden|mim-in:referentieElementen|mim-in:bron|mim-in:doel|
-        mim-in:type|mim-in:gegevensgroepType)/*" mode="metagegeven"/>
+        mim-in:type|mim-in:gegevensgroepType|mim-in:supertype)/*" mode="metagegeven"/>
     </xsl:element>
     <xsl:apply-templates/>
   </xsl:template>
@@ -186,7 +186,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
     <mim:relatieklasse rdf:resource="{local:get-id(.)}"/>
   </xsl:template>
   
-  <xsl:template match="(mim-in:GeneralisatieObjecttypes|mim-in:GeneralisatieDatatypes)[mim-in:supertype/mim-ref:*]">
+  <xsl:template match="(mim-in:GeneralisatieObjecttypen|mim-in:GeneralisatieDatatypen)[mim-in:supertype/mim-ref:*]">
     <mim:Generalisatie rdf:about="{local:get-id(.)}">
       <xsl:apply-templates select="mim-in:*[xhtml:* or (not(*) and normalize-space())]" mode="metagegeven"/>
       <mim:subtype rdf:resource="{local:get-id(ancestor::mim-in:*[@id][1])}"/>
