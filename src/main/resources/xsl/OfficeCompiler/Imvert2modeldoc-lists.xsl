@@ -44,10 +44,13 @@
     <xsl:output method="xml" indent="yes"/>
     
     <xsl:variable name="includedoclist" select="imf:boolean(imf:get-config-string('cli','includedoclist'))"/>
-    <xsl:variable name="doclist-xml-url" select="imf:get-config-parameter('doclist-xml-url')"/>
+    <xsl:variable name="doclist-xml-url" select="imf:get-config-parameter('doclist-xml-url',false())"/>
     
     <xsl:template match="/">
         <xsl:choose>
+            <xsl:when test="$includedoclist and not($doclist-xml-url)">
+                <xsl:sequence select="imf:msg($imvert-document,'ERROR','Property [1] cannot be yes when parameter [2] is not specified',('includedoclist','doclist-xml-url'))"/>
+            </xsl:when>
             <xsl:when test="$owner = 'BRO'">
                 <!-- TODO aanpassen initialisatie codelists....!
                     
