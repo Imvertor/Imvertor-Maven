@@ -33,14 +33,19 @@
     <xsl:variable name="master-docx" select="/document/@name" as="xs:string"/>
    
     <xsl:variable name="abbreviations" as="element(abbr)*">
-        <xsl:variable name="abbrs" select="imf:get-xparm('documentor/prop-afkortingen')"/>
-        <xsl:for-each select="tokenize($abbrs,'\[sep1\]')">
-            <xsl:analyze-string select="." regex="^(.*?):(.*?)$">
-                <xsl:matching-substring>
-                    <abbr title="{normalize-space(regex-group(2))}">{normalize-space(regex-group(1))}</abbr>
-                </xsl:matching-substring>
-            </xsl:analyze-string>
-        </xsl:for-each>
+        <xsl:variable name="abbrs" select="//include-abbreviation"/>
+        <xsl:variable name="dups" as="element(abbr)*">
+            <xsl:for-each select="$abbrs">
+                <xsl:analyze-string select="." regex="^(.*?):(.*?)$">
+                    <xsl:matching-substring>
+                        <abbr title="{normalize-space(regex-group(2))}">{normalize-space(regex-group(1))}</abbr>
+                    </xsl:matching-substring>
+                </xsl:analyze-string>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:for-each-group select="$dups" group-by=".">
+            <xsl:sequence select="current-group()[last()]"/>
+        </xsl:for-each-group>
     </xsl:variable>
    
     <xsl:template match="/document">
@@ -240,6 +245,10 @@
         </xsl:choose>
         <!-- onthoud dat een catalogus is opgevraag, en dat het dus een informatiemodel betreft -->
         <xsl:sequence select="imf:set-xparm('documentor/catalog-included','true')"/>
+    </xsl:template>
+    
+    <xsl:template match="include-abbreviation">
+        <!-- verwijder -->
     </xsl:template>
     
     <xsl:template match="text()">

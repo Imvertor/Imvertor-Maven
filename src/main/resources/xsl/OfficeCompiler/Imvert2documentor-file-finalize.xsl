@@ -237,6 +237,12 @@
                     <xsl:value-of select="@val"/>
                 </include-catalog>
             </xsl:when>
+            <xsl:when test="@key = 'abbreviation'">
+                <!-- dit pakken we later op als alles worden geintegreerd -->
+                <include-abbreviation>
+                    <xsl:value-of select="@val"/>
+                </include-abbreviation>
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:next-match/>
             </xsl:otherwise>

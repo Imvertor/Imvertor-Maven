@@ -349,6 +349,8 @@ public class OfficeCompiler extends Step {
 		WordFile infile = new WordFile(mswordFile);
 		XmlFile outfile = new XmlFile(mswordFile.getCanonicalPath() + ".xhtml");
 		
+		runner.info(logger,"Processing " + infile.getName());
+
 		Transformer transformer = new Transformer();
 		
 		boolean succeeds = true;

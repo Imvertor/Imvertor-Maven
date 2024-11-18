@@ -2,7 +2,7 @@
 <picklist xmlns:xi="http://www.w3.org/2001/XInclude">
     <item>
         <key>DOCUMENTOR-WARNING</key>
-        <trans lang="nl">Waarschuwing</trans>
+        <trans lang="nl">Let op</trans>
         <trans lang="en">Warning</trans>
     </item>
     

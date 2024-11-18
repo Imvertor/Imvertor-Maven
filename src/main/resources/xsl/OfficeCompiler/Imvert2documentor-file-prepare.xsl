@@ -230,10 +230,12 @@
     <!-- 
         Extensions introduce external constructs 
     
-        format is 
+        format is
+      
+        key
         key: value
-        
-        Not case sensitive.
+      
+        Key is not case sensitive.
     -->
     
     <xsl:function name="local:get-extension" as="item()*">
@@ -241,7 +243,7 @@
         
         <xsl:variable name="kv-pat">^(.+?)(:\s*(.+))?$</xsl:variable>
         
-        <xsl:variable name="ext" select="normalize-space($elm)"/>
+        <xsl:variable name="ext" select="imf:normalize-space($elm)"/>
       
         <xsl:analyze-string select="$ext" regex="{$kv-pat}">
             <xsl:matching-substring>

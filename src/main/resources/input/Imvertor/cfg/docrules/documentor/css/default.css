@@ -156,7 +156,7 @@ span.example {
     
 }
 span.letop {
-    color: orange;
+    color: orangered;
     font-style: italic;
 }
 div.more-info {
@@ -211,4 +211,8 @@ img.image-asset {
 .imvertor-info {
     color: gray;
     font-size: 80%;
+}
+h2,h3,h4,h5,h6 {
+    margin-top: 1rem !important;
+    margin-bottom: 0rem !important;
 }

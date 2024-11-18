@@ -117,8 +117,6 @@ public class WordFile extends AnyFile {
 			long osExecutorJobTimeout = Long.parseLong(configurator.getServerProperty("documentor.msword.transformer.timeout")); // location of the tool
 			boolean osExecutorInBackground = false;
 			
-			runner.info(logger, "Reading: " + this.getName());
-			
 			OsExecutorResultHandler osExecutorResult = null;
 			
 			/*
