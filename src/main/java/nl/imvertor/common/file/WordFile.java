@@ -94,7 +94,7 @@ public class WordFile extends AnyFile {
 						+ "\"title-meta\": \"NOTITLE\""
 					+ "},"
 					+ "\"text\": \"" + payloadBase64 + "\""
-					+ "}";		
+					+ "}";
 			try {
 				String result = localFile.post(HttpFile.METHOD_POST_CONTENT, URI.create(pandocServerUrl), headerMap, null, new String[] {payload});
 				if (StringUtils.startsWith(result,"<")) {
