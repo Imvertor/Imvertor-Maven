@@ -244,6 +244,8 @@
                     <xsl:when test="$norm-key = 'naam'">name: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'instelling'">company: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'instelling url'">companyURL: "{$found-value}"</xsl:when>
+                    <xsl:when test="$norm-key = 'e-mail'">mailto: "{$found-value}"</xsl:when>
+                    <xsl:when test="$norm-key = 'opmerking'">note: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'url'">url: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'bron'">src: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'alternatief'">alt: "{$found-value}"</xsl:when>

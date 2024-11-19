@@ -46,7 +46,7 @@
 
     <xsl:variable name="meta-is-role-based" select="imf:boolean(imf:get-xparm('appinfo/meta-is-role-based'))"/>
     
-    <xsl:variable name="diagram-encoding" select="imf:get-config-parameter('diagram-encoding',false())"/><!-- #326 als figure, of als img met tekst eronder -->
+    <xsl:variable name="diagram-encoding" select="$configuration-docrules-file/diagram-encoding"/><!-- #326 als figure, of als img met tekst eronder -->
     
     <xsl:template match="book" mode="respec-type">
         <xsl:choose>
@@ -725,7 +725,6 @@
     </xsl:template>
     
     <xsl:template name="process-imagemaps">
-       
         <!-- context is a section holding imagemap elements -->
         <xsl:for-each select="section[@type = 'IMAGEMAP']">
             <xsl:variable name="diagram-id" select="@id"/>
@@ -763,9 +762,10 @@
                         <xsl:sequence select="$map"/>
                     </xsl:when>
                     <xsl:when test="$diagram-encoding = 'figure'">
-                        <figure>
+                        <figure class="uml-diagram">
                             <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
                             <figcaption>
+                                <xsl:text> &#8210; Diagram: </xsl:text>
                                 <xsl:sequence select="imf:parse-diagram-title($diagram-name)[1]"/> 
                             </figcaption>
                         </figure>

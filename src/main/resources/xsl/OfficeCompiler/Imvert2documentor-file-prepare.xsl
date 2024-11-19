@@ -157,11 +157,11 @@
     </xsl:template>
     
     <xsl:template match="div[@data-custom-style = 'extension']" mode="resolve-pre" priority="10">
-        <xsl:sequence select="local:get-extension(.)"/>
+        <xsl:sequence select="local:get-extension(.,true())"/>
     </xsl:template>
     
     <xsl:template match="span[@data-custom-style = 'extensionchar']" mode="resolve-pre" priority="10">
-        <xsl:sequence select="local:get-extension(.)"/>
+        <xsl:sequence select="local:get-extension(.,false())"/>
     </xsl:template>
     
     <!-- == resolving @id and @lang == -->
@@ -240,6 +240,7 @@
     
     <xsl:function name="local:get-extension" as="item()*">
         <xsl:param name="elm" as="element()"/>
+        <xsl:param name="as-section" as="xs:boolean"/>
         
         <xsl:variable name="kv-pat">^(.+?)(:\s*(.+))?$</xsl:variable>
         
@@ -247,21 +248,26 @@
       
         <xsl:analyze-string select="$ext" regex="{$kv-pat}">
             <xsl:matching-substring>
-                <xsl:variable name="key" select="replace(lower-case(regex-group(1)),'[^a-z]+','')"/>
+                <xsl:variable name="key" select="lower-case(regex-group(1))"/>
+                <extension key="{$key}" val="{regex-group(3)}"/>
+                <?x
                 <xsl:choose>
-                    <xsl:when test="$key = 'currentdatetime'">
+                    <xsl:when test="$as-section">
+                    </xsl:when>
+                    <xsl:when test="$key = 'current-datetime'">
                         <xsl:value-of select="format-dateTime(current-dateTime(), '[Y0001]-[M01]-[D01] om [H01]:[m01]:[s01]')"/>
                     </xsl:when>
-                    <xsl:when test="$key = 'currentdate'">
+                    <xsl:when test="$key = 'current-date'">
                         <xsl:value-of select="format-date(current-date(), '[Y0001]-[M01]-[D01]')"/>
                     </xsl:when>
-                    <xsl:when test="$key = 'currentdocument'">
+                    <xsl:when test="$key = 'current-document'">
                         <xsl:value-of select="$msword-file-name"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <extension key="{$key}" val="{regex-group(3)}"/>
+                        <extension key="{regex-group(1)}"/>
                     </xsl:otherwise>
                 </xsl:choose>
+                x?>
             </xsl:matching-substring>
             <xsl:non-matching-substring>
                 <xsl:sequence select="imf:msg('ERROR','Extension format [1] not recognized. Processing [2]',($ext, $msword-file-name))"/>

@@ -4,6 +4,7 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all"
     
@@ -216,7 +217,9 @@
     <!--
         Extensions may be resolved in processing the XHTML, or later when generating the final HTML. 
         The correct phase for resolving the extension is recognized by the different XSLTs, for each step. 
-        -->
+        
+        Extension key is in lower case.
+    -->
     <xsl:template match="extension">
         <xsl:choose>
             <xsl:when test="@key = 'id'">
@@ -225,26 +228,40 @@
                     <xsl:value-of select="@val"/>
                 </id>
             </xsl:when>
-            <xsl:when test="@key = 'includesection'">
+            <xsl:when test="@key = 'include section'">
                 <!-- dit pakken we later op als alles worden geintegreerd -->
                 <include-section>
                     <xsl:value-of select="@val"/>
                 </include-section>
             </xsl:when>
-            <xsl:when test="@key = 'includecatalog'">
+            <xsl:when test="@key = 'include catalog'">
                 <!-- dit pakken we later op als alles worden geintegreerd -->
                 <include-catalog>
                     <xsl:value-of select="@val"/>
                 </include-catalog>
             </xsl:when>
+            <xsl:when test="@key = 'include overview'">
+                <!-- dit pakken we later op als alles worden geintegreerd -->
+                <include-overview>
+                    <xsl:value-of select="@val"/>
+                </include-overview>
+            </xsl:when>
+            <xsl:when test="@key = 'include bijlage'">
+                <!-- dit pakken we later op als alles worden geintegreerd -->
+                <include-bijlage>
+                    <xsl:value-of select="@val"/>
+                </include-bijlage>
+            </xsl:when>
             <xsl:when test="@key = 'abbreviation'">
                 <!-- dit pakken we later op als alles worden geintegreerd -->
-                <include-abbreviation>
+                <define-abbreviation>
                     <xsl:value-of select="@val"/>
-                </include-abbreviation>
+                </define-abbreviation>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:next-match/>
+                <include-xparm>
+                    <xsl:value-of select="@key"/>
+                </include-xparm>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

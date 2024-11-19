@@ -208,11 +208,26 @@ img.image-asset {
     height: auto;
 }
 
-.imvertor-info {
-    color: gray;
-    font-size: 80%;
-}
+
 h2,h3,h4,h5,h6 {
     margin-top: 1rem !important;
     margin-bottom: 0rem !important;
+}
+
+ul.abbrevs {
+    margin-left: 0;
+    padding: 0;
+    padding-left: 2em;
+}
+li.abbrevsline {
+    list-style: none outside none;
+}
+li.abbrevsline abbr.exclude {
+    font-weight: bold;
+}
+li.abbrevsline abbr.exclude:after {
+    content: ": ";
+}
+figure.umldiagram img {
+    max-width: fit-content !important; /* diagrammen moeten vrije breedte hebben anders werkt clickable niet meer goed */
 }

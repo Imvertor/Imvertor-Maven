@@ -33,7 +33,7 @@
     <xsl:variable name="master-docx" select="/document/@name" as="xs:string"/>
    
     <xsl:variable name="abbreviations" as="element(abbr)*">
-        <xsl:variable name="abbrs" select="//include-abbreviation"/>
+        <xsl:variable name="abbrs" select="//define-abbreviation"/>
         <xsl:variable name="dups" as="element(abbr)*">
             <xsl:for-each select="$abbrs">
                 <xsl:analyze-string select="." regex="^(.*?):(.*?)$">
@@ -47,7 +47,13 @@
             <xsl:sequence select="current-group()[last()]"/>
         </xsl:for-each-group>
     </xsl:variable>
-   
+
+    <xsl:variable name="regex-timezonef">(Z?)(\+\d\d:\d\d)</xsl:variable>
+    <xsl:variable name="regex-datef">\d\d\d\d-\d\d-\d\d</xsl:variable>
+    <xsl:variable name="regex-timef">\d\d:\d\d:\d\d\.\d+</xsl:variable>
+    <xsl:variable name="regex-date">^{$regex-datef}({$regex-timezonef})?$</xsl:variable>
+    <xsl:variable name="regex-dateTime">^{$regex-datef}T{$regex-timef}({$regex-timezonef})?$</xsl:variable>
+    
     <xsl:template match="/document">
    
         <xsl:sequence select="local:log('section: Create Respec',/)"/>
@@ -58,6 +64,9 @@
         
         <xsl:sequence select="imf:set-xparm('documentor/prop-titel',./title)"/>
         <xsl:sequence select="imf:set-xparm('documentor/prop-subtitel',./subtitle)"/>
+        
+        <xsl:sequence select="imf:set-xparm('appinfo/current-date',current-date())"/>
+        <xsl:sequence select="imf:set-xparm('appinfo/current-datetime',current-dateTime())"/>
         
         <xsl:variable name="respec-result" as="element()*">
 
@@ -129,9 +138,6 @@
     <xsl:template match="page">
         <section>
             <xsl:apply-templates select="node()|@*"/>
-            <xsl:if test="@id = 'abstract' and imf:boolean(imf:get-xparm('documentor/prop-toonimvertorinfo'))">
-                <p class="imvertor-info">Release: {imf:get-xparm('appinfo/release-name')} / Imvertor: {imf:get-xparm('run/version')} / Module: {(imf:get-xparm('documentor/prop-module'),'Default')[1]}</p>
-            </xsl:if>
         </section>
     </xsl:template>
     
@@ -247,7 +253,66 @@
         <xsl:sequence select="imf:set-xparm('documentor/catalog-included','true')"/>
     </xsl:template>
     
-    <xsl:template match="include-abbreviation">
+    <xsl:template match="include-overview">
+        <xsl:choose>
+            <xsl:when test=". = 'figures'">
+                <section id="tof"/>
+            </xsl:when>
+            <xsl:when test=". = 'references'">
+                <xsl:sequence select="imf:msg('WARNING','Include overview type [1] not yet supported',.)"/>
+            </xsl:when>
+            <xsl:when test=". = 'abbreviations'">
+                <section id="abbrevs">
+                    <h2>Lijst met afkortingen</h2>
+                    <ul class="abbrevs">
+                        <xsl:for-each select="$abbreviations">
+                            <xsl:sort select="."/>
+                            <li class="abbrevsline"><abbr class="exclude">{.}</abbr> {@title}</li>
+                        </xsl:for-each>
+                    </ul>
+                </section>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg('WARNING','Include overview type [1] not supported',.)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="include-xparm">
+        <xsl:variable name="key" select="."/>
+        
+        <xsl:variable name="parm" select="imf:extract(if (contains($key,'/')) then $key else 'appinfo/' || $key,'[a-z0-9\-/]')"/>
+        <xsl:variable name="val" select="imf:get-xparm($parm,())"/>
+        <xsl:variable name="norm-val" as="xs:string">
+            <xsl:try>
+                <xsl:choose>
+                    <xsl:when test="matches($val,$regex-dateTime)">
+                        <xsl:value-of select="format-dateTime(xs:dateTime($val), '[Y0001]-[M01]-[D01] om [H01]:[m01]:[s01]')"/>
+                    </xsl:when>
+                    <xsl:when test="matches($val,$regex-date)">
+                        <xsl:value-of select="format-date(xs:date($val), '[Y0001]-[M01]-[D01]')"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="$val"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:catch>
+                    <xsl:value-of select="$val"/>
+                </xsl:catch>
+            </xsl:try>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="$val">
+                <span class="xparm">{$norm-val}</span>                        
+            </xsl:when>
+            <xsl:otherwise>
+                <span class="TODO">XPARM? {$key}</span>
+                <xsl:sequence select="imf:msg('WARNING','Xparm [1] has no value or is unknown',$parm)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="define-abbreviation">
         <!-- verwijder -->
     </xsl:template>
     

@@ -148,7 +148,15 @@
     
     <xsl:template match="caption">
         <figcaption class="caption">
-            <xsl:apply-templates/>
+            <xsl:choose>
+                <xsl:when test="p">
+                    <xsl:text> &#8210; </xsl:text>
+                    <xsl:apply-templates select="p/node()"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates/>
+                </xsl:otherwise>
+            </xsl:choose>
         </figcaption>
     </xsl:template>
     

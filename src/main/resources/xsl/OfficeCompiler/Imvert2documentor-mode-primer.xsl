@@ -535,7 +535,7 @@
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="extension[@key = 'includebijlage' and @val = 'metagegevens']" mode="pack:mode-primer" priority="1">
+    <xsl:template match="include-bijlage[. = 'metagegevens']" mode="pack:mode-primer" priority="1">
         <xsl:variable name="stereos" as="xs:string+">
             <xsl:for-each-group select="$metagegevens-hardcoded/metagegeven/modelelement" group-by=".">
                 <xsl:sort select="."/>
