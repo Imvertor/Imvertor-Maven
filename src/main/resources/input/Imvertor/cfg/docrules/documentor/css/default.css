@@ -96,17 +96,19 @@ table td {
     min-width: 1em;
 }
 table th {
-    /* background-color: #eeeeee; */
-    /* font-weight: bold;  */
-    color: white;
+    background-color: #bcd1e1;
+    color: black;
+    font-weight: bold;
 }
 table tr th p {
     margin: 0;
+    font-weight: normal;
 }
 table td p {
     /*  pars within td are aligned on top. */
     margin: 0 0 .5em 0;
 }
+
 
 
 table.matrix, 
@@ -129,6 +131,9 @@ figure.image-type-foto>div {
 
 figcaption.caption {
    
+}
+figure.uml-diagram img {
+    max-width: fit-content !important; /* diagrammen moeten vrije breedte hebben anders werkt clickable niet meer goed */
 }
 bdi.figno {
     font-weight: bold;    
@@ -227,7 +232,4 @@ li.abbrevsline abbr.exclude {
 }
 li.abbrevsline abbr.exclude:after {
     content: ": ";
-}
-figure.umldiagram img {
-    max-width: fit-content !important; /* diagrammen moeten vrije breedte hebben anders werkt clickable niet meer goed */
 }
