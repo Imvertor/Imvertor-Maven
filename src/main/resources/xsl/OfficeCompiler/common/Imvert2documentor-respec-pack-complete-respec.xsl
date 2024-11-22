@@ -22,6 +22,8 @@
     -->
     
     <xsl:variable name="respec-config-filename" select="$configuration-docrules-file/respec-config"/>
+
+    <xsl:variable name="image-zoomer" select="$configuration-docrules-file/image-zoomer"/>
     
     <xsl:function name="pack:complete-respec" as="item()*">
         <xsl:param name="book" as="item()*"/>
@@ -157,6 +159,14 @@
                     De volgende javascript is de complete Respec, in lijn met nationale regels (Logius).
                 -->
                 <script src="documentor/js/{$respec-config-filename}.js" class="remove" async="async"/>
+                
+                <!-- panzoom images? -->
+                <xsl:choose>
+                    <xsl:when test="$image-zoomer = 'image-pan-zoom'">
+                        <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'/> <!-- https://github.com/anvaka/panzoom -->
+                    </xsl:when>
+                    <!-- andere diagram weergaves? -->
+                </xsl:choose>
                 
                 <title>{imf:get-xparm('documentor/prop-titel')}</title>
                 

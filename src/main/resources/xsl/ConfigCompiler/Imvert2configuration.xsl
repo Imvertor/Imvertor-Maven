@@ -468,6 +468,7 @@
                 <xsl:apply-templates select="($doc-rules//show-properties)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//respec-config)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//diagram-encoding)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//image-zoomer)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//identifying-attribute-with-context)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//gegevensgroep-attribute-container)[last()]" mode="#current"/>
                 

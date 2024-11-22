@@ -16,6 +16,8 @@
     
     <xsl:import href="../common/extension/imvert-common-hash.xsl"/>
     
+    <xsl:variable name="image-zoomer" select="$configuration-docrules-file/image-zoomer"/>
+    
      <!-- 
         omzetten van het xhtml formaat dat uit XHTML van pandoc
         Deze HTML bevat ook eigen tags, die hier naar XHTML equivalent worden omgezet. 
@@ -81,6 +83,7 @@
     <!-- == images == -->
     
     <xsl:template match="image">
+        <xsl:variable name="image-id">img-{generate-id()}</xsl:variable>
         <figure class="image image-type-{(@metadata-type,'default')[1]}">
             <xsl:choose>
                 <xsl:when test="raw">
@@ -123,15 +126,21 @@
                   
                     <!-- and create the link to the image -->
                     <div style="width:auto;">
-                        <img src="{$img-src}" style="max-width: 100%; width: auto; height: auto;"/> <!-- width="{$dims[1]}" height="{$dims[2]}" --> 
+                        <img id="{$image-id}" src="{$img-src}" style="max-width: 100%; width: auto; height: auto;"/> <!-- width="{$dims[1]}" height="{$dims[2]}" --> 
                     </div>
                     
                 </xsl:when>
                 <xsl:otherwise>
-                    <img src="inc/{@src}"  style="max-width: 100%; width: auto; height: auto;"/>
+                    <img id="{$image-id}" src="inc/{@src}"  style="max-width: 100%; width: auto; height: auto;"/>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:apply-templates select="caption"/>
+            <xsl:choose>
+                <xsl:when test="$image-zoomer = 'image-pan-zoom'">
+                    <script>panzoom(document.querySelector('#{$image-id}'))</script>
+                </xsl:when>
+                <!-- andere diagram weergaves? -->
+            </xsl:choose>
         </figure>
     </xsl:template>
     
