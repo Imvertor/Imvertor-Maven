@@ -71,7 +71,6 @@ div.box_quote_href {
     text-align: right;
     color: gray;
 }
-
 div.box_inner_label {
    color: gray;
    font-style: italic;
@@ -163,6 +162,13 @@ span.example {
 span.letop {
     color: orangered;
     font-style: italic;
+}
+div.aside {
+    font-size: 80%;
+    color: gray;
+}
+span.aside {
+    color: gray;
 }
 div.more-info {
     font-size: 90%;

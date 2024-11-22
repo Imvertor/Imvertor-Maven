@@ -55,3 +55,9 @@ td {
 tr:nth-child(even) {
 	background-color: white !important;
 }
+
+div.topline {
+    color: gray;
+    font-size: 80%;
+    border-bottom: 1px solid gray;
+}

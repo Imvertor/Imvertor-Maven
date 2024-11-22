@@ -340,6 +340,7 @@
         </xsl:choose>
     </xsl:function>
     
+    <?x
     <xsl:function name="local:get-prop" as="item()*">
         <xsl:param name="key" as="xs:string*"/>
         <xsl:sequence select="local:get-prop($key,false())"/>
@@ -351,6 +352,7 @@
         <xsl:variable name="prop" select="imf:get-xparm('documentor/prop-' || local:compact($key))"/>
         <xsl:sequence select="if ($get-all) then $prop else $prop[last()]"/>
     </xsl:function>
+    x?>
     
     <!-- 
        Resolve errors and such.

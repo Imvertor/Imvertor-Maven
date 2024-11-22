@@ -123,9 +123,20 @@
         </box>
     </xsl:template>
     <xsl:template match="span[@data-custom-style = 'letopchar']">
-       <span class="letop">
-           <xsl:apply-templates select="node()"/>
-       </span>
+        <span class="letop">
+            <xsl:apply-templates select="node()"/>
+        </span>
+    </xsl:template>
+    
+    <xsl:template match="div[@data-custom-style = 'aside']">
+        <div class="aside">
+            <xsl:apply-templates select="node()"/>
+        </div>
+    </xsl:template>
+    <xsl:template match="span[@data-custom-style = 'asidechar']">
+        <span class="aside">
+            <xsl:apply-templates select="node()"/>
+        </span>
     </xsl:template>
     
     <xsl:template match="div[@data-custom-style = ('quote','citaat')]">

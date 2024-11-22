@@ -191,6 +191,11 @@
             </head>
             
             <body>
+                <xsl:if test="imf:boolean(imf:get-xparm('documentor/prop-toonimvertorinfo'))">
+                    <div class="topline">
+                        <p>Path: {imf:get-xparm('appinfo/subpath')} at {imf:get-xparm('run/start')}, Imvertor: {imf:get-xparm('run/version')} at metamodel {imf:get-xparm('appinfo/metamodel-name-and-version')}, Module: {(imf:get-xparm('documentor/prop-module'),'default')[1]}</p>
+                    </div>
+                </xsl:if>
                 <xsl:sequence select="imf:document(imf:get-xparm('properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE'))/document/section"/>
             </body>
         </html>
