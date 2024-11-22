@@ -138,7 +138,7 @@ public class OfficeCompiler extends Step {
 		
 					// process catalog only, save as XHTML
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_MODELDOC_RESPEC_XSLPATH") : false;
-					if (succeeds) processDoc(fn,"respec.catalog.xhtml","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
+					if (succeeds) processDoc(fn,"respec.catalog.xhtml","appinfo/catalog-documentation-filename","properties/WORK_RESPEC_FILE","none");
 					
 					// als documentor info beschikbaar is, dan uitpakken en omzetten naar xhtml met Pandoc
 					String mdf = configurator.getXParm("cli/documentorfile",false);
