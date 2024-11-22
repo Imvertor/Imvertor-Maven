@@ -223,7 +223,10 @@ public class OfficeCompiler extends Step {
 							// process complete report
 							transformer.setXslParm("catalog-only", "false");
 							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_RESPEC_XSLPATH") : false;
-							if (succeeds) processDoc(fn,"respec.full.html","appinfo/full-respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
+							
+							// als de fn is "index", vervang dan de extensie door (index.)html
+							String fullExt = (fn.equals("index")) ? "html" : "respec.full.html";
+							if (succeeds) processDoc(fn,fullExt,"appinfo/full-respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
 						}
 						
 						// process catalog only, save as HTML
