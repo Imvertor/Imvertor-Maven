@@ -244,7 +244,7 @@
         Geef ook aan of de key moet worden genormaliseerd (zoals dat bij afkorting dus niet het geval is).
         Let op: keys zijn doorgaans in het nederlands; hier worden ze vertaald naar Respec.
     -->
-    <xsl:function name="imf:respec-config-parm" as="xs:string">
+    <xsl:function name="imf:respec-config-parm" as="xs:string?">
         <xsl:param name="line" as="xs:string"/>
         <xsl:param name="normalize" as="xs:boolean"/>
         <xsl:analyze-string select="$line" regex="^(.*?):(.*?)$">
@@ -272,6 +272,9 @@
                     <xsl:otherwise>"{$found-key}": "{$found-value}"</xsl:otherwise>
                 </xsl:choose>
             </xsl:matching-substring>
+            <xsl:non-matching-substring>
+                <xsl:sequence select="imf:msg((),'ERROR','Invalid format for Respec header line: [1]', ($line))"/>
+            </xsl:non-matching-substring>
         </xsl:analyze-string>
         
     </xsl:function>
