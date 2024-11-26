@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.transport.PushResult;
@@ -37,10 +36,12 @@ import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.FtpFolder;
+import nl.imvertor.common.file.WordFile;
+import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.ZipFile;
 import nl.imvertor.common.git.ResourcePusher;
-import nl.imvertor.common.helper.OsExecutor;
-import nl.imvertor.common.helper.OsExecutor.OsExecutorResultHandler;
+import nl.imvertor.common.xsl.extensions.ImvertorCalculateHashlabel;
+import nl.imvertor.common.xsl.extensions.expath.ImvertorExpathWriteBinary;
 
 public class OfficeCompiler extends Step {
 
@@ -48,6 +49,9 @@ public class OfficeCompiler extends Step {
 	
 	public static final String STEP_NAME = "OfficeCompiler";
 	public static final String VC_IDENTIFIER = "$Id: OfficeCompiler.java 7457 2016-03-05 08:43:43Z arjan $";
+	
+	private AnyFolder workFolder;
+	private AnyFolder moduleFolder;
 	
 	public boolean run() throws Exception{
 		
@@ -79,7 +83,9 @@ public class OfficeCompiler extends Step {
 		if (op.equals("html")) {
 			runner.info(logger,"Creating documentation");
 			Transformer transformer = new Transformer();
-			
+			transformer.setExtensionFunction(new ImvertorCalculateHashlabel());
+			transformer.setExtensionFunction(new ImvertorExpathWriteBinary());
+				
 			boolean succeeds = true;
 			
 			// append codelists and reference lists to imvertor file when referenced and when required.
@@ -93,10 +99,12 @@ public class OfficeCompiler extends Step {
 			succeeds = succeeds ? transformer.transformStep("properties/WORK_LISTS_FILE","properties/WORK_MODELDOC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_XSLPATH") : false;
 			*/
 			int i = 1;
+			String lastModeldocFile = "";
 			while (true) {
 				String xslname = "IMVERTOR_METAMODEL_" + dr + "_MODELDOC_XSLPATH" + ((i == 1) ? "" : ("_" + i));
 				String outname = "WORK_MODELDOC_FILE" + ((i == 1) ? "" : ("_" + i));
 				if (configurator.getParm("properties", xslname, false) != null) {
+					lastModeldocFile = configurator.getXParm("properties/" + outname); // onthoud welk file als laatste in de reeks is gegenereerd
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/" + outname, "properties/" + xslname, "system/cur-imvertor-filepath") : false ;
 					i += 1;
 				} else if (i == 0) {
@@ -107,13 +115,14 @@ public class OfficeCompiler extends Step {
 					break;
 			}
 			
-			// variants may be "office" or "respec"
 			Vector<String> vr = Configurator.split(configurator.getXParm("cli/createofficevariant"),"\\s+");
-			if (vr.contains("msword") || vr.contains("respec")) {
+			if (vr.contains("msword") || vr.contains("respec") || vr.contains("documentor")) {
 			
 				String template = configurator.getXParm("cli/officename"); // e.g. resolved [project-name]-[application-name]-[phase]-[release]
 				String fn = configurator.mergeParms(template);
 			
+				configurator.setXParm("system/officename-resolved", fn); // resolved, dus bijv. CM-Testmodel-1-20231114
+				
 				if (vr.contains("msword")) {
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_MSWORD_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_MSWORD_XSLPATH") : false;
 					if (succeeds) processDoc(fn,"msword.html","appinfo/msword-documentation-filename","properties/WORK_MSWORD_FILE","none");
@@ -124,45 +133,109 @@ public class OfficeCompiler extends Step {
 						if (mswordFolder.isDirectory()) 
 							mswordFolder.copy(new AnyFolder(configurator.getXParm("system/work-cat-folder-path") + "/msword"));
 					}
-				}
-				if (vr.contains("respec")) {
-					if (configurator.isTrue("cli","fullrespec", false)) {
-						// process complete report
-						transformer.setXslParm("catalog-only", "false");
-						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_RESPEC_XSLPATH") : false;
-						if (succeeds) processDoc(fn,"respec.full.html","appinfo/full-respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
-					}
-					// process catalog only, save as HTML
-					transformer.setXslParm("catalog-only", "true");
-					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_RESPEC_XSLPATH") : false;
-					if (succeeds) processDoc(fn,"respec.html","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE",configurator.getXParm("cli/passoffice",false));
+				}//msword
+				if (vr.contains("respec") || vr.contains("documentor")) {
+		
 					// process catalog only, save as XHTML
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_MODELDOC_RESPEC_XSLPATH") : false;
-					if (succeeds) processDoc(fn,"respec.catalog.xhtml","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
+					if (succeeds) processDoc(fn,"respec.catalog.xhtml","appinfo/catalog-documentation-filename","properties/WORK_RESPEC_FILE","none");
 					
-					// De laatste output is de XHTML catalogus; die staat centraal in documentor.
-					/*
 					// als documentor info beschikbaar is, dan uitpakken en omzetten naar xhtml met Pandoc
-					AnyFile docFile = new AnyFile(configurator.getXParm("cli/modeldocfile",false));
-					if (docFile != null) {
-						boolean isFolder = docFile.isDirectory();
+					String mdf = configurator.getXParm("cli/documentorfile",false);
+					
+					if (mdf == null && vr.contains("documentor")) { 
+						runner.warn(logger, "Documentor processing requested but no modeldoc folder passed");
+						succeeds = false;
+					}
+				
+					if (succeeds && vr.contains("documentor")) {
+						
+						// Er is documentor input in de vorm van modeldocs meegeleverd.
+						
+						// Maak de workfolder en de module folder aan
+						workFolder = new AnyFolder(configurator.getWorkFolder("documentor"));
+						if (workFolder.isDirectory()) workFolder.deleteDirectory(); 
+						workFolder.mkdir();
+						configurator.setXParm("documentor/modeldoc-workfolder",workFolder.getCanonicalPath());
+						
+						moduleFolder = new AnyFolder(workFolder,"module");
+						if (moduleFolder.isDirectory()) moduleFolder.deleteDirectory();
+						moduleFolder.mkdir();
+						configurator.setXParm("documentor/modeldoc-modulefolder",moduleFolder.getCanonicalPath());
+						
+						// check het type modeldoc. In development: folder, in productie: zipfile
+						AnyFile docFile = new AnyFile(mdf);
 						boolean isZip = docFile.getExtension().equals("zip");
 						if (isZip) {
+							runner.debug(logger,"CHAIN","Extracting documentor files");
 							// alles uitpakken naar de workfolder
-							AnyFolder docFolder = new AnyFolder(configurator.getWorkFolder("modeldoc"));
 							ZipFile zipFile = new ZipFile(docFile);
-							zipFile.decompress(docFolder);
-							// ga door deze files heen en zet ze om naar XHTML
-							Iterator<String> it = docFolder.listFilesToVector(false).iterator();
-							while (it.hasNext()) {
-								AnyFile f = new AnyFile(it.next());
-								if (f.getExtension().equals("docx"))
-									succeeds = succeeds ? transformDocx(f) : false ;
-							}
+							zipFile.decompress(workFolder);
+						} else {
+							runner.debug(logger,"CHAIN","Copying documentor files");
+							// alles kopieren naar de workfolder
+							(new AnyFolder(docFile)).copy(workFolder);
+						}
+						
+						// maak een kopie van alle *relevante* files in de workfolder en verzamel deze in de modulefolder.
+						String modelName = configurator.getXParm("appinfo/original-application-name");
+						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/modeldoc/" + modelName, modelName, true, true) : false;
+						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/sections", modelName, true, false) : false;
+						
+						// de files zijn uitgelezen en omgezet naar XHTML
+						// nu de bestanden integreren, start bij het masterdoc, als dat er is -- masterdoc wordt bepaald bij het scannen van de files..
+						String masterdocPath = configurator.getXParm("documentor/masterdoc-path",false);
+						if (masterdocPath == null) { 
+							runner.warn(logger, "Documentor processing requested but no modeldoc file \"" + modelName + "/" + modelName + ".docx\" found");
+							succeeds = false;
+						}
+						// kopieer het masterdoc naar de imvertor workfolder
+						if (succeeds) {
+							(new AnyFile(masterdocPath)).copyFile(configurator.getXParm("properties/IMVERTOR_DOCUMENTOR_CORESCANNER_FILE"));
+							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_CORESCANNER_FILE", "properties/IMVERTOR_DOCUMENTOR_CORESCANNER_XSLPATH","system/cur-imvertor-filepath") : false;
+							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_COREMODES_FILE", "properties/IMVERTOR_DOCUMENTOR_COREMODES_XSLPATH","system/cur-imvertor-filepath") : false;
+							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE", "properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_XSLPATH","system/cur-imvertor-filepath") : false;
+						}
+						if (succeeds) {
+							
+							// kopieer documentor configuratie naar de cat folder. Eerst de standaard "Imvertor" files, en daaroverheen de owner files.
+							AnyFolder target = new AnyFolder(configurator.getWorkFolder() + "/app/cat/documentor");
+							target.mkdirs();
+							AnyFolder imvertorFolder = new AnyFolder(configurator.getBaseFolder(), "input" + File.separator + "Imvertor/cfg/docrules/documentor"); // waaronder default.css en default.js
+							imvertorFolder.copy(target);
+							AnyFolder ownerFolder = new AnyFolder(configurator.getInputFolder() + "/cfg/docrules/documentor");
+							if (ownerFolder.isDirectory()) 
+								ownerFolder.copy(target);
+							else
+								runner.warn(logger, "Documentor has not been configured for \""+ configurator.getXParm("cli/owner") +"\". Please contact your system administrator.");
+							
+							// kopieer de gecachte versie van de respec config javascript naar de js folder 
+							AnyFolder cacheFolder = new AnyFolder(configurator.getBaseFolder() + "/etc/respec/cache/" + configurator.getXParm("documentor/respec-config")); 
+							AnyFolder jsFolder = new AnyFolder(target + "/js");
+							cacheFolder.copy(jsFolder);
 						}
 					}
-					*/
-				}
+					configurator.setXParm("system/cur-imvertor-filepath", lastModeldocFile);
+					
+					if (succeeds) {
+						// we hebben nu het hele document in respec format, met daarin de catalogus. Plaats dit document als body van het Respec resultaat document.
+						if (configurator.isTrue("cli","fullrespec", false)) {
+							// process complete report
+							transformer.setXslParm("catalog-only", "false");
+							succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_RESPEC_XSLPATH") : false;
+							
+							// als de fn is "index", vervang dan de extensie door (index.)html
+							String fullExt = (fn.equals("index")) ? "html" : "respec.full.html";
+							if (succeeds) processDoc(fn,fullExt,"appinfo/full-respec-documentation-filename","properties/WORK_RESPEC_FILE","none");
+						}
+						
+						// process catalog only, save as HTML
+						transformer.setXslParm("catalog-only", "true");
+						succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + dr + "_MODELDOC_RESPEC_XSLPATH") : false;
+						if (succeeds) processDoc(fn,"respec.html","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE",configurator.getXParm("cli/passoffice",false));
+					}
+					
+				}//respec
 			} else {
 				runner.error(logger,"No (valid) office variant specified: " + vr.toString());
 				succeeds = false;
@@ -276,8 +349,76 @@ public class OfficeCompiler extends Step {
 	}
 	
 	private boolean transformDocx(AnyFile mswordFile) throws Exception {
-		//TODO
+		WordFile infile = new WordFile(mswordFile);
+		XmlFile outfile = new XmlFile(mswordFile.getCanonicalPath() + ".xhtml");
 		
-		return true;
+		runner.info(logger,"Processing " + infile.getName());
+
+		Transformer transformer = new Transformer();
+		
+		boolean succeeds = true;
+		
+		succeeds = succeeds ? infile.correctCodeSpaces() : false;
+		
+		succeeds = succeeds? infile.toXhtmlFile(outfile) : false;
+				
+		if (succeeds) {
+			// transformeer die XHTML naar iets bruikbaars, extraheer ook meteen respec properties
+			transformer.setXslParm("msword-file-path", outfile.getCanonicalPath());
+			transformer.setXslParm("msword-file-name", outfile.getNameNoExtension());
+			configurator.setXParm("system/cur-imvertor-filepath", outfile.getCanonicalPath());
+			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_FILEPREPARE_FILE", "properties/IMVERTOR_DOCUMENTOR_FILEPREPARE_XSLPATH","system/cur-imvertor-filepath") : false;
+			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE", "properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_XSLPATH","system/cur-imvertor-filepath") : false;
+			// vervang het file met de aangepaste XHTML file
+			(new AnyFile(configurator.getXParm("properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE"))).copyFile(outfile);
+		}
+		return succeeds;
 	}
+	
+	private boolean copyFilesToModulefolder(String workSubFolderPath, String modelName, boolean recurse, boolean mustExist) throws Exception {
+		
+		// workfolder is gemaakt; alle MsWord bestanden omzetten naar XHTML
+		AnyFolder workSubFolder = new AnyFolder(workSubFolderPath);
+		workSubFolderPath = workSubFolder.getCanonicalPath(); // forward slash correctie
+		if (workSubFolder.isDirectory()) {
+			// eerste slag: alle docx files transformeren naar standaard XHTML vorm.
+			Iterator<String> it1 = workSubFolder.listFilesToVector(recurse).iterator();
+			boolean succeeds = true;
+			while (it1.hasNext()) {
+				String path = it1.next();
+				AnyFile f = new AnyFile(path);
+				Boolean isMasterDoc = f.getParent().equals(workSubFolderPath) && f.getName().equals(modelName + ".docx");
+				String fileUri = f.toURI().toString();
+				// Kies de te verwerken bestanden: het moet een docx file zijn, het is de masterdoc of het is een lokaal subdocument. Sla alle msword werkbestanden over. 
+				if (f.getExtension().equals("docx") && (isMasterDoc || StringUtils.contains(fileUri,"/sections/")) && !StringUtils.startsWith(f.getName(),"~"))
+					succeeds = succeeds ? transformDocx(f) : false ;
+			}
+			// tweede slag: alles kopieren naar module folder
+			Iterator<String> it2 = workSubFolder.listFilesToVector(recurse).iterator();
+			while (it2.hasNext()) {
+				AnyFile f = new AnyFile(it2.next());
+				String fileName = f.getName();
+				String fileUri = f.toURI().toString();
+				
+				// Kopieer de msword resultaten en de include files naar de module folder. 
+				if (f.isFile()) {
+					Boolean isWordFile = StringUtils.endsWith(fileName,".docx.xhtml");
+					Boolean isIncludeFile = StringUtils.contains(fileUri,"/include/");
+					if (isWordFile || isIncludeFile) {
+						String filepath = (isWordFile) ? moduleFolder + "/" + fileName : configurator.getWorkFolder() + "/app/cat/inc/" + fileName;
+						AnyFile moduleFile = new AnyFile(filepath);
+						if (moduleFile.isFile()) {
+							runner.error(logger, "Duplicate file name in documentor input: " + fileName);
+							succeeds = false;
+						} else 
+							f.copyFile(moduleFile);
+					}
+				}
+			}
+	
+			return succeeds;
+		} else
+			return !mustExist;
+	}
+	
 }

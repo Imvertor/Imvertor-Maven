@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <!-- Armatiek follows Imvertor and MIM 1.* requirements -->
+    
+    <xi:include href="Armatiek-MIM-1-CONCEPTUAL.xml"/>
+    
+    <name>Armatiek-MIM-1-LOGICAL</name>
+    
+</metamodel>

@@ -1,0 +1,63 @@
+/* hier de algemene CSS voor deze eigenaar */
+
+th, td {
+    vertical-align: baseline !important;
+}
+
+th {
+    font-weight: normal;
+}
+
+.imvertor-info {
+    color: gray;
+    font-size: 80%;
+}
+
+/* *
+ * Primer specifieke CSS
+ * */
+
+span.primer::before {
+    content: "Primer";    
+}
+span.mim::before {
+    content: "MIM";    
+}
+span.logo {
+    border: 1px solid gray;
+    border-radius: 0.5em;
+    padding: 0em 0.3em;
+}
+span.logo.primer {
+    background: #f2dfbe;
+}
+span.logo.mim {
+    background: #b7dced;
+}
+
+span.logo {
+    text-decoration: none;
+}
+
+.box_example {
+    background: #fcfaee;
+}
+
+/*  pas tabellen aan */
+tbody {
+	background-color: white !important;
+}
+
+td {
+	min-width: 1em !important;
+}
+
+tr:nth-child(even) {
+	background-color: white !important;
+}
+
+div.topline {
+    color: gray;
+    font-size: 80%;
+    border-bottom: 1px solid gray;
+}

@@ -250,6 +250,10 @@ public class Configurator {
 	public AnyFolder getWorkFolder() {
 		return workFolder;
 	}
+	
+	public AnyFolder getInputFolder() {
+		return inputFolder;
+	}
 
 	public AnyFolder getWorkFolder(String subfolderName) {
 		return new AnyFolder(workFolder,subfolderName);
@@ -1040,7 +1044,7 @@ public class Configurator {
 			String optionName = e.nextElement().toString();
 			String value = properties.getProperty(optionName);
 			// process file properties in context of the current file
-			if (optionName.equals("umlfile") | optionName.equals("zipfile") | optionName.equals("hisfile")) {
+			if (optionName.equals("umlfile") | optionName.equals("zipfile") | optionName.equals("hisfile") | optionName.equals("documentorfile")) {
 				File parent = (new File(filePath)).getParentFile();
 				if (AnyFile.isAbsolutePath(value))
 					value = (new File(value)).getCanonicalPath();

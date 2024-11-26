@@ -37,7 +37,9 @@
         <xsl:variable name="messages" select="$configuration//messages/message[src='XMI1Imvert']"/>
         <xsl:variable name="errors" select="$messages[type=('FATAL','ERROR')]"/>
         <xsl:variable name="msword-filename" select="imf:get-config-string('appinfo','msword-documentation-filename')"/>
-        <xsl:variable name="respec-filename" select="imf:get-config-string('appinfo','full-respec-documentation-filename')"/>
+        <xsl:variable name="full-respec-filename" select="imf:get-config-string('appinfo','full-respec-documentation-filename')"/>
+        <xsl:variable name="respec-filename" select="imf:get-config-string('appinfo','frespec-documentation-filename')"/>
+        <xsl:variable name="catalog-filename" select="imf:get-config-string('appinfo','catalog-documentation-filename')"/>
         
         <xsl:variable name="model-respec-filename" select="concat(imf:get-config-string('appinfo','application-name'),'.html')"/>
         
@@ -52,7 +54,9 @@
                     <xsl:sequence select="imf:report-key-label('Saved as','appinfo','office-documentation-filename')"/>
                 </info>
                 <info label="Respec documentation">
-                    <xsl:sequence select="imf:report-key-label('Saved as','appinfo','respec-documentation-filename')"/>
+                    <xsl:sequence select="imf:report-key-label('Profile used','cli','createofficevariant')"/>
+                    <xsl:sequence select="imf:report-key-label('Partial catalog saved as','appinfo','respec-documentation-filename')"/>
+                    <xsl:sequence select="imf:report-key-label('Full catalog saved as','appinfo','full-respec-documentation-filename')"/>
                 </info>
             </summary>
             <page>
@@ -70,33 +74,47 @@
                             <p><strong>The preview supplied may show flaws as the intended publication environment is not available here.</strong></p>
                         </xsl:when>
                         <xsl:otherwise>
-                            <p>The model documentation is packaged in this Imvertor model release for further processing.</p>
+                            <p>The model documentation is packaged in this Imvertor model release for publication or further processing.</p>
                         </xsl:otherwise>
                     </xsl:choose>
                 </intro>
                 <content>
                     <div>
+                        <div>
+                            <h1>XHTML catalog</h1>
+                            <p><a href="{concat('../../cat/',$catalog-filename)}" target="catalog">Click here (opens new tab)</a> for the XHTML result file.</p>
+                        </div>
                         <xsl:if test="$msword-filename">
                             <div>
                                 <h1>MsWord documentation</h1>
                                 <p>The HTML document may be opened in MsWord. 
                                     In order to apply specific styles to the markup, the contents of the MsWord document may be copied to the clipboard, 
                                     and pasted into a template document, or styles from a template document may be applied to the just created MsWord document.</p>
-                                <p><a href="{concat('../../cat/',$msword-filename)}">Click here</a> for the packaged documentation files.</p>
+                                <p><a href="{concat('../../cat/',$msword-filename)}" target="catalog">Click here (opens new tab)</a> for the packaged documentation files.</p>
                             </div>
                         </xsl:if>
                         <xsl:if test="$respec-filename">
                             <div>
-                                <h1>Respec documentation</h1>
-                                <p><a href="{concat('../../cat/',$respec-filename)}">Click here</a> for the packaged documentation file. Use Control-Click to ensure correct rendering of the Respec file.</p>
+                                <h1>Partial Respec documentation</h1>
+                                <p>This document has been compiled without any Respec profile, and holds a basic catalog in Respec format. It may be used to include within a Respec document..</p>
+                                <p><a href="{concat('../../cat/',$respec-filename)}" target="catalog">Click here (opens new tab)</a> for the packaged partial documentation file.</p>
                             </div>
                         </xsl:if>
-                        <div>
-                            <h1>External documentation</h1>
-                            <p><a href="{concat('../../cat/',$model-respec-filename)}">Click here</a> for the packaged externally compiled documentation. Use Control-Click to ensure correct rendering of the Respec file.</p>
-                            <p><i>Please consult your Imvertor provider if the link does not resolve to a valid HTML document.</i></p>
-                        </div>
-
+                        <xsl:if test="$full-respec-filename">
+                            <div>
+                                <h1>Stand-alone Respec documentation</h1>
+                                <xsl:choose>
+                                    <xsl:when test="imf:get-xparm('cli/createofficevariant') = 'documentor'">
+                                        <p>This document has been compiled using Documentor. It may be used for publication.</p>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <p>This document has been compiled using a simple W3C Respec profile. It should not be used for publication.</p>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <p><a href="{concat('../../cat/',$full-respec-filename)}" target="catalog">Click here (opens new tab)</a> for the packaged full documentation file.</p>
+                            </div>
+                        </xsl:if>
+                        
                     </div>
                 </content>
             </page>

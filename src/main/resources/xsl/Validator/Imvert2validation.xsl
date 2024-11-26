@@ -173,6 +173,8 @@
     
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
+    <xsl:variable name="allow-empty-model" select="imf:boolean(imf:get-xparm('cli/allowemptymodel'))"/>
+  
     <!-- 
         Document validation; this validates the root (application-)package.
       
@@ -296,7 +298,7 @@
             not(imf:test-file-name-convention($this-package/imvert:name)), 
             'Package name holds invalid characters')"/>
         <xsl:sequence select="imf:report-error(., 
-            empty($domain-packages), 
+            empty($domain-packages and not($allow-empty-model)), 
             'No domain subpackages found')"/>
         <xsl:sequence select="imf:report-error(., 
             not($root-release), 
@@ -317,6 +319,9 @@
                 <xsl:sequence select="imf:report-error(., 
                     ($root-release != $largest), 
                     'The root package release number [1] is not found as the release of any domain package.',($root-release))"/>
+            </xsl:when>
+            <xsl:when test="$allow-empty-model">
+                <!-- skip -->
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:report-error(., 

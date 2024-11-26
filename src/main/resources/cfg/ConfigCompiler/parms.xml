@@ -27,7 +27,7 @@
       <cli-parm>
          <name>owner</name>
          <arg>name</arg>
-         <tip>Name of the project owner</tip>
+         <tip>The owner of the configurations that are applied in a single Imvertor OS run. Typically an organization name.</tip>
          <required>true</required>
       </cli-parm> 
       <cli-parm>

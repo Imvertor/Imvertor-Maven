@@ -1455,4 +1455,19 @@
         <xsl:value-of select="substring-after(imf:file-to-url($subpath),'/input/')"/>
     </xsl:function>
     
+    <xsl:function name="imf:normalize-space" as="xs:string">
+        <xsl:param name="seq" as="item()*"/>
+        <xsl:value-of select="normalize-space(imf:string-value($seq))"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:string-value" as="xs:string">
+        <xsl:param name="seq" as="item()*"/>
+        <xsl:variable name="v" as="xs:string*">
+            <xsl:for-each select="$seq">
+                <xsl:value-of select="."/>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:value-of select="string-join($v,'')"/>
+    </xsl:function>
+    
 </xsl:stylesheet>

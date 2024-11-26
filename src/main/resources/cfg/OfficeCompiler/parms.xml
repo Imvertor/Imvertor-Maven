@@ -25,13 +25,13 @@
    <cli-parms>
       <cli-parm>
          <name>createoffice</name>
-         <arg>html|doc|none</arg>
+         <arg>html | doc | none</arg>
          <tip>Create a documentation file in plain HTML, MsWord, or Respec format. By default, create none.</tip>
          <required>false</required>
       </cli-parm> 
       <cli-parm>
          <name>createofficevariant</name>
-         <arg>msword/respec</arg>
+         <arg>msword | respec | documentor</arg>
          <tip>Specify the type of office file. Multiple formats are allowed, separate list by whitespace.</tip>
          <required>When createoffice is set to html</required>
       </cli-parm>
@@ -133,6 +133,14 @@
          <tip>Yes if codelists and reference lists that have a location must be read dynamically from that location and included in the model documentation.</tip>
          <required>false</required>
       </cli-parm> 
+    
+      <cli-parm>
+         <name>modeldocfile</name>
+         <arg>filepath</arg>
+         <tip>Path to the folder or zipfile holding the modeldoc files, i.e. profile and MsWord files and images used to create a full Respec.</tip>
+         <required>false</required>
+         <type>file</type>
+      </cli-parm> 
       
    </cli-parms>
    <properties>
@@ -148,6 +156,21 @@
       
       <IMVERTOR_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-xhtml-respec.xsl</IMVERTOR_MODELDOC_RESPEC_XSLPATH>
     
+      <IMVERTOR_DOCUMENTOR_FILEPREPARE_XSLPATH alias="ITO">Imvert2documentor-file-prepare.xsl</IMVERTOR_DOCUMENTOR_FILEPREPARE_XSLPATH>
+      <IMVERTOR_DOCUMENTOR_FILEPREPARE_FILE alias="ITO">${system/work-imvert-folder-path}/imvertor.26.1.documentor-file-prepare.xhtml</IMVERTOR_DOCUMENTOR_FILEPREPARE_FILE>
+    
+      <IMVERTOR_DOCUMENTOR_FILEFINALIZE_XSLPATH alias="ITO">Imvert2documentor-file-finalize.xsl</IMVERTOR_DOCUMENTOR_FILEFINALIZE_XSLPATH>
+      <IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE alias="ITO">${system/work-imvert-folder-path}/imvertor.26.2.documentor-file-finalize.xhtml</IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE>
+      
+      <IMVERTOR_DOCUMENTOR_CORESCANNER_XSLPATH alias="ITO">Imvert2documentor-core-scanner.xsl</IMVERTOR_DOCUMENTOR_CORESCANNER_XSLPATH>
+      <IMVERTOR_DOCUMENTOR_CORESCANNER_FILE alias="ITO">${system/work-imvert-folder-path}/imvertor.26.3.documentor-core-scanner.xhtml</IMVERTOR_DOCUMENTOR_CORESCANNER_FILE>
+    
+      <IMVERTOR_DOCUMENTOR_COREMODES_XSLPATH alias="ITO">Imvert2documentor-core-modes.xsl</IMVERTOR_DOCUMENTOR_COREMODES_XSLPATH>
+      <IMVERTOR_DOCUMENTOR_COREMODES_FILE alias="ITO">${system/work-imvert-folder-path}/imvertor.26.4.documentor-core-modes.xhtml</IMVERTOR_DOCUMENTOR_COREMODES_FILE>
+      
+      <IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_XSLPATH alias="ITO">Imvert2documentor-respec-xhtml-to-respec.xsl</IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_XSLPATH>
+      <IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE alias="ITO">${system/work-imvert-folder-path}/imvertor.26.5.documentor-respec-xhtml-to-respec.xhtml</IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE>
+      
       <!-- KING -->
       <IMVERTOR_METAMODEL_KING-MIM-11-SIM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-KING-MIM-11-SIM.xsl</IMVERTOR_METAMODEL_KING-MIM-11-SIM_MODELDOC_XSLPATH>
       <IMVERTOR_METAMODEL_KING-MIM-11-SIM_MODELDOC_MSWORD_XSLPATH alias="ITO">Imvert2modeldoc-KING-MIM-11-SIM-html-msword.xsl</IMVERTOR_METAMODEL_KING-MIM-11-SIM_MODELDOC_MSWORD_XSLPATH>
@@ -251,6 +274,9 @@
       <IMVERTOR_METAMODEL_Kadaster-MIM-12_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Kadaster-MIM-11.xsl</IMVERTOR_METAMODEL_Kadaster-MIM-12_MODELDOC_XSLPATH>
       <IMVERTOR_METAMODEL_Kadaster-MIM-12_MODELDOC_MSWORD_XSLPATH alias="ITO">Imvert2modeldoc-Kadaster-MIM-11-html-msword.xsl</IMVERTOR_METAMODEL_Kadaster-MIM-12_MODELDOC_MSWORD_XSLPATH>
       <IMVERTOR_METAMODEL_Kadaster-MIM-12_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-Kadaster-MIM-11-html-respec.xsl</IMVERTOR_METAMODEL_Kadaster-MIM-12_MODELDOC_RESPEC_XSLPATH>
+      
+      <IMVERTOR_METAMODEL_Armatiek-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Armatiek-MIM-12-CONCEPTUAL.xsl</IMVERTOR_METAMODEL_Armatiek-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_Armatiek-MIM-12-CONCEPTUAL_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-Armatiek-MIM-12-CONCEPTUAL-html-respec.xsl</IMVERTOR_METAMODEL_Armatiek-MIM-12-CONCEPTUAL_MODELDOC_RESPEC_XSLPATH>
       
       <IMVERTOR_METAMODEL_EIGENAAR-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-EIGENAAR-MIM-12-CONCEPTUAL.xsl</IMVERTOR_METAMODEL_EIGENAAR-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH>
       <IMVERTOR_METAMODEL_EIGENAAR-MIM-12-CONCEPTUAL_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-EIGENAAR-MIM-12-CONCEPTUAL-html-respec.xsl</IMVERTOR_METAMODEL_EIGENAAR-MIM-12-CONCEPTUAL_MODELDOC_RESPEC_XSLPATH>

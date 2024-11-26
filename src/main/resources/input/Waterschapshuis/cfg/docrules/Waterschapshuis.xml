@@ -46,10 +46,10 @@
     <include-overview-sections-by-type>yes</include-overview-sections-by-type>
     <include-detail-sections-by-type>yes</include-detail-sections-by-type>
     
-    <!-- 
+    <!--
         Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
     -->
-    <respec-config>https://armatiek.nl/respec-profiles/w3c/profile/respec-w3c-common.js</respec-config>
+    <respec-config>respec-nlgov</respec-config> <!-- gecachte versie van https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js -->
     
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
