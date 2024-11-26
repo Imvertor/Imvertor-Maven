@@ -49,5 +49,5 @@
         Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
     -->
     <respec-config>respec-nlgov</respec-config> <!-- gecachte versie van https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js -->
-            
+
 </doc-rules>

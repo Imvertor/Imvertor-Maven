@@ -20,11 +20,11 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- IHW follows VNGR requirements -->
-    <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
+    <xi:include href="../../../MIM/cfg/tvsets/MIM12.xml"/>
     
-    <xi:include href="../../../MIM/cfg/tvsets/MIM11-extension.xml"/>
+    <xi:include href="../../../MIM/cfg/tvsets/MIM12-extension.xml"/>
     
-    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM11.xml"/>
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM12.xml"/>
     
     <name>IHW-MIM-1-CONCEPTUAL</name>
     

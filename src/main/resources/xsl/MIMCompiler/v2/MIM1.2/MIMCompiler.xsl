@@ -49,8 +49,8 @@
   <xsl:mode name="missing-metadata"/>
 
   <xsl:param name="generate-readable-ids" select="'true'" as="xs:string"/>
-  <xsl:param name="generate-all-ids" select="'false'" as="xs:string"/>
-  <xsl:param name="add-generated-id" select="'false'" as="xs:string"/>
+  <xsl:param name="generate-all-ids" select="'true'" as="xs:string"/>
+  <xsl:param name="add-generated-id" select="'true'" as="xs:string"/>
   
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   <xsl:variable name="add-xlink-id" select="true()"/>
@@ -1342,9 +1342,8 @@
  
   <xsl:function name="imf:create-id" as="xs:string">
     <xsl:param name="elem" as="element()"/>
-    <xsl:variable name="package" select="imf:valid-id($elem/ancestor-or-self::*[self::mim:Domein|self::mim:View|self::Extern]/mim:naam)" as="xs:string?"/>
-    <xsl:variable name="modelelement" select="local-name($elem)" as="xs:string"/>
-    <xsl:variable name="naam" select="imf:valid-id($elem/mim:naam)" as="xs:string?"/>
+    <xsl:variable name="ancestors" select="$elem/ancestor-or-self::*/mim:naam" as="element()*"/>
+    <xsl:variable name="naam" select="$elem/mim:naam" as="element()?"/>
     <xsl:variable name="naam" as="xs:string">
       <xsl:choose>
         <xsl:when test="$naam">
@@ -1355,7 +1354,10 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:value-of select="lower-case(string-join(($package, $modelelement, $naam, if ($add-generated-id = 'true') then generate-id($elem) else ()), '-'))"/>
+    <xsl:value-of select="string-join((
+        for $n in $ancestors return imf:valid-id($n),
+        if ($add-generated-id = 'true') then generate-id($elem) else ()
+      ), '-')"/>
   </xsl:function>
   
   <xsl:function name="imf:clean-id" as="xs:string">
@@ -1365,7 +1367,7 @@
   
   <xsl:function name="imf:valid-id" as="xs:string?">
     <xsl:param name="id" as="xs:string?"/>
-    <xsl:sequence select="if ($id) then replace(replace(lower-case(normalize-space($id)), '[^a-z0-9 ]', ''), ' ', '-') else ()"/>
+    <xsl:sequence select="if ($id) then replace(lower-case($id), '[^a-z0-9]', '') else ()"/>
   </xsl:function>
   
   <xsl:function name="imf:generate-id-attr" as="attribute()?">

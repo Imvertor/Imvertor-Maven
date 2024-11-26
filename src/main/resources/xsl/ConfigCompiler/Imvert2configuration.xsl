@@ -145,7 +145,7 @@
         <xsl:variable name="crx" select="imf:get-config-string('run','version')"/>
         <xsl:variable name="lrx" select="imf:get-config-string('system','latest-imvertor-release')"/>
         <xsl:choose>
-            <xsl:when test="matches($crx, '^\d+\.\d+\.\d+$')"> <!-- regular major-minor version? -->
+            <xsl:when test="matches($crx, '^\d+\.\d+\.\d+.*$')"> <!-- (starts with) a regular major-minor version? -->
                 <xsl:variable name="cr" select="string-join(for $m in subsequence(tokenize($crx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
                 <xsl:variable name="lr" select="string-join(for $m in subsequence(tokenize($lrx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
                 <xsl:sequence select="imf:report-warning(.,$cr lt $lr,'You are using Imvertor version [1], however a more recent version [2] is available.',($crx,$lrx))"/>
