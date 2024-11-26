@@ -174,6 +174,10 @@
         </xsl:copy>
     </xsl:template>
     
+    <xsl:template match="section[metadata/@key = 'process' and metadata/@val = 'remove']" mode="resolve-ext">
+        <!-- remove alltogether -->
+    </xsl:template>
+    
     <xsl:template match="*" mode="resolve-ext">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>
