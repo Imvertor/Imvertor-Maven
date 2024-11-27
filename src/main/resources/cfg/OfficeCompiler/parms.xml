@@ -135,9 +135,9 @@
       </cli-parm> 
     
       <cli-parm>
-         <name>modeldocfile</name>
+         <name>documentorfile</name>
          <arg>filepath</arg>
-         <tip>Path to the folder or zipfile holding the modeldoc files, i.e. profile and MsWord files and images used to create a full Respec.</tip>
+         <tip>Path to the folder or zipfile holding the Documentor files, i.e. MsWord files and binaries used to create full Respec documentation.</tip>
          <required>false</required>
          <type>file</type>
       </cli-parm> 
