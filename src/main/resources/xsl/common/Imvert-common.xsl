@@ -841,7 +841,7 @@
         Specify if it is assumed to exist; if false, test availability (which slows down) 
     -->
     <xsl:function name="imf:document" as="document-node()?">
-        <xsl:param name="uri-or-path" as="xs:string"/>
+        <xsl:param name="uri-or-path" as="xs:string?"/>
         <xsl:param name="assume-existing" as="xs:boolean"/>
 
         <xsl:variable name="is-local-uri" select="matches($uri-or-path,'^file:.*$')"/>
@@ -865,6 +865,9 @@
                 else ()"/>
         
         <xsl:choose>
+            <xsl:when test="empty($uri-or-path)">
+                <xsl:sequence select="()"/>
+            </xsl:when>
             <xsl:when test="$assume-existing">
                 <xsl:sequence select="imf:document-from-cache($uri)"/>
             </xsl:when>
@@ -881,7 +884,7 @@
     </xsl:function>
     
     <xsl:function name="imf:document-from-cache" as="document-node()">
-        <xsl:param name="uri"/>
+        <xsl:param name="uri" as="xs:string"/>
         <xsl:sequence select="document($uri)"/>
     </xsl:function>
     
@@ -944,12 +947,12 @@
     </xsl:function>
 
     <xsl:function name="imf:file-to-url">
-        <xsl:param name="filepath"/>
+        <xsl:param name="filepath" as="xs:string?"/>
         <xsl:value-of select="imf:path-to-file-uri($filepath)"/>
     </xsl:function>
     
     <xsl:function name="imf:file-to-url">
-        <xsl:param name="filepath"/>
+        <xsl:param name="filepath" as="xs:string?"/>
         <xsl:param name="debug-origin"/>
         <xsl:sequence select="imf:file-to-url($filepath)"/>
     </xsl:function>
