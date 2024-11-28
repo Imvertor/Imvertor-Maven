@@ -29,7 +29,6 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Runner;
@@ -96,10 +95,14 @@ public class WordFile extends AnyFile {
 					+ "\"text\": \"" + payloadBase64 + "\""
 					+ "}";
 			try {
+				configurator.getRunner().debug(logger,"DOCUMENTOR","Posting payload, base64 size " + payloadBase64.length());
 				String result = localFile.post(HttpFile.METHOD_POST_CONTENT, URI.create(pandocServerUrl), headerMap, null, new String[] {payload});
 				if (StringUtils.startsWith(result,"<")) {
 					outFile.setContent(result);
 					return true;
+				} else if (result.equals("")) {
+					runner.error(logger, "Documentor processing error: empty result");
+					return false;
 				} else {
 					runner.error(logger, "Documentor processing error: \"" + result + "\"");
 					return false;
@@ -152,6 +155,7 @@ public class WordFile extends AnyFile {
 	 */
 	public boolean correctCodeSpaces() throws Exception{
 		Configurator configurator = Configurator.getInstance();
+		configurator.getRunner().debug(logger,"DOCUMENTOR","Correcting code spaces");
 		try {
 			ZipFile thisFile = new ZipFile(this);
 			AnyFolder tempFolder = configurator.getWorkFolder("documentor/msword");

@@ -362,6 +362,8 @@ public class OfficeCompiler extends Step {
 		
 		succeeds = succeeds? infile.toXhtmlFile(outfile) : false;
 				
+		configurator.getRunner().debug(logger,"DOCUMENTOR","File prepared okay? " + succeeds);
+		
 		if (succeeds) {
 			// transformeer die XHTML naar iets bruikbaars, extraheer ook meteen respec properties
 			transformer.setXslParm("msword-file-path", outfile.getCanonicalPath());
