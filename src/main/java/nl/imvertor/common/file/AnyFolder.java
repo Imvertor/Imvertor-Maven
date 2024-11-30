@@ -66,8 +66,8 @@ public class AnyFolder extends AnyFile {
 	}
 
 	/**
-	 * Create a copy of this folder within the target folder. 
-	 * Example /a -> /b creates : /b/a/*
+	 * Create a copy of the files in this folder within the target folder. 
+	 * Example /a/m -> /b creates : /b/m/*
 	 * 
 	 * @param targetFolder
 	 * @throws Exception
@@ -109,6 +109,20 @@ public class AnyFolder extends AnyFile {
 		copy(new AnyFolder(targetFolderPath),true);
 	}
 	
+	/**
+	 * Copy this folder as a new subfolder within target folder, under the source folder name.
+	 * Overwrite any existing files/folders.
+	 * 
+	 *  Example /a -> /b creates : /b/a
+	 * 
+	 * @param targetFolderPath
+	 * @throws Exception
+	 */
+	public void copyFolder(AnyFolder targetFolder) throws Exception {
+		targetFolder = new AnyFolder(targetFolder.getCanonicalPath() + "/" + getName());
+		FileUtils.copyDirectory(this, targetFolder);
+	}
+
 	public boolean hasFile(String filename) throws IOException {
 		if (!this.exists() || this.isFile()) return false;
 		return (new File(this.getCanonicalPath() + File.separator + filename)).isFile(); 
