@@ -26,7 +26,7 @@
     -->
     <vocabularies>
         
-        <base>http://definities.geostandaarden.nl/[afkorting]/id/[type]/[naam]</base>
+        <base>http://begrippen.stelselcatalogus.nl/[afkorting]/id/[type]/[naam]</base>
         <!-- 
             * afkorting lower case
             * type bepalen obv:
