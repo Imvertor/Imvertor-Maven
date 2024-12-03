@@ -61,6 +61,12 @@
         
         <!-- geef via deze documentor property aan java proces door waar het respec-config file is geplaatst -->
         <xsl:sequence select="imf:set-xparm('documentor/respec-config',$configuration-docrules-file/respec-config)"/>
+        <!-- 
+            zet de waarde van documentor/image-zoomer etc. op basis van huidige config 
+            Deze worden uitgelezen in het java proces zodat de js/css kan worden gekopieerd
+        -->
+        <xsl:sequence select="imf:set-xparm('documentor/image-zoomer',$configuration-docrules-file/image-zoomer)"/>
+        <xsl:sequence select="imf:set-xparm('documentor/diagram-zoomer',$configuration-docrules-file/diagram-zoomer)"/>
         
         <xsl:sequence select="imf:set-xparm('documentor/prop-titel',./title)"/>
         <xsl:sequence select="imf:set-xparm('documentor/prop-subtitel',./subtitle)"/>

@@ -16,8 +16,6 @@
     
     <xsl:import href="../common/extension/imvert-common-hash.xsl"/>
     
-    <xsl:variable name="image-zoomer" select="$configuration-docrules-file/image-zoomer"/>
-    
      <!-- 
         omzetten van het xhtml formaat dat uit XHTML van pandoc
         Deze HTML bevat ook eigen tags, die hier naar XHTML equivalent worden omgezet. 
@@ -135,12 +133,6 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:apply-templates select="caption"/>
-            <xsl:choose>
-                <xsl:when test="$image-zoomer = 'image-pan-zoom'">
-                    <script>panzoom(document.querySelector('#{$image-id}'))</script>
-                </xsl:when>
-                <!-- andere diagram weergaves? -->
-            </xsl:choose>
         </figure>
     </xsl:template>
     

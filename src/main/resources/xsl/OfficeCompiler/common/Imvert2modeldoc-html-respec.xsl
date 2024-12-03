@@ -48,8 +48,6 @@
     
     <xsl:variable name="diagram-encoding" select="$configuration-docrules-file/diagram-encoding"/><!-- #326 als figure, of als img met tekst eronder -->
     
-    <xsl:variable name="image-zoomer" select="$configuration-docrules-file/image-zoomer"/>
-    
     <xsl:template match="book" mode="respec-type">
         <xsl:choose>
             <!-- 
@@ -794,12 +792,6 @@
                             </xsl:if>
                         </p>    
                     </xsl:otherwise>
-                </xsl:choose>
-                <xsl:choose>
-                    <xsl:when test="$image-zoomer = 'image-pan-zoom'">
-                        <script>panzoom(document.querySelector('#{$diagram-id}'))</script>
-                    </xsl:when>
-                    <!-- andere diagram weergaves? -->
                 </xsl:choose>
             </div>
         </xsl:for-each>

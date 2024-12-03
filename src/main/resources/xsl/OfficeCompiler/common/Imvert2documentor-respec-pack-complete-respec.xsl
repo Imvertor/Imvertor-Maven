@@ -23,6 +23,7 @@
     
     <xsl:variable name="respec-config-filename" select="$configuration-docrules-file/respec-config"/>
 
+    <xsl:variable name="diagram-zoomer" select="$configuration-docrules-file/diagram-zoomer"/>
     <xsl:variable name="image-zoomer" select="$configuration-docrules-file/image-zoomer"/>
     
     <xsl:function name="pack:complete-respec" as="item()*">
@@ -32,6 +33,7 @@
     </xsl:function>
     
     <xsl:template match="book" mode="pack:complete-respec">
+        
         <html lang="{$language}">
             <head>
                 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
@@ -160,14 +162,6 @@
                 -->
                 <script src="documentor/js/{$respec-config-filename}.js" class="remove" async="async"/>
                 
-                <!-- panzoom images? -->
-                <xsl:choose>
-                    <xsl:when test="$image-zoomer = 'image-pan-zoom'">
-                        <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'/> <!-- https://github.com/anvaka/panzoom -->
-                    </xsl:when>
-                    <!-- andere diagram weergaves? -->
-                </xsl:choose>
-                
                 <title>{imf:get-xparm('documentor/prop-titel')}</title>
                 
                 <!-- logo van de organisatie opnemen -->
@@ -198,6 +192,26 @@
                 </xsl:if>
                 <xsl:sequence select="imf:document(imf:get-xparm('properties/IMVERTOR_DOCUMENTOR_XHTMLTORESPEC_FILE'))/document/section"/>
             </body>
+            
+            <!-- zet diagram en image zoomers -->
+            <xsl:choose>
+                <xsl:when test="($image-zoomer,$diagram-zoomer) = 'pan-zoom-image'">
+                    <link rel="stylesheet" href="documentor/leaflet/leaflet.css"/>
+                    <script src="documentor/leaflet/leaflet.js"/>
+                    <script src="documentor/leaflet/panZoomImage.js"/>
+                    <xsl:choose>
+                        <xsl:when test="$diagram-zoomer = 'pan-zoom-image'">
+                            <script>panZoomImg('diagram')</script>
+                        </xsl:when>
+                        <xsl:when test="$image-zoomer = 'pan-zoom-image'">
+                            <script>panZoomImg('image')</script>
+                        </xsl:when>
+                        <!-- andere diagram weergaves? -->
+                    </xsl:choose>
+                </xsl:when>
+                <!-- andere diagram weergaves? -->
+            </xsl:choose>
+            
         </html>
     </xsl:template>
     

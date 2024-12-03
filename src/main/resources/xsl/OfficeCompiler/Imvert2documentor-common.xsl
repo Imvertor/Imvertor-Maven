@@ -4,7 +4,7 @@
     xmlns:local="urn:local"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger"
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     expand-text="yes">
     

@@ -201,8 +201,13 @@ public class OfficeCompiler extends Step {
 							// kopieer documentor configuratie naar de cat folder. Eerst de standaard "Imvertor" files, en daaroverheen de owner files.
 							AnyFolder target = new AnyFolder(configurator.getWorkFolder() + "/app/cat/documentor");
 							target.mkdirs();
-							AnyFolder imvertorFolder = new AnyFolder(configurator.getBaseFolder(), "input" + File.separator + "Imvertor/cfg/docrules/documentor"); // waaronder default.css en default.js
+							AnyFolder imvertorFolder = new AnyFolder(configurator.getBaseFolder(), "input/Imvertor/cfg/docrules/documentor"); // waaronder default.css en default.js
 							imvertorFolder.copy(target);
+							// kopieer documentor configuratie
+							if (configurator.getXParm("documentor/image-zoomer").equals("pan-zoom-image") || configurator.getXParm("documentor/diagram-zoomer").equals("pan-zoom-image")) {
+								AnyFolder panZoomImageFolder = new AnyFolder(configurator.getBaseFolder(), "etc/respec/panZoomImage");
+								panZoomImageFolder.copyFolder(target);
+							}
 							AnyFolder ownerFolder = new AnyFolder(configurator.getInputFolder() + "/cfg/docrules/documentor");
 							if (ownerFolder.isDirectory()) 
 								ownerFolder.copy(target);
