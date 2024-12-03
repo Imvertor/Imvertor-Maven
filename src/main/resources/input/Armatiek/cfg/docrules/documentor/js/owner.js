@@ -20,8 +20,8 @@ var organisationConfig = {
    // De hier gedefinieerde variabelen kunnen door ze nogmaals in de config.js te plaatsen overruled worden.  
    shortName: "noname",
    pubDomain: "report", // publicatie domein, zoals "imvertor", "whitepaper" etc.
-   publishVersion: "0.002",
-   previousPublishVersion: "0.001",
+   publishVersion: "0.01",
+   //previousPublishVersion: "0.001",
    	
    //this: "this", <-- Zo kun je dus eigen variabelen introduceren die je ergens anders kunt gebruiken.
    // Zoals bijv. hier --> 'thisVersion: ["nl_organisationPublishURL", "this", "/", "shortName"],'

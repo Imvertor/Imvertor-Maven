@@ -59,11 +59,12 @@
     <diagram-encoding>figure</diagram-encoding>
     
     <!--
-        wWelke image zoomer wordt gebruikt?
+        Welke image zoomer wordt gebruikt?
         Opties:
         - default
-        - image-pan-zoom
+        - pan-zoom-image
     -->
+    <diagram-zoomer>default</diagram-zoomer>
     <image-zoomer>default</image-zoomer>
     
     <image-purpose id="CFG-IMG-OVERVIEW">
