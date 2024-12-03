@@ -205,8 +205,8 @@ public class OfficeCompiler extends Step {
 							imvertorFolder.copy(target);
 							// kopieer documentor configuratie
 							if (configurator.getXParm("documentor/image-zoomer").equals("pan-zoom-image") || configurator.getXParm("documentor/diagram-zoomer").equals("pan-zoom-image")) {
-								AnyFolder panZoomImageFolder = new AnyFolder(configurator.getBaseFolder(), "etc/respec/panZoomImage");
-								panZoomImageFolder.copyFolder(target);
+								AnyFolder leafletFolder = new AnyFolder(configurator.getBaseFolder(), "etc/respec/leaflet");
+								leafletFolder.copyFolder(target);
 							}
 							AnyFolder ownerFolder = new AnyFolder(configurator.getInputFolder() + "/cfg/docrules/documentor");
 							if (ownerFolder.isDirectory()) 
