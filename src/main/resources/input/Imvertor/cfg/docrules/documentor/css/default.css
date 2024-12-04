@@ -239,3 +239,13 @@ li.abbrevsline abbr.exclude {
 li.abbrevsline abbr.exclude:after {
     content: ": ";
 }
+
+.header-wrapper {
+    margin-top: 1rem;    
+}
+
+div.topline {
+    color: gray;
+    font-size: 80%;
+    border-bottom: 1px solid gray;
+}

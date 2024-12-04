@@ -143,14 +143,17 @@ public class OfficeCompiler extends Step {
 					// als documentor info beschikbaar is, dan uitpakken en omzetten naar xhtml met Pandoc
 					String mdf = configurator.getXParm("cli/documentorfile",false);
 					
+					Boolean useDefault = false;
 					if (mdf == null && vr.contains("documentor")) { 
-						runner.warn(logger, "Documentor processing requested but no modeldoc folder passed");
-						succeeds = false;
+						runner.warn(logger, "Documentor processing requested but no modeldoc folder passed. Using default model documentation.");
+						mdf = configurator.getBaseFolder() + "/etc/respec/documentor";
+						useDefault = true;
 					}
 				
 					if (succeeds && vr.contains("documentor")) {
 						
 						// Er is documentor input in de vorm van modeldocs meegeleverd.
+						// Zo niet, val terug op default modeldoc.
 						
 						// Maak de workfolder en de module folder aan
 						workFolder = new AnyFolder(configurator.getWorkFolder("documentor"));
@@ -178,7 +181,7 @@ public class OfficeCompiler extends Step {
 						}
 						
 						// maak een kopie van alle *relevante* files in de workfolder en verzamel deze in de modulefolder.
-						String modelName = configurator.getXParm("appinfo/original-application-name");
+						String modelName = useDefault ? "default" : configurator.getXParm("appinfo/original-application-name");
 						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/modeldoc/" + modelName, modelName, true, true) : false;
 						succeeds = succeeds ? copyFilesToModulefolder(workFolder + "/sections", modelName, true, false) : false;
 						
@@ -208,7 +211,7 @@ public class OfficeCompiler extends Step {
 								AnyFolder leafletFolder = new AnyFolder(configurator.getBaseFolder(), "etc/respec/leaflet");
 								leafletFolder.copyFolder(target);
 							}
-							AnyFolder ownerFolder = new AnyFolder(configurator.getInputFolder() + "/cfg/docrules/documentor");
+							AnyFolder ownerFolder = new AnyFolder(useDefault ? configurator.getBaseFolder() + "/input/Imvertor/cfg/docrules/documentor" : configurator.getInputFolder() + "/cfg/docrules/documentor");
 							if (ownerFolder.isDirectory()) 
 								ownerFolder.copy(target);
 							else

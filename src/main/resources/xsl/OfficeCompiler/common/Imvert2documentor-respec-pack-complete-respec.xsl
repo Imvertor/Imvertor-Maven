@@ -90,13 +90,14 @@
                 
                 <xsl:variable name="respec-config" as="xs:string*">
                     <xsl:for-each select="$respec-parms/parm">
-                        <xsl:variable name="specified" select="imf:get-xparm('documentor/' || @parms-name,())"/>
+                        <xsl:variable name="specified" select="imf:reduce-space(imf:merge-parms(imf:get-xparm('documentor/' || @parms-name,())))" as="xs:string?"/>
                         <xsl:variable name="default" select="node()"/>
                         <xsl:variable name="value" select="($specified,$default)[1]"/>
                         <xsl:if test="$value">
                             <xsl:choose>
                                 <xsl:when test="@type = 'date'">
-                                    <xsl:text>{@respec-name} : "{$value}",&#10;</xsl:text>
+                                    <xsl:variable name="date" select="imf:extract-pattern($value,'\d{4}-\d{2}-\d{2}')[1]"/>
+                                    <xsl:text>{@respec-name} : "{$date}",&#10;</xsl:text>
                                 </xsl:when>
                                 <xsl:when test="@type = 'integer'">
                                     <xsl:text>{@respec-name} : {$value},&#10;</xsl:text>
@@ -162,7 +163,7 @@
                 -->
                 <script src="documentor/js/{$respec-config-filename}.js" class="remove" async="async"/>
                 
-                <title>{imf:get-xparm('documentor/prop-titel')}</title>
+                <title>{imf:merge-parms(imf:get-xparm('documentor/prop-titel'))}</title>
                 
                 <!-- logo van de organisatie opnemen -->
                 <link href="documentor/img/logo.ico" rel="shortcut icon" type="image/x-icon" />
