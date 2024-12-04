@@ -1460,7 +1460,7 @@
     
     <xsl:function name="imf:normalize-space" as="xs:string">
         <xsl:param name="seq" as="item()*"/>
-        <xsl:value-of select="normalize-space(imf:string-value($seq))"/>
+        <xsl:sequence select="normalize-space(imf:string-value($seq))"/>
     </xsl:function>
     
     <xsl:function name="imf:string-value" as="xs:string">
@@ -1470,7 +1470,28 @@
                 <xsl:value-of select="."/>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:value-of select="string-join($v,'')"/>
+        <xsl:sequence select="string-join($v,'')"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:reduce-space" as="xs:string?">
+        <xsl:param name="seq" as="item()*"/>
+        <xsl:sequence select="for $s in imf:normalize-space($seq) return if ($s eq '') then () else $s"/>
+    </xsl:function>
+    
+    <!--
+        haal een patroon uit een string zoveel as het voorkomt
+        Voorbeeld: 
+        extract pattern ('2024-12-04','\d{2}')
+        levert 20 24 12 04 (4 strings)
+    -->
+    <xsl:function name="imf:extract-pattern" as="xs:string*">
+        <xsl:param name="string" as="xs:string?"/>
+        <xsl:param name="regex" as="xs:string"/>
+        <xsl:analyze-string select="$string" regex="{$regex}">
+            <xsl:matching-substring>
+                <xsl:value-of select="."/>
+            </xsl:matching-substring>
+        </xsl:analyze-string>
     </xsl:function>
     
 </xsl:stylesheet>
