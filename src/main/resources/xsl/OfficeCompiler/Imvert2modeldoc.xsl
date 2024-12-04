@@ -66,6 +66,7 @@
     <xsl:variable name="lists-to-listing" select="imf:boolean($configuration-docrules-file/lists-to-listing)"/>
     <xsl:variable name="reveal-composition-name" select="imf:boolean($configuration-docrules-file/reveal-composition-name)"/>
     <xsl:variable name="show-properties" select="($configuration-docrules-file/show-properties,'config')[1]"/>
+    <xsl:variable name="show-lists-with-metadata" select="imf:boolean(($configuration-docrules-file/show-lists-with-metadata,'no')[1])"/>
     
     <xsl:variable name="has-material-history" select="exists(//imvert:tagged-value[@id = ('CFG-TV-INDICATIONMATERIALHISTORY','CFG-TV-HEEFTTIJDLIJNGELDIGHEID')]/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     <xsl:variable name="has-formal-history" select="exists(//imvert:tagged-value[@id = ('CFG-TV-INDICATIONFORMALHISTORY','CFG-TV-HEEFTTIJDLIJNREGISTRATIE')]/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
@@ -159,16 +160,28 @@
                     <section type="OVERVIEW-PRIMITIVEDATATYPE" include="{$include-overview-sections-by-type}">
                         <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]"/>
                     </section>
-                    <section type="OVERVIEW-CODELIST" include="{$include-overview-sections-by-type}">
-                        <content>
-                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]"/>
-                        </content>
-                    </section>
-                    <section type="OVERVIEW-ENUMERATION" include="{$include-overview-sections-by-type}">
-                        <content>
-                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]"/>
-                        </content>
-                    </section>
+                    <xsl:choose>
+                        <xsl:when test="$show-lists-with-metadata">
+                            <section type="OVERVIEW-CODELIST" include="{$include-overview-sections-by-type}">
+                                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]"/>
+                            </section>
+                            <section type="OVERVIEW-ENUMERATION" include="{$include-overview-sections-by-type}">
+                                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]"/>
+                            </section>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <section type="OVERVIEW-CODELIST" include="{$include-overview-sections-by-type}">
+                                <content>
+                                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="listoverview"/>
+                                </content>
+                            </section>
+                            <section type="OVERVIEW-ENUMERATION" include="{$include-overview-sections-by-type}">
+                                <content>
+                                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]"  mode="listoverview"/>
+                                </content>
+                            </section>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </section>
                 <section type="DETAILS" include="{$include-detail-section-level}">
                     <section type="DETAILS-OBJECTTYPE" include="{$include-detail-sections-by-type}">
@@ -306,7 +319,7 @@
         </section>
     </xsl:template>
   
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')]" mode="listoverview">
         <xsl:variable name="naam" select="imf:get-name(.,true())"/>
         <part>
             <xsl:sequence select="imf:calculate-node-position(.)"/>
@@ -318,8 +331,38 @@
             <xsl:apply-templates select="." mode="type-relations"/>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
         </part>
-     </xsl:template>
-
+    </xsl:template>
+   
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]">
+        <section name="{imf:get-name(.,true())}" type="CODELIST" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
+            <content>
+                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-CODELIST')"/>
+            </content>
+            <!-- hier alle type relaties -->
+            <xsl:apply-templates select="." mode="type-relations"/>
+            <!-- hier alle constraints; als ingebedde tabel -->
+            <xsl:apply-templates select="imvert:constraints" mode="short"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
+        </section>
+    </xsl:template>
+    
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]">
+        <section name="{imf:get-name(.,true())}" type="ENUMERATION" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
+            <content>
+                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-ENUMERATION')"/>
+            </content>
+            <!-- hier alle type relaties -->
+            <xsl:apply-templates select="." mode="type-relations"/>
+            <!-- hier alle constraints; als ingebedde tabel -->
+            <xsl:apply-templates select="imvert:constraints" mode="short"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
+        </section>
+    </xsl:template>
+    
     <!-- uitzondering: gegevensgroeptype wordt apart getoond. -->
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]">
         <section name="{imf:get-name(.,true())}" type="COMPOSITE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
@@ -455,7 +498,9 @@
     
     <xsl:template match="imvert:attribute" mode="short">
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
-        <xsl:variable name="global-or-detail" select="if ($type/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')) then 'detail' else 'global'"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/428 -->
+        <xsl:variable name="global-or-detail" select="
+            if ($show-lists-with-metadata) then 'global' else 
+            if ($type/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')) then 'detail' else 'global'"/><!-- #428, #545 -->
        <part>
            <xsl:sequence select="imf:calculate-node-position(.)"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/> 

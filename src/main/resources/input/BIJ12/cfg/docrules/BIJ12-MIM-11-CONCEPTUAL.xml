@@ -43,4 +43,9 @@
     <diagram-zoomer>default</diagram-zoomer>
     <image-zoomer>default</image-zoomer>
     
+    <!--
+        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
+    -->
+    <show-lists-with-metadata>yes</show-lists-with-metadata>
+    
 </doc-rules>

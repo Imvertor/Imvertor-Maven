@@ -480,6 +480,7 @@
                 <xsl:apply-templates select="($doc-rules//image-zoomer)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//identifying-attribute-with-context)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//gegevensgroep-attribute-container)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//show-lists-with-metadata)[last()]" mode="#current"/>
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="@order" order="ascending"/>

@@ -62,6 +62,11 @@
     -->
     <identifying-attribute-with-context>no</identifying-attribute-with-context>
     
+    <!--
+        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
+    -->
+    <show-lists-with-metadata>no</show-lists-with-metadata>
+    
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>
