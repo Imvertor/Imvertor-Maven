@@ -443,13 +443,21 @@
             <notes-rules root="true">
                 <xsl:variable name="notes-rules" select="notes-rules"/> 
                 <xsl:apply-templates select="imf:distinct($notes-rules//notes-format)[last()]" mode="#current"/>
-                <xsl:apply-templates select="imf:distinct($notes-rules//notes-rule[@lang=($language,'#all')])[last()]" mode="#current"/>
-            </notes-rules>
+                
+                <xsl:variable name="default" select="$notes-rules//notes-rule[@lang=($language,'#all')]/@default"/>
+                <xsl:for-each-group select="$notes-rules//notes-rule[@lang=($language,'#all')]" group-by="@lang">
+                    <notes-rule lang="{@lang}" default="{@default}">
+                        <xsl:for-each-group select="current-group()/section" group-by="@title">
+                            <xsl:sequence select="current-group()[last()]"/>
+                        </xsl:for-each-group>
+                    </notes-rule>
+                </xsl:for-each-group>
+           </notes-rules>
             
             <version-rules root="true">
                 <xsl:variable name="version-rules" select="version-rules"/> 
-                <xsl:apply-templates select="$version-rules//version-rule" mode="#current"/>
-                <xsl:apply-templates select="$version-rules//phase-rule" mode="#current"/>
+                <xsl:apply-templates select="($version-rules//version-rule)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($version-rules//phase-rule)[last()]" mode="#current"/>
             </version-rules>
 
             <doc-rules root="true">
