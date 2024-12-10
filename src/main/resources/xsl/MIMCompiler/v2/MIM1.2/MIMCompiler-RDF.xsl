@@ -43,6 +43,8 @@
   
   <xsl:variable name="urn-prefix" as="xs:string">uuid:</xsl:variable>
   
+  <xsl:variable name="rdf-retain-xhtml" select="true()"/><!-- TODO instelbaar -->
+  
   <xsl:variable name="output-parameters" xmlns:output="http://www.w3.org/2010/xslt-xquery-serialization" as="element(output:serialization-parameters)">
     <output:serialization-parameters>
       <output:indent value="no"/>
@@ -195,10 +197,17 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   </xsl:template>
   
   <xsl:template match="(mim-in:definitie|mim-in:toelichting)[.//text()[normalize-space()]]" mode="metagegeven">
-    <xsl:variable name="html">
-      <xsl:apply-templates mode="xhtml"/>
-    </xsl:variable>
-    <xsl:element name="mim:{local-name()}">{serialize($html, $output-parameters)}</xsl:element>
+    <xsl:choose>
+      <xsl:when test="$rdf-retain-xhtml">
+        <xsl:variable name="html">
+          <xsl:apply-templates mode="xhtml"/>
+        </xsl:variable>
+        <xsl:element name="mim:{local-name()}">{serialize($html, $output-parameters)}</xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:element name="mim:{local-name()}">{.}</xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template match="xhtml:*" mode="xhtml" priority="10">
