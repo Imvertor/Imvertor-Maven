@@ -26,6 +26,10 @@
    
    <desc lang="en">BIJ12 Conceptual model metamodel</desc>
    
+   <features>
+      <feature name="unique-normalized-association-names">no</feature>
+   </features>
+   
    <profiles>
       <profile lang="nl"> 
          <id>BIJ12CMNL</id>
