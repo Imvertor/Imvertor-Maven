@@ -202,7 +202,10 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
         <xsl:variable name="html">
           <xsl:apply-templates mode="xhtml"/>
         </xsl:variable>
-        <xsl:element name="mim:{local-name()}">{serialize($html, $output-parameters)}</xsl:element>
+        <xsl:element name="mim:{local-name()}">
+          <xsl:attribute name="rdf:datatype">http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML</xsl:attribute>
+          <xsl:text>{serialize($html, $output-parameters)}</xsl:text>
+        </xsl:element>
       </xsl:when>
       <xsl:otherwise>
         <xsl:element name="mim:{local-name()}">{.}</xsl:element>
