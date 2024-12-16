@@ -19,11 +19,9 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="../../../MIM/cfg/tvsets/MIM11.xml"/>
+    <xi:include href="../../../MIM/cfg/tvsets/MIM12.xml"/>
     
-    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM11.xml"/>
-    
-    <xi:include href="Grouping-MIM11.xml"/>
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM12.xml"/>
     
     <name>Waarderingskamer SIM</name>
     <tagged-values>
@@ -83,5 +81,20 @@
                 <value>Relatierol leidend</value>
             </declared-values>
         </tv>
+        
+        <!-- Grouping -->
+        <tv norm="space" id="CFG-TV-ISDERIVED"><!-- Waarderingskamer: default is leeg -->
+            <declared-values lang="nl">
+                <value default="no">Nee</value>
+                <value default="no">Ja</value>
+                <value default="no">Zie package</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value default="no">No</value>
+                <value default="no">Yes</value>
+                <value default="no">See package</value>
+            </declared-values>
+        </tv>
+        
     </tagged-values>
 </tagset>

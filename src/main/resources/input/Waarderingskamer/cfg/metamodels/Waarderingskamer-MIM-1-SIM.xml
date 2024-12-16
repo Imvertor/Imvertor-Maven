@@ -19,9 +19,9 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
    
-   <xi:include href="../../../MIM/cfg/metamodels/MIM11.xml"/>
+   <xi:include href="../../../MIM/cfg/metamodels/MIM12.xml"/>
    
-   <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM11.xml"/>
+   <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM12.xml"/>
    
    <name>Waarderingskamer SIM</name>
    
@@ -30,13 +30,13 @@
    <profiles>
       <profile lang="nl"> 
          <id>WKSIMNL</id>
-         <release>1.1</release>
+         <release>1.2</release>
          <desc>WKSIM Grouping NL</desc> 
          <profile-name>WKMIM</profile-name>
       </profile>
       <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
          <id>WKSIMEN</id>
-         <release>1.1</release>
+         <release>1.2</release>
          <desc>WKSIM Grouping EN</desc>
          <profile-name>WKMIM</profile-name>
       </profile>
