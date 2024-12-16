@@ -25,7 +25,8 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
     exclude-result-prefixes="#all"
-    version="2.0">
+    expand-text="yes"
+    version="3.0">
     
     <!-- 
          Reporting stylesheet for the reporting step itself.
@@ -38,12 +39,16 @@
         <xsl:variable name="errors" select="$messages[type=('FATAL','ERROR')]"/>
         <xsl:variable name="msword-filename" select="imf:get-config-string('appinfo','msword-documentation-filename')"/>
         <xsl:variable name="full-respec-filename" select="imf:get-config-string('appinfo','full-respec-documentation-filename')"/>
-        <xsl:variable name="respec-filename" select="imf:get-config-string('appinfo','frespec-documentation-filename')"/>
+        <xsl:variable name="respec-filename" select="imf:get-config-string('appinfo','respec-documentation-filename')"/>
         <xsl:variable name="catalog-filename" select="imf:get-config-string('appinfo','catalog-documentation-filename')"/>
         
         <xsl:variable name="model-respec-filename" select="concat(imf:get-config-string('appinfo','application-name'),'.html')"/>
         
         <xsl:variable name="remote-url" select="imf:get-config-string('properties','giturl-resolved',())"/>
+        
+        <xsl:variable name="created-by-documentor" select="imf:get-xparm('cli/createofficevariant') = 'documentor'"/>
+        <xsl:variable name="created-by-documentor-default" select="imf:boolean(imf:get-xparm('documentor/use-default','no'))"/>
+        
         <report>
             <step-display-name>Model documentation</step-display-name>
             <status>
@@ -66,9 +71,7 @@
                     <xsl:choose>
                         <xsl:when test="$remote-url">
                             <p>The model documentation is published remotely by Imvertor. Please check 
-                                <a href="{$remote-url}" target="remote-url">
-                                    <xsl:value-of select="$remote-url"/>
-                                </a>. 
+                                <a href="{$remote-url}" target="remote-url">{$remote-url}</a>. 
                             </p>
                             <p>However, for archival purposes the documentation files are also packaged in this Imvertor model release.</p>
                             <p><strong>The preview supplied may show flaws as the intended publication environment is not available here.</strong></p>
@@ -100,21 +103,20 @@
                                 <p><a href="{concat('../../cat/',$respec-filename)}" target="catalog">Click here (opens new tab)</a> for the packaged partial documentation file.</p>
                             </div>
                         </xsl:if>
-                        <xsl:if test="$full-respec-filename">
+                        <xsl:if test="$created-by-documentor">
                             <div>
                                 <h1>Stand-alone Respec documentation</h1>
                                 <xsl:choose>
-                                    <xsl:when test="imf:get-xparm('cli/createofficevariant') = 'documentor'">
+                                    <xsl:when test="not($created-by-documentor-default)">
                                         <p>This document has been compiled using Documentor. It may be used for publication.</p>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <p>This document has been compiled using a simple W3C Respec profile. It should not be used for publication.</p>
+                                        <p>This document has been compiled using Documentor applying a default profile. It should not be be used for publication.</p>
                                     </xsl:otherwise>
                                 </xsl:choose>
                                 <p><a href="{concat('../../cat/',$full-respec-filename)}" target="catalog">Click here (opens new tab)</a> for the packaged full documentation file.</p>
                             </div>
                         </xsl:if>
-                        
                     </div>
                 </content>
             </page>

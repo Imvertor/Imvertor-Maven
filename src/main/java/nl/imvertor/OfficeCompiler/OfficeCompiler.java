@@ -150,6 +150,8 @@ public class OfficeCompiler extends Step {
 						useDefault = true;
 					}
 				
+					configurator.setXParm("documentor/use-default", useDefault ? "yes" : "no");
+					
 					if (succeeds && vr.contains("documentor")) {
 						
 						// Er is documentor input in de vorm van modeldocs meegeleverd.
