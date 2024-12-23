@@ -113,14 +113,14 @@ public class ShaclFile extends RdfFile {
 	            } catch (RepositoryException exception) {
 	                Throwable cause = exception.getCause();
 	                if (cause instanceof ValidationException) {
-	                	runner.error(logger, "Shacl validator reports RDF error: " + exception.getMessage());
+	                	runner.error(logger, "Shacl validator reports RDF error: \"" + exception.getMessage() + "\"","shacl-parse","SHACL-SVRRE1");
 	                } else 
 	                    throw exception;
 	            }
             }
             
 		} catch (Exception e) {
-			runner.warn(logger, "Shacl validator schema file \"" + getName() + "\" invalid, cannot validate RDF. " + e.getMessage(),"rdf-parse","some-wiki-ref");
+			runner.warn(logger, "Shacl validator schema file \"" + getName() + "\" invalid, cannot validate RDF: \"" + e.getMessage() + "\"","rdf-parse","SHACL-SVSF1ICVR2");
 		}
 		
 	}
