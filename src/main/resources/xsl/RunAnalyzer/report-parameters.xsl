@@ -36,7 +36,7 @@
     
     <xsl:template match="config" mode="doc-parameters">
         <page>
-            <title>Runtime parameters passed</title>
+            <title>Properties passed</title>
             <intro>
                 <p>
                     Info on the parameters passed for this run, and their values.

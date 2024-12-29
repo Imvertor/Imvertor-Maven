@@ -98,7 +98,7 @@
                             <div>
                                 <h1>Short overview</h1>
                                 <p>This overview is compacted such that a number of message types is collapsed, showing only the first occurrence of the message.</p>
-                                <p>The types of messages to be collapsed is defined as a runtime parameter.</p>
+                                <p>The types of messages to be collapsed is defined as a property.</p>
                                 <table class="tablesorter"> 
                                     <xsl:variable name="rows" as="element(tr)*">
                                         <xsl:for-each-group select="$messages" group-by="wiki">
