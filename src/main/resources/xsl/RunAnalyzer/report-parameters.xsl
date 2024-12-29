@@ -39,10 +39,10 @@
             <title>Properties passed</title>
             <intro>
                 <p>
-                    Info on the parameters passed for this run, and their values.
+                    Info on the properties for this run, and their values.
                 </p>
                 <p>
-                    Arguments are passed in files, in this order:
+                    Properties are passed in files, in this order:
                     <ol>
                         <xsl:for-each select="reverse($xparms-doc/xparms/xparm[@name = 'cli/arguments'])">
                             <li>
