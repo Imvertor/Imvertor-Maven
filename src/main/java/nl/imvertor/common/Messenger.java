@@ -23,6 +23,7 @@ package nl.imvertor.common;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import net.sf.saxon.event.PipelineConfiguration;
@@ -173,7 +174,14 @@ public class Messenger extends SequenceWriter {
 						cfg.addProperty("messages/message[" + messageIndex + "]/steptext", m.group(3));
 					}
 					if (id != null) cfg.addProperty("messages/message[" + messageIndex + "]/id", id);
-					cfg.addProperty("messages/message[" + messageIndex + "]/wiki", (wiki != null) ? wiki : "NOWIKI");
+					
+					// bepaal of de wiki message apart moet worden afgehandeld. Dat is bijv. #XERCES-s4s-att-invalid-value
+					if (wiki == null) 
+						wiki = "NOWIKI";
+					else if (wiki.startsWith("#")) {
+						wiki = StringUtils.split(wiki.substring(1),'-')[0]; 
+					}
+					cfg.addProperty("messages/message[" + messageIndex + "]/wiki", wiki);
 				}
 			}
 		}
