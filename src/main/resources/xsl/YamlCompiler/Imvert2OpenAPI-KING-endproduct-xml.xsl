@@ -915,7 +915,7 @@
 								</ep:parameter>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:sequence select="imf:msg('WARNING','It wasn&quot;t possible to retrieve the SIM-name of the construct [1].', ($construct/imvert:name))" />
+								<xsl:sequence select="imf:msg('WARNING','It was not possible to retrieve the SIM-name of the construct [1].', ($construct/imvert:name))" />
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:if
