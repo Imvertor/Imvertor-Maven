@@ -85,7 +85,7 @@
                     <div>
                         <div>
                             <h1>XHTML catalog</h1>
-                            <p><a href="{concat('../../cat/',$catalog-filename)}" target="catalog">Click here (opens new tab)</a> for the XHTML result file.</p>
+                            <p><a href="{concat('../../cat/',$catalog-filename)}" target="catalog">Click here</a> for the XHTML result file.</p>
                         </div>
                         <xsl:if test="$msword-filename">
                             <div>
@@ -93,14 +93,14 @@
                                 <p>The HTML document may be opened in MsWord. 
                                     In order to apply specific styles to the markup, the contents of the MsWord document may be copied to the clipboard, 
                                     and pasted into a template document, or styles from a template document may be applied to the just created MsWord document.</p>
-                                <p><a href="{concat('../../cat/',$msword-filename)}" target="catalog">Click here (opens new tab)</a> for the packaged documentation files.</p>
+                                <p><a href="{concat('../../cat/',$msword-filename)}" target="catalog">Click here</a> for the packaged documentation files.</p>
                             </div>
                         </xsl:if>
                         <xsl:if test="$respec-filename">
                             <div>
                                 <h1>Partial Respec documentation</h1>
                                 <p>This document has been compiled without any Respec profile, and holds a basic catalog in Respec format. It may be used to include within a Respec document..</p>
-                                <p><a href="{concat('../../cat/',$respec-filename)}" target="catalog">Click here (opens new tab)</a> for the packaged partial documentation file.</p>
+                                <p><a href="{concat('../../cat/',$respec-filename)}" target="catalog">Click here</a> for the packaged partial documentation file.</p>
                             </div>
                         </xsl:if>
                         <xsl:if test="$created-by-documentor">
@@ -114,7 +114,7 @@
                                         <p>This document has been compiled using Documentor applying a default profile. It should not be be used for publication.</p>
                                     </xsl:otherwise>
                                 </xsl:choose>
-                                <p><a href="{concat('../../cat/',$full-respec-filename)}" target="catalog">Click here (opens new tab)</a> for the packaged full documentation file.</p>
+                                <p><a href="{concat('../../cat/',$full-respec-filename)}" target="catalog">Click here</a> for the packaged full documentation file.</p>
                             </div>
                         </xsl:if>
                     </div>
