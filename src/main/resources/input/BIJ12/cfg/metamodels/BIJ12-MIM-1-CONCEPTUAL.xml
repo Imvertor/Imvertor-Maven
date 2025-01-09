@@ -27,7 +27,7 @@
    <desc lang="en">BIJ12 Conceptual model metamodel</desc>
    
    <features>
-      <feature name="unique-normalized-association-names">false</feature>
+      <feature name="unique-normalized-association-names">no</feature>
    </features>
    
    <profiles>
