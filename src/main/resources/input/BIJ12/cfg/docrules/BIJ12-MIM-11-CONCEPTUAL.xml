@@ -20,5 +20,32 @@
          Default is: 'object'. 
      -->
     <gegevensgroep-attribute-container>group</gegevensgroep-attribute-container>
-
+    
+    <!--
+        Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
+    -->   
+    <respec-config>respec-nlgov</respec-config> <!-- gecachte versie van https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js -->
+     
+    <!-- 
+        Wordt een diagram geplaatst binnen <figure> (met figcaption) of (default) gewoon in een <img>? 
+        Options:
+        - figure
+        - img
+    -->
+    <diagram-encoding>figure</diagram-encoding>
+    
+    <!--
+        Welke image zoomer wordt gebruikt?
+        Opties:
+        - default
+        - pan-zoom-image
+    -->
+    <diagram-zoomer>default</diagram-zoomer>
+    <image-zoomer>default</image-zoomer>
+    
+    <!--
+        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
+    -->
+    <show-lists-with-metadata>yes</show-lists-with-metadata>
+    
 </doc-rules>

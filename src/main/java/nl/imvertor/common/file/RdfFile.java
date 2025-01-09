@@ -90,10 +90,10 @@ public class RdfFile extends AnyFile {
 			 } else if (ext.equals("yml")) {
 				 
 				 // TODO
-				 configurator.getRunner().error(logger,"Not a supported RDF file extension: " + ext,null,"rdf-uns","some-wiki-ref");
+				 configurator.getRunner().error(logger,"Not a supported RDF file extension: \"" + ext + "\"",null,"rdf-uns","RDF-NASRFE1");
 				 
 			 } else 
-				configurator.getRunner().fatal(logger,"Not a known RDF file extension: " + ext,null,"rdf-unk","some-wiki-ref");
+				configurator.getRunner().fatal(logger,"Not a known RDF file extension: \"" + ext + "\"",null,"rdf-unk","RDF-NAKRFE1");
 		
 			 isOpen = true;
 		} else {

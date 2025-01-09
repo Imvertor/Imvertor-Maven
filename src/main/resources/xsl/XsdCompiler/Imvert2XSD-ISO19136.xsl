@@ -601,7 +601,7 @@
                                 <xsl:otherwise>
                                     <xsl:sequence select="imf:create-xml-debug-comment(.,'Datatype')"/>
                                     <!-- a datatype -->
-                                    <xs:sequence minOccurs="0">
+                                    <xs:sequence><!-- #552 -->
                                         <xs:element ref="{imf:get-type($type-name,$package-name)}"/>
                                     </xs:sequence>
                                 </xsl:otherwise>

@@ -1,0 +1,11 @@
+/* hier de default CSS voor deze owner */
+
+th, td {
+    vertical-align: top;
+}
+th>p, td>p {
+    margin: 0 0 1em;
+}
+table {
+    width: 100%;
+}

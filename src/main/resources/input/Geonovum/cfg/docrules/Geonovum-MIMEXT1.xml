@@ -17,6 +17,19 @@
     -->
     <explanation-location>as-row</explanation-location>
     
+    <!-- 
+        Wordt een diagram geplaatst binnen <figure> (met figcaption) of (default) gewoon in een <img>? 
+        Options:
+        - figure
+        - img
+    -->
+    <diagram-encoding>figure</diagram-encoding>
+    
+    <!--
+        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
+    -->
+    <show-lists-with-metadata>yes</show-lists-with-metadata>
+    
     <doc-rule id="CFG-DOC-ACTUALITEIT" order="300">
         <name lang="nl">Actualiteit</name>
         <levels>

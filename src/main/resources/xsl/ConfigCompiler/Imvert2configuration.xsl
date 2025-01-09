@@ -145,7 +145,7 @@
         <xsl:variable name="crx" select="imf:get-config-string('run','version')"/>
         <xsl:variable name="lrx" select="imf:get-config-string('system','latest-imvertor-release')"/>
         <xsl:choose>
-            <xsl:when test="matches($crx, '^\d+\.\d+\.\d+$')"> <!-- regular major-minor version? -->
+            <xsl:when test="matches($crx, '^\d+\.\d+\.\d+.*$')"> <!-- (starts with) a regular major-minor version? -->
                 <xsl:variable name="cr" select="string-join(for $m in subsequence(tokenize($crx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
                 <xsl:variable name="lr" select="string-join(for $m in subsequence(tokenize($lrx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
                 <xsl:sequence select="imf:report-warning(.,$cr lt $lr,'You are using Imvertor version [1], however a more recent version [2] is available.',($crx,$lrx))"/>
@@ -443,13 +443,21 @@
             <notes-rules root="true">
                 <xsl:variable name="notes-rules" select="notes-rules"/> 
                 <xsl:apply-templates select="imf:distinct($notes-rules//notes-format)[last()]" mode="#current"/>
-                <xsl:apply-templates select="imf:distinct($notes-rules//notes-rule[@lang=($language,'#all')])" mode="#current"/>
-            </notes-rules>
+                
+                <xsl:variable name="default" select="$notes-rules//notes-rule[@lang=($language,'#all')]/@default"/>
+                <xsl:for-each-group select="$notes-rules//notes-rule[@lang=($language,'#all')]" group-by="@lang">
+                    <notes-rule lang="{@lang}" default="{@default}">
+                        <xsl:for-each-group select="current-group()/section" group-by="@title">
+                            <xsl:sequence select="current-group()[last()]"/>
+                        </xsl:for-each-group>
+                    </notes-rule>
+                </xsl:for-each-group>
+           </notes-rules>
             
             <version-rules root="true">
                 <xsl:variable name="version-rules" select="version-rules"/> 
-                <xsl:apply-templates select="$version-rules//version-rule" mode="#current"/>
-                <xsl:apply-templates select="$version-rules//phase-rule" mode="#current"/>
+                <xsl:apply-templates select="($version-rules//version-rule)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($version-rules//phase-rule)[last()]" mode="#current"/>
             </version-rules>
 
             <doc-rules root="true">
@@ -467,8 +475,12 @@
                 <xsl:apply-templates select="($doc-rules//include-detail-sections-by-type)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//show-properties)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//respec-config)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//diagram-encoding)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//diagram-zoomer)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//image-zoomer)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//identifying-attribute-with-context)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//gegevensgroep-attribute-container)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//show-lists-with-metadata)[last()]" mode="#current"/>
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="@order" order="ascending"/>

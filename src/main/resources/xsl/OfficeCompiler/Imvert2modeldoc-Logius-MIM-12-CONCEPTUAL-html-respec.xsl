@@ -13,58 +13,8 @@
     
     <xsl:import href="common/Imvert2modeldoc-html-respec.xsl"/>
     
-    <!-- this owner generates respec files with all info stored in that file. -->
-    
     <xsl:template match="/book">
-        <html>
-            <head>
-                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-                <title>
-                    <xsl:value-of select="concat('Catalogus: ',@name)"/>
-                </title>
-                <script src="{$configuration-docrules-file/respec-config}" class="remove"/>
-                <script class="remove">
-                    var respecConfig = {
-                        specStatus: "ED",
-                        editors: [{
-                            name: "<xsl:value-of select="imf:get-xparm('cli/userid')"/>, <xsl:value-of select="imf:get-xparm('cli/owner')"/>",
-                            url: "http://your.site/",
-                        }],
-                        edDraftURI: "http://some.place",
-                        shortName: "msgdoc",
-                        maxTocLevel: 4
-                    };
-                </script>
-                <style type="text/css">
-                   /* none additional yet */
-                </style>
-            </head>
-            <body>
-                <section id="abstract">
-                    <p>
-                        Samenvatting..... INSERT HERE
-                    </p>
-                </section>
-                <section id="sotd">
-                    <p>
-                        This documentation is updated at .... INSERT HERE
-                    </p>
-                </section>
-                <section id="prologue" class="informative" level="1">
-                    <h1>Prologue</h1>
-                    <p>
-                        Intro here........
-                    </p>
-                </section>
-                <xsl:apply-templates select="chapter"/><!-- calls upon the standard template for chapters such as CAT and REF -->
-                <section id="epilogue" class="informative" level="1">
-                    <h1>Epilogue</h1>
-                    <p>
-                        Last remarks here........
-                    </p>
-                </section>
-            </body>
-        </html>
+        <xsl:apply-templates select="." mode="respec-type"/>
     </xsl:template>
     
     <xsl:function name="imf:insert-chapter-intro" as="item()*">

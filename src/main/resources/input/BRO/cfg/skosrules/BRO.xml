@@ -72,7 +72,7 @@
         -->
         <map id="CFG-TV-DEFINITION" type="3q" lang="#all" requires-lang="true">skos:definition</map>
         <map id="CFG-TV-SOURCEOFDEFINITION" type="2q" lang="#all" requires-lang="false" rule="when-uri">skos:exactMatch</map>
-        <map id="CFG-TV-DESCRIPTION" type="2q" lang="#all" requires-lang="true">skos:note</map>
+        <map id="CFG-TV-DESCRIPTION" type="3q" lang="#all" requires-lang="true">skos:note</map>
         
         <map id="CFG-TV-ABBREV" type="2q" lang="#all" requires-lang="true">skos:altLabel</map>
         <map id="CFG-TV-CODE" type="2q" lang="#all" requires-lang="false">skos:notation</map>

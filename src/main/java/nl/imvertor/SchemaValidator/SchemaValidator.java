@@ -101,10 +101,10 @@ public class SchemaValidator extends Step {
 			String msg = "XML schema: " +  StringUtils.substringAfter(m.message, m.code + ": ")  + " [" + URLDecoder.decode(StringUtils.substringAfter(m.file,"/xsd/"), StandardCharsets.UTF_8.name()) + ":" + m.line + "]";
 			switch (m.type.toLowerCase()) {
 				case "error":
-					runner.error(logger, msg,"","XERCES-" + m.code);
+					runner.error(logger, msg,"","#XERCES-" + m.code);
 					break;
 				case "warning":
-					runner.warn(logger, msg,"","XERCES-" + m.code);
+					runner.warn(logger, msg,"","#XERCES-" + m.code);
 					break;
 				default: 
 					runner.debug(logger,"CHAIN", msg);

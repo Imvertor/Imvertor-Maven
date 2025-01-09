@@ -52,15 +52,20 @@
     
     <show-properties>config</show-properties> <!-- config, all, compact -->
     
-    <!-- 
+    <!--
         Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
     -->
-    <respec-config>https://armatiek.nl/respec-profiles/w3c/profile/respec-w3c-common.js</respec-config>
+    <respec-config>respec-nlgov</respec-config> <!-- gecachte versie van https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js -->
     
     <!--
         moet een zinnetje worden toegevoegd dat aangeeft dat identificerend attribuut gecombineerd wordt met andere idenrtificerende attributen? cf #263
     -->
     <identifying-attribute-with-context>no</identifying-attribute-with-context>
+    
+    <!--
+        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
+    -->
+    <show-lists-with-metadata>no</show-lists-with-metadata>
     
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>

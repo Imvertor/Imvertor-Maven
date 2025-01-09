@@ -21,19 +21,12 @@
 package nl.imvertor.common.file;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -63,6 +56,7 @@ public class ZipFile extends AnyFile {
 	}
 	public ZipFile(File file) throws IOException {
 		super(file);
+		fileList = new ArrayList<String>();
 	}
 	public ZipFile(File folder, String file) throws IOException {
 		super(folder, file);
@@ -79,9 +73,7 @@ public class ZipFile extends AnyFile {
 	 */
     public void compress(File folderToCompress) throws Exception {
     	if (folderToCompress.isDirectory()) {
-    	  	sourceFolder = folderToCompress.getAbsolutePath();
-           	generateFileList(folderToCompress);
-        	zipIt();
+    	  	ZipUtils.zipDirectory(folderToCompress, this); 
     	} else 
     		throw new Exception("Source folder for zip is not a folder: " + folderToCompress);
     }
@@ -94,113 +86,9 @@ public class ZipFile extends AnyFile {
      * @throws Exception 
      */
 	public void decompress(AnyFolder targetFolder) throws Exception {
-		unZipIt(this.getAbsolutePath(),targetFolder.getAbsolutePath(),null);
+		ZipUtils.unzipFile(this, targetFolder);
 	}
-	public void decompress(AnyFolder targetFolder,Pattern requestedFilePattern) throws Exception {
-		if (targetFolder.isFile())
-			throw new Exception("Cannot decompress to a file: " + targetFolder);
-		if (!targetFolder.exists() )
-			targetFolder.mkdirs();
-		unZipIt(this.getAbsolutePath(),targetFolder.getAbsolutePath(),requestedFilePattern);
-	}
-
-    /**
-     * Traverse a folder and get all files,
-     * and add the file into fileList  
-     * @param node file or folder
-     */
-    // adapted from http://www.mkyong.com/java/how-to-compress-files-in-zip-format/
-    private void generateFileList(File node){
-
-    	//add file only
-    	if(node.isFile()) {
-    		fileList.add(generateZipEntry(node.getAbsoluteFile().toString()));
-    	}
-    	if(node.isDirectory()){
-    		String[] subNote = node.list();
-    		for(String filename : subNote){
-    			generateFileList(new File(node, filename));
-    		}
-    	}
-    }
-
-    /**
-     * Format the file path for zip
-     * @param file file path
-     * @return Formatted file path
-     */
-    private String generateZipEntry(String file){
-    	return file.substring(sourceFolder.length()+1, file.length());
-    }
-  
-    /**
-     * Zip it
-     * @throws IOException 
-     */
-	// adapted from http://www.mkyong.com/java/how-to-compress-files-in-zip-format/
-    private void zipIt() throws IOException {
-    	byte[] buffer = new byte[1024];
-		FileOutputStream fos = new FileOutputStream(this);
-		ZipOutputStream zos = new ZipOutputStream(fos);
-		for(String file : this.fileList){
-			ZipEntry ze = new ZipEntry(file);
-			zos.putNextEntry(ze);
-			FileInputStream in = new FileInputStream(sourceFolder + File.separator + file);
-			int len;
-			while ((len = in.read(buffer)) > 0) {
-				zos.write(buffer, 0, len);
-			}
-			in.close();
-		}
-		zos.closeEntry();
-		zos.close();
-    }
-    
-    /**
-     * Unzip it
-     * @param zipFile input zip file
-     * @param outputFolder zip file output folder
-     * @param requestedFilePattern Pattern to match the file name.
-     * 
-     * @throws Exception 
-     */
-    private void unZipIt(String zipFile, String outputFolder, Pattern requestedFilePattern) throws Exception{
-
-    	byte[] buffer = new byte[1024];
-
-		//create output folder is not exists
-		AnyFolder folder = new AnyFolder(outputFolder);
-		folder.mkdir();
-		
-		//get the zip file content
-		ZipInputStream zis = 
-				new ZipInputStream(new FileInputStream(zipFile));
-		//get the zipped file list entry
-		ZipEntry ze = zis.getNextEntry();
-
-		while(ze!=null){
-			if (!ze.isDirectory()) {
-				String fileName = ze.getName();
-				// if the pattern specified, use a matcher. Otherwise accept any file.
-				Matcher m = (requestedFilePattern != null) ? requestedFilePattern.matcher(fileName) : null;
-				if (requestedFilePattern == null || m.find()) {
-					File newFile = new File(outputFolder + File.separator + fileName);
-					//create all non exists folders
-					//else you will hit FileNotFoundException for compressed folder
-					new File(newFile.getParent()).mkdirs();
-					FileOutputStream fos = new FileOutputStream(newFile);             
-					int len;
-					while ((len = zis.read(buffer)) > 0) {
-						fos.write(buffer, 0, len);
-					}
-					fos.close();   
-				}
-			}
-			ze = zis.getNextEntry();
-		}
-		zis.closeEntry();
-		zis.close();
-    }
+	
     /**
      * Create an XML serialization in a folder that will hold 
      * 1/ a single xml file content.xml

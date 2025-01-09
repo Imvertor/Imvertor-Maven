@@ -173,6 +173,8 @@
     
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
+    <xsl:variable name="allow-empty-model" select="imf:boolean(imf:get-xparm('cli/allowemptymodel'))"/>
+  
     <!-- 
         Document validation; this validates the root (application-)package.
       
@@ -296,7 +298,7 @@
             not(imf:test-file-name-convention($this-package/imvert:name)), 
             'Package name holds invalid characters')"/>
         <xsl:sequence select="imf:report-error(., 
-            empty($domain-packages), 
+            empty($domain-packages and not($allow-empty-model)), 
             'No domain subpackages found')"/>
         <xsl:sequence select="imf:report-error(., 
             not($root-release), 
@@ -317,6 +319,9 @@
                 <xsl:sequence select="imf:report-error(., 
                     ($root-release != $largest), 
                     'The root package release number [1] is not found as the release of any domain package.',($root-release))"/>
+            </xsl:when>
+            <xsl:when test="$allow-empty-model">
+                <!-- skip -->
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:report-error(., 
@@ -879,7 +884,7 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:attribute[../../imvert:stereotype/@id = ('stereotype-name-objecttype')]">
+    <xsl:template match="imvert:attribute[../../imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-composite')]" priority="1">
         <!--setup-->
         <xsl:variable name="class" select="../.."/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
@@ -894,6 +899,13 @@
             imvert:stereotype/@id = 'stereotype-name-attributegroup' and not($defining-class/imvert:designation = 'class'), 
             '[1] type must be an UML class', imf:string-group(imf:get-config-stereotypes('stereotype-name-attributegroup'),' or '))"/>
         
+        <xsl:sequence select="imf:report-error(., 
+            imvert:stereotype/@id = 'stereotype-name-attributegroup' and not($defining-class/imvert:stereotype/@id = ('stereotype-name-attribute','stereotype-name-composite','stereotype-name-interface')), 
+            '[1] type is not allowed here: [2]', (
+                imf:string-group(imf:get-config-stereotypes('stereotype-name-attributegroup'),' or '),
+                imf:get-config-stereotypes($defining-class/imvert:stereotype/@id)
+            ))"/>
+        
         <!-- Is het attribuut goed gestereotypeerd? -->
         <!--TODO alle relaties tussen construct van een bepaald stereotype valideren op basis van primary en context/parent info uit configuratiebestand. Dus als eerste aparte slag na canocalisatie. -->
         <xsl:variable name="allowed-primary-stereotype-ids" select="$configuration-metamodel-file/stereotypes/stereo[construct = 'attribute' and context/parent-stereo = 'stereotype-name-objecttype' and @primary = 'yes']/@id" as="xs:string*"/>
@@ -904,7 +916,7 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:attribute[../../imvert:stereotype/@id = ('stereotype-name-composite','stereotype-name-complextype')]">
+    <xsl:template match="imvert:attribute[../../imvert:stereotype/@id = ('stereotype-name-composite','stereotype-name-complextype')]" priority="2">
         <!--setup-->
         <xsl:variable name="class" select="../.."/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>

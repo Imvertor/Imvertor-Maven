@@ -14,7 +14,7 @@
     <xsl:import href="common/Imvert2modeldoc-html-respec.xsl"/>
     
     <xsl:template match="/">
-        <html>
+        <html lang="{$language}">
             <head>
                 <title>
                     <xsl:value-of select="$subpath"/>

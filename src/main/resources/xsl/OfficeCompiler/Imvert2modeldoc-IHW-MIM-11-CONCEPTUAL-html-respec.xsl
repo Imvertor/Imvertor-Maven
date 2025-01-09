@@ -13,54 +13,8 @@
     
     <xsl:import href="common/Imvert2modeldoc-html-respec.xsl"/>
     
-    <!-- this owner generates respec files with all info stored in that file. -->
-    
     <xsl:template match="/book">
-        <html>
-            <head>
-                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-                <title>
-                    <xsl:value-of select="concat('Catalogus conceptueel model: ',@name)"/>
-                </title>
-                <script src="{$configuration-docrules-file/respec-config}" class="remove"/>
-                <script class="remove">
-                    var respecConfig = {
-                        specStatus: "ED",
-                        editors: [{
-                            name: "<xsl:value-of select="imf:get-xparm('cli/userid')"/>, <xsl:value-of select="imf:get-xparm('cli/owner')"/>",
-                            url: "http://your.site/",
-                        }],
-                        edDraftURI: "http://some.place",
-                        shortName: "msgdoc",
-                        maxTocLevel: 4
-                    };
-                </script>
-                <style type="text/css">
-                    th, td {
-                        vertical-align: top;
-                    }
-                    th>p, td>p {
-                        margin: 0 0 1em;
-                    }
-                    table {
-                        width: 100%;
-                    }
-                </style>
-            </head>
-            <body>
-                <section id="abstract">
-                    <p>
-                       Dit is een conceptueel model van IHW.
-                    </p>
-                </section>
-                <section id="sotd">
-                    <p>
-                        Deze documentatie van het conceptueel model is laatst bijgewerkt op <xsl:value-of select="imf:format-dateTime(current-dateTime())"/>.
-                    </p>
-                </section>
-                <xsl:apply-templates select="chapter"/><!-- calls upon the standard template for chapters such as CAT and REF -->
-            </body>
-        </html>
+        <xsl:apply-templates select="." mode="respec-type"/>
     </xsl:template>
     
     <xsl:function name="imf:insert-chapter-intro" as="item()*">

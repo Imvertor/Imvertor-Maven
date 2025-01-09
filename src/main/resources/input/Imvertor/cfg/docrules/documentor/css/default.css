@@ -1,0 +1,251 @@
+/* *
+ * Documentor CSS - default.
+ * Deze CSS wordt standaard meegeleverd en kan mogelijk door een klantspecifieke versie worden aangevuld. Dat kan centraal worden ingeregeld, of lokaal bij de klant worden beheerd.
+ */
+
+
+div.FOUT {
+    background-color: orange;
+    color: black;
+}
+div.FOUT span {
+    background-color: red;
+    color: black;
+    font-weight: bold;
+}
+span.TODO {
+    background-color: yellow;
+    color: black;
+    font-weight: bold;
+}
+
+span.code {
+    font-family: monospace;
+    font-size: 120%;
+    background-color: #fff6e4;
+}
+span.local_note {
+    color: gray;
+}
+div.code {
+    font-family: monospace;
+    font-size: 100%;
+    background-color: #fff6e4;
+}
+div.code_xml {
+    font-family: monospace;
+    font-size: 100%;
+    background-color: #fff6e4;
+}
+div.code_java {
+    font-family: monospace;
+    font-size: 100%;
+    background-color: #fff6e4;
+}
+
+span.underline {
+    text-decoration: underline;
+}
+
+div.box {
+    background-color: #eeeeee;
+    padding: 0.5em 1em;
+}
+div.box_note {
+    background-color: #fafaac;
+    padding: 0.5em 1em;
+}
+div.box_warning {
+    background-color: #f6d99e;
+    padding: 0.5em 1em;
+}
+div.box_example {
+    background-color: #fffff3;
+    padding: 0.5em 1em;
+}
+div.box_quote {
+    background-color: #f0e9da;
+    padding: 0.5em 1em;
+}
+div.box_quote_href {
+    text-align: right;
+    color: gray;
+}
+div.box_inner_label {
+   color: gray;
+   font-style: italic;
+}
+div.box_inner_body {
+   padding-left: 2em;
+}
+div.box_inner_href {
+   text-align: right;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid gray;
+    width: 100%;
+}
+table th,
+table td {
+    border: 1px solid gray;
+    padding: 0.5em;
+    vertical-align: baseline !important;
+    min-width: 1em;
+}
+table th {
+    background-color: #bcd1e1;
+    color: black;
+    font-weight: bold;
+}
+table tr th p {
+    margin: 0;
+    font-weight: normal;
+}
+table td p {
+    /*  pars within td are aligned on top. */
+    margin: 0 0 .5em 0;
+}
+
+
+
+table.matrix, 
+table.matrix td {
+    border: 0px;
+}
+
+figure.image {
+   text-align: center;
+   font-style: normal;
+}
+figure.image-type-default>div {
+   -webkit-box-shadow: 0 0 10px 2px #b4dce7;
+    -moz-box-shadow: 0 0 10px 2px #b4dce7;
+    box-shadow: 0 0 10px 2px #b4dce7;
+}
+figure.image-type-foto>div {
+   /*  geen border */
+}
+
+figcaption.caption {
+   
+}
+figure.uml-diagram img {
+    max-width: fit-content !important; /* diagrammen moeten vrije breedte hebben anders werkt clickable niet meer goed */
+}
+bdi.figno {
+    font-weight: bold;    
+}
+
+div.code_format {
+    font-size: 70%;
+    text-align: right;
+    color: gray;
+}
+div.code_format::before { 
+  content: "Format: ";
+}
+pre {
+	background-color: beige;
+}
+
+span.quote {
+    background-color: #f0e9da;
+}
+span.example {
+    background: #fcfaee;
+    padding: 0px;
+    border: 0px;
+    
+}
+span.letop {
+    color: orangered;
+    font-style: italic;
+}
+div.aside {
+    font-size: 80%;
+    color: gray;
+}
+span.aside {
+    color: gray;
+}
+div.more-info {
+    font-size: 90%;
+    font-style: italic;
+}
+span.more-info {
+    font-style: italic;
+}
+
+/* Primer logos */
+
+span.external::before {
+    content: "\1F87D";    
+}
+span.logo {
+    font-size: 70%;
+    border: 1px solid gray;
+    border-radius: 0.5em;
+}
+span.logo.external {
+    background: white;
+}
+
+/*  inner tables (tables in tables) worden gewoon als tabellarische info getoond dus zonder lijntjes of headers. */
+table.inner-table,
+table.outer-table {
+    background-color: white;
+    border: none;
+}
+table.inner-table td,
+table.outer-table td {
+    background-color: white;
+    border: none;
+}
+table.inner-table tr:nth-child(odd),
+table.outer-table tr:nth-child(odd) {
+  background-color: inherit;
+}
+table.inner-table tr:nth-child(even),
+table.outer-table tr:nth-child(even) {
+  background-color: inherit;
+}
+
+/*  images assets in de weergave van definities etc. */
+img.image-asset {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+}
+
+
+h2,h3,h4,h5,h6 {
+    margin-top: 1rem !important;
+    margin-bottom: 0rem !important;
+}
+
+ul.abbrevs {
+    margin-left: 0;
+    padding: 0;
+    padding-left: 2em;
+}
+li.abbrevsline {
+    list-style: none outside none;
+}
+li.abbrevsline abbr.exclude {
+    font-weight: bold;
+}
+li.abbrevsline abbr.exclude:after {
+    content: ": ";
+}
+
+.header-wrapper {
+    margin-top: 1rem;    
+}
+
+div.topline {
+    color: gray;
+    font-size: 80%;
+    border-bottom: 1px solid gray;
+}

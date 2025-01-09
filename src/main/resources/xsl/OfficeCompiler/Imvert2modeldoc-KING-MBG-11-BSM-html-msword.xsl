@@ -18,7 +18,7 @@
     -->
     
     <xsl:template match="/book">
-        <html>
+        <html lang="{$language}">
             <head>
                 <meta charset="UTF-8"/> 
                 <style type="text/css">
