@@ -20,11 +20,7 @@
     <!-- overrides the default -->
     <xsl:function name="imf:initialize-modeldoc" as="item()*">
         
-        <!-- the abbreviation for the registration object must be set here; this is part of the path in GIT where the catalog is uploaded -->
-        <xsl:variable name="namespace" select="$imvert-document/imvert:packages/imvert:base-namespace"/>
-        <xsl:variable name="abbrev" select="tokenize($namespace,'/')[last()]" as="xs:string?"/>
-        
-        <xsl:sequence select="imf:set-config-string('appinfo','model-abbreviation',$abbrev)"/>
+        <!-- no further ini -->
         
     </xsl:function>
     
