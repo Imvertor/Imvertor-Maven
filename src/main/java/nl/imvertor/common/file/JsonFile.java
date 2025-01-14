@@ -155,7 +155,7 @@ public class JsonFile extends AnyFile {
 	/**
 	 * Validate the contents of this file. 
 	 * 
-	 * When errors occur, return that error message.
+	 * When errors occur, return that error message as a warning.
 	 * 
 	 * Try to validate against Json schema specified in content using "$schema".
 	 * 
@@ -214,7 +214,7 @@ public class JsonFile extends AnyFile {
 			
 			
 		} catch (Exception e) {
-			Configurator.getInstance().getRunner().error(logger, "Invalid JSON: \"" + e.getMessage() + "\"", null, "", "INVJSON");
+			Configurator.getInstance().getRunner().warn(logger, "Invalid JSON: \"" + e.getMessage() + "\"", null, "INVJSON");
 			return false;
 		}
 		return true;
