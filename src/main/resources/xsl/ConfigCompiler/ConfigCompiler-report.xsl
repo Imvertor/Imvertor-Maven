@@ -108,6 +108,10 @@
                         <h1>Translations</h1>
                         <xsl:apply-templates select="$configuration-translations" mode="translations"/>
                     </div>
+                    <div>
+                        <h1>Parameters</h1>
+                        <xsl:apply-templates select="." mode="parameter"/>
+                    </div>
                 </content>
             </page>
         </report>
@@ -458,6 +462,27 @@
         </div>
     </xsl:template>
     
+    <xsl:template match="/config" mode="parameter">
+        <xsl:variable name="rows" as="element(tr)*">
+            <xsl:for-each-group select="$configuration-file//parameter" group-by="concat(local-name(..),': ',@name)">
+                <xsl:sort select="current-grouping-key()"/>
+                <xsl:for-each select="current-group()">
+                    <tr>
+                        <td>
+                            <xsl:value-of select="current-grouping-key()"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="."/>
+                        </td>
+                        <td>
+                            <xsl:sequence select="imf:get-src(.)"/>
+                        </td>
+                    </tr>
+                </xsl:for-each>
+            </xsl:for-each-group>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'parameter:40,value:40,config:20','table-parms')"/>
+    </xsl:template>
     
     <xsl:function name="imf:show-name">
         <xsl:param name="element"/>
