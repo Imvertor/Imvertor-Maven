@@ -47,6 +47,28 @@
         </levels>
     </doc-rule>
     
+    <!-- materiele en formele historie wordt niet weergegeven als niet gevuld. -->
+    <doc-rule id="CFG-DOC-INDICATIEMATERIELEHISTORIE" order="150">
+        <name lang="nl">Indicatie materiële historie</name>
+        <name lang="en">Indication material history</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-INDICATIEFORMELEHISTORIE" order="160">
+        <name lang="nl">Indicatie formele historie</name>
+        <name lang="en">Indication formal history</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    
     <doc-rule id="CFG-DOC-HEEFTTIJDLIJNGELDIGHEID" order="150">
         <name lang="nl">Heeft tijdlijn geldigheid</name>
         <name lang="en">Has timeline validity</name>
