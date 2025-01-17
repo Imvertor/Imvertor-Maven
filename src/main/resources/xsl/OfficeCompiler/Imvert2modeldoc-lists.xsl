@@ -210,7 +210,7 @@
             <imvert:tagged-values>
                 <imvert:tagged-value id="CFG-TV-DEFINITION">
                     <imvert:value>
-                        <xsl:value-of select="Omschrijving"/>
+                        <xsl:sequence select="Omschrijving/node()"/>
                     </imvert:value>
                 </imvert:tagged-value>
             </imvert:tagged-values>
@@ -232,7 +232,7 @@
             <imvert:tagged-values>
                 <imvert:tagged-value id="CFG-TV-DEFINITION">
                     <imvert:value>
-                        <xsl:value-of select="Omschrijving"/>
+                        <xsl:sequence select="Omschrijving/node()"/>
                     </imvert:value>
                 </imvert:tagged-value>
             </imvert:tagged-values>
@@ -257,7 +257,7 @@
             <imvert:tagged-values>
                 <imvert:tagged-value id="CFG-TV-DEFINITION">
                     <imvert:value>
-                        <xsl:value-of select="Omschrijving"/>
+                        <xsl:sequence select="Omschrijving/node()"/>
                     </imvert:value>
                 </imvert:tagged-value>
             </imvert:tagged-values>
