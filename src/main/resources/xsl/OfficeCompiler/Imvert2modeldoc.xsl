@@ -924,7 +924,7 @@
         <part>
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:for-each select="imvert:element">
-                <xsl:sequence select="imf:create-element('item',string(.))"/>
+                <xsl:sequence select="imf:create-element('item',node())"/>
             </xsl:for-each>
         </part>
     </xsl:template>

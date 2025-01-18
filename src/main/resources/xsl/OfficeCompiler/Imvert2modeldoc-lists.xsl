@@ -269,7 +269,7 @@
         <imvert:refelement>
             <xsl:for-each select="*">
                 <imvert:element>
-                    <xsl:value-of select="."/>
+                    <xsl:sequence select="node()"/>
                 </imvert:element>
             </xsl:for-each>
         </imvert:refelement>
