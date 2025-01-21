@@ -426,12 +426,12 @@
                         </xsl:choose>
                         <xsl:sequence select="if ($unit) then imf:ep-to-namevaluepair('unit',$unit) else ()"/><!-- /req/core/iso19103-measure-types -->
                         <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('minimum',ep:min-value-inclusive)"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('maximum',ep:max-value-inclusive)"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMinimum',ep:min-value-exclusive)"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMaximum',ep:max-value-exclusive)"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('minLength',ep:min-length)"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',ep:max-length)"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('minimum',imf:get-local-value(ep:min-value-inclusive,ep:data-type))"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('maximum',imf:get-local-value(ep:max-value-inclusive,ep:data-type))"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMinimum',imf:get-local-value(ep:min-value-exclusive,ep:data-type))"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMaximum',imf:get-local-value(ep:max-value-exclusive,ep:data-type))"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('minLength',imf:get-local-value(ep:min-length,'ep:integer'))"/>
+                        <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',imf:get-local-value(ep:max-length,'ep:integer'))"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('pattern',(ep:formal-pattern,imf:map-datapattern-to-ep-type(ep:data-type))[1])"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
                         <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
@@ -684,7 +684,7 @@
         <xsl:variable name="json-type" select="imf:map-datatype-to-ep-type($ep-type)"/>
         <xsl:try>
             <xsl:choose>
-                <xsl:when test="empty($value)">
+                <xsl:when test="not(normalize-space($value))">
                     <!-- niks -->
                 </xsl:when>
                 <xsl:when test="empty($ep-type)">
