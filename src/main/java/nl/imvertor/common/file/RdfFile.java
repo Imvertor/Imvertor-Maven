@@ -80,7 +80,7 @@ public class RdfFile extends AnyFile {
 				 Model model = new LinkedHashModel();
 				 rdfParser.setRDFHandler(new StatementCollector(model));
 				 try {
-					 rdfParser.parse(inputStream, documentURL.toString());
+					 rdfParser.parse(inputStream, documentURL.toString()); // playground voor shacl schema's: https://shacl-playground.zazuko.com/
 				 } catch (Exception e) {
 					// ignore
 			 	 } finally {
