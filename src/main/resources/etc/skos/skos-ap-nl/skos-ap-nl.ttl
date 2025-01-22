@@ -1,5 +1,3 @@
-# overgenomen van https://raw.githubusercontent.com/pldn/nederlands-profiel-voor-stelselcatalogi/main/profiles/skos-ap-nl.ttl
-
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
@@ -25,7 +23,9 @@ skosapnl:
 
 skosapnl:Concept
   a sh:NodeShape ;
-  rdfs:comment "Een abstract idee of notie."@nl, "An idea or notion; a unit of thought."@en ;
+  rdfs:comment 
+    "Een abstract idee of notie."@nl, 
+    "An idea or notion; a unit of thought."@en ;
   rdfs:label "Begrip"@nl ;
   sh:property    
     skosapnl:Concept-example ,
@@ -89,15 +89,15 @@ skosapnl:Collection
     skosapnl:Collection-comment ;
   sh:targetClass skos:Collection .
 
-
 skosapnl:ConceptScheme
   a sh:NodeShape ;
   rdfs:comment
     "Een verzameling concepten en (optioneel) semantische relaties tussen de concepten"@nl ,
     "A set of concepts, optionally including statements about semantic relationships between those concepts."@en ;
   rdfs:label "Begrippenkader"@nl ;
-  sh:name "Begrippenkader"@nl ;
-  sh:name "ConceptScheme"@en ;
+  sh:name 
+    "Begrippenkader"@nl ,
+    "ConceptScheme"@en ;
   rdfs:label "ConceptScheme"@en ;
   sh:property
     skosapnl:ConceptScheme-hasTopConcept ,
@@ -106,39 +106,54 @@ skosapnl:ConceptScheme
   sh:targetClass skos:ConceptScheme .
 
 skosapnl:LabelsAndDescriptionPropertyGroup a sh:PropertyGroup ;
-  rdfs:label "Labels and Description"@en, "Termen en beschrijvingen"@nl ;
+  rdfs:label 
+    "Labels and Description"@en, 
+    "Termen en beschrijvingen"@nl ;
   sh:order 0 .
 
 skosapnl:DefinitionPropertyGroup a sh:PropertyGroup ;
-  rdfs:label "Definition"@en, "Definitie"@nl ;
+  rdfs:label 
+    "Definition"@en, 
+    "Definitie"@nl ;
   sh:order 1 .
 
 skosapnl:SemanticRelationPropertyGroup a sh:PropertyGroup ;
-  rdfs:label "Semantic Relationships"@en , "Semantische relaties"@nl ;
+  rdfs:label 
+    "Semantic Relationships"@en , 
+    "Semantische relaties"@nl ;
   sh:order 2 .
 
 skosapnl:NotesPropertyGroup a sh:PropertyGroup ;
-  rdfs:label "Notes"@en, "Notities"@nl ;
+  rdfs:label 
+    "Notes"@en, 
+    "Notities"@nl ;
   sh:order 3 .
 
 skosapnl:MatchingRelationshipsPropertyGroup a sh:PropertyGroup ;
-  rdfs:label
-    "Matching Relationships"@en , "Harmonisatierelaties"@nl ;
+  rdfs:label 
+    "Matching Relationships"@en, 
+    "Harmonisatierelaties"@nl ;
   sh:order 4 .
 
 skosapnl:Iso-thesRelationships a sh:PropertyGroup ;
-  rdfs:label "Iso-thes Relationships"@en, "Iso-thes relaties"@nl ;
+  rdfs:label
+    "Iso-thes Relationships"@en, 
+    "Iso-thes relaties"@nl ;
   sh:order 5 .
 
 skosapnl:Concept-related
   a sh:PropertyShape ;
   rdfs:label "is gerelateerd aan"@nl ;
   sh:class skos:Concept ;
-  sh:description "Een concept met een associatieve semantische relatie"@nl, "Relates a concept to a concept with which there is an associative semantic relationship."@en ;
+  sh:description 
+    "Een concept met een associatieve semantische relatie"@nl, 
+    "Relates a concept to a concept with which there is an associative semantic relationship."@en ;
   sh:disjoint skos:broader ;
   sh:disjoint skos:narrower ;
   sh:group skosapnl:SemanticRelationPropertyGroup ;
-  sh:name "has related"@en, "is gerelateerd aan"@nl ;
+  sh:name 
+    "has related"@en, 
+    "is gerelateerd aan"@nl ;
   sh:order 22 ;
   sh:nodeKind sh:IRI ;
   sh:severity sh:Warning ;
@@ -153,7 +168,9 @@ skosapnl:Concept-definition
     "Een definitie van een begrip is een tekstuele beschrijving van de betekenis van dit begrip waarmee het begrip kan worden onderscheiden van andere begrippen."@nl, "A statement or formal explanation of the meaning of a concept."@en ;
   sh:group skosapnl:DefinitionPropertyGroup ;
   sh:minCount 1 ;
-  sh:name "definitie"@nl ;
+  sh:name 
+    "definition"@en ,
+    "definitie"@nl ;
   sh:order 10 ;
   sh:nodeKind sh:Literal ;
   sh:path skos:definition ;
@@ -169,12 +186,16 @@ skosapnl:Concept-narrowerInstantial
   sh:order 56 ;
   sh:nodeKind sh:IRI ;
   sh:severity sh:Warning ;
-   sh:path isothes:narrowerInstantial .
+  sh:path isothes:narrowerInstantial .
 
 skosapnl:Concept-changeNote
   a sh:PropertyShape ;
-  sh:description "A note about a modification to a concept."@en, "Notitie over een wijziging aan het concept"@nl ;
-  sh:name "change note"@en, "wijzigingsnotitie"@nl ;
+  sh:description 
+    "A note about a modification to a concept."@en , 
+    "Notitie over een wijziging aan het concept"@nl ;
+  sh:name 
+    "change note"@en, 
+    "wijzigingsnotitie"@nl ;
   rdfs:label "wijzigingsnotitie"@nl ;
   sh:group skosapnl:NotesPropertyGroup ;
   sh:order 31 ;
@@ -252,7 +273,9 @@ skosapnl:Concept-example
     "An example of the use of a concept."@en ,
     "Een voorbeeld van het gebruik van het concept."@nl ;
   sh:group skosapnl:NotesPropertyGroup ;
-  sh:name "example"@en, "voorbeeld"@nl ;
+  sh:name 
+    "example"@en, 
+    "voorbeeld"@nl ;
   rdfs:label "voorbeeld"@nl ;
   sh:order 35 ;
   sh:or ([ sh:datatype rdf:langString ] [ sh:datatype xsd:string ]);
@@ -291,8 +314,9 @@ skosapnl:Concept-relatedMatch
   a sh:PropertyShape ;
   rdfs:label "is overeenkomstig verwant"@nl ;
   sh:class skos:Concept ;
-  sh:description "skos:relatedMatch is used to state an associative mapping link between two conceptual resources in different concept schemes."@en ;
-  sh:description "Used to state an associative mapping link between two conceptual resources in different concept schemes."@en ;
+  sh:description 
+    "skos:relatedMatch is used to state an associative mapping link between two conceptual resources in different concept schemes."@en ,
+    "Used to state an associative mapping link between two conceptual resources in different concept schemes."@en ;
   sh:group skosapnl:MatchingRelationshipsPropertyGroup ;
   sh:name "is overeenkomstig verwant"@nl ;
   sh:disjoint skos:broadMatch ;
@@ -415,9 +439,13 @@ skosapnl:Concept-narrowerGeneric
 
 skosapnl:Concept-historyNote
   a sh:PropertyShape ;
-  sh:description "Notitie over de voormalige status/gebruik/betekenis van het begrip"@nl, "A note about the past state/use/meaning of a concept."@en ;
+  sh:description 
+    "A note about the past state/use/meaning of a concept."@en ,
+    "Notitie over de voormalige status/gebruik/betekenis van het begrip"@nl ;
   sh:group skosapnl:NotesPropertyGroup ;
-  sh:name "history note"@en, "historie notitie"@nl ;
+  sh:name 
+    "history note"@en ,
+    "historie notitie"@nl ;
   rdfs:label "historie notitie"@nl;
   sh:order 33 ;
   sh:datatype rdf:langString ;
@@ -439,9 +467,13 @@ skosapnl:Concept-source
 
 skosapnl:Concept-comment
   a sh:PropertyShape ;
-  rdfs:comment "Een begrip heeft bij voorkeur een uitleg in 'klare taal'."@nl, "Preferably a concept has a comment in 'clear language'."@en ;
+  rdfs:comment 
+   "Preferably a concept has a comment in 'clear language'."@en ,
+   "Een begrip heeft bij voorkeur een uitleg in 'klare taal'."@nl ;
   sh:group skosapnl:LabelsAndDescriptionPropertyGroup ;
-  sh:name "uitleg"@nl, "comment"@en ;
+  sh:name 
+    "comment"@en ,
+    "uitleg"@nl ;
   rdfs:label "comment"@nl ;
   sh:order 5 ;
   sh:datatype rdf:langString ;
@@ -453,7 +485,9 @@ skosapnl:Concept-editorialNote
   a sh:PropertyShape ;
   sh:description "A note for an editor, translator or maintainer of the vocabulary."@en ;
   sh:group skosapnl:NotesPropertyGroup ;
-  sh:name "redactionele notitie"@nl, "editorial note"@en ;
+  sh:name 
+    "editorial note"@en ,
+    "redactionele notitie"@nl ;
   rdfs:label "redactionele notitie"@nl ;
   sh:datatype rdf:langString ;
   sh:order 32 ;
@@ -478,7 +512,9 @@ skosapnl:Concept-scopeNote
   rdfs:label "toelichting"@nl ;
   sh:description "A note that helps to clarify the meaning and/or the use of a concept."@en ;
   sh:group skosapnl:NotesPropertyGroup ;
-  sh:name "toelichting"@nl, "scope note"@en ;
+  sh:name 
+     "scope note"@en ,
+     "toelichting"@nl ;
   sh:datatype rdf:langString ;
   sh:order 34 ;
   sh:nodeKind sh:Literal ;
@@ -515,7 +551,7 @@ skosapnl:Concept-notation
 skosapnl:Concept-label
   a sh:PropertyShape ;
   rdfs:label "naam"@nl ;
-  sh:datatype xsd:string ;
+  sh:datatype rdf:langString ;
   sh:description "Een naam is een voor mensen leesbare term ter aanduiding van het begrip."@nl ;
   sh:group skosapnl:LabelsAndDescriptionPropertyGroup ;
   sh:name "naam"@nl ;
@@ -559,7 +595,6 @@ skosapnl:SourceDocument-page
   sh:nodeKind sh:IRI ;
   sh:severity sh:Warning ;
   sh:path foaf:page .
-
 
 skosapnl:SourceDocument-bibliographicCitation
   a sh:PropertyShape ;
@@ -643,162 +678,3 @@ skosapnl:ConceptScheme-label
   sh:severity sh:Warning ;
   sh:path dct:title .
 
-
-
-## logical constraints
-
-skosapnl:DisjointConceptAndConceptScheme
-  a sh:NodeShape ;
-  sh:targetClass skos:Concept ;
-  sh:sparql [
-    sh:prefixes skosapnl: ;
-    sh:message "Een begrip kan niet ook een begrippenkader zijn."@nl ;
-    sh:select """
-    SELECT $this
-    WHERE {
-      $this a skos:ConceptScheme 
-    }""" ;
-  ] ;
-.
-skosapnl::DisjointConceptAndCollection
-  a sh:NodeShape ;
-  sh:targetSubjectsOf skos:narrower ;
-  sh:targetSubjectsOf skos:broader ;
-  sh:targetSubjectsOf skos:related ;
-  sh:sparql [
-    sh:prefixes skosapnl: ;
-    sh:message "Een begrip kan niet ook een collectie zijn." ;
-    sh:select """
-    SELECT $this
-    WHERE {
-      $this a skos:Collection .
-    }""" ;
-  ] ;
-.
-
-skosapnl:DisjointConceptSchemeAndCollection
-  a sh:NodeShape ;
-  sh:targetObjectsOf skos:topConceptOf ;
-  sh:targetObjectsOf skos:inScheme ;
-  sh:sparql [
-    sh:prefixes skosapnl: ;
-    sh:message "Een begrippenkader kan niet ook een collectie zijn." ;
-    sh:select """
-    SELECT $this
-    WHERE {
-      $this a skos:Collection
-    }""" ;
-  ] ;
-.
-
-skosapnl:MappingRelationsMisuse
-  a sh:NodeShape ;
-  sh:targetSubjectsOf skos:broadMatch ;
-  sh:targetSubjectsOf skos:closeMatch ;
-  sh:targetSubjectsOf skos:exactMatch ;
-  sh:targetSubjectsOf skos:narrowMatch ;
-  sh:targetSubjectsOf skos:relatedMatch ;
-  sh:sparql [
-    sh:prefixes skosapnl: ;
-    sh:message "Harmonisatierelaties mogen niet gebruikt worden tussen begrippen die tot hetzelfde begrippenkader behoren."@nl ;
-    sh:message "Mapping relations should be asserted to concepts being members of different concept schemes"@en ;
-    sh:select """
-    SELECT $this
-    WHERE {
-      $this skos:broadMatch | skos:closeMatch | skos:exactMatch | skos:narrowMatch | skos:relatedMatch ?concept ; 
-        skos:inScheme ?cs .
-      ?concept skos:inScheme ?cs .
-      
-    }""" ;
-  ] ;
-.
-
-skosapnl:SemanticRelations
-  a sh:NodeShape ;
-  sh:targetObjectsOf skos:broader ;
-  sh:targetObjectsOf skos:narrower ;
-  sh:targetObjectsOf skos:related ;
-  sh:targetSubjectsOf skos:broader ;
-  sh:targetSubjectsOf skos:narrower ;
-  sh:targetSubjectsOf skos:related ;
-  sh:targetObjectsOf skos:broadMatch ;
-  sh:targetObjectsOf skos:closeMatch ;
-  sh:targetObjectsOf skos:exactMatch ;
-  sh:targetObjectsOf skos:narrowMatch ;
-  sh:targetObjectsOf skos:relatedMatch ;
-  sh:targetSubjectsOf skos:broadMatch ;
-  sh:targetSubjectsOf skos:closeMatch ;
-  sh:targetSubjectsOf skos:exactMatch ;
-  sh:targetSubjectsOf skos:narrowMatch ;
-  sh:targetSubjectsOf skos:relatedMatch ;
-  sh:sparql [
-    sh:prefixes skosapnl: ;
-    sh:message "Semantische relaties verwijzen altijd van en naar begrippen." ;
-    sh:select """
-    SELECT $this
-    WHERE {
-      FILTER NOT EXISTS { $this a skos:Concept }
-    }""" ;
-  ] ;
-.
-
-skosapnl:UnambiguousNotations 
-  a sh:SPARQLConstraint ;
-  sh:message 
-    "Begrippen binnen een begrippenkader mogen geen codes delen."@nl ,
-    "Duplicate notations within concept scheme"@en ;
-  sh:severity sh:Violation ;
-  sh:prefixes skosapnl: ;
-  sh:select """SELECT $this
-    WHERE {
-      $this skos:notation ?value  .
-      ?other skos:notation ?value .
-      ?this skos:inScheme ?cs .
-      ?other skos:inScheme ?cs .
-      FILTER (?this != ?other)
-    }
-    """ .
-
-skosapnl:UniquePreflabelWithinConceptScheme 
-  a sh:SPARQLConstraint ;
-  sh:message 
-    "Duplicate preffered labels within concept scheme."@en ,
-    "meerdere begrippen met dezelfde voorkeursterm binnen een begrippenkader"@en ;
-  sh:severity sh:Violation ;
-  sh:prefixes skosapnl: ;
-  sh:select """SELECT $this
-    WHERE {
-      $this skos:prefLabel ?value  .
-      ?other skos:prefLabel ?value .
-      ?this skos:inScheme ?cs .
-      ?other skos:inScheme ?cs .
-      FILTER (?this != ?other)
-    }
-    """ .
-skosapnl:TopConceptHavingBroader 
-  a sh:SPARQLConstraint ;
-  sh:prefixes skosapnl: ;
-  sh:message "Een topbegrip mag geen bovenliggende begrippen kennen." ;
-  sh:severity sh:Violation ;
-  sh:select """SELECT $this
-    WHERE {
-      ?this skos:topConceptOf|^skos:hasTopConcept ?cs ; 
-      skos:broader ?other .
-    }
-    """ .
-
-skosapnl:OrphanConcept 
-  a sh:SPARQLConstraint ;
-  sh:prefixes skosapnl: ;
-  sh:message "Het begrip is geen topbegrip maar heeft ook geen bovenliggende of gerelateerde begrippen."@nl ;
-  sh:select """SELECT $this 
-    WHERE {
-      $this a skos:Concept .
-      FILTER NOT EXISTS {
-        ?this skos:topConceptOf|^skos:hasTopConcept ?cs .
-      }
-      FILTER NOT EXISTS {
-      ?this skos:broader | ^skos:broader | skos:narrower | ^skos:narrower | skos:related | ^skos:related ?other .
-      }
-    }""" ;
-  sh:severity sh:Warning .
