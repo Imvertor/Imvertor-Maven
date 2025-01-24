@@ -47,7 +47,11 @@
                 <xsl:variable name="respec-parms" as="element(parms)">
                     <parms>
                         
-                        <parm respec-name="specStatus" parms-name="prop-publicatiestatus">{if (imf:get-xparm('appinfo/phase') eq '3') then 'IG' else 'IO'}</parm>
+                        <parm respec-name="specStatus" parms-name="prop-publicatiestatus">{
+                            (imf:get-xparm('documentor/prop-documentstatus',()),
+                            if (imf:get-xparm('appinfo/phase') eq '3') then 'IG' else 'IO'
+                            )[1]
+                        }</parm>
                         <parm respec-name="specType" parms-name="prop-publicatietype">{
                             (
                                 imf:get-xparm('documentor/prop-documenttype',()),
