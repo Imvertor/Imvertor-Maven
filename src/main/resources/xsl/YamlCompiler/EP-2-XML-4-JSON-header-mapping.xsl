@@ -382,7 +382,7 @@
 						<xsl:sequence select="imf:msg(.,'ERROR','An expand parameter is only applicable for hal+json, remove it from the [1] message [2].', ($method, $messageName))" />			
 					</xsl:when>
 					<xsl:when test="$expand = false() and $checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND']">
-						<xsl:sequence select="imf:msg(.,'WARNING','An expand parameter is not applicable for the [1] message [2], remove it.', ($messageName))" />			
+						<xsl:sequence select="imf:msg(.,'WARNING','An expand parameter is not applicable for the [1] message [2], remove it.', ($method, $messageName))" />			
 					</xsl:when>
 				</xsl:choose>
 				
