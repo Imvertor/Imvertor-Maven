@@ -19,7 +19,7 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-   <xi:include href="../../../KING/cfg/metamodels/KINGBSM.xml"/>
+   <xi:include href="../../../KING/cfg/metamodels/KING-MBG-1-BSM.xml"/>
    
    <name>Kennisnet BSM</name>
    
