@@ -64,5 +64,17 @@
             </declared-values>
         </tv>
         
+        <!-- https://github.com/Geonovum/MIM-Werkomgeving/issues/579 -->
+        <tv norm="space" id="CFG-TV-HEEFTTIJDLIJNGELDIGHEID">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-HEEFTTIJDLIJNREGISTRATIE">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
 </tagset>
