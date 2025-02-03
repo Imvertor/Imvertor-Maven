@@ -303,7 +303,7 @@
                 <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{$name}" kind="attrib" alias="{$alias}"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:association[not(imvert:name)]">
-                <xsl:variable name="type" select="concat('[',$this/imvert:type-name,']')"/>
+                <xsl:variable name="type" select="concat('..',$this/imvert:type-name)"/>
                 <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{$type}" kind="{imf:get-aggregation($this)}" alias="{$alias}"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:association">
@@ -311,7 +311,7 @@
             </xsl:when>
             <xsl:when test="$this/self::imvert:source | $this/self::imvert:target">
                 <xsl:variable name="assoc" select="$this/.."/>
-                <xsl:variable name="type" select="concat('[', imf:get-original-names($assoc), ':', $this/imvert:role/@original,']')"/>
+                <xsl:variable name="type" select="concat('{', imf:get-original-names($assoc), ':', $this/imvert:role/@original,'}')"/>
                 <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{$type}" alias="{$alias}" tv=""/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:tagged-value">
