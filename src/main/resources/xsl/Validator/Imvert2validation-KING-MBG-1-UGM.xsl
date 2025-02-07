@@ -62,6 +62,7 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <?x niet meer van toepassing; niet verwijderen; zie mail 25 jan 2025
     <xsl:template match="imvert:is-id">
         <!-- setup -->
         <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'##CFG-TV-INDICATIEMATCHGEGEVEN')"/>
@@ -86,6 +87,7 @@
         <xsl:next-match/>
     </xsl:template>
     
+   
     <xsl:template match="imvert:tagged-value[@id = 'CFG-TV-INDICATIEMATCHGEGEVEN']">
         <!-- setup -->
         <xsl:variable name="construct" select="../.."/>
@@ -97,6 +99,7 @@
         
         <xsl:next-match/>
     </xsl:template>
+    x?>
     
     <xsl:template match="*[self::imvert:class | self::imvert:attribute | imvert:association]/imvert:name">
         <!-- setup -->
