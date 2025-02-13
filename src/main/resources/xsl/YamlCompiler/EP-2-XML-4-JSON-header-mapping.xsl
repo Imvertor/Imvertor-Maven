@@ -189,8 +189,11 @@
 						<xsl:when test="contains($berichttype,'Gr')">
 							<xsl:value-of select="concat('getResource',ep:tech-name)"/>
 						</xsl:when>
-						<xsl:otherwise>
+						<xsl:when test="contains($berichttype,'Gc')">
 							<xsl:value-of select="concat('getCollection',ep:tech-name)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($berichttype,ep:tech-name)"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
@@ -773,28 +776,26 @@
 					 Daarnaast wordt ook gecheckt of er wel een 'page' parameter is gedefinieerd als er een 'pagesize' parameter is gedefinieerd. -->
 				<xsl:choose>
 					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE'] and not(contains(upper-case($berichttype),'PO'))">
-						<xsl:sequence select="imf:msg(.,'ERROR','A page parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
+						<xsl:sequence select="imf:msg(.,'ERROR','A page parameter is not applicable for [1] message [2], remove it.', ($method, $messageName))" />			
 					</xsl:when>
 					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and not(contains(upper-case($berichttype),'PO'))">
 						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
 					</xsl:when>
 					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and empty($checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE'])">
-						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for [1] message [2] since no page parameter has been created, remove it or create a page parameter.', ($method, $messageName))" />			
+						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for the [1] message [2] since no page parameter has been created, remove it or create a page parameter.', ($method, $messageName))" />			
 					</xsl:when>
 				</xsl:choose>
 				
 				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sort' attribute (dus parameter) wordt gedefinieerd
-					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. 
-					 Wel mag er natuurlijk voor worden gekozen een sort attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is. -->
+					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. -->
 				<xsl:choose>
 					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='SORTEER'] and not(contains(upper-case($berichttype),'PO'))">
 						<xsl:sequence select="imf:msg(.,'ERROR','A sorteer parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
 					</xsl:when>
 				</xsl:choose>
 				
-				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sort' attribute (dus parameter) wordt gedefinieerd
-					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. 
-					 Wel mag er natuurlijk voor worden gekozen een sort attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is. -->
+				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'fields' attribute (dus parameter) wordt gedefinieerd
+					 wordt gecheckt of deze wel gedefiniëerd is als dat van toepassing is. -->
 				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='FIELDS'] and not(contains(upper-case($berichttype),'PO'))">
 					<xsl:sequence select="imf:msg(.,'ERROR','A fields parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
 				</xsl:if>
@@ -1658,8 +1659,8 @@
 						<xsl:variable name="paramName" select="ep:name"/>
 						<xsl:variable name="originalParamName" select="ep:name/@original"/>
 						<xsl:if test="not($calculatedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName)">
-							<!-- If there is no param within the current calculated urpart which is equal to the name of the param of the corresponding
-								 determined uripart it is reproduced with all necessary properties and with an indcator stating there's an error.
+							<!-- If there is no param within the current calculated uripart which is equal to the name of the param of the corresponding
+								 determined uripart it is reproduced with all necessary properties and with an indicator stating there's an error.
 								 Also a warning is generated. -->
 							<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not avalable as query parameter.', ($paramName,$rawMessageName))" />			
 							<ep:param path="false" position="{@position}">
