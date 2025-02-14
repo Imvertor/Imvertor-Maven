@@ -1869,7 +1869,7 @@
 					</ep:parameters>
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
-					<xsl:sequence select="imf:msg($construct,'WARNING','Processing attribute [1] with baretype.',(@display-name,imvert:baretype))"/>						
+					<!--<xsl:sequence select="imf:msg($construct,'WARNING','Processing attribute [1] with baretype.',(@display-name,imvert:baretype))"/>-->						
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name-oas,'type-name'))" />
 					<xsl:sequence select="imf:create-output-element('ep:outside-ref', imvert:type-package)" />
 					<xsl:choose>
@@ -2334,7 +2334,7 @@
 		<xsl:choose>
 			<xsl:when test="count($packages//imvert:package[not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]/
 				imvert:class[imf:get-stereotype(.) = ('stereotype-name-simpletype') and imf:get-compiled-name(.) = $compiled-name]) > 1">
-				<xsl:sequence select="imf:msg(.,'ERROR','Two or more DataType or PrimitiveType classes share the name [1] (case insensitive).',(imvert:name))" />			
+				<xsl:sequence select="imf:msg(.,'ERROR','Two or more DataType or PrimitiveType classes share the same name (case insensitive).',())" />			
 			</xsl:when>
 			<xsl:when test="$as-supertype and not(imvert:supertype)">
 				<xsl:call-template name="attributeFacets">
@@ -2777,17 +2777,19 @@
 				<xsl:value-of select="$name" />
 			</xsl:when>
 			<xsl:when test="$type = 'association' and $stereotype = ('stereotype-name-relatiesoort')">
+				<xsl:sequence select="imf:msg($this,'ERROR','No alias',())" />
 				<xsl:value-of select="lower-case($name)" />
 			</xsl:when>
 			<xsl:when test="$type = 'association' and normalize-space($alias)"> <!-- composite -->
 				<xsl:value-of select="$alias" />
 			</xsl:when>
 			<xsl:when test="$type = 'association'">
+				<xsl:sequence select="imf:msg($this,'ERROR','No alias',())" />
 				<xsl:value-of select="lower-case($name)" />
 			</xsl:when>
 			<!-- TODO meer soorten namen uitwerken? -->
 			<xsl:otherwise>
-				<xsl:sequence select="imf:msg($this,'ERROR','The class [1] with the stereotype [2] has the unknown type [3].', ($name-raw, string-join($stereotype,', '),$type))" />
+				<xsl:sequence select="imf:msg($this,'ERROR','Unknown type [1] with stereo [2]', ($type, string-join($stereotype,', ')))" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:function>
