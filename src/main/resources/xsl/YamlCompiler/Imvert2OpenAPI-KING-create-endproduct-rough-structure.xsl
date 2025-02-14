@@ -147,7 +147,7 @@
 			 messagetypes. These configurations are picked-up here. -->
 		<xsl:variable name="berichtsjabloon" select="$packages//imvert:package[imvert:alias='/www.kinggemeenten.nl/BSM/Berichtstrukturen/Model']//imvert:class[.//imvert:tagged-value[@id='CFG-TV-BERICHTCODE']/imvert:value=$berichtcode]" />
 		<xsl:if test="empty($berichtsjabloon)">
-			<xsl:sequence select="imf:msg('ERROR','There is no class with berichtcode [1] within the Berichtstructuren model or that model is not present. Check this.',($berichtcode))" />
+			<xsl:sequence select="imf:msg('ERROR','The class [1] has the berichtcode [2], however within the Berichtstructuren model there is no class with such a berichtcode or that model is not present. Check this.',(imvert:name, $berichtcode))" />
 		</xsl:if>
 		<xsl:variable name="grouping" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-GROUPING')" />
 		<xsl:variable name="pagination" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-PAGE')" />
@@ -275,7 +275,7 @@
 								<xsl:choose>
 									<xsl:when test="not(empty($sort)) and contains($berichtcode,'Gr')">
 										<xsl:variable name="msg"
-											select="concat('The tagged value sort is not allowed on a ',$berichtcode,' messageclass.')"
+											select="concat('The tagged value sort is defined on the messageclass ',ep:name,', however it is not allowed on a ',$berichtcode,' messageclass.')"
 											as="xs:string" />
 										<xsl:sequence select="imf:msg('ERROR',$msg)" />
 									</xsl:when>
@@ -308,7 +308,7 @@
 					<xsl:when test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type 'entiteitrelatie'. If that's the case an error message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype are processed for messages with berichttype ',$berichtcode,'.')"
+							select="concat('Within the messageclass ',imvert:name,' no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype, or stereotype &quot;pad&quot;, are processed for messages with berichttype ',$berichtcode,'.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
@@ -348,7 +348,7 @@
 						<!-- In case of a Po messagetype has one or more associations not having the name 'response', 'request','requestbody or 'pad' an error
 						     message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; one or more associations with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; one or more associations are present with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
@@ -426,7 +426,7 @@
 					<xsl:when test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type 'entiteitrelatie'. If that's the case an error message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype are processed for messages with berichttype ',$berichtcode,'.')"
+							select="concat('Within the messageclass ',imvert:name,' no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype, or stereotype &quot;pad&quot;, are processed for messages with berichttype ',$berichtcode,'.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
@@ -474,7 +474,7 @@
 						<!-- In case of a Po messagetype has one or more associations not having the name 'response', 'request','requestbody or 'pad' an error
 						     message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; one or more associations with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; one or more associations are present with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
@@ -611,19 +611,19 @@
 							<ep:rough-message messagetype="request"	berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}" operationId="{$operationId}">
 								<xsl:if test="not(empty($fields))">
 									<xsl:variable name="msg"
-										select="concat('The tagged value fields is not allowed on a ',$berichtcode,' messageclass.')"
+										select="concat('The tagged value fields is defined on the messageclass ',ep:name,', however it is not allowed on a ',$berichtcode,' messageclass.')"
 										as="xs:string" />
 									<xsl:sequence select="imf:msg('ERROR',$msg)" />
 								</xsl:if>
 								<xsl:if test="$customPathFacet != ''">
 									<xsl:variable name="msg"
-										select="concat('The tagged value customPathFacet is not allowed on a ',$berichtcode,' messageclass.')"
+										select="concat('The tagged value customPathFacet is defined on the messageclass ',ep:name,', however it is not allowed on a ',$berichtcode,' messageclass.')"
 										as="xs:string" />
 									<xsl:sequence select="imf:msg('ERROR',$msg)" />
 								</xsl:if>
 								<xsl:if test="not(empty($sort)) and contains($berichtcode,'De')">
 									<xsl:variable name="msg"
-										select="concat('The tagged value sort is not allowed on a ',$berichtcode,' messageclass.')"
+										select="concat('The tagged value sort is defined on the messageclass ',ep:name,', however it is not allowed on a ',$berichtcode,' messageclass.')"
 										as="xs:string" />
 									<xsl:sequence select="imf:msg('ERROR',$msg)" />
 								</xsl:if>
