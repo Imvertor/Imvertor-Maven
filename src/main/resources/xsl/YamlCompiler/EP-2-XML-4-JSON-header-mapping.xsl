@@ -231,7 +231,7 @@
 					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
 						<xsl:choose>
 							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct])">
-								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$construct)"/>
+								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1] in message [2].', ($construct, $rawMessageName))"/>
 							</xsl:when>
 							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
 								<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct,$rawMessageName))"/>
@@ -628,7 +628,7 @@
 					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
 						<xsl:choose>
 							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct])">
-								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$construct)"/>
+								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1] in message [2].',($construct, $rawMessageName))"/>
 							</xsl:when>
 							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
 								<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct,$rawMessageName))"/>
@@ -994,7 +994,7 @@
 					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
 						<xsl:choose>
 							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct])">
-								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$construct)"/>
+								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1] in message [2].',($construct, $rawMessageName))"/>
 							</xsl:when>
 							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
 								<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct,$rawMessageName))"/>

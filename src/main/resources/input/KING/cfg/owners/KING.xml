@@ -138,6 +138,6 @@
     <parameter name="standard-yaml-parameters-path">#/components/parameters/</parameter>
     <parameter name="standard-yaml-responses-path">#/components/responses/</parameter>
 
-    <parameter name="yamlCompiler-stylesheets-version">20250109</parameter>
+    <parameter name="yamlCompiler-stylesheets-version">20250217</parameter>
 
 </project-owner>
