@@ -94,7 +94,7 @@
 					<xsl:value-of select="./imvert:associations/imvert:association[imvert:stereotype/@id='stereotype-name-padrelatie']/imvert:type-id"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:sequence select="imf:msg('ERROR','The messageclass [1] does not have an association to a pad class or the association has the wrong stereotype. This is neccessary to determine the name of the message.',(imvert:name/@original))" />
+					<xsl:sequence select="imf:msg(.,'ERROR','The messageclass [1] does not have an association to a pad class or the association has the wrong stereotype. This is neccessary to determine the name of the message.',(imvert:name/@original))" />
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -104,7 +104,7 @@
 					<xsl:sequence select="$packages//imvert:class[imvert:id=$pad-id]"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:sequence select="imf:msg('WARNING','The padclass [1] has the wrong stereotype. It should be [2].',($packages//imvert:class[imvert:id=$pad-id],'Padtype'))" />
+					<xsl:sequence select="imf:msg(.,'WARNING','The padclass [1] connected to the messageclass [2] has the wrong stereotype. It should be &quot;Padtype&quot;.',($packages//imvert:class[imvert:id=$pad-id],imvert:name/@original))" />
 					<xsl:sequence select="$packages//imvert:class[imvert:id=$pad-id]"/>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -139,7 +139,7 @@
 			select="imf:get-tagged-value(.,'##CFG-TV-BERICHTCODE')" />
 		<xsl:if test="$berichtcode = '' or empty($berichtcode)">
 			<!-- For now a berichtcode is neccessary so if it lacks or if it's empty an error message is generated. -->
-			<xsl:sequence select="imf:msg('ERROR','The messageclass [1] does not have a value for the tagged value berichtcode or the tagged value lacks.',(imvert:name/@original))" />
+			<xsl:sequence select="imf:msg(.,'ERROR','The messageclass [1] does not have a value for the tagged value &quot;berichtcode&quot; or the tagged value lacks.',(imvert:name/@original))" />
 		</xsl:if>
 		<xsl:variable name="tag" select="imf:get-tagged-value(., '##CFG-TV-TAG')" />
 		
@@ -147,7 +147,7 @@
 			 messagetypes. These configurations are picked-up here. -->
 		<xsl:variable name="berichtsjabloon" select="$packages//imvert:package[imvert:alias='/www.kinggemeenten.nl/BSM/Berichtstrukturen/Model']//imvert:class[.//imvert:tagged-value[@id='CFG-TV-BERICHTCODE']/imvert:value=$berichtcode]" />
 		<xsl:if test="empty($berichtsjabloon)">
-			<xsl:sequence select="imf:msg('ERROR','There is no class with berichtcode [1] within the Berichtstructuren model or that model is not present. Check this.',($berichtcode))" />
+			<xsl:sequence select="imf:msg(.,'ERROR','The class [1] has the berichtcode [2], however within the Berichtstructuren model there is no class with such a berichtcode or that model is not present. Check this.',(imvert:name, $berichtcode))" />
 		</xsl:if>
 		<xsl:variable name="grouping" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-GROUPING')" />
 		<xsl:variable name="pagination" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-PAGE')" />
@@ -173,18 +173,12 @@
 				'stereotype-name-deleteberichttype')">
 				<!-- If the messageclass has no supertype relation to an interface which is refering to a REST berichttype class within the
 					 'Berichtstructuren' package an error message is generated. -->
-				<xsl:variable name="msg"
-					select="concat('The messageclass &quot;',imvert:name,'&quot; has no interface to a supertype from the &quot;Berichtstructuren&quot; package.')"
-					as="xs:string" />
-				<xsl:sequence select="imf:msg('ERROR',$msg)" />
+				<xsl:sequence select="imf:msg(.,'ERROR','The messageclass &quot;[1]&quot; has no interface to a supertype from the &quot;Berichtstructuren&quot; package.', (imvert:name))" />			
 			</xsl:when>
 			<xsl:when test="not(contains(imvert:supertype/imvert:type-name,$berichtcode))">
 				<!-- If the type-name of the interface class has a value which doesn't correspondent to the 'berichtcode' of the message-class
 					 (e.g. it has the value 'Gr01-Getresource' while the berichtcode has the value 'Gc01') an error message is generated. -->
-				<xsl:variable name="msg"
-					select="concat('The berichtcode &quot;',$berichtcode,'&quot; of the messageclass &quot;',imvert:name,'&quot; does not correspond with the superclass &quot;',imvert:supertype/imvert:type-name,'&quot; it refers to.')"
-					as="xs:string" />
-				<xsl:sequence select="imf:msg('ERROR',$msg)" />
+				<xsl:sequence select="imf:msg(.,'ERROR','The berichtcode &quot;[1]&quot; of the messageclass &quot;[2]&quot; does not correspond with the superclass &quot;[3]&quot; it refers to.', ($berichtcode,imvert:name,imvert:supertype/imvert:type-name))" />			
 			</xsl:when>
 			<xsl:when test="contains($berichtcode,'Gc') or contains($berichtcode,'Gr')">
 				<xsl:sequence select="imf:create-debug-comment-with-xpath('A11000]',$debugging,.)" />
@@ -192,54 +186,36 @@
 					<xsl:when
 						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type 'entiteitrelatie'. If that's the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype or of stereotype &quot;padrelatie&quot; are processed for messages with berichttype ',$berichtcode,'.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype or of stereotype &quot;padrelatie&quot; are processed for messages with berichttype &quot;[2]&quot;.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="not(count(imvert:associations/imvert:association[imvert:name = 'response']) = 1)">
 						<!-- In case of a Gr or Gc messagetype it's required to have one and not more than one association with the name 'response'. 
 						     If this isn't the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; is present. For messages with berichttype &quot;',$berichtcode,'&quot; 1 (and only 1) has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; is present. For messages with berichttype &quot;[2]&quot; 1 (and only 1) has to be present.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1)">
 						<!-- In case of a Gr or Gc messagetype it's required to have one and not more than one association with the name 'request'. 
 						     If this isn't the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; is present. For messages with berichttype &quot;',$berichtcode,'&quot; 1 (and only 1) has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; is present. For messages with berichttype &quot;[2]&quot; 1 (and only 1) has to be present.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-padrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type 'padrelatie'. If that's the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;padrelatie&quot; is present, for messages with berichttype ',$berichtcode,' such an association has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no association with the stereotype &quot;padrelatie&quot; is present, for messages with berichttype &quot;[2]&quot; such an association has to be present.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="not(count(imvert:associations/imvert:association[imvert:name = 'pad']) = 1)">
 						<!-- In case of a Gr or Gc messagetype it's required to have one and not more than one association with the name 'pad'. 
 						     If this isn't the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no or more than 1 association with the stereotype &quot;padrelatie&quot; and the name &quot;pad&quot; is present. For messages with berichttype &quot;',$berichtcode,'&quot; 1 (and only 1) has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no or more than 1 association with the stereotype &quot;padrelatie&quot; and the name &quot;pad&quot; is present. For messages with berichttype &quot;[2]&quot; 1 (and only 1) has to be present.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="imvert:associations/imvert:association[imvert:name != 'request' and imvert:name != 'response' and imvert:name != 'pad']">
 						<!-- In case the Gr or Gc messagetype has one or more associations not having the name 'response', 'request' or 'pad' an error
 						     message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; one or more associations are present with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; one or more associations are present with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;[2]&quot; this is not allowed.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
@@ -274,10 +250,7 @@
 								</xsl:if>
 								<xsl:choose>
 									<xsl:when test="not(empty($sort)) and contains($berichtcode,'Gr')">
-										<xsl:variable name="msg"
-											select="concat('The tagged value sort is not allowed on a ',$berichtcode,' messageclass.')"
-											as="xs:string" />
-										<xsl:sequence select="imf:msg('ERROR',$msg)" />
+										<xsl:sequence select="imf:msg(.,'ERROR','The tagged value sort is defined on the messageclass &quot;[1]&quot;, however it is not allowed on a &quot;[2]&quot; messageclass.', (ep:name,$berichtcode))" />			
 									</xsl:when>
 									<xsl:when test="not(empty($sort)) and contains($berichtcode,'Gc')">
 										<xsl:attribute name="sort" select="$sort"/>
@@ -307,50 +280,32 @@
 				<xsl:choose>
 					<xsl:when test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type 'entiteitrelatie'. If that's the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype are processed for messages with berichttype ',$berichtcode,'.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype, or stereotype &quot;pad&quot;, are processed for messages with berichttype &quot;[2]&quot;.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when test="not(count(imvert:associations/imvert:association[imvert:name = 'response']) = 1)">
 						<!-- In case of a Po messagetype it's required to have one and not more than one association with the name 'response'. 
 						     If this isn't the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; has to be present.', (imvert:name))" />			
 					</xsl:when>
 					<xsl:when test="not(count(imvert:associations/imvert:association[imvert:name = 'requestbody']) = 1)">
 						<!-- In case of a Po messagetype it's required to have one and not more than one association with the name 'requestbody'. 
 						     If this isn't the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;requestbody&quot; has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;requestbody&quot; has to be present.', (imvert:name))" />			
 					</xsl:when>
 					<xsl:when test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-padrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type padrelatie'. If that's the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;padrelatie&quot; is present, for messages with berichttype ',$berichtcode,' such an association has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no association with the stereotype &quot;padrelatie&quot; is present, for messages with berichttype &quot;[2]&quot; such an association has to be present.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when test="not(count(imvert:associations/imvert:association[imvert:name = 'pad']) = 1)">
 						<!-- In case of a Po messagetype it's required to have one and not more than one association with the name 'pad'. 
 						     If this isn't the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;padrelatie&quot; and the name &quot;pad&quot; has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; 1 (and only 1) association with the stereotype &quot;padrelatie&quot; and the name &quot;pad&quot; has to be present.', (imvert:name))" />			
 					</xsl:when>
 					<xsl:when
 						test="imvert:associations/imvert:association[imvert:name != 'request' and imvert:name != 'response' and imvert:name != 'requestbody' and imvert:name != 'pad']">
 						<!-- In case of a Po messagetype has one or more associations not having the name 'response', 'request','requestbody or 'pad' an error
 						     message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; one or more associations with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; one or more associations are present with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;[2]&quot; this is not allowed.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
@@ -425,58 +380,37 @@
 				<xsl:choose>
 					<xsl:when test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type 'entiteitrelatie'. If that's the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype are processed for messages with berichttype ',$berichtcode,'.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype, or stereotype &quot;pad&quot;, are processed for messages with berichttype &quot;[2]&quot;.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when test="not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1)">
 						<!-- In case of a Po messagetype it's required to have one and not more than one association with the name 'request'. 
 						     If this isn't the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; has to be present.', (imvert:name))" />			
 					</xsl:when>
 					<xsl:when test="not(count(imvert:associations/imvert:association[imvert:name = 'response']) = 1)">
 						<!-- In case of a Po messagetype it's required to have one and not more than one association with the name 'response'. 
 						     If this isn't the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; has to be present.', (imvert:name))" />			
 					</xsl:when>
 					<xsl:when test="not(count(imvert:associations/imvert:association[imvert:name = 'requestbody']) = 1)">
 						<!-- In case of a Po messagetype it's required to have one and not more than one association with the name 'requestbody'. 
 						     If this isn't the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;requestbody&quot; has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;requestbody&quot; has to be present.', (imvert:name))" />			
 					</xsl:when>
 					<xsl:when test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-padrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type padrelatie'. If that's the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;padrelatie&quot; is present, for messages with berichttype ',$berichtcode,' such an association has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no association with the stereotype &quot;padrelatie&quot; is present, for messages with berichttype &quot;[2]&quot; such an association has to be present.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when test="not(count(imvert:associations/imvert:association[imvert:name = 'pad']) = 1)">
 						<!-- In case of a Po messagetype it's required to have one and not more than one association with the name 'pad'. 
 						     If this isn't the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;padrelatie&quot; and the name &quot;pad&quot; has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; 1 (and only 1) association with the stereotype &quot;padrelatie&quot; and the name &quot;pad&quot; has to be present.', (imvert:name))" />			
 					</xsl:when>
 					<xsl:when
 						test="imvert:associations/imvert:association[imvert:name != 'request' and imvert:name != 'response' and imvert:name != 'requestbody' and imvert:name != 'pad']">
 						<!-- In case of a Po messagetype has one or more associations not having the name 'response', 'request','requestbody or 'pad' an error
 						     message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; one or more associations with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; one or more associations are present with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;[2]&quot; this is not allowed.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
@@ -551,54 +485,36 @@
 					<xsl:when
 						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type 'entiteitrelatie'. If that's the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype or of stereotype &quot;padrelatie&quot; are processed for messages with berichttype ',$berichtcode,'.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype or of stereotype &quot;padrelatie&quot; are processed for messages with berichttype &quot;[2]&quot;.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="count(imvert:associations/imvert:association[imvert:name = 'response']) = 1">
 						<!-- In case of a De messagetype no association with the name 'response' is allowed. 
 						     If this association is present an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; is allowed.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; is allowed.', (imvert:name))" />			
 					</xsl:when>
 					<xsl:when
 						test="not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1)">
 						<!-- In case of a De messagetype it's required to have one and not more than one association with the name 'request'. 
 						     If this isn't the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; is present. For messages with berichttype &quot;',$berichtcode,'&quot; 1 (and only 1) has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; is present. For messages with berichttype &quot;[2]&quot; 1 (and only 1) has to be present.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-padrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type 'padrelatie'. If that's the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;padrelatie&quot; is present, for messages with berichttype ',$berichtcode,' such an association has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no association with the stereotype &quot;padrelatie&quot; is present, for messages with berichttype &quot;[2]&quot; such an association has to be present.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="not(count(imvert:associations/imvert:association[imvert:name = 'pad']) = 1)">
 						<!-- In case of a De messagetype it's required to have one and not more than one association with the name 'pad'. 
 						     If this isn't the case an error message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no or more than 1 association with the stereotype &quot;padrelatie&quot; and the name &quot;pad&quot; is present. For messages with berichttype &quot;',$berichtcode,'&quot; 1 (and only 1) has to be present.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; no or more than 1 association with the stereotype &quot;padrelatie&quot; and the name &quot;pad&quot; is present. For messages with berichttype &quot;[2]&quot; 1 (and only 1) has to be present.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="imvert:associations/imvert:association[imvert:name != 'request' and imvert:name != 'pad']">
 						<!-- In case the De messagetype has one or more associations not having the name 'request' or 'pad' an error
 						     message is generated. -->
-						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; one or more associations are present with a name not equal to &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
-							as="xs:string" />
-						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+						<xsl:sequence select="imf:msg(.,'ERROR','Within the messageclass &quot;[1]&quot; one or more associations are present with a name not equal to &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;[2]&quot; this is not allowed.', (imvert:name,$berichtcode))" />			
 					</xsl:when>
 					<xsl:when
 						test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
@@ -610,22 +526,13 @@
 							<xsl:sequence select="imf:create-debug-comment-with-xpath('A13100]',$debugging,.)" />
 							<ep:rough-message messagetype="request"	berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}" operationId="{$operationId}">
 								<xsl:if test="not(empty($fields))">
-									<xsl:variable name="msg"
-										select="concat('The tagged value fields is not allowed on a ',$berichtcode,' messageclass.')"
-										as="xs:string" />
-									<xsl:sequence select="imf:msg('ERROR',$msg)" />
+									<xsl:sequence select="imf:msg(.,'ERROR','The tagged value &quot;fields&quot; is defined on the messageclass &quot;[1]&quot;, however it is not allowed on a &quot;[2]&quot; messageclass.', (ep:name,$berichtcode))" />			
 								</xsl:if>
 								<xsl:if test="$customPathFacet != ''">
-									<xsl:variable name="msg"
-										select="concat('The tagged value customPathFacet is not allowed on a ',$berichtcode,' messageclass.')"
-										as="xs:string" />
-									<xsl:sequence select="imf:msg('ERROR',$msg)" />
+									<xsl:sequence select="imf:msg(.,'ERROR','The tagged value &quot;customPathFacet&quot; is defined on the messageclass &quot;[1]&quot;, however it is not allowed on a &quot;[2]&quot; messageclass.', (ep:name,$berichtcode))" />			
 								</xsl:if>
 								<xsl:if test="not(empty($sort)) and contains($berichtcode,'De')">
-									<xsl:variable name="msg"
-										select="concat('The tagged value sort is not allowed on a ',$berichtcode,' messageclass.')"
-										as="xs:string" />
-									<xsl:sequence select="imf:msg('ERROR',$msg)" />
+									<xsl:sequence select="imf:msg(.,'ERROR','The tagged value &quot;sort&quot; is defined on the messageclass &quot;[1]&quot;, however it is not allowed on a &quot;[2]&quot; messageclass.', (ep:name,$berichtcode))" />			
 								</xsl:if>
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
