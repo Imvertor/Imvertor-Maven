@@ -116,11 +116,11 @@ public class JsonSchemaCompiler extends Step {
 		
 		JsonFile metaSchemaFile = jsonSchemaFileByCatalog(configurator.getXParm("system/json-metaschema-url"));
 		succeeds = succeeds && jsonFile.isWellformed();
-		succeeds = succeeds && jsonFile.isValid(metaSchemaFile);
 		
 		// pretty print and store to json folder
 		if (succeeds) {
-	
+			jsonFile.isValid(metaSchemaFile); // alleen waarschuwingen afgeven
+			
 			jsonFile.toYaml(yamlFile);
 			
 			// copy to the app folder

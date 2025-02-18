@@ -32,7 +32,7 @@
     xmlns:rschema="http://www.w3.org/2000/01/rdf-schema#"
     
     exclude-result-prefixes="#all" 
-    version="2.0">
+    version="3.0">
     
     <!-- 
           Introduce lists.
@@ -115,25 +115,30 @@
                     <xsl:sequence select="imf:msg(.,'ERROR','Owner parameter doclist-xml-url not defined',())"/>
                 </xsl:when>
                 <xsl:when test="normalize-space($loc)">
-                    <!-- Wanneer het een URL met xmlk extensie betreft, dan integraal overnemen. Anders oplossen op basis van de doclist-xml-url. -->
+                    <!-- Wanneer het een URL met xml extensie betreft, dan integraal overnemen. Anders oplossen op basis van de doclist-xml-url. -->
                     <xsl:variable name="url" select="if (matches($loc,'^https?://.*?\.xml$','i')) then $loc else imf:merge-parms($doclist-xml-url)"/>
                     <xsl:sequence select="imf:msg(.,'DEBUG','Reading [1] entries from: [2]',(imf:get-config-stereotypes(imvert:stereotype/@id),$url))"/>
-                    <xsl:variable name="xml" select="if (unparsed-text-available($url)) then document($url) else ()"/>
-                    <xsl:choose>
-                        <xsl:when test="exists($xml) and imvert:stereotype/@id = 'stereotype-name-codelist'">
-                            <xsl:apply-templates select="$xml" mode="codelist">
-                                <xsl:with-param name="construct" select="."/>
-                            </xsl:apply-templates>
-                        </xsl:when>
-                        <xsl:when test="exists($xml) and imvert:stereotype/@id = 'stereotype-name-referentielijst'">
-                            <xsl:apply-templates select="$xml" mode="reflist">
-                                <xsl:with-param name="construct" select="."/>
-                            </xsl:apply-templates>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:sequence select="imf:msg(.,'WARNING','List contents cannot be retrieved from location [1], tried [2]',($loc, $url))"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
+                    <xsl:try>
+                        <xsl:variable name="xml" select="if (unparsed-text-available($url)) then document($url) else ()"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($xml) and imvert:stereotype/@id = 'stereotype-name-codelist'">
+                                <xsl:apply-templates select="$xml" mode="codelist">
+                                    <xsl:with-param name="construct" select="."/>
+                                </xsl:apply-templates>
+                            </xsl:when>
+                            <xsl:when test="exists($xml) and imvert:stereotype/@id = 'stereotype-name-referentielijst'">
+                                <xsl:apply-templates select="$xml" mode="reflist">
+                                    <xsl:with-param name="construct" select="."/>
+                                </xsl:apply-templates>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:sequence select="imf:msg(.,'WARNING','List contents cannot be retrieved from location [1], tried [2]',($loc, $url))"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:catch>
+                            <xsl:sequence select="imf:msg(.,'WARNING','List contents did not parse okay, please check [2]',($url))"/>
+                        </xsl:catch>
+                    </xsl:try>
                 </xsl:when>
                 <xsl:when test="exists($referring-attributes-noloc)">
                     <xsl:sequence select="imf:msg(.,'WARNING','Codelist content location not specified',())"/>
@@ -210,7 +215,7 @@
             <imvert:tagged-values>
                 <imvert:tagged-value id="CFG-TV-DEFINITION">
                     <imvert:value>
-                        <xsl:value-of select="Omschrijving"/>
+                        <xsl:sequence select="Omschrijving/node()"/>
                     </imvert:value>
                 </imvert:tagged-value>
             </imvert:tagged-values>
@@ -232,7 +237,7 @@
             <imvert:tagged-values>
                 <imvert:tagged-value id="CFG-TV-DEFINITION">
                     <imvert:value>
-                        <xsl:value-of select="Omschrijving"/>
+                        <xsl:sequence select="Omschrijving/node()"/>
                     </imvert:value>
                 </imvert:tagged-value>
             </imvert:tagged-values>
@@ -257,7 +262,7 @@
             <imvert:tagged-values>
                 <imvert:tagged-value id="CFG-TV-DEFINITION">
                     <imvert:value>
-                        <xsl:value-of select="Omschrijving"/>
+                        <xsl:sequence select="Omschrijving/node()"/>
                     </imvert:value>
                 </imvert:tagged-value>
             </imvert:tagged-values>
@@ -269,7 +274,7 @@
         <imvert:refelement>
             <xsl:for-each select="*">
                 <imvert:element>
-                    <xsl:value-of select="."/>
+                    <xsl:sequence select="node()"/>
                 </imvert:element>
             </xsl:for-each>
         </imvert:refelement>

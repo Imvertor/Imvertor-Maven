@@ -1542,7 +1542,7 @@
                         <xsl:sequence select="imf:create-output-element('imvert:type',imf:get-system-tagged-value(.,'type'))"/>
                         <xsl:sequence select="imf:create-output-element('imvert:weight',imf:get-system-tagged-value(.,'weight'))"/>
                         <xsl:sequence select="imf:create-output-element('imvert:status',imf:get-system-tagged-value(.,'status'))"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:definition',(imf:get-system-tagged-value(.,'description'),imf:get-system-tagged-value(.,'documentation'))[1])"/>
+                        <xsl:sequence select="imf:create-output-element('imvert:definition',imf:eadoc-to-xhtml((imf:get-system-tagged-value(.,'description'),imf:get-system-tagged-value(.,'documentation'))[1]))"/>
                        
                         <!-- when constraint on association: -->
                         <xsl:variable name="links" select="imf:get-system-tagged-value(.,'relatedlinks')"/>

@@ -81,9 +81,9 @@
                     <h1>Tagged values specified</h1>
                     <div class="intro">
                         <p>
-                            The list provids a complete overview of all <i>specified</i> tagged value names and values. 
+                            The list provides a complete overview of all <i>specified</i> tagged value names and values. 
                             If derived, the applicationrelease is specified ("origin"), otherwise "(here)" is shown.
-                            Note that some tagged values of the supplier are not derived, an therefore not shown here.
+                            Note that some tagged values of the supplier are not derived, and therefore not shown here.
                         </p>
                         <xsl:variable name="ns" select="string-join($system-defined-tagged-value-names,', ')"/>
                         <xsl:if test="normalize-space($ns)">

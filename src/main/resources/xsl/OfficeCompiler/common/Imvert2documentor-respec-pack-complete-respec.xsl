@@ -19,6 +19,7 @@
         Deze opzet volgt de Logius ReSpec template instructies
         
         Zie https://github.com/Logius-standaarden/ReSpec-template
+        Zie https://github.com/Logius-standaarden/respec/wiki
     -->
     
     <xsl:variable name="respec-config-filename" select="$configuration-docrules-file/respec-config"/>
@@ -47,43 +48,38 @@
                 <xsl:variable name="respec-parms" as="element(parms)">
                     <parms>
                         
-                        <parm respec-name="specStatus" parms-name="prop-publicatiestatus">{if (imf:get-xparm('appinfo/phase') eq '3') then 'IG' else 'IO'}</parm>
-                        <parm respec-name="specType" parms-name="prop-publicatietype">{
-                            (
-                                imf:get-xparm('documentor/prop-documenttype',()),
-                                if (imf:boolean(imf:get-xparm('documentor/catalog-included'))) then 'IM' else 'base'
-                            )[1]
-                        }</parm>
-                        <parm respec-name="subtitle" parms-name="prop-subtitel"/>
-                        <parm respec-name="edDraftURI" parms-name="prop-concepturi" type="uri"/>
-                        <parm respec-name="shortName" parms-name="prop-kortenaam">{imf:get-xparm('appinfo/model-abbreviation',())}</parm>
-                        <parm respec-name="publishVersion" parms-name="prop-publicatieversie">{imf:get-xparm('appinfo/version',())}</parm>
-                        <parm respec-name="publishDate" parms-name="prop-publicatiedatum" type="date">{imf:get-xparm('run/start',())}</parm>
-                        <parm respec-name="previousPublishVersion" parms-name="prop-vorigepublicatieversie"/>
-                        <parm respec-name="previousPublishDate" parms-name="prop-vorigepublicatiedatum" type="date"/>
-                        <parm respec-name="addSectionLinks" parms-name="prop-voegsectielinkstoe" type="boolean">true</parm>
-                        <parm respec-name="latestVersion" parms-name="prop-meestrecenteversie"/>
-                        <parm respec-name="prevED" parms-name="prop-TODOprevED"/>
-                        <parm respec-name="prevRecURI" parms-name="prop-TODOprevRecURI" type="uri"/>
-                        <parm respec-name="maxTocLevel" parms-name="prop-inhoudsopgaveniveaus" type="integer">4</parm>
-                        <parm respec-name="license" parms-name="prop-licentie"/>
-                        <parm respec-name="lint" parms-name="prop-lint" type="boolean"/>
-                        <parm respec-name="pubDomain" parms-name="prop-publicatiedomein"/>
-                        <parm respec-name="modificationDate" parms-name="prop-aanpassingsdatum" type="date"/>
-                        <parm respec-name="isPreview" parms-name="prop-ispreview" type="boolean"/>
-                        <parm respec-name="prevED" parms-name="prop-vorigconcept" type="uri"/>
-                        <parm respec-name="module" parms-name="prop-module"/>
+                        <parm req="1" respec-name="specStatus"             parms-name="prop-documentstatus"         property="Document status">{if (imf:get-xparm('appinfo/phase') eq '3') then 'IG' else 'IO'}</parm>
+                        <parm req="1" respec-name="specType"               parms-name="prop-documenttype"           property="Document type">{if (imf:boolean(imf:get-xparm('documentor/catalog-included'))) then 'IM' else 'base'}</parm>
+                        <parm req="1" respec-name="subtitle"               parms-name="prop-subtitel"               property="Subtitel"/>
+                        <parm req="0" respec-name="edDraftURI"             parms-name="prop-concepturi"             property="Concept URI" type="uri"/>
+                        <parm req="1" respec-name="shortName"              parms-name="prop-kortenaam"              property="Korte naam">{imf:get-xparm('appinfo/model-abbreviation',())}</parm>
+                        <parm req="1" respec-name="publishVersion"         parms-name="prop-publicatieversie"       property="Publicatie versie">{imf:get-xparm('appinfo/version',())}</parm>
+                        <parm req="0" respec-name="publishDate"            parms-name="prop-publicatiedatum"        property="Publicatie datum" type="date"/><!-- https://github.com/speced/respec/wiki/publishDate -->
+                        <parm req="0" respec-name="previousPublishVersion" parms-name="prop-vorigepublicatieversie" property="Vorige publicatie versie"/>
+                        <parm req="0" respec-name="previousPublishDate"    parms-name="prop-vorigepublicatiedatum"  property="Vorige publicatie datum" type="date"/>
+                        <parm req="1" respec-name="addSectionLinks"        parms-name="prop-voegsectielinkstoe"     property="Voeg sectielinks toe" type="boolean">true</parm>
+                        <parm req="0" respec-name="latestVersion"          parms-name="prop-meestrecenteversie"     property="Meest recente versie">{imf:get-xparm('documentor/prop-publicatieversie',())}</parm>
+                        <parm req="0" respec-name="prevED"                 parms-name="prop-TODOprevED"             property=""/>
+                        <parm req="0" respec-name="prevRecURI"             parms-name="prop-TODOprevRecURI"         property="" type="uri"/>
+                        <parm req="1" respec-name="maxTocLevel"            parms-name="prop-inhoudsopgaveniveaus"   property="Inhoudsopgave niveaus" type="integer">4</parm>
+                        <parm req="1" respec-name="license"                parms-name="prop-licentie"               property="Licentie"/>
+                        <parm req="0" respec-name="lint"                   parms-name="prop-lint"                   property="Lint" type="boolean">Ja</parm>
+                        <parm req="1" respec-name="pubDomain"              parms-name="prop-publicatiedomein"       property="Publicatie domein"/>
+                        <parm req="0" respec-name="modificationDate"       parms-name="prop-aanpassingsdatum"       property="Aanpassingsdatum" type="date"/>
+                        <parm req="0" respec-name="isPreview"              parms-name="prop-ispreview"              property="Is preview" type="boolean">Nee</parm>
+                        <parm req="0" respec-name="prevED"                 parms-name="prop-vorigconcept"           property="Vorig concept" type="uri"/>
+                        <parm req="0" respec-name="module"                 parms-name="prop-module"                 property="Module">default</parm>
+                        <parm req="0" respec-name="localImvertorInfo"      parms-name="prop-toonimvertorinfo"       property="Toon imvertor info">Ja</parm>
                         
                         <!-- gestuctureerde info apart afhandelen -->
-                        <parm respec-name="github" parms-name="prop-github" type="github"/>
-                        <parm respec-name="abbrevs" parms-name="prop-afkortingen" type="abbrev"/> <!--TODO is niet meer onderdeel van logius -->
+                        <parm req="0" respec-name="github"                 parms-name="prop-github"                 property="Github" type="github"/>
                         
                         <!-- lijsten speciaal afhandelen -->
-                        <parm respec-name="authors" parms-name="prop-auteur-list" type="person-list"/>
-                        <parm respec-name="editors" parms-name="prop-redacteur-list" type="person-list"/>
-                        <parm respec-name="formerEditors" parms-name="prop-vorigeredacteur-list" type="person-list"/>
-                        <parm respec-name="logos" parms-name="prop-logo-list" type="logo-list"/>
-                        <parm respec-name="alternateFormats" parms-name="prop-alternatiefformaat-list" type="formats-list"/>
+                        <parm req="0" respec-name="authors"                parms-name="prop-auteur-list"            property="Auteur" type="person-list"/>
+                        <parm req="1" respec-name="editors"                parms-name="prop-redacteur-list"         property="Redacteur" type="person-list"/>
+                        <parm req="0" respec-name="formerEditors"          parms-name="prop-vorigeredacteur-list"   property="Vorige redacteur" type="person-list"/>
+                        <parm req="0" respec-name="logos"                  parms-name="prop-logo-list"              property="Logo" type="logo-list"/>
+                        <parm req="0" respec-name="alternateFormats"       parms-name="prop-alternatiefformaat-list" property="Alternatief formaat" type="formats-list"/>
                         
                     </parms>
                 </xsl:variable>
@@ -91,8 +87,26 @@
                 <xsl:variable name="respec-config" as="xs:string*">
                     <xsl:for-each select="$respec-parms/parm">
                         <xsl:variable name="specified" select="imf:reduce-space(imf:merge-parms(imf:get-xparm('documentor/' || @parms-name,())))" as="xs:string?"/>
-                        <xsl:variable name="default" select="node()"/>
+                        <xsl:variable name="default" select="if (normalize-space(.)) then . else ()"/>
                         <xsl:variable name="value" select="($specified,$default)[1]"/>
+                        
+                        <xsl:variable name="required" select="@req = '1'"/>
+                        
+                        <!-- test of en hoe een waarde is bepaald -->
+                        <xsl:choose>
+                            <xsl:when test="$specified">
+                                <!-- okay, opgegeven in de header tabel -->
+                            </xsl:when>
+                            <xsl:when test="$default and $required">
+                                <!-- okay, er is een default -->
+                                <xsl:sequence select="imf:msg('WARNING','No Documentor value for [1] specified, assuming: [2]', (@property,node()))"></xsl:sequence>
+                            </xsl:when>
+                            <xsl:when test="$required">
+                                <xsl:sequence select="imf:msg('ERROR','No Documentor value for [1] specified', @property)"></xsl:sequence>
+                            </xsl:when>
+                        </xsl:choose>
+                        
+                        
                         <xsl:if test="$value">
                             <xsl:choose>
                                 <xsl:when test="@type = 'date'">
@@ -266,15 +280,15 @@
             <xsl:matching-substring>
                 <xsl:variable name="found-key" select="regex-group(1)"/>
                 <xsl:variable name="found-value" select="replace(regex-group(2),'&quot;','\\&quot;')"/>
-                <xsl:variable name="norm-key" select="if ($normalize) then lower-case(normalize-space($found-key)) else ()"/>
+                <xsl:variable name="norm-key" select="if ($normalize) then imf:extract(lower-case($found-key),'[a-z]') else ()"/>
                 <xsl:choose>
                     <xsl:when test="empty($norm-key)">"{$found-key}": "{$found-value}"</xsl:when>
-                    <xsl:when test="$norm-key = 'repository url'">repoURL: "{$found-value}"</xsl:when>
+                    <xsl:when test="$norm-key = 'repositoryurl'">repoURL: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'branch'">branch: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'naam'">name: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'instelling'">company: "{$found-value}"</xsl:when>
-                    <xsl:when test="$norm-key = 'instelling url'">companyURL: "{$found-value}"</xsl:when>
-                    <xsl:when test="$norm-key = 'e-mail'">mailto: "{$found-value}"</xsl:when>
+                    <xsl:when test="$norm-key = 'instellingurl'">companyURL: "{$found-value}"</xsl:when>
+                    <xsl:when test="$norm-key = 'email'">mailto: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'opmerking'">note: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'url'">url: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'bron'">src: "{$found-value}"</xsl:when>
@@ -284,7 +298,7 @@
                     <xsl:when test="$norm-key = 'id'">id: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'label'">label: "{$found-value}"</xsl:when>
                     <xsl:when test="$norm-key = 'uri'">uri: "{$found-value}"</xsl:when>
-                    <xsl:otherwise>"{$found-key}": "{$found-value}"</xsl:otherwise>
+                    <xsl:otherwise>"{$norm-key}": "{$found-value}"</xsl:otherwise>
                 </xsl:choose>
             </xsl:matching-substring>
             <xsl:non-matching-substring>

@@ -158,7 +158,7 @@
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
                 
                 <!-- mim 1.1.1 adaptions: -->
-                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
