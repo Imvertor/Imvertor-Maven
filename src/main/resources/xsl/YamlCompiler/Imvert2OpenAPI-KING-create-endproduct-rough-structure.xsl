@@ -250,7 +250,7 @@
 								</xsl:if>
 								<xsl:choose>
 									<xsl:when test="not(empty($sort)) and contains($berichtcode,'Gr')">
-										<xsl:sequence select="imf:msg(.,'ERROR','The tagged value sort is defined on the messageclass &quot;[1]&quot;, however it is not allowed on a &quot;[2]&quot; messageclass.', (ep:name,$berichtcode))" />			
+										<xsl:sequence select="imf:msg(.,'ERROR','The tagged value &quot;sort&quot; is defined on the messageclass &quot;[1]&quot;, however it is not allowed on a &quot;[2]&quot; messageclass.', (ep:name,$berichtcode))" />			
 									</xsl:when>
 									<xsl:when test="not(empty($sort)) and contains($berichtcode,'Gc')">
 										<xsl:attribute name="sort" select="$sort"/>
