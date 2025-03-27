@@ -2608,6 +2608,9 @@
 	<xsl:template match="html:*">
 		<xsl:copy>
 			<xsl:choose>
+				<xsl:when test="local-name()='a'">
+					<xsl:text>[</xsl:text><xsl:value-of select="."/><xsl:text>](</xsl:text><xsl:value-of select="./@href"/><xsl:text>)</xsl:text>
+				</xsl:when>
 				<xsl:when test="html:*">
 					<xsl:apply-templates select="html:*|text()"/>
 				</xsl:when>
