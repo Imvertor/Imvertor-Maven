@@ -77,7 +77,7 @@
 	<xsl:variable name="kv-serialisation">
 		<xsl:choose>
 			<xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-SERIALISATION'))">
-				<xsl:sequence select="imf:msg(.,$packages,'WARNING','For an Open API interface a serialisation must be defined. Define one using the tv Serialisatie.', ())" />
+				<xsl:sequence select="imf:msg(.,'WARNING','For an Open API interface a serialisation must be defined. Define one using the tv Serialisatie.')" />
 				<xsl:value-of select="'hal+json'"/>
 			</xsl:when>
 			<xsl:otherwise>
@@ -2788,7 +2788,7 @@
 			</xsl:when>
 			<!-- TODO meer soorten namen uitwerken? --> ?>
 			<xsl:otherwise>
-				<xsl:sequence select="imf:msg($this,'ERROR','The class [1] with the stereotype [3] has the unknown type [2].', ($this/imvert:name,string-join($stereotype,', ',$type)))"/>
+				<xsl:sequence select="imf:msg($this,'ERROR','The class [1] with the stereotype [3] has the unknown type [2].', ($this/imvert:name,string-join(string-join($stereotype,', '),$type)))"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:function>
