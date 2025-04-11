@@ -238,7 +238,7 @@
     </xsl:template>
     
     <xsl:template match="mim:ExterneKoppeling">
-        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineOrByReference'),'byReference')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineOrByReference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag --><!-- #574-->
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Externe koppeling',())"/>
             <ep:parameters>
@@ -252,7 +252,7 @@
     </xsl:template>
     
     <xsl:template match="mim:Keuze">
-        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineOrByReference'),'byreference')[1]"/><!-- we nemen aan dat in keuze objecten de referentie by default op referentie is gebaseerd NB je kunt die niet specificeren op de keuze-relaties -->
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineOrByReference'),'inline')[1]"/><!-- we nemen aan dat in keuze objecten de referentie by default inline is NB je kunt die niet specificeren op de keuze-relaties --><!-- #574-->
         <ep:construct>
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Keuze',())"/>
@@ -441,7 +441,7 @@
         <xsl:variable name="pva" select="if ($obj and $requires-pva) then if (imf:get-supers-with-pva($obj)) then () else imf:get-primary-interval-attribute($obj) else ()"/>
         <xsl:variable name="unit" select="imf:get-kenmerk(.,'eenheid')"/>
         <xsl:variable name="is-gml-measure-type" select="lower-case(mim:naam) = ('measure', 'length', 'speed', 'angle', 'area', 'volume')"/>
-        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineOrByReference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk(.,'inlineOrByReference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag --><!-- #574-->
         
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een attribuutsoort',())"/>
@@ -611,7 +611,7 @@
     
     <xsl:template match="mim:Relatiesoort">
         <xsl:variable name="info-provider" select="if ($relatierol-leidend) then mim:relatierollen/mim:Doel else ."/>
-        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk($info-provider,'inlineOrByReference'),'byReference')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
+        <xsl:variable name="inlineOrByReference" select="(imf:get-kenmerk($info-provider,'inlineOrByReference'),'inline')[1]"/><!-- see /req/by-reference-basic/inline-or-by-reference-tag -->
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Relatiesoort',())"/>
             <ep:parameters>

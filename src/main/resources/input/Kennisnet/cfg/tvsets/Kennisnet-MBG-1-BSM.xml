@@ -19,7 +19,7 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="../../../KING/cfg/tvsets/KINGBSM.xml"/>
+    <xi:include href="../../../KING/cfg/tvsets/KING-MBG-1-BSM.xml"/>
     
     <name>Kennisnet BSM TV-sets</name>
     

@@ -303,7 +303,7 @@
                 <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{$name}" kind="attrib" alias="{$alias}"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:association[not(imvert:name)]">
-                <xsl:variable name="type" select="concat('[',$this/imvert:type-name,']')"/>
+                <xsl:variable name="type" select="concat('..',$this/imvert:type-name)"/>
                 <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{$type}" kind="{imf:get-aggregation($this)}" alias="{$alias}"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:association">
@@ -311,11 +311,13 @@
             </xsl:when>
             <xsl:when test="$this/self::imvert:source | $this/self::imvert:target">
                 <xsl:variable name="assoc" select="$this/.."/>
-                <xsl:variable name="type" select="concat('[', imf:get-original-names($assoc), ':', $this/imvert:role/@original,']')"/>
+                <xsl:variable name="type" select="concat('{', imf:get-original-names($assoc), ':', $this/imvert:role/@original,'}')"/>
                 <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{$type}" alias="{$alias}" tv=""/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:tagged-value">
-                <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{$name}" alias="{$alias}" tv="{$this/imvert:name}"/>
+                <frags tv="{imf:get-original-names($this)}">
+                    <xsl:copy-of select="imf:get-construct-name-frags($this/../..)/@*"/>
+                </frags>
             </xsl:when>
             <xsl:otherwise>
                 <frags name="{$name}"  pack="{$package-names}" class="{$class-name}" prop="{local-name($this)}" alias="{$alias}"/>
@@ -348,7 +350,7 @@
         <xsl:variable name="prn" select="if (imf:exists($property-name)) then concat('.',$property-name) else ''"/>
         <xsl:variable name="prk" select="if (imf:exists($property-kind)) then concat(' (',$property-kind,')') else ''"/>
         <xsl:variable name="ali" select="if (imf:exists($alias)) then concat(' = ',$alias) else ''"/>
-        <xsl:variable name="tvn" select="if (imf:exists($tv-name)) then concat(' [',$tv-name,']') else ''"/>
+        <xsl:variable name="tvn" select="if (imf:exists($tv-name)) then concat(' &lt;',$tv-name,'&gt;') else ''"/>
         <xsl:value-of select="concat($pan,$cln,$prn,$prk,$ali,$tvn)"/>
         
         <!--

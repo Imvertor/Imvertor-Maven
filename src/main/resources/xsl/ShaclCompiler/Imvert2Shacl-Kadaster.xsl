@@ -341,10 +341,10 @@
         <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype/@id = ('stereotype-name-union-element')]" mode="mode-shacl-subject"/>
         
         <xsl:apply-templates select="$this/imvert:associations/imvert:association[imvert:target/imvert:stereotype/@id = ('stereotype-name-relation-role')]" mode="mode-shacl-subject"/>
-   
+        
     </xsl:template>
     
-    <xsl:template match="imvert:attribute" mode="mode-shacl-object">
+    <xsl:template match="imvert:attribute | imvert:association" mode="mode-shacl-object">
         <xsl:variable name="this" select="."/>
         
         <xsl:value-of select="imf:ttl-debug(.,'mode-shacl-object 1')"/>

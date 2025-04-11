@@ -6,7 +6,7 @@
     
     <xi:include href="../../../Geonovum/cfg/tvsets/Geonovum-MIM-1-NEN36102022.xml"/>
     
-    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM12.xml"/>
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM11.xml"/>
     
     <xi:include href="BRO.xml"/>
     

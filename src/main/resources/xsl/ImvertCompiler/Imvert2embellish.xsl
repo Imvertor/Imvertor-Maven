@@ -81,8 +81,20 @@
         </imvert:packages>
         
         <!-- store some info to xparms -->
-        <xsl:sequence select="imf:set-config-string('appinfo','model-abbreviation',imf:get-tagged-value(/*,'##CFG-TV-ABBREV'))"/>
-   
+        <!-- 
+            De afkorting van het model wortdt bepaald door de tagged value "afkorting", of, als die er niet is, door het laatste del van de URL, of, als die er niet is, de default "no-abbrev"  
+        -->
+        <xsl:variable name="namespace" select="$imvert-document/imvert:packages/imvert:base-namespace"/>
+        <xsl:variable name="abbrev" select="(imf:get-tagged-value(/*,'##CFG-TV-ABBREV'), tokenize($namespace,'/')[last()])[1]" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="$abbrev">
+                <xsl:sequence select="imf:set-config-string('appinfo','model-abbreviation',$abbrev)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg('WARNING','Cannot determine an abbreviation for this model')"/>
+                <xsl:sequence select="imf:set-config-string('appinfo','model-abbreviation','no-abbrev')"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="imvert:package">

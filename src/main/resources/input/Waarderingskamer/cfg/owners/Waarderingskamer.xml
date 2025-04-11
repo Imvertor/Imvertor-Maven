@@ -118,7 +118,7 @@
         Which messages may be collapsed in the EA interface?
         This is a set defined by this owner which may be referenced as [system/collapse-key-set] as the value of -messagecollapsekeys
     -->
-    <parameter name="message-collapse-keys">TV1NSBRF2 TV1NEOS2 NAFFA NAFF1 TCBR1 1TMBAUD</parameter>
+    <parameter name="message-collapse-keys"><!--TV1NSBRF2 TV1NEOS2 NAFFA NAFF1 TCBR1 1TMBAUD--></parameter>
 
     <!-- URL of the standard JSON components are available -->
     <!--parameter name="standard-components-url">https://github.com/VNG-Realisatie/Haal-Centraal-BRP-bevragen/blob/master/api-specificatie/</parameter-->

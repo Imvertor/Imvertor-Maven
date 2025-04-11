@@ -189,8 +189,11 @@
 						<xsl:when test="contains($berichttype,'Gr')">
 							<xsl:value-of select="concat('getResource',ep:tech-name)"/>
 						</xsl:when>
-						<xsl:otherwise>
+						<xsl:when test="contains($berichttype,'Gc')">
 							<xsl:value-of select="concat('getCollection',ep:tech-name)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($berichttype,ep:tech-name)"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>

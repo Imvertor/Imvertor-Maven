@@ -742,10 +742,14 @@
                 <part>
                     <?x <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/> x?>
                     <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+                    <xsl:sequence select="imf:add-data-location(.)"/>
                 </part>
             </content>
-            <content>
+           <content>
                 <xsl:choose>
+                    <xsl:when test="empty(imvert:attributes/imvert:attribute)">
+                        <!-- lege lijst -->
+                    </xsl:when>
                     <xsl:when test="$is-imbro-list and $has-code">
                         <itemtype type="CODE"/>
                         <itemtype type="VALUE"/>
@@ -821,19 +825,22 @@
                                 </xsl:for-each>
                             </ol>
                         </item>
+                       <xsl:sequence select="imf:add-data-location(.)"/>
                     </item>
                 </part>
             </content>
-            <content>
-                <!-- the attributes are the names of the reference list columns. -->
-                <xsl:for-each select="imvert:attributes/imvert:attribute">
-                    <itemtype type="LABEL" name="{imvert:name}" is-id="{imf:boolean(imvert:is-id)}">
-                        <xsl:value-of select="imvert:name/@original"/>
-                    </itemtype>
-                </xsl:for-each>
-                <!-- and the add the columns for this reference list -->
-                <xsl:apply-templates select="imvert:attributes/imvert:refelement" mode="detail-refelement"/>
-            </content>
+            <xsl:if test="imvert:attributes/imvert:refelement">
+                <content>
+                    <!-- the attributes are the names of the reference list columns. -->
+                    <xsl:for-each select="imvert:attributes/imvert:attribute">
+                        <itemtype type="LABEL" name="{imvert:name}" is-id="{imf:boolean(imvert:is-id)}">
+                            <xsl:value-of select="imvert:name/@original"/>
+                        </itemtype>
+                    </xsl:for-each>
+                    <!-- and the add the columns for this reference list -->
+                    <xsl:apply-templates select="imvert:attributes/imvert:refelement" mode="detail-refelement"/>
+                </content>
+            </xsl:if>
         </section>
     </xsl:template>
     
@@ -924,7 +931,7 @@
         <part>
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:for-each select="imvert:element">
-                <xsl:sequence select="imf:create-element('item',string(.))"/>
+                <xsl:sequence select="imf:create-element('item',node())"/>
             </xsl:for-each>
         </part>
     </xsl:template>
@@ -1859,6 +1866,31 @@
     <xsl:function name="imf:is-url" as="xs:boolean">
         <xsl:param name="url" as="xs:string?"/>
         <xsl:sequence select="matches($url,'^https?:')"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:add-data-location" as="element(item)?">
+        <xsl:param name="this" as="element()"/>
+        <xsl:variable name="dataloc" select="imf:get-formatted-tagged-value($this,'CFG-TV-DATALOCATION')"/>
+        
+        <xsl:variable name="list-type" select="$this/imvert:stereotype/@id"/>
+        <xsl:variable name="show-for-list" select="
+            ($list-type = 'stereotype-name-referentielijst' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-REFERENCELIST']) or
+            ($list-type = 'stereotype-name-codelijst' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-CODELIST'])
+        "/>
+        <xsl:choose>
+            <xsl:when test="not($show-for-list)">
+                <!-- niet toevoegen: er is niet opgegeven dat de url moet worden getoond op glovbaal, dan ook niet in detail. -->
+            </xsl:when>
+            <xsl:when test="not(imf:normalize-space($dataloc))">
+                <!-- niet toevoegen: er is geen datalocatie opgegeven -->
+            </xsl:when>
+            <xsl:otherwise>
+                <item>
+                    <xsl:text>Data locatie: </xsl:text>
+                    <a href="{$dataloc}"><xsl:value-of select="$dataloc"/></a>
+                </item> 
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <!-- ======== remove the sections that have @include set to false (as configured) =========== -->

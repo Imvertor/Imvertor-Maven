@@ -114,6 +114,7 @@
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value default="yes">Nee</value>
+                <value>Zie groep</value>
             </declared-values>
         </tv>
         <tv norm="space" id="CFG-TV-HEEFTTIJDLIJNREGISTRATIE">
@@ -131,9 +132,35 @@
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value default="yes">Nee</value>
+                <value>Zie groep</value>
             </declared-values>
         </tv>
         
+        <tv norm="space" id="CFG-TV-INDICATIONMATERIALHISTORY">
+            <!-- we maken het niet verplicht, overgangssituatie -->
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-INDICATIONFORMALHISTORY">
+            <!-- we maken het niet verplicht, overgangssituatie -->
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
+            </stereotypes>
+        </tv>
+            
         <tv norm="space" id="CFG-TV-DOELFORMAAT">
             <name lang="nl">Doelformaat</name>
             <desc lang="nl">Het formaat waarin een waardelijst is gepubliceerd.</desc>
