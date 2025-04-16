@@ -135,15 +135,15 @@
 		<xsl:variable name="customPathFacet">
 			<xsl:choose>
 				<xsl:when test="substring($rawCustomPathFacet,1,1) = '/' and substring($rawCustomPathFacet,string-length($rawCustomPathFacet),1) = '/'">
-					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains 2 slashes. Remove them.',($rawCustomPathFacet,$rawMessageName))"/>
+					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] starts and ends with slashes. Remove them.',($rawCustomPathFacet,$rawMessageName))"/>
 					<xsl:value-of select="substring-before(substring-after($rawCustomPathFacet,'/'),'/')"/>
 				</xsl:when>
 				<xsl:when test="substring($rawCustomPathFacet,1,1) = '/'">
-					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains a slash. Remove it.',($rawCustomPathFacet,$rawMessageName))"/>
+					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] starts or ends with a slash. Remove it.',($rawCustomPathFacet,$rawMessageName))"/>
 					<xsl:value-of select="substring-after($rawCustomPathFacet,'/')"/>
 				</xsl:when>
 				<xsl:when test="substring($rawCustomPathFacet,string-length($rawCustomPathFacet),1) = '/'">
-					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains a slash. Remove it.',($rawCustomPathFacet,$rawMessageName))"/>
+					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] starts or ends with a slash. Remove it.',($rawCustomPathFacet,$rawMessageName))"/>
 					<xsl:value-of select="substring-before($rawCustomPathFacet,'/')"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -405,13 +405,12 @@
 					</xsl:when>
 				</xsl:choose>
 				
-				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sort' attribute (dus parameter) wordt gedefinieerd
+				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sorteer' attribute (dus parameter) wordt gedefinieerd
 					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. 
 					 Wel mag er natuurlijk voor worden gekozen een sort attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is. -->
 				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='SORTEER'] and not(contains(upper-case($berichttype),'GC'))">
 					<xsl:sequence select="imf:msg(.,'ERROR','A sorteer parameter is not applicable for the [1] message [2], remove it', ($method,$messageName))" />			
 				</xsl:if>
-				
 				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[(empty(@path) or @path = 'false') and (not(@position) or @position='')]">
 					<xsl:sequence select="imf:msg(.,'WARNING','On one or more query parameters on the [1] message [2] no tagged value Positie has been defined. These parameters will be sorted alphabetically!', ($method, $messageName))" />			
 				</xsl:if>
@@ -1087,7 +1086,7 @@
 					<xsl:sequence select="imf:msg(.,'WARNING','The messagename ([1]) is not correct, according to the request tree in the model it should be [2].', ($messageName,$calculatedMessageName))" />			
 				</xsl:if> ?>
 				
-				<!-- At the moment query parameters become applicable for DELETE massage the following Error messages can be enabled. -->
+				<!-- At the moment query parameters become applicable for DELETE message the following Error messages can be enabled. -->
 				<?x				<!-- Een expand parameter is niet van toepassing op een DELETE bericht. -->
 				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND']">
 					<xsl:sequence select="imf:msg(.,'ERROR','An expand parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			

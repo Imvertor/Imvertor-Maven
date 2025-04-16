@@ -462,6 +462,12 @@
 								<xsl:sequence select="imf:create-output-element('ep:value', @tag)" />
 							</ep:parameter>
 						</xsl:if>
+						<xsl:if test="@customPathFacet and @customPathFacet!=''">
+							<ep:parameter>
+								<xsl:sequence select="imf:create-output-element('ep:name', 'customPathFacet')" />
+								<xsl:sequence select="imf:create-output-element('ep:value', @customPathFacet)" />
+							</ep:parameter>
+						</xsl:if>
 						<ep:parameter> 
 							<xsl:sequence select="imf:create-output-element('ep:name', 'operationId')" />
 							<xsl:choose>
