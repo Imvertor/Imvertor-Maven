@@ -9,7 +9,7 @@
     <!-- 
         these visuals specify the basic visual aspects of the UML profile  
     -->
-    <name>IHW MIM 1.2</name>
+    <name>IHW-MIM-1.2-CONCEPTUAL</name>
 
     <desc lang="en">Visuals for IHW MIM 1.2 models</desc>
     <desc lang="nl">Visuele aspecten van IHW MIM 1.2 modellen</desc>

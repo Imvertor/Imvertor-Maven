@@ -3,10 +3,7 @@
  * Copyright (C) 2016 
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    
-    <xi:include href="../../../Geonovum/cfg/metamodels/Geonovum-MIM-1-NEN36102022.xml"/>
-    
-    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-NEN3610-2022.xml"/>
+    <xi:include href="IHW-MIM-1-CONCEPTUAL.xml"/>
     
     <name>IHW-MIM-1-LOGICAL</name>
     

@@ -19,7 +19,6 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <!-- IHW follows VNGR requirements -->
     <xi:include href="IHW-MIM-1-CONCEPTUAL.xml"/>
     
     <name>IHW-MIM-1-LOGICAL</name>
