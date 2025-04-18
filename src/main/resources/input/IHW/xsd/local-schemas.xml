@@ -3,6 +3,6 @@
 -->
 <local-schemas xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="../../Kadaster/xsd/www.opengis.net/ls-GML322PROFILE-20200728.xml"/>
+  
     
 </local-schemas>
