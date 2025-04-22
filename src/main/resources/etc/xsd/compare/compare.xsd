@@ -1,0 +1,39 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    
+    <xs:element name="cmps">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="res" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="res">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="cmp" minOccurs="2" maxOccurs="2"/>
+            </xs:sequence>
+            <xs:attribute name="type">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="CHANGED"/>
+                        <xs:enumeration value="ADDED"/>
+                        <xs:enumeration value="REMOVED"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="cmp">
+        <xs:complexType>
+            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="domain" type="xs:string" use="optional"/>
+            <xs:attribute name="domain-stereo" type="xs:string" use="optional"/>
+            <xs:attribute name="class" type="xs:string" use="optional"/>
+            <xs:attribute name="class-stereo" type="xs:string" use="optional"/>
+            <xs:attribute name="property" type="xs:string" use="optional"/>
+            <xs:attribute name="property-stereo" type="xs:string" use="optional"/>
+            <xs:attribute name="value" type="xs:string" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema>
