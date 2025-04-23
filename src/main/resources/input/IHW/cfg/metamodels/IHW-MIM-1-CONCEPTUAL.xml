@@ -37,6 +37,9 @@
     </scalars>   
    
     <features>
+        <feature name="allow-multiple-supertypes">true</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+        <feature name="role-based">false</feature>
         <feature name="unique-normalized-association-names">no</feature>
     </features>
     

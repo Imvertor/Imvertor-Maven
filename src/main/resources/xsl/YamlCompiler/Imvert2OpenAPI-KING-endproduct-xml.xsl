@@ -40,7 +40,7 @@
 	<xsl:variable name="stylesheet" as="xs:string">Imvert2XSD-KING-OpenAPI-endproduct-xml</xsl:variable>
 	<xsl:variable name="stylesheet-version" as="xs:string">
 			$Id: Imvert2XSD-KING-OpenAPI-endproduct-xml.xsl 
-			2018-09-18 10:55:00Z Robert Melskens $</xsl:variable>
+			2025-03-27 10:14:00Z Robert Melskens $</xsl:variable>
 
 	<xsl:variable name="messages" select="imf:document($processable-base-file)" />
 	<xsl:variable name="packages" select="$messages/imvert:packages" />
@@ -2613,6 +2613,9 @@
 	<xsl:template match="html:*">
 		<xsl:copy>
 			<xsl:choose>
+				<xsl:when test="local-name()='a'">
+					<xsl:text>[</xsl:text><xsl:value-of select="."/><xsl:text>](</xsl:text><xsl:value-of select="./@href"/><xsl:text>)</xsl:text>
+				</xsl:when>
 				<xsl:when test="html:*">
 					<xsl:apply-templates select="html:*|text()"/>
 				</xsl:when>

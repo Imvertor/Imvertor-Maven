@@ -382,7 +382,7 @@ public class OfficeCompiler extends Step {
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_FILEPREPARE_FILE", "properties/IMVERTOR_DOCUMENTOR_FILEPREPARE_XSLPATH","system/cur-imvertor-filepath") : false;
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE", "properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_XSLPATH","system/cur-imvertor-filepath") : false;
 			// vervang het file met de aangepaste XHTML file
-			(new AnyFile(configurator.getXParm("properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE"))).copyFile(outfile);
+			if (succeeds) (new AnyFile(configurator.getXParm("properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE"))).copyFile(outfile);
 		}
 		return succeeds;
 	}

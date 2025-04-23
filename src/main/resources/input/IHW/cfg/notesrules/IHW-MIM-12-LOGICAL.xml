@@ -4,10 +4,8 @@
 -->
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="IHWUGM.xml"/>
+    <xi:include href="IHW-MIM-12-CONCEPTUAL.xml"/>
     
-    <name>IHW BSM</name>
-    
-    <desc>IHWBSM follows UGM conventions.</desc>
+    <name>IHW-MIM-12-LOGICAL</name>
     
 </notes-rules>

@@ -10,10 +10,8 @@
       <cs:Mapping>
          <cs:name>IHW_GEOSTANDAARDEN</cs:name>
          <cs:use>
-            <cs-ref:MapRef xlink:href="#GML322PROFILE"/>
-            <cs-ref:MapRef xlink:href="#MIM111"/>
-            <cs-ref:MapRef xlink:href="#IMGEO211"/>
-            <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
+            <cs-ref:MapRef xlink:href="#GML322"/>
+            <cs-ref:MapRef xlink:href="#MIM12"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-HYDRONETWORK"/>
             <cs-ref:MapRef xlink:href="#IHW-GENERIEK"/>
          </cs:use>
@@ -22,10 +20,8 @@
    <cs:components>
       <cs:ConceptualSchemasComponents>
 
-         <xi:include href="../../MIM/xsd/cs-MIM111.xml"/><!-- implements ConceptualSchema MIM11 -->
-         <xi:include href="../../Kadaster/xsd/cs-GML322PROFILE.xml"/><!-- implements ConceptualSchema GML322 -->
-         <xi:include href="../../Geonovum/xsd/cs-IMGEO211.xml"/><!-- implements ConceptualSchema IMGEO -->
-         <xi:include href="../../NEN3610/xsd/cs-NEN3610-2022.xml"/><!-- implements ConceptualSchema NEN3610-->
+         <xi:include href="../../MIM/xsd/cs-MIM12.xml"/><!-- implements ConceptualSchema MIM12 -->
+         <xi:include href="../../OGC/xsd/cs-GML322.xml"/><!-- implements Map #GML3 -->
          <xi:include href="../../INSPIRE/xsd/cs-INSPIRE.xml"/>
          
          <cs:ConceptualSchema>
@@ -37,10 +33,8 @@
          
          <!--maps:-->
          
-         <xi:include href="../../MIM/xsd/cm-MIM111.xml"/><!-- implements Map #MIM11 -->
-         <xi:include href="../../Kadaster/xsd/cm-GML322PROFILE.xml"/><!-- implements Map #GML322PROFILE -->
-         <xi:include href="../../Geonovum/xsd/cm-IMGEO211.xml"/><!-- implements Map #IMGEO -->
-         <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/><!-- implements Map #NEN3610 -->
+         <xi:include href="../../MIM/xsd/cm-MIM12.xml"/><!-- implements Map #MIM12 -->
+         <xi:include href="../../OGC/xsd/cm-GML322.xml"/><!-- for GML321-BROPROFILE -->
          <xi:include href="../../INSPIRE/xsd/cm-INSPIRE-HYDRONETWORK.xml"/>
          
          <cs:Map>
@@ -55,14 +49,17 @@
             </cs:forSchema>
             <cs:owner>IHW</cs:owner>
             <cs:constructs>
-               <cs:Construct>
+              <?x
+              <cs:Construct>
                   <cs:name>OIN</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
+               x?>
               <cs:Construct>
                   <cs:name>IMWA_GeoObject</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
+              <?x
               <cs:Construct>
                   <cs:name>VerticaleReferentie</cs:name>
                   <cs:sentinel>false</cs:sentinel>
@@ -80,30 +77,6 @@
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
                <cs:Construct>
-                  <cs:name>Point</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>Polygon</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>LineString</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>MultiPoint</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>MultiPolygon</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-               </cs:Construct>
-               <cs:Construct>
-                  <cs:name>MultiLineString</cs:name>
-                  <cs:sentinel>false</cs:sentinel>
-               </cs:Construct>
-               <cs:Construct>
                   <cs:name>DatumOnvolledig</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
@@ -115,6 +88,7 @@
                   <cs:name>GeoJsonGeometrie</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                </cs:Construct>
+               x?>
             </cs:constructs>
          </cs:Map>
         

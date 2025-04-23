@@ -476,10 +476,9 @@
         <executions>
           <execution>
             <id>install-external</id>
-            <phase>clean</phase>
+            <phase>validate</phase>
             <configuration>
               <file>${project.basedir}/lib/eaapi.jar</file>
-              <repositoryLayout>default</repositoryLayout>
               <groupId>enterprise.architect</groupId>
               <artifactId>java-api</artifactId>
               <version>1.0.0</version>

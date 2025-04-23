@@ -135,7 +135,7 @@
                     <p>This report shows {$cdiff} differences found between <xsl:sequence select="$compare-text"/>. This report is intended to provide sufficient information for manually creating <i>release notes</i> on the model.</p>
                 </intro>
                 <content>
-                    TODO
+                    <p><i>TODO</i></p>
                 </content>
             </page>
         </report>

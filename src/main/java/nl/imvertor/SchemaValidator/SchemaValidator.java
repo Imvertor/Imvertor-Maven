@@ -128,8 +128,9 @@ public class SchemaValidator extends Step {
 			} else if (file.getName().toLowerCase().endsWith(".xsd")) {
 				XsdFile schema = new XsdFile(file);
 				schema.allownsimports = true;
-				Vector<ErrorHandlerMessage> v = schema.validateGrammar(true, true, true);
+				Vector<ErrorHandlerMessage> v = schema.validateGrammar(true, false, true);
 				vl.addAll(v);
+				configurator.getRunner().debug(logger, "ISOS", "File \"" + schema.getName() + "\" parse errors: " + v.size() + "");
 			}
 		}
 		return vl;
