@@ -59,6 +59,13 @@
          <tip>No if aliases for objects and relations should not be tested (STUB)</tip>
          <required>false</required>
       </cli-parm> 
+      <cli-parm>
+         <name>tvmissingaswarning</name>
+         <arg>yes|no|phase</arg>
+         <tip>Should missing tagged values be signalled as an error, as a warning, or does this depend on the phase of the model?</tip>
+         <required>false</required>
+      </cli-parm> 
+      
    </cli-parms>
    <properties>
       

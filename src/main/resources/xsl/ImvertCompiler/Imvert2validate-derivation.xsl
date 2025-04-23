@@ -356,6 +356,12 @@
         <xsl:variable name="stereotype-id" select="$this/imvert:stereotype/@id"/>
         
         <xsl:if test="$validate-tv-occurs">
+            
+            <!-- bepaal wat we willen doen met missende tagged values, zie #572 --> 
+            
+            <xsl:variable name="tvmissingaswarning" select="imf:get-xparm('cli/tvmissingaswarning','yes') = 'yes'"/>
+            <xsl:variable name="phase-is-draft" select="$imvert-document/imvert:packages/imvert:phase = ('0','1')"/>
+            
             <xsl:for-each select="$config-tagged-values[stereotypes/stereo/@id = $stereotype-id]"> <!-- i.e. <tv> elements -->
                 <xsl:variable name="tv-name" select="name"/>
                 <xsl:variable name="tv-id" select="@id"/>
@@ -386,9 +392,11 @@
                     <xsl:sequence select="imf:msg($this,'FATAL','Tagged value without name for stereotype [1]',(imf:string-group($selected-stereotype)))"/>
                 </xsl:if>
                 
-                <xsl:sequence select="imf:report-warning($this, 
+                <xsl:sequence select="imf:report-validation($this, 
                     $min eq 1 and empty($applicable-values),
+                    if ($tvmissingaswarning or $phase-is-draft) then 'WARNING' else 'ERROR',
                     'Tagged value [1] not specified but required for [2]',($tv-name,imf:string-group($selected-stereotype)))"/>
+                
                 <xsl:sequence select="imf:report-error($this, 
                     count($applicable-values) gt $max,
                     'Tagged value [1] specified too many times for [2]',($tv-name,imf:string-group($selected-stereotype)))"/>
