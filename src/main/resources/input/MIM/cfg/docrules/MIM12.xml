@@ -34,6 +34,8 @@
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-MODEL</level>
+            
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>

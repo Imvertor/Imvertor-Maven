@@ -142,6 +142,13 @@
          <type>file</type>
       </cli-parm> 
       
+      <cli-parm>
+         <name>includemodelinfo</name>
+         <arg>yes|no</arg>
+         <tip>Include model metadata in the catalog?</tip>
+         <required>false</required>
+      </cli-parm> 
+      
    </cli-parms>
    <properties>
 

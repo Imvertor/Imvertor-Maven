@@ -117,6 +117,9 @@
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DOMAIN</level>
+            
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
@@ -143,6 +146,9 @@
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-UNION</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DOMAIN</level>
             
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
@@ -190,6 +196,8 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-MNEMONIC" order="040">
@@ -199,6 +207,8 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level> 
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
         </levels>
     </doc-rule>
 
@@ -224,6 +234,9 @@
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-MODEL</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DOMAIN</level>
+            
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
@@ -246,6 +259,9 @@
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-MODEL</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DOMAIN</level>
             
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
@@ -271,6 +287,9 @@
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DOMAIN</level>
+            
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
@@ -293,6 +312,9 @@
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DOMAIN</level>
             
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
@@ -445,6 +467,9 @@
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-MODEL</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DOMAIN</level>
+            
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
@@ -508,6 +533,56 @@
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+        </levels>
+    </doc-rule>
+    
+    <doc-rule id="CFG-DOC-BASISURI" order="100">
+        <name lang="nl">Basis-URI</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DOMAIN</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-INFORMATIEMODELTYPE" order="100">
+        <name lang="nl">Informatiemodel type</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-INFORMATIEDOMEIN" order="100">
+        <name lang="nl">Informatiedomein</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MIMVERSIE" order="100">
+        <name lang="nl">MIM versie</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MIMEXTENSIE" order="100">
+        <name lang="nl">MIM extensie</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MIMTAAL" order="100">
+        <name lang="nl">MIM taal</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-RELATIEMODELLERINGSTYPE" order="100">
+        <name lang="nl">Relatiemodelleringstype</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-TEKSTOPMAAK" order="100">
+        <name lang="nl">Tekstopmaak</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-MODEL</level>
         </levels>
     </doc-rule>
     

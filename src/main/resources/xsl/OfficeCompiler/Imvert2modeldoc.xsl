@@ -87,11 +87,13 @@
                 <xsl:variable name="sections" as="element()*">
                     <section type="MODEL" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.,'global')}">
                         <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
-                        <section type="OVERVIEW-MODEL">
-                            <content>
-                                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-MODEL')"/>
-                            </content>
-                        </section>
+                        <xsl:if test="imf:boolean(imf:get-xparm('cli/includemodelinfo','no'))">
+                            <section type="OVERVIEW-MODEL">
+                                <content>
+                                    <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-MODEL')"/>
+                                </content>
+                            </section>
+                        </xsl:if>
                     </section>
                     <!-- exclude package replacements (resolved stereotype internal) -->
                     <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
@@ -215,6 +217,14 @@
                     </xsl:if>
                 </section>
             </xsl:variable>
+            
+            <xsl:if test="imf:boolean(imf:get-xparm('cli/includemodelinfo','no'))">
+                <section type="OVERVIEW-DOMAIN">
+                    <content>
+                        <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-DOMAIN')"/>
+                    </content>
+                </section>
+            </xsl:if>
             <xsl:apply-templates select="$sections" mode="section-include"/>
         </section>
    
@@ -1527,6 +1537,32 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:get-constraint-frags($this/imvert:definition)[2])"/>   
                 </xsl:when>
                 
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-BASISURI'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-BASISURI'))"/>   
+                </xsl:when>
+             
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-INFORMATIEMODELTYPE'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-IMTYPE'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-INFORMATIEDOMEIN'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-IMDOMAIN'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-MIMVERSIE'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MIMVERSION'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-MIMEXTENSIE'">
+                    <xsl:sequence select="imf:create-part-2(.,string-join((imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MIMEXTENSION'),imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MIMEXTENSIONVERSION')),' v. '))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-MIMTAAL'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MIMLANGUAGE'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-RELATIEMODELLERINGSTYPE'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-IMRELATIONMODELINGTYPE'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-TEKSTOPMAAK'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-TEKSTOPMAAK'))"/>   
+                </xsl:when>
+              
                 <xsl:otherwise>
                     <xsl:sequence select="imf:msg($this,'FATAL','No such document rule: [1]',$doc-rule-id)"/>
                 </xsl:otherwise>
@@ -1751,10 +1787,14 @@
         <xsl:variable name="relation-name" select="$relation/imvert:name"/>
         <xsl:variable name="target-name" select="if (not($append-role-name)) then () else $target/imvert:role"/>
         
+        <xsl:variable name="model-name" select="if ($this/self::imvert:packages) then $this/imvert:application else ()"/>
         <xsl:variable name="construct-name" select="if (exists($relation-name) and exists($target-name)) then concat($relation-name,': ',$target-name) else ($relation-name,$target-name)"/>
         <xsl:variable name="construct-original-name" select="if (exists($relation-name) and exists($target-name)) then concat($relation-name/@original,': ',$target-name/@original) else ($relation-name/@original,$target-name/@original)"/>
         <xsl:variable name="name">
             <xsl:choose>
+                <xsl:when test="$model-name">
+                    <xsl:value-of select="$model-name"/>                
+                </xsl:when>
                 <xsl:when test="$original">
                     <xsl:value-of select="$construct-original-name"/>                
                 </xsl:when>

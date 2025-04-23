@@ -714,7 +714,19 @@
         <trans lang="en"> (identifying)</trans>
         
     </item>
+ 
+    <item>
+        <key>OVERVIEW-MODEL</key>
+        <trans lang="nl">Kenmerken</trans>
+        <trans lang="en">Features</trans>
+    </item>
+    <item>
+        <key>OVERVIEW-DOMAIN</key>
+        <trans lang="nl">Kenmerken</trans>
+        <trans lang="en">Features</trans>
+    </item>
     
+ 
     <!-- intermediate text -->
     
     <item>
