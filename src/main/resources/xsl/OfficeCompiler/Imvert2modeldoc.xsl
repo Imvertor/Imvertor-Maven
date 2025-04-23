@@ -750,12 +750,13 @@
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <part>
-                    <?x <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/> x?>
-                    <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
-                    <xsl:sequence select="imf:add-data-location(.)"/>
+                    <item>
+                        <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+                        <xsl:sequence select="imf:add-data-location(.)"/>
+                    </item>
                 </part>
             </content>
-           <content>
+            <content>
                 <xsl:choose>
                     <xsl:when test="empty(imvert:attributes/imvert:attribute)">
                         <!-- lege lijst -->
@@ -1819,10 +1820,8 @@
        <xsl:variable name="val" select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/node()"/>
        <xsl:choose>
             <xsl:when test="imf:is-url(string-join($val,''))">
-                <span>
-                    <a href="{$val}" target="_blank">
-                        <xsl:value-of select="$val"/>
-                    </a>
+                <span class="url">
+                    <xsl:value-of select="$val"/>
                 </span>
             </xsl:when>
             <xsl:otherwise>
@@ -1915,11 +1914,11 @@
         <xsl:variable name="list-type" select="$this/imvert:stereotype/@id"/>
         <xsl:variable name="show-for-list" select="
             ($list-type = 'stereotype-name-referentielijst' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-REFERENCELIST']) or
-            ($list-type = 'stereotype-name-codelijst' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-CODELIST'])
+            ($list-type = 'stereotype-name-codelist' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-CODELIST'])
         "/>
         <xsl:choose>
             <xsl:when test="not($show-for-list)">
-                <!-- niet toevoegen: er is niet opgegeven dat de url moet worden getoond op glovbaal, dan ook niet in detail. -->
+                <!-- niet toevoegen: er is niet opgegeven dat de url moet worden getoond op globaal, dan ook niet in detail. -->
             </xsl:when>
             <xsl:when test="not(imf:normalize-space($dataloc))">
                 <!-- niet toevoegen: er is geen datalocatie opgegeven -->
@@ -1927,7 +1926,9 @@
             <xsl:otherwise>
                 <item>
                     <xsl:text>Data locatie: </xsl:text>
-                    <a href="{$dataloc}"><xsl:value-of select="$dataloc"/></a>
+                    <span class="url">
+                        <xsl:value-of select="$dataloc"/>
+                    </span>
                 </item> 
             </xsl:otherwise>
         </xsl:choose>
