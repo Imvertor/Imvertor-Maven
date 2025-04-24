@@ -1,4 +1,4 @@
-name: Build and Package development branch
+name: Build and Package 4.3.0 branch
 
 on:
   workflow_dispatch:
