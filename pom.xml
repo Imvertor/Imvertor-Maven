@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>nl.imvertor</groupId>
   <artifactId>imvertor</artifactId>
-  <version>0.9.9</version>
+  <version>4.3.0</version>
   <name>Imvertor</name>
 
   <description>Imvertor under Maven</description>

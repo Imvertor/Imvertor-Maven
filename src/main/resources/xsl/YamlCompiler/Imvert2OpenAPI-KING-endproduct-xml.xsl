@@ -62,14 +62,14 @@
 	<xsl:variable name="project-url">
 		<xsl:choose>
 			<xsl:when test="not($packages/imvert:stereotype/@id = ('stereotype-name-application-package'))">
-				<xsl:sequence select="imf:msg('ERROR', 'Unable to create endproduct for a package that is not stereotyped as [1]', imf:string-group(imf:get-config-name-by-id('stereotype-name-application-package')))" />
+				<xsl:sequence select="imf:msg(.,'ERROR', 'Unable to create endproduct for a package that is not stereotyped as &quot;[1]&quot;.', (imf:string-group(imf:get-config-name-by-id('stereotype-name-application-package'))))" />
 				<!-- test only applies to koppelvlak-->	
 			</xsl:when>
 			<xsl:when test="string-length(imf:get-tagged-value($packages,'##CFG-TV-PROJECT-URL')) != 0">
 				<xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-PROJECT-URL')"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:sequence select="imf:msg('WARN', 'No tagged value project_url has been defined on the interface, define one.')" />
+				<xsl:sequence select="imf:msg(.,'WARNING', 'No tagged value project_url has been defined on the interface, define one.')" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
@@ -77,7 +77,7 @@
 	<xsl:variable name="kv-serialisation">
 		<xsl:choose>
 			<xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-SERIALISATION'))">
-				<xsl:sequence select="imf:msg($packages,'WARNING','For an Open API interface a serialisation must be defined. Define one using the tv Serialisatie.', ())" />
+				<xsl:sequence select="imf:msg(.,'WARNING','For an Open API interface a serialisation must be defined. Define one using the tv Serialisatie.')" />
 				<xsl:value-of select="'hal+json'"/>
 			</xsl:when>
 			<xsl:otherwise>
@@ -460,6 +460,12 @@
 							<ep:parameter>
 								<xsl:sequence select="imf:create-output-element('ep:name', 'tag')" />
 								<xsl:sequence select="imf:create-output-element('ep:value', @tag)" />
+							</ep:parameter>
+						</xsl:if>
+						<xsl:if test="@customPathFacet and @customPathFacet!=''">
+							<ep:parameter>
+								<xsl:sequence select="imf:create-output-element('ep:name', 'customPathFacet')" />
+								<xsl:sequence select="imf:create-output-element('ep:value', @customPathFacet)" />
 							</ep:parameter>
 						</xsl:if>
 						<ep:parameter> 
@@ -915,7 +921,7 @@
 								</ep:parameter>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:sequence select="imf:msg('WARNING','It wasn&quot;t possible to retrieve the SIM-name of the construct [1].', ($construct/imvert:name))" />
+								<xsl:sequence select="imf:msg(.,'WARNING','It wasn&quot;t possible to retrieve the SIM-name of the construct [1].', ($construct/imvert:name))" />
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:if
@@ -1351,7 +1357,7 @@
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="empty($id) and empty($type-id)">
-				<xsl:sequence select="imf:msg('WARNING','The construct [1] doesn&quot;t have an id and type-id.', ($name))" />
+				<xsl:sequence select="imf:msg(.,'WARNING','The construct [1] doesn&quot;t have an id and type-id.', ($name))" />
 			</xsl:when>
 			<xsl:otherwise/>
 		</xsl:choose>
@@ -1869,7 +1875,6 @@
 					</ep:parameters>
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
-					<xsl:sequence select="imf:msg($construct,'WARNING','Processing attribute [1] with baretype.',(@display-name,imvert:baretype))"/>						
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name-oas,'type-name'))" />
 					<xsl:sequence select="imf:create-output-element('ep:outside-ref', imvert:type-package)" />
 					<xsl:choose>
@@ -2718,81 +2723,81 @@
 	</xsl:function>
 
 	<xsl:function name="imf:get-compiled-name">
-		<xsl:param name="this" as="element()" />
-		<xsl:variable name="type" select="local-name($this)" />
-		<xsl:variable name="stereotype" select="imf:get-stereotype($this)" />
-		<xsl:variable name="alias" select="$this/imvert:alias" />
-		<xsl:variable name="name-raw" select="$this/imvert:name" />
-		<xsl:variable name="name-form" select="replace(imf:strip-accents($name-raw),'[^\p{L}0-9.\-]+','_')" />
+		<xsl:param name="this" as="element()"/>
+		<xsl:variable name="type" select="local-name($this)"/>
+		<xsl:variable name="stereotype" select="imf:get-stereotype($this)"/>
+		<xsl:variable name="alias" select="$this/imvert:alias"/>
+		<xsl:variable name="name-raw" select="$this/imvert:name"/>
+		<xsl:variable name="name-form" select="replace(imf:strip-accents($name-raw),'[^\p{L}0-9.\-]+','_')"/>
 
-		<xsl:variable name="name" select="$name-form" />
+		<xsl:variable name="name" select="$name-form"/>
 
 		<xsl:choose>
-			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-composite')">
-				<xsl:value-of select="concat(imf:capitalize($name),'Grp')" />
+			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-simpletype')">
+				<xsl:value-of select="$name"/>
+			</xsl:when>
+<?x			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-composite')">
+				<xsl:value-of select="concat(imf:capitalize($name),'Grp')"/>
 			</xsl:when>
 			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-objecttype')">
-				<xsl:value-of select="$alias" />
+				<xsl:value-of select="$alias"/>
 			</xsl:when>
 			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-relatieklasse')">
-				<xsl:value-of select="$alias" />
+				<xsl:value-of select="$alias"/>
 			</xsl:when>
 			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-referentielijst')">
-				<xsl:value-of select="$alias" />
+				<xsl:value-of select="$alias"/>
 			</xsl:when>
 			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-complextype')">
-				<xsl:value-of select="$name" />
-			</xsl:when>
+				<xsl:value-of select="$name"/>
+			</xsl:when> ?>
 			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-enumeration')">
-				<xsl:value-of select="$name" />
+				<xsl:value-of select="$name"/>
 			</xsl:when>
-			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-union')">
-				<xsl:value-of select="$name" />
+<?x			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-union')">
+				<xsl:value-of select="$name"/>
 			</xsl:when>
 			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-interface')">
 				<!-- this must be an external -->
-				<xsl:variable name="external-name" select="imf:get-external-type-name($this,true())" />
-				<xsl:value-of select="$external-name" />
-			</xsl:when>
-			<xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-simpletype')">
-				<xsl:value-of select="$name" />
+				<xsl:variable name="external-name" select="imf:get-external-type-name($this,true())"/>
+				<xsl:value-of select="$external-name"/>
 			</xsl:when>
 			<xsl:when test="$type = 'attribute' and $stereotype = ('stereotype-name-attribute')">
-				<xsl:value-of select="$name" />
+				<xsl:value-of select="$name"/>
 			</xsl:when>
 			<xsl:when test="$type = 'attribute' and $stereotype = ('stereotype-name-referentie-element')">
-				<xsl:value-of select="$name" />
+				<xsl:value-of select="$name"/>
 			</xsl:when>
 			<xsl:when test="$type = 'attribute' and $stereotype = ('stereotype-name-data-element')">
-				<xsl:value-of select="$name" />
+				<xsl:value-of select="$name"/>
 			</xsl:when>
 			<xsl:when test="$type = 'attribute' and $stereotype = ('stereotype-name-enum')">
-				<xsl:value-of select="$name" />
+				<xsl:value-of select="$name"/>
 			</xsl:when>
 			<xsl:when test="$type = 'attribute' and $stereotype = ('stereotype-name-union-element')">
-				<xsl:value-of select="imf:useable-attribute-name($name,$this)" />
+				<xsl:value-of select="imf:useable-attribute-name($name,$this)"/>
 			</xsl:when>
 			<xsl:when test="$type = 'association' and $stereotype = ('stereotype-name-relatiesoort') and normalize-space($alias)">
 				<!-- if this relation occurs multiple times, add the alias of the target object -->
-				<xsl:value-of select="$alias" />
+				<xsl:value-of select="$alias"/>
 			</xsl:when>
 			<xsl:when test="$type = 'association' and $this/imvert:aggregation = 'composite'">
-				<xsl:value-of select="$name" />
+				<xsl:value-of select="$name"/>
 			</xsl:when>
 			<xsl:when test="$type = 'association' and $stereotype = ('stereotype-name-relatiesoort')">
-				<xsl:sequence select="imf:msg($this,'ERROR','No alias',())" />
-				<xsl:value-of select="lower-case($name)" />
+				<xsl:sequence select="imf:msg($this,'ERROR','No alias',())"/>
+				<xsl:value-of select="lower-case($name)"/>
 			</xsl:when>
 			<xsl:when test="$type = 'association' and normalize-space($alias)"> <!-- composite -->
-				<xsl:value-of select="$alias" />
+				<xsl:value-of select="$alias"/>
 			</xsl:when>
 			<xsl:when test="$type = 'association'">
-				<xsl:sequence select="imf:msg($this,'ERROR','No alias',())" />
-				<xsl:value-of select="lower-case($name)" />
+				<xsl:sequence select="imf:msg($this,'ERROR','No alias',())"/>
+				<xsl:value-of select="lower-case($name)"/>
 			</xsl:when>
-			<!-- TODO meer soorten namen uitwerken? -->
+			<!-- TODO meer soorten namen uitwerken? --> ?>
 			<xsl:otherwise>
-				<xsl:sequence select="imf:msg($this,'ERROR','Unknown type [1] with stereo [2]', ($type, string-join($stereotype,', ')))" />
+				<xsl:sequence select="imf:msg($this,'ERROR','The class [1] with the stereotype [3] has the unknown type [2].', ($this/imvert:name,string-join(string-join($stereotype,', '),$type)))"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:function>
