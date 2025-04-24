@@ -39,6 +39,11 @@
     -->
     <lists-to-listing>true</lists-to-listing>
     
+    <!--
+        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
+    -->
+    <show-lists-with-metadata>yes</show-lists-with-metadata>
+
     <!-- which sections to include in the modeldoc? --> 
     <include-overview-section-level>no</include-overview-section-level>
     <include-detail-section-level>yes</include-detail-section-level>
