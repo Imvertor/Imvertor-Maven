@@ -290,6 +290,9 @@
             <xsl:when test="$scheme = 'property-name'">
                 <xsl:value-of select="imf:get-normalized-name-sub($name,'R',true())"/>
             </xsl:when>
+            <xsl:when test="$scheme = 'enum-name'">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
             <xsl:when test="$scheme = 'tv-name'">
                 <xsl:value-of select="imf:get-normalized-name-sub($name,'T',true())"/>
             </xsl:when>

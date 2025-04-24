@@ -73,6 +73,7 @@
     <xsl:template match="imvert:found-name">
         <xsl:variable name="type" select="
             if (parent::imvert:package) then 'package-name' else 
+            if (parent::imvert:attribute[imvert:stereotype/@id = 'stereotype-name-enum']) then 'enum-name' else
             if (parent::imvert:attribute) then 'property-name' else
             if (parent::imvert:association) then 'property-name' else 'class-name'"/>
         <imvert:name original="{.}">
