@@ -14,6 +14,8 @@
             <cs-ref:MapRef xlink:href="#MIM12"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-HYDRONETWORK"/>
             <cs-ref:MapRef xlink:href="#IHW-GENERIEK"/>
+            <cs-ref:MapRef xlink:href="#IMGEO211"/>
+            <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
@@ -22,6 +24,8 @@
 
          <xi:include href="../../MIM/xsd/cs-MIM12.xml"/><!-- implements ConceptualSchema MIM12 -->
          <xi:include href="../../OGC/xsd/cs-GML322.xml"/><!-- implements Map #GML3 -->
+        <xi:include href="../../Geonovum/xsd/cs-IMGEO211.xml"/><!-- implements ConceptualSchema IMGEO -->
+         <xi:include href="../../NEN3610/xsd/cs-NEN3610-2022.xml"/><!-- implements ConceptualSchema NEN3610-->
          <xi:include href="../../INSPIRE/xsd/cs-INSPIRE.xml"/>
          
          <cs:ConceptualSchema>
