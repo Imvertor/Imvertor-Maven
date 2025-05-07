@@ -112,14 +112,19 @@ public class JsonSchemaCompiler extends Step {
 		if (succeeds) jsonXmlFile.toJson(jsonFile,true);
 		
 		// Debug: test if json is okay.
-		// het toepasbare metaschema si doorgegeven via xparm 
 		
-		JsonFile metaSchemaFile = jsonSchemaFileByCatalog(configurator.getXParm("system/json-metaschema-url"));
+		String metaSchemaUrl = configurator.getXParm("system/json-metaschema-url",false);
+		JsonFile metaSchemaFile = null;
+		
+		if (metaSchemaUrl != null) 
+			metaSchemaFile = jsonSchemaFileByCatalog(metaSchemaUrl);
+		
 		succeeds = succeeds && jsonFile.isWellformed();
 		
 		// pretty print and store to json folder
 		if (succeeds) {
-			jsonFile.isValid(metaSchemaFile); // alleen waarschuwingen afgeven
+			if (metaSchemaFile != null) 
+				jsonFile.isValid(metaSchemaFile); // alleen waarschuwingen afgeven
 			
 			jsonFile.toYaml(yamlFile);
 			
