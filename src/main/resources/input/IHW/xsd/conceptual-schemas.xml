@@ -24,8 +24,8 @@
 
          <xi:include href="../../MIM/xsd/cs-MIM12.xml"/><!-- implements ConceptualSchema MIM12 -->
          <xi:include href="../../OGC/xsd/cs-GML322.xml"/><!-- implements Map #GML3 -->
-        <xi:include href="../../Geonovum/xsd/cs-IMGEO211.xml"/><!-- implements ConceptualSchema IMGEO -->
-         <xi:include href="../../NEN3610/xsd/cs-NEN3610-2022.xml"/><!-- implements ConceptualSchema NEN3610-->
+         <xi:include href="../../Geonovum/xsd/cs-IMGEO211.xml"/><!-- implements ConceptualSchema IMGEO -->
+         <xi:include href="../../NEN3610/xsd/cs-NEN3610-2022.xml"/><!-- implements ConceptualSchema NEN3610 -->
          <xi:include href="../../INSPIRE/xsd/cs-INSPIRE.xml"/>
          
          <cs:ConceptualSchema>
@@ -39,6 +39,8 @@
          
          <xi:include href="../../MIM/xsd/cm-MIM12.xml"/><!-- implements Map #MIM12 -->
          <xi:include href="../../OGC/xsd/cm-GML322.xml"/><!-- for GML321-BROPROFILE -->
+         <xi:include href="../../Geonovum/xsd/cm-IMGEO211.xml"/><!-- implements map IMGEO211 -->
+         <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/><!-- implements map NEN3610-2022 -->
          <xi:include href="../../INSPIRE/xsd/cm-INSPIRE-HYDRONETWORK.xml"/>
          
          <cs:Map>
