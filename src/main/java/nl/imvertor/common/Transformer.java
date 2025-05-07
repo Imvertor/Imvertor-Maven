@@ -186,7 +186,8 @@ public class Transformer {
 
 		String task = "Transforming";
 		
-		configurator.getRunner().debug(logger,"CHAIN",task + " " + (new AnyFile(infile)).getRelativePath(configurator.getWorkFolder()) + " using " + (new AnyFile(xslfile)).getRelativePath(configurator.getBaseFolder()));
+		String relxslfile = (new AnyFile(xslfile)).getRelativePath(configurator.getBaseFolder()); // bedoeld om relatief pad van het file tov. basefolder weer te geven
+		configurator.getRunner().debug(logger,"CHAIN",task + " " + (new AnyFile(infile)).getRelativePath(configurator.getWorkFolder()) + " using " + relxslfile);
 		
 		stylesheetIdentifier  = Configurator.getStylesheetIdentifier(xslfile);
 		
@@ -273,7 +274,7 @@ public class Transformer {
 		Configurator.getInstance().getRunner().debug(logger,"CHAIN","Transformation took " + duration + " msec");
 		
 		// send to log as to be able to determine the full chain of info through transformations. 
-		configurator.getXsltCallLogger().add(configurator.getCurrentStepName(), infile.getName(), xslfile.getName(), outfile.getName(), duration);
+		configurator.getXsltCallLogger().add(configurator.getCurrentStepName(), infile.getName(), relxslfile, outfile.getName(), duration);
 		
 		return (configurator.forceCompile() || configurator.getRunner().getFirstErrorText(stylesheetIdentifier) == null);
 
