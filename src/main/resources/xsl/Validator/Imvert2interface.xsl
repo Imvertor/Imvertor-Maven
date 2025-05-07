@@ -60,6 +60,9 @@
             <xsl:variable name="referencing-constructs" select="$document-classes/descendant-or-self::*[imvert:type-id = $id]/ancestor-or-self::*[imvert:id][1]"/><!-- construct in dit document van dat type -->
             <xsl:variable name="construct" as="element(cs:Construct)?">
                 <xsl:choose>
+                    <xsl:when test="empty($name)">
+                        <xsl:sequence select="imf:msg(.,'ERROR','Incomplete canonization, this metamodel is configured (completely) for your organization')"/>
+                    </xsl:when>
                     <!-- er zijn meerdere constructs onder deze naam, dus disambigueren, maar geen van de constructst heeft een ID -->
                     <xsl:when test="$constructs[2] and empty($identified-construct) and imf:boolean(imf:get-xparm('cli/usefirstmap'))">
                         <xsl:sequence select="imf:msg(.,'WARNING','Duplicates occur for references to [1] in outside model, using mapping [2]',(imf:string-group($name),$conceptual-schema-mapping-name))"/>
