@@ -51,7 +51,6 @@
         Typical example are GML constructs.
     -->
     <xsl:variable name="outside-mapped-classes" as="element(imvert:class)*">
-        
         <xsl:for-each select="$document-packages[imvert:id = 'OUTSIDE']/imvert:class"> <!-- all stubs -->
             <xsl:variable name="id" select="imvert:id"/>
             <xsl:variable name="name" select="imvert:name"/>
@@ -60,9 +59,6 @@
             <xsl:variable name="referencing-constructs" select="$document-classes/descendant-or-self::*[imvert:type-id = $id]/ancestor-or-self::*[imvert:id][1]"/><!-- construct in dit document van dat type -->
             <xsl:variable name="construct" as="element(cs:Construct)?">
                 <xsl:choose>
-                    <xsl:when test="empty($name)">
-                        <xsl:sequence select="imf:msg(.,'ERROR','Incomplete canonization, this metamodel is configured (completely) for your organization')"/>
-                    </xsl:when>
                     <!-- er zijn meerdere constructs onder deze naam, dus disambigueren, maar geen van de constructst heeft een ID -->
                     <xsl:when test="$constructs[2] and empty($identified-construct) and imf:boolean(imf:get-xparm('cli/usefirstmap'))">
                         <xsl:sequence select="imf:msg(.,'WARNING','Duplicates occur for references to [1] in outside model, using mapping [2]',(imf:string-group($name),$conceptual-schema-mapping-name))"/>
@@ -151,12 +147,20 @@
         <xsl:sequence select="imf:set-config-string('appinfo','phase',$phase)"/>
         <xsl:sequence select="imf:set-config-string('appinfo','release',$release)"/>
         <xsl:sequence select="imf:set-config-string('appinfo','subpath',imf:get-subpath($project-name,$application-package-name,$release))"/>
-            
+           
         <!-- then process -->
         <xsl:copy>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
-            <xsl:apply-templates select="imvert:package"/>
+            <xsl:choose>
+                <xsl:when test="exists($document-packages[imvert:id = 'OUTSIDE']/imvert:class[empty(imvert:name)])"> <!-- #621 -->
+                    <xsl:sequence select="imf:msg(.,'ERROR','Incomplete canonization, this metamodel is configured (completely) for your organization')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="imvert:package"/>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:copy>
+        
     </xsl:template>
     
     <xsl:template match="imvert:package[imvert:id = 'OUTSIDE']">
