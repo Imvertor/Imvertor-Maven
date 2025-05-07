@@ -44,7 +44,6 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-conceptual-map.xsl"/>
        
-  
     <!-- 
         outside mapped classes  are classes that are referenced but not defined. 
         They are considered to be configured using the conceptual schemas configuration.
@@ -153,7 +152,7 @@
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
             <xsl:choose>
                 <xsl:when test="exists($document-packages[imvert:id = 'OUTSIDE']/imvert:class[empty(imvert:name)])"> <!-- #621 -->
-                    <xsl:sequence select="imf:msg(.,'ERROR','Incomplete canonization, this metamodel is configured (completely) for your organization')"/>
+                    <xsl:sequence select="imf:msg(.,'ERROR','Incomplete canonization, this metamodel [1] is not configured (completely) for your organization',imf:get-xparm('appinfo/metamodel-name-and-version'))"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates select="imvert:package"/>
