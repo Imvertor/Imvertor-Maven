@@ -67,6 +67,11 @@
     -->
     <show-lists-with-metadata>no</show-lists-with-metadata>
     
+    <!--
+        Moet een URL in een data locatie worden weergegeven als link? (zie #565)
+    -->
+    <data-location-as-link>no</data-location-as-link>
+    
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>

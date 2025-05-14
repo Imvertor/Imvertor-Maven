@@ -49,5 +49,15 @@
         Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
     -->
     <respec-config>respec-nlgov</respec-config> <!-- gecachte versie van https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js -->
-
+    
+    <!--
+        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
+    -->
+    <show-lists-with-metadata>no</show-lists-with-metadata>
+    
+    <!--
+        Moet een URL in een data locatie worden weergegeven als link? (zie #565)
+    -->
+    <data-location-as-link>yes</data-location-as-link>
+    
 </doc-rules>

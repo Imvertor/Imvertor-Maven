@@ -1916,6 +1916,7 @@
             ($list-type = 'stereotype-name-referentielijst' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-REFERENCELIST']) or
             ($list-type = 'stereotype-name-codelist' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-CODELIST'])
         "/>
+        <xsl:variable name="create-link" select="imf:is-url($dataloc) and imf:boolean($configuration-docrules-file/data-location-as-link)"/>
         <xsl:choose>
             <xsl:when test="not($show-for-list)">
                 <!-- niet toevoegen: er is niet opgegeven dat de url moet worden getoond op globaal, dan ook niet in detail. -->
@@ -1926,9 +1927,18 @@
             <xsl:otherwise>
                 <item>
                     <xsl:text>Data locatie: </xsl:text>
-                    <span class="url">
-                        <xsl:value-of select="$dataloc"/>
-                    </span>
+                    <xsl:choose>
+                        <xsl:when test="$create-link">
+                            <a href="{$dataloc}" target="_blank">
+                                <xsl:value-of select="$dataloc"/>
+                            </a>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <span class="url">
+                                <xsl:value-of select="$dataloc"/>
+                            </span>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </item> 
             </xsl:otherwise>
         </xsl:choose>
