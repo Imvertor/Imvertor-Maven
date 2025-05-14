@@ -35,4 +35,7 @@
     <!-- specify the minOccurs/maxOccurs when needed ("default") or "always" -->
     <parameter name="specify-xsd-occurrence">default</parameter><!-- only applies to ISO19136 -->
     
+    <!-- specify if version or modelversion or release should occur in the schema folder path -->
+    <parameter name="release-folder-name">release</parameter>
+    
 </xmlschema-rules>

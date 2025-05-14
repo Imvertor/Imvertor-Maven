@@ -568,8 +568,24 @@
     -->    
     <xsl:function name="imf:get-xsd-filefolder" as="xs:string">
         <xsl:param name="this" as="node()"/> <!-- an imvert:package -->
+        
+        <xsl:variable name="release-folder-name" select="imf:get-config-xmlschemarules()/parameter[@name='release-folder-name']"/>
+        <xsl:variable name="release-folder">
+            <xsl:choose>
+                <xsl:when test="$release-folder-name = 'version'">
+                    <xsl:value-of select="concat('/',$this/imvert:version)"/>
+                </xsl:when>
+                <xsl:when test="$release-folder-name = 'modelversion'">
+                    <xsl:value-of select="concat('/',$imvert-document/imvert:packages/imvert:version)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="concat('/v',$this/imvert:release)"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
         <xsl:variable name="localpath" select="substring-after($this/imvert:namespace,concat($base-namespace,'/'))"/>
-        <xsl:value-of select="concat(if (normalize-space($localpath)) then $localpath else 'unknown','/v',$this/imvert:release)"/>
+        <xsl:value-of select="concat(if (normalize-space($localpath)) then $localpath else 'unknown',$release-folder)"/>
     </xsl:function>
     
     <!--
