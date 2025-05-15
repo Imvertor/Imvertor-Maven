@@ -140,7 +140,8 @@ public class MIMCompiler extends Step {
 			XmlFile resultMimFile = new XmlFile(configurator.getXParm("properties/WORK_MIMFORMAT_XMLPATH"));
 			
 			// copy to the app folder
-			String mimFormatName = configurator.mergeParms(configurator.getXParm("cli/mimformatname"));
+			String n = configurator.getXParm("cli/mimformatname", false);
+			String mimFormatName = configurator.mergeParms((n != null) ? n : "[appinfo/application-name]");
 			// Create the folder; it is not expected to exist yet.
 			AnyFolder xmlFolder = new AnyFolder(configurator.getXParm("system/work-mim-folder-path"));
 			XmlFile appXmlFile = new XmlFile(xmlFolder, mimFormatName + ".xml");
