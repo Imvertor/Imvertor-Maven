@@ -32,6 +32,8 @@
       <xs:element name="herkomstDefinitie" type="xs:string" minOccurs="0"/>
       <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0"/>
       <xs:element name="datumOpname" type="xs:string"/>
+      <xs:element name="unidirectioneel" type="xs:string"/>
+      <xs:element name="aggregatietype" type="mim:aggregatietype"/>
       <xs:element name="doel">
         <xs:complexType>
           <xs:choice>
@@ -77,21 +79,9 @@
       <xs:element name="indicatieMaterieleHistorie" type="mim:boolean"/>
       <xs:element name="indicatieFormeleHistorie" type="mim:boolean"/>
       <xs:element name="kardinaliteit" type="xs:string"/>
-      <xs:element name="kardinaliteitBron" type="xs:string"/>
       <xs:element name="authentiek" type="xs:string"/>
       <xs:element name="mogelijkGeenWaarde" type="mim:boolean"/>
       <xs:element name="identificerend" type="mim:boolean" minOccurs="0"/>
-      <xs:element name="aggregatietype">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Compositie"/>
-            <xs:enumeration value="Gedeeld"/>
-            <xs:enumeration value="Geen"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-
-
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>

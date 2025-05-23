@@ -849,7 +849,7 @@
   
   <xsl:template match="metagegeven[. = 'Kardinaliteit bron']">
     <xsl:param name="context" as="element()"/>
-    <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+    <mim:kardinaliteitBron>{imf:kardinaliteit($context/imvert:min-occurs-source, $context/imvert:max-occurs-source)}</mim:kardinaliteitBron>
     <?x
     <xsl:choose>
       <xsl:when test="$context/self::imvert:source">

@@ -604,16 +604,7 @@
       <xs:element name="authentiek" type="xs:string"/>
       <xs:element name="indicatieAfleidbaar" type="mim:boolean"/>
       <xs:element name="mogelijkGeenWaarde" type="mim:boolean"/>
-      <xs:element name="aggregatietype">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Compositie"/>
-            <xs:enumeration value="Gedeeld"/>
-            <xs:enumeration value="Geen"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-
+      <xs:element name="aggregatietype" type="mim:aggregatietype"/>
       <xs:element ref="mim:attribuutsoorten" minOccurs="0"/>
       <xs:element ref="mim:constraints" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>

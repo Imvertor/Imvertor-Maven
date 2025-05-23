@@ -433,11 +433,9 @@
          <metagegeven kardinaliteit="1">Indicatie materiële historie</metagegeven>
          <metagegeven kardinaliteit="1">Indicatie formele historie</metagegeven>
          <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
-         <metagegeven kardinaliteit="1">Kardinaliteit bron</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Authentiek</metagegeven>
          <metagegeven kardinaliteit="1">Mogelijk geen waarde</metagegeven>
          <metagegeven kardinaliteit="1">Identificerend</metagegeven><!-- add 1.1.1 -->
-         <metagegeven kardinaliteit="1">Aggregatietype</metagegeven><!-- add 1.1.1 -->
          <!-- json extensie -->
          <metagegeven kardinaliteit="0..1">inlineOrByReference</metagegeven>
          <metagegeven kardinaliteit="0..1">Heeft tijdlijn geldigheid</metagegeven><!-- add 1.2 -->
@@ -466,6 +464,8 @@
          <metagegeven kardinaliteit="0..1">Herkomst definitie</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="0..1">Toelichting</metagegeven><!-- add 1.1.1 -->
          <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="1">Unidirectioneel</metagegeven> <!-- 1.2 zie #633 -->
+         <metagegeven kardinaliteit="1">Aggregatietype</metagegeven><!-- add 1.2 zie #663 -->
          <!-- json extensie -->
          <metagegeven kardinaliteit="0..1">inlineOrByReference</metagegeven>
          <metagegeven kardinaliteit="1">Identificatie</metagegeven><!-- add 1.2 -->
