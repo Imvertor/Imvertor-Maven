@@ -43,4 +43,9 @@
     
     <show-properties>config</show-properties> <!-- config, all, compact -->
     
+    <!--
+        Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
+    -->   
+    <respec-config>respec-nlgov</respec-config> <!-- gecachte versie van https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js -->
+    
 </doc-rules>
