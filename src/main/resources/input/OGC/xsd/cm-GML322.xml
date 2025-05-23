@@ -298,12 +298,35 @@
           </cs:oasTypes>
        </cs:Construct>
        <cs:Construct>
+          <cs:name>GM_Arc</cs:name>
+          <cs:sentinel>false</cs:sentinel>
+          <cs:xsdTypes>
+             <cs:XsdType>
+                <cs:name>Arc</cs:name>
+                <cs:asAttribute>ArcPropertyType</cs:asAttribute>
+                <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                <cs:primitive>false</cs:primitive>
+             </cs:XsdType>
+          </cs:xsdTypes>
+          <cs:rdfTypes>
+             <cs:RdfType>
+                <cs:name>rdfs:Datatype</cs:name>
+             </cs:RdfType>
+          </cs:rdfTypes>
+          <cs:oasTypes>
+             <cs:OasType>
+                <cs:name>linestringGeoJSON</cs:name>
+                <cs:primitive>false</cs:primitive>
+             </cs:OasType>
+          </cs:oasTypes>
+       </cs:Construct>
+       <cs:Construct>
           <cs:name>GM_ArcString</cs:name>
           <cs:sentinel>false</cs:sentinel>
           <cs:xsdTypes>
              <cs:XsdType>
                 <cs:name>ArcString</cs:name>
-                <cs:asAttribute>ArcStringPropertyType</cs:asAttribute>
+                <cs:asAttribute>ArcStringType</cs:asAttribute>
                 <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                 <cs:primitive>false</cs:primitive>
              </cs:XsdType>
@@ -326,7 +349,7 @@
           <cs:xsdTypes>
              <cs:XsdType>
                 <cs:name>LineString</cs:name>
-                <cs:asAttribute>LineStringPropertyType</cs:asAttribute>
+                <cs:asAttribute>LineStringType</cs:asAttribute>
                 <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                 <cs:primitive>false</cs:primitive>
              </cs:XsdType>
