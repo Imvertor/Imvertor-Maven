@@ -49,6 +49,7 @@ import nl.imvertor.RunInitializer.RunInitializer;
 import nl.imvertor.SchemaValidator.SchemaValidator;
 import nl.imvertor.ShaclCompiler.ShaclCompiler;
 import nl.imvertor.SkosCompiler.SkosCompiler;
+import nl.imvertor.SourcecodeGenerator.SourcecodeGenerator;
 import nl.imvertor.StcCompiler.StcCompiler;
 import nl.imvertor.Validator.Validator;
 import nl.imvertor.XmiCompiler.XmiCompiler;
@@ -190,7 +191,7 @@ public class ChainTranslateAndReport {
 				    	succeeds = (new ImvertCompiler()).run();
 				    
 		    		// generate the MIM format from Imvertor embellish format
-			    	if (succeeds && (configurator.isTrue("cli","createmimformat",false) || configurator.isTrue("cli","createjsonschema",false)))
+			    	if (succeeds && (configurator.isTrue("cli","createmimformat",false) || configurator.isTrue("cli","createjsonschema",false) || configurator.isTrue("cli","createsourcecode",false)))
 			    		succeeds = (new MIMCompiler()).run();
 				
 			    	// generate the Stelselcatalogus CSV
@@ -218,6 +219,10 @@ public class ChainTranslateAndReport {
 			    			succeeds = (new JsonSchemaCompiler()).run();
 			    	}
 			    	
+					// Generate a json schema
+					if (succeeds && configurator.isTrue("cli","createsourcecode",false))
+						succeeds = (new SourcecodeGenerator()).run();
+
 				    // compile the history info 
 					if (succeeds && configurator.isTrue("cli","createhistory",false))
 						succeeds = (new HistoryCompiler()).run();

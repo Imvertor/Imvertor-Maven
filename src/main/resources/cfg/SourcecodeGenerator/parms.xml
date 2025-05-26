@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Source code generator</name>
+     <version-control>$Id: $</version-control>
+   </id>
+   
+   <cli-parms>
+      <cli-parm>
+         <name>createsourcecode</name>
+         <arg>yes|no</arg>
+         <tip>Yes if source code must be generated</tip>
+         <required>false</required>
+         <default>false</default>
+      </cli-parm>  
+      <cli-parm>
+         <name>sourcecodetype</name>
+         <arg>java-jpa|java-jpa-dto|entity-xml</arg>
+         <tip>The type of source code generated</tip>
+         <required>false</required>
+         <default>java-jpa</default>
+      </cli-parm>  
+   </cli-parms>
+   
+   <properties>
+    
+      <WORK_SOURCECODE_XMLPATH>${system/work-imvert-folder-path}/imvertor.31.sourcecode.xml</WORK_SOURCECODE_XMLPATH>
+      <WORK_SOURCECODE_CODEPATH>${system/work-imvert-folder-path}/imvertor.31</WORK_SOURCECODE_CODEPATH>
+ 
+      <IMVERTOR_SOURCECODE_ENTITY_XML_1.2_XSLPATH>MIM1.2/entity-xml.xsl</IMVERTOR_SOURCECODE_ENTITY_XML_1.2_XSLPATH>
+      <IMVERTOR_SOURCECODE_JAVA_JPA_1.2_XSLPATH>MIM1.2/java-jpa.xsl</IMVERTOR_SOURCECODE_JAVA_JPA_1.2_XSLPATH>
+      <IMVERTOR_SOURCECODE_JAVA_JPA_DTO_1.2_XSLPATH>MIM1.2/java-jpa-dto.xsl</IMVERTOR_SOURCECODE_JAVA_JPA_DTO_1.2_XSLPATH>
+      
+   </properties>
+   
+</config>
