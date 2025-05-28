@@ -19,14 +19,19 @@
 package nl.imvertor.SourcecodeGenerator;
 
 import java.io.File;
+import java.util.Arrays;
 
+import org.apache.commons.compress.utils.FileNameUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
+
+import static java.lang.String.format;
 
 /**
  * The CodeGenerator takes the MIM serialization and transforms it to source
@@ -35,6 +40,8 @@ import nl.imvertor.common.file.AnyFolder;
 public class SourcecodeGenerator extends Step {
 
   protected static final Logger logger = Logger.getLogger(SourcecodeGenerator.class);
+  
+  private static final String[] SUPPORTED_SOURCECODE_TYPES = { "entity-xml", "plantuml", "java-jpa", "java-jpa-dto" }; 
 
   public static final String STEP_NAME = "SourcecodeGenerator";
   public static final String VC_IDENTIFIER = "$Id: $";
@@ -59,7 +66,7 @@ public class SourcecodeGenerator extends Step {
     // save any changes to the work configuration for report and future steps
     configurator.save();
 
-    // report(); TODO
+    report();
 
     return runner.succeeds();
   }
@@ -70,11 +77,19 @@ public class SourcecodeGenerator extends Step {
    * @throws Exception
    */
   public boolean generateDefault() throws Exception {
+    
+    boolean succeeds = true;
+    
+    // check of MIM resultaat beschikbaar is
+    succeeds = succeeds && AnyFile.exists(configurator.getXParm("properties/WORK_MIMFORMAT_XMLPATH", false));
+    if (!succeeds) {
+      runner.error(logger, "Error generating source code; no MIM serialization available");
+      configurator.setXParm("system/sourcecode-generator-created", succeeds);
+      return succeeds;
+    }
 
     // create a transformer
     Transformer transformer = new Transformer();
-
-    boolean succeeds = true;
 
     runner.debug(logger, "CHAIN", "Generating source code");
 
@@ -82,50 +97,56 @@ public class SourcecodeGenerator extends Step {
 
     transformer.setXslParm("mim-version", mimVersion);
 
-    String sourceCodeType = configurator.getXParm("cli/sourcecodetype", false);
-    if (sourceCodeType == null) {
-      sourceCodeType = "java-jpa";
+    String sourceCodeTypes = configurator.getXParm("cli/sourcecodetypes", false);
+    if (sourceCodeTypes == null) {
+      sourceCodeTypes = "entity-xml,java-jpa";
     } else {
-      sourceCodeType = configurator.mergeParms(sourceCodeType);
+      sourceCodeTypes = configurator.mergeParms(sourceCodeTypes);
     }
+    
+    String[] types = sourceCodeTypes.trim().split("\\s*[,;]\\s*");
+    for (String type: types) {
+      if (!StringUtils.equalsAny(type, SUPPORTED_SOURCECODE_TYPES)) {
+        runner.warn(logger, format("Unsupported sourcecodetype \"%s\"; must be one of %s", type, Arrays.toString(SUPPORTED_SOURCECODE_TYPES)));
+        continue;
+      }
+      String xslFileParam = "properties/IMVERTOR_CODEGEN_" + type.toUpperCase().replace("-", "_") + "_" + mimVersion + "_XSLPATH";
+      
+      String workFileParam = "properties/WORK_CODEGEN_" + type.toUpperCase().replace("-", "_") + "_FILEPATH";
+      String workDirParam = "properties/WORK_CODEGEN_" + type.toUpperCase().replace("-", "_") + "_DIRPATH";
+      
+      String workFilePath = configurator.getXParm(workFileParam, false);
+      String workDirPath = configurator.getXParm(workDirParam, false);
+      
+      File workFile = null;
+      if (workFilePath != null) {
+        workFile = new File(workFilePath);
+      }
+      
+      File workDirFile = null;
+      if (workDirPath != null) {
+        workDirFile = new File(workDirPath);
+        transformer.setXslParm("output-uri", workDirFile.toURI().toString());  
+      }
+      
+      succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", workFileParam, xslFileParam);
 
-    String xslFileParam;
-    switch (sourceCodeType) {
-    case "entity-xml":
-      xslFileParam = "properties/IMVERTOR_SOURCECODE_ENTITY_XML_" + mimVersion + "_XSLPATH";
-      break;
-    case "java-jpa-dto":
-      xslFileParam = "properties/IMVERTOR_SOURCECODE_JAVA_JPA_DTO_" + mimVersion + "_XSLPATH";
-      break;
-    default: /* java-jpa */
-      xslFileParam = "properties/IMVERTOR_SOURCECODE_JAVA_JPA_" + mimVersion + "_XSLPATH";
-      break;
-    }
-
-    // check of MIM resultaat beschikbaar is
-    succeeds = succeeds && AnyFile.exists(configurator.getXParm("properties/WORK_MIMFORMAT_XMLPATH", false));
-
-    File codePath = new File(configurator.getXParm("properties/WORK_SOURCECODE_CODEPATH", false));
-    File xmlPath = new File(configurator.getXParm("properties/WORK_SOURCECODE_XMLPATH", false));
-    transformer.setXslParm("output-uri", codePath.toURI().toString());
-
-    succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", "properties/WORK_SOURCECODE_XMLPATH", xslFileParam);
-
-    // store to sourcecode folder
-    if (succeeds) {
-      AnyFolder outputFolder = new AnyFolder(configurator.getXParm("system/work-sc-folder-path"));
-      outputFolder.mkdirs();
-      if (codePath.isDirectory()) {
-        FileUtils.copyDirectory(codePath, outputFolder);
-      } else {
-        String n = configurator.getXParm("cli/entityxmlname", false);
-        String entityXmlName = configurator.mergeParms((n != null) ? n : "[appinfo/application-name]");
-        FileUtils.copyFile(xmlPath, new File(outputFolder, entityXmlName + ".xml"));
+      // store to sourcecode folder
+      if (succeeds) {
+        AnyFolder outputFolder = new AnyFolder(configurator.getXParm("system/work-codegen-folder-path"));
+        outputFolder.mkdirs();
+        if (workDirFile != null && workDirFile.isDirectory()) {
+          FileUtils.copyDirectory(workDirFile, new File(outputFolder, type));
+        } else if (workFile != null) {
+          String n = configurator.getXParm("cli/sourcecodename", false);
+          String fileName = configurator.mergeParms((n != null) ? n : "[appinfo/application-name]");
+          FileUtils.copyFile(workFile, new File(new File(outputFolder, type), fileName + "." + FileNameUtils.getExtension(workFilePath)));
+        }
       }
     }
 
-    configurator.setXParm("system/sourcecode-generator-created", succeeds);
-    configurator.setXParm("system/sourcecode-generator-type", sourceCodeType);
+    configurator.setXParm("system/codegen-created", succeeds);
+    configurator.setXParm("system/codegen-sourcecode-types", sourceCodeTypes);
 
     return succeeds;
   }

@@ -31,21 +31,26 @@
       </cli-parm>  
       <cli-parm>
          <name>sourcecodetype</name>
-         <arg>java-jpa|java-jpa-dto|entity-xml</arg>
-         <tip>The type of source code generated</tip>
+         <arg>java-jpa|java-jpa-dto|plantuml|entity-xml</arg>
+         <tip>The type(s) of source code generated (comma separated)</tip>
          <required>false</required>
          <default>java-jpa</default>
       </cli-parm>  
    </cli-parms>
    
    <properties>
-    
-      <WORK_SOURCECODE_XMLPATH>${system/work-imvert-folder-path}/imvertor.31.sourcecode.xml</WORK_SOURCECODE_XMLPATH>
-      <WORK_SOURCECODE_CODEPATH>${system/work-imvert-folder-path}/imvertor.31</WORK_SOURCECODE_CODEPATH>
- 
-      <IMVERTOR_SOURCECODE_ENTITY_XML_1.2_XSLPATH>MIM1.2/entity-xml.xsl</IMVERTOR_SOURCECODE_ENTITY_XML_1.2_XSLPATH>
-      <IMVERTOR_SOURCECODE_JAVA_JPA_1.2_XSLPATH>MIM1.2/java-jpa.xsl</IMVERTOR_SOURCECODE_JAVA_JPA_1.2_XSLPATH>
-      <IMVERTOR_SOURCECODE_JAVA_JPA_DTO_1.2_XSLPATH>MIM1.2/java-jpa-dto.xsl</IMVERTOR_SOURCECODE_JAVA_JPA_DTO_1.2_XSLPATH>
+     
+      <WORK_CODEGEN_JAVA_JPA_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-jpa.xml</WORK_CODEGEN_JAVA_JPA_FILEPATH>
+      <WORK_CODEGEN_JAVA_JPA_DTO_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-jpa-dto.xml</WORK_CODEGEN_JAVA_JPA_DTO_FILEPATH>
+      <WORK_CODEGEN_JAVA_JPA_DIRPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-jpa</WORK_CODEGEN_JAVA_JPA_DIRPATH>
+      <WORK_CODEGEN_JAVA_JPA_DTO_DIRPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-jpa-dto</WORK_CODEGEN_JAVA_JPA_DTO_DIRPATH>
+      <WORK_CODEGEN_ENTITY_XML_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.entity-xml.xml</WORK_CODEGEN_ENTITY_XML_FILEPATH>
+      <WORK_CODEGEN_PLANTUML_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.plantuml.puml</WORK_CODEGEN_PLANTUML_FILEPATH>
+      
+      <IMVERTOR_CODEGEN_ENTITY_XML_1.2_XSLPATH>MIM1.2/entity-xml.xsl</IMVERTOR_CODEGEN_ENTITY_XML_1.2_XSLPATH>
+      <IMVERTOR_CODEGEN_PLANTUML_1.2_XSLPATH>MIM1.2/plantuml.xsl</IMVERTOR_CODEGEN_PLANTUML_1.2_XSLPATH>
+      <IMVERTOR_CODEGEN_JAVA_JPA_1.2_XSLPATH>MIM1.2/java-jpa.xsl</IMVERTOR_CODEGEN_JAVA_JPA_1.2_XSLPATH>
+      <IMVERTOR_CODEGEN_JAVA_JPA_DTO_1.2_XSLPATH>MIM1.2/java-jpa-dto.xsl</IMVERTOR_CODEGEN_JAVA_JPA_DTO_1.2_XSLPATH>
       
    </properties>
    

@@ -9,7 +9,7 @@
   
   <xsl:template match="model">
     <java-jpa-dto>
-      <xsl:comment> Zie directory "imvertor.31" </xsl:comment>
+      <xsl:comment> Zie directory "imvertor.41.codegen.java-jpa-dto" </xsl:comment>
       <xsl:apply-templates>
         <xsl:with-param name="mode" tunnel="yes" select="'entity'"/>
       </xsl:apply-templates>
