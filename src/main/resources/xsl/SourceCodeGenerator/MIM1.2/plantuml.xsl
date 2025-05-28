@@ -47,6 +47,14 @@
       <xsl:map-entry key="'URI'" select="'String'"/>
     </xsl:map>
   </xsl:variable>
+  
+  <xsl:variable name="package-color-mapping" as="map(xs:string, xs:string)">
+    <xsl:map>
+      <xsl:map-entry key="'domein'" select="'#90EE90'"/>
+      <xsl:map-entry key="'view'" select="'#ADD8E6'"/>
+      <xsl:map-entry key="'extern'" select="'#F08080'"/>
+    </xsl:map>
+  </xsl:variable>
     
   <xsl:function name="entity:package-name">
     <xsl:param name="package-hierarchy" as="xs:string*"/>
@@ -81,19 +89,13 @@
   </xsl:template>
   
   <xsl:template match="domein|view|extern">
-    <!--
     <line/>
-    <line>package {name} {{</line>
-    -->
+    <line>package {name} {map:get($package-color-mapping, local-name())} {{</line>
     <xsl:apply-templates mode="class"/>
-    <!--
     <line/>
-    -->
     <xsl:apply-templates mode="relation"/>
-    <!--
     <line/>
     <line>}}</line>
-    -->
   </xsl:template>
     
   <xsl:template match="entity" mode="class">
@@ -131,6 +133,7 @@
   
   <xsl:template match="entity[super-type]" mode="relation">
     <line>{local:full-package-name(super-type/@package-name) || '.' || super-type} &lt;|-- {local:full-package-name(package-name) || '.' || name}</line>
+    <xsl:apply-templates mode="#current"/>
   </xsl:template>
 
   <xsl:template match="field[not(type/@is-standard = 'true')]" mode="relation">

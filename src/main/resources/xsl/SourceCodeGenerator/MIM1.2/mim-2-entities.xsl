@@ -18,21 +18,23 @@
   version="3.0">
   
   <!--
-  Keuze tussen datatypen
+  Keuze tussen datatypen?
+  Ondersteuning unidirectioneel
+  Ondersteuning Relatieklasse
+  Ondersteuning Mixin
+  Composite Objecttype -> Keuze?
+  Composite Objecttype -> Gegevensgroeptype?
   "Mogelijk geen waarde" vs kardinaliteit
-  Alleen lengte opnemen als type CharacterString is
+  Alleen lengte etc opnemen als type CharacterString is
   Jakarta Bean Validation: https://stackoverflow.com/questions/74441174/in-java-how-would-i-make-a-class-that-is-essentially-a-subclass-of-string-but
   https://stackoverflow.com/questions/1972933/cross-field-validation-with-hibernate-validator-jsr-303
-  Add Tagged/Marker interfaces
-  Relatiesoort leidend
-  Relatieklasse
   Uniek maken toegevoegd @Id veld
-  Mixin
-  List vs Set
+  List vs Set?
   -->  
     
   <xsl:mode on-no-match="shallow-skip"/>
   <xsl:mode name="entity-specific" on-no-match="shallow-skip"/>
+  <xsl:mode name="xhtml" on-no-match="shallow-copy"/>
     
   <xsl:param name="output-uri" as="xs:string" select="''"/>
   
@@ -76,6 +78,7 @@
     <xsl:variable name="model" as="document-node()">
       <xsl:document>
         <model>
+          <xsl:namespace name="xhtml">http://www.w3.org/1999/xhtml</xsl:namespace>
           <name>{entity:package-name((mim:naam))}</name>
           <package-prefix>{$package-prefix}</package-prefix>
           <xsl:apply-templates/>
@@ -117,7 +120,7 @@
       <package-name>{entity:package-name(local:package-hierarchy(.))}</package-name>
       <model-element>{local-name()}</model-element>
       <definition>
-        <xsl:sequence select="mim:definitie/node()"/>
+        <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
       </definition>  
       <is-abstract>{if (mim:indicatieAbstractObject) then mim:indicatieAbstractObject else 'false'}</is-abstract>
       <has-id-attribute>{$has-id-attribute}</has-id-attribute>
@@ -284,16 +287,46 @@
       </cardinality>
     </field>
   </xsl:template>
-  
-  <!--  
-  <xsl:template match="mim:Keuze/mim:keuzeAttributen/mim:Attribuutsoort">
     
+  <!--
+  <xsl:template match="mim:Keuze/mim:keuzeDatatypen/(mim:Datatype|mim-ref:DatatypeRef|mim-ext:ConstructieRef)">
+    <xsl:variable name="type-elem" as="element(mim:type)">
+      <mim:type>
+        <xsl:sequence select="."/>
+      </mim:type>
+    </xsl:variable>
+    <xsl:variable name="type-info" select="local:type-to-class($type-elem)" as="element(class)"/>
+    <field>
+      <name>{if (@label) then entity:field-name(@label) else 'attr' || position()}</name>
+      <type 
+        is-enum="{exists(local:resolve-reference(.)/self::mim:Enumeratie)}" 
+        is-standard="{$type-info/is-standard-class = 'true'}">
+        <xsl:if test="$type-info/package-name">
+          <xsl:attribute name="package-name">{$type-info/package-name}</xsl:attribute>
+        </xsl:if>
+        <xsl:if test="$type-info/model-element">
+          <xsl:attribute name="model-element">{$type-info/model-element}</xsl:attribute> 
+        </xsl:if>
+        <xsl:value-of select="$type-info/name"/>
+      </type>
+      <category>Keuze datatype</category>
+      <is-id-attribute>false</is-id-attribute>
+      <nullable>true</nullable>
+      <aggregation>composite</aggregation>
+      <unidirectional>true</unidirectional> 
+      <cardinality>
+        <source>
+          <min-occurs>1</min-occurs> 
+          <max-occurs>1</max-occurs>  
+        </source>
+        <target>
+          <min-occurs>0</min-occurs> < ! - - Immers: "Keuze" - - >
+          <max-occurs>1</max-occurs>
+        </target>
+      </cardinality>
+    </field>
   </xsl:template>  
   -->
-  
-  <xsl:template match="mim:Keuze/mim:keuzeDatatypen/(mim:Datatype|mim-ref:DatatypeRef|mim-ext:ConstructieRef)">
-    
-  </xsl:template>  
   
   <!-- Keuze tussen relatiedoelen: -->  
   <xsl:template match="mim:Keuze/mim:keuzeRelatiedoelen/mim:Relatiedoel/mim-ref:ObjecttypeRef">
@@ -307,7 +340,7 @@
         is-standard="false"
         model-element="Objecttype"
         package-name="{entity:package-name(local:package-hierarchy($relatiedoel))}">{entity:class-name($relatiedoel/mim:naam)}</type>
-      <category>Keuze Relatiedoel -> Objectype</category>
+      <category>Keuze (relatiedoel)</category>
       <is-id-attribute>false</is-id-attribute>
       <nullable>true</nullable>
       <!--
@@ -378,7 +411,13 @@
       <category>{local-name()} -> {$target/local-name()}</category>      
       <is-id-attribute>false</is-id-attribute>
       <nullable>{if ($nullable) then $nullable else 'false'}</nullable>
-      <aggregation>{if ($aggregation) then map:get($aggregation-type-mapping, $aggregation) else 'none'}</aggregation>
+      <aggregation>
+        <xsl:choose>
+          <xsl:when test="$target/self::mim:Keuze">composite</xsl:when> <!-- Objecttype and Keuze are tied together --> 
+          <xsl:when test="$aggregation">{map:get($aggregation-type-mapping, $aggregation)}</xsl:when>
+          <xsl:otherwise>none</xsl:otherwise>
+        </xsl:choose>  
+      </aggregation>
       <unidirectional>{if ($unidirectional) then $unidirectional else 'true'}</unidirectional>
       <cardinality>
         <source>
@@ -411,7 +450,13 @@
       <category>{local-name()} -> {$target/local-name()}</category>
       <is-id-attribute>false</is-id-attribute>
       <nullable>{if ($nullable) then $nullable else 'false'}</nullable>
-      <aggregation>{if ($aggregation) then map:get($aggregation-type-mapping, $aggregation) else 'none'}</aggregation>
+      <aggregation>
+        <xsl:choose>
+          <xsl:when test="$target/self::mim:Keuze">composite</xsl:when> <!-- Objecttype and Keuze are tied together --> 
+          <xsl:when test="$aggregation">{map:get($aggregation-type-mapping, $aggregation)}</xsl:when>
+          <xsl:otherwise>none</xsl:otherwise>
+        </xsl:choose>  
+      </aggregation>
       <unidirectional>{if ($unidirectional) then $unidirectional else 'true'}</unidirectional>
       <cardinality>
         <source>
@@ -424,6 +469,12 @@
         </target>
       </cardinality>
     </field>
+  </xsl:template>
+  
+  <xsl:template match="xhtml:*" mode="xhtml">
+    <xsl:element name="xhtml:{local-name()}" namespace="http://www.w3.org/1999/xhtml">
+      <xsl:apply-templates select="@*|node()" mode="#current"/>
+    </xsl:element>
   </xsl:template>
   
   <xsl:function name="local:kenmerk-ext" as="xs:string?">
@@ -455,7 +506,7 @@
           </class>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:variable name="resolved-element" select="local:resolve-reference($type/mim-ref:*)" as="element()"/>
+          <xsl:variable name="resolved-element" select="local:resolve-reference($type/*[@xlink:href])" as="element()"/>
           <xsl:choose>
             <xsl:when test="$resolved-element/self::mim:PrimitiefDatatype/mim:supertypen/mim:GeneralisatieDatatypen/mim:supertype/mim:Datatype">
               <!-- Use the MIM standard type supertype instead of a custom subclassed entity (we cannot subclass String after all): -->
