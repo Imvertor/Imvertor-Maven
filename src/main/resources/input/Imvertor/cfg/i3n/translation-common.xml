@@ -734,5 +734,10 @@
         <trans lang="nl">is specialisatie van</trans>
         <trans lang="en">specializes</trans>
     </item>
+    <item>
+        <key>ISMIXINSPECIALISATIONOF</key>
+        <trans lang="nl">overerft eigenschappen van</trans>
+        <trans lang="en">inherits properties from</trans>
+    </item>
     
 </picklist>

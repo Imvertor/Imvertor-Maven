@@ -695,7 +695,14 @@
                     <xsl:value-of select="imf:get-name(..,true())"/>
                 </item>
                 <item>
-                    <xsl:value-of select="imf:plugin-translate-i3n('ISSPECIALISATIONOF',true())"/>
+                    <xsl:choose>
+                        <xsl:when test="imf:boolean(imf:get-tagged-value(.,'##CFG-TV-MIXIN'))">
+                            <xsl:value-of select="imf:plugin-translate-i3n('ISMIXINSPECIALISATIONOF',true())"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="imf:plugin-translate-i3n('ISSPECIALISATIONOF',true())"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </item>
                 <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',(imvert:type-name/@original,string(imvert:conceptual-schema-type))[1]))"/>
             </item>
