@@ -22,19 +22,15 @@
   <xsl:mode name="field-declaration" on-no-match="shallow-skip"/>
   <xsl:mode name="field-getter-setter" on-no-match="shallow-skip"/>
   
-  <!-- TODO: validate mapping -->
   <xsl:variable name="primitive-mim-type-mapping" as="map(xs:string, xs:string)">
     <xsl:map>
       <xsl:map-entry key="'CharacterString'" select="'String'"/>
       <xsl:map-entry key="'Integer'" select="'Integer'"/>
       <xsl:map-entry key="'Real'" select="'Double'"/>
-      <xsl:map-entry key="'Decimal'" select="'Double'"/>
+      <xsl:map-entry key="'Decimal'" select="'java.math.BigDecimal'"/>
       <xsl:map-entry key="'Boolean'" select="'Boolean'"/>
-      <xsl:map-entry key="'Date'" select="'LocalDate'"/>
-      <!--
-      <xsl:map-entry key="'DateTime'" select="'LocalDateTime'"/>
-      -->
-      <xsl:map-entry key="'DateTime'" select="'java.sql.Date'"/>
+      <xsl:map-entry key="'Date'" select="'java.time.LocalDate'"/>
+      <xsl:map-entry key="'DateTime'" select="'java.time.ZonedDateTime'"/>
       <xsl:map-entry key="'Year'" select="'Short'"/>
       <xsl:map-entry key="'Day'" select="'Byte'"/>
       <xsl:map-entry key="'Month'" select="'Byte'"/>
@@ -84,8 +80,7 @@
         <line mode="entity">import nl.imvertor.mim.annotation.*;</line>
         <line mode="entity">import jakarta.persistence.*;</line>
         <line>import java.io.Serializable;</line>
-        <line>import java.util.List;</line>
-        <line>import java.time.*;</line>
+        <line>import java.util.*;</line>
         <line/>
   
         <xsl:call-template name="javadoc"/>

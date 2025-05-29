@@ -28,19 +28,15 @@
   <xsl:mode name="definition" on-no-match="shallow-copy"/>
   -->
   
-  <!-- TODO: validate mapping -->
   <xsl:variable name="primitive-mim-type-mapping" as="map(xs:string, xs:string)">
     <xsl:map>
       <xsl:map-entry key="'CharacterString'" select="'String'"/>
       <xsl:map-entry key="'Integer'" select="'Integer'"/>
       <xsl:map-entry key="'Real'" select="'Double'"/>
-      <xsl:map-entry key="'Decimal'" select="'Double'"/>
+      <xsl:map-entry key="'Decimal'" select="'BigDecimal'"/>
       <xsl:map-entry key="'Boolean'" select="'Boolean'"/>
       <xsl:map-entry key="'Date'" select="'LocalDate'"/>
-      <!--
-      <xsl:map-entry key="'DateTime'" select="'LocalDateTime'"/>
-      -->
-      <xsl:map-entry key="'DateTime'" select="'java.sql.Date'"/>
+      <xsl:map-entry key="'DateTime'" select="'ZonedDateTime'"/>
       <xsl:map-entry key="'Year'" select="'Short'"/>
       <xsl:map-entry key="'Day'" select="'Byte'"/>
       <xsl:map-entry key="'Month'" select="'Byte'"/>

@@ -112,8 +112,8 @@
     mim:datatypen/mim:Referentielijst |
     mim-ext:constructies/mim-ext:Constructie"> 
     
-    <xsl:variable name="supertype-info" select="local:type-to-class(mim:supertypen/mim:GeneralisatieObjecttypen/mim:supertype)" as="element(class)?"/>
-    <xsl:variable name="has-id-attribute" select="$supertype-info or (mim:attribuutsoorten/mim:Attribuutsoort | mim:referentieElementen/mim:ReferentieElement)/mim:identificerend = 'true'" as="xs:boolean"/>
+    <xsl:variable name="non-mixin-supertype-info" select="local:type-to-class(mim:supertypen/mim:GeneralisatieObjecttypen[not(mim:mixin = 'true')]/mim:supertype)" as="element(class)?"/>
+    <xsl:variable name="has-id-attribute" select="$non-mixin-supertype-info or (mim:attribuutsoorten/mim:Attribuutsoort | mim:referentieElementen/mim:ReferentieElement)/mim:identificerend = 'true'" as="xs:boolean"/>
     
     <entity>
       <name>{entity:class-name(mim:naam)}</name>
@@ -124,11 +124,11 @@
       </definition>  
       <is-abstract>{if (mim:indicatieAbstractObject) then mim:indicatieAbstractObject else 'false'}</is-abstract>
       <has-id-attribute>{$has-id-attribute}</has-id-attribute>
-      <xsl:if test="$supertype-info">
+      <xsl:if test="$non-mixin-supertype-info">
         <super-type 
-          is-standard="{$supertype-info/is-standard-class = 'true'}"
-          package-name="{$supertype-info/package-name}"
-          model-element="{$supertype-info/model-element}">{$supertype-info/name}</super-type>  
+          is-standard="{$non-mixin-supertype-info/is-standard-class = 'true'}"
+          package-name="{$non-mixin-supertype-info/package-name}"
+          model-element="{$non-mixin-supertype-info/model-element}">{$non-mixin-supertype-info/name}</super-type>  
       </xsl:if>
       <has-sub-types>{local:has-subtype(.)}</has-sub-types>
       <fields>
@@ -157,6 +157,8 @@
             <!-- TODO: create fields for unidirectional relatiesoorten -->
           </xsl:if>
         </xsl:if>
+        <!-- "Copy down" fields from mixin supertypes: --> 
+        <xsl:apply-templates select="mim:supertypen/mim:GeneralisatieObjecttypen[mim:mixin = 'true']/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)/local:resolve-reference(.)"/>
         <xsl:apply-templates select="." mode="entity-specific"/>
         <xsl:apply-templates/>
       </fields>
@@ -234,11 +236,12 @@
       <nullable>
         <xsl:choose>
           <xsl:when test="parent::mim:keuzeAttributen">true</xsl:when> <!-- Override mim:mogelijkGeenWaarde because of Keuze -->
-          <xsl:otherwise>{if (mim:mogelijkGeenWaarde) then mim:mogelijkGeenWaarde else 'false'}</xsl:otherwise>  <!-- TODO: is default correct? -->
+          <xsl:when test="mim:mogelijkGeenWaarde = 'true'">true</xsl:when> <!-- Takes precedence over cardinality -->
+          <xsl:otherwise>{$cardinality/@minOccurs = $ZERO}</xsl:otherwise> 
         </xsl:choose>  
       </nullable>
       <xsl:if test="not($type-info/is-standard = 'true')">
-        <aggregation>composite</aggregation>
+        <aggregation>composite</aggregation> <!-- TODO: this is not always correct! -->
       </xsl:if>
       <xsl:call-template name="kenmerken"/>
       <cardinality>
@@ -343,18 +346,6 @@
       <category>Keuze (relatiedoel)</category>
       <is-id-attribute>false</is-id-attribute>
       <nullable>true</nullable>
-      <!--
-      <nullable>
-        <xsl:choose>
-          <xsl:when test="$is-relatierol-leidend">{if ($referer-relatiesoort-bron/mim:mogelijkGeenWaarde) then
-            $referer-relatiesoort-bron/mim:mogelijkGeenWaarde
-            else 'false'}</xsl:when>
-          <xsl:otherwise>{if ($referer-relatiesoort/mim:mogelijkGeenWaarde) then 
-            $referer-relatiesoort/mim:mogelijkGeenWaarde 
-            else 'false'}</xsl:otherwise>
-        </xsl:choose>
-      </nullable>
-      -->
       <aggregation>
         <xsl:choose>
           <xsl:when test="$is-relatierol-leidend">{if ($referer-relatiesoort-bron/mim:aggregatietype) then 
@@ -396,7 +387,7 @@
     <xsl:variable name="target" select="local:resolve-reference(mim:doel/*)" as="element()"/> <!-- Objecttype, Keuze, Constructie -->
     <xsl:variable name="source-cardinality" select="local:cardinality(mim:relatierollen/mim:Bron/mim:kardinaliteit)" as="element(cardinality)"/>
     <xsl:variable name="target-cardinality" select="local:cardinality(mim:relatierollen/mim:Doel/mim:kardinaliteit)" as="element(cardinality)"/>
-    <xsl:variable name="nullable" select="mim:relatierollen/mim:Bron/mim:mogelijkGeenWaarde" as="xs:string?"/>
+    
     <xsl:variable name="aggregation" select="mim:relatierollen/mim:Bron/mim:aggregatietype" as="xs:string?"/>
     <!-- TODO: in geval "Relatiebron leidend" lijkt mim:unidirectioneel voor mim:Relatiesoort niet te worden opgenomen in de serialisatie: -->
     <xsl:variable name="unidirectional" select="mim:relatierollen/mim:Bron/mim:unidirectioneel" as="xs:string?"/>
@@ -410,7 +401,12 @@
         model-element="{$target/local-name()}">{entity:class-name($target/mim:naam)}</type>
       <category>{local-name()} -> {$target/local-name()}</category>      
       <is-id-attribute>false</is-id-attribute>
-      <nullable>{if ($nullable) then $nullable else 'false'}</nullable>
+      <nullable>
+        <xsl:choose>
+          <xsl:when test="mim:relatierollen/mim:Bron/mim:mogelijkGeenWaarde = 'true'">true</xsl:when> <!-- Takes precedence over cardinality -->
+          <xsl:otherwise>{$target-cardinality/@minOccurs = $ZERO}</xsl:otherwise> 
+        </xsl:choose>  
+      </nullable>
       <aggregation>
         <xsl:choose>
           <xsl:when test="$target/self::mim:Keuze">composite</xsl:when> <!-- Objecttype and Keuze are tied together --> 
@@ -436,7 +432,6 @@
     <xsl:variable name="target" select="local:resolve-reference(mim:doel/*)" as="element()"/> <!-- Objecttype, Keuze, Constructie -->
     <xsl:variable name="source-cardinality" select="if (not(mim:kardinaliteitBron = 'TODO')) then local:cardinality(mim:kardinaliteitBron) else local:cardinality(mim-ext:kenmerken/mim-ext:Kenmerk[@naam='kardinaliteitBron'])" as="element(cardinality)"/>
     <xsl:variable name="target-cardinality" select="local:cardinality(mim:kardinaliteit)" as="element(cardinality)"/>
-    <xsl:variable name="nullable" select="mim:mogelijkGeenWaarde" as="xs:string?"/>
     <xsl:variable name="aggregation" select="mim:aggregatietype" as="xs:string?"/>
     <xsl:variable name="unidirectional" select="mim:unidirectioneel" as="xs:string?"/>
     
@@ -449,7 +444,12 @@
         model-element="{$target/local-name()}">{entity:class-name($target/mim:naam)}</type>
       <category>{local-name()} -> {$target/local-name()}</category>
       <is-id-attribute>false</is-id-attribute>
-      <nullable>{if ($nullable) then $nullable else 'false'}</nullable>
+      <nullable>
+        <xsl:choose>
+          <xsl:when test="mim:mogelijkGeenWaarde = 'true'">true</xsl:when> <!-- Takes precedence over cardinality -->
+          <xsl:otherwise>{$target-cardinality/@minOccurs = $ZERO}</xsl:otherwise> 
+        </xsl:choose>  
+      </nullable>
       <aggregation>
         <xsl:choose>
           <xsl:when test="$target/self::mim:Keuze">composite</xsl:when> <!-- Objecttype and Keuze are tied together --> 
