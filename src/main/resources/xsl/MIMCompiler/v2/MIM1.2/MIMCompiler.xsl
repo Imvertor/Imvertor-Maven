@@ -919,6 +919,11 @@
     <mim:maximumwaardeExclusief source-id="CFG-TV-MAXVALUEEXCLUSIVE">{imf:tagged-values($context, 'CFG-TV-MAXVALUEEXCLUSIVE')}</mim:maximumwaardeExclusief>  
   </xsl:template>
   
+  <xsl:template match="metagegeven[. = 'Mixin']">
+    <xsl:param name="context" as="element()"/>
+    <mim:mixin source-id="CFG-TV-MIXIN">{imf:boolean(imf:tagged-values-not-traced($context, 'CFG-TV-MIXIN'))}</mim:mixin> 
+  </xsl:template>
+  
   <xsl:template match="metagegeven[. = 'Mogelijk geen waarde']">
     <xsl:param name="context" as="element()"/>
     <mim:mogelijkGeenWaarde source-id="CFG-TV-VOIDABLE">{imf:mim-boolean(imf:tagged-values($context, 'CFG-TV-VOIDABLE')[1])}</mim:mogelijkGeenWaarde>
