@@ -40,17 +40,17 @@
     
   <xsl:function name="entity:package-name">
     <xsl:param name="package-hierarchy" as="xs:string*"/>
-    <xsl:sequence select="string-join((for $p in $package-hierarchy return funct:lower-case($p)), '.')"/>
+    <xsl:sequence select="string-join((for $p in $package-hierarchy return funct:replace-special-chars(funct:flatten-diacritics(funct:lower-case($p)), '_')), '.')"/>
   </xsl:function>
   
   <xsl:function name="entity:class-name">
     <xsl:param name="name" as="xs:string"/>
-    <xsl:sequence select="funct:pascal-case($name)"/>
+    <xsl:sequence select="funct:replace-special-chars(funct:flatten-diacritics(funct:pascal-case($name)), '_')"/>
   </xsl:function>
-
+  
   <xsl:function name="entity:field-name">
     <xsl:param name="name" as="xs:string"/>
-    <xsl:sequence select="funct:camel-case($name)"/>
+    <xsl:sequence select="funct:replace-special-chars(funct:flatten-diacritics(funct:camel-case($name)), '_')"/>
   </xsl:function>
   
   <xsl:function name="entity:enum-value" as="xs:string">
@@ -70,22 +70,24 @@
   <xsl:template match="entity">
     <xsl:param name="mode" tunnel="yes" as="xs:string"/>
     <xsl:variable name="full-package-name" select="local:full-package-name($mode, package-name)" as="xs:string"/>
-    <xsl:variable name="class-name" select="if ($mode = 'entity') then name else name || 'DTO'" as="xs:string"/>
+    <xsl:variable name="class-name" select="if ($mode = 'dto') then name || 'DTO' else name" as="xs:string"/>
     <xsl:result-document href="{$output-uri}/{replace($full-package-name, '\.', '/')}/{replace($class-name, '\.', '/')}.java" method="text">  
       <xsl:variable name="lines-elements" as="element(line)+"> 
         <line>package {$full-package-name};</line>
         <line/>
         
         <!-- imports: -->
-        <line mode="entity">import nl.imvertor.mim.annotation.*;</line>
-        <line mode="entity">import jakarta.persistence.*;</line>
-        <line>import java.io.Serializable;</line>
+        <line>import nl.imvertor.mim.annotation.*;</line>
+        <xsl:if test="$mode = 'entity'">
+          <line mode="entity">import jakarta.persistence.*;</line>
+          <line>import java.io.Serializable;</line>  
+        </xsl:if>
         <line>import java.util.*;</line>
         <line/>
   
         <xsl:call-template name="javadoc"/>
         
-        <line mode="entity">
+        <line>
           <xsl:choose>
             <xsl:when test="model-element = 'Keuze'">
               <xsl:variable name="field-names" select="for $n in fields/field[not(type/@is-standard = 'true')]/name return $n" as="xs:string*"/>
@@ -103,7 +105,7 @@
           <line mode="entity">@PrimaryKeyJoinColumn</line>
         </xsl:if>
         
-        <xsl:variable name="super-type-class-name" select="if ($mode = 'entity') then super-type else super-type || 'DTO'" as="xs:string"/>
+        <xsl:variable name="super-type-class-name" select="if ($mode = 'dto') then super-type || 'DTO' else super-type" as="xs:string"/>
         
         <line>public {if (is-abstract = 'true') then 'abstract ' else ''}class {$class-name}{if (super-type) then ' extends ' || local:full-package-name($mode, super-type/@package-name) || '.' || $super-type-class-name  else () }{if ($mode = 'entity') then ' implements Serializable' else () } {{</line>
         <line mode="entity"/>
@@ -125,15 +127,15 @@
   <xsl:template match="enumeration">
     <xsl:param name="mode" tunnel="yes" as="xs:string"/>
     <xsl:variable name="full-package-name" select="local:full-package-name($mode, package-name)" as="xs:string"/>
-    <xsl:variable name="class-name" select="if ($mode = 'entity') then name else name || 'DTO'" as="xs:string"/>
+    <xsl:variable name="class-name" select="if ($mode = 'dto') then name || 'DTO' else name" as="xs:string"/>
     <xsl:result-document href="{$output-uri}/{replace($full-package-name, '\.', '/')}/{replace($class-name, '\.', '/')}.java" method="text">   
       <xsl:variable name="lines-elements" as="element(line)+"> 
         <line>package {$full-package-name};</line>
         <line/>
-        <line mode="entity">import nl.imvertor.mim.annotation.*;</line>
+        <line>import nl.imvertor.mim.annotation.*;</line>
         <line/>
         <xsl:call-template name="javadoc"/>
-        <line mode="entity">@{model-element}</line>
+        <line>@{model-element}</line>
         <line>public enum {$class-name} {{</line>
         <line/>
         <xsl:for-each select="values/value">
@@ -265,7 +267,7 @@
     <xsl:param name="type-info" as="element()"/>
     <xsl:param name="cardinality" as="element()"/>
     <xsl:param name="mode" as="xs:string"/>
-    <xsl:variable name="class-name" select="if ($mode = 'entity') then $type-info else $type-info || 'DTO'" as="xs:string"/>
+    <xsl:variable name="class-name" select="if ($mode = 'dto') then $type-info || 'DTO' else $type-info" as="xs:string"/>
     <xsl:variable name="singular-type" select="if ($type-info/@is-standard = 'true') then $type-info else local:full-package-name($mode, $type-info/@package-name) || '.' || $class-name" as="xs:string"/>
     <xsl:value-of select="if ($cardinality/target/max-occurs = $unbounded) then 'List&lt;' || $singular-type || '&gt;' else $singular-type"/>
   </xsl:function>

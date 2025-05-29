@@ -41,7 +41,7 @@ public class SourcecodeGenerator extends Step {
 
   protected static final Logger logger = Logger.getLogger(SourcecodeGenerator.class);
   
-  private static final String[] SUPPORTED_SOURCECODE_TYPES = { "entity-xml", "plantuml", "java-jpa", "java-jpa-dto" }; 
+  private static final String[] SUPPORTED_SOURCECODE_TYPES = { "entity-xml", "plantuml", "java-jpa", "java-jpa-dto", "java-pojo" }; 
 
   public static final String STEP_NAME = "SourcecodeGenerator";
   public static final String VC_IDENTIFIER = "$Id: $";

@@ -112,7 +112,7 @@
     mim:datatypen/mim:Referentielijst |
     mim-ext:constructies/mim-ext:Constructie"> 
     
-    <xsl:variable name="non-mixin-supertype-info" select="local:type-to-class(mim:supertypen/mim:GeneralisatieObjecttypen[not(mim:mixin = 'true')]/mim:supertype)" as="element(class)?"/>
+    <xsl:variable name="non-mixin-supertype-info" select="local:type-to-class(mim:supertypen/mim:GeneralisatieObjecttypen[not(mim:mixin = 'true')]/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef))" as="element(class)?"/>
     <xsl:variable name="has-id-attribute" select="$non-mixin-supertype-info or (mim:attribuutsoorten/mim:Attribuutsoort | mim:referentieElementen/mim:ReferentieElement)/mim:identificerend = 'true'" as="xs:boolean"/>
     
     <entity>
@@ -215,7 +215,7 @@
     mim:dataElementen/mim:DataElement |
     mim:referentieElementen/mim:ReferentieElement">
     
-    <xsl:variable name="type-info" select="local:type-to-class(mim:type|mim:gegevensgroeptype)" as="element(class)"/>
+    <xsl:variable name="type-info" select="local:type-to-class((mim:type | mim:gegevensgroeptype)/*)" as="element(class)"/>
     <xsl:variable name="cardinality" select="local:cardinality(mim:kardinaliteit)" as="element(cardinality)"/>
     
     <field>
@@ -291,14 +291,9 @@
     </field>
   </xsl:template>
     
-  <!--
+  <!-- Keuze tussen datatypen: -->  
   <xsl:template match="mim:Keuze/mim:keuzeDatatypen/(mim:Datatype|mim-ref:DatatypeRef|mim-ext:ConstructieRef)">
-    <xsl:variable name="type-elem" as="element(mim:type)">
-      <mim:type>
-        <xsl:sequence select="."/>
-      </mim:type>
-    </xsl:variable>
-    <xsl:variable name="type-info" select="local:type-to-class($type-elem)" as="element(class)"/>
+    <xsl:variable name="type-info" select="local:type-to-class(.)" as="element(class)"/>
     <field>
       <name>{if (@label) then entity:field-name(@label) else 'attr' || position()}</name>
       <type 
@@ -323,13 +318,12 @@
           <max-occurs>1</max-occurs>  
         </source>
         <target>
-          <min-occurs>0</min-occurs> < ! - - Immers: "Keuze" - - >
+          <min-occurs>0</min-occurs> <!-- Immers: "Keuze" -->
           <max-occurs>1</max-occurs>
         </target>
       </cardinality>
     </field>
   </xsl:template>  
-  -->
   
   <!-- Keuze tussen relatiedoelen: -->  
   <xsl:template match="mim:Keuze/mim:keuzeRelatiedoelen/mim:Relatiedoel/mim-ref:ObjecttypeRef">
@@ -496,21 +490,21 @@
   </xsl:function>
     
   <xsl:function name="local:type-to-class" as="element(class)?">
-    <xsl:param name="type" as="element()?"/>  
+    <xsl:param name="type" as="element()?"/>
     <xsl:if test="$type">
       <xsl:choose>
-        <xsl:when test="$type/mim:Datatype">
+        <xsl:when test="$type/self::mim:Datatype">
           <class>
-            <name>{map:get($primitive-mim-type-mapping, $type/mim:Datatype)}</name>
+            <name>{map:get($primitive-mim-type-mapping, $type)}</name>
             <is-standard-class>true</is-standard-class>  
           </class>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:variable name="resolved-element" select="local:resolve-reference($type/*[@xlink:href])" as="element()"/>
+          <xsl:variable name="resolved-element" select="local:resolve-reference($type[@xlink:href])" as="element()"/>
           <xsl:choose>
             <xsl:when test="$resolved-element/self::mim:PrimitiefDatatype/mim:supertypen/mim:GeneralisatieDatatypen/mim:supertype/mim:Datatype">
               <!-- Use the MIM standard type supertype instead of a custom subclassed entity (we cannot subclass String after all): -->
-              <xsl:sequence select="local:type-to-class($resolved-element/self::mim:PrimitiefDatatype/mim:supertypen/mim:GeneralisatieDatatypen/mim:supertype)"/>
+              <xsl:sequence select="local:type-to-class($resolved-element/self::mim:PrimitiefDatatype/mim:supertypen/mim:GeneralisatieDatatypen/mim:supertype/mim:Datatype)"/>
             </xsl:when>
             <xsl:when test="$resolved-element/self::mim:PrimitiefDatatype">
               <!-- PrimitiefDatatype without supertype, default to CharacterString: -->
@@ -670,6 +664,20 @@
     <xsl:where-populated>
       <max-excl>{local:kenmerk-maximumwaarde-exclusief(.)}</max-excl>
     </xsl:where-populated>
+  </xsl:template>
+  
+  <xsl:template name="write-to-file">
+    <xsl:param name="uri" as="xs:string"/>
+    <xsl:param name="lines" as="element()+"/>
+    <xsl:result-document href="{$uri}" method="text">   
+      <xsl:variable name="lines-elements" as="element(line)+"> 
+        <xsl:sequence select="$lines"/>        
+      </xsl:variable>
+      <xsl:variable name="lines" as="xs:string*">
+        <xsl:apply-templates select="$lines-elements"/>  
+      </xsl:variable>
+      <xsl:sequence select="string-join($lines)"/>
+    </xsl:result-document>
   </xsl:template>
   
 </xsl:stylesheet>

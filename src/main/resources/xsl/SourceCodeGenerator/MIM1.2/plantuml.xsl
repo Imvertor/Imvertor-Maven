@@ -3,7 +3,6 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:map="http://www.w3.org/2005/xpath-functions/map"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  xmlns:functx="http://www.functx.com"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:local="urn:local"
@@ -23,10 +22,6 @@
   
   <xsl:mode name="class" on-no-match="shallow-skip"/>
   <xsl:mode name="relation" on-no-match="shallow-skip"/>
-  
-  <!--
-  <xsl:mode name="definition" on-no-match="shallow-copy"/>
-  -->
   
   <xsl:variable name="primitive-mim-type-mapping" as="map(xs:string, xs:string)">
     <xsl:map>
@@ -54,17 +49,17 @@
     
   <xsl:function name="entity:package-name">
     <xsl:param name="package-hierarchy" as="xs:string*"/>
-    <xsl:sequence select="string-join((for $p in $package-hierarchy return funct:lower-case($p)), '.')"/>
+    <xsl:sequence select="string-join((for $p in $package-hierarchy return funct:replace-special-chars(funct:flatten-diacritics(funct:lower-case($p)), '_')), '.')"/>
   </xsl:function>
   
   <xsl:function name="entity:class-name">
     <xsl:param name="name" as="xs:string"/>
-    <xsl:sequence select="funct:pascal-case($name)"/>
+    <xsl:sequence select="funct:replace-special-chars(funct:flatten-diacritics(funct:pascal-case($name)), '_')"/>
   </xsl:function>
 
   <xsl:function name="entity:field-name">
     <xsl:param name="name" as="xs:string"/>
-    <xsl:sequence select="funct:camel-case($name)"/>
+    <xsl:sequence select="funct:replace-special-chars(funct:flatten-diacritics(funct:camel-case($name)), '_')"/>
   </xsl:function>
   
   <xsl:function name="entity:enum-value" as="xs:string">
@@ -96,16 +91,16 @@
     
   <xsl:template match="entity" mode="class">
     <line/>
-    <line>{if (is-abstract = 'true') then 'abstract ' else ()}class {local:full-package-name(package-name) || '.' || name} &lt;&lt;{model-element}&gt;&gt; {{</line>
+    <line indent="2">{if (is-abstract = 'true') then 'abstract ' else ()}class {local:full-package-name(package-name) || '.' || name} &lt;&lt;{model-element}&gt;&gt; {{</line>
     <xsl:apply-templates mode="#current"/>
-    <line>}}</line>
+    <line indent="2">}}</line>
   </xsl:template>
   
   <xsl:template match="enumeration" mode="class">
     <line/>
-    <line>enum {local:full-package-name(package-name) || '.' || name} &lt;&lt;{model-element}&gt;&gt; {{</line>
+    <line indent="2">enum {local:full-package-name(package-name) || '.' || name} &lt;&lt;{model-element}&gt;&gt; {{</line>
     <xsl:for-each select="values/value">
-      <line indent="2">{upper-case(funct:replace-special-chars(funct:camel-case(code), '_'))}</line>
+      <line indent="4">{upper-case(funct:replace-special-chars(funct:camel-case(code), '_'))}</line>
     </xsl:for-each>
     <line>}}</line> 
   </xsl:template>
@@ -124,16 +119,16 @@
   -->
   
   <xsl:template match="field[type/@is-standard = 'true' or type/@is-enum = 'true']" mode="class">
-    <line indent="2">-{name} : {type}</line>
+    <line indent="4">-{name} : {type}</line>
   </xsl:template>  
   
   <xsl:template match="entity[super-type]" mode="relation">
-    <line>{local:full-package-name(super-type/@package-name) || '.' || super-type} &lt;|-- {local:full-package-name(package-name) || '.' || name}</line>
+    <line indent="2">{local:full-package-name(super-type/@package-name) || '.' || super-type} &lt;|-- {local:full-package-name(package-name) || '.' || name}</line>
     <xsl:apply-templates mode="#current"/>
   </xsl:template>
 
   <xsl:template match="field[not(type/@is-standard = 'true')]" mode="relation">
-    <line>
+    <line indent="2">
       <xsl:text>{local:full-package-name(ancestor::entity/package-name) || '.' || ancestor::entity/name}</xsl:text>
       <xsl:text> {local:cardinality-to-str(cardinality/source)}</xsl:text>
       <xsl:text> {if (aggregation = 'composite') then '*--' else 'o--'}</xsl:text>
@@ -150,9 +145,6 @@
   
   <xsl:function name="local:full-package-name" as="xs:string">
     <xsl:param name="package-name" as="xs:string"/>
-    <!--
-    <xsl:sequence select="string-join(($package-prefix, 'entity', $package-name), '.')"/>
-    -->
     <xsl:sequence select="$package-name"/>
   </xsl:function>
   
