@@ -2,6 +2,8 @@
 <xsl:stylesheet 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:fn="http://www.w3.org/2005/xpath-functions"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:map="http://www.w3.org/2005/xpath-functions/map"
   xmlns:mim="http://www.geostandaarden.nl/mim/mim-core/1.2"
   xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0"
@@ -9,8 +11,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:functx="http://www.functx.com"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:imf="http://www.imvertor.org/xsl/functions"   
   xmlns:local="urn:local"
   xmlns:entity="urn:entity"
   exclude-result-prefixes="#all"
@@ -22,6 +23,7 @@
   Ondersteuning unidirectioneel
   Ondersteuning Relatieklasse
   Ondersteuning Mixin
+  Messages toevoegen
   Composite Objecttype -> Keuze?
   Composite Objecttype -> Gegevensgroeptype?
   "Mogelijk geen waarde" vs kardinaliteit
@@ -42,9 +44,15 @@
   <xsl:key name="ref" match="mim-ref:*|mim-ext:ConstructieRef" use="substring(@xlink:href, 2)"/>
   <xsl:key name="supertype-ref" match="mim:supertypen/mim:GeneralisatieObjecttypen/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)" use="substring(@xlink:href, 2)"/>
   
+  <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
+  
+  <xsl:import href="../../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
+  
   <xsl:variable name="lf" select="'&#10;'" as="xs:string"/>
+  <!--
   <xsl:variable name="brace-left" select="'{'" as="xs:string"/>
   <xsl:variable name="brace-right" select="'}'" as="xs:string"/>
+  -->
   
   <xsl:variable name="ONE" select="'1'" as="xs:string"/>
   <xsl:variable name="ZERO" select="'0'" as="xs:string"/>
@@ -112,7 +120,12 @@
     mim:datatypen/mim:Referentielijst |
     mim-ext:constructies/mim-ext:Constructie"> 
     
-    <xsl:variable name="non-mixin-supertype-info" select="local:type-to-class(mim:supertypen/mim:GeneralisatieObjecttypen[not(mim:mixin = 'true')]/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef))" as="element(class)?"/>
+    <xsl:variable name="non-mixin-supertype-refs" select="mim:supertypen/mim:GeneralisatieObjecttypen[not(mim:mixin = 'true')]/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)" as="element()*"/>  
+    <xsl:if test="count($non-mixin-supertype-refs) gt 1">
+      <xsl:sequence select="imf:message(., 'ERROR', 'Multiple inheritance is not supported (besides on mixin/static supertypes)', 'Objecttype: ' || mim:naam)"/>  
+    </xsl:if>
+    
+    <xsl:variable name="non-mixin-supertype-info" select="local:type-to-class($non-mixin-supertype-refs[1])" as="element(class)?"/>
     <xsl:variable name="has-id-attribute" select="$non-mixin-supertype-info or (mim:attribuutsoorten/mim:Attribuutsoort | mim:referentieElementen/mim:ReferentieElement)/mim:identificerend = 'true'" as="xs:boolean"/>
     
     <entity>
@@ -215,6 +228,7 @@
     mim:dataElementen/mim:DataElement |
     mim:referentieElementen/mim:ReferentieElement">
     
+    <xsl:variable name="type-model-element" select="local:resolve-reference((mim:type | mim:gegevensgroeptype)/*)" as="element()?"/>
     <xsl:variable name="type-info" select="local:type-to-class((mim:type | mim:gegevensgroeptype)/*)" as="element(class)"/>
     <xsl:variable name="cardinality" select="local:cardinality(mim:kardinaliteit)" as="element(cardinality)"/>
     
@@ -240,9 +254,12 @@
           <xsl:otherwise>{$cardinality/@minOccurs = $ZERO}</xsl:otherwise> 
         </xsl:choose>  
       </nullable>
-      <xsl:if test="not($type-info/is-standard = 'true')">
-        <aggregation>composite</aggregation> <!-- TODO: this is not always correct! -->
-      </xsl:if>
+      <aggregation>
+        <xsl:choose>
+          <xsl:when test="self::mim:Gegevensgroep">composite</xsl:when>
+          <xsl:otherwise>shared</xsl:otherwise>
+        </xsl:choose>  
+      </aggregation>
       <xsl:call-template name="kenmerken"/>
       <cardinality>
         <source>
@@ -265,7 +282,8 @@
     </field>
   </xsl:template>
     
-  <xsl:template match="mim:keuzen/mim-ref:KeuzeRef">
+  <xsl:template match="mim:Objecttype/mim:keuzen/mim-ref:KeuzeRef">
+    <!-- Verwijzing vanuit Objecttype naar Keuze tussen Attribuutsoorten -->
     <xsl:variable name="keuze" select="local:resolve-reference(.)" as="element()"/>
     <field>
       <name>{entity:field-name(@label)}</name>
@@ -290,9 +308,9 @@
       </cardinality>
     </field>
   </xsl:template>
-    
-  <!-- Keuze tussen datatypen: -->  
+     
   <xsl:template match="mim:Keuze/mim:keuzeDatatypen/(mim:Datatype|mim-ref:DatatypeRef|mim-ext:ConstructieRef)">
+    <!-- Keuze tussen Datatypen --> 
     <xsl:variable name="type-info" select="local:type-to-class(.)" as="element(class)"/>
     <field>
       <name>{if (@label) then entity:field-name(@label) else 'attr' || position()}</name>
@@ -324,9 +342,9 @@
       </cardinality>
     </field>
   </xsl:template>  
-  
-  <!-- Keuze tussen relatiedoelen: -->  
+   
   <xsl:template match="mim:Keuze/mim:keuzeRelatiedoelen/mim:Relatiedoel/mim-ref:ObjecttypeRef">
+    <!-- Keuze tussen Relatiedoelen --> 
     <xsl:variable name="relatiedoel" select="local:resolve-reference(.)" as="element()"/>
     <xsl:variable name="referer-relatiesoort" select="local:resolve-referer(ancestor::mim:Keuze)/ancestor::mim:Relatiesoort" as="element()"/>
     <xsl:variable name="referer-relatiesoort-bron" select="if ($is-relatierol-leidend) then $referer-relatiesoort/mim:relatierollen/mim:Bron else ()" as="element(mim:Bron)?"/>
@@ -634,6 +652,22 @@
   <xsl:function name="local:kenmerk-maximumwaarde-exclusief" as="xs:string?">
     <xsl:param name="model-element" as="element()"/>
     <xsl:sequence select="local:kenmerk($model-element, 'maximumwaardeExclusief')"/>
+  </xsl:function>
+  
+  <xsl:function name="imf:message" as="empty-sequence()" use-when="$runs-in-imvertor-context">
+    <xsl:param name="this" as="node()*"/>
+    <xsl:param name="type" as="xs:string"/>
+    <xsl:param name="text" as="xs:string"/>
+    <xsl:param name="info" as="item()*"/>
+    <xsl:sequence select="imf:msg($this, $type, $text, $info)"/>
+  </xsl:function>
+  
+  <xsl:function name="imf:message" as="empty-sequence()" use-when="not($runs-in-imvertor-context)">
+    <xsl:param name="this" as="node()*"/>
+    <xsl:param name="type" as="xs:string"/>
+    <xsl:param name="text" as="xs:string"/>
+    <xsl:param name="info" as="item()*"/>
+    <xsl:message select="$type || ': ' || $text"/>
   </xsl:function>
   
   <xsl:template name="kenmerken">
