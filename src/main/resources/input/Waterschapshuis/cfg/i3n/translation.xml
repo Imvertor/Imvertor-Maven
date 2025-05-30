@@ -7,4 +7,22 @@
     
     <!-- add or override translations here: -->
     
+    <item>
+        <key>CHAPTER-CATALOG</key>
+        <trans lang="nl">De catalogus</trans>
+        <trans lang="en">The catalog</trans>
+    </item>
+    
+    <item>
+        <key>DETAILS-ENUMERATION</key>
+        <trans lang="nl">Enumeratie details</trans>
+        <trans lang="en">Enumeration details</trans>
+    </item>
+    
+    <item>
+        <key>DETAILS</key>
+        <trans lang="nl">Details</trans>
+        <trans lang="en">Details</trans>
+    </item>
+    
 </picklist>

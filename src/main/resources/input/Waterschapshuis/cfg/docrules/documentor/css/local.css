@@ -1,2 +1,5 @@
 /* hier de default CSS voor deze owner */
 
+html > body {
+    font-family: math;
+}
