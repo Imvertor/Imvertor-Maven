@@ -67,6 +67,7 @@
     <xsl:variable name="reveal-composition-name" select="imf:boolean($configuration-docrules-file/reveal-composition-name)"/>
     <xsl:variable name="show-properties" select="($configuration-docrules-file/show-properties,'config')[1]"/>
     <xsl:variable name="show-lists-with-metadata" select="imf:boolean(($configuration-docrules-file/show-lists-with-metadata,'no')[1])"/>
+    <xsl:variable name="show-relation-name" select="imf:boolean(($configuration-docrules-file/show-relation-name,'no')[1])"/>
     
     <xsl:variable name="has-material-history" select="exists(//imvert:tagged-value[@id = ('CFG-TV-INDICATIONMATERIALHISTORY','CFG-TV-HEEFTTIJDLIJNGELDIGHEID')]/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     <xsl:variable name="has-formal-history" select="exists(//imvert:tagged-value[@id = ('CFG-TV-INDICATIONFORMALHISTORY','CFG-TV-HEEFTTIJDLIJNREGISTRATIE')]/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
@@ -646,8 +647,10 @@
                 
                 maar kan ook een rol betreffen
                 -->
-                <xsl:variable name="relation" select="imvert:name"/>
+                <xsl:variable name="relation" select="if ($show-relation-name) then imvert:name else ()"/>
                 <xsl:variable name="target" select="imvert:target/imvert:role"/>
+                <xsl:sequence select="dlogger:save('create-link',())"></xsl:sequence>
+
                 <xsl:variable name="relation-original-name" select="if (exists($relation) and exists($target)) then concat($relation/@original,': ',$target/@original) else ($relation/@original,$target/@original)"/>
                 
                 <xsl:sequence select="imf:create-element('item',if ($incoming) then imf:create-link(../..,'global',../../imvert:name/@original) else string(../../imvert:name/@original))"/>
@@ -657,7 +660,6 @@
                 <xsl:sequence select="imf:create-element('item',('[',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs),']'))"/>
             </item>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
-            
         </part>
     </xsl:template>
   
@@ -931,12 +933,15 @@
     <xsl:template match="imvert:attribute" mode="detail-enumeratie">
         <xsl:param name="is-imbroa" as="xs:boolean"/>
         <xsl:param name="is-coded" as="xs:boolean"/>
+        
+        <xsl:variable name="init" select="imvert:initial-value"/>
+        <xsl:variable name="display-name" select="imf:get-name(.,true()) || (if ($init) then (' (' || $init || ')') else '')"/><!-- speciaal voor Waterschapshuis enumeraties -->
         <part>
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:if test="$is-coded">
                 <xsl:sequence select="imf:create-element('item',string(imvert:alias))"/>
             </xsl:if>
-            <xsl:sequence select="imf:create-element('item',imf:get-name(.,true()))"/>
+            <xsl:sequence select="imf:create-element('item',$display-name)"/>
             <xsl:if test="$is-imbroa">
                 <xsl:sequence select="imf:create-element('item',if (imvert:stereotype/@id = ('stereotype-name-imbroa')) then '' else '&#x2714;')"/>
                 <xsl:sequence select="imf:create-element('item','&#x2714;')"/>
@@ -1214,6 +1219,7 @@
        <xsl:param name="waarde" as="item()*"/>
      
        <xsl:variable name="doc-rule" select="$level/../.."/>
+       <xsl:variable name="suppress" select="$doc-rule/levels/@show = 'none'"/> <!-- moet de weergave geheel worden onderdrukt? -->
        
        <xsl:variable name="name" select="$doc-rule/name"/> 
        <xsl:variable name="doc-rule-id" select="$doc-rule/@id"/>
@@ -1226,6 +1232,9 @@
        
        <xsl:variable name="display-waarde" as="item()*">
            <xsl:choose>
+               <xsl:when test="$suppress">
+                   <!-- skip; this is forced by the levels attribute @show=none -->
+               </xsl:when>
                <xsl:when test="$show-properties = 'config' and $show = 'none'">
                    <!-- skip; this is forced by the configuration -->
                </xsl:when>
