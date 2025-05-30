@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <name>Default</name>
+    
+    <desc>Default requirements on documentation. A complete overview of all parameters acceptable for documentation generation.</desc>
+    
+    <link-by>NAME</link-by><!-- link by EAID or NAME -->
+    
+    <!--
+        Where to show the explanation? (at-bottom or as-row)
+    -->
+    <explanation-location>as-row</explanation-location>
+    
+    <!-- 
+        Append the role name at end of the association name? 
+    --> 
+    <append-role-name>no</append-role-name>
+    
+    <!--
+        Determine the type of any diagram image by suffix, i.e. the diagram name after "-" as in "Objecttypen  – overzicht" 
+    -->
+    <diagram-type-strategy>suffix</diagram-type-strategy>
+    
+    <!--
+        Include incoming associations in the short overview?
+    -->
+    <include-incoming-associations>no</include-incoming-associations>
+    
+    <!--
+        Show the gegevensgroep type name in the attribute listings?
+    -->
+    <reveal-composition-name>yes</reveal-composition-name>
+    
+    <!-- 
+        collect the codelist and enumeration contents in a separate section?
+    -->
+    <lists-to-listing>yes</lists-to-listing>
+    
+    <!--
+        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
+    -->
+    <show-lists-with-metadata>yes</show-lists-with-metadata>
+
+    <!-- which sections to include in the modeldoc? --> 
+    <include-overview-section-level>no</include-overview-section-level>
+    <include-detail-section-level>yes</include-detail-section-level>
+    <include-overview-sections-by-type>yes</include-overview-sections-by-type>
+    <include-detail-sections-by-type>yes</include-detail-sections-by-type>
+    
+    <!-- 
+        visibility of properties: show in accordance with configuration (@show) or compact: only the specified parts 
+    -->
+    <show-properties>compact</show-properties> <!-- config, all, compact -->
+    
+    <!--
+        moet een zinnetje worden toegevoegd dat aangeeft dat identificerend attribuut gecombineerd wordt met andere idenrtificerende attributen? cf #263
+    -->
+    <identifying-attribute-with-context>no</identifying-attribute-with-context>
+    
+    <!-- 
+         Moeten de details van attribuutsoorten uit een gegevensgroeptype alleen worden opgenomen in de sectie voor gegevengroeptypen ('group'), of ook bij de objecten ('object')?
+         Default is: 'object'. 
+     -->
+    <gegevensgroep-attribute-container>object</gegevensgroep-attribute-container>
+
+    <!-- 
+        Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
+    -->
+    <respec-config>respec-nlgov</respec-config> <!-- gecachte versie van https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js -->
+    
+    <!-- 
+        Wordt een diagram geplaatst binnen <figure> (met figcaption) of (default) gewoon in een <img>? 
+        Options:
+        - figure
+        - img
+    -->
+    <diagram-encoding>figure</diagram-encoding>
+    
+    <!--
+        Welke image zoomer wordt gebruikt?
+        Opties:
+        - default
+        - pan-zoom-image
+    -->
+    <diagram-zoomer>default</diagram-zoomer>
+    <image-zoomer>default</image-zoomer>
+    
+    <!--
+        Moet in de weergave van relaties wanneer rol-gebaseerd de naam van relatie én rol worden getoond? 
+    -->
+    <show-relation-name>yes</show-relation-name>
+    
+    <!--
+        Moet een URL in een data locatie worden weergegeven als link? (zie #565)
+    -->
+    <data-location-as-link>yes</data-location-as-link>
+    
+    <image-purpose id="CFG-IMG-OVERVIEW">
+        <name lang="nl">Overzichtsdiagram</name>
+        <name lang="en">Overview diagram</name>
+        <!-- markers are placed after the name of the diagram, as in "Sample simple constructs - overzicht" -->
+        <marker lang="nl">overzicht</marker>
+        <marker lang="en">overview</marker>
+        <show-caption>yes</show-caption>
+    </image-purpose>
+    
+    <image-purpose id="CFG-IMG-DETAIL">
+        <name lang="nl">Detaildiagram</name>
+        <name lang="en">Detail diagram</name>
+        <marker lang="nl">detail</marker>
+        <marker lang="en">detail</marker>
+        <show-caption>yes</show-caption>
+    </image-purpose>
+       
+</doc-rules>
