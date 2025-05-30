@@ -481,6 +481,7 @@
                 <xsl:apply-templates select="($doc-rules//identifying-attribute-with-context)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//gegevensgroep-attribute-container)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//show-lists-with-metadata)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//show-relation-name)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//data-location-as-link)[last()]" mode="#current"/>
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
@@ -488,7 +489,8 @@
                     <doc-rule id="{current-grouping-key()}" order="{@order}">
                         <xsl:apply-templates select="current-group()[last()]/name" mode="#current"/>
                         <levels>
-                            <xsl:for-each-group select="current-group()/levels/level" group-by="text()">
+                            <xsl:attribute name="show" select="(current-group()/levels/@show)[last()]"/>
+                           <xsl:for-each-group select="current-group()/levels/level" group-by="text()">
                                 <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                             </xsl:for-each-group>
                         </levels>
