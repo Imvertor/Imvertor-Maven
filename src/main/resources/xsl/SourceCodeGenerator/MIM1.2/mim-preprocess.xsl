@@ -25,25 +25,18 @@
   
   <xsl:param name="sourcecode-resolve-gegevensgroeptypes" select="true()" as="xs:boolean"/>
   <xsl:param name="sourcecode-copy-down-mixins" select="false()" as="xs:boolean"/>
-  <xsl:param name="sourcecode-resolve-keuze-tussen-attribuutsoorten" select="false()" as="xs:boolean"/>
-  <xsl:param name="sourcecode-resolve-keuze-tussen-relatiesoorten" select="false()" as="xs:boolean"/>
+  <xsl:param name="sourcecode-resolve-keuze-tussen-attribuutsoorten" select="true()" as="xs:boolean"/>
+  <xsl:param name="sourcecode-resolve-keuze-tussen-relatiedoelen" select="true()" as="xs:boolean"/>
   <xsl:param name="sourcecode-resolve-keuze-tussen-datatypen" select="true()" as="xs:boolean"/>
   
   <xsl:template match="(mim:Domein|mim:View)/mim:gegevensgroeptypen[$sourcecode-resolve-gegevensgroeptypes]"/>
   <xsl:template match="(mim:Domein|mim:View)/mim:keuzen/mim:Keuze[mim:keuzeAttributen][$sourcecode-resolve-keuze-tussen-attribuutsoorten]"/>
   <xsl:template match="(mim:Domein|mim:View)/mim:keuzen/mim:Keuze[mim:keuzeDatatypen][$sourcecode-resolve-keuze-tussen-datatypen]"/>
+  <xsl:template match="(mim:Domein|mim:View)/mim:keuzen/mim:Keuze[mim:keuzeRelatiedoelen][$sourcecode-resolve-keuze-tussen-relatiedoelen]"/>
   
-  <!--
-  <xsl:template match="(mim:Domein|mim:View)/mim:keuzen/mim:Keuze[mim:keuzeRelatiedoelen][$sourcecode-resolve-keuze-tussen-relatiesoorten]"/>
-  -->
-
   <xsl:template match="mim:Objecttype/mim:gegevensgroepen[$sourcecode-resolve-gegevensgroeptypes]"/>
   <xsl:template match="mim:Objecttype/mim:keuzen[local:resolve-reference(mim-ref:KeuzeRef)/mim:keuzeAttributen][$sourcecode-resolve-keuze-tussen-attribuutsoorten]"/>
     
-  <!--
-  <xsl:template match="mim:Relatiesoort/mim:doel[local:resolve-reference(mim-ref:KeuzeRef)/mim:keuzeRelatiedoelen][$sourcecode-resolve-keuze-tussen-relatiesoorten]"/>
-  -->
-  
   <xsl:template match="(mim:Objecttype|mim:Gegevensgroeptype)/(mim:attribuutsoorten|mim:relatiesoorten)">
     <xsl:param name="name-prefix" as="xs:string?" tunnel="yes"/>
     <xsl:variable name="local-name" select="local-name()" as="xs:string"/>
@@ -81,7 +74,7 @@
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <xsl:if test="$comment">
-        <xsl:comment> {$comment}  </xsl:comment>  
+        <xsl:comment> {$comment} </xsl:comment>  
       </xsl:if>
       <xsl:apply-templates select="node()"/>
     </xsl:copy>
@@ -100,12 +93,24 @@
     </xsl:for-each>
   </xsl:template>
   
+  <xsl:template match="mim:Relatiesoort[mim:doel/mim-ref:KeuzeRef][$sourcecode-resolve-keuze-tussen-relatiedoelen]">
+    <!-- $sourcecode-resolve-keuze-tussen-relatiedoelen -->
+    <xsl:variable name="keuze" select="local:resolve-reference(mim:doel/mim-ref:KeuzeRef)" as="element(mim:Keuze)"/>
+    <xsl:variable name="current" select="." as="element()"/>
+    <xsl:for-each select="$keuze/mim:keuzeRelatiedoelen/mim:Relatiedoel/mim-ref:ObjecttypeRef">
+      <xsl:apply-templates select="$current" mode="keuze-relatiedoelen">
+        <xsl:with-param name="relatiedoel-ref" select="." as="element(mim-ref:ObjecttypeRef)" tunnel="yes"/>
+        <xsl:with-param name="comment" select="'$sourcecode-resolve-keuze-tussen-relatiedoelen'" as="xs:string"/>
+      </xsl:apply-templates>  
+    </xsl:for-each>
+  </xsl:template>
+  
   <xsl:template match="mim:Attribuutsoort" mode="keuze-datatypen">
     <xsl:param name="comment" as="xs:string?"/>
     <xsl:copy>
       <xsl:apply-templates select="@*[not(local-name() = ('index', 'id'))]" mode="#current"/>
       <xsl:if test="$comment">
-        <xsl:comment>xxx {$comment}  </xsl:comment>  
+        <xsl:comment> {$comment} </xsl:comment>  
       </xsl:if>
       <xsl:apply-templates select="node()" mode="#current"/>
     </xsl:copy>
@@ -129,7 +134,23 @@
     <xsl:param name="name-prefix" as="xs:string?" tunnel="yes"/>
     <xsl:value-of select="if ($name-prefix) then $name-prefix || ' ' || . else ."/>
   </xsl:template>
-    
+  
+  <xsl:template match="mim:Relatiesoort" mode="keuze-relatiedoelen">
+    <xsl:param name="comment" as="xs:string?"/>
+    <xsl:copy>
+      <xsl:apply-templates select="@*[not(local-name() = ('index', 'id'))]" mode="#current"/>
+      <xsl:if test="$comment">
+        <xsl:comment> {$comment} </xsl:comment>  
+      </xsl:if>
+      <xsl:apply-templates select="node()" mode="#current"/>
+    </xsl:copy>
+  </xsl:template>
+  
+  <xsl:template match="mim:Relatiesoort/mim:doel" mode="keuze-relatiedoelen">
+    <xsl:param name="relatiedoel-ref" as="element(mim-ref:ObjecttypeRef)" tunnel="yes"/>
+    <xsl:sequence select="$relatiedoel-ref"/>
+  </xsl:template>
+  
   <!-- Find the element that is referred to by $ref-element/@xlink:href: -->
   <xsl:function name="local:resolve-reference" as="element()?">
     <xsl:param name="ref-element" as="element()?"/>
