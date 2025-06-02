@@ -22,6 +22,7 @@
   
   <xsl:mode name="class" on-no-match="shallow-skip"/>
   <xsl:mode name="relation" on-no-match="shallow-skip"/>
+  <xsl:mode name="choice" on-no-match="shallow-skip"/>
   
   <xsl:variable name="primitive-mim-type-mapping" as="map(xs:string, xs:string)">
     <xsl:map>
@@ -70,6 +71,7 @@
   <xsl:template match="model">
     <xsl:variable name="lines-elements" as="element(line)+"> 
       <line>@startuml</line>
+      <line>skinparam style strictuml</line>
       <xsl:apply-templates/>
       <line>@enduml</line>
     </xsl:variable>
@@ -85,6 +87,8 @@
     <xsl:apply-templates mode="class"/>
     <line/>
     <xsl:apply-templates mode="relation"/>
+    <line/>
+    <xsl:apply-templates mode="choice"/>
     <line/>
     <line>}}</line>
   </xsl:template>
@@ -136,6 +140,18 @@
       <xsl:text> {local:full-package-name(type/@package-name) || '.' || type}</xsl:text>
       <xsl:text> : {name}</xsl:text>
     </line>
+  </xsl:template>
+  
+  <xsl:template match="fields" mode="choice">
+    <xsl:variable name="parent-entity" select="local:full-package-name(parent::entity/package-name) || '.' || parent::entity/name" as="xs:string"/>
+    <xsl:for-each-group select="field[choice-id]" group-by="choice-id">
+      <xsl:variable name="target-entities" as="xs:string+">
+        <xsl:for-each select="current-group()">
+          <xsl:value-of select="local:full-package-name(type/@package-name) || '.' || type"/>    
+        </xsl:for-each>
+      </xsl:variable>
+      <line indent="2">({$parent-entity}, {$target-entities[1]}) ...  ({$target-entities[2]}, {$parent-entity}) : {{xor}}</line>
+    </xsl:for-each-group>
   </xsl:template>
   
   <xsl:template match="line">

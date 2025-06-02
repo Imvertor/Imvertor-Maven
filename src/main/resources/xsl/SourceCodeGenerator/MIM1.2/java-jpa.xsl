@@ -87,15 +87,26 @@
   
         <xsl:call-template name="javadoc"/>
         
-        <line>
-          <xsl:choose>
-            <xsl:when test="model-element = 'Keuze'">
-              <xsl:variable name="field-names" select="for $n in fields/field[not(type/@is-standard = 'true')]/name return $n" as="xs:string*"/>
-              <xsl:text>@Keuze(fieldNames = {{{ string-join(for $n in $field-names return '"' || $n || '"', ', ') }}} , message = "Exactly one of {string-join($field-names, ', ')} must be non-zero")</xsl:text>
-            </xsl:when>
-            <xsl:otherwise>@{model-element}</xsl:otherwise>
-          </xsl:choose>
-        </line>
+        <xsl:choose>
+          <xsl:when test="fields/field[choice-id]">
+            <xsl:for-each-group select="fields/field[choice-id]" group-by="choice-id">
+              <xsl:variable name="field-names" select="current-group()/name" as="xs:string+"/>
+              <line>
+                <xsl:text>@Keuze(fieldNames = {{{ string-join(for $n in $field-names return '"' || $n || '"', ', ') }}} , message = "Exactly one of {string-join($field-names, ', ')} must be non-zero")</xsl:text>  
+              </line>
+            </xsl:for-each-group>
+          </xsl:when>
+          <xsl:when test="model-element = 'Keuze'">
+            <xsl:variable name="field-names" select="for $n in fields/field[not(type/@is-standard = 'true')]/name return $n" as="xs:string*"/>
+            <line>
+              <xsl:text>@Keuze(fieldNames = {{{ string-join(for $n in $field-names return '"' || $n || '"', ', ') }}} , message = "Exactly one of {string-join($field-names, ', ')} must be non-zero")</xsl:text>  
+            </line>
+          </xsl:when>
+          <xsl:otherwise>
+            <line>@{model-element}</line>
+          </xsl:otherwise>
+        </xsl:choose>
+        
         
         <line mode="entity">@Entity</line>
         <xsl:if test="has-sub-types = 'true'">

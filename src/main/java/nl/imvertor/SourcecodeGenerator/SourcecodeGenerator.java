@@ -104,6 +104,9 @@ public class SourcecodeGenerator extends Step {
       sourceCodeTypes = configurator.mergeParms(sourceCodeTypes);
     }
     
+    String xslFileParamMIMResolved = "properties/IMVERTOR_CODEGEN_MIM_RESOLVED_" + mimVersion + "_XSLPATH";
+    String workFileParamMIMResolved = "properties/WORK_CODEGEN_MIM_RESOLVED_FILEPATH";
+    
     String[] types = sourceCodeTypes.trim().split("\\s*[,;]\\s*");
     for (String type: types) {
       if (!StringUtils.equalsAny(type, SUPPORTED_SOURCECODE_TYPES)) {
@@ -128,8 +131,10 @@ public class SourcecodeGenerator extends Step {
         workDirFile = new File(workDirPath);
         transformer.setXslParm("output-uri", workDirFile.toURI().toString());  
       }
+
+      succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", workFileParamMIMResolved, xslFileParamMIMResolved);
       
-      succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", workFileParam, xslFileParam);
+      succeeds = succeeds && transformer.transformStep(workFileParamMIMResolved, workFileParam, xslFileParam);
 
       // store to sourcecode folder
       if (succeeds) {

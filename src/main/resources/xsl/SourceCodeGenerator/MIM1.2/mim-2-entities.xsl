@@ -11,7 +11,8 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:functx="http://www.functx.com"
-  xmlns:imf="http://www.imvertor.org/xsl/functions"   
+  xmlns:imf="http://www.imvertor.org/xsl/functions"
+  xmlns:pre="http://www.imvertor.org/xsl/preprocess"
   xmlns:local="urn:local"
   xmlns:entity="urn:entity"
   exclude-result-prefixes="#all"
@@ -279,6 +280,9 @@
           </xsl:choose>
         </target>  
       </cardinality>
+      <xsl:where-populated>
+        <choice-id>{@pre:keuze-id}</choice-id>  
+      </xsl:where-populated>
     </field>
   </xsl:template>
     
@@ -437,6 +441,9 @@
           <max-occurs>{$target-cardinality/@maxOccurs}</max-occurs> 
         </target>
       </cardinality>
+      <xsl:where-populated>
+        <choice-id>{@pre:keuze-id}</choice-id>  
+      </xsl:where-populated>
     </field>
   </xsl:template>
   
@@ -480,6 +487,9 @@
           <max-occurs>{$target-cardinality/@maxOccurs}</max-occurs> 
         </target>
       </cardinality>
+      <xsl:where-populated>
+        <choice-id>{@pre:keuze-id}</choice-id>  
+      </xsl:where-populated>
     </field>
   </xsl:template>
   
