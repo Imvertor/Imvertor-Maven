@@ -36,6 +36,7 @@
     -->
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-report.xsl"/>
+    <xsl:import href="Imvert2compare-human-style.xsl"/>
     
     <xsl:template match="/config">
        
@@ -135,7 +136,17 @@
                     <p>This report shows {$cdiff} differences found between <xsl:sequence select="$compare-text"/>. This report is intended to provide sufficient information for manually creating <i>release notes</i> on the model.</p>
                 </intro>
                 <content>
-                    <p><i>TODO</i></p>
+                    <xsl:choose>
+                        <xsl:when test="$cdiff = 0">
+                            <p><i>No differences.</i></p>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <table> 
+                                <xsl:apply-templates select="$diff-doc/cmps" mode="releasenotes"/>
+                            </table>           
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <!--p><i>TODO</i></p-->
                 </content>
             </page>
         </report>
