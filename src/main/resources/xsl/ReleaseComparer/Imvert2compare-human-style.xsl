@@ -24,8 +24,31 @@
 		</tr>
 		<tr>
 			<td>
-				<h2>Domein</h2>
-				<xsl:apply-templates select="../cmps" mode="domain"/>
+				<h2>Domains</h2>
+				<xsl:for-each-group select="../cmps" group-by="res/cmp/@domain" >
+					<xsl:variable name="domain" select="current-grouping-key()"/>
+					<h4>Domain <xsl:sequence select="$domain"/></h4>
+					<ul>
+						<xsl:for-each-group select="res" group-by="@type">
+							<xsl:apply-templates select="../res[@type = current-grouping-key() and cmp/@domain = $domain]" mode="domain"/>
+							
+						</xsl:for-each-group>
+						<xsl:if test="$concise = 'yes' and res[cmp[1][@domain and not(@class) and @property-stereo != '']]">
+							<xsl:variable name="changed">
+								<xsl:if test="res[@type = 'CHANGED' and cmp[1][@domain and not(@class) and @property-stereo != '']]">yes</xsl:if>
+							</xsl:variable>
+							<xsl:variable name="removed">
+								<xsl:if test="res[@type = 'REMOVED' and cmp[1][@domain and not(@class) and @property-stereo != '']]">yes</xsl:if>
+							</xsl:variable>
+							<xsl:variable name="added">
+								<xsl:if test="res[@type = 'ADDED' and cmp[1][@domain and not(@class) and @property-stereo != '']]">yes</xsl:if>
+							</xsl:variable>
+							<li><xsl:text>Er zijn een of meer tagged-values op dit domein </xsl:text>
+								<xsl:sequence select="imf:changed-removed-and-added($changed,$removed,$added)"/>
+							</li>
+						</xsl:if>
+					</ul>
+				</xsl:for-each-group>
 			</td>
 		</tr>
 		<tr>
@@ -104,56 +127,15 @@
 		</ul>
 	</xsl:template>
 	
-	<xsl:template match="cmps" mode="domain">
-		<ul>
-			<xsl:for-each select="res/cmp[1][@domain and not(@class)]" >
-				<xsl:sort select="@id"/>
-				
-				<xsl:choose>
-					<xsl:when test="$concise = 'yes' and @property-stereo != ''"/>
-					<xsl:otherwise>
-						<xsl:variable name="event" select="../@type"/>
-						<xsl:variable name="type" select="'Domain'"/>
-						<xsl:variable name="property" select="@property"/>
-						<xsl:variable name="property-stereo" select="@property-stereo"/>
-						<xsl:variable name="domain" select="@domain"/>
-						<xsl:variable name="domain-stereo" select="@domain-stereo"/>
-						<xsl:variable name="class-stereo" select="@class-stereo"/>
-						<xsl:variable name="attass" select="@attass"/>
-						<xsl:variable name="attass-stereo" select="@attass-stereo"/>
-						<xsl:variable name="currentvalue" select="@value"/>
-						<xsl:variable name="newvalue" select="../cmp[2]/@value"/>
-						
-						<xsl:sequence select="imf:determine-releasenote($event,$type,$property,$property-stereo,$domain,$domain-stereo,$class-stereo,$attass,$attass-stereo,$currentvalue,$newvalue)"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:for-each>
-			<xsl:if test="$concise = 'yes' and res[cmp[1][@domain and not(@class) and @property-stereo != '']]">
-				<xsl:variable name="changed">
-					<xsl:if test="res[@type = 'CHANGED' and cmp[1][@domain and not(@class) and @property-stereo != '']]">yes</xsl:if>
-				</xsl:variable>
-				<xsl:variable name="removed">
-					<xsl:if test="res[@type = 'REMOVED' and cmp[1][@domain and not(@class) and @property-stereo != '']]">yes</xsl:if>
-				</xsl:variable>
-				<xsl:variable name="added">
-					<xsl:if test="res[@type = 'ADDED' and cmp[1][@domain and not(@class) and @property-stereo != '']]">yes</xsl:if>
-				</xsl:variable>
-				<li><xsl:text>Er zijn een of meer tagged-values op dit domein </xsl:text>
-					<xsl:sequence select="imf:changed-removed-and-added($changed,$removed,$added)"/>
-				</li>
-			</xsl:if>
-		</ul>
-	</xsl:template>
-	
-	<xsl:template match="res" mode="class">
-		<xsl:for-each select="cmp[1][@class]">
+	<xsl:template match="res" mode="domain">
+		<xsl:for-each select="cmp[1][@domain and not(@class)]">
 			<xsl:sort select="@id"/>
 			
 			<xsl:choose>
 				<xsl:when test="$concise = 'yes' and @property-stereo != ''"/>
 				<xsl:otherwise>
 					<xsl:variable name="event" select="../@type"/>
-						<xsl:variable name="type" select="'Class'"/>
+						<xsl:variable name="type" select="'Domain'"/>
 						<xsl:variable name="property" select="@property"/>
 						<xsl:variable name="property-stereo" select="@property-stereo"/>
 						<xsl:variable name="domain" select="@domain"/>
@@ -170,6 +152,31 @@
 		</xsl:for-each>
 	</xsl:template>
 
+	<xsl:template match="res" mode="class">
+		<xsl:for-each select="cmp[1][@class]">
+			<xsl:sort select="@id"/>
+			
+			<xsl:choose>
+				<xsl:when test="$concise = 'yes' and @property-stereo != ''"/>
+				<xsl:otherwise>
+					<xsl:variable name="event" select="../@type"/>
+					<xsl:variable name="type" select="'Class'"/>
+					<xsl:variable name="property" select="@property"/>
+					<xsl:variable name="property-stereo" select="@property-stereo"/>
+					<xsl:variable name="domain" select="@domain"/>
+					<xsl:variable name="domain-stereo" select="@domain-stereo"/>
+					<xsl:variable name="class-stereo" select="@class-stereo"/>
+					<xsl:variable name="attass" select="@attass"/>
+					<xsl:variable name="attass-stereo" select="@attass-stereo"/>
+					<xsl:variable name="currentvalue" select="@value"/>
+					<xsl:variable name="newvalue" select="../cmp[2]/@value"/>
+					
+					<xsl:sequence select="imf:determine-releasenote($event,$type,$property,$property-stereo,$domain,$domain-stereo,$class-stereo,$attass,$attass-stereo,$currentvalue,$newvalue)"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>
+	</xsl:template>
+	
 	<xsl:function name="imf:changed-removed-and-added">
 		<xsl:param name="changed"/>
 		<xsl:param name="removed"/>
