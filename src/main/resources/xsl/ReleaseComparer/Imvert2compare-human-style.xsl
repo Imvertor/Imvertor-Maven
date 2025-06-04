@@ -13,7 +13,7 @@
 
 	<!--xsl:variable name="NOT2BReportedProperties">attributeTypeDesignation, compos, conceptualSchemaType, documentation, exported, generated, generator, modified, nameAttribute, nameAssociation, nameClass, trace, tv_CFG-TV-DEFINITION, tv_CFG-TV-IMDOMAIN, tv_CFG-TV-DESCRIPTION, typeId, typePackage, typePackageId</xsl:variable-->
 
-	<xsl:variable name="concise" select="'yes'"/>
+	<xsl:variable name="concise" select="'no'"/>
 
 	<xsl:template match="/cmps" mode="releasenotes">
 		<tr>
@@ -31,29 +31,33 @@
 		<tr>
 			<td>
 				<h2>Classes</h2>
-				<xsl:for-each-group select="../cmps" group-by="res/cmp/@class">
-					<h4>In de class <xsl:value-of select="current-grouping-key()"/> zijn de volgende wijzigingen aangebracht:</h4>
-					<xsl:variable name="class" select="current-grouping-key()"/>
-					<ul>
-						<xsl:for-each-group select="res" group-by="@type">
-							<xsl:apply-templates select="../res[@type = current-grouping-key() and cmp/@class = $class]" mode="class"/>
-							
-						</xsl:for-each-group>
-						<xsl:if test="$concise = 'yes' and res/cmp[1][@property-stereo != '' and @class = $class]">
-							<xsl:variable name="changed">
-								<xsl:if test="res[@type = 'CHANGED' and cmp[1][@property-stereo != '' and @class = $class]]">yes</xsl:if>
-							</xsl:variable>
-							<xsl:variable name="removed">
-								<xsl:if test="res[@type = 'REMOVED' and cmp[1][@property-stereo != '' and @class = $class]]">yes</xsl:if>
-							</xsl:variable>
-							<xsl:variable name="added">
-								<xsl:if test="res[@type = 'ADDED' and cmp[1][@property-stereo != '' and @class = $class]]">yes</xsl:if>
-							</xsl:variable>
-							<li><xsl:text>Er zijn een of meer tagged-values op deze class, op attributes van deze class of op, met deze class gedefinieerde, associations </xsl:text>
-								<xsl:sequence select="imf:changed-removed-and-added($changed,$removed,$added)"/>
-							</li>
-						</xsl:if>
-					</ul>
+				<xsl:for-each-group select="../cmps" group-by="res/cmp/@class-stereo" >
+					<xsl:variable name="class-stereo" select="current-grouping-key()"/>
+					<h4><xsl:sequence select="$class-stereo"/> classes</h4>
+					<xsl:for-each-group select="../cmps" group-by="res/cmp[@class-stereo = $class-stereo]/@class">
+						<xsl:variable name="class" select="current-grouping-key()"/>
+						<h5>In de <xsl:sequence select="$class-stereo"/> class &apos;<xsl:value-of select="$class"/>&apos; zijn de volgende wijzigingen aangebracht:</h5>
+						<ul>
+							<xsl:for-each-group select="res" group-by="@type">
+								<xsl:apply-templates select="../res[@type = current-grouping-key() and cmp/@class = $class]" mode="class"/>
+								
+							</xsl:for-each-group>
+							<xsl:if test="$concise = 'yes' and res/cmp[1][@property-stereo != '' and @class = $class]">
+								<xsl:variable name="changed">
+									<xsl:if test="res[@type = 'CHANGED' and cmp[1][@property-stereo != '' and @class = $class]]">yes</xsl:if>
+								</xsl:variable>
+								<xsl:variable name="removed">
+									<xsl:if test="res[@type = 'REMOVED' and cmp[1][@property-stereo != '' and @class = $class]]">yes</xsl:if>
+								</xsl:variable>
+								<xsl:variable name="added">
+									<xsl:if test="res[@type = 'ADDED' and cmp[1][@property-stereo != '' and @class = $class]]">yes</xsl:if>
+								</xsl:variable>
+								<li><xsl:text>Er zijn een of meer tagged-values op deze class, op attributes van deze class of op, met deze class gedefinieerde, associations </xsl:text>
+									<xsl:sequence select="imf:changed-removed-and-added($changed,$removed,$added)"/>
+								</li>
+							</xsl:if>
+						</ul>
+					</xsl:for-each-group>
 				</xsl:for-each-group>
 			</td>
 		</tr>
@@ -209,108 +213,86 @@
 		<xsl:param name="currentvalue"/>
 		<xsl:param name="newvalue"/>
 		
-		<xsl:choose>
-			<xsl:when test="$event='CHANGED'">
-				<li><xsl:text>De waarde van de </xsl:text>
-					<xsl:if test="$property-stereo != ''">
-						<xsl:value-of select="$property-stereo"/>
-					</xsl:if>
-					<xsl:text> property &apos;</xsl:text><xsl:value-of select="$property"/><xsl:text>&apos; </xsl:text>
-					<xsl:if test="$type = 'Model'">
-						<xsl:text>van het informatiemodel </xsl:text>
-					</xsl:if>
-					<xsl:if test="$domain != '' and $type = 'Domain'">
-						<xsl:text>van het </xsl:text><xsl:value-of select="$domain-stereo"/> &apos;<xsl:value-of select="$domain"/><xsl:text>&apos; </xsl:text>
-					</xsl:if>
-					<xsl:if test="$attass != ''">
-						<xsl:text>van het </xsl:text><xsl:value-of select="$attass-stereo"/> &apos;<xsl:value-of select="$attass"/><xsl:text>&apos; in </xsl:text>
-					</xsl:if>
-					<xsl:if test="$class-stereo != '' and $attass = ''">
-						<xsl:text>van </xsl:text>
-					</xsl:if>
-					<xsl:if test="$class-stereo != ''">
-						<xsl:text>dit </xsl:text><xsl:value-of select="$class-stereo"/><xsl:text> </xsl:text>
-					</xsl:if>
-					is gewijzigd van<br/>&#160;&#160;&#160;&#160;&apos;<span style="color: #cc66ff"><xsl:value-of select="$currentvalue"/></span>&apos;<br/>&#160;&#160;&#160;&#160;in &apos;<span style="color: blue;"><xsl:value-of select="$newvalue"/></span>&apos;.</li>			
-			</xsl:when>
-			<xsl:when test="$event='REMOVED' and $property != ''">
-				<li><xsl:text>De </xsl:text>
-					<xsl:if test="$property-stereo != ''">
-						<xsl:value-of select="$property-stereo"/>
-					</xsl:if>
-					<xsl:text> property &apos;</xsl:text><xsl:value-of select="$property"/><xsl:text>&apos; </xsl:text>
-					<xsl:if test="$type = 'Model'">
-						<xsl:text>van het informatiemodel </xsl:text>
-					</xsl:if>
-					<xsl:if test="$domain != '' and $type = 'Domain'">
-						<xsl:text>van het </xsl:text><xsl:value-of select="$domain-stereo"/> &apos;<xsl:value-of select="$domain"/><xsl:text>&apos; </xsl:text>
-					</xsl:if>
-					<xsl:if test="$attass != ''">
-						<xsl:text>van het </xsl:text><xsl:value-of select="$attass-stereo"/> &apos;<xsl:value-of select="$attass"/><xsl:text>&apos; </xsl:text>
-					</xsl:if>
-					<xsl:if test="$class-stereo != ''">
-						<xsl:text>in dit </xsl:text><xsl:value-of select="$class-stereo"/><xsl:text> </xsl:text>
-					</xsl:if>
-					is verwijderd.</li>
-			</xsl:when>
-			<xsl:when test="$event='REMOVED' and $property = '' and $attass != ''">
-				<li><xsl:text>Het/De </xsl:text>
-					<xsl:if test="$attass != ''">
-						<xsl:text></xsl:text><xsl:value-of select="$attass-stereo"/> &apos;<xsl:value-of select="$attass"/><xsl:text>&apos; </xsl:text>
-					</xsl:if>
-					<xsl:if test="$class-stereo != ''">
-						<xsl:text>in dit </xsl:text><xsl:value-of select="$class-stereo"/><xsl:text> </xsl:text>
-					</xsl:if>
-					is verwijderd.</li>
-			</xsl:when>
-			<xsl:when test="$event='REMOVED' and $property = '' and $attass = '' and $class-stereo =''">
-				<li><xsl:text>Het </xsl:text>
-					<xsl:if test="$domain-stereo != ''">
-						<xsl:value-of select="$domain-stereo"/> &apos;<xsl:value-of select="$domain"/><xsl:text>&apos; </xsl:text>
-					</xsl:if>
-					is verwijderd.</li>
-			</xsl:when>
-			<xsl:when test="$event='REMOVED' and $property = '' and $class-stereo != ''">
-				<li>Dit <xsl:value-of select="$class-stereo"/> is verwijderd.</li>
-			</xsl:when>
-			<xsl:when test="$event='ADDED' and $property != ''">
-				<li><xsl:text>De </xsl:text>
-					<xsl:if test="$property-stereo != ''">
-						<xsl:value-of select="$property-stereo"/>
-					</xsl:if>
-					<xsl:text> property &apos;</xsl:text><xsl:value-of select="$property"/><xsl:text>&apos; </xsl:text>
-					<xsl:if test="$type = 'Model'">
-						<xsl:text>van het informatiemodel </xsl:text>
-					</xsl:if>
-					<xsl:if test="$domain != '' and $type = 'Domain'">
-						<xsl:text>van het </xsl:text><xsl:value-of select="$domain-stereo"/> &apos;<xsl:value-of select="$domain"/><xsl:text>&apos; </xsl:text>
-					</xsl:if>
-					<xsl:if test="$attass != ''">
-						<xsl:text>van het </xsl:text><xsl:value-of select="$attass-stereo"/> &apos;<xsl:value-of select="$attass"/><xsl:text>&apos; </xsl:text>
-					</xsl:if>
-					<xsl:if test="$class-stereo != ''">
-						<xsl:text>in dit </xsl:text><xsl:value-of select="$class-stereo"/><xsl:text> </xsl:text>
-					</xsl:if>
-					is toegevoegd met de waarde<br/>&#160;&#160;&#160;&#160;&apos;<span style="color: blue;"><xsl:value-of select="$currentvalue"/></span>&apos;.</li>
-			</xsl:when>
-			<xsl:when test="$event='ADDED' and $property = '' and $attass != ''">
-				<li><xsl:text>Het/De </xsl:text>
-					<xsl:if test="$attass != ''">
-						<xsl:text></xsl:text><xsl:value-of select="$attass-stereo"/> &apos;<xsl:value-of select="$attass"/><xsl:text>&apos; </xsl:text>
-					</xsl:if>
-					<xsl:if test="$class-stereo != ''">
-						<xsl:text>in dit </xsl:text><xsl:value-of select="$class-stereo"/><xsl:text> </xsl:text>
-					</xsl:if>
-					is toegevoegd.</li>
-			</xsl:when>
-			<!--xsl:when test="$event='ADDED' and $property = '' and $attass = ''"-->
-			<xsl:when test="$event='ADDED' and $property = '' and $class-stereo != ''">
-				<li>Dit <xsl:value-of select="$class-stereo"/> is toegevoegd.</li>
-			</xsl:when>
-			<!--xsl:otherwise>
-				<xsl:value-of select="concat($event,'-',$type,'-',$property,'-',$property-stereo,'-',$domain,'-',$domain-stereo,'-',$class-stereo,'-',$attass,'-',$attass-stereo,'-',$currentvalue,'-',$newvalue)"/>
-			</xsl:otherwise-->
-		</xsl:choose>
+		<xsl:variable name="attass-stereo2">
+			<xsl:choose>
+				<xsl:when test="string-length($attass-stereo) = 0">
+					<xsl:value-of select="''"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$attass-stereo"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			
+		</xsl:variable>
+		
+		<li>
+			<xsl:choose>
+				<xsl:when test="$property != ''"><xsl:text>De </xsl:text></xsl:when>
+				<xsl:when test="$attass-stereo2 != ''"><xsl:text>De/Het </xsl:text></xsl:when>
+				<xsl:when test="$class-stereo != ''"><xsl:text>Dit </xsl:text></xsl:when>
+				<xsl:when test="$domain-stereo != ''"><xsl:text>Het </xsl:text></xsl:when>				
+			</xsl:choose>
+			<xsl:if test="$event = 'CHANGED'"><xsl:text>waarde van de </xsl:text></xsl:if>
+			<xsl:if test="$property-stereo != '' and $concise != 'yes'"><xsl:value-of select="$property-stereo"/><xsl:text> </xsl:text></xsl:if>
+			<xsl:if test="$property != ''"><xsl:text>property &apos;</xsl:text><xsl:value-of select="$property"/></xsl:if>
+			<xsl:choose>
+				<xsl:when test="$property != '' and $event = 'REMOVED' and $class-stereo != '' and $attass-stereo2 = ''">
+					<xsl:text>&apos;</xsl:text>
+				</xsl:when>
+				<xsl:when test="$property != '' and $event = 'ADDED' and $type = 'Model'">
+					<xsl:text>&apos;</xsl:text>
+				</xsl:when>
+				<xsl:when test="$property != '' and $event = 'ADDED' and $class-stereo != '' and $attass-stereo2 = ''">
+					<xsl:text>&apos;</xsl:text>
+				</xsl:when>
+				<xsl:when test="$property != '' and $event = 'CHANGED' and $attass-stereo2 = '' and $class-stereo != ''">
+					<xsl:text>&apos; van dit </xsl:text>
+				</xsl:when>
+				<xsl:when test="$property != '' and $attass-stereo2 != ''">
+					<xsl:text>&apos; van de/het </xsl:text>
+				</xsl:when>
+				<xsl:when test="$property != ''">
+					<xsl:text>&apos; van het </xsl:text>
+				</xsl:when>
+			</xsl:choose>
+			<xsl:if test="$type = 'Model' and $event != 'ADDED'"><xsl:text>informatiemodel</xsl:text></xsl:if>
+			<xsl:if test="$type = 'Domain' and $domain-stereo != ''"><xsl:value-of select="$domain-stereo"/></xsl:if>
+			<xsl:if test="$type = 'Class' and $attass-stereo2 != ''"><xsl:value-of select="$attass-stereo2"/></xsl:if>
+			<xsl:if test="($type = 'Domain' and $domain-stereo != '') or ($type = 'Class' and $attass-stereo2 != '')"> &apos;</xsl:if>
+			<xsl:if test="$type = 'Domain' and $domain-stereo != ''"><xsl:value-of select="$domain"/></xsl:if>
+			<xsl:if test="$type = 'Class' and $attass-stereo2 != ''"><xsl:value-of select="$attass"/></xsl:if>
+			<xsl:if test="($type = 'Domain' and $domain-stereo != '') or ($type = 'Class' and $attass-stereo2 != '')">&apos;</xsl:if>
+			<xsl:choose>
+				<xsl:when test="$attass-stereo2 !='' or ($property != '' and $class-stereo != '')">
+					<xsl:text> in dit </xsl:text>
+				</xsl:when>
+			</xsl:choose>
+			<xsl:if test="$class-stereo !=''"><xsl:value-of select="$class-stereo"/></xsl:if>
+			<xsl:if test="$event != 'REMOVED'"><xsl:text> is</xsl:text></xsl:if>
+			<xsl:choose>
+				<xsl:when test="$property != '' and $event != 'CHANGED'">
+					<xsl:text> met de waarde &apos;</xsl:text>
+				</xsl:when>
+				<xsl:when test="$property != '' and $event = 'CHANGED'">
+					<xsl:text> gewijzigd van</xsl:text><br/><xsl:text>&#160;&#160;&#160;&#160;&apos;</xsl:text>
+				</xsl:when>
+			</xsl:choose>
+			<xsl:if test="$property != ''"><span style="color: #cc66ff"><xsl:value-of select="$currentvalue"/></span>&apos;</xsl:if>
+			<xsl:choose>
+				<xsl:when test="$event = 'REMOVED'">
+					<xsl:text> is verwijderd.</xsl:text>
+				</xsl:when>
+				<xsl:when test="$event = 'ADDED' and $type = 'Model'">
+					<xsl:text> toegevoegd aan het informatiemodel.</xsl:text>
+				</xsl:when>
+				<xsl:when test="$event = 'ADDED'">
+					<xsl:text> toegevoegd.</xsl:text>
+				</xsl:when>
+				<xsl:when test="$event = 'CHANGED'">
+					<br/><xsl:text>&#160;&#160;&#160;&#160;in &apos;</xsl:text><span style="color: blue;"><xsl:value-of select="$newvalue"/></span>&apos;.
+				</xsl:when>
+			</xsl:choose>
+		</li>
 	</xsl:function>
 	
 </xsl:stylesheet>
