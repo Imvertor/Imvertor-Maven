@@ -40,7 +40,7 @@
     
     <xsl:template match="/config">
        
-        <xsl:variable name="diff-doc" select="imf:document(imf:get-xparm('properties/WORK_COMPARE_DIFF_FILE'))"/>
+        <xsl:variable name="diff-doc" select="imf:document(imf:get-xparm('properties/WORK_COMPAREV2_DIFF_CLEAN_FILE'))"/>
         
         <xsl:variable name="compare-method" select="imf:get-xparm('cli/compare')"/><!-- dat is 'supplier' of 'release' -->
         <xsl:variable name="supplier-subpath" select="imf:get-xparm('appinfo/supplier-subpath')"/>

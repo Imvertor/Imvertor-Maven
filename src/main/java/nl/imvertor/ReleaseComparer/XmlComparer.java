@@ -72,7 +72,7 @@ public class XmlComparer {
         myWriter.write("</cmps>");
 	    myWriter.close();
         
-	    resultFile.prettyPrintXml(false);
+	    //resultFile.prettyPrintXml(false);
 	    
         // Check if XML files are identical
         return count;

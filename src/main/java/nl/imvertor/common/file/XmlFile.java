@@ -122,7 +122,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		
 		Configurator configurator = Configurator.getInstance();
 		
-		int test = 3;
+		int test = 4;
 		
 		if (test == 1) {
 			//XmlFile file = new XmlFile("D:\\projects\\arjan\\Java development\\CommonHandlers\\sandbox\\EHcache\\config\\ehcache.xml");
@@ -152,6 +152,18 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 			yfile1 = new YamlFile(configurator.getResource("tests/XmlFile/Bakstenen basismodel.yaml"));
 			
 			yfile1.toXml(xfile1);
+			
+		}
+		if (test == 4) {
+			// determine temporary files
+			XmlFile controlSimpleFile = new XmlFile("c:/temp/c/imvertor.20.release.1.1.compare-control-simple.xml"); // imvertor.20.docrelease.1.1.compare-control-simple.xml
+			XmlFile testSimpleFile = new XmlFile("c:/temp/c/imvertor.20.release.1.2.compare-test-simple.xml"); // imvertor.20.docrelease.1.2.compare-test-simple.xml
+			
+			XmlFile diffXml = new XmlFile("c:/temp/c/imvertor.20.release.2.compare-diff.xml"); // imvertor.20.docrelease.2.compare-diff.xml
+				
+			// compare 
+			Integer differences = XmlComparer.compare(controlSimpleFile,testSimpleFile,diffXml);
+			System.out.println(differences + " differences");
 			
 		}
 		System.out.println("Done " + test); 
@@ -493,14 +505,17 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		transformer.setXslParm("compare-system-packages", (compareSystemPackages != null) ? compareSystemPackages : "false");
 			
 		// determine temporary files
-		XmlFile controlSimpleFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_CONTROL_SIMPLE_FILE")); // imvertor.20.docrelease.1.1.compare-control-simple.xml
-		XmlFile testSimpleFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_TEST_SIMPLE_FILE")); // imvertor.20.docrelease.1.2.compare-test-simple.xml
+		XmlFile controlSimpleFile = new XmlFile(configurator.getXParm("properties/WORK_COMPAREV2_CONTROL_SIMPLE_FILE")); // imvertor.20.docrelease.1.1.compare-control-simple.xml
+		XmlFile testSimpleFile = new XmlFile(configurator.getXParm("properties/WORK_COMPAREV2_TEST_SIMPLE_FILE")); // imvertor.20.docrelease.1.2.compare-test-simple.xml
 		
-		XmlFile diffXml = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_DIFF_FILE")); // imvertor.20.docrelease.2.compare-diff.xml
+		XmlFile diffXml = new XmlFile(configurator.getXParm("properties/WORK_COMPAREV2_DIFF_FILE")); // imvertor.20.docrelease.2.compare-diff.xml
 			
 		// maak het eenvoudige/platte vergelijkbare formaat aan 
 		XslFile simpleXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPAREV2_SIMPLE_XSLPATH"));
-		
+				
+		// maak het eenvoudige/platte vergelijkbare formaat aan 
+		XslFile cleanXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPAREV2_CLEAN_XSLPATH"));
+				
 		transformer.setXslParm("comparison-role", "ctrl");
 		valid = valid && transformer.transform(this,controlSimpleFile,simpleXsl,null);
 		transformer.setXslParm("comparison-role", "test");
@@ -509,7 +524,11 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		// compare 
 		Integer differences = XmlComparer.compare(controlSimpleFile,testSimpleFile,diffXml);
 		
-		configurator.setXParm("appinfo/compare-differences-" + compareLabel, differences);
+		// verwijder info die niet relevant (subproperties van elementen die verwijderd of toegevoegd zijn).
+		XmlFile cleanFile = new XmlFile(configurator.getXParm("properties/WORK_COMPAREV2_DIFF_CLEAN_FILE")); // imvertor.20.docrelease.1.2.compare-diff-clean.xml
+		transformer.transform(diffXml,cleanFile,cleanXsl,null);
+		
+		configurator.setXParm("appinfo/compare-differences-" + compareLabel, configurator.getXParm("appinfo/compare-differences-clean", true));
 
 		// Build report
 		boolean result = valid && (differences == 0);

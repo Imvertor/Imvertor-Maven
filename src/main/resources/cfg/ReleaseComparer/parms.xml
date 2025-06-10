@@ -73,14 +73,12 @@
       generates WORK_COMPARE_*_SIMPLE_FILE
     -->
     <IMVERTOR_COMPARE_SIMPLE_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-simplify.xsl</IMVERTOR_COMPARE_SIMPLE_XSLPATH>
-    <IMVERTOR_COMPAREV2_SIMPLE_XSLPATH>${system/xsl-folder-path}/ReleaseComparer/Imvert2compareV2-simplify.xsl</IMVERTOR_COMPAREV2_SIMPLE_XSLPATH>
     <!-- 
       The XSLT which simplifies the model. 
       generates WORK_COMPARE_*_SIMPLE_FILE
      -->
     <IMVERTOR_COMPARE_LISTING_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-listing.xsl</IMVERTOR_COMPARE_LISTING_XSLPATH>
-    <IMVERTOR_COMPAREV2_LISTING_XSLPATH>${system/xsl-folder-path}/ReleaseComparer/Imvert2compareV2-listing.xsl</IMVERTOR_COMPAREV2_LISTING_XSLPATH>
-    
+   
     <IMVERTOR_COMPARE_XMLDIFF_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-listing-xmldiff.xsl</IMVERTOR_COMPARE_XMLDIFF_XSLPATH>
     <!-- 
         The XML which holds the rules for comparion. This is assumd to be different for each type of metamodel / tagged value set.
@@ -98,19 +96,10 @@
     <WORK_COMPARE_CONTROL_VIEW_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.1.compare-control-model.xml</WORK_COMPARE_CONTROL_VIEW_FILE>
     <WORK_COMPARE_TEST_VIEW_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.2.compare-test-model.xml</WORK_COMPARE_TEST_VIEW_FILE>
     <!-- 
-      the simple file is a representation of the model file in a simple format, suitable for comparing and reporting. 
-    -->
-    <WORK_COMPARE_CONTROL_SIMPLE_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.1.compare-control-simple.xml</WORK_COMPARE_CONTROL_SIMPLE_FILE>
-    <WORK_COMPARE_TEST_SIMPLE_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.2.compare-test-simple.xml</WORK_COMPARE_TEST_SIMPLE_FILE>
-    <!-- 
       the name file records names TODO 
     -->
     <WORK_COMPARE_CONTROL_NAME_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.1.compare-control-name.xml</WORK_COMPARE_CONTROL_NAME_FILE>
     <WORK_COMPARE_TEST_NAME_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.2.compare-test-name.xml</WORK_COMPARE_TEST_NAME_FILE>
-    <!-- 
-      the diff file is the Junit generated xml differencing output. 
-    -->
-    <WORK_COMPARE_DIFF_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.2.compare-diff.xml</WORK_COMPARE_DIFF_FILE>
     <!-- 
       the listing file is the XML format that is suitable for processing by the compare reporter 
     -->
@@ -123,6 +112,33 @@
         <uri name="http://www.imvertor.org/imvertor/1.0/xslt/compare/compare-generated.xsl" uri="(the COMPARE_GENERATED_XSLPATH)">
       -->
     <COMPARE_GENERATED_XSLPATH>${system/work-folder-path}/compare/generated.xsl</COMPARE_GENERATED_XSLPATH>
+
+    <!-- ============= V2 ================= -->
+    
+    <!-- 
+      The XSLT which simplifies the model. 
+      generates WORK_COMPAREV2_*_SIMPLE_FILE
+    -->
+    <IMVERTOR_COMPAREV2_SIMPLE_XSLPATH>${system/xsl-folder-path}/ReleaseComparer/Imvert2compareV2-simplify.xsl</IMVERTOR_COMPAREV2_SIMPLE_XSLPATH>
+    <!-- 
+      The XSLT which simplifies the model. 
+      generates WORK_COMPAREV2_*_SIMPLE_FILE
+     -->
+    <IMVERTOR_COMPAREV2_LISTING_XSLPATH>${system/xsl-folder-path}/ReleaseComparer/Imvert2compareV2-listing.xsl</IMVERTOR_COMPAREV2_LISTING_XSLPATH>
+    <!-- 
+      XSLT die alle eigenschappen van toegevoegde en verwijderde elementen verwijdert uit het compare resultaat
+    -->
+    <IMVERTOR_COMPAREV2_CLEAN_XSLPATH>${system/xsl-folder-path}/ReleaseComparer/Imvert2compareV2-clean.xsl</IMVERTOR_COMPAREV2_CLEAN_XSLPATH>
+    <!-- 
+      the simple file is a representation of the model file in a simple format, suitable for comparing and reporting. 
+    -->
+    <WORK_COMPAREV2_CONTROL_SIMPLE_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.1.compare-control-simple.xml</WORK_COMPAREV2_CONTROL_SIMPLE_FILE>
+    <WORK_COMPAREV2_TEST_SIMPLE_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.2.compare-test-simple.xml</WORK_COMPAREV2_TEST_SIMPLE_FILE>
+    <!-- 
+      the diff file is the Junit generated xml differencing output. 
+    -->
+    <WORK_COMPAREV2_DIFF_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.2.compare-diff.xml</WORK_COMPAREV2_DIFF_FILE>
+    <WORK_COMPAREV2_DIFF_CLEAN_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.2.compare-diff-clean.xml</WORK_COMPAREV2_DIFF_CLEAN_FILE>
 
   </properties>
 </config>

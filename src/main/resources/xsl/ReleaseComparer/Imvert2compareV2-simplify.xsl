@@ -272,58 +272,59 @@
         <xsl:param name="element" as="element()*"/>
         <xsl:param name="as-property" as="xs:boolean"/>
         <xsl:for-each select="$element">
-         <xsl:variable name="element-id" as="xs:string+">
-             <xsl:for-each select="$element/ancestor-or-self::*">
-                 <xsl:choose>
-                     <xsl:when test="local-name() = 'packages'">model</xsl:when>
-                     <xsl:when test="local-name() = 'package'">{local:get-safe-name(imvert:name)}</xsl:when>
-                     <xsl:when test="local-name() = 'class'">{local:get-safe-name(imvert:name)}</xsl:when>
-                     <xsl:when test="local-name() = 'attribute'">{local:get-safe-name(imvert:name)}</xsl:when>
-                     <xsl:when test="local-name() = 'association'">{local:get-safe-name(imvert:name)}</xsl:when>
-                     <xsl:when test="local-name() = 'source'">{local:get-safe-name(imvert:role)}</xsl:when>
-                     <xsl:when test="local-name() = 'target'">{local:get-safe-name(imvert:role)}</xsl:when>
-                     <xsl:when test="local-name() = 'tagged-value'">TV{local:get-safe-name(imvert:name)}</xsl:when>
-                 </xsl:choose>
-             </xsl:for-each>
-         </xsl:variable>
-         <xsl:element name="{string-join($element-id,'_')}">
-             <xsl:for-each select="$element/ancestor-or-self::*">
-                 <xsl:variable name="stereo" select="local:get-stereo(.)"/>
-                 <xsl:choose>
-                     <xsl:when test="local-name() = 'package'">
-                         <xsl:attribute name="domain">{imvert:name/@original}</xsl:attribute>
-                         <xsl:attribute name="domain-stereo">{$stereo}</xsl:attribute>
-                     </xsl:when>
-                     <xsl:when test="local-name() = 'class'">
-                         <xsl:attribute name="class">{imvert:name/@original}</xsl:attribute>
-                         <xsl:attribute name="class-stereo">{$stereo}</xsl:attribute>
-                     </xsl:when>
-                     <xsl:when test="local-name() = ('attribute','association')">
-                         <xsl:attribute name="attass">{imvert:name/@original}</xsl:attribute>
-                         <xsl:attribute name="attass-stereo">{$stereo}</xsl:attribute>
-                     </xsl:when>
-                     <xsl:when test="local-name() = ('source','target')">
-                         <xsl:attribute name="attass">{imvert:role/@original}</xsl:attribute>
-                         <xsl:attribute name="attass-stereo">{$stereo}</xsl:attribute>
-                     </xsl:when>
-                     <!-- TODO rollen -->
-                     <xsl:when test="local-name() = ('tagged-value')">
-                         <xsl:variable name="value">{imvert:value}</xsl:variable>
-                         <xsl:attribute name="property">{imvert:name/@original}</xsl:attribute>
-                         <xsl:attribute name="value">{normalize-space($value)}</xsl:attribute>
-                         <xsl:attribute name="property-stereo">TAGGED VALUE</xsl:attribute>
-                     </xsl:when>
-                     <xsl:when test="not($as-property)">
-                         <xsl:attribute name="property"><!--leeg--></xsl:attribute>
-                     </xsl:when>
-                     <xsl:when test="empty(*)">
-                         <xsl:variable name="value">{.}</xsl:variable>
-                         <xsl:attribute name="property">{local-name()}</xsl:attribute>
-                         <xsl:attribute name="value">{normalize-space($value)}</xsl:attribute>
-                     </xsl:when>
-                 </xsl:choose>
-             </xsl:for-each>
-         </xsl:element>
+             <xsl:variable name="element-id" as="xs:string+">
+                 <xsl:for-each select="$element/ancestor-or-self::*">
+                     <xsl:choose>
+                         <xsl:when test="local-name() = 'packages'">model</xsl:when>
+                         <xsl:when test="local-name() = 'package'">{local:get-safe-name(imvert:name)}</xsl:when>
+                         <xsl:when test="local-name() = 'class'">{local:get-safe-name(imvert:name)}</xsl:when>
+                         <xsl:when test="local-name() = 'attribute'">{local:get-safe-name(imvert:name)}</xsl:when>
+                         <xsl:when test="local-name() = 'association'">{local:get-safe-name(imvert:name)}</xsl:when>
+                         <xsl:when test="local-name() = 'source'">{local:get-safe-name(imvert:role)}</xsl:when>
+                         <xsl:when test="local-name() = 'target'">{local:get-safe-name(imvert:role)}</xsl:when>
+                         <xsl:when test="local-name() = 'tagged-value'">TV{local:get-safe-name(imvert:name)}</xsl:when>
+                         <xsl:when test="empty(*)">{local-name()}</xsl:when>
+                     </xsl:choose>
+                 </xsl:for-each>
+             </xsl:variable>
+             <xsl:element name="{string-join($element-id,'_')}">
+                 <xsl:for-each select="$element/ancestor-or-self::*">
+                     <xsl:variable name="stereo" select="local:get-stereo(.)"/>
+                     <xsl:choose>
+                         <xsl:when test="local-name() = 'package'">
+                             <xsl:attribute name="domain">{imvert:name/@original}</xsl:attribute>
+                             <xsl:attribute name="domain-stereo">{$stereo}</xsl:attribute>
+                         </xsl:when>
+                         <xsl:when test="local-name() = 'class'">
+                             <xsl:attribute name="class">{imvert:name/@original}</xsl:attribute>
+                             <xsl:attribute name="class-stereo">{$stereo}</xsl:attribute>
+                         </xsl:when>
+                         <xsl:when test="local-name() = ('attribute','association')">
+                             <xsl:attribute name="attass">{imvert:name/@original}</xsl:attribute>
+                             <xsl:attribute name="attass-stereo">{$stereo}</xsl:attribute>
+                         </xsl:when>
+                         <xsl:when test="local-name() = ('source','target')">
+                             <xsl:attribute name="attass">{imvert:role/@original}</xsl:attribute>
+                             <xsl:attribute name="attass-stereo">{$stereo}</xsl:attribute>
+                         </xsl:when>
+                         <!-- TODO rollen -->
+                         <xsl:when test="local-name() = ('tagged-value')">
+                             <xsl:variable name="value">{imvert:value}</xsl:variable>
+                             <xsl:attribute name="property">{imvert:name/@original}</xsl:attribute>
+                             <xsl:attribute name="value">{normalize-space($value)}</xsl:attribute>
+                             <xsl:attribute name="property-stereo">TAGGED VALUE</xsl:attribute>
+                         </xsl:when>
+                         <xsl:when test="not($as-property)">
+                             <xsl:attribute name="property"><!--leeg--></xsl:attribute>
+                         </xsl:when>
+                         <xsl:when test="empty(*)">
+                             <xsl:variable name="value">{.}</xsl:variable>
+                             <xsl:attribute name="property">{local-name()}</xsl:attribute>
+                             <xsl:attribute name="value">{normalize-space($value)}</xsl:attribute>
+                         </xsl:when>
+                     </xsl:choose>
+                 </xsl:for-each>
+             </xsl:element>
         </xsl:for-each>
     </xsl:function>
     
