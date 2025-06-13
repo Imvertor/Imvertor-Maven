@@ -3,45 +3,13 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <name>Waarderingskamer</name>
+    <xi:include href="../../../Default/cfg/docrules/Default.xml"/> 
     
     <xi:include href="../../../MIM/cfg/docrules/MIM12.xml"/>
     
-    <!--
-        Where to show the explanation?
-    -->
-    <explanation-location>as-row</explanation-location>
+    <name>Waarderingskamer</name>
     
-    <include-overview-section-level>no</include-overview-section-level>
-  
     <identifying-attribute-with-context>yes</identifying-attribute-with-context>
-    
-    <!--
-        Wanneer ReSpec wordt samengesteld, welke config kan worden gebruikt? 
-    -->
-    <respec-config>respec-nlgov</respec-config> <!-- gecachte versie van https://gitdocumentatie.logius.nl/publicatie/respec/builds/respec-nlgov.js -->
-    
-    <!-- 
-        Wordt een diagram geplaatst binnen <figure> (met figcaption) of (default) gewoon in een <img>? 
-        Options:
-        - figure
-        - img
-    -->
-    <diagram-encoding>figure</diagram-encoding>
-    
-    <!--
-        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
-    -->
-    <show-lists-with-metadata>yes</show-lists-with-metadata>
-    
-    <!--
-        Welke image zoomer wordt gebruikt?
-        Opties:
-        - default
-        - pan-zoom-image
-    -->
-    <diagram-zoomer>default</diagram-zoomer>
-    <image-zoomer>default</image-zoomer>
     
     <doc-rule id="CFG-DOC-INDICATIEINONDERZOEK" order="185">
         <name lang="nl">Indicatie in onderzoek</name>

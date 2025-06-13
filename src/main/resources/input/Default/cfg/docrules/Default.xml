@@ -44,7 +44,9 @@
     -->
     <show-lists-with-metadata>yes</show-lists-with-metadata>
 
-    <!-- which sections to include in the modeldoc? --> 
+    <!-- 
+        Which sections to include in the modeldoc? 
+    --> 
     <include-overview-section-level>no</include-overview-section-level>
     <include-detail-section-level>yes</include-detail-section-level>
     <include-overview-sections-by-type>yes</include-overview-sections-by-type>
@@ -56,7 +58,7 @@
     <show-properties>compact</show-properties> <!-- config, all, compact -->
     
     <!--
-        moet een zinnetje worden toegevoegd dat aangeeft dat identificerend attribuut gecombineerd wordt met andere idenrtificerende attributen? cf #263
+        Moet een zinnetje worden toegevoegd dat aangeeft dat identificerend attribuut gecombineerd wordt met andere idenrtificerende attributen? cf #263
     -->
     <identifying-attribute-with-context>no</identifying-attribute-with-context>
     

@@ -3,54 +3,22 @@
  * Copyright (C) 
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-  
+    <xi:include href="../../../Default/cfg/docrules/Default.xml"/>
+    
     <name>BRO</name>
     
     <desc lang="en">BRO specific requirements on documentation.</desc>
-    
-    <!-- 
-        Linking strategy: link by EAID or NAME 
-    -->
-    <link-by>NAME</link-by>
-    
-    <!--
-        Where to show the explanation? (at-bottom or as-row)
-    -->
-    <explanation-location>as-row</explanation-location>
-    
-    <!-- 
-        Append the role name at end of the association name? 
-    --> 
-    <append-role-name>no</append-role-name>
-    
-    <!--
-        Determine the type of any diagram image by suffix, i.e. the diagram name after "-" as in "Objecttypen  – overzicht" 
-    -->
-    <diagram-type-strategy>suffix</diagram-type-strategy>
     
     <!--
         Include incoming associations in the short overview?
     -->
     <include-incoming-associations>yes</include-incoming-associations>
     
-    <!--
-        Show the gegevensgroep type name in the attribute listings?
-    -->
-    <reveal-composition-name>yes</reveal-composition-name>
-    
-    <!-- 
-        collect the codelist and enumeration contents in a separate section?
-    -->
-    <lists-to-listing>true</lists-to-listing>
-    
-    <!-- which sections to include in the modeldoc? --> 
-    <include-overview-section-level>no</include-overview-section-level>
-    <include-detail-section-level>yes</include-detail-section-level>
-    <include-overview-sections-by-type>yes</include-overview-sections-by-type>
     <include-detail-sections-by-type>no</include-detail-sections-by-type>
     
-    <!-- visibility of properties: show in accordance with configuration (@show) or compact: only the specified parts -->
-    
+    <!-- 
+        visibility of properties: show in accordance with configuration (@show) or compact: only the specified parts 
+    -->
     <show-properties>config</show-properties> <!-- config, all, compact -->
     
     <image-purpose id="CFG-IMG-OVERVIEW">
