@@ -13,7 +13,7 @@
             <cs-ref:MapRef xlink:href="#GML322"/>
             <cs-ref:MapRef xlink:href="#MIM12"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-HYDRONETWORK"/>
-            <cs-ref:MapRef xlink:href="#IHW-GENERIEK"/>
+            <cs-ref:MapRef xlink:href="#IMWA-BASIS"/>
             <cs-ref:MapRef xlink:href="#IMGEO211"/>
             <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
          </cs:use>
@@ -44,57 +44,223 @@
          <xi:include href="../../INSPIRE/xsd/cm-INSPIRE-HYDRONETWORK.xml"/>
          
          <cs:Map>
-            <cs:id>IHW-GENERIEK</cs:id>
-            <cs:namespace>http://www.ihw.nl/</cs:namespace>
-            <cs:location>http://schemas.ihw.nl/ihw-generiek.xsd</cs:location><!-- bogus not used for schema generator -->
+            <cs:id>IMWA-BASIS</cs:id>
+            <cs:namespace>https://data.aquo.nl/model/IMWA-Basis/2024.1.0</cs:namespace>
+            <cs:location>http://data.aquo.nl/model/IMWA-Basis/2024.1.0/IMWA-Basis.xsd</cs:location>
             <cs:phase>3</cs:phase>
-            <cs:version>1.0.0</cs:version>
-            <cs:release>20211020</cs:release>
+            <cs:version>2024.1.0</cs:version>
+            <cs:release>20240101</cs:release>
             <cs:forSchema>
                <cs-ref:ConceptualSchemaRef xlink:href="#IHW"/>
             </cs:forSchema>
             <cs:owner>IHW</cs:owner>
             <cs:constructs>
-              <?x
               <cs:Construct>
-                  <cs:name>OIN</cs:name>
+                  <cs:name>WaterstaatkundigeZonering</cs:name>
                   <cs:sentinel>false</cs:sentinel>
-               </cs:Construct>
-               x?>
+                 <cs:xsdTypes>
+                    <cs:XsdType>
+                       <cs:name>WaterstaatkundigeZonering</cs:name>
+                       <cs:asAttribute>WaterstaatkundigeZoneringPropertyType</cs:asAttribute>
+                       <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                       <cs:primitive>false</cs:primitive>
+                    </cs:XsdType>
+                 </cs:xsdTypes>
+              </cs:Construct>
               <cs:Construct>
                   <cs:name>IMWA_GeoObject</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                 <cs:xsdTypes>
+                    <cs:XsdType>
+                       <cs:name>IMWA_GeoObject</cs:name>
+                       <cs:asAttribute>IMWA_GeoObjectPropertyType</cs:asAttribute>
+                       <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                       <cs:primitive>false</cs:primitive>
+                    </cs:XsdType>
+                 </cs:xsdTypes>
                </cs:Construct>
-              <?x
               <cs:Construct>
-                  <cs:name>VerticaleReferentie</cs:name>
+                  <cs:name>Beschermingszone</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                 <cs:xsdTypes>
+                    <cs:XsdType>
+                       <cs:name>Beschermingszone</cs:name>
+                       <cs:asAttribute>BeschermingszonePropertyType</cs:asAttribute>
+                       <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                       <cs:primitive>false</cs:primitive>
+                    </cs:XsdType>
+                 </cs:xsdTypes>
                </cs:Construct>
               <cs:Construct>
-                  <cs:name>Watersysteem</cs:name>
+                  <cs:name>WaterbeheerFunctie</cs:name>
                   <cs:sentinel>false</cs:sentinel>
-               </cs:Construct>
+                 <cs:xsdTypes>
+                    <cs:XsdType>
+                       <cs:name>WaterbeheerFunctie</cs:name>
+                       <cs:asAttribute>WaterbeheerFunctiePropertyType</cs:asAttribute>
+                       <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                       <cs:primitive>false</cs:primitive>
+                    </cs:XsdType>
+                 </cs:xsdTypes>
+              </cs:Construct>
               <cs:Construct>
-                  <cs:name>Waterbeheerfunctie</cs:name>
+                  <cs:name>Subject</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                 <cs:xsdTypes>
+                    <cs:XsdType>
+                       <cs:name>Subject</cs:name>
+                       <cs:asAttribute>SubjectPropertyType</cs:asAttribute>
+                       <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                       <cs:primitive>false</cs:primitive>
+                    </cs:XsdType>
+                 </cs:xsdTypes>
+              </cs:Construct>
+               <cs:Construct>
+                  <cs:name>RolSubject</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>RolSubject</cs:name>
+                        <cs:asAttribute>RolSubjectPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
-                  <cs:name>UUID</cs:name>
+                  <cs:name>NatuurlijkPersoon</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>NatuurlijkPersoon</cs:name>
+                        <cs:asAttribute>NatuurlijkPersoonPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
-                  <cs:name>DatumOnvolledig</cs:name>
+                  <cs:name>NietNatuurlijkPersoon</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>NietNatuurlijkPersoon</cs:name>
+                        <cs:asAttribute>NietNatuurlijkPersoonPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
-                  <cs:name>CompositeID</cs:name>
+                  <cs:name>IMWA_RegistratieType</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>IMWA_RegistratieType</cs:name>
+                        <cs:asAttribute>IMWA_RegistratieTypePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <!-- codelijsten: -->
+               <cs:Construct>
+                  <cs:name>Artikel</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>ArtikelType</cs:name>
+                        <cs:asAttribute>ArtikelTypePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
-                  <cs:name>GeoJsonGeometrie</cs:name>
+                  <cs:name>functie</cs:name>
                   <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>functieType</cs:name>
+                        <cs:asAttribute>functiePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
                </cs:Construct>
-               x?>
+               <cs:Construct>
+                  <cs:name>ObjectStatus</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>ObjectStatusType</cs:name>
+                        <cs:asAttribute>ObjectStatusTypePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Subject_rollen</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Subject_rollenType</cs:name>
+                        <cs:asAttribute>Subject_rollenTypePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Subject_soorten</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Subject_soortenType</cs:name>
+                        <cs:asAttribute>Subject_soortenPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Waterbeheerder</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>WaterbeheerderType</cs:name>
+                        <cs:asAttribute>WaterbeheerderTypePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Waterstaatkundigezonering</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>WaterstaatkundigezoneringType</cs:name>
+                        <cs:asAttribute>WaterstaatkundigezoneringPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>WetVerordeningtype</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>WetVerordeningtypeType</cs:name>
+                        <cs:asAttribute>WetVerordeningtypePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               
             </cs:constructs>
          </cs:Map>
         
