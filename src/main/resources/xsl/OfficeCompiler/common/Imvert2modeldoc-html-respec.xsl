@@ -155,12 +155,20 @@
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-ATTRIBUTES',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
+            <xsl:when test="@type = 'SHORT-ENUMS'">
+                <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-ENUMS',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
             <xsl:when test="@type = 'SHORT-CONSTRAINTS'">
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-CONSTRAINTS',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-UNIONELEMENTS'">
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-UNIONELEMENTS',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
+            <xsl:when test="@type = 'SHORT-DATAELEMENTS'">
+                <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-DATAELEMENTS',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-ASSOCIATIONS'">
@@ -300,7 +308,10 @@
             <xsl:when test="$type = 'EXPLANATION'"> <!-- 100 -->
                 <colgroup width="100%"/>
             </xsl:when>
-            <xsl:when test="$type = 'SHORT-ASSOCIATIONS'"> <!-- 50 50 -->
+            <xsl:when test="$type = 'SHORT-ASSOCIATIONS' and $items = 1"> <!-- 100 -->
+                <colgroup width="100%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-ASSOCIATIONS' and $items = 2"> <!-- 50 50 -->
                 <colgroup width="50%"/>
                 <colgroup width="50%"/>
             </xsl:when>
@@ -313,6 +324,10 @@
                 <colgroup width="50%"/>
                 <colgroup width="10%"/>
                 <colgroup width="10%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-ENUMS'"> <!-- 40 60 -->
+                <colgroup width="40%"/>
+                <colgroup width="60%"/>
             </xsl:when>
             <xsl:when test="$type = 'SHORT-DATAELEMENTS'"> <!-- 30 50 10 10 -->
                 <colgroup width="30%"/>
@@ -458,7 +473,14 @@
                         <xsl:apply-templates select="item" mode="#current"/>
                     </td>
                 </xsl:when>
-                <xsl:when test="$type = 'SHORT-ASSOCIATIONS'"> <!-- 50 50 -->
+                <xsl:when test="$type = 'SHORT-ASSOCIATIONS' and $items = 1"> <!-- 100 -->
+                    <td>
+                        <xsl:if test="@type = 'COMPOSED'">- </xsl:if>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                        <xsl:if test="@type = 'COMPOSER'">:</xsl:if>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-ASSOCIATIONS' and $items = 2"> <!-- 50 50 -->
                     <td>
                         <xsl:if test="@type = 'COMPOSED'">- </xsl:if>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
@@ -506,6 +528,14 @@
                     </td>
                     <td>
                         <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-ENUMS'"> <!-- 40 60 -->
+                    <td>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
                     </td>
                 </xsl:when>
                 <xsl:when test="$type = 'SHORT-DATAELEMENTS'">
