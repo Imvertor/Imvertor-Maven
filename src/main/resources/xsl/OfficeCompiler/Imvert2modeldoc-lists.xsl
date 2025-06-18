@@ -132,11 +132,11 @@
                                 </xsl:apply-templates>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:sequence select="imf:msg(.,'WARNING','List contents cannot be retrieved from location [1], tried [2]',($loc, $url))"/>
+                                <xsl:sequence select="imf:msg(.,'ERROR','List contents cannot be retrieved from location [1], tried [2]',($loc, $url))"/>
                             </xsl:otherwise>
                         </xsl:choose>
                         <xsl:catch>
-                            <xsl:sequence select="imf:msg(.,'WARNING','List contents did not parse okay, please check [2]',($url))"/>
+                            <xsl:sequence select="imf:msg(.,'ERROR','List contents did not parse okay, please check [2]',($url))"/>
                         </xsl:catch>
                     </xsl:try>
                 </xsl:when>
