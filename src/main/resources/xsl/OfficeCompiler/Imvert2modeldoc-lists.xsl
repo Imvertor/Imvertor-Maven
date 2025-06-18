@@ -141,7 +141,7 @@
                     </xsl:try>
                 </xsl:when>
                 <xsl:when test="exists($referring-attributes-noloc)">
-                    <xsl:sequence select="imf:msg(.,'WARNING','Codelist content location not specified',())"/>
+                    <xsl:sequence select="imf:msg(.,'ERROR','Codelist content location not specified',())"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <!-- specified at all attributes that reference this codelist -->
