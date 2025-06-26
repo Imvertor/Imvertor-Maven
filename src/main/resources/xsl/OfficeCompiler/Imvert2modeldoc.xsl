@@ -1328,7 +1328,9 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-SOURCEOFDEFINITION'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-TOELICHTING'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DESCRIPTION'))"/>
+                    <xsl:if test="$explanation-location = 'as-row'"> <!-- NB kan ook "at-bottom" zijn; in dat geval niet als row tonen -->
+                        <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DESCRIPTION'))"/>
+                    </xsl:if>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-UITLEG'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-EXPLANATION'))"/>
