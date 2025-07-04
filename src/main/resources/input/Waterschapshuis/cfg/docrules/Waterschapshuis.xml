@@ -4,8 +4,8 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <xi:include href="../../../Default/cfg/docrules/Default.xml"/>
-    
+    <xi:include href="../../../MIM/cfg/docrules/MIM12.xml"/>
+
     <name>Waterschapshuis</name>
     
     <desc>Waterschapshuis specific requirements on documentation.</desc>
@@ -24,6 +24,11 @@
         collect the codelist and enumeration contents in a separate section?
     -->
     <lists-to-listing>no</lists-to-listing>
+    
+    <!--
+        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
+    -->
+    <show-lists-with-metadata>yes</show-lists-with-metadata>
     
     <!--
         Moet in de weergave van relaties wanneer rol-gebaseerd de naam van relatie én rol worden getoond? 

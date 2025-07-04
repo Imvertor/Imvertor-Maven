@@ -4,8 +4,6 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../Default/cfg/docrules/Default.xml"/>
-    
     <xi:include href="../../../MIM/cfg/docrules/MIM12.xml"/>
     
     <name>Logius</name>

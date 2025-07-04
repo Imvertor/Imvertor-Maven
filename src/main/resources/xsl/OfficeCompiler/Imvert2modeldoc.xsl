@@ -55,7 +55,7 @@
     
     <xsl:variable name="create-links" select="imf:get-config-string('cli','createofficemode','click') = 'click'"/>
     
-    <xsl:variable name="link-by-eaid" select="($configuration-docrules-file/link-by,'EAID')[1] eq 'EAID'"/>
+    <xsl:variable name="link-by-eaid" select="$configuration-docrules-file/link-by eq 'EAID'"/>
     <xsl:variable name="explanation-location" select="$configuration-docrules-file/explanation-location"/>
     <xsl:variable name="append-role-name" select="imf:boolean($configuration-docrules-file/append-role-name)"/>
     
@@ -65,16 +65,16 @@
     <xsl:variable name="include-incoming-associations" select="imf:boolean($configuration-docrules-file/include-incoming-associations)"/>
     <xsl:variable name="lists-to-listing" select="imf:boolean($configuration-docrules-file/lists-to-listing)"/>
     <xsl:variable name="reveal-composition-name" select="imf:boolean($configuration-docrules-file/reveal-composition-name)"/>
-    <xsl:variable name="show-properties" select="($configuration-docrules-file/show-properties,'config')[1]"/>
-    <xsl:variable name="show-lists-with-metadata" select="imf:boolean(($configuration-docrules-file/show-lists-with-metadata,'no')[1])"/>
-    <xsl:variable name="show-relation-name" select="imf:boolean(($configuration-docrules-file/show-relation-name,'no')[1])"/>
+    <xsl:variable name="show-properties" select="$configuration-docrules-file/show-properties"/>
+    <xsl:variable name="show-lists-with-metadata" select="imf:boolean($configuration-docrules-file/show-lists-with-metadata)"/>
+    <xsl:variable name="show-relation-name" select="imf:boolean($configuration-docrules-file/show-relation-name)"/>
     
     <xsl:variable name="has-material-history" select="exists(//imvert:tagged-value[@id = ('CFG-TV-INDICATIONMATERIALHISTORY','CFG-TV-HEEFTTIJDLIJNGELDIGHEID')]/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     <xsl:variable name="has-formal-history" select="exists(//imvert:tagged-value[@id = ('CFG-TV-INDICATIONFORMALHISTORY','CFG-TV-HEEFTTIJDLIJNREGISTRATIE')]/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     
     <xsl:variable name="has-imbroa" select="//imvert:attribute/imvert:stereotype/@id = 'stereotype-name-imbroa'"/>
     
-    <xsl:variable name="gegevensgroep-attribute-container" select="($configuration-docrules-file/gegevensgroep-attribute-container,'object')[1]"/>
+    <xsl:variable name="gegevensgroep-attribute-container" select="$configuration-docrules-file/gegevensgroep-attribute-container"/>
     
     <xsl:variable name="sort-domain" select="imf:boolean($configuration-docrules-file/sort-in-domain)"/>
     

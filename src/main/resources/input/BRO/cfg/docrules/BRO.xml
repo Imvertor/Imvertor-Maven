@@ -3,7 +3,7 @@
  * Copyright (C) 
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <xi:include href="../../../Default/cfg/docrules/Default.xml"/>
+    <xi:include href="../../../MIM/cfg/docrules/MIM12.xml"/>
     
     <name>BRO</name>
     
@@ -20,6 +20,18 @@
         visibility of properties: show in accordance with configuration (@show) or compact: only the specified parts 
     -->
     <show-properties>config</show-properties> <!-- config, all, compact -->
+    <!-- 
+        Wordt een diagram geplaatst binnen <figure> (met figcaption) of (default) gewoon in een <img>? 
+        Options:
+        - figure
+        - img
+    -->
+    <diagram-encoding>img</diagram-encoding>
+    
+    <!--
+        Where to show the explanation? (at-bottom or as-row)
+    -->
+    <explanation-location>as-row</explanation-location>
     
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>

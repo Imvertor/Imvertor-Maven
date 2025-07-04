@@ -465,6 +465,7 @@
              
                 <xsl:apply-templates select="($doc-rules//link-by)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//explanation-location)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//append-role-name)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//diagram-type-strategy)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//include-incoming-associations)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//lists-to-listing)[last()]" mode="#current"/>
