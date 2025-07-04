@@ -100,6 +100,13 @@
     -->
     <data-location-as-link>yes</data-location-as-link>
     
+    <!--
+        Sorteer alle constructs in een categorie binnen een domein (zoals alle objecttypen) op naam?
+        
+        NB dit kan door de analist zelf worden bepaald (project opeenvolging) of je laat het over aan Imvertor.
+    -->
+    <sort-in-domain>no</sort-in-domain>
+    
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>

@@ -30,6 +30,11 @@
     -->
     <show-relation-name>no</show-relation-name>
     
+    <!--
+         Sorteer alle constructs in een categorie binnen een domein (zoals alle objecttypen) op naam?
+    -->
+    <sort-in-domain>yes</sort-in-domain>
+    
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>
