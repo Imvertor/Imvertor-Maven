@@ -749,7 +749,7 @@
         -->
         <xsl:variable name="is-imbro-list" select="(imf:get-config-string('cli','owner') eq 'BRO') and $has-imbroa"/>
         <!-- Check if ANY value has an alias, in that case assume a code column should be added -->
-        <xsl:variable name="has-code" select="exists(imvert:attributes/imvert:attribute/imvert:alias)"/>
+        <xsl:variable name="has-code" select="exists(imvert:attributes/imvert:attribute/imvert:alias) or exists(imvert:attributes/imvert:attribute/imvert:initial-value)"/>
         <section 
             name="{imf:get-name(.,true())}" 
             type="{if ($is-codelist) then 'DETAIL-CODELIST' else 'DETAIL-ENUMERATION'}" 
@@ -934,19 +934,20 @@
         <xsl:param name="is-imbroa" as="xs:boolean"/>
         <xsl:param name="is-coded" as="xs:boolean"/>
         
-        <xsl:variable name="init" select="imvert:initial-value"/>
-        <xsl:variable name="display-name" select="imf:get-name(.,true()) || (if ($init) then (' (' || $init || ')') else '')"/><!-- speciaal voor Waterschapshuis enumeraties -->
+        <xsl:variable name="display-name" select="imf:get-name(.,true())"/>
+        <xsl:variable name="definition" select="imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION')"/>
+        <xsl:sequence select="dlogger:save('$definition',$definition)"></xsl:sequence>
         <part>
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:if test="$is-coded">
-                <xsl:sequence select="imf:create-element('item',string(imvert:alias))"/>
+                <xsl:sequence select="imf:create-element('item',string((imvert:initial-value,imvert:alias)[1]))"/>
             </xsl:if>
             <xsl:sequence select="imf:create-element('item',$display-name)"/>
             <xsl:if test="$is-imbroa">
                 <xsl:sequence select="imf:create-element('item',if (imvert:stereotype/@id = ('stereotype-name-imbroa')) then '' else '&#x2714;')"/>
                 <xsl:sequence select="imf:create-element('item','&#x2714;')"/>
             </xsl:if>
-            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+            <xsl:sequence select="imf:create-element('item',if ($definition) then $definition else '--')"/>
         </part>
     </xsl:template>
     

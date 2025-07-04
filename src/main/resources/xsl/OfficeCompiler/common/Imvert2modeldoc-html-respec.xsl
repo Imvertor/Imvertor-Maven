@@ -325,6 +325,11 @@
                 <colgroup width="10%"/>
                 <colgroup width="10%"/>
             </xsl:when>
+            <xsl:when test="$type = 'SHORT-ENUMS' and $items = 3"> <!-- 10 30 60 waterschapshuis: enums met codes. -->
+                <colgroup width="10%"/>
+                <colgroup width="30%"/>
+                <colgroup width="60%"/>
+            </xsl:when>
             <xsl:when test="$type = 'SHORT-ENUMS'"> <!-- 40 60 -->
                 <colgroup width="40%"/>
                 <colgroup width="60%"/>
@@ -530,12 +535,15 @@
                         <xsl:apply-templates select="item[4]" mode="#current"/>
                     </td>
                 </xsl:when>
-                <xsl:when test="$type = 'SHORT-ENUMS'"> <!-- 40 60 -->
+                <xsl:when test="$type = 'SHORT-ENUMS' and $items = 3"> <!-- 10 30 60 -->
                     <td>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>
                     <td>
                         <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
                     </td>
                 </xsl:when>
                 <xsl:when test="$type = 'SHORT-DATAELEMENTS'">
