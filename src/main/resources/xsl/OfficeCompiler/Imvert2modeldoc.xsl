@@ -1970,12 +1970,15 @@
     
     <xsl:function name="imf:add-data-location" as="element(item)?">
         <xsl:param name="this" as="element()"/>
+        
+        <!-- eigenlijk moet dit anders: het tonen van metadata op een referentielijst of codelijst zou eigenlijk standaard moeten worden aangezet -->
+        
         <xsl:variable name="dataloc" select="imf:get-formatted-tagged-value($this,'CFG-TV-DATALOCATION')"/>
         
         <xsl:variable name="list-type" select="$this/imvert:stereotype/@id"/>
         <xsl:variable name="show-for-list" select="
-            ($list-type = 'stereotype-name-referentielijst' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-REFERENCELIST']) or
-            ($list-type = 'stereotype-name-codelist' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-CODELIST'])
+            ($list-type = 'stereotype-name-referentielijst' and $configuration-docrules-file/doc-rule[@id = 'CFG-DOC-DATALOCATIE']/levels/level[. = 'DISPLAY-GLOBAL-REFERENCELIST']/@show = ('config','force')) or
+            ($list-type = 'stereotype-name-codelist' and $configuration-docrules-file/doc-rule[@id = 'CFG-DOC-DATALOCATIE']/levels/level[. = 'DISPLAY-GLOBAL-CODELIST']/@show = ('config','force'))
         "/>
         <xsl:variable name="create-link" select="imf:is-url($dataloc) and imf:boolean($configuration-docrules-file/data-location-as-link)"/>
         <xsl:choose>
@@ -1987,7 +1990,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <item>
-                    <xsl:text>Data locatie: </xsl:text>
+                   <xsl:value-of select="imf:plugin-translate-i3n('DATALOCATIE',true()) || ': '"/>
                     <xsl:choose>
                         <xsl:when test="$create-link">
                             <a href="{$dataloc}" target="_blank">

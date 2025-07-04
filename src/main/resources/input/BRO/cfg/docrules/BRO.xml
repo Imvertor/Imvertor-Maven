@@ -20,6 +20,7 @@
         visibility of properties: show in accordance with configuration (@show) or compact: only the specified parts 
     -->
     <show-properties>config</show-properties> <!-- config, all, compact -->
+    
     <!-- 
         Wordt een diagram geplaatst binnen <figure> (met figcaption) of (default) gewoon in een <img>? 
         Options:
@@ -500,4 +501,12 @@
         </levels>
     </doc-rule>
     
+    <doc-rule id="CFG-DOC-DATALOCATIE" order="260">
+        <name lang="nl">Data locatie</name>
+        <name lang="en">Data location</name>
+        <levels>
+            <level show="none">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="none">DISPLAY-GLOBAL-CODELIST</level>
+        </levels>
+    </doc-rule>
 </doc-rules>
