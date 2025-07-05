@@ -691,8 +691,7 @@
                 -->
                 <xsl:variable name="relation" select="if ($show-relation-name) then imvert:name else ()"/>
                 <xsl:variable name="target" select="imvert:target/imvert:role"/>
-                <xsl:sequence select="dlogger:save('create-link',())"></xsl:sequence>
-
+              
                 <xsl:variable name="relation-original-name" select="if (exists($relation) and exists($target)) then concat($relation/@original,': ',$target/@original) else ($relation/@original,$target/@original)"/>
                 
                 <xsl:sequence select="imf:create-element('item',if ($incoming) then imf:create-link(../..,'global',../../imvert:name/@original) else string(../../imvert:name/@original))"/>
@@ -978,7 +977,6 @@
         
         <xsl:variable name="display-name" select="imf:get-name(.,true())"/>
         <xsl:variable name="definition" select="imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION')"/>
-        <xsl:sequence select="dlogger:save('$definition',$definition)"></xsl:sequence>
         <part>
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:if test="$is-coded">
