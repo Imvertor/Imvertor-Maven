@@ -51,7 +51,7 @@
         <!--setup-->
         <xsl:sequence select="imf:report-error(., 
             (imvert:min-occurs ne '1' or imvert:max-occurs ne '1'), 
-            'Attribute with stereotype [1] must have cardinality of 1..1', imf:get-config-name-by-id('stereotype-name-union'))"/>
+            'Attribute with stereotype [1] must have cardinality of [2]', (imf:get-config-name-by-id('stereotype-name-union'),'1..1'))"/>
         
         <xsl:next-match/>
     </xsl:template>
