@@ -42,9 +42,7 @@
     <xsl:variable name="stylesheet-code">SKOS</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
-    <xsl:variable name="str3quot">'''</xsl:variable>
-    <xsl:variable name="str2quot">"</xsl:variable>
-    <xsl:variable name="str1quot">'</xsl:variable>
+    <xsl:variable name="str1quot">"</xsl:variable>
     <xsl:variable name="apos">'</xsl:variable>
     
     <xsl:variable name="use-alias-for-uri" select="imf:boolean(imf:get-xparm('cli/skosusealias','no'))"/>
@@ -83,8 +81,8 @@
         <xsl:value-of select="concat(
             $conceptscheme-uri || '&#10;',
             imf:ttl(('a','skos:ConceptScheme')),
-            if ($allow-label) then imf:ttl(('rdfs:label',imf:ttl-value($model-name,'2q'))) else (),
-            imf:ttl(('skos:prefLabel',imf:ttl-value($model-name,'2q','nl'))),
+            if ($allow-label) then imf:ttl(('rdfs:label',imf:ttl-value($model-name))) else (),
+            imf:ttl(('skos:prefLabel',imf:ttl-value($model-name,'nl'))),
             imf:ttl('.'))
             "/>
         
@@ -143,7 +141,7 @@
         
         <xsl:variable name="is-enumeration-value" select="$this/../../imvert:designation = 'enumeration'"/>
         
-        <xsl:value-of select="if (not($is-enumeration-value)) then imf:ttl(('skosthes:broaderPartitive',imf:ttl-get-uri($class,'concept'))) else ()"/>
+        <xsl:value-of select="if (not($is-enumeration-value)) then imf:ttl(('skos:broader',imf:ttl-get-uri($class,'concept'))) else ()"/>
         
         <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
         
@@ -219,12 +217,12 @@
             imf:ttl-comment(('Construct:',imf:get-display-name($this), concat('(', string-join($this/imvert:stereotype,', ') ,')'))),
             imf:ttl-get-uri($this,if ($type = 'Concept') then 'concept' else 'collection') || '&#10;',
             imf:ttl(('a',concat($prefixSkos, ':', $type))),
-            if ($allow-label) then imf:ttl(('rdfs:label',imf:ttl-value($name,'2q'))) else (),
-            imf:ttl((concat($prefixSkos,':prefLabel'),imf:ttl-value($name,'2q','nl'))),
-            if ($suffix) then imf:ttl((concat($prefixSkos,':altLabel'),imf:ttl-value($name || $suffix,'2q','nl'))) else (),
-            if ($allow-notation) then if ($is-enumeration or $is-enumeration-value) then imf:ttl((concat($prefixSkos,':notation'),imf:ttl-value($name,'4q','xsd:string'))) else '' else (),
-            if ($created) then imf:ttl(('dct:created',imf:ttl-value($created,'4q','xsd:date'))) else '',
-            if ($modified) then imf:ttl(('dct:modified',imf:ttl-value($modified,'4q','xsd:date'))) else '',
+            if ($allow-label) then imf:ttl(('rdfs:label',imf:ttl-value($name))) else (),
+            imf:ttl((concat($prefixSkos,':prefLabel'),imf:ttl-value($name,'nl'))),
+            if ($suffix) then imf:ttl((concat($prefixSkos,':altLabel'),imf:ttl-value($name || $suffix,'nl'))) else (),
+            if ($allow-notation) then if ($is-enumeration or $is-enumeration-value) then imf:ttl((concat($prefixSkos,':notation'),imf:ttl-value($name,'xsd:string'))) else '' else (),
+            if ($created) then imf:ttl(('dct:created',imf:ttl-value($created,'xsd:date'))) else '',
+            if ($modified) then imf:ttl(('dct:modified',imf:ttl-value($modified,'xsd:date'))) else '',
             imf:ttl(('skos:inScheme',$conceptscheme-uri)))
         "/>
     </xsl:function>
@@ -250,13 +248,11 @@
     
     <xsl:function name="imf:ttl-value" as="xs:string?">
         <xsl:param name="item" as="item()*"/>
-        <xsl:param name="type" as="xs:string?"/>
-        <xsl:sequence select="imf:ttl-value($item,$type,())"/>
+        <xsl:sequence select="imf:ttl-value($item,())"/>
     </xsl:function>
     
     <xsl:function name="imf:ttl-value" as="xs:string?">
         <xsl:param name="item" as="item()*"/>
-        <xsl:param name="type" as="xs:string?"/>
         <xsl:param name="lang" as="xs:string?"/>
         <xsl:variable name="strings" as="xs:string*">
             <xsl:choose>
@@ -280,20 +276,11 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:variable name="string" select="string-join($strings,'\n')"/>
-        <xsl:variable name="langstr" select="if ($lang) then concat('@',$lang) else ()"/>
+        <xsl:variable name="string" select="replace(string-join($strings,'\n'),'\n','\\n')"/>
+        <xsl:variable name="langstr" select="if ($lang) then if (contains($lang,':')) then concat('^^',$lang) else concat('@',$lang) else ()"/>
         <xsl:choose>
             <xsl:when test="not(normalize-space($string))">
                 <!-- skip -->
-            </xsl:when>
-            <xsl:when test="$type = '4q'">
-                <xsl:value-of select="concat($str2quot,imf:normalize-ttl-string($string),$str2quot,'^^',$lang)"/>
-            </xsl:when>
-            <xsl:when test="$type = '3q'">
-                <xsl:value-of select="concat($str3quot,imf:normalize-ttl-string($string),$str3quot,$langstr)"/>
-            </xsl:when>
-            <xsl:when test="$type = '2q'">
-                <xsl:value-of select="concat($str2quot,imf:normalize-ttl-string($string),$str2quot,$langstr)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="concat($str1quot,imf:normalize-ttl-string($string),$str1quot,$langstr)"/>
@@ -318,7 +305,7 @@
                         <!-- skip -->
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:value-of select="imf:ttl(($map, imf:ttl-value($tv,$map/@type, if (imf:boolean($map/@requires-lang)) then 'nl' else ())))"/>
+                        <xsl:value-of select="imf:ttl(($map, imf:ttl-value($tv,if (imf:boolean($map/@requires-lang)) then 'nl' else ())))"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:if>
@@ -366,8 +353,7 @@
     
     <xsl:function name="imf:normalize-ttl-string">
         <xsl:param name="string"/>
-        <xsl:variable name="result" select="replace(replace($string,'&quot;','\\&quot;'),$apos,concat('\\',$apos))"/>
-        <xsl:value-of select="$result"/>
+        <xsl:value-of select="replace($string,'&quot;','\\&quot;')"/><!-- all values are quoted ("...") so only escape the quote itself -->
     </xsl:function>
   
     <xsl:function name="imf:for-uri">
