@@ -38,7 +38,7 @@
          <!--maps:-->
          
          <xi:include href="../../MIM/xsd/cm-MIM12.xml"/><!-- implements Map #MIM12 -->
-         <xi:include href="../../OGC/xsd/cm-GML322.xml"/><!-- for GML321-BROPROFILE -->
+         <xi:include href="../../OGC/xsd/cm-GML322.xml"/>
          <xi:include href="../../Geonovum/xsd/cm-IMGEO211.xml"/><!-- implements map IMGEO211 -->
          <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/><!-- implements map NEN3610-2022 -->
          <xi:include href="../../INSPIRE/xsd/cm-INSPIRE-HYDRONETWORK.xml"/>
