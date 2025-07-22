@@ -48,6 +48,8 @@
     
     <xsl:variable name="diagram-encoding" select="$configuration-docrules-file/diagram-encoding"/><!-- #326 als figure, of als img met tekst eronder -->
     
+    <xsl:variable name="use-subheaders-in-respec" select="imf:boolean($configuration-docrules-file/use-subheaders-in-respec)"/>
+    
     <xsl:template match="book" mode="respec-type">
         <xsl:choose>
             <!-- 
@@ -144,12 +146,20 @@
                     <xsl:apply-templates mode="#current"/>
                 </section>
             </xsl:when>
+            <xsl:when test="@type = 'EXPLANATION' and $use-subheaders-in-respec">
+                <xsl:sequence select="imf:create-section-subheader-name($section,$level,'EXPLANATION',$language-model,())"/>
+                <xsl:apply-templates select="content[not(@approach='association')]/part/item" mode="#current"/>
+            </xsl:when>
             <xsl:when test="@type = 'EXPLANATION'">
                 <section class="notoc" level="{$level}">
                     <xsl:sequence select="$idatt"/>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,'EXPLANATION',$language-model,())"/>
                     <xsl:apply-templates select="content[not(@approach='association')]/part/item" mode="#current"/>
                 </section>
+            </xsl:when>
+            <xsl:when test="@type = 'SHORT-ATTRIBUTES' and $use-subheaders-in-respec">
+                <xsl:sequence select="imf:create-section-subheader-name($section,$level,'SHORT-ATTRIBUTES',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-ATTRIBUTES'">
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-ATTRIBUTES',$language-model,())"/>
@@ -169,6 +179,10 @@
             </xsl:when>
             <xsl:when test="@type = 'SHORT-DATAELEMENTS'">
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-DATAELEMENTS',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
+            <xsl:when test="@type = 'SHORT-ASSOCIATIONS' and $use-subheaders-in-respec">
+                <xsl:sequence select="imf:create-section-subheader-name($section,$level,'SHORT-ASSOCIATIONS',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-ASSOCIATIONS'">
@@ -872,13 +886,27 @@
         <xsl:param name="type"/>
         <xsl:param name="language-model"/>
         <xsl:param name="name"/>
-
+        
         <xsl:element name="{imf:get-section-header-element-name($level)}">
             <xsl:sequence select="if ($debugging) then '[lvl:' || $level || ']' else ()"/>
             <xsl:sequence select="imf:translate-i3n($type,$language-model,())"/>
             <xsl:sequence select="' '"/>
             <xsl:sequence select="$name"/>
         </xsl:element>
+    </xsl:function>
+    <xsl:function name="imf:create-section-subheader-name" as="element()">
+        <xsl:param name="section"/>
+        <xsl:param name="level"/>
+        <xsl:param name="type"/>
+        <xsl:param name="language-model"/>
+        <xsl:param name="name"/>
+        
+        <div class="subheader">
+            <xsl:sequence select="if ($debugging) then '[lvl:' || $level || ']' else ()"/>
+            <xsl:sequence select="imf:translate-i3n($type,$language-model,())"/>
+            <xsl:sequence select="' '"/>
+            <xsl:sequence select="$name"/>
+        </div>
     </xsl:function>
     
     <xsl:function name="imf:is-valid-idref" as="xs:boolean">

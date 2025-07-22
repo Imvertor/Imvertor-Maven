@@ -109,6 +109,12 @@
     -->
     <sort-in-domain>no</sort-in-domain>
     
+    <!--
+        Moeten de tussenkopjes onder o.a. ojecttypen (overzicht attributen, relaties, en toelichting) 
+        als een gewoon tekstje worden getoond of als refereerbare paragraaf?
+    -->
+    <use-subheaders-in-respec>no</use-subheaders-in-respec>
+    
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>

@@ -485,6 +485,7 @@
                 <xsl:apply-templates select="($doc-rules//show-relation-name)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//data-location-as-link)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//sort-in-domain)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//use-subheaders-in-respec)[last()]" mode="#current"/>
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="@order" order="ascending"/>

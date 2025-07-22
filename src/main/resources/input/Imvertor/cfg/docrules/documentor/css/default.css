@@ -222,7 +222,7 @@ img.image-asset {
 
 h2,h3,h4,h5,h6 {
     margin-top: 1rem !important;
-    margin-bottom: 0rem !important;
+    margin-bottom: 0.5rem !important;
 }
 
 ul.abbrevs {
@@ -248,4 +248,9 @@ div.topline {
     color: gray;
     font-size: 80%;
     border-bottom: 1px solid gray;
+}
+
+div.subheader {
+    font-size: 14pt;
+    padding-top: 0.5rem;
 }
