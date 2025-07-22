@@ -36,6 +36,12 @@
     <show-relation-name>no</show-relation-name>
     
     <!--
+        Moeten de tussenkopjes onder o.a. ojecttypen (overzicht attributen, relaties, en toelichting) 
+        als een gewoon tekstje worden getoond of als refereerbare paragraaf?
+    -->
+    <use-subheaders-in-respec>yes</use-subheaders-in-respec>
+
+    <!--
          Sorteer alle constructs in een categorie binnen een domein (zoals alle objecttypen) op naam?
     -->
     <sort-in-domain>yes</sort-in-domain>
