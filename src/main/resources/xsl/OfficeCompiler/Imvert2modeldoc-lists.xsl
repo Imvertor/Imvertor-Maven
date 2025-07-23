@@ -31,6 +31,8 @@
     xmlns:dcat="http://www.w3.org/ns/dcat#"
     xmlns:rschema="http://www.w3.org/2000/01/rdf-schema#"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all" 
     version="3.0">
     
@@ -136,7 +138,7 @@
                             </xsl:otherwise>
                         </xsl:choose>
                         <xsl:catch>
-                            <xsl:sequence select="imf:msg(.,'ERROR','List contents did not parse okay, please check [2]',($url))"/>
+                            <xsl:sequence select="imf:msg(.,'ERROR','List contents did not parse okay, please check [1]',($url))"/>
                         </xsl:catch>
                     </xsl:try>
                 </xsl:when>
