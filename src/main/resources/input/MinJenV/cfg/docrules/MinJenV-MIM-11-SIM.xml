@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../KING/cfg/docrules/KING-MIM-11-SIM.xml"/>
+    
+    <name>MinJenV-MIM-11-SIM</name>
+    
+</doc-rules>
