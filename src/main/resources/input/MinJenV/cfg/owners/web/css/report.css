@@ -1,0 +1,166 @@
+/* 
+ * standard color orange = #C65019
+ * 
+ * VNG realisatie kleuren
+ *  Donkerblauw: #164273
+ *  (Lichtblauw: #00adef, Oranje: #f07e26)
+ */
+body {
+	background-color: #FFFFFF;
+	font-family: "Arial", sans-serif;
+}
+table {
+    border-collapse: collapse; 
+    border: #dcdcdc 1px solid;
+    width: 100%;
+}
+.info {
+    
+}
+.intro {
+    
+}
+.content {
+    
+}
+.warning {
+    color: orange;
+    font-weight: bold;
+}
+.error {
+    color: red;
+    font-weight: bold;
+}
+p.supplierMark {
+    color: gray;
+}
+
+.tid {
+    display: inline;
+    font-size: 70%;
+    color: gray;  
+}
+tr.tableHeader th {
+    background-color: #EEEEEE;
+    font-weight: bold;
+    font-style: italic;
+}
+td {
+    border-collapse: collapse; 
+    border: #dcdcdc 1px solid;
+    padding: 0.15em;
+    text-align: left;
+    vertical-align: top;
+}
+td.vert_spacer {
+    padding-top: 2em;
+}
+td.package {
+    background-color: #CCCCCC;
+}
+td.class {
+    background-color: #EEEEEE;
+}
+td.ix {
+    color: gray;
+    font-size: 70%;
+    padding: 0.6em;
+}
+span.label {
+    
+}
+span.value {
+    font-weight: bold;
+}
+h1 {
+    font-size: 1.5em;
+    color: #164273;
+}
+h2 {
+    font-size: 1em;
+    color: #164273;
+}
+a {
+    color: blue;
+    text-decoration: none;
+}
+a:hover {
+    color: black;
+    text-decoration: underline;
+}
+/* compare */
+table.compare tr:nth-child(even) {
+    background-color:#FFF;
+}
+table.compare tr:nth-child(odd) {  
+    background-color:#EEE;
+}
+tr.cmp-system {
+    color: #999;
+    font-style: oblique;
+}
+.overview {
+    font-weight: bold;
+    color: white;
+    background-color: #164273;
+    padding: 0.5em 2em;
+    border-radius: 0.5em;
+}
+img.overview-logo {
+   display: block;
+   margin: 3em auto;
+}
+.overview-title {
+   font-weight: bold;
+   color: gray;
+   margin: 2em;
+}
+.app {
+    font-size: 150%;
+}
+.home {
+    width: 50%;
+    margin-left: 25%;
+    text-align: center;
+}
+.home-block {
+    font-weight: bold;
+    color: white;
+    background-color: #164273;
+    padding: 2em 2em;
+    border-radius: 1em;
+}
+img.home-logo {
+   display: block;
+   margin: 3em auto;
+}
+.home-title {
+   font-weight: bold;
+   color: gray;
+   margin: 2em;
+}
+.subpath {
+    font-size: 120%;
+    font-style: italic;
+    padding-bottom: 2em;
+}
+.readme-block {
+    font-weight: normal;
+    color: black;
+    background-color: white;
+    padding: 2em 2em;
+    width: 80%;
+    margin-left: 10%;
+}
+.processing-status-okay {
+    font-weight:bold;
+    color: black;
+}
+.processing-status-not-okay {
+    font-weight:bold;
+    color: red;
+}
+tr.shortviewHeader {
+    background-color: #ccc;
+    font-weight: bold;
+}
