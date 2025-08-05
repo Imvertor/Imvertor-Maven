@@ -282,7 +282,7 @@
     </xsl:template>
     
     <xsl:template match="itemtype" mode="detail">
-        <th>
+        <th scope="col">
             <xsl:value-of select="
                 if (normalize-space(.)) then string(.) else
                 if (@type) then imf:translate-i3n(@type,$language-model,()) else ''
@@ -450,7 +450,7 @@
                 <?x issue https://github.com/Imvertor/Imvertor-Maven/issues/366
                 <xsl:when test="@type = 'CFG-DOC-NAAM' and $type['DETAILS'] and not($type = ('DETAIL-ATTRIBUTE','DETAIL-ASSOCIATION','DETAIL-UNIONELEMENT'))"> 
                     <!-- https://github.com/Imvertor/Imvertor-Maven/issues/365# -->
-                    <th>
+                    <th scope="row">
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </th>
                     <td>
@@ -462,7 +462,7 @@
                 x?>
                 <xsl:when test="@type = 'CFG-DOC-INDICATIEAUTHENTIEK'">
                     <!-- add suffix info string -->
-                    <th>
+                    <th scope="row">
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </th>
                     <td>
@@ -589,7 +589,7 @@
                     </td>
                 </xsl:when>
                 <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 2"> <!-- normal without code -->
-                    <th>
+                    <th scope="row">
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </th>
                     <td>
@@ -653,7 +653,7 @@
                     </xsl:for-each>
                 </xsl:when>
                 <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->
-                    <th>
+                    <th scope="row">
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </th>
                     <td>
