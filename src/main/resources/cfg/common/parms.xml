@@ -75,12 +75,6 @@
          <required>true</required>
       </cli-parm> 
       <cli-parm>
-         <name>dashboardpath</name>
-         <arg>http-path</arg>
-         <tip>The path to the Imvertor dashboard application.</tip>
-         <required>true</required>
-      </cli-parm> 
-      <cli-parm>
          <name>jobid</name>
          <arg>ID</arg>
          <tip>An ID for this particular run of Imvertor</tip>
