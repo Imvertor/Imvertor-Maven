@@ -710,5 +710,54 @@
           </cs:xsdTypes>
        </cs:Construct>
        x?>
+       <!-- op verzoek van IHW toegevoegd: https://github.com/Imvertor/Imvertor-Maven/issues/639 -->
+       <cs:Construct>
+          <cs:name>TM_Object</cs:name>
+          <cs:sentinel>false</cs:sentinel>
+          <cs:xsdTypes>
+             <cs:XsdType>
+                <cs:name>AbstractTimeObject</cs:name>
+                <cs:asAttribute>AbstractTimeObjectType</cs:asAttribute>
+                <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                <cs:primitive>false</cs:primitive>
+             </cs:XsdType>
+          </cs:xsdTypes>
+       </cs:Construct>
+       <cs:Construct>
+          <cs:name>TM_Period</cs:name>
+          <cs:sentinel>false</cs:sentinel>
+          <cs:xsdTypes>
+             <cs:XsdType>
+                <cs:name>TimePeriod</cs:name>
+                <cs:asAttribute>TimePeriodType</cs:asAttribute>
+                <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                <cs:primitive>false</cs:primitive>
+             </cs:XsdType>
+          </cs:xsdTypes>
+       </cs:Construct>
+       <cs:Construct>
+          <cs:name>TM_Position</cs:name>
+          <cs:sentinel>false</cs:sentinel>
+          <cs:xsdTypes>
+             <cs:XsdType>
+                <cs:name>TimePosition</cs:name>
+                <cs:asAttribute>TimePositionType</cs:asAttribute>
+                <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                <cs:primitive>false</cs:primitive>
+             </cs:XsdType>
+          </cs:xsdTypes>
+       </cs:Construct>
+       <cs:Construct>
+          <cs:name>TM_PeriodDuration</cs:name>
+          <cs:sentinel>false</cs:sentinel>
+          <cs:xsdTypes>
+             <cs:XsdType>
+                <cs:name>TimeDuration</cs:name>
+                <cs:asAttribute>TimeDurationType</cs:asAttribute>
+                <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                <cs:primitive>false</cs:primitive>
+             </cs:XsdType>
+          </cs:xsdTypes>
+       </cs:Construct>
     </cs:constructs>
 </cs:Map>

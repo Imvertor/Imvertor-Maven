@@ -57,7 +57,7 @@
         
         <xsl:variable name="rows" as="element(tr)*">
             <xsl:for-each select="$diff-doc/cmps/res/cmp[1]" >
-                <xsl:sort select="@id"/>
+                <xsl:sort select="lower-case(@id)"/>
                 <xsl:choose>
                     <xsl:when test="@property = 'subpath'">
                         <!-- skip -->

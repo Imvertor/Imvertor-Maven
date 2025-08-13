@@ -21,6 +21,8 @@
     
     <!--
         Determine the type of any diagram image by suffix, i.e. the diagram name after "-" as in "Objecttypen  – overzicht" 
+        
+        Waarden: prefix, suffix of none.
     -->
     <diagram-type-strategy>suffix</diagram-type-strategy>
     
@@ -32,31 +34,33 @@
     <!--
         Show the gegevensgroep type name in the attribute listings?
     -->
-    <reveal-composition-name>yes</reveal-composition-name>
+    <reveal-composition-name>no</reveal-composition-name>
     
     <!-- 
         collect the codelist and enumeration contents in a separate section?
     -->
-    <lists-to-listing>yes</lists-to-listing>
+    <lists-to-listing>no</lists-to-listing>
     
     <!--
         Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
     -->
-    <show-lists-with-metadata>yes</show-lists-with-metadata>
+    <show-lists-with-metadata>no</show-lists-with-metadata>
 
-    <!-- which sections to include in the modeldoc? --> 
+    <!-- 
+        Which sections to include in the modeldoc? 
+    --> 
     <include-overview-section-level>no</include-overview-section-level>
-    <include-detail-section-level>yes</include-detail-section-level>
-    <include-overview-sections-by-type>yes</include-overview-sections-by-type>
-    <include-detail-sections-by-type>yes</include-detail-sections-by-type>
+    <include-detail-section-level>no</include-detail-section-level>
+    <include-overview-sections-by-type>no</include-overview-sections-by-type>
+    <include-detail-sections-by-type>no</include-detail-sections-by-type>
     
     <!-- 
         visibility of properties: show in accordance with configuration (@show) or compact: only the specified parts 
     -->
-    <show-properties>compact</show-properties> <!-- config, all, compact -->
+    <show-properties>config</show-properties> <!-- config, all, compact -->
     
     <!--
-        moet een zinnetje worden toegevoegd dat aangeeft dat identificerend attribuut gecombineerd wordt met andere idenrtificerende attributen? cf #263
+        Moet een zinnetje worden toegevoegd dat aangeeft dat identificerend attribuut gecombineerd wordt met andere idenrtificerende attributen? cf #263
     -->
     <identifying-attribute-with-context>no</identifying-attribute-with-context>
     
@@ -96,7 +100,20 @@
     <!--
         Moet een URL in een data locatie worden weergegeven als link? (zie #565)
     -->
-    <data-location-as-link>yes</data-location-as-link>
+    <data-location-as-link>no</data-location-as-link>
+    
+    <!--
+        Sorteer alle constructs in een categorie binnen een domein (zoals alle objecttypen) op naam?
+        
+        NB dit kan door de analist zelf worden bepaald (project opeenvolging) of je laat het over aan Imvertor.
+    -->
+    <sort-in-domain>no</sort-in-domain>
+    
+    <!--
+        Moeten de tussenkopjes onder o.a. ojecttypen (overzicht attributen, relaties, en toelichting) 
+        als een gewoon tekstje worden getoond of als refereerbare paragraaf?
+    -->
+    <use-subheaders-in-respec>no</use-subheaders-in-respec>
     
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>

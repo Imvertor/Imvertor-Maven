@@ -136,8 +136,8 @@ public class ChainTranslateAndReport {
 			    // Create the XMI file from EAP or other sources
 			    succeeds = succeeds && (new XmiCompiler()).run();
 				
-			    // Build the configuration file
-			    succeeds = succeeds && (new ConfigCompiler()).run();
+			    // Build the configuration file. Ignore possible errors in XMI compilation.
+			    (new ConfigCompiler()).run();
 			 
 			    Transformer.setMayProfile(true);
 			 

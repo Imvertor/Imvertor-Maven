@@ -55,7 +55,7 @@
     
     <xsl:variable name="create-links" select="imf:get-config-string('cli','createofficemode','click') = 'click'"/>
     
-    <xsl:variable name="link-by-eaid" select="($configuration-docrules-file/link-by,'EAID')[1] eq 'EAID'"/>
+    <xsl:variable name="link-by-eaid" select="$configuration-docrules-file/link-by eq 'EAID'"/>
     <xsl:variable name="explanation-location" select="$configuration-docrules-file/explanation-location"/>
     <xsl:variable name="append-role-name" select="imf:boolean($configuration-docrules-file/append-role-name)"/>
     
@@ -65,16 +65,18 @@
     <xsl:variable name="include-incoming-associations" select="imf:boolean($configuration-docrules-file/include-incoming-associations)"/>
     <xsl:variable name="lists-to-listing" select="imf:boolean($configuration-docrules-file/lists-to-listing)"/>
     <xsl:variable name="reveal-composition-name" select="imf:boolean($configuration-docrules-file/reveal-composition-name)"/>
-    <xsl:variable name="show-properties" select="($configuration-docrules-file/show-properties,'config')[1]"/>
-    <xsl:variable name="show-lists-with-metadata" select="imf:boolean(($configuration-docrules-file/show-lists-with-metadata,'no')[1])"/>
-    <xsl:variable name="show-relation-name" select="imf:boolean(($configuration-docrules-file/show-relation-name,'no')[1])"/>
+    <xsl:variable name="show-properties" select="$configuration-docrules-file/show-properties"/>
+    <xsl:variable name="show-lists-with-metadata" select="imf:boolean($configuration-docrules-file/show-lists-with-metadata)"/>
+    <xsl:variable name="show-relation-name" select="imf:boolean($configuration-docrules-file/show-relation-name)"/>
     
     <xsl:variable name="has-material-history" select="exists(//imvert:tagged-value[@id = ('CFG-TV-INDICATIONMATERIALHISTORY','CFG-TV-HEEFTTIJDLIJNGELDIGHEID')]/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     <xsl:variable name="has-formal-history" select="exists(//imvert:tagged-value[@id = ('CFG-TV-INDICATIONFORMALHISTORY','CFG-TV-HEEFTTIJDLIJNREGISTRATIE')]/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     
     <xsl:variable name="has-imbroa" select="//imvert:attribute/imvert:stereotype/@id = 'stereotype-name-imbroa'"/>
     
-    <xsl:variable name="gegevensgroep-attribute-container" select="($configuration-docrules-file/gegevensgroep-attribute-container,'object')[1]"/>
+    <xsl:variable name="gegevensgroep-attribute-container" select="$configuration-docrules-file/gegevensgroep-attribute-container"/>
+    
+    <xsl:variable name="sort-domain" select="imf:boolean($configuration-docrules-file/sort-in-domain)"/>
     
     <xsl:template match="/imvert:packages">
         <xsl:sequence select="imf:track('Generating modeldoc',())"/>
@@ -143,44 +145,66 @@
             <xsl:variable name="sections" as="element(section)*">
                 <section type="OVERVIEW" include="{$include-overview-section-level}">
                     <section type="OVERVIEW-OBJECTTYPE" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-ASSOCIATIONCLASS" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-REFERENCELIST" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-UNION" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-COMPOSITION" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-STRUCTUREDDATATYPE" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-PRIMITIVEDATATYPE" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <xsl:choose>
                         <xsl:when test="$show-lists-with-metadata">
                             <section type="OVERVIEW-CODELIST" include="{$include-overview-sections-by-type}">
-                                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]"/>
+                                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]">
+                                    <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                                </xsl:apply-templates>
                             </section>
                             <section type="OVERVIEW-ENUMERATION" include="{$include-overview-sections-by-type}">
-                                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]"/>
+                                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]">
+                                    <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                                </xsl:apply-templates>
                             </section>
                         </xsl:when>
                         <xsl:otherwise>
                             <section type="OVERVIEW-CODELIST" include="{$include-overview-sections-by-type}">
                                 <content>
-                                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="listoverview"/>
+                                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="listoverview">
+                                        <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                                    </xsl:apply-templates>
                                 </content>
                             </section>
                             <section type="OVERVIEW-ENUMERATION" include="{$include-overview-sections-by-type}">
                                 <content>
-                                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]"  mode="listoverview"/>
+                                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]"  mode="listoverview">
+                                        <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                                    </xsl:apply-templates>
                                 </content>
                             </section>
                         </xsl:otherwise>
@@ -188,32 +212,50 @@
                 </section>
                 <section type="DETAILS" include="{$include-detail-section-level}">
                     <section type="DETAILS-OBJECTTYPE" include="{$include-detail-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]" mode="detail">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="DETAILS-COMPOSITE" include="{$include-detail-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]" mode="detail">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="DETAILS-ASSOCIATIONCLASS" include="{$include-detail-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]" mode="detail">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="DETAILS-UNION" include="{$include-detail-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]" mode="detail">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="DETAILS-STRUCTUREDDATATYPE" include="{$include-detail-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]" mode="detail">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="DETAILS-PRIMITIVEDATATYPE" include="{$include-detail-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]" mode="detail">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <xsl:if test="not($lists-to-listing)">
                         <section type="DETAILS-REFERENCELIST" include="{$include-detail-sections-by-type}">
-                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="detail"/>
+                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="detail">
+                                <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                            </xsl:apply-templates>
                         </section>
                         <section type="DETAILS-CODELIST" include="{$include-detail-sections-by-type}">
-                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="content"/>
+                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="content">
+                                <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                            </xsl:apply-templates>
                         </section>
                         <section type="DETAILS-ENUMERATION" include="{$include-detail-sections-by-type}">
-                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="content"/>
+                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="content">
+                                <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                            </xsl:apply-templates>
                         </section>
                     </xsl:if>
                 </section>
@@ -649,8 +691,7 @@
                 -->
                 <xsl:variable name="relation" select="if ($show-relation-name) then imvert:name else ()"/>
                 <xsl:variable name="target" select="imvert:target/imvert:role"/>
-                <xsl:sequence select="dlogger:save('create-link',())"></xsl:sequence>
-
+              
                 <xsl:variable name="relation-original-name" select="if (exists($relation) and exists($target)) then concat($relation/@original,': ',$target/@original) else ($relation/@original,$target/@original)"/>
                 
                 <xsl:sequence select="imf:create-element('item',if ($incoming) then imf:create-link(../..,'global',../../imvert:name/@original) else string(../../imvert:name/@original))"/>
@@ -749,7 +790,7 @@
         -->
         <xsl:variable name="is-imbro-list" select="(imf:get-config-string('cli','owner') eq 'BRO') and $has-imbroa"/>
         <!-- Check if ANY value has an alias, in that case assume a code column should be added -->
-        <xsl:variable name="has-code" select="exists(imvert:attributes/imvert:attribute/imvert:alias)"/>
+        <xsl:variable name="has-code" select="exists(imvert:attributes/imvert:attribute/imvert:alias) or exists(imvert:attributes/imvert:attribute/imvert:initial-value)"/>
         <section 
             name="{imf:get-name(.,true())}" 
             type="{if ($is-codelist) then 'DETAIL-CODELIST' else 'DETAIL-ENUMERATION'}" 
@@ -934,19 +975,19 @@
         <xsl:param name="is-imbroa" as="xs:boolean"/>
         <xsl:param name="is-coded" as="xs:boolean"/>
         
-        <xsl:variable name="init" select="imvert:initial-value"/>
-        <xsl:variable name="display-name" select="imf:get-name(.,true()) || (if ($init) then (' (' || $init || ')') else '')"/><!-- speciaal voor Waterschapshuis enumeraties -->
+        <xsl:variable name="display-name" select="imf:get-name(.,true())"/>
+        <xsl:variable name="definition" select="imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION')"/>
         <part>
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:if test="$is-coded">
-                <xsl:sequence select="imf:create-element('item',string(imvert:alias))"/>
+                <xsl:sequence select="imf:create-element('item',string((imvert:initial-value,imvert:alias)[1]))"/>
             </xsl:if>
             <xsl:sequence select="imf:create-element('item',$display-name)"/>
             <xsl:if test="$is-imbroa">
                 <xsl:sequence select="imf:create-element('item',if (imvert:stereotype/@id = ('stereotype-name-imbroa')) then '' else '&#x2714;')"/>
                 <xsl:sequence select="imf:create-element('item','&#x2714;')"/>
             </xsl:if>
-            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+            <xsl:sequence select="imf:create-element('item',if ($definition) then $definition else '--')"/>
         </part>
     </xsl:template>
     
@@ -1328,7 +1369,9 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-SOURCEOFDEFINITION'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-TOELICHTING'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DESCRIPTION'))"/>
+                    <xsl:if test="$explanation-location = 'as-row'"> <!-- NB kan ook "at-bottom" zijn; in dat geval niet als row tonen -->
+                        <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DESCRIPTION'))"/>
+                    </xsl:if>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-UITLEG'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-EXPLANATION'))"/>
@@ -1925,12 +1968,15 @@
     
     <xsl:function name="imf:add-data-location" as="element(item)?">
         <xsl:param name="this" as="element()"/>
+        
+        <!-- eigenlijk moet dit anders: het tonen van metadata op een referentielijst of codelijst zou eigenlijk standaard moeten worden aangezet -->
+        
         <xsl:variable name="dataloc" select="imf:get-formatted-tagged-value($this,'CFG-TV-DATALOCATION')"/>
         
         <xsl:variable name="list-type" select="$this/imvert:stereotype/@id"/>
         <xsl:variable name="show-for-list" select="
-            ($list-type = 'stereotype-name-referentielijst' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-REFERENCELIST']) or
-            ($list-type = 'stereotype-name-codelist' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-CODELIST'])
+            ($list-type = 'stereotype-name-referentielijst' and $configuration-docrules-file/doc-rule[@id = 'CFG-DOC-DATALOCATIE']/levels/level[. = 'DISPLAY-GLOBAL-REFERENCELIST']/@show = ('config','force')) or
+            ($list-type = 'stereotype-name-codelist' and $configuration-docrules-file/doc-rule[@id = 'CFG-DOC-DATALOCATIE']/levels/level[. = 'DISPLAY-GLOBAL-CODELIST']/@show = ('config','force'))
         "/>
         <xsl:variable name="create-link" select="imf:is-url($dataloc) and imf:boolean($configuration-docrules-file/data-location-as-link)"/>
         <xsl:choose>
@@ -1942,7 +1988,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <item>
-                    <xsl:text>Data locatie: </xsl:text>
+                   <xsl:value-of select="imf:plugin-translate-i3n('DATALOCATIE',true()) || ': '"/>
                     <xsl:choose>
                         <xsl:when test="$create-link">
                             <a href="{$dataloc}" target="_blank">

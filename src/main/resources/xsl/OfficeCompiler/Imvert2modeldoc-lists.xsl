@@ -31,6 +31,8 @@
     xmlns:dcat="http://www.w3.org/ns/dcat#"
     xmlns:rschema="http://www.w3.org/2000/01/rdf-schema#"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all" 
     version="3.0">
     
@@ -132,16 +134,16 @@
                                 </xsl:apply-templates>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:sequence select="imf:msg(.,'WARNING','List contents cannot be retrieved from location [1], tried [2]',($loc, $url))"/>
+                                <xsl:sequence select="imf:msg(.,'ERROR','List contents cannot be retrieved from location [1], tried [2]',($loc, $url))"/>
                             </xsl:otherwise>
                         </xsl:choose>
                         <xsl:catch>
-                            <xsl:sequence select="imf:msg(.,'WARNING','List contents did not parse okay, please check [2]',($url))"/>
+                            <xsl:sequence select="imf:msg(.,'ERROR','List contents did not parse okay, please check [1]',($url))"/>
                         </xsl:catch>
                     </xsl:try>
                 </xsl:when>
                 <xsl:when test="exists($referring-attributes-noloc)">
-                    <xsl:sequence select="imf:msg(.,'WARNING','Codelist content location not specified',())"/>
+                    <xsl:sequence select="imf:msg(.,'ERROR','Codelist content location not specified',())"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <!-- specified at all attributes that reference this codelist -->

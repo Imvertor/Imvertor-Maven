@@ -21,20 +21,24 @@
 package nl.imvertor.common.file;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 import org.eclipse.rdf4j.common.exception.ValidationException;
+import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.vocabulary.RDF4J;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
 import org.eclipse.rdf4j.sail.shacl.ShaclSail;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Runner;
+import nl.imvertor.common.Transformer;
 
 /**
  * A representation of a Shacl file.
@@ -113,7 +117,14 @@ public class ShaclFile extends RdfFile {
 	            } catch (RepositoryException exception) {
 	                Throwable cause = exception.getCause();
 	                if (cause instanceof ValidationException) {
-	                	runner.error(logger, "Shacl validator reports RDF error: \"" + exception.getMessage() + "\"","shacl-parse","SHACL-SVRRE1");
+	                	runner.warn(logger, "Shacl validator reports RDF error(s)","shacl-parse","SHACL-SVRRE1");
+	                	
+	                	XmlFile validationReport = new XmlFile(configurator.getXParm("properties/RESULT_SHACL_VALIDATION_PATH"));
+	                	FileOutputStream outputStream = new FileOutputStream(validationReport);
+	                	Model validationReportModel = ((ValidationException) cause).validationReportAsModel(); // use validationReportModel to understand validation violations
+	                    Rio.write(validationReportModel, outputStream, RDFFormat.RDFXML);
+	                    outputStream.close();
+	                       
 	                } else 
 	                    throw exception;
 	            }

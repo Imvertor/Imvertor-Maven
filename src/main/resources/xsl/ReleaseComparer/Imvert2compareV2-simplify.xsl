@@ -274,15 +274,16 @@
         <xsl:for-each select="$element">
              <xsl:variable name="element-id" as="xs:string+">
                  <xsl:for-each select="$element/ancestor-or-self::*">
+                     <xsl:variable name="is-root" select="local-name(../..) = 'packages'"/>
                      <xsl:choose>
-                         <xsl:when test="local-name() = 'packages'">model</xsl:when>
+                         <xsl:when test="local-name() = 'packages'">IM</xsl:when>
                          <xsl:when test="local-name() = 'package'">{local:get-safe-name(imvert:name)}</xsl:when>
                          <xsl:when test="local-name() = 'class'">{local:get-safe-name(imvert:name)}</xsl:when>
                          <xsl:when test="local-name() = 'attribute'">{local:get-safe-name(imvert:name)}</xsl:when>
                          <xsl:when test="local-name() = 'association'">{local:get-safe-name(imvert:name)}</xsl:when>
                          <xsl:when test="local-name() = 'source'">{local:get-safe-name(imvert:role)}</xsl:when>
                          <xsl:when test="local-name() = 'target'">{local:get-safe-name(imvert:role)}</xsl:when>
-                         <xsl:when test="local-name() = 'tagged-value'">TV{local:get-safe-name(imvert:name)}</xsl:when>
+                         <xsl:when test="local-name() = 'tagged-value'">{if ($is-root) then 'AA_TV' else 'TV'}{local:get-safe-name(imvert:name)}</xsl:when>
                          <xsl:when test="empty(*)">{local-name()}</xsl:when>
                      </xsl:choose>
                  </xsl:for-each>
@@ -330,7 +331,21 @@
     
     <xsl:function name="local:get-safe-name" as="xs:string">
         <xsl:param name="name" as="xs:string"/>
-        <xsl:value-of select="replace(lower-case($name),'[^a-z0-9]','')"/>
+        <xsl:variable name="encoded" as="xs:string*">
+            <xsl:analyze-string select="$name" regex="[A-Za-z0-9]+">
+                <xsl:matching-substring>
+                    <xsl:value-of select="."/>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:analyze-string select="." regex=".">
+                        <xsl:matching-substring>
+                            <xsl:value-of select="'_' || string-to-codepoints(.) || '_'"/>
+                        </xsl:matching-substring>
+                    </xsl:analyze-string>
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        <xsl:value-of select="string-join($encoded,'')"/>
     </xsl:function>
     
     <xsl:function name="local:get-stereo" as="xs:string">

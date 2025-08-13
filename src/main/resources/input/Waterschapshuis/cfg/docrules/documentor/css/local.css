@@ -1,5 +1,96 @@
 /* hier de default CSS voor deze owner */
 
+@font-face {
+    font-family: 'Asap-Bold';
+    src: url('fonts/Asap-Bold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Asap-Italic-VariableFont_wght';
+    src: url('fonts/Asap-Italic-VariableFont_wght.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Asap-Medium';
+    src: url('fonts/Asap-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Asap-Regular';
+    src: url('fonts/Asap-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Asap-SemiBold';
+    src: url('fonts/Asap-SemiBold.ttf') format('truetype');
+}
+
 html > body {
-    font-family: math;
+    font-family: 'Asap-Regular', Courier, sans-serif;
+    font-size: 12pt;
+    --logius-table-even-rows: #A9BBDF;/* middenblauw */
+}
+div.head h1.title { 
+    font-family: 'Asap-SemiBold', Courier, sans-serif;
+    font-size: 28pt;
+    color: #3B5C9D;/* blauw */
+}
+div.head h2.subtitle { 
+    font-family: 'Asap-SemiBold', Courier, sans-serif;
+    font-size: 14pt;
+    color: #3B5C9D;/* blauw */
+}
+div.head h2 { 
+    font-family: 'Asap-Medium', Courier, sans-serif;
+    font-size: 12pt;
+    color: #3B5C9D;/* blauw */
+}
+div.head dl dt { 
+    font-family: 'Asap-SemiBold', Courier, sans-serif;
+    font-size: 12pt;
+    color: inherit; /* standaard kleur */    
+}
+div.head dl dd { 
+    font-family: 'Asap-Regular', Courier, sans-serif;
+    font-size: 12pt;
+    color: #F79239;/*  oranje */    
+}
+div.head dl dd a[href]{ 
+    color: #F79239;/*  oranje */    
+}
+
+section div.header-wrapper h2 { 
+    font-family: 'Asap-SemiBold', Courier, sans-serif;
+    font-size: 20pt;
+    color: #3B5C9D;/* blauw */
+}
+section div.header-wrapper h3 { 
+    font-family: 'Asap-SemiBold', Courier, sans-serif;
+    font-size: 18pt;
+    color: #3B5C9D;/* blauw */
+}
+section div.header-wrapper h4 { 
+    font-family: 'Asap-SemiBold', Courier, sans-serif;
+    font-size: 17pt;
+    color: #3B5C9D;/* blauw */
+}
+section div.header-wrapper h5 { 
+    font-family: 'Asap-Regular', Courier, sans-serif;
+    font-size: 14pt;
+}
+
+table { 
+    background-color: #D4DDEF;/* lichtblauw */
+    border: 1px solid white;
+}
+table th { 
+    background-color: #6384C5;/* donkerblauw */
+    color: white;
+}
+table th, 
+table td { 
+    border: 1px solid white;
+}
+
+div.subheader {
+    font-family: 'Asap-Regular', Courier, sans-serif;
+    font-size: 14pt;
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
 }

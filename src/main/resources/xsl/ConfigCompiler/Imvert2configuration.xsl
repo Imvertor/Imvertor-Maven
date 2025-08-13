@@ -465,6 +465,7 @@
              
                 <xsl:apply-templates select="($doc-rules//link-by)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//explanation-location)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//append-role-name)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//diagram-type-strategy)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//include-incoming-associations)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//lists-to-listing)[last()]" mode="#current"/>
@@ -483,6 +484,8 @@
                 <xsl:apply-templates select="($doc-rules//show-lists-with-metadata)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//show-relation-name)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//data-location-as-link)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//sort-in-domain)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//use-subheaders-in-respec)[last()]" mode="#current"/>
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="@order" order="ascending"/>

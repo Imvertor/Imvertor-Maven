@@ -510,6 +510,11 @@
         <trans lang="en">AttributeType overview</trans>
     </item>
     <item>
+        <key>SHORT-ENUMS</key>
+        <trans lang="nl">Lijst waarden</trans>
+        <trans lang="en">List values</trans>
+    </item>
+    <item>
         <key>SHORT-ASSOCIATIONS</key>
         <trans lang="nl">Overzicht relaties</trans>
         <trans lang="en">Overview of associations</trans>
@@ -545,6 +550,11 @@
         <key>EXPLANATION</key>
         <trans lang="nl">Toelichting</trans>
         <trans lang="en">Explanation</trans>
+    </item>
+    <item>
+        <key>LISTCONTENTS</key>
+        <trans lang="nl">Lijst waarden</trans>
+        <trans lang="en">List values</trans>
     </item>
     
     <item>
