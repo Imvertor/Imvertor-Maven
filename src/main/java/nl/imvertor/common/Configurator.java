@@ -155,6 +155,7 @@ public class Configurator {
 	private XsltCallLogger xsltCallLogger; // keeps track of the XSLT calls. A debugging tool.
 	
 	private Integer maxWarnings = 1000;
+	private Integer maxErrors = 1000;
 	
 	private Configurator()  {
 		
@@ -212,6 +213,8 @@ public class Configurator {
 			
 			String mw = getServerProperty("max.warnings", false);
 			maxWarnings = (mw != null) ? Integer.parseInt(mw) : 1000; 
+			String me = getServerProperty("max.errors", false);
+			maxErrors = (me != null) ? Integer.parseInt(me) : 1000; 
 			
 		} catch (Exception e) {
 			System.err.println("Invalid configuration: " + e.getMessage());
@@ -1377,6 +1380,9 @@ public class Configurator {
 
 	public Integer maxWarnings() {
 		return maxWarnings;
+	}
+	public Integer maxErrors() {
+		return maxErrors;
 	}
 	/**
 	 * Merge parameters into a string, parameters taken by default from appinfo section of the parms.xml; otherwise use [group/name] syntax.

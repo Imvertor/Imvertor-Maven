@@ -46,7 +46,10 @@ public class Messenger extends SequenceWriter {
 
 	public static final Logger logger = Logger.getLogger(Messenger.class);
 	public static final String VC_IDENTIFIER = "$Id: Messenger.java 7431 2016-02-24 12:46:42Z arjan $";
-
+	
+	public static Integer warningCount = 0;
+	public static Integer errorCount = 0;
+	
 	private String fatalValue = "FATAL";
 	private Pattern messagePattern = Pattern.compile("^(.+?): \\[(.+?)\\] (.+?)$");
 	
@@ -148,17 +151,29 @@ public class Messenger extends SequenceWriter {
 	public void writeMsg(String src, String type, String name, String text, String id, String wiki) {
 		if (exists(src) && exists(type) && exists(text)) {
 			Integer mw = Configurator.getInstance().maxWarnings();
-			XMLConfiguration cfg = Configurator.getInstance().getXmlConfiguration();
+			Integer me = Configurator.getInstance().maxErrors();
+				XMLConfiguration cfg = Configurator.getInstance().getXmlConfiguration();
 			if (cfg != null) { 
+				if (type.equals("WARNING")) warningCount += 1;
+				if (type.equals("ERROR") || type.equals("FATAL")) errorCount += 1;
 				int messageIndex = cfg.getMaxIndex("messages/message") + 2;   // -1 when no messages.
-				if (messageIndex == (mw + 1) && type.equals("WARNING")) {
+				if (warningCount == (mw + 1)) {
 					cfg.addProperty("messages/message", "");
 					cfg.addProperty("messages/message[" + messageIndex + "]/src", "/system");
 					cfg.addProperty("messages/message[" + messageIndex + "]/type", "WARNING");
 					cfg.addProperty("messages/message[" + messageIndex + "]/name", name);
 					cfg.addProperty("messages/message[" + messageIndex + "]/text", "More than "+ mw +" warnings, skipping remainder");
 					return;
-				} else if (messageIndex > (mw + 1) && type.equals("WARNING"))
+				} else if (warningCount > (mw + 1) && type.equals("WARNING"))
+					return;
+				else if (errorCount == (me + 1)) {
+					cfg.addProperty("messages/message", "");
+					cfg.addProperty("messages/message[" + messageIndex + "]/src", "/system");
+					cfg.addProperty("messages/message[" + messageIndex + "]/type", "WARNING");
+					cfg.addProperty("messages/message[" + messageIndex + "]/name", name);
+					cfg.addProperty("messages/message[" + messageIndex + "]/text", "More than "+ mw +" errors, skipping remainder");
+					return;
+				} else if (errorCount > (me + 1) && (type.equals("ERROR") || type.equals("FATAL")))
 					return;
 			    else {
 					cfg.addProperty("messages/message", "");

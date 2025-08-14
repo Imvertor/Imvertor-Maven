@@ -66,6 +66,10 @@ public class Step {
 	 * @throws Exception
 	 */
 	public boolean report() throws Exception {
+		
+		Configurator.getInstance().setXParm("system/error-count", String.valueOf(Messenger.errorCount),true);
+		Configurator.getInstance().setXParm("system/warning-count", String.valueOf(Messenger.warningCount),true);
+		
 		Transformer transformer = new Transformer();
 		transformer.setExtensionFunction(new ImvertorParseHTML());
 		transformer.setExtensionFunction(new ImvertorStripAccents());	

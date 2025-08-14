@@ -252,8 +252,6 @@ public class Runner {
 	 * @throws IOException 
 	 */
 	public void error(Logger logger, String text, Exception e, String id, String wiki) throws IOException, ConfiguratorException {
-		imvertorErrors += 1;
-		Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
 		messenger.writeMsg(Configurator.currentComponentIdentifier, "ERROR", "", text, id, wiki);
 		logger.error(text,e);
 	}
@@ -278,14 +276,10 @@ public class Runner {
 	 * @throws IOException 
 	 */
 	public void error(Logger logger, String text, String id, String wiki) throws IOException, ConfiguratorException {
-		imvertorErrors += 1;
-		Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
 		messenger.writeMsg(Configurator.currentComponentIdentifier, "ERROR", "", text, id, wiki);
 		logger.error(text);
 	}
 	public void error(Logger logger, String text) throws IOException, ConfiguratorException {
-		imvertorErrors += 1;
-		Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
 		messenger.writeMsg(Configurator.currentComponentIdentifier, "ERROR", "", text, null,null);
 		logger.error(text);
 	}
@@ -301,8 +295,6 @@ public class Runner {
 	 * @throws IOException 
 	 */
 	public void warn(Logger logger, String text, String id, String wiki) throws IOException, ConfiguratorException {
-		imvertorWarnings += 1;
-		Configurator.getInstance().setXParm("system/warning-count", String.valueOf(imvertorWarnings),true);
 		messenger.writeMsg(Configurator.currentComponentIdentifier, "WARNING", "", text, id, wiki);
 		logger.warn(text);
 	}
@@ -370,8 +362,6 @@ public class Runner {
 	 */
 	public void fatal(Logger logger, String text, Throwable t, String id, String wiki)  {
 		try {
-			imvertorErrors += 1;
-			Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
 			messenger.writeMsg(Configurator.currentComponentIdentifier, "FATAL", "", text, id, wiki);
 			logger.fatal(text);
 			info(logger, "");
