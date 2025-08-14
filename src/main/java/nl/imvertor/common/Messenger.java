@@ -152,7 +152,7 @@ public class Messenger extends SequenceWriter {
 		if (exists(src) && exists(type) && exists(text)) {
 			Integer mw = Configurator.getInstance().maxWarnings();
 			Integer me = Configurator.getInstance().maxErrors();
-				XMLConfiguration cfg = Configurator.getInstance().getXmlConfiguration();
+			XMLConfiguration cfg = Configurator.getInstance().getXmlConfiguration();
 			if (cfg != null) { 
 				if (type.equals("WARNING")) warningCount += 1;
 				if (type.equals("ERROR") || type.equals("FATAL")) errorCount += 1;
