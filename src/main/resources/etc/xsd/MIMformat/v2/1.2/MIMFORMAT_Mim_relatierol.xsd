@@ -32,7 +32,7 @@
       <xs:element name="herkomstDefinitie" type="xs:string" minOccurs="0"/>
       <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0"/>
       <xs:element name="datumOpname" type="xs:string"/>
-      <xs:element name="unidirectioneel" type="xs:string"/>
+      <xs:element name="unidirectioneel" type="xs:string" minOccurs="0"/><!-- Optioneel voor backward compatibiliteit met eerdere 1.2 versies -->
       <xs:element name="aggregatietype" type="mim:aggregatietype"/>
       <xs:element name="doel">
         <xs:complexType>
@@ -79,9 +79,11 @@
       <xs:element name="indicatieMaterieleHistorie" type="mim:boolean"/>
       <xs:element name="indicatieFormeleHistorie" type="mim:boolean"/>
       <xs:element name="kardinaliteit" type="xs:string"/>
+      <xs:element name="kardinaliteitBron" type="xs:string" minOccurs="0"/><!-- Optioneel voor backward compatibiliteit met eerdere 1.2 versies; "deprecated" -->
       <xs:element name="authentiek" type="xs:string"/>
       <xs:element name="mogelijkGeenWaarde" type="mim:boolean"/>
       <xs:element name="identificerend" type="mim:boolean" minOccurs="0"/>
+      <xs:element name="aggregatietype" type="mim:aggregatietype" minOccurs="0"/><!-- Optioneel voor backward compatibiliteit met eerdere 1.2 versies; "deprecated" -->
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="optional"/>

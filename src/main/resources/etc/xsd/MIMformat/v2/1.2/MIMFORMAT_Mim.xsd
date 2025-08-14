@@ -629,7 +629,7 @@
   <xs:complexType name="GeneralisatieObjecttypen">
     <xs:sequence>
       <xs:element name="datumOpname" type="xs:string"/>
-      <xs:element name="mixin" type="mim:boolean"/>
+      <xs:element name="mixin" type="mim:boolean" minOccurs="0"/>
       <xs:element name="typeSupertype" type="xs:string" minOccurs="0"/>
       <xs:element name="supertype">
         <xs:complexType>
