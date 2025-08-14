@@ -470,6 +470,7 @@ commentaar toegevoegd. Dat is alleen bij de éérste opkomst van een contructie 
                      <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-unidirectioneel-->
                      <mim:unidirectioneel>true</mim:unidirectioneel>
                      <mim:aggregatietype>Compositie</mim:aggregatietype>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
                      <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-doel-->
                      <mim:doel>
                         <mim-ref:ObjecttypeRef index="2220" xlink:href="#personen-objecttype-persoon">Persoon</mim-ref:ObjecttypeRef>
