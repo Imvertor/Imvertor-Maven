@@ -57,9 +57,6 @@ public class Runner {
 	public static final Integer APPLICATION_PHASE_FINALDRAFT = 2;
 	public static final Integer APPLICATION_PHASE_FINAL = 3;
 	
-	private int imvertorErrors = 0;
-	private int imvertorWarnings = 0;
-
 	private Boolean debugging = false;
 	private String[] debugmodes = new String[0]; // debugmodes are codes; initially empty.
 	
@@ -111,16 +108,16 @@ public class Runner {
 	 * @throws IOException 
 	 */
 	public void windup() throws IOException, ConfiguratorException {
-		if (imvertorErrors < 0)
+		if (Messenger.errorCount < 0)
 			info(logger, "Task fails. Please contact your system administrator.");
 		else {
-			if (imvertorErrors == 0) 
-				if (imvertorWarnings == 0)
+			if (Messenger.errorCount == 0) 
+				if (Messenger.warningCount == 0)
 					info(logger, "Task succeeds.");
 				else
 					info(logger, "Task succeeds with warnings.");
 			else 
-				if (imvertorWarnings == 0)
+				if (Messenger.warningCount == 0)
 					info(logger, "Task fails with errors.");
 				else
 					info(logger, "Task fails with errors and warnings.");
@@ -137,7 +134,7 @@ public class Runner {
 	 * @throws Exception 
 	 */
 	public boolean succeeds() throws Exception {
-		return Configurator.getInstance().forceCompile() || (getFirstErrorText() == null && imvertorErrors <= 0);
+		return Configurator.getInstance().forceCompile() || (getFirstErrorText() == null && Messenger.errorCount <= 0);
 	}
 
 	/**
@@ -450,7 +447,7 @@ public class Runner {
 
 	// TODO suppress warnings werkt nog niet; waarom de warnings aan het einde op 0?
 	public boolean hasWarnings() {
-		return imvertorWarnings > 0;
+		return Messenger.warningCount > 0;
 	}
 	
 	/**
