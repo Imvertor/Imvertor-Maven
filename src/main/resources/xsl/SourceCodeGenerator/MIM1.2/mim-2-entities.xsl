@@ -40,6 +40,9 @@
   <xsl:mode name="xhtml" on-no-match="shallow-copy"/>
     
   <xsl:param name="output-uri" as="xs:string" select="''"/>
+  <xsl:param name="package-prefix" as="xs:string" select="'nl.imvertor.entity'"/>
+  <xsl:param name="class-name-prefix" as="xs:string" select="''"/>
+  <xsl:param name="class-name-suffix" as="xs:string" select="''"/>
   
   <xsl:key name="id" match="*[@id]" use="@id"/>
   <xsl:key name="ref" match="mim-ref:*|mim-ext:ConstructieRef" use="substring(@xlink:href, 2)"/>
@@ -50,6 +53,8 @@
   <xsl:import href="../../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
   
   <xsl:variable name="lf" select="'&#10;'" as="xs:string"/>
+  <xsl:variable name="accolade-open" select="'{'" as="xs:string"/>
+  <xsl:variable name="accolade-close" select="'}'" as="xs:string"/>
   <!--
   <xsl:variable name="brace-left" select="'{'" as="xs:string"/>
   <xsl:variable name="brace-right" select="'}'" as="xs:string"/>
@@ -72,8 +77,6 @@
   </xsl:variable>
   <xsl:variable name="is-relatiesoort-leidend" select="/*/mim:relatiemodelleringstype = 'Relatiesoort leidend' or /*/mim:relatiemodelleringtype = 'Relatiesoort leidend'" as="xs:boolean"/>
   <xsl:variable name="is-relatierol-leidend" select="/*/mim:relatiemodelleringstype = 'Relatierol leidend' or /*/mim:relatiemodelleringtype = 'Relatierol leidend'" as="xs:boolean"/>
-  
-  <xsl:variable name="package-prefix" select="(local:kenmerk-ext(/*, 'package-prefix'), 'nl.imvertor')[1]" as="xs:string"/>
   
   <xsl:variable name="aggregation-type-mapping" as="map(xs:string, xs:string)">
     <xsl:map>

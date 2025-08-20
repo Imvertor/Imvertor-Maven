@@ -22,6 +22,11 @@
   <xsl:mode name="field-declaration" on-no-match="shallow-skip"/>
   <xsl:mode name="field-getter-setter" on-no-match="shallow-skip"/>
   
+  <xsl:param name="jpa-annotations" as="xs:boolean" select="false()"/>
+  <xsl:param name="java-interfaces" as="xs:boolean" select="false()"/> 
+  
+  <xsl:variable name="mode" select="if ($jpa-annotations) then 'entity' else ''" as="xs:string"/>
+  
   <xsl:variable name="primitive-mim-type-mapping" as="map(xs:string, xs:string)">
     <xsl:map>
       <xsl:map-entry key="'CharacterString'" select="'String'"/>
@@ -45,7 +50,7 @@
   
   <xsl:function name="entity:class-name">
     <xsl:param name="name" as="xs:string"/>
-    <xsl:sequence select="funct:replace-special-chars(funct:flatten-diacritics(funct:pascal-case($name)), '_')"/>
+    <xsl:sequence select="$class-name-prefix || funct:replace-special-chars(funct:flatten-diacritics(funct:pascal-case($name)), '_') || $class-name-suffix"/>
   </xsl:function>
   
   <xsl:function name="entity:field-name">
@@ -59,18 +64,15 @@
   </xsl:function>
   
   <xsl:template match="model">
-    <java-jpa>
-      <xsl:comment> Zie directory "imvertor.41.codegen.java-jpa" </xsl:comment>
-      <xsl:apply-templates>
-        <xsl:with-param name="mode" tunnel="yes" select="'entity'"/>
-      </xsl:apply-templates>  
-    </java-jpa>
+    <java>
+      <xsl:comment> Zie directory "imvertor.*.codegen.java-jpa" </xsl:comment>
+      <xsl:apply-templates/>  
+    </java>
   </xsl:template>
     
   <xsl:template match="entity">
-    <xsl:param name="mode" tunnel="yes" as="xs:string"/>
-    <xsl:variable name="full-package-name" select="local:full-package-name($mode, package-name)" as="xs:string"/>
-    <xsl:variable name="class-name" select="if ($mode = 'dto') then name || 'DTO' else name" as="xs:string"/>
+    <xsl:variable name="full-package-name" select="local:full-package-name(package-name)" as="xs:string"/>
+    <xsl:variable name="class-name" select="name" as="xs:string"/>
     <xsl:result-document href="{$output-uri}/{replace($full-package-name, '\.', '/')}/{replace($class-name, '\.', '/')}.java" method="text">  
       <xsl:variable name="lines-elements" as="element(line)+"> 
         <line>package {$full-package-name};</line>
@@ -116,13 +118,15 @@
           <line mode="entity">@PrimaryKeyJoinColumn</line>
         </xsl:if>
         
-        <xsl:variable name="super-type-class-name" select="if ($mode = 'dto') then super-type || 'DTO' else super-type" as="xs:string"/>
+        <xsl:variable name="super-type-class-name" select="super-type" as="xs:string"/>
         
-        <line>public {if (is-abstract = 'true') then 'abstract ' else ''}class {$class-name}{if (super-type) then ' extends ' || local:full-package-name($mode, super-type/@package-name) || '.' || $super-type-class-name  else () }{if ($mode = 'entity') then ' implements Serializable' else () } {{</line>
+        <line>public {if (is-abstract = 'true') then 'abstract ' else ''}{if ($java-interfaces) then 'interface' else 'class'} {$class-name}{if (super-type) then ' extends ' || local:full-package-name(super-type/@package-name) || '.' || $super-type-class-name  else () }{if ($mode = 'entity') then ' implements Serializable' else () } {{</line>
         <line mode="entity"/>
         <line indent="2" mode="entity">private static final long serialVersionUID = 1L;</line>
         
-        <xsl:apply-templates select="fields" mode="field-declaration"/>
+        <xsl:if test="not($java-interfaces)">
+          <xsl:apply-templates select="fields" mode="field-declaration"/>
+        </xsl:if>
         <xsl:apply-templates select="fields" mode="field-getter-setter"/>
         
         <line/>
@@ -136,10 +140,8 @@
   </xsl:template>
   
   <xsl:template match="enumeration">
-    <xsl:param name="mode" tunnel="yes" as="xs:string"/>
-    <xsl:variable name="full-package-name" select="local:full-package-name($mode, package-name)" as="xs:string"/>
-    <xsl:variable name="class-name" select="if ($mode = 'dto') then name || 'DTO' else name" as="xs:string"/>
-    <xsl:result-document href="{$output-uri}/{replace($full-package-name, '\.', '/')}/{replace($class-name, '\.', '/')}.java" method="text">   
+    <xsl:variable name="full-package-name" select="local:full-package-name(package-name)" as="xs:string"/>
+    <xsl:result-document href="{$output-uri}/{replace($full-package-name, '\.', '/')}/{replace(name, '\.', '/')}.java" method="text">   
       <xsl:variable name="lines-elements" as="element(line)+"> 
         <line>package {$full-package-name};</line>
         <line/>
@@ -147,7 +149,7 @@
         <line/>
         <xsl:call-template name="javadoc"/>
         <line>@{model-element}</line>
-        <line>public enum {$class-name} {{</line>
+        <line>public enum {name} {{</line>
         <line/>
         <xsl:for-each select="values/value">
           <xsl:call-template name="javadoc">
@@ -166,7 +168,6 @@
   </xsl:template>
   
   <xsl:template match="field" mode="field-declaration">
-    <xsl:param name="mode" tunnel="yes" as="xs:string"/>
     
     <line/>
     
@@ -212,21 +213,25 @@
       </xsl:choose>  
     </xsl:if>
     
-    <xsl:variable name="resolved-type" select="local:type(type, cardinality, $mode)" as="xs:string"/>
+    <xsl:variable name="resolved-type" select="local:type(type, cardinality)" as="xs:string"/>
     <line indent="2">private {$resolved-type} {name};</line>
   </xsl:template>
   
   <xsl:template match="field" mode="field-getter-setter">
-    <xsl:param name="mode" tunnel="yes" as="xs:string"/>
-    <xsl:variable name="resolved-type" select="local:type(type, cardinality, $mode)" as="xs:string"/>
+    <xsl:variable name="resolved-type" select="local:type(type, cardinality)" as="xs:string"/>
     <line/>
-    <line indent="2">public {$resolved-type} {if (type = 'Boolean') then 'is' else 'get'}{functx:capitalize-first(name)}() {{</line>
-    <line indent="2">  return {name};</line>
-    <line indent="2">}}</line>
+    <line indent="2">public {$resolved-type} {if (type = 'Boolean') then 'is' else 'get'}{functx:capitalize-first(name)}(){if ($java-interfaces) then ';' else ' ' || $accolade-open}</line>
+    <xsl:if test="not($java-interfaces)">
+      <line indent="2">  return {name};</line>
+      <line indent="2">}}</line>  
+    </xsl:if>
+    
     <line/>
-    <line indent="2">public void set{functx:capitalize-first(name)}({$resolved-type} {name}) {{</line>
-    <line indent="2">  this.{name} = {name};</line>
-    <line indent="2">}}</line>
+    <line indent="2">public void set{functx:capitalize-first(name)}({$resolved-type} {name}){if ($java-interfaces) then ';' else ' ' || $accolade-open}</line>
+    <xsl:if test="not($java-interfaces)">
+      <line indent="2">  this.{name} = {name};</line>
+      <line indent="2">}}</line>
+    </xsl:if>
   </xsl:template>
   
   <xsl:template name="javadoc">
@@ -261,7 +266,6 @@
   </xsl:template>
   
   <xsl:template match="line">
-    <xsl:param name="mode" tunnel="yes" as="xs:string"/>
     <xsl:if test="not(@mode) or (@mode = $mode)">
       <xsl:variable name="indent" select="if (@indent) then xs:integer(@indent) else 0" as="xs:integer"/>
       <xsl:sequence select="string-join(((for $i in 1 to $indent return ' '), ., $lf))"/>  
@@ -269,17 +273,15 @@
   </xsl:template>
   
   <xsl:function name="local:full-package-name" as="xs:string">
-    <xsl:param name="mode" as="xs:string"/>
     <xsl:param name="package-name" as="xs:string"/>
-    <xsl:sequence select="string-join(($package-prefix, $mode, $package-name), '.')"/>
+    <xsl:sequence select="string-join(($package-prefix, $package-name), '.')"/>
   </xsl:function>
   
   <xsl:function name="local:type" as="xs:string">
     <xsl:param name="type-info" as="element()"/>
     <xsl:param name="cardinality" as="element()"/>
-    <xsl:param name="mode" as="xs:string"/>
-    <xsl:variable name="class-name" select="if ($mode = 'dto') then $type-info || 'DTO' else $type-info" as="xs:string"/>
-    <xsl:variable name="singular-type" select="if ($type-info/@is-standard = 'true') then $type-info else local:full-package-name($mode, $type-info/@package-name) || '.' || $class-name" as="xs:string"/>
+    <xsl:variable name="class-name" select="$type-info" as="xs:string"/>
+    <xsl:variable name="singular-type" select="if ($type-info/@is-standard = 'true') then $type-info else local:full-package-name($type-info/@package-name) || '.' || $class-name" as="xs:string"/>
     <xsl:value-of select="if ($cardinality/target/max-occurs = $unbounded) then 'List&lt;' || $singular-type || '&gt;' else $singular-type"/>
   </xsl:function>
   
