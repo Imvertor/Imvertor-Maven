@@ -38,6 +38,7 @@
   <xsl:mode on-no-match="shallow-skip"/>
   <xsl:mode name="entity-specific" on-no-match="shallow-skip"/>
   <xsl:mode name="xhtml" on-no-match="shallow-copy"/>
+  <xsl:mode name="kenmerk" on-no-match="shallow-copy"/>
     
   <xsl:param name="output-uri" as="xs:string" select="''"/>
   <xsl:param name="package-prefix" as="xs:string" select="'nl.imvertor.entity'"/>
@@ -55,6 +56,7 @@
   <xsl:variable name="lf" select="'&#10;'" as="xs:string"/>
   <xsl:variable name="accolade-open" select="'{'" as="xs:string"/>
   <xsl:variable name="accolade-close" select="'}'" as="xs:string"/>
+  <xsl:variable name="backslash" select="'\'" as="xs:string"/>
   <!--
   <xsl:variable name="brace-left" select="'{'" as="xs:string"/>
   <xsl:variable name="brace-right" select="'}'" as="xs:string"/>
@@ -94,6 +96,7 @@
           <name>{entity:package-name((mim:naam))}</name>
           <package-prefix>{$package-prefix}</package-prefix>
           <xsl:apply-templates/>
+          <xsl:apply-templates select="mim-ext:kenmerken" mode="kenmerk"/>
         </model>  
       </xsl:document>
     </xsl:variable>
@@ -156,7 +159,7 @@
             <category/>
             <definition>Field that is not part of the model but added to define an identifying field for this entity</definition>
             <is-id-attribute>true</is-id-attribute>
-            <auto-generate>true</auto-generate>
+            <auto-generate>true</auto-generate> <!-- TODO: only use in entity classes -->
             <nullable>false</nullable>
             <cardinality>
               <source>
@@ -179,6 +182,7 @@
         <xsl:apply-templates select="." mode="entity-specific"/>
         <xsl:apply-templates/>
       </fields>
+      <xsl:apply-templates select="mim-ext:kenmerken" mode="kenmerk"/>
     </entity>
   </xsl:template>
   
@@ -209,6 +213,9 @@
       <name>{entity:field-name($field-name)}</name>
       <type is-enum="false" is-standard="true">{map:get($primitive-mim-type-mapping, 'CharacterString')}</type>
       <category>Codelijst -> Waardeitem</category>
+      <definition>
+        <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
+      </definition> 
       <is-id-attribute>false</is-id-attribute>
       <nullable>false</nullable>
       <xsl:call-template name="kenmerken"/>
@@ -250,6 +257,9 @@
         <xsl:value-of select="$type-info/name"/>
       </type>
       <category>{local-name()}{if (not($type-info/is-standard-class = 'true')) then ' -> ' || $type-info/model-element else ()}</category>
+      <definition>
+        <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
+      </definition> 
       <is-id-attribute>{if (mim:identificerend) then mim:identificerend else 'false'}</is-id-attribute>
       <nullable>
         <xsl:choose>
@@ -300,6 +310,9 @@
         model-element="Keuze"
         package-name="{entity:package-name(local:package-hierarchy($keuze))}">{entity:class-name($keuze/mim:naam)}</type>
       <category>-> Keuze tussen {lower-case(substring-after(local-name($keuze/(mim:keuzeAttributen|mim:keuzeDatatypen|mim:keuzeRelatiedoelen)), 'keuze'))}</category>
+      <definition>
+        <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
+      </definition> 
       <is-id-attribute>false</is-id-attribute>
       <nullable>false</nullable> 
       <aggregation>composite</aggregation>
@@ -333,6 +346,9 @@
         <xsl:value-of select="$type-info/name"/>
       </type>
       <category>Keuze datatype</category>
+      <definition>
+        <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
+      </definition> 
       <is-id-attribute>false</is-id-attribute>
       <nullable>true</nullable>
       <aggregation>composite</aggregation>
@@ -363,6 +379,9 @@
         model-element="Objecttype"
         package-name="{entity:package-name(local:package-hierarchy($relatiedoel))}">{entity:class-name($relatiedoel/mim:naam)}</type>
       <category>Keuze (relatiedoel)</category>
+      <definition>
+        <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
+      </definition> 
       <is-id-attribute>false</is-id-attribute>
       <nullable>true</nullable>
       <aggregation>
@@ -418,7 +437,10 @@
         is-standard="false"
         package-name="{entity:package-name(local:package-hierarchy($target))}"
         model-element="{$target/local-name()}">{entity:class-name($target/mim:naam)}</type>
-      <category>{local-name()} -> {$target/local-name()}</category>      
+      <category>{local-name()} -> {$target/local-name()}</category>
+      <definition>
+        <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
+      </definition>       
       <is-id-attribute>false</is-id-attribute>
       <nullable>
         <xsl:choose>
@@ -465,6 +487,9 @@
         package-name="{entity:package-name(local:package-hierarchy($target))}"
         model-element="{$target/local-name()}">{entity:class-name($target/mim:naam)}</type>
       <category>{local-name()} -> {$target/local-name()}</category>
+      <definition>
+        <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
+      </definition> 
       <is-id-attribute>false</is-id-attribute>
       <nullable>
         <xsl:choose>
@@ -500,6 +525,15 @@
     <xsl:element name="xhtml:{local-name()}" namespace="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates select="@*|node()" mode="#current"/>
     </xsl:element>
+  </xsl:template>
+  
+  <xsl:template match="mim-ext:kenmerken" mode="kenmerk">
+    <features>
+      <xsl:for-each select="mim-ext:Kenmerk">
+        <feature name="{@naam}">{.}</feature>
+      </xsl:for-each>
+      <xsl:apply-templates/>
+    </features>
   </xsl:template>
   
   <xsl:function name="local:kenmerk-ext" as="xs:string?">

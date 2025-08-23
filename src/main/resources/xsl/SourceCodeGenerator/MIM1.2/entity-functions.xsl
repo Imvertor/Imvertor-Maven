@@ -97,4 +97,10 @@
     <xsl:sequence select="replace($str, '[^a-zA-Z_0-9]', $replacement)"/>  
   </xsl:function>
   
+  <xsl:function name="funct:equals-case-insensitive" as="xs:boolean">
+    <xsl:param name="str1" as="xs:string?"/>
+    <xsl:param name="str2" as="xs:string+"/>
+    <xsl:sequence select="lower-case(functx:trim($str1)) = (for $s in $str2 return lower-case(functx:trim($s)))"/>
+  </xsl:function>
+  
 </xsl:stylesheet>

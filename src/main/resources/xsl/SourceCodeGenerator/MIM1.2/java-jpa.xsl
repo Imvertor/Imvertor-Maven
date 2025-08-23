@@ -23,7 +23,8 @@
   <xsl:mode name="field-getter-setter" on-no-match="shallow-skip"/>
   
   <xsl:param name="jpa-annotations" as="xs:boolean" select="false()"/>
-  <xsl:param name="java-interfaces" as="xs:boolean" select="false()"/> 
+  <xsl:param name="swagger-annotatations" as="xs:boolean" select="false()"/>
+  <xsl:param name="java-interfaces" as="xs:boolean" select="false()"/>
   
   <xsl:variable name="mode" select="if ($jpa-annotations) then 'entity' else ''" as="xs:string"/>
   
@@ -80,10 +81,16 @@
         
         <!-- imports: -->
         <line>import nl.imvertor.mim.annotation.*;</line>
-        <xsl:if test="$mode = 'entity'">
+        <xsl:if test="$jpa-annotations">
           <line mode="entity">import jakarta.persistence.*;</line>
           <line>import java.io.Serializable;</line>  
         </xsl:if>
+        
+        <xsl:if test="$swagger-annotatations">
+          <line>import io.swagger.v3.oas.annotations.media.Schema;</line>
+          <line>import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;</line>
+        </xsl:if>
+        
         <line>import java.util.*;</line>
         <line/>
   
@@ -116,6 +123,13 @@
         </xsl:if>
         <xsl:if test="super-type">
           <line mode="entity">@PrimaryKeyJoinColumn</line>
+        </xsl:if>
+        
+        <xsl:if test="$swagger-annotatations">
+          <xsl:variable name="description" select="local:definition-as-string(definition)" as="xs:string?"/>
+          <xsl:if test="$description">
+            <line>@Schema(description = "{$description}")</line>
+          </xsl:if>
         </xsl:if>
         
         <xsl:variable name="super-type-class-name" select="super-type" as="xs:string"/>
@@ -202,7 +216,7 @@
               <line indent="2">@Column(nullable={nullable = 'true'})</line>
             </xsl:when>
             <xsl:when test="cardinality/source/max-occurs = $unbounded and cardinality/target/max-occurs = $unbounded">
-              <line indent="2">@@ManyToMany{if (aggregation = 'composite') then '(cascade = CascadeType.ALL)' else ()}</line>
+              <line indent="2">@ManyToMany{if (aggregation = 'composite') then '(cascade = CascadeType.ALL)' else ()}</line>
               <line indent="2">@Column(nullable={nullable = 'true'})</line>
             </xsl:when>
             <xsl:otherwise>
@@ -211,6 +225,17 @@
           </xsl:choose>
         </xsl:when>
       </xsl:choose>  
+    </xsl:if>
+    
+    <xsl:if test="$swagger-annotatations">
+      <xsl:variable name="description" select="local:definition-as-string(definition)" as="xs:string?"/>
+      <xsl:variable name="required-mode" as="xs:string"> <!-- TODO: is this correct? -->
+        <xsl:choose>
+          <xsl:when test="cardinality/target/max-occurs = '1'">RequiredMode.REQUIRED</xsl:when>
+          <xsl:otherwise>RequiredMode.NOT_REQUIRED</xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <line indent="2">@Schema({if ($description) then 'description = "' || $description || '", ' else ()}requiredMode = {$required-mode})</line>
     </xsl:if>
     
     <xsl:variable name="resolved-type" select="local:type(type, cardinality)" as="xs:string"/>
@@ -283,6 +308,24 @@
     <xsl:variable name="class-name" select="$type-info" as="xs:string"/>
     <xsl:variable name="singular-type" select="if ($type-info/@is-standard = 'true') then $type-info else local:full-package-name($type-info/@package-name) || '.' || $class-name" as="xs:string"/>
     <xsl:value-of select="if ($cardinality/target/max-occurs = $unbounded) then 'List&lt;' || $singular-type || '&gt;' else $singular-type"/>
+  </xsl:function>
+  
+  <xsl:function name="local:definition-as-string" as="xs:string?">
+    <xsl:param name="definition" as="element()?"/>
+    <xsl:choose>
+      <xsl:when test="$definition">
+        <xsl:variable name="text" select="normalize-space(string-join($definition//text(), ' '))" as="xs:string"/>
+        <xsl:sequence select="if (string-length($text) gt 0) then local:escape-java($text) else ()"/>    
+      </xsl:when>
+    </xsl:choose>
+  </xsl:function>
+  
+  <xsl:function name="local:escape-java" as="xs:string">
+    <xsl:param name="str" as="xs:string?"/>
+    <!--
+    <xsl:sequence select="functx:replace-multi(functx:replace-multi($str, '\', '\\'), '&quot;', '\&quot;')"/>  
+    -->
+    <xsl:sequence select="replace(replace($str, '\\', '\\\\'), '&quot;', '\\&quot;')"/>
   </xsl:function>
   
 </xsl:stylesheet>
