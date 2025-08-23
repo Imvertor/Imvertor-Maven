@@ -13,7 +13,7 @@
   expand-text="true"
   version="3.0">
     
-  <xsl:import href="mim-2-entities.xsl"/>
+  <xsl:import href="java-base.xsl"/>
   
   <xsl:include href="entity-functions.xsl"/>
   
@@ -22,7 +22,8 @@
   <xsl:param name="repository-package-prefix" as="xs:string" select="'nl.imvertor.repository'"/>
   
   <xsl:variable name="mode" as="xs:string" select="'spring-boot-repository'"/>
-    
+  
+  <!--  
   <xsl:variable name="primitive-mim-type-mapping" as="map(xs:string, xs:string)">
     <xsl:map>
       <xsl:map-entry key="'CharacterString'" select="'String'"/>
@@ -58,13 +59,14 @@
     <xsl:param name="str" as="xs:string?"/>
     <xsl:sequence select="funct:replace-special-chars(upper-case(funct:snake-case(funct:flatten-diacritics($str))), '_')"/>  
   </xsl:function>
+  -->
   
   <xsl:template match="model">
     <java>
       <xsl:comment> Zie directory "imvertor.*.codegen.java-jpa" </xsl:comment>
       
       <!-- Generate the JpaRepository interfaces: -->
-      <xsl:apply-templates select=".//entity[model-element = 'Objecttype' and is-abstract = 'false' and not(funct:equals-case-insensitive(features/feature[@name = 'openapi.expose'], ('false', 'no', 'nee')))]"/>
+      <xsl:apply-templates select=".//entity[(model-element = 'Objecttype') and (is-abstract = 'false') and not(funct:equals-case-insensitive(features/feature[@name = 'openapi.expose'], ('false', 'no', 'nee')))]"/>
       
       <!-- Generate openapi.properties: -->
       <xsl:call-template name="generate-openapi-properties"/>
@@ -88,7 +90,11 @@
         <line/>
         
         <xsl:variable name="type" select="(fields/field[is-id-attribute = 'true']/type, 'String')[1]" as="xs:string"/> <!-- TODO: navigate supertypes -->
-        <line>@RepositoryRestResource(path = "{lower-case(name)}", collectionResourceRel = "{lower-case(name)}", itemResourceRel = "{lower-case(name)}")</line> <!-- TODO: make configurable -->
+        <xsl:variable name="path" select="features/feature[@name='openapi.path']" as="xs:string?"/>
+        <xsl:variable name="collection-resource-rel" select="features/feature[@name='openapi.collectionResourceRel']" as="xs:string?"/>
+        <xsl:variable name="item-resource-rel" select="features/feature[@name='openapi.itemResourceRel']" as="xs:string?"/>
+        
+        <line>@RepositoryRestResource(path = "{if ($path) then $path else lower-case(name)}", collectionResourceRel = "{if ($collection-resource-rel) then $collection-resource-rel else lower-case(name)}", itemResourceRel = "{if ($item-resource-rel) then $item-resource-rel else lower-case(name)}")</line> <!-- TODO: make configurable -->
         <line>public interface {$repository-class-name} extends JpaRepository&lt;{name}, {$type}&gt; {{ }}</line>
       </xsl:variable>
       <xsl:variable name="lines" as="xs:string*">
@@ -101,16 +107,18 @@
   <xsl:template name="generate-openapi-properties">
     <xsl:result-document href="{$output-uri}/src/main/resources/openapi.properties" method="text">  
       <xsl:variable name="lines-elements" as="element(line)+"> 
+        
+        <xsl:if test="not(/model/features/feature[@name = 'openapi.title'])">
+          <line>openapi.title={/model/title}</line>
+        </xsl:if>
+        <xsl:if test="not(/model/features/feature[@name = 'openapi.description'])">
+          <line>openapi.description={local:definition-as-string(/model/definition)}</line>
+        </xsl:if>
+        
         <xsl:for-each select="/model/features/feature[starts-with(@name, 'openapi.')]">
           <line>{@name}={.}</line>
         </xsl:for-each>
-        
-        <!-- TODO:
-        <xsl:if test="not(/model/features/feature[@name = 'openapi.description'])">
-          <line>openapi.description</line>
-        </xsl:if>
-        -->
-        
+     
         <line/>
         <xsl:for-each select="//entity[model-element = 'Objecttype']">
           <xsl:variable name="entity" select="." as="element(entity)"/>
@@ -126,12 +134,14 @@
     </xsl:result-document>
   </xsl:template>
   
+  <!--
   <xsl:template match="line">
     <xsl:if test="not(@mode) or (@mode = $mode)">
       <xsl:variable name="indent" select="if (@indent) then xs:integer(@indent) else 0" as="xs:integer"/>
       <xsl:sequence select="string-join(((for $i in 1 to $indent return ' '), ., $lf))"/>  
     </xsl:if>
   </xsl:template>
+  -->
   
   <xsl:function name="local:full-repository-package-name" as="xs:string">
     <xsl:param name="package-name" as="xs:string"/>

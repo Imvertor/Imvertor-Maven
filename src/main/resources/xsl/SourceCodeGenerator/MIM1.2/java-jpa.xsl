@@ -13,7 +13,7 @@
   expand-text="true"
   version="3.0">
     
-  <xsl:import href="mim-2-entities.xsl"/>
+  <xsl:import href="java-base.xsl"/>
   
   <xsl:include href="entity-functions.xsl"/>
   
@@ -28,6 +28,7 @@
   
   <xsl:variable name="mode" select="if ($jpa-annotations) then 'entity' else ''" as="xs:string"/>
   
+  <!--
   <xsl:variable name="primitive-mim-type-mapping" as="map(xs:string, xs:string)">
     <xsl:map>
       <xsl:map-entry key="'CharacterString'" select="'String'"/>
@@ -70,7 +71,8 @@
       <xsl:apply-templates/>  
     </java>
   </xsl:template>
-    
+  -->  
+  
   <xsl:template match="entity">
     <xsl:variable name="full-package-name" select="local:full-package-name(package-name)" as="xs:string"/>
     <xsl:variable name="class-name" select="name" as="xs:string"/>
@@ -126,7 +128,7 @@
         </xsl:if>
         
         <xsl:if test="$swagger-annotatations">
-          <xsl:variable name="description" select="local:definition-as-string(definition)" as="xs:string?"/>
+          <xsl:variable name="description" select="local:escape-java(local:definition-as-string(definition))" as="xs:string?"/>
           <xsl:if test="$description">
             <line>@Schema(description = "{$description}")</line>
           </xsl:if>
@@ -228,7 +230,7 @@
     </xsl:if>
     
     <xsl:if test="$swagger-annotatations">
-      <xsl:variable name="description" select="local:definition-as-string(definition)" as="xs:string?"/>
+      <xsl:variable name="description" select="local:escape-java(local:definition-as-string(definition))" as="xs:string?"/>
       <xsl:variable name="required-mode" as="xs:string"> <!-- TODO: is this correct? -->
         <xsl:choose>
           <xsl:when test="cardinality/target/max-occurs = '1'">RequiredMode.REQUIRED</xsl:when>
@@ -259,6 +261,7 @@
     </xsl:if>
   </xsl:template>
   
+  <!--
   <xsl:template name="javadoc">
     <xsl:param name="indent" as="xs:integer" select="0"/>
     <xsl:if test="(definition|category)/node()">
@@ -309,23 +312,6 @@
     <xsl:variable name="singular-type" select="if ($type-info/@is-standard = 'true') then $type-info else local:full-package-name($type-info/@package-name) || '.' || $class-name" as="xs:string"/>
     <xsl:value-of select="if ($cardinality/target/max-occurs = $unbounded) then 'List&lt;' || $singular-type || '&gt;' else $singular-type"/>
   </xsl:function>
-  
-  <xsl:function name="local:definition-as-string" as="xs:string?">
-    <xsl:param name="definition" as="element()?"/>
-    <xsl:choose>
-      <xsl:when test="$definition">
-        <xsl:variable name="text" select="normalize-space(string-join($definition//text(), ' '))" as="xs:string"/>
-        <xsl:sequence select="if (string-length($text) gt 0) then local:escape-java($text) else ()"/>    
-      </xsl:when>
-    </xsl:choose>
-  </xsl:function>
-  
-  <xsl:function name="local:escape-java" as="xs:string">
-    <xsl:param name="str" as="xs:string?"/>
-    <!--
-    <xsl:sequence select="functx:replace-multi(functx:replace-multi($str, '\', '\\'), '&quot;', '\&quot;')"/>  
-    -->
-    <xsl:sequence select="replace(replace($str, '\\', '\\\\'), '&quot;', '\\&quot;')"/>
-  </xsl:function>
+  -->
   
 </xsl:stylesheet>

@@ -93,6 +93,11 @@
       <xsl:document>
         <model>
           <xsl:namespace name="xhtml">http://www.w3.org/1999/xhtml</xsl:namespace>
+          <title>{mim:naam}</title>
+          <definition>
+            <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
+          </definition>  
+          
           <name>{entity:package-name((mim:naam))}</name>
           <package-prefix>{$package-prefix}</package-prefix>
           <xsl:apply-templates/>
@@ -102,7 +107,7 @@
     </xsl:variable>
     <xsl:apply-templates select="$model"/>
   </xsl:template>
- 
+   
   <xsl:template match="mim:packages">
     <packages>  
       <xsl:apply-templates/>  
@@ -699,6 +704,16 @@
   <xsl:function name="local:kenmerk-maximumwaarde-exclusief" as="xs:string?">
     <xsl:param name="model-element" as="element()"/>
     <xsl:sequence select="local:kenmerk($model-element, 'maximumwaardeExclusief')"/>
+  </xsl:function>
+  
+  <xsl:function name="local:definition-as-string" as="xs:string?">
+    <xsl:param name="definition" as="element()?"/>
+    <xsl:choose>
+      <xsl:when test="$definition">
+        <xsl:variable name="text" select="normalize-space(string-join($definition//text(), ' '))" as="xs:string"/>
+        <xsl:sequence select="if (string-length($text) gt 0) then local:escape-java($text) else ()"/>    
+      </xsl:when>
+    </xsl:choose>
   </xsl:function>
   
   <xsl:function name="imf:message" as="empty-sequence()" use-when="$runs-in-imvertor-context">
