@@ -711,7 +711,7 @@
     <xsl:choose>
       <xsl:when test="$definition">
         <xsl:variable name="text" select="normalize-space(string-join($definition//text(), ' '))" as="xs:string"/>
-        <xsl:sequence select="if (string-length($text) gt 0) then local:escape-java($text) else ()"/>    
+        <xsl:sequence select="if (string-length($text) gt 0) then $text else ()"/>    
       </xsl:when>
     </xsl:choose>
   </xsl:function>

@@ -22,6 +22,13 @@
   <xsl:mode name="field-declaration" on-no-match="shallow-skip"/>
   <xsl:mode name="field-getter-setter" on-no-match="shallow-skip"/>
     
+  <!-- TODO -->
+  <!-- Min, max constraints -->
+  <!-- Type van unieke identifiers --> 
+  <!-- Next en previous -> URI -->
+  <!-- Bij aggregatie gedeeld reference genereren -->
+  <!-- Ieder object een id en url geven? -->  
+    
   <xsl:template match="entity">
     <xsl:variable name="full-package-name" select="local:full-package-name(package-name)" as="xs:string"/>
     <xsl:result-document href="{$output-uri}/{replace($full-package-name, '\.', '/')}/{name}.java" method="text">  
@@ -31,6 +38,7 @@
         
         <!-- imports: -->
         <line>import nl.imvertor.mim.annotation.*;</line>
+        <line>import nl.imvertor.mim.model.*;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;</line>    
         <line>import java.util.*;</line>
@@ -86,6 +94,7 @@
         
         <!-- imports: -->
         <line>import nl.imvertor.mim.annotation.*;</line>
+        <line>import nl.imvertor.mim.model.PaginatedBase;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;</line>    
         <line>import java.util.*;</line>
@@ -95,29 +104,11 @@
         <line>@Schema(description = "{$description}")</line>
         -->
  
+        <line>@Schema(allOf = PaginatedBase.class)</line>
         <line>public class Paginated{name}List {{</line>
         <line/>
-        <line indent="2">private String next;</line>
-        <line/>
-        <line indent="2">private String previous;</line>
-        <line/>
+        <line indent="2">@Schema(requiredMode = RequiredMode.REQUIRED)</line>
         <line indent="2">private List&lt;{name}&gt; results;</line>
-        <line/>
-        <line indent="2">public String getNext() {{</line>
-        <line indent="4">return this.next;</line>
-        <line indent="2">}}</line>
-        <line/>
-        <line indent="2">public void setNext(String next) {{</line>
-        <line indent="4">this.next = next;</line>
-        <line indent="2">}}</line>
-        <line/>
-        <line indent="2">public String getPrevious() {{</line>
-        <line indent="4">return this.previous;</line>
-        <line indent="2">}}</line>
-        <line/>
-        <line indent="2">public void setPrevious(String previous) {{</line>
-        <line indent="4">this.previous = previous;</line>
-        <line indent="2">}}</line>
         <line/>
         <line indent="2">public List&lt;{name}&gt; getResults() {{</line>
         <line indent="4">return this.results;</line>
@@ -173,28 +164,43 @@
     
     <xsl:variable name="description" select="local:escape-java(local:definition-as-string(definition))" as="xs:string?"/>
     <xsl:variable name="required-mode" as="xs:string"> <!-- TODO: is this correct? -->
-      <xsl:choose>
-        <xsl:when test="cardinality/target/max-occurs = '1'">RequiredMode.REQUIRED</xsl:when>
-        <xsl:otherwise>RequiredMode.NOT_REQUIRED</xsl:otherwise>
+      <xsl:choose>        
+        <xsl:when test="cardinality/target/min-occurs = '0'">RequiredMode.NOT_REQUIRED</xsl:when>
+        <xsl:otherwise>RequiredMode.REQUIRED</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <line indent="2">@Schema({if ($description) then 'description = "' || $description || '", ' else ()}requiredMode = {$required-mode})</line>
     
-    <xsl:variable name="resolved-type" select="local:type(type, cardinality)" as="xs:string"/>
+    <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation)" as="xs:string"/>
     <line indent="2">private {$resolved-type} {name};</line>
   </xsl:template>
   
   <xsl:template match="field" mode="field-getter-setter">
-    <xsl:variable name="resolved-type" select="local:type(type, cardinality)" as="xs:string"/>
+    <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation)" as="xs:string"/>
     <line/>
     <line indent="2">public {$resolved-type} {if (type = 'Boolean') then 'is' else 'get'}{functx:capitalize-first(name)}() {{</line>
-    <line indent="2">  return {name};</line>
+    <line indent="4">return {name};</line>
     <line indent="2">}}</line>  
     
     <line/>
     <line indent="2">public void set{functx:capitalize-first(name)}({$resolved-type} {name}) {{</line>
-    <line indent="2">  this.{name} = {name};</line>
+    <line indent="4">this.{name} = {name};</line>
     <line indent="2">}}</line>
   </xsl:template>
+  
+  <xsl:function name="local:type-or-reference" as="xs:string">
+    <xsl:param name="type-info" as="element()"/>
+    <xsl:param name="cardinality" as="element()"/>
+    <xsl:param name="aggregation" as="xs:string?"/>    
+    <xsl:choose>
+      <xsl:when test="$aggregation = 'shared' and not($type-info/@is-standard = 'true')">
+        <xsl:variable name="singular-type" select="'nl.imvertor.mim.model.Reference'" as="xs:string"/>
+        <xsl:value-of select="if ($cardinality/target/max-occurs = $unbounded) then 'List&lt;' || $singular-type || '&gt;' else $singular-type"/>    
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="local:type($type-info, $cardinality)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
   
 </xsl:stylesheet>
