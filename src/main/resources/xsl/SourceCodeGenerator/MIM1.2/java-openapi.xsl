@@ -22,6 +22,7 @@
   <xsl:param name="resource-package-prefix" as="xs:string" select="'nl.imvertor.resource'"/>
   
   <xsl:variable name="response-component-base-url" as="xs:string">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/common.yaml#/components/responses/</xsl:variable>
+  <xsl:variable name="global-openapi-methods" select="lower-case(normalize-space(/model/features/feature[@name = 'openapi.methods']))" as="xs:string?"/>  
     
   <!-- TODO -->
   <!-- Er wordt nergens een paginanummer meegegeven -->
@@ -64,60 +65,60 @@
         
         <xsl:variable name="type" select="(fields/field[is-id-attribute = 'true']/type, 'String')[1]" as="xs:string"/> <!-- TODO: navigate supertypes -->
         <xsl:variable name="path" select="features/feature[@name='openapi.path']" as="xs:string?"/>
-        <xsl:variable name="collection-resource-rel" select="features/feature[@name='openapi.collectionResourceRel']" as="xs:string?"/>
-        <xsl:variable name="item-resource-rel" select="features/feature[@name='openapi.itemResourceRel']" as="xs:string?"/>
         
         <line>@Path("/{if ($path) then $path else lower-case(name)}")</line>
         <line>@Tag(name = "{name}", description = "{local:definition-as-string(definition)}")</line> 
         <line>public class {$resource-class-name} {{</line>
         
-        <xsl:call-template name="get-collection">
-          <xsl:with-param name="resource-class-name" as="xs:string" select="$resource-class-name"/>
-          <xsl:with-param name="type" as="xs:string" select="$type"/> 
-          <xsl:with-param name="path" as="xs:string?" select="$path"/>
-          <xsl:with-param name="collection-resource-rel" as="xs:string?" select="$collection-resource-rel"/>
-          <xsl:with-param name="item-resource-rel" as="xs:string?" select="$item-resource-rel"/>
-        </xsl:call-template>
+        <xsl:variable name="openapi-methods" select="features/feature[@name = 'openapi.methods']" as="xs:string?"/>
         
-        <xsl:call-template name="post">
-          <xsl:with-param name="resource-class-name" as="xs:string" select="$resource-class-name"/>
-          <xsl:with-param name="type" as="xs:string" select="$type"/> 
-          <xsl:with-param name="path" as="xs:string?" select="$path"/>
-          <xsl:with-param name="collection-resource-rel" as="xs:string?" select="$collection-resource-rel"/>
-          <xsl:with-param name="item-resource-rel" as="xs:string?" select="$item-resource-rel"/>
-        </xsl:call-template>
+        <xsl:if test="local:expose-method('getCol', $openapi-methods)">
+          <xsl:call-template name="get-collection">
+            <xsl:with-param name="resource-class-name" as="xs:string" select="$resource-class-name"/>
+            <xsl:with-param name="type" as="xs:string" select="$type"/> 
+            <xsl:with-param name="path" as="xs:string?" select="$path"/>
+          </xsl:call-template>  
+        </xsl:if>
         
-        <xsl:call-template name="delete">
-          <xsl:with-param name="resource-class-name" as="xs:string" select="$resource-class-name"/>
-          <xsl:with-param name="type" as="xs:string" select="$type"/> 
-          <xsl:with-param name="path" as="xs:string?" select="$path"/>
-          <xsl:with-param name="collection-resource-rel" as="xs:string?" select="$collection-resource-rel"/>
-          <xsl:with-param name="item-resource-rel" as="xs:string?" select="$item-resource-rel"/>
-        </xsl:call-template>
+        <xsl:if test="local:expose-method('post', $openapi-methods)">
+          <xsl:call-template name="post">
+            <xsl:with-param name="resource-class-name" as="xs:string" select="$resource-class-name"/>
+            <xsl:with-param name="type" as="xs:string" select="$type"/> 
+            <xsl:with-param name="path" as="xs:string?" select="$path"/>
+          </xsl:call-template>
+        </xsl:if>
         
-        <xsl:call-template name="get-item">
-          <xsl:with-param name="resource-class-name" as="xs:string" select="$resource-class-name"/>
-          <xsl:with-param name="type" as="xs:string" select="$type"/> 
-          <xsl:with-param name="path" as="xs:string?" select="$path"/>
-          <xsl:with-param name="collection-resource-rel" as="xs:string?" select="$collection-resource-rel"/>
-          <xsl:with-param name="item-resource-rel" as="xs:string?" select="$item-resource-rel"/>
-        </xsl:call-template>
+        <xsl:if test="local:expose-method('delete', $openapi-methods)">
+          <xsl:call-template name="delete">
+            <xsl:with-param name="resource-class-name" as="xs:string" select="$resource-class-name"/>
+            <xsl:with-param name="type" as="xs:string" select="$type"/> 
+            <xsl:with-param name="path" as="xs:string?" select="$path"/>
+          </xsl:call-template>
+        </xsl:if>
         
-        <xsl:call-template name="put">
-          <xsl:with-param name="resource-class-name" as="xs:string" select="$resource-class-name"/>
-          <xsl:with-param name="type" as="xs:string" select="$type"/> 
-          <xsl:with-param name="path" as="xs:string?" select="$path"/>
-          <xsl:with-param name="collection-resource-rel" as="xs:string?" select="$collection-resource-rel"/>
-          <xsl:with-param name="item-resource-rel" as="xs:string?" select="$item-resource-rel"/>
-        </xsl:call-template>
+        <xsl:if test="local:expose-method('getItem', $openapi-methods)">
+          <xsl:call-template name="get-item">
+            <xsl:with-param name="resource-class-name" as="xs:string" select="$resource-class-name"/>
+            <xsl:with-param name="type" as="xs:string" select="$type"/> 
+            <xsl:with-param name="path" as="xs:string?" select="$path"/>
+          </xsl:call-template>
+        </xsl:if>
         
-        <xsl:call-template name="patch">
-          <xsl:with-param name="resource-class-name" as="xs:string" select="$resource-class-name"/>
-          <xsl:with-param name="type" as="xs:string" select="$type"/> 
-          <xsl:with-param name="path" as="xs:string?" select="$path"/>
-          <xsl:with-param name="collection-resource-rel" as="xs:string?" select="$collection-resource-rel"/>
-          <xsl:with-param name="item-resource-rel" as="xs:string?" select="$item-resource-rel"/>
-        </xsl:call-template>
+        <xsl:if test="local:expose-method('put', $openapi-methods)">
+          <xsl:call-template name="put">
+            <xsl:with-param name="resource-class-name" as="xs:string" select="$resource-class-name"/>
+            <xsl:with-param name="type" as="xs:string" select="$type"/> 
+            <xsl:with-param name="path" as="xs:string?" select="$path"/>
+          </xsl:call-template>
+        </xsl:if>
+        
+        <xsl:if test="local:expose-method('patch', $openapi-methods)">
+          <xsl:call-template name="patch">
+            <xsl:with-param name="resource-class-name" as="xs:string" select="$resource-class-name"/>
+            <xsl:with-param name="type" as="xs:string" select="$type"/> 
+            <xsl:with-param name="path" as="xs:string?" select="$path"/>
+          </xsl:call-template>
+        </xsl:if>
         
         <line/>
         <line>}}</line>
@@ -133,8 +134,6 @@
     <xsl:param name="resource-class-name" as="xs:string"/>
     <xsl:param name="type" as="xs:string"/> 
     <xsl:param name="path" as="xs:string?"/>
-    <xsl:param name="collection-resource-rel" as="xs:string?"/>
-    <xsl:param name="item-resource-rel" as="xs:string?"/>
     
     <xsl:variable name="operation-id" select="features/feature[@name='openapi.getCol.operationId']" as="xs:string?"/>
     
@@ -175,8 +174,6 @@
     <xsl:param name="resource-class-name" as="xs:string"/>
     <xsl:param name="type" as="xs:string"/> 
     <xsl:param name="path" as="xs:string?"/>
-    <xsl:param name="collection-resource-rel" as="xs:string?"/>
-    <xsl:param name="item-resource-rel" as="xs:string?"/>
     
     <xsl:variable name="operation-id" select="features/feature[@name='openapi.getItem.operationId']" as="xs:string?"/>
     
@@ -203,10 +200,7 @@
   <xsl:template name="post">
     <xsl:param name="resource-class-name" as="xs:string"/>
     <xsl:param name="type" as="xs:string"/> 
-    <xsl:param name="path" as="xs:string?"/>
-    <xsl:param name="collection-resource-rel" as="xs:string?"/>
-    <xsl:param name="item-resource-rel" as="xs:string?"/>
-    
+    <xsl:param name="path" as="xs:string?"/> 
     <xsl:variable name="operation-id" select="features/feature[@name='openapi.post.operationId']" as="xs:string?"/>
     
     <line/>
@@ -233,8 +227,6 @@
     <xsl:param name="resource-class-name" as="xs:string"/>
     <xsl:param name="type" as="xs:string"/> 
     <xsl:param name="path" as="xs:string?"/>
-    <xsl:param name="collection-resource-rel" as="xs:string?"/>
-    <xsl:param name="item-resource-rel" as="xs:string?"/>
     
     <xsl:variable name="operation-id" select="features/feature[@name='openapi.post.operationId']" as="xs:string?"/>
     
@@ -259,8 +251,6 @@
     <xsl:param name="resource-class-name" as="xs:string"/>
     <xsl:param name="type" as="xs:string"/> 
     <xsl:param name="path" as="xs:string?"/>
-    <xsl:param name="collection-resource-rel" as="xs:string?"/>
-    <xsl:param name="item-resource-rel" as="xs:string?"/>
     
     <xsl:variable name="operation-id" select="features/feature[@name='openapi.post.operationId']" as="xs:string?"/>
     
@@ -291,8 +281,6 @@
     <xsl:param name="resource-class-name" as="xs:string"/>
     <xsl:param name="type" as="xs:string"/> 
     <xsl:param name="path" as="xs:string?"/>
-    <xsl:param name="collection-resource-rel" as="xs:string?"/>
-    <xsl:param name="item-resource-rel" as="xs:string?"/>
     
     <xsl:variable name="operation-id" select="features/feature[@name='openapi.post.operationId']" as="xs:string?"/>
     
@@ -341,13 +329,16 @@
           <line>{@name}={.}</line>
         </xsl:for-each>
      
+        <!--
         <line/>
+        
         <xsl:for-each select="//entity[model-element = 'Objecttype']">
           <xsl:variable name="entity" select="." as="element(entity)"/>
           <xsl:for-each select="features/feature[starts-with(@name, 'openapi.')]">
             <line>openapi.{local:full-package-name($entity/package-name)}.{$entity/name}.{substring-after(@name, 'openapi.')}={.}</line>  
           </xsl:for-each>
         </xsl:for-each>
+        -->
       </xsl:variable>
       <xsl:variable name="lines" as="xs:string*">
         <xsl:apply-templates select="$lines-elements"/>  
@@ -364,6 +355,22 @@
   <xsl:function name="local:full-package-name" as="xs:string">
     <xsl:param name="package-name" as="xs:string"/>
     <xsl:sequence select="string-join(($package-prefix, $package-name), '.')"/>
+  </xsl:function>
+  
+  <xsl:function name="local:expose-method" as="xs:boolean">
+    <xsl:param name="method" as="xs:string"/>
+    <xsl:param name="openapi-methods" as="xs:string?"/>
+    <xsl:choose>
+      <xsl:when test="normalize-space($openapi-methods)">
+        <xsl:sequence select="functx:contains-case-insensitive($openapi-methods, $method)"/>
+      </xsl:when>
+      <xsl:when test="normalize-space($global-openapi-methods)">
+        <xsl:sequence select="functx:contains-case-insensitive($global-openapi-methods, $method)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="true()"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:function>
   
 </xsl:stylesheet>

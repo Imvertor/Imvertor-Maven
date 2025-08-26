@@ -62,7 +62,7 @@
   
   <xsl:function name="funct:pascal-case" as="xs:string">
     <xsl:param name="str" as="xs:string?"/>
-    <xsl:sequence select="funct:uppercase-first(functx:words-to-camel-case(normalize-space($str)))"/>
+    <xsl:sequence select="funct:uppercase-first(functx:words-to-camel-case(funct:lower-case-if-all-uppercase(normalize-space($str))))"/>
   </xsl:function>
   
   <xsl:function name="funct:snake-case" as="xs:string">
@@ -84,6 +84,16 @@
   <xsl:function name="funct:uppercase-first" as="xs:string?">
     <xsl:param name="str" as="xs:string?"/> 
     <xsl:sequence select="functx:capitalize-first(normalize-space($str))"/>
+  </xsl:function>
+  
+  <xsl:function name="funct:is-all-uppercase" as="xs:boolean">
+    <xsl:param name="str" as="xs:string?"/> 
+    <xsl:sequence select="$str = upper-case($str)"/>
+  </xsl:function>
+  
+  <xsl:function name="funct:lower-case-if-all-uppercase" as="xs:string">
+    <xsl:param name="str" as="xs:string?"/> 
+    <xsl:sequence select="if (funct:is-all-uppercase($str)) then lower-case($str) else $str"/>
   </xsl:function>
   
   <xsl:function name="funct:flatten-diacritics" as="xs:string">

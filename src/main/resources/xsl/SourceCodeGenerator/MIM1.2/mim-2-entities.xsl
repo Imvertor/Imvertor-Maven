@@ -436,7 +436,12 @@
     <xsl:variable name="unidirectional" select="mim:relatierollen/mim:Bron/mim:unidirectioneel" as="xs:string?"/>
     
     <field>
-      <name>{entity:field-name(mim:relatierollen/mim:Doel/mim:naam)}</name>
+      <name>
+        <xsl:choose>
+          <xsl:when test="normalize-space(mim:relatierollen/mim:Doel/mim:naam)">{entity:field-name(mim:relatierollen/mim:Doel/mim:naam)}</xsl:when>
+          <xsl:otherwise>{entity:field-name(mim:naam)}{entity:class-name($target/mim:naam)}</xsl:otherwise> <!-- Add target name to avoid naming collisions -->
+        </xsl:choose>
+      </name>
       <type 
         is-enum="false" 
         is-standard="false"
@@ -485,7 +490,7 @@
     <xsl:variable name="unidirectional" select="mim:unidirectioneel" as="xs:string?"/>
     
     <field>
-      <name>{entity:field-name(mim:naam)}</name>
+      <name>{entity:field-name(mim:naam)}{entity:class-name($target/mim:naam)}</name> <!-- Add target name to avoid naming collisions -->
       <type 
         is-enum="false" 
         is-standard="false"
