@@ -14,52 +14,12 @@
   version="3.0">
     
   <xsl:import href="java-base.xsl"/>
-  
-  <xsl:include href="entity-functions.xsl"/>
-  
+    
   <xsl:mode on-no-match="shallow-skip"/>
   
   <xsl:param name="repository-package-prefix" as="xs:string" select="'nl.imvertor.repository'"/>
   
   <xsl:variable name="mode" as="xs:string" select="'spring-boot-repository'"/>
-  
-  <!--  
-  <xsl:variable name="primitive-mim-type-mapping" as="map(xs:string, xs:string)">
-    <xsl:map>
-      <xsl:map-entry key="'CharacterString'" select="'String'"/>
-      <xsl:map-entry key="'Integer'" select="'Integer'"/>
-      <xsl:map-entry key="'Real'" select="'Double'"/>
-      <xsl:map-entry key="'Decimal'" select="'java.math.BigDecimal'"/>
-      <xsl:map-entry key="'Boolean'" select="'Boolean'"/>
-      <xsl:map-entry key="'Date'" select="'java.time.LocalDate'"/>
-      <xsl:map-entry key="'DateTime'" select="'java.time.ZonedDateTime'"/>
-      <xsl:map-entry key="'Year'" select="'Short'"/>
-      <xsl:map-entry key="'Day'" select="'Byte'"/>
-      <xsl:map-entry key="'Month'" select="'Byte'"/>
-      <xsl:map-entry key="'URI'" select="'String'"/>
-    </xsl:map>
-  </xsl:variable>
-  
-  <xsl:function name="entity:package-name">
-    <xsl:param name="package-hierarchy" as="xs:string*"/>
-    <xsl:sequence select="string-join((for $p in $package-hierarchy return funct:replace-special-chars(funct:flatten-diacritics(funct:lower-case($p)), '_')), '.')"/>
-  </xsl:function>
-  
-  <xsl:function name="entity:class-name">
-    <xsl:param name="name" as="xs:string"/>
-    <xsl:sequence select="$class-name-prefix || funct:replace-special-chars(funct:flatten-diacritics(funct:pascal-case($name)), '_') || $class-name-suffix"/>
-  </xsl:function>
-  
-  <xsl:function name="entity:field-name">
-    <xsl:param name="name" as="xs:string"/>
-    <xsl:sequence select="funct:replace-special-chars(funct:flatten-diacritics(funct:camel-case($name)), '_')"/>
-  </xsl:function>
-  
-  <xsl:function name="entity:enum-value" as="xs:string">
-    <xsl:param name="str" as="xs:string?"/>
-    <xsl:sequence select="funct:replace-special-chars(upper-case(funct:snake-case(funct:flatten-diacritics($str))), '_')"/>  
-  </xsl:function>
-  -->
   
   <xsl:template match="model">
     <java>
@@ -134,15 +94,6 @@
     </xsl:result-document>
   </xsl:template>
   
-  <!--
-  <xsl:template match="line">
-    <xsl:if test="not(@mode) or (@mode = $mode)">
-      <xsl:variable name="indent" select="if (@indent) then xs:integer(@indent) else 0" as="xs:integer"/>
-      <xsl:sequence select="string-join(((for $i in 1 to $indent return ' '), ., $lf))"/>  
-    </xsl:if>
-  </xsl:template>
-  -->
-  
   <xsl:function name="local:full-repository-package-name" as="xs:string">
     <xsl:param name="package-name" as="xs:string"/>
     <xsl:sequence select="string-join(($repository-package-prefix, $package-name), '.')"/>
@@ -152,17 +103,5 @@
     <xsl:param name="package-name" as="xs:string"/>
     <xsl:sequence select="string-join(($package-prefix, $package-name), '.')"/>
   </xsl:function>
-  
-  <!--
-  <xsl:function name="local:entity-and-supertypes" as="element(entity)*">
-    <xsl:param name="context" as="element(entity)"/>
-    <xsl:param name="visited" as="element(entity)*"/>
-    <xsl:if test="$context">
-      
-      
-      <xsl:sequence select="($visited, local:entity-and-supertypes($context, $visited))"/>
-    </xsl:if>
-  </xsl:function>
-  -->
   
 </xsl:stylesheet>

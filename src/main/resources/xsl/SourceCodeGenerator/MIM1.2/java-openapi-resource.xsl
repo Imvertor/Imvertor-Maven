@@ -14,11 +14,10 @@
   version="3.0">
     
   <xsl:import href="java-base.xsl"/>
-  
-  <xsl:include href="entity-functions.xsl"/>
-  
+    
   <xsl:mode on-no-match="shallow-skip"/>
   
+  <xsl:param name="package-prefix" as="xs:string" select="'nl.imvertor.model'"/>
   <xsl:param name="resource-package-prefix" as="xs:string" select="'nl.imvertor.resource'"/>
   
   <xsl:variable name="response-component-base-url" as="xs:string">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/common.yaml#/components/responses/</xsl:variable>

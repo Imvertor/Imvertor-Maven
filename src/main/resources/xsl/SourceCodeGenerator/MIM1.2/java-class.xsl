@@ -14,9 +14,7 @@
   version="3.0">
     
   <xsl:import href="java-base.xsl"/>
-  
-  <xsl:include href="entity-functions.xsl"/>
-  
+    
   <xsl:mode on-no-match="shallow-skip"/>
   <xsl:mode name="definition" on-no-match="shallow-copy"/>
   <xsl:mode name="field-declaration" on-no-match="shallow-skip"/>

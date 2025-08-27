@@ -53,6 +53,8 @@
   
   <xsl:import href="../../common/Imvert-common.xsl" use-when="$runs-in-imvertor-context"/>
   
+  <xsl:include href="functx-1.0.1.xsl"/>
+  
   <xsl:variable name="lf" select="'&#10;'" as="xs:string"/>
   <xsl:variable name="accolade-open" select="'{'" as="xs:string"/>
   <xsl:variable name="accolade-close" select="'}'" as="xs:string"/>

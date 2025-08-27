@@ -18,8 +18,12 @@
 
 package nl.imvertor.SourcecodeGenerator;
 
+import static java.lang.String.format;
+
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.compress.utils.FileNameUtils;
 import org.apache.commons.io.FileUtils;
@@ -31,8 +35,6 @@ import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 
-import static java.lang.String.format;
-
 /**
  * The CodeGenerator takes the MIM serialization and transforms it to source
  * code (Java-JPA, ...).
@@ -41,7 +43,7 @@ public class SourcecodeGenerator extends Step {
 
   protected static final Logger logger = Logger.getLogger(SourcecodeGenerator.class);
   
-  private static final String[] SUPPORTED_SOURCECODE_TYPES = { "entity-xml", "plantuml", "java-jpa", "java-jpa-dto", "java-pojo" }; 
+  private static final String[] SUPPORTED_SOURCECODE_TYPES = { "entity-xml", "plantuml", "java-pojo", "java-jpa", "java-openapi", "java-openapi-model", "java-openapi-resource" }; 
 
   public static final String STEP_NAME = "SourcecodeGenerator";
   public static final String VC_IDENTIFIER = "$Id: $";
@@ -107,7 +109,15 @@ public class SourcecodeGenerator extends Step {
     String xslFileParamMIMResolved = "properties/IMVERTOR_CODEGEN_MIM_RESOLVED_" + mimVersion + "_XSLPATH";
     String workFileParamMIMResolved = "properties/WORK_CODEGEN_MIM_RESOLVED_FILEPATH";
     
-    String[] types = sourceCodeTypes.trim().split("\\s*[,;]\\s*");
+    Set<String> types = new HashSet<>(Arrays.asList(sourceCodeTypes.trim().split("\\s*[,;]\\s*")));
+    
+    if (types.contains("java-openapi")) {
+      /* Expand the type "java-openapi": */
+      types.remove("java-openapi");
+      types.add("java-openapi-resource");
+      types.add("java-openapi-model");
+    }
+   
     for (String type: types) {
       if (!StringUtils.equalsAny(type, SUPPORTED_SOURCECODE_TYPES)) {
         runner.warn(logger, format("Unsupported sourcecodetype \"%s\"; must be one of %s", type, Arrays.toString(SUPPORTED_SOURCECODE_TYPES)));

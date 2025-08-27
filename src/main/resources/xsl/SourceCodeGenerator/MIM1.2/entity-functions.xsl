@@ -10,9 +10,7 @@
   exclude-result-prefixes="#all"
   expand-text="true"
   version="3.0">
-  
-  <xsl:include href="functx-1.0.1.xsl"/>
-  
+    
   <!-- Transformations: -->
   <xsl:variable name="transformation-lower-case" select="'lower-case'" as="xs:string"/>
   <xsl:variable name="transformation-camel-case" select="'camel-case'" as="xs:string"/>

@@ -14,8 +14,8 @@
   version="3.0">
     
   <xsl:import href="java-base.xsl"/>
-  
-  <xsl:include href="entity-functions.xsl"/>
+    
+  <xsl:param name="package-prefix" as="xs:string" select="'nl.imvertor.model'"/>
   
   <xsl:mode on-no-match="shallow-skip"/>
   <xsl:mode name="definition" on-no-match="shallow-copy"/>
