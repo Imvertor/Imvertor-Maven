@@ -10,4 +10,24 @@
     
     <name>EIGENAAR-MIM-1-LOGICAL</name>
     
+    <stereotypes xml:id="stereotypes">
+        
+        <stereo id="stereotype-name-queryparameters" primary="yes">
+            <name lang="nl">QueryParameters</name>
+            <name lang="en">QueryParameters</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-queryparameter" primary="yes">
+            <name lang="nl">QueryParameter</name>
+            <name lang="en">QueryParameter</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+        
+    </stereotypes>
+    
 </metamodel>
