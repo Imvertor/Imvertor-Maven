@@ -8,3 +8,8 @@ th, td {
     color: gray;
     font-size: 80%;
 }
+
+tr:nth-child(even),
+tr:nth-child(odd) {
+    background: inherit !important;
+}
