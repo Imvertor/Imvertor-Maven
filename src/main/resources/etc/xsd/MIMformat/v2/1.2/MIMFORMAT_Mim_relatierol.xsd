@@ -33,7 +33,7 @@
       <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0"/>
       <xs:element name="datumOpname" type="xs:string"/>
       <xs:element name="unidirectioneel" type="xs:string" minOccurs="0"/><!-- Optioneel voor backward compatibiliteit met eerdere 1.2 versies -->
-      <xs:element name="aggregatietype" type="mim:aggregatietype"/>
+      <xs:element name="aggregatietype" type="mim:aggregatietype" minOccurs="0"/><!-- Optioneel voor backward compatibiliteit met eerdere 1.2 versies -->
       <xs:element name="doel">
         <xs:complexType>
           <xs:choice>
