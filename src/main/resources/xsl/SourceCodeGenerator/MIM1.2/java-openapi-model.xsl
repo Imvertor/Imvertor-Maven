@@ -31,7 +31,7 @@
     
   <xsl:template match="entity">
     <xsl:variable name="full-package-name" select="local:full-package-name(package-name)" as="xs:string"/>
-    <xsl:result-document href="{$output-uri}/{replace($full-package-name, '\.', '/')}/{name}.java" method="text">  
+    <xsl:result-document href="{$output-uri}/src/main/java/{replace($full-package-name, '\.', '/')}/{name}.java" method="text">  
       <xsl:variable name="lines-elements" as="element(line)+"> 
         <line>package {$full-package-name};</line>
         <line/>
@@ -87,7 +87,7 @@
       <xsl:sequence select="string-join($lines)"/>
     </xsl:result-document>
     
-    <xsl:result-document href="{$output-uri}/{replace($full-package-name, '\.', '/')}/Paginated{name}List.java" method="text">  
+    <xsl:result-document href="{$output-uri}/src/main/java/{replace($full-package-name, '\.', '/')}/Paginated{name}List.java" method="text">  
       <xsl:variable name="lines-elements" as="element(line)+"> 
         <line>package {$full-package-name};</line>
         <line/>
@@ -129,7 +129,7 @@
   
   <xsl:template match="enumeration">
     <xsl:variable name="full-package-name" select="local:full-package-name(package-name)" as="xs:string"/>
-    <xsl:result-document href="{$output-uri}/{replace($full-package-name, '\.', '/')}/{replace(name, '\.', '/')}.java" method="text">   
+    <xsl:result-document href="{$output-uri}/src/main/java/{replace($full-package-name, '\.', '/')}/{replace(name, '\.', '/')}.java" method="text">   
       <xsl:variable name="lines-elements" as="element(line)+"> 
         <line>package {$full-package-name};</line>
         <line/>
