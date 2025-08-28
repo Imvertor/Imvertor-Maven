@@ -107,7 +107,7 @@ public class XmlComparerFormatter implements ComparisonFormatter {
 		Iterable<Node> nodeList = xpathEngine.selectNodes(xpath, document);
 		
 		String desc = "";
-		// Iterate over the nodes - dit is er altijd maar één.
+		// Iterate over the nodes - dit is er altijd maar Ã©Ã©n.
         for (Node node : nodeList) desc += getNodeDescription(node,xpath);
         
 		return desc;
