@@ -22,6 +22,7 @@
   
   <xsl:variable name="response-component-base-url" as="xs:string">https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/common.yaml#/components/responses/</xsl:variable>
   <xsl:variable name="global-openapi-methods" select="lower-case(normalize-space(/model/features/feature[@name = 'openapi.methods']))" as="xs:string?"/>  
+  <xsl:variable name="api-version" select="normalize-space((/model/features/feature[@name = 'openapi.pathVersion'], '1'))[1]" as="xs:string?"/>  
     
   <!-- TODO -->
   <!-- Er wordt nergens een paginanummer meegegeven -->
@@ -54,6 +55,7 @@
         <line>import io.swagger.v3.oas.annotations.*;</line>
         <line>import io.swagger.v3.oas.annotations.media.*;</line>
         <line>import io.swagger.v3.oas.annotations.responses.*;</line>
+        <line>import io.swagger.v3.oas.annotations.headers.*;</line>
         <line>import io.swagger.v3.oas.annotations.tags.Tag;</line>
         <line/>
         <line>import jakarta.validation.constraints.Min;</line>
@@ -65,7 +67,7 @@
         <xsl:variable name="type" select="(fields/field[is-id-attribute = 'true']/type, 'String')[1]" as="xs:string"/> <!-- TODO: navigate supertypes -->
         <xsl:variable name="path" select="features/feature[@name='openapi.path']" as="xs:string?"/>
         
-        <line>@Path("/{if ($path) then $path else lower-case(name)}")</line>
+        <line>@Path("/v{$api-version}/{if ($path) then $path else lower-case(name)}")</line>
         <line>@Tag(name = "{name}", description = "{local:definition-as-string(definition)}")</line> 
         <line>public class {$resource-class-name} {{</line>
         
@@ -139,11 +141,20 @@
     <line/>
     <line indent="2">@GET</line>
     <line indent="2">@Produces(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Get all {name} objects", description = "Retrieves a paginated list of all {name} objects")</line>
+    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Retourneert de lijst van alle {name} objecten", description = "Retourneert een gepagineerde lijst van alle {name} objecten")</line>
     <line indent="2">@ApiResponses(value = {{</line>
     <line indent="4">@ApiResponse(responseCode = "200", description = "OK",</line>
     <line indent="6">content = @Content(mediaType = "application/json",</line> 
-    <line indent="6">schema = @Schema(implementation = Paginated{name}List.class))),</line>
+    <line indent="6">schema = @Schema(implementation = Paginated{name}List.class)),</line>
+    <line indent="6">headers = {{@Header(name = "api-version", ref = "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/common.yaml#/components/headers/api_version")}}),</line>
+    
+    <!--
+    401 Unauthorized → client not authenticated.
+    403 Forbidden → client authenticated but lacks permissions.
+    429 Too Many Requests → rate limiting.
+    500 Internal Server Error → unexpected server-side failure.
+    503 Service Unavailable → temporary overload or maintenance.
+    -->
     
     <xsl:call-template name="error-responses">
       <xsl:with-param name="response-codes" as="xs:string*" select="('400','401','403','409','410','415','429','500','501','503')"/> <!-- TODO: default -->
@@ -153,17 +164,17 @@
     <line indent="2">public Response getAll{name}(</line>
     <line indent="4">@QueryParam("page")</line> 
     <line indent="4">@DefaultValue("0")</line>
-    <line indent="4">@Parameter(description = "Page number (0-based)", example = "0")</line> 
+    <line indent="4">@Parameter(description = "Paginanummer (beginnend bij 0)", example = "0")</line> 
     <line indent="4">@Min(0) int page,</line>
     <line/>  
     <line indent="4">@QueryParam("size")</line> 
     <line indent="4">@DefaultValue("20")</line>
-    <line indent="4">@Parameter(description = "Number of items per page", example = "20")</line> 
+    <line indent="4">@Parameter(description = "Aantal objecten per pagina", example = "20")</line> 
     <line indent="4">@Min(1) int size,</line>
     <line/>  
     <line indent="4">@QueryParam("sort")</line> 
     <line indent="4">@DefaultValue("id")</line>
-    <line indent="4">@Parameter(description = "Field to sort by", example = "name")</line> 
+    <line indent="4">@Parameter(description = "Sorteerveld", example = "name")</line> 
     <line indent="4">String sortBy) {{</line>
     <line indent="4">return Response.ok().build();</line>
     <line indent="2">}}</line>
@@ -180,11 +191,12 @@
     <line indent="2">@GET</line>
     <line indent="2">@Path("/{{id}}")</line>
     <line indent="2">@Produces(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Get {name} by id", description = "Retrieves a specific {name} by their unique identifier")</line>
+    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Retourneert een {name} object op basis van zijn unieke identificatie", description = "Retourneert een individueel {name} object op basis van zijn unieke identificatie")</line>
     <line indent="2">@ApiResponses(value = {{</line>
-    <line indent="4">@ApiResponse(responseCode = "200", description = "{name} was found",</line>
+    <line indent="4">@ApiResponse(responseCode = "200", description = "{name} was gevonden",</line>
     <line indent="6">content = @Content(mediaType = "application/json",</line> 
-    <line indent="6">schema = @Schema(implementation = {name}.class))),</line>
+    <line indent="6">schema = @Schema(implementation = {name}.class)),</line>
+    <line indent="6">headers = {{@Header(name = "api-version", ref = "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/common.yaml#/components/headers/api_version")}}),</line>
     
     <xsl:call-template name="error-responses">
       <xsl:with-param name="response-codes" as="xs:string*" select="('400','401','403','404','409','410','415','429','500','501','503')"/>
@@ -206,18 +218,20 @@
     <line indent="2">@POST</line>
     <line indent="2">@Consumes(MediaType.APPLICATION_JSON)</line>
     <line indent="2">@Produces(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Create a new {name}", description = "Creates a new {name} with the provided information")</line>
+    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Maakt een nieuw {name} object", description = "Maakt een nieuw {name} object aan op basis van de aangeleverde gegevens")</line>
     <line indent="2">@ApiResponses(value = {{</line>
-    <line indent="4">@ApiResponse(responseCode = "201", description = "{name} created successfully",</line>
+    <line indent="4">@ApiResponse(responseCode = "201", description = "{name} succesvol aangemaakt",</line>
     <line indent="6">content = @Content(mediaType = "application/json",</line> 
-    <line indent="6">schema = @Schema(implementation = {name}.class))),</line>
+    <line indent="6">schema = @Schema(implementation = {name}.class)),</line>
+    <line indent="6">headers = {{@Header(name = "api-version", ref = "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/common.yaml#/components/headers/api_version"),</line>
+    <line indent="8">@Header(name = "Location", description = "URI van het opgeslagen object", schema = @Schema(type = "string", format = "uri"))}}),</line>
     
     <xsl:call-template name="error-responses">
       <xsl:with-param name="response-codes" as="xs:string*" select="('400','401','403','409','410','415','429','500','501','503')"/>
     </xsl:call-template>
     
     <line indent="2">}})</line>
-    <line indent="2">public Response create{name}(@Parameter(description = "{name} creation data", required = true) {name} {lower-case(name)}) {{</line>
+    <line indent="2">public Response create{name}(@Parameter(description = "De gegevens van het {name} object", required = true) {name} {lower-case(name)}) {{</line>
     <line indent="4">return Response.ok().build();</line>
     <line indent="2">}}</line>
   </xsl:template>
@@ -232,9 +246,10 @@
     <line/>
     <line indent="2">@DELETE</line>
     <line indent="2">@Path("/{{id}}")</line>
-    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Delete {name}", description = "Permanently deletes a {name} from the system")</line>
+    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Verwijderd een {name} object", description = "Verwijderd een specifiek {name} object permanent uit het systeem")</line>
     <line indent="2">@ApiResponses(value = {{</line>
-    <line indent="4">@ApiResponse(responseCode = "204", description = "{name} deleted successfully"),</line>
+    <line indent="4">@ApiResponse(responseCode = "204", description = "{name} object succesvol verwijderd",</line>
+    <line indent="6">headers = {{@Header(name = "api-version", ref = "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/common.yaml#/components/headers/api_version")}}),</line>
     
     <xsl:call-template name="error-responses">
       <xsl:with-param name="response-codes" as="xs:string*" select="('400','401','403','404','409','410','415','429','500','501','503')"/>
@@ -258,11 +273,13 @@
     <line indent="2">@Path("/{{id}}")</line>
     <line indent="2">@Consumes(MediaType.APPLICATION_JSON)</line>
     <line indent="2">@Produces(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Update {name}", description = "Completely updates a {name} with new information (replaces all fields)")</line>
+    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Maakt nieuw of overschrijft bestaand {name} object", description = "Maakt een nieuw of overschrijft (volledig) een bestaand {name} object")</line>
     <line indent="2">@ApiResponses(value = {{</line>
-    <line indent="4">@ApiResponse(responseCode = "200", description = "{name} updated successfully",</line>
+    <line indent="4">@ApiResponse(responseCode = "200", description = "{name} object succesvol aangemaakt/overschreven",</line>
     <line indent="6">content = @Content(mediaType = "application/json",</line> 
-    <line indent="6">schema = @Schema(implementation = {name}.class))),</line>
+    <line indent="6">schema = @Schema(implementation = {name}.class)),</line>
+    <line indent="6">headers = {{@Header(name = "api-version", ref = "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/common.yaml#/components/headers/api_version"),</line>
+    <line indent="8">@Header(name = "Location", description = "URI van het opgeslagen object", schema = @Schema(type = "string", format = "uri"))}}),</line>
     
     <xsl:call-template name="error-responses">
       <xsl:with-param name="response-codes" as="xs:string*" select="('400','401','403','404','409','410','415','429','500','501','503')"/>
@@ -288,11 +305,12 @@
     <line indent="2">@Path("/{{id}}")</line>
     <line indent="2">@Consumes(MediaType.APPLICATION_JSON)</line>
     <line indent="2">@Produces(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Partially update {name}", description = "Partially updates a {name} by modifying only the provided fields")</line>
+    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Werkt een bestaand {name} object gedeeltelijk bij", description = "Werkt een bestaand {name} object gedeeltelijk bij door alleen de aangeleverde velden te overschrijven")</line>
     <line indent="2">@ApiResponses(value = {{</line>
-    <line indent="4">@ApiResponse(responseCode = "200", description = "{name} updated successfully",</line>
+    <line indent="4">@ApiResponse(responseCode = "200", description = "{name} succesvol bijgewerkt",</line>
     <line indent="6">content = @Content(mediaType = "application/json",</line> 
-    <line indent="6">schema = @Schema(implementation = {name}.class))),</line>
+    <line indent="6">schema = @Schema(implementation = {name}.class)),</line>
+    <line indent="6">headers = {{@Header(name = "api-version", ref = "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/common.yaml#/components/headers/api_version")}}),</line>
     
     <xsl:call-template name="error-responses">
       <xsl:with-param name="response-codes" as="xs:string*" select="('400','401','403','404','409','410','415','429','500','501','503')"/>
@@ -327,17 +345,7 @@
         <xsl:for-each select="/model/features/feature[starts-with(@name, 'openapi.')]">
           <line>{@name}={.}</line>
         </xsl:for-each>
-     
-        <!--
-        <line/>
         
-        <xsl:for-each select="//entity[model-element = 'Objecttype']">
-          <xsl:variable name="entity" select="." as="element(entity)"/>
-          <xsl:for-each select="features/feature[starts-with(@name, 'openapi.')]">
-            <line>openapi.{local:full-package-name($entity/package-name)}.{$entity/name}.{substring-after(@name, 'openapi.')}={.}</line>  
-          </xsl:for-each>
-        </xsl:for-each>
-        -->
       </xsl:variable>
       <xsl:variable name="lines" as="xs:string*">
         <xsl:apply-templates select="$lines-elements"/>  
