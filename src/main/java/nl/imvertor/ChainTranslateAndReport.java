@@ -190,6 +190,12 @@ public class ChainTranslateAndReport {
 				    if (succeeds)
 				    	succeeds = (new ImvertCompiler()).run();
 				    
+				    /* support "createopenapi" as an alias for the combination of "createsourcecode = yes" and "sourcecodetypes = java-openapi" */
+				    if (configurator.isTrue("cli", "createopenapi", false)) {
+				      configurator.setParm("cli", "createsourcecode", "yes");
+				      configurator.setParm("cli", "sourcecodetypes", "java-openapi");
+				    }
+				    
 		    		// generate the MIM format from Imvertor embellish format
 			    	if (succeeds && (configurator.isTrue("cli","createmimformat",false) || configurator.isTrue("cli","createjsonschema",false) || configurator.isTrue("cli","createsourcecode",false)))
 			    		succeeds = (new MIMCompiler()).run();
@@ -219,7 +225,7 @@ public class ChainTranslateAndReport {
 			    			succeeds = (new JsonSchemaCompiler()).run();
 			    	}
 			    	
-					// Generate a json schema
+					// Generate source code
 					if (succeeds && configurator.isTrue("cli","createsourcecode",false))
 						succeeds = (new SourcecodeGenerator()).run();
 
