@@ -13,3 +13,7 @@ tr:nth-child(even),
 tr:nth-child(odd) {
     background: inherit !important;
 }
+
+table {
+    border-bottom: inherit !important;   
+}
