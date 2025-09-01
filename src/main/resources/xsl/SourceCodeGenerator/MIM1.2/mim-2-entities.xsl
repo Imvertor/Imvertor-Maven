@@ -295,12 +295,13 @@
           <xsl:otherwise>{$cardinality/@minOccurs = $ZERO}</xsl:otherwise> 
         </xsl:choose>  
       </nullable>
-      <aggregation>
-        <xsl:choose>
-          <xsl:when test="self::mim:Gegevensgroep">composite</xsl:when>
-          <xsl:otherwise>shared</xsl:otherwise>
-        </xsl:choose>  
-      </aggregation>
+      <!--
+      <xsl:choose>
+        <xsl:when test="self::mim:Gegevensgroep">composite</xsl:when>
+        <xsl:otherwise>shared</xsl:otherwise>
+      </xsl:choose>
+      -->
+      <aggregation>composite</aggregation>
       <xsl:call-template name="kenmerken"/>
       <cardinality>
         <source>
