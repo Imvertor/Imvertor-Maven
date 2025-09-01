@@ -40,7 +40,7 @@
         <line>import nl.imvertor.mim.annotation.*;</line>
         <line>import nl.imvertor.mim.model.*;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema;</line>
-        <line>import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;</line>    
+        <line>import io.swagger.v3.oas.annotations.media.Schema.*;</line> 
         <line>import java.util.*;</line>
         <line/>
   
@@ -75,7 +75,12 @@
         
         <line>public {if (is-abstract = 'true') then 'abstract ' else ''}class {name}{if (super-type) then ' extends ' || local:full-package-name(super-type/@package-name) || '.' || $super-type-class-name  else () } {{</line>
         
+        <xsl:call-template name="identification-field-declarations"/>
+        
         <xsl:apply-templates select="fields" mode="field-declaration"/>
+        
+        <xsl:call-template name="identification-field-getters-setters"/>
+        
         <xsl:apply-templates select="fields" mode="field-getter-setter"/>
         
         <line/>
@@ -155,7 +160,7 @@
     </xsl:result-document>
   </xsl:template>
   
-  <xsl:template match="field" mode="field-declaration">
+  <xsl:template match="field[not(auto-generate = 'true')]" mode="field-declaration">
     <line/>
     
     <xsl:call-template name="javadoc">
@@ -175,7 +180,7 @@
     <line indent="2">private {$resolved-type} {name};</line>
   </xsl:template>
   
-  <xsl:template match="field" mode="field-getter-setter">
+  <xsl:template match="field[not(auto-generate = 'true')]" mode="field-getter-setter">
     <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation)" as="xs:string"/>
     <line/>
     <line indent="2">public {$resolved-type} {if (type = 'Boolean') then 'is' else 'get'}{functx:capitalize-first(name)}() {{</line>
@@ -188,12 +193,45 @@
     <line indent="2">}}</line>
   </xsl:template>
   
+  <xsl:template name="identification-field-declarations">
+    <xsl:if test="not(identifying-attribute)">
+      <line/>
+      <line indent="2">@Schema(description = "Unieke identificatie van de resource waarnaar verwezen wordt", type = "string", requiredMode = RequiredMode.REQUIRED, minLength = 1)</line>
+      <line indent="2">private String id;</line>  
+    </xsl:if>
+    
+    <line/>
+    <line indent="2">@Schema(description = "URL-referentie naar de resource waarnaar verwezen wordt", type = "string", format = "uri", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY, minLength = 1)</line>
+    <line indent="2">private String url;</line>
+  </xsl:template>
+  
+  <xsl:template name="identification-field-getters-setters">
+    <xsl:if test="not(identifying-attribute)">
+      <line/>
+      <line indent="2">public String getId() {{</line>
+      <line indent="4">return id;</line>
+      <line indent="2">}}</line>
+      <line/>
+      <line indent="2">public void setId(String id) {{</line>
+      <line indent="4">this.id = id;</line>
+      <line indent="2">}}</line>
+      <line/>
+      <line indent="2">public String getUrl() {{</line>
+      <line indent="4">return url;</line>
+      <line indent="2">}}</line>
+    </xsl:if>
+    <line/>
+    <line indent="2">public void setUrl(String url) {{</line>
+    <line indent="4">this.url = url;</line>
+    <line indent="2">}}</line>
+  </xsl:template>
+  
   <xsl:function name="local:type-or-reference" as="xs:string">
     <xsl:param name="type-info" as="element()"/>
     <xsl:param name="cardinality" as="element()"/>
     <xsl:param name="aggregation" as="xs:string?"/>    
     <xsl:choose>
-      <xsl:when test="$aggregation = 'shared' and not($type-info/@is-standard = 'true')">
+      <xsl:when test="$aggregation = 'shared' and not($type-info/@model-element = 'Enumeratie') and not($type-info/@is-standard = 'true')">
         <xsl:variable name="singular-type" select="'nl.imvertor.mim.model.Reference'" as="xs:string"/>
         <xsl:value-of select="if ($cardinality/target/max-occurs = $unbounded) then 'List&lt;' || $singular-type || '&gt;' else $singular-type"/>    
       </xsl:when>
