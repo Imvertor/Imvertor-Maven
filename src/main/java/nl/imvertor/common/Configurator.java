@@ -414,7 +414,8 @@ public class Configurator {
 		setXParm(workConfiguration,"system/work-ld-folder-path",      wf + s + "app" + s + "ld", true);
 		setXParm(workConfiguration,"system/work-skos-folder-path",    wf + s + "app" + s + "skos", true);
 		setXParm(workConfiguration,"system/work-cat-folder-path",     wf + s + "app" + s + "cat", true);
-		setXParm(workConfiguration,"system/work-json-folder-path",    wf + s + "app" + s + "json", true);
+		setXParm(workConfiguration,"system/work-json-c-folder-path",  wf + s + "app" + s + "json-concepts", true);
+		setXParm(workConfiguration,"system/work-json-s-folder-path",  wf + s + "app" + s + "json-schema", true);
 		setXParm(workConfiguration,"system/work-yaml-folder-path",    wf + s + "app" + s + "yaml", true);
 		setXParm(workConfiguration,"system/work-xmi-s-folder-path",   wf + s + "app" + s + "xmi", true);
 		setXParm(workConfiguration,"system/work-msword-folder-path",  wf + s + "app" + s + "msword", true);

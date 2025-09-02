@@ -137,7 +137,7 @@ public class JsonSchemaCompiler extends Step {
 			schemaName = schemaName.replaceAll("[^A-Za-z0-9]+", "_");
 			
 			// Create the folder; it is not expected to exist yet.
-			AnyFolder jsonFolder = new AnyFolder(configurator.getXParm("system/work-json-folder-path"));
+			AnyFolder jsonFolder = new AnyFolder(configurator.getXParm("system/work-json-s-folder-path"));
 			
 			JsonFile appJsonFile = new JsonFile(new File(jsonFolder,schemaName + ".json"));
 			YamlFile appYamlFile = new YamlFile(new File(jsonFolder,schemaName + ".yaml"));

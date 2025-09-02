@@ -99,7 +99,7 @@ public class JsonConceptsCompiler extends Step {
 				// copy to the app folder
 				String jsonConceptsName = configurator.mergeParms(configurator.getXParm("cli/jsonconceptsname"));
 				// Create the folder; it is not expected to exist yet.
-				AnyFolder jsonFolder = new AnyFolder(configurator.getXParm("system/work-json-folder-path"));
+				AnyFolder jsonFolder = new AnyFolder(configurator.getXParm("system/work-json-c-folder-path"));
 				AnyFile appJsonFile = new AnyFile(jsonFolder,jsonConceptsName + ".json");
 				jsonFolder.mkdirs();
 				jsonFile.copyFile(appJsonFile);
