@@ -36,11 +36,15 @@
     <java>
       <xsl:comment> Zie directory "imvertor.*.codegen.java-*" </xsl:comment>
       
-      <!-- Generate the JpaRepository interfaces: -->
+      <!-- Generate the Java Resource classes: -->
       <xsl:apply-templates select=".//entity[(model-element = 'Objecttype') and (is-abstract = 'false') and not(funct:equals-case-insensitive(features/feature[@name = 'openapi.expose'], ('false', 'no', 'nee')))]"/>
       
       <!-- Generate openapi.properties: -->
+      <!--
       <xsl:call-template name="generate-openapi-properties"/>
+      -->
+      
+      <xsl:call-template name="generate-openapi-header"/>
     </java>
   </xsl:template>
     
@@ -371,10 +375,10 @@
     </xsl:for-each>
   </xsl:template>
   
+  <!--
   <xsl:template name="generate-openapi-properties">
     <xsl:result-document href="{$output-uri}/src/main/resources/openapi.properties" method="text">  
       <xsl:variable name="lines-elements" as="element(line)+"> 
-        
         <xsl:if test="not(/model/features/feature[@name = 'openapi.title'])">
           <line>openapi.title={/model/title}</line>
         </xsl:if>
@@ -386,6 +390,49 @@
           <line>{@name}={.}</line>
         </xsl:for-each>
         
+      </xsl:variable>
+      <xsl:variable name="lines" as="xs:string*">
+        <xsl:apply-templates select="$lines-elements"/>  
+      </xsl:variable>
+      <xsl:sequence select="string-join($lines)"/>
+    </xsl:result-document>
+  </xsl:template>
+  -->
+  
+  <xsl:template name="generate-openapi-header">
+    <xsl:result-document href="{$output-uri}/src/main/java/nl/imvertor/resource/OpenApiDefinition.java" method="text">  
+      <xsl:variable name="lines-elements" as="element(line)+"> 
+        <xsl:variable name="title" select="local:feature(/model, 'openapi.title')" as="xs:string?"/>
+        <xsl:variable name="description" select="local:feature(/model, 'openapi.description')" as="xs:string?"/>
+        
+        <line>package nl.imvertor.resource;</line>
+        <line/>
+        <line>import io.swagger.v3.oas.annotations.OpenAPIDefinition;</line>
+        <line>import io.swagger.v3.oas.annotations.info.*;</line>
+        <line>import io.swagger.v3.oas.annotations.servers.*;</line>
+        <line>import io.swagger.v3.oas.annotations.tags.*;</line>
+        <line/>
+        <line>@OpenAPIDefinition(</line>
+        <line indent="2">info = @Info(</line>
+        <line indent="4">title = "{(local:feature(/model,'openapi.title'), /model/title)[1]}",</line>
+        <line indent="4">description = "{(local:feature(/model,'openapi.description'), local:definition-as-string(/model/definition))}",</line>
+        <line indent="4">version = "{(local:feature(/model,'openapi.version'), '1.0.0')[1]}",</line>
+        <!-- TODO, make contact configurable: -->
+        <line indent="4">contact = @Contact(</line>
+        <line indent="6">url = "{local:feature(/model,'openapi.contact')}"</line>
+        <line indent="4">),</line>
+        <line indent="4">license = @License(</line>
+        <line indent="6">name = "European Union Public License, version 1.2 (EUPL-1.2)",</line>
+        <line indent="6">url = "https://eupl.eu/1.2/nl/"</line>
+        <line indent="4">)</line>
+        <line indent="2">),</line>
+        <line indent="2">servers = {{</line>
+        <xsl:for-each select="local:feature(/model,'openapi.server')">
+          <line indent="4">@Server(url = "{.}")</line>  
+        </xsl:for-each>
+        <line indent="2">}}</line>
+        <line>)</line>
+        <line>public class OpenApiDefinition {{ }}</line>
       </xsl:variable>
       <xsl:variable name="lines" as="xs:string*">
         <xsl:apply-templates select="$lines-elements"/>  
@@ -418,6 +465,12 @@
         <xsl:sequence select="true()"/>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:function>
+  
+  <xsl:function name="local:feature" as="xs:string*">
+    <xsl:param name="context" as="element()"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:sequence select="$context/features/feature[lower-case(@name) = lower-case($name)]/text()[normalize-space()]"/>
   </xsl:function>
   
 </xsl:stylesheet>

@@ -25,7 +25,6 @@
   <!-- TODO -->
   <!-- Min, max constraints -->
   <!-- Type van unieke identifiers --> 
-  <!-- Next en previous -> URI -->
   <!-- Bij aggregatie gedeeld reference genereren -->
   <!-- Ieder object een id en url geven? -->  
     
@@ -98,17 +97,12 @@
         <line/>
         
         <!-- imports: -->
-        <line>import nl.imvertor.mim.annotation.*;</line>
         <line>import nl.imvertor.mim.model.PaginatedBase;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;</line>    
         <line>import java.util.*;</line>
         <line/>
         
-        <!-- TODO
-        <line>@Schema(description = "{$description}")</line>
-        -->
- 
         <line>@Schema(allOf = PaginatedBase.class)</line>
         <line>public class Paginated{name}List {{</line>
         <line/>
@@ -124,6 +118,25 @@
         <line indent="2">}}</line>
         <line/>
         <line>}}</line>
+      </xsl:variable>
+      <xsl:variable name="lines" as="xs:string*">
+        <xsl:apply-templates select="$lines-elements"/>  
+      </xsl:variable>
+      <xsl:sequence select="string-join($lines)"/>
+    </xsl:result-document>
+    
+    <xsl:result-document href="{$output-uri}/src/main/java/{replace($full-package-name, '\.', '/')}/AnyOfReferenceOr{name}.java" method="text">  
+      <xsl:variable name="lines-elements" as="element(line)+"> 
+        <line>package {$full-package-name};</line>
+        <line/>
+        
+        <!-- imports: -->
+        <line>import nl.imvertor.mim.model.Reference;</line>
+        <line>import io.swagger.v3.oas.annotations.media.Schema;</line>
+        <line/>
+                
+        <line>@Schema(anyOf = {{ Reference.class, {name}.class }})</line>
+        <line>public class AnyOfReferenceOr{name} {{ }}</line>
       </xsl:variable>
       <xsl:variable name="lines" as="xs:string*">
         <xsl:apply-templates select="$lines-elements"/>  
