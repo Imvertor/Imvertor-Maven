@@ -39,11 +39,6 @@
       <!-- Generate the Java Resource classes: -->
       <xsl:apply-templates select=".//entity[(model-element = 'Objecttype') and (is-abstract = 'false') and not(funct:equals-case-insensitive(features/feature[@name = 'openapi.expose'], ('false', 'no', 'nee')))]"/>
       
-      <!-- Generate openapi.properties: -->
-      <!--
-      <xsl:call-template name="generate-openapi-properties"/>
-      -->
-      
       <xsl:call-template name="generate-openapi-header"/>
     </java>
   </xsl:template>
@@ -374,31 +369,7 @@
       <line indent="4">@ApiResponse(responseCode = "{.}", ref="{$response-component-base-url}{.}"){if (not(position() = last())) then ',' else ()}</line>
     </xsl:for-each>
   </xsl:template>
-  
-  <!--
-  <xsl:template name="generate-openapi-properties">
-    <xsl:result-document href="{$output-uri}/src/main/resources/openapi.properties" method="text">  
-      <xsl:variable name="lines-elements" as="element(line)+"> 
-        <xsl:if test="not(/model/features/feature[@name = 'openapi.title'])">
-          <line>openapi.title={/model/title}</line>
-        </xsl:if>
-        <xsl:if test="not(/model/features/feature[@name = 'openapi.description'])">
-          <line>openapi.description={local:definition-as-string(/model/definition)}</line>
-        </xsl:if>
-        
-        <xsl:for-each select="/model/features/feature[starts-with(@name, 'openapi.')]">
-          <line>{@name}={.}</line>
-        </xsl:for-each>
-        
-      </xsl:variable>
-      <xsl:variable name="lines" as="xs:string*">
-        <xsl:apply-templates select="$lines-elements"/>  
-      </xsl:variable>
-      <xsl:sequence select="string-join($lines)"/>
-    </xsl:result-document>
-  </xsl:template>
-  -->
-  
+    
   <xsl:template name="generate-openapi-header">
     <xsl:result-document href="{$output-uri}/src/main/java/nl/imvertor/resource/OpenApiDefinition.java" method="text">  
       <xsl:variable name="lines-elements" as="element(line)+"> 
@@ -415,7 +386,7 @@
         <line>@OpenAPIDefinition(</line>
         <line indent="2">info = @Info(</line>
         <line indent="4">title = "{(local:feature(/model,'openapi.title'), /model/title)[1]}",</line>
-        <line indent="4">description = "{(local:feature(/model,'openapi.description'), local:definition-as-string(/model/definition))}",</line>
+        <line indent="4">description = "{(local:feature(/model,'openapi.description'), local:definition-as-string(/model/definition))[1]}",</line>
         <line indent="4">version = "{(local:feature(/model,'openapi.version'), '1.0.0')[1]}",</line>
         <!-- TODO, make contact configurable: -->
         <line indent="4">contact = @Contact(</line>

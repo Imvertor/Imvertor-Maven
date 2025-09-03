@@ -22,7 +22,7 @@
   <xsl:key name="id" match="*[@id]" use="@id"/>
   <xsl:key name="ref" match="mim-ref:*|mim-ext:ConstructieRef" use="substring(@xlink:href, 2)"/>
   
-  <xsl:param name="sourcecode-copy-down-mixins" select="true()" as="xs:boolean"/>
+  <xsl:param name="sourcecode-copy-down-mixins" select="false()" as="xs:boolean"/>
   <xsl:param name="sourcecode-resolve-keuze-tussen-attribuutsoorten" select="true()" as="xs:boolean"/>
   <xsl:param name="sourcecode-resolve-keuze-tussen-relatiedoelen" select="true()" as="xs:boolean"/>
   <xsl:param name="sourcecode-resolve-keuze-tussen-datatypen" select="true()" as="xs:boolean"/>

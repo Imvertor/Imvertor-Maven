@@ -101,7 +101,7 @@ public class SourcecodeGenerator extends Step {
 
     String sourceCodeTypes = configurator.getXParm("cli/sourcecodetypes", false);
     if (sourceCodeTypes == null) {
-      sourceCodeTypes = "entity-xml,java-jpa";
+      sourceCodeTypes = "java-openapi-model,java-openapi-resource";
     } else {
       sourceCodeTypes = configurator.mergeParms(sourceCodeTypes);
     }
@@ -142,6 +142,21 @@ public class SourcecodeGenerator extends Step {
         transformer.setXslParm("output-uri", workDirFile.toURI().toString());  
       }
 
+      String sourcecodeCopyDownMixins = configurator.getXParm("cli/sourcecodecopydownmixins", false);
+      String sourcecodeResolveKeuzeAttribuutsoorten = configurator.getXParm("cli/sourcecoderesolvekeuzeattribuutsoorten", false);
+      String sourcecodeResolveKeuzeRelatiedoelen = configurator.getXParm("cli/sourcecoderesolvekeuzerelatiedoelen", false);
+      String sourcecodeResolveKeuzeDatatypen = configurator.getXParm("cli/sourcecoderesolvekeuzedatatypen", false);
+      
+      // Should have been stylesheet params of type boolean but this is not supported by transformer. Now rely on XSLT type conversion from strings "true" and "false" to booleans
+      if (sourcecodeCopyDownMixins != null)
+        transformer.setXslParm("sourcecode-copy-down-mixins", configParamToTrueFalseString(sourcecodeCopyDownMixins, "true"));
+      if (sourcecodeResolveKeuzeAttribuutsoorten != null)
+        transformer.setXslParm("sourcecode-resolve-keuze-tussen-attribuutsoorten", configParamToTrueFalseString(sourcecodeResolveKeuzeAttribuutsoorten, "true"));
+      if (sourcecodeResolveKeuzeRelatiedoelen != null)
+        transformer.setXslParm("sourcecode-resolve-keuze-tussen-relatiedoelen", configParamToTrueFalseString(sourcecodeResolveKeuzeRelatiedoelen, "true"));
+      if (sourcecodeResolveKeuzeDatatypen != null)
+        transformer.setXslParm("sourcecode-resolve-keuze-tussen-datatypen", configParamToTrueFalseString(sourcecodeResolveKeuzeDatatypen, "true"));
+      
       succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", workFileParamMIMResolved, xslFileParamMIMResolved);
       
       succeeds = succeeds && transformer.transformStep(workFileParamMIMResolved, workFileParam, xslFileParam);
@@ -165,5 +180,20 @@ public class SourcecodeGenerator extends Step {
 
     return succeeds;
   }
+  
+  private String configParamToTrueFalseString(String configParam, String defaultValue) {
+    if (configParam == null) {
+      return defaultValue;
+    }
+    String param = configParam.toLowerCase();
+    if ("no".equals(param)) {
+      return "false";
+    }
+    if ("yes".equals(param)) {
+      return "true";
+    }
+    return defaultValue;
+  }
+  
 
 }
