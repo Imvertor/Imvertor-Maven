@@ -14,6 +14,7 @@
             <cs-ref:MapRef xlink:href="#NEN3610-2022"/>
             <cs-ref:MapRef xlink:href="#GML322"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
+            <cs-ref:MapRef xlink:href="#OPENAPI"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
@@ -25,6 +26,7 @@
          <xi:include href="../../NEN3610/xsd/cs-NEN3610-2022.xml"/>
          <xi:include href="../../OGC/xsd/cs-GML322.xml"/>
          <xi:include href="../../OGC/xsd/cs-GMLSF.xml"/>
+         <xi:include href="../../ARMATIEK/xsd/cs-OpenAPI.xml"/>
          
          <!--maps:-->
          
@@ -32,6 +34,7 @@
          <xi:include href="../../NEN3610/xsd/cm-NEN3610-2022.xml"/>
          <xi:include href="../../OGC/xsd/cm-GML322.xml"/>
          <xi:include href="../../OGC/xsd/cm-GMLSF.xml"/>
+         <xi:include href="../../ARMATIEK/xsd/cm-OpenAPI.xml"/>
          
       </cs:ConceptualSchemasComponents>
    </cs:components>

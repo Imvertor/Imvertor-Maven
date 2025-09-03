@@ -10,22 +10,53 @@
     
     <name>EIGENAAR-MIM-1-LOGICAL</name>
     
+    <profiles>
+        <profile lang="nl"> 
+            <id>MEGNLL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1 EIGENAAR NL LOGISCH</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>MEGENL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1 EIGENAAR EN LOGICAL</desc>
+        </profile>
+    </profiles>
+    
+    <features>
+        <feature name="role-based">false</feature>
+        <feature name="allow-multiple-supertypes">true</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+    </features>
+    
     <stereotypes xml:id="stereotypes">
         
-        <stereo id="stereotype-name-queryparameters" primary="yes">
-            <name lang="nl">QueryParameters</name>
-            <name lang="en">QueryParameters</name>
+        <stereo id="stereotype-name-openapi-operation" primary="yes">
+            <name lang="nl">OpenAPI Operation</name>
+            <name lang="en">OpenAPI Operation</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">TODO</desc>
             <construct>class</construct>
         </stereo>
         
-        <stereo id="stereotype-name-queryparameter" primary="yes">
-            <name lang="nl">QueryParameter</name>
-            <name lang="en">QueryParameter</name>
+        <stereo id="stereotype-name-openapi-parameter" primary="yes">
+            <name lang="nl">OpenAPI Parameter</name>
+            <name lang="en">OpenAPI Parameter</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">TODO</desc>
             <construct>attribute</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-openapi-result" primary="yes">
+            <name lang="nl">OpenAPI Result</name>
+            <name lang="en">OpenAPI Result</name>
+            <desc lang="en">Het resultaat van de operatie. 
+                Het aangewezen objecttype heeft een multipliciteit in de relatie.
+                Optioneel wanneer geen resultaat mogelijk is (0 of 0..1 of 0..*). 
+                Verplicht wanneer minimaal één resultaat verwacht (1 of 1..*). 
+                Meervoudig wanneer meerder resultaten mogelijk zijn (1..* of 0..*).</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>association</construct>
         </stereo>
         
     </stereotypes>

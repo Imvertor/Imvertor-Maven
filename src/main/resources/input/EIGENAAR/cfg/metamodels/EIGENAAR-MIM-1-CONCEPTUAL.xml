@@ -14,14 +14,14 @@
     
     <profiles>
         <profile lang="nl"> 
-            <id>MEGNL</id>
+            <id>MEGNLC</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM 1 EIGENAAR NL</desc> 
+            <desc>MIM 1 EIGENAAR NL CONCEPTUEEL</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
-            <id>MEGEN</id>
+            <id>MEGENC</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM 1 EIGENAAR EN</desc>
+            <desc>MIM 1 EIGENAAR EN CONCEPTUAL</desc>
         </profile>
     </profiles>
     
