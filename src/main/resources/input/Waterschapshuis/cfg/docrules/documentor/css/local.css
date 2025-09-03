@@ -24,7 +24,7 @@
 html > body {
     font-family: 'Asap-Regular', Courier, sans-serif;
     font-size: 12pt;
-    --logius-table-even-rows: #A9BBDF;/* middenblauw */
+    --logius-table-even-rows: #c6edf0;/* middenaqua */
 }
 div.head h1.title { 
     font-family: 'Asap-SemiBold', Courier, sans-serif;
@@ -76,16 +76,16 @@ section div.header-wrapper h5 {
 }
 
 table { 
-    background-color: #D4DDEF;/* lichtblauw */
+    background-color: white;
     border: 1px solid white;
 }
 table th { 
-    background-color: #6384C5;/* donkerblauw */
+    background-color: #31b6bf;/* donkeraqua */
     color: white;
 }
 table th, 
 table td { 
-    border: 1px solid white;
+    /* border: 1px solid white; */
 }
 
 div.subheader {
