@@ -1,0 +1,11 @@
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:OpenAPI="https://armatiek.nl/OpenAPI"
+    targetNamespace="https://armatiek.nl/OpenAPI"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="1.2">
+    
+    <!-- empty -->
+    
+</xs:schema>
