@@ -26,7 +26,45 @@
   <!-- Min, max constraints -->
   <!-- Type van unieke identifiers --> 
   <!-- Bij aggregatie gedeeld reference genereren -->
-  <!-- Ieder object een id en url geven? -->  
+  <!-- Ieder object een id en url geven? --> 
+  
+  <xsl:variable name="primitive-mim-openapi-type-mapping" as="map(xs:string, element(type))">
+    <xsl:map>
+      <xsl:map-entry key="'CharacterString'">
+        <type>string</type> 
+      </xsl:map-entry>
+      <xsl:map-entry key="'Integer'">
+        <type format="int32">number</type>
+      </xsl:map-entry>
+      <xsl:map-entry key="'Real'">
+        <type format="double">number</type>
+      </xsl:map-entry>
+      <xsl:map-entry key="'Decimal'">
+        <type>number</type>
+      </xsl:map-entry>
+      <xsl:map-entry key="'Boolean'">
+        <type>boolean</type>
+      </xsl:map-entry>
+      <xsl:map-entry key="'Date'">
+        <type format="date">string</type>
+      </xsl:map-entry>
+      <xsl:map-entry key="'DateTime'">
+        <type format="date-time">string</type>
+      </xsl:map-entry>
+      <xsl:map-entry key="'Year'">
+        <type format="int32">number</type>
+      </xsl:map-entry>
+      <xsl:map-entry key="'Day'">
+        <type format="int32">number</type>
+      </xsl:map-entry>
+      <xsl:map-entry key="'Month'">
+        <type format="int32">number</type>
+      </xsl:map-entry>
+      <xsl:map-entry key="'URI'">
+        <type format="uri">string</type> 
+      </xsl:map-entry>
+    </xsl:map>
+  </xsl:variable>
     
   <xsl:template match="entity">
     <xsl:variable name="full-package-name" select="local:full-package-name(package-name)" as="xs:string"/>
@@ -41,46 +79,39 @@
         <line>import io.swagger.v3.oas.annotations.media.Schema;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema.*;</line> 
         <line>import java.util.*;</line>
+        <line>import java.time.*;</line>
         <line/>
   
         <xsl:call-template name="javadoc"/>
         
-        <xsl:choose>
-          <xsl:when test="fields/field[choice-id]">
-            <xsl:for-each-group select="fields/field[choice-id]" group-by="choice-id">
-              <xsl:variable name="field-names" select="current-group()/name" as="xs:string+"/>
-              <line>
-                <xsl:text>@Keuze(fieldNames = {{{ string-join(for $n in $field-names return '"' || $n || '"', ', ') }}} , message = "Exactly one of {string-join($field-names, ', ')} must be non-zero")</xsl:text>  
-              </line>
-            </xsl:for-each-group>
-          </xsl:when>
-          <xsl:when test="model-element = 'Keuze'">
-            <xsl:variable name="field-names" select="for $n in fields/field[not(type/@is-standard = 'true')]/name return $n" as="xs:string*"/>
-            <line>
-              <xsl:text>@Keuze(fieldNames = {{{ string-join(for $n in $field-names return '"' || $n || '"', ', ') }}} , message = "Exactly one of {string-join($field-names, ', ')} must be non-zero")</xsl:text>  
-            </line>
-          </xsl:when>
-          <xsl:otherwise>
-            <line>@{model-element}</line>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:if test="not(model-element = 'Keuze')">
+          <line>@{model-element}</line>  
+        </xsl:if>
         
         <xsl:variable name="description" select="local:escape-java(local:definition-as-string(definition))" as="xs:string?"/>
-        <xsl:if test="$description">
-          <line>@Schema(description = "{$description}")</line>
-        </xsl:if>
+        <xsl:variable name="description-field" select="if ($description) then 'description = &quot;' || $description || '&quot;' else ()" as="xs:string?"/>
+        <xsl:choose>
+          <xsl:when test="model-element = 'Keuze'">
+            <xsl:variable name="any-of-classes" 
+              select="string-join(for $f in fields/field[not(auto-generate = 'true')] return local:full-package-name($f/type/@package-name) || '.' || $f/type || '.class', ', ')" as="xs:string"/>    
+            <line>@Schema({if ($description-field) then $description-field || ', ' else ()}anyOf = {{ {$any-of-classes} }})</line>
+          </xsl:when>
+          <xsl:otherwise>
+            <line>@Schema({$description-field})</line>    
+          </xsl:otherwise>
+        </xsl:choose>
         
         <xsl:variable name="super-type-class-name" select="super-type" as="xs:string"/>
         
         <line>public {if (is-abstract = 'true') then 'abstract ' else ''}class {name}{if (super-type) then ' extends ' || local:full-package-name(super-type/@package-name) || '.' || $super-type-class-name  else () } {{</line>
         
-        <xsl:call-template name="identification-field-declarations"/>
+        <xsl:if test="not(model-element = 'Keuze')">
+          <xsl:call-template name="identification-field-declarations"/>
+          <xsl:apply-templates select="fields" mode="field-declaration"/>
         
-        <xsl:apply-templates select="fields" mode="field-declaration"/>
-        
-        <xsl:call-template name="identification-field-getters-setters"/>
-        
-        <xsl:apply-templates select="fields" mode="field-getter-setter"/>
+          <xsl:call-template name="identification-field-getters-setters"/>
+          <xsl:apply-templates select="fields" mode="field-getter-setter"/>
+        </xsl:if>
         
         <line/>
         <line>}}</line>

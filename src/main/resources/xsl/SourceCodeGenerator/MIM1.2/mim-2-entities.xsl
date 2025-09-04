@@ -132,7 +132,7 @@
     mim:datatypen/mim:GestructureerdDatatype | 
     mim:datatypen/mim:Codelijst | 
     mim:datatypen/mim:Referentielijst |
-    mim-ext:constructies/mim-ext:Constructie"> 
+    mim-ext:constructies/mim-ext:Constructie[not(mim-ext:constructietype = 'OPENAPI OPERATION')]"> 
     
     <xsl:variable name="non-mixin-supertype-refs" select="mim:supertypen/mim:GeneralisatieObjecttypen[not(local:is-mixin(.))]/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)" as="element()*"/>  
     <xsl:if test="count($non-mixin-supertype-refs) gt 1">
@@ -562,6 +562,59 @@
     </field>
   </xsl:template>
   
+  <xsl:template match="mim-ext:constructies/mim-ext:Constructie[mim-ext:constructietype = 'OPENAPI OPERATION']">
+    <openapi-operation>
+      <method>{(local:kenmerk-ext(., 'OA HTTP method'), 'GET')[1]}</method>
+      <operation-id>{mim:naam}</operation-id>
+      <path>{local:kenmerk-ext(., 'OA Path')}</path>
+      <tag>{(local:kenmerk-ext(., 'OA Tag'))[1]}</tag>
+      <summary>{local:kenmerk-ext(., 'OA Summary')}</summary>
+      <description>{local:kenmerk-ext(., 'OA Description')}</description>
+      <xsl:where-populated>
+        <parameters>
+          <xsl:for-each select="mim-ext:bevat/mim-ext:Constructie[mim-ext:constructietype = 'OPENAPI PARAMETER']">
+            <xsl:sort select="local:kenmerk-ext(., 'positie')" order="ascending"/>
+            <parameter>
+              <name>{normalize-space(mim:naam)}</name>
+              <type original-type="{mim:type/mim:Datatype}">{map:get($primitive-mim-type-mapping, (mim:type/mim:Datatype, 'CharacterString')[1])}</type> <!-- TODO: support non-standard MIM types? -->
+              <parameter-type>{(local:kenmerk-ext(., 'OA Parameter type'), 'query')[1]}</parameter-type>
+              <cardinality>{mim:kardinaliteit}</cardinality>
+              <required>{local:true-or-false(local:kenmerk-ext(., 'OA Required'))}</required>
+              <description>{local:kenmerk-ext(., 'OA Description')}</description>
+              <example>{local:kenmerk-ext(., 'OA Example')}</example>
+              <xsl:apply-templates select="mim-ext:kenmerken" mode="kenmerk"/>
+            </parameter>
+          </xsl:for-each>
+        </parameters>  
+      </xsl:where-populated>
+      <xsl:where-populated>
+        <request-body>
+          <xsl:for-each select="mim-ext:bevat/mim-ext:Constructie[mim-ext:constructietype = 'OPENAPI REQUEST BODY']">
+            <xsl:for-each select="local:resolve-reference(mim:verwijstNaar/mim-ref:ObjecttypeRef)">
+              <name>{mim:naam}</name>
+              <package-name>{entity:package-name(local:package-hierarchy(.))}</package-name>  
+            </xsl:for-each>
+            <is-collection>{ends-with(normalize-space(mim:kardinaliteit), '*')}</is-collection>
+            <inclusion>{local:kenmerk-ext(., 'inclusion')}</inclusion>  
+          </xsl:for-each>
+        </request-body>  
+      </xsl:where-populated>
+      <xsl:where-populated>
+        <response-body>
+          <xsl:for-each select="mim-ext:bevat/mim-ext:Constructie[mim-ext:constructietype = 'OPENAPI RESPONSE BODY']">
+            <xsl:for-each select="local:resolve-reference(mim:verwijstNaar/mim-ref:ObjecttypeRef)">
+              <name>{mim:naam}</name>
+              <package-name>{entity:package-name(local:package-hierarchy(.))}</package-name>  
+            </xsl:for-each>
+            <is-collection>{ends-with(normalize-space(mim:kardinaliteit), '*')}</is-collection>
+            <inclusion>{local:kenmerk-ext(., 'inclusion')}</inclusion>  
+          </xsl:for-each>
+        </response-body>  
+      </xsl:where-populated>
+      <xsl:apply-templates select="mim-ext:kenmerken" mode="kenmerk"/>
+    </openapi-operation>
+  </xsl:template>
+  
   <xsl:template match="xhtml:*" mode="xhtml">
     <xsl:element name="xhtml:{local-name()}" namespace="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates select="@*|node()" mode="#current"/>
@@ -580,7 +633,16 @@
   <xsl:function name="local:kenmerk-ext" as="xs:string?">
     <xsl:param name="model-element" as="element()"/>
     <xsl:param name="feature-name" as="xs:string"/>
-    <xsl:sequence select="$model-element/mim-ext:kenmerken/mim-ext:Kenmerk[@naam=$feature-name]"/>
+    <xsl:sequence select="$model-element/mim-ext:kenmerken/mim-ext:Kenmerk[lower-case(normalize-space(@naam)) = lower-case(normalize-space($feature-name))]/text()[normalize-space()]"/>
+  </xsl:function>
+  
+  <xsl:function name="local:true-or-false" as="xs:string">
+    <xsl:param name="str" as="xs:string?"/>
+    <xsl:variable name="s" select="lower-case(normalize-space($str))" as="xs:string"/>
+    <xsl:choose>
+      <xsl:when test="$s = ('yes', 'true')">true</xsl:when>
+      <xsl:otherwise>false</xsl:otherwise>
+    </xsl:choose>
   </xsl:function>
   
   <!-- Find the element that is referred to by $ref-element/@xlink:href: -->
