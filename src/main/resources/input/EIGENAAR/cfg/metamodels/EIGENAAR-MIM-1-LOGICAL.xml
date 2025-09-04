@@ -8,6 +8,8 @@
     
     <xi:include href="EIGENAAR-MIM-1-CONCEPTUAL.xml"/>
     
+    <xi:include href="../../../Armatiek/cfg/metamodels/Armatiek-OpenAPI-1-BASE-10.xml"/>
+
     <name>EIGENAAR-MIM-1-LOGICAL</name>
     
     <profiles>
@@ -31,34 +33,7 @@
     
     <stereotypes xml:id="stereotypes">
         
-        <stereo id="stereotype-name-openapi-operation" primary="yes">
-            <name lang="nl">OpenAPI Operation</name>
-            <name lang="en">OpenAPI Operation</name>
-            <desc lang="en">TODO</desc>
-            <desc lang="nl">TODO</desc>
-            <construct>class</construct>
-        </stereo>
-        
-        <stereo id="stereotype-name-openapi-parameter" primary="yes">
-            <name lang="nl">OpenAPI Parameter</name>
-            <name lang="en">OpenAPI Parameter</name>
-            <desc lang="en">TODO</desc>
-            <desc lang="nl">TODO</desc>
-            <construct>attribute</construct>
-        </stereo>
-        
-        <stereo id="stereotype-name-openapi-result" primary="yes">
-            <name lang="nl">OpenAPI Result</name>
-            <name lang="en">OpenAPI Result</name>
-            <desc lang="en">Het resultaat van de operatie. 
-                Het aangewezen objecttype heeft een multipliciteit in de relatie.
-                Optioneel wanneer geen resultaat mogelijk is (0 of 0..1 of 0..*). 
-                Verplicht wanneer minimaal één resultaat verwacht (1 of 1..*). 
-                Meervoudig wanneer meerder resultaten mogelijk zijn (1..* of 0..*).</desc>
-            <desc lang="nl">TODO</desc>
-            <construct>association</construct>
-        </stereo>
-        
+           
     </stereotypes>
     
 </metamodel>

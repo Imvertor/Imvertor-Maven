@@ -12,6 +12,14 @@
     <name>EIGENAAR-MIM-12-LOGICAL</name>
     
     <stereos>
+        <stereo id="stereotype-name-openapi-informatiemodel-package">
+            <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-openapi-objecttype">
+            <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
         <stereo id="stereotype-name-openapi-operation">
             <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
             <toolbox category="MISCELLANEOUS"/>
@@ -19,7 +27,10 @@
         <stereo id="stereotype-name-openapi-parameter">
             <toolbox category="MISCELLANEOUS"/>
         </stereo>
-        <stereo id="stereotype-name-openapi-result">
+        <stereo id="stereotype-name-openapi-responsebody">
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-openapi-requestbody">
             <toolbox category="MISCELLANEOUS"/>
         </stereo>
     </stereos>
