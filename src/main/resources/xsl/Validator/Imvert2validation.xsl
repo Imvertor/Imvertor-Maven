@@ -746,11 +746,13 @@
     <xsl:template match="imvert:class[imvert:designation='enumeration']" priority="1">
         <!--setup-->
         <!--validation-->
-        <xsl:for-each select="imvert:stereotype">
+        <?x
+       <xsl:for-each select="imvert:stereotype">
             <xsl:sequence select="imf:report-error(.., 
                 not(@id = ($enumeration-stereos)), 
                 'UML enumerations should be stereotyped as: [1] and not [2]',(string-join(imf:get-config-stereotypes($enumeration-stereos),' or '),imf:string-group(.)))"/>
         </xsl:for-each>
+        x?>
         <xsl:sequence select="imf:report-error(., 
             imvert:associations/imvert:association, 
             'Enumerations may not have associations')"/>
