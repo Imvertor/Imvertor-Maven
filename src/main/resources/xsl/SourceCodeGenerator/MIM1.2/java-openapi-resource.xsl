@@ -4,6 +4,7 @@
   xmlns:map="http://www.w3.org/2005/xpath-functions/map"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:functx="http://www.functx.com"
+  xmlns:imf="http://www.imvertor.org/xsl/functions"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:local="urn:local"
@@ -19,17 +20,7 @@
   
   <xsl:param name="package-prefix" as="xs:string" select="'nl.imvertor.model'"/>
   <xsl:param name="resource-package-prefix" as="xs:string" select="'nl.imvertor.resource'"/>
-  
-  <!--
-  <xsl:variable name="feature-name-info-title" as="xs:string">OA Title</xsl:variable>
-  <xsl:variable name="feature-name-info-description" as="xs:string">OA Description</xsl:variable>
-  <xsl:variable name="feature-name-info-version" as="xs:string">OA Version</xsl:variable>
-  <xsl:variable name="feature-name-info-contact-name" as="xs:string">OA Contact Name</xsl:variable>
-  <xsl:variable name="feature-name-info-contact-url" as="xs:string">OA Contact Url</xsl:variable>
-  <xsl:variable name="feature-name-info-contact-email" as="xs:string">OA Contact Email</xsl:variable>
-  <xsl:variable name="feature-name-path-version" as="xs:string">OA Path version</xsl:variable>
-  -->
-  
+    
   <xsl:variable name="common-base-url" as="xs:string">https://armatiek.github.io/imvertor-openapi-generator/openapi/generiek.yaml</xsl:variable>
   <xsl:variable name="response-component-base-url" as="xs:string">{$common-base-url}#/components/responses/</xsl:variable>
      
@@ -119,7 +110,6 @@
                   <name>{name}</name>
                   <package-name>{package-name}</package-name>
                   <is-collection>true</is-collection>
-                  <inclusion/> <!-- TODO -->
                 </response-body>
               </xsl:with-param>
             </xsl:call-template>
@@ -254,6 +244,9 @@
   
   <xsl:template name="generate-custom-operations">
     <xsl:for-each-group select=".//openapi-operation" group-by="tag">
+      
+      <xsl:call-template name="validate-operation"/>
+      
       <xsl:variable name="tag" select="current-grouping-key()" as="xs:string"/>
       <xsl:variable name="class-name" select="funct:uppercase-first(local:to-java-identifier($tag))"/>
       
@@ -278,10 +271,10 @@
           <line>public class {$class-name} {{</line>
           
           <xsl:variable name="api-path-version" select="(local:feature(/model, 'OA Path version'), '1')[1]" as="xs:string?"/>
-          <xsl:variable name="path" select="'/v' || $api-path-version || replace(path, '^/v\d+', '')" as="xs:string"/>
           
           <!-- Generate all operations for this tag: -->
           <xsl:for-each select="current-group()">
+            <xsl:variable name="path" select="'/v' || $api-path-version || replace(path, '^/v\d+', '')" as="xs:string"/>       
             <xsl:call-template name="generate-operation">
               <xsl:with-param name="path" select="$path" as="xs:string?"/>
               <xsl:with-param name="method" select="method" as="xs:string"/>
@@ -290,7 +283,15 @@
               <xsl:with-param name="operation-id" select="operation-id" as="xs:string"/>
               <xsl:with-param name="parameters" select="parameters/parameter" as="element(parameter)*"/>
               <xsl:with-param name="request-body" select="request-body" as="element(request-body)?"/>
-              <xsl:with-param name="response-body" select="response-body" as="element(response-body)?"/>
+              <xsl:with-param name="response-body" as="element(response-body)?">
+                <xsl:if test="not(method = 'DELETE')">
+                  <xsl:call-template name="get-response-body">
+                    <xsl:with-param name="request-body" select="request-body" as="element(request-body)?"/>
+                    <xsl:with-param name="response-body" select="response-body"  as="element(response-body)?"/>
+                    <xsl:with-param name="operation-id" select="operation-id" as="xs:string?"/>
+                  </xsl:call-template>  
+                </xsl:if>
+              </xsl:with-param>
             </xsl:call-template>
           </xsl:for-each>
           
@@ -394,7 +395,8 @@
       <line indent="4">@Parameter(ref = "{$common-base-url}#/components/parameters/sortField") String sortField{if ($parameters) then ',' else ') {'}</line>  
     </xsl:if>
     <xsl:for-each select="$parameters">
-      <line indent="4">@{funct:uppercase-first(parameter-type)}Param("{name}") @Parameter(description = "{description}", required = {required}, example = "{example}") {type}{if (ends-with(cardinality, '*')) then '[]' else ()} {name}{if (not(position() = last()) or $request-body) then ',' else ') {'}</line> <!-- TODO: cardinaliteit -->
+      <xsl:variable name="required" select="if (parameter-type = 'path') then 'true' else required" as="xs:string"/>
+      <line indent="4">@{funct:uppercase-first(parameter-type)}Param("{name}") @Parameter(description = "{description}", required = {$required}, example = "{example}") {type}{if (ends-with(cardinality, '*')) then '[]' else ()} {name}{if (not(position() = last()) or $request-body) then ',' else ') {'}</line> <!-- TODO: cardinaliteit -->
     </xsl:for-each>
     <xsl:if test="$request-body">
       <line indent="4">@Parameter(description = "De gegevens van het {$request-body/name} object", required = true) {$fqn-request-class-name} {lower-case($request-body/name)}) {{</line>
@@ -403,224 +405,6 @@
     <line indent="4">return Response.ok().build();</line>
     <line indent="2">}}</line>
   </xsl:template>
-  
-  <!--
-  <xsl:template name="get-collection">
-    <xsl:param name="resource-class-name" as="xs:string"/>
-    <xsl:param name="path" as="xs:string?"/>
-    
-    <xsl:variable name="operation-id" select="features/feature[@name='openapi.getCol.operationId']" as="xs:string?"/>
-    
-    <line/>
-    <line indent="2">@GET</line>
-    <line indent="2">@Produces(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Retourneert de lijst van alle {name} objecten", description = "Retourneert een gepagineerde lijst van alle {name} objecten")</line>
-    <line indent="2">@ApiResponses(value = {{</line>
-    <line indent="4">@ApiResponse(responseCode = "200", description = "OK",</line>
-    <line indent="6">content = @Content(mediaType = "application/json",</line> 
-    <line indent="6">schema = @Schema(implementation = Paginated{name}List.class)),</line>
-    <line indent="6">headers = {{@Header(name = "api-version", ref = "{$common-base-url}#/components/headers/API-Version")}}),</line>
-        
-    <xsl:call-template name="error-responses">
-      <xsl:with-param name="configured-response-codes" select="/model/features/feature[@name = 'openapi.getCol.responseCodes']" as="xs:string?"/>
-      <xsl:with-param name="default-response-codes" select="$openapi-getcol-response-codes" as="xs:string+"/>
-    </xsl:call-template>
-    
-    <line indent="2">}})</line>
-    <line indent="2">public Response getAll{name}(</line>
-    <line indent="4">@Parameter(ref = "{$common-base-url}#/components/parameters/page")</line>
-    <line indent="4">int page,</line>
-    <line indent="4">@Parameter(ref = "{$common-base-url}#/components/parameters/pageSize")</line>
-    <line indent="4">int pageSize,</line>
-    <line indent="4">@Parameter(ref = "{$common-base-url}#/components/parameters/sortField")</line>
-    <line indent="4">String sortField) {{</line>
-    
-    <line indent="4">return Response.ok().build();</line>
-    <line indent="2">}}</line>
-  </xsl:template>
-  
-  <xsl:template name="get-item">
-    <xsl:param name="resource-class-name" as="xs:string"/>
-    <xsl:param name="id-name" as="xs:string"/>
-    <xsl:param name="id-type" as="xs:string"/>
-    <xsl:param name="path" as="xs:string?"/>
-    
-    <xsl:variable name="operation-id" select="features/feature[@name='openapi.getItem.operationId']" as="xs:string?"/>
-    
-    <line/>
-    <line indent="2">@GET</line>
-    <line indent="2">@Path("/{{{$id-name}}}")</line>
-    <line indent="2">@Produces(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Retourneert een {name} object op basis van zijn unieke identificatie", description = "Retourneert een individueel {name} object op basis van zijn unieke identificatie")</line>
-    <line indent="2">@ApiResponses(value = {{</line>
-    <line indent="4">@ApiResponse(responseCode = "200", description = "{name} was gevonden",</line>
-    <line indent="6">content = @Content(mediaType = "application/json",</line> 
-    <line indent="6">schema = @Schema(implementation = {name}.class)),</line>
-    <line indent="6">headers = {{@Header(name = "api-version", ref = "{$common-base-url}#/components/headers/API-Version")}}),</line>
-    
-    <xsl:call-template name="error-responses">
-      <xsl:with-param name="configured-response-codes" select="/model/features/feature[@name = 'openapi.getItem.responseCodes']" as="xs:string?"/>
-      <xsl:with-param name="default-response-codes" select="$openapi-getitem-response-codes" as="xs:string+"/>
-    </xsl:call-template>
-    
-    <line indent="2">}})</line>
-    <line indent="2">public Response get{name}ById(@Parameter(description = "{name} ID", example="1", required = true) @PathParam("{$id-name}") {$id-type} {$id-name}) {{</line>
-    <line indent="4">return Response.ok().build();</line>
-    <line indent="2">}}</line>
-  </xsl:template>
-  
-  <xsl:template name="post">
-    <xsl:param name="resource-class-name" as="xs:string"/>
-    <xsl:param name="path" as="xs:string?"/> 
-    <xsl:variable name="operation-id" select="features/feature[@name='openapi.post.operationId']" as="xs:string?"/>
-    
-    <line/>
-    <line indent="2">@POST</line>
-    <line indent="2">@Consumes(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Produces(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Maakt een nieuw {name} object", description = "Maakt een nieuw {name} object aan op basis van de aangeleverde gegevens")</line>
-    <line indent="2">@ApiResponses(value = {{</line>
-    <line indent="4">@ApiResponse(responseCode = "201", description = "{name} succesvol aangemaakt",</line>
-    <line indent="6">content = @Content(mediaType = "application/json",</line> 
-    <line indent="6">schema = @Schema(implementation = {name}.class)),</line>
-    <line indent="6">headers = {{@Header(name = "api-version", ref = "{$common-base-url}#/components/headers/API-Version"),</line>
-    <line indent="8">@Header(name = "Location", description = "URI van het opgeslagen object", schema = @Schema(type = "string", format = "uri"))}}),</line>
-    
-    <xsl:call-template name="error-responses">
-      <xsl:with-param name="configured-response-codes" select="/model/features/feature[@name = 'openapi.post.responseCodes']" as="xs:string?"/>
-      <xsl:with-param name="default-response-codes" select="$openapi-post-response-codes" as="xs:string+"/>
-    </xsl:call-template>
-    
-    <line indent="2">}})</line>
-    <line indent="2">public Response create{name}(@Parameter(description = "De gegevens van het {name} object", required = true) {name} {lower-case(name)}) {{</line>
-    <line indent="4">return Response.ok().build();</line>
-    <line indent="2">}}</line>
-  </xsl:template>
-  
-  <xsl:template name="delete">
-    <xsl:param name="resource-class-name" as="xs:string"/>
-    <xsl:param name="id-name" as="xs:string"/>
-    <xsl:param name="id-type" as="xs:string"/>
-    <xsl:param name="path" as="xs:string?"/>
-    
-    <xsl:variable name="operation-id" select="features/feature[@name='openapi.post.operationId']" as="xs:string?"/>
-    
-    <line/>
-    <line indent="2">@DELETE</line>
-    <line indent="2">@Path("/{{{$id-name}}}")</line>
-    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Verwijderd een {name} object", description = "Verwijderd een specifiek {name} object permanent uit het systeem")</line>
-    <line indent="2">@ApiResponses(value = {{</line>
-    <line indent="4">@ApiResponse(responseCode = "202", description = "{name} object zal worden verwijderd",</line>
-    <line indent="6">headers = {{@Header(name = "api-version", ref = "{$common-base-url}#/components/headers/API-Version")}}),</line>
-    <line indent="4">@ApiResponse(responseCode = "204", description = "{name} object succesvol verwijderd",</line>
-    <line indent="6">headers = {{@Header(name = "api-version", ref = "{$common-base-url}#/components/headers/API-Version")}}),</line>
-    
-    <xsl:call-template name="error-responses">
-      <xsl:with-param name="configured-response-codes" select="/model/features/feature[@name = 'openapi.delete.responseCodes']" as="xs:string?"/>
-      <xsl:with-param name="default-response-codes" select="$openapi-delete-response-codes" as="xs:string+"/>
-    </xsl:call-template>
-     
-    <line indent="2">}})</line>
-    <line indent="2">public Response delete{name}(@Parameter(description = "{name} ID", example="1", required = true) @PathParam("{$id-name}") {$id-type} {$id-name}) {{</line>
-    <line indent="4">return Response.ok().build();</line>
-    <line indent="2">}}</line>
-  </xsl:template>
-  
-  <xsl:template name="put">
-    <xsl:param name="resource-class-name" as="xs:string"/>
-    <xsl:param name="id-name" as="xs:string"/>
-    <xsl:param name="id-type" as="xs:string"/>
-    <xsl:param name="path" as="xs:string?"/>
-    
-    <xsl:variable name="operation-id" select="features/feature[@name='openapi.post.operationId']" as="xs:string?"/>
-    
-    <line/>
-    <line indent="2">@PUT</line>
-    <line indent="2">@Path("/{{{$id-name}}}")</line>
-    <line indent="2">@Consumes(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Produces(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Maakt nieuw of overschrijft bestaand {name} object", description = "Maakt een nieuw of overschrijft (volledig) een bestaand {name} object")</line>
-    <line indent="2">@ApiResponses(value = {{</line>
-    <line indent="4">@ApiResponse(responseCode = "200", description = "{name} object succesvol aangemaakt/overschreven",</line>
-    <line indent="6">content = @Content(mediaType = "application/json",</line> 
-    <line indent="6">schema = @Schema(implementation = {name}.class)),</line>
-    <line indent="6">headers = {{@Header(name = "api-version", ref = "{$common-base-url}#/components/headers/API-Version"),</line>
-    <line indent="8">@Header(name = "Location", description = "URI van het opgeslagen object", schema = @Schema(type = "string", format = "uri"))}}),</line>
-    <line indent="4">@ApiResponse(responseCode = "201", description = "{name} object succesvol aangemaakt",</line>
-    <line indent="6">content = @Content(mediaType = "application/json",</line> 
-    <line indent="6">schema = @Schema(implementation = {name}.class)),</line>
-    <line indent="6">headers = {{@Header(name = "api-version", ref = "{$common-base-url}#/components/headers/API-Version"),</line>
-    <line indent="8">@Header(name = "Location", description = "URI van het opgeslagen object", schema = @Schema(type = "string", format = "uri"))}}),</line>
-    <line indent="4">@ApiResponse(responseCode = "204", description = "{name} object succesvol overschreven",</line>
-    <line indent="6">headers = {{@Header(name = "api-version", ref = "{$common-base-url}#/components/headers/API-Version")}}),</line>
-    
-    <xsl:call-template name="error-responses">
-      <xsl:with-param name="configured-response-codes" select="/model/features/feature[@name = 'openapi.put.responseCodes']" as="xs:string?"/>
-      <xsl:with-param name="default-response-codes" select="$openapi-put-response-codes" as="xs:string+"/>
-    </xsl:call-template>
-        
-    <line indent="2">}})</line>
-    <line indent="2">public Response update{name}(</line>
-    <line indent="4">@Parameter(description = "{name} ID", example="1", required = true) @PathParam("{$id-name}") {$id-type} {$id-name},</line> 
-    <line indent="4">@Parameter(description = "Complete {name} update data", required = true) {name} {lower-case(name)}) {{</line>
-    <line indent="4">return Response.ok().build();</line>
-    <line indent="2">}}</line>
-  </xsl:template>
-  
-  <xsl:template name="patch">
-    <xsl:param name="resource-class-name" as="xs:string"/>
-    <xsl:param name="id-name" as="xs:string"/>
-    <xsl:param name="id-type" as="xs:string"/>
-    <xsl:param name="path" as="xs:string?"/>
-    
-    <xsl:variable name="operation-id" select="features/feature[@name='openapi.post.operationId']" as="xs:string?"/>
-    
-    <line/>
-    <line indent="2">@PATCH</line>
-    <line indent="2">@Path("/{{{$id-name}}}")</line>
-    <line indent="2">@Consumes(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Produces(MediaType.APPLICATION_JSON)</line>
-    <line indent="2">@Operation({if ($operation-id) then 'operationId = "{$operation-id}", ' else ()}summary = "Werkt een bestaand {name} object gedeeltelijk bij", description = "Werkt een bestaand {name} object gedeeltelijk bij door alleen de aangeleverde velden te overschrijven")</line>
-    <line indent="2">@ApiResponses(value = {{</line>
-    <line indent="4">@ApiResponse(responseCode = "200", description = "{name} object succesvol aangemaakt/overschreven",</line>
-    <line indent="6">content = @Content(mediaType = "application/json",</line> 
-    <line indent="6">schema = @Schema(implementation = {name}.class)),</line>
-    <line indent="6">headers = {{@Header(name = "api-version", ref = "{$common-base-url}#/components/headers/API-Version"),</line>
-    <line indent="8">@Header(name = "Location", description = "URI van het opgeslagen object", schema = @Schema(type = "string", format = "uri"))}}),</line>
-    <line indent="4">@ApiResponse(responseCode = "204", description = "{name} object succesvol overschreven",</line>
-    <line indent="6">headers = {{@Header(name = "api-version", ref = "{$common-base-url}#/components/headers/API-Version")}}),</line>
-    
-    <xsl:call-template name="error-responses">
-      <xsl:with-param name="configured-response-codes" select="/model/features/feature[@name = 'openapi.patch.responseCodes']" as="xs:string?"/>
-      <xsl:with-param name="default-response-codes" select="$openapi-patch-response-codes" as="xs:string+"/>
-    </xsl:call-template>
-    
-    <line indent="2">}})</line>
-    <line indent="2">public Response patch{name}(</line>
-    <line indent="4">@Parameter(description = "{name} ID", example="1", required = true) @PathParam("{$id-name}") {$id-type} {$id-name},</line> 
-    <line indent="4">@Parameter(description = "{name} update data", required = true) {name} {lower-case(name)}) {{</line>
-    <line indent="4">return Response.ok().build();</line>
-    <line indent="2">}}</line>
-  </xsl:template>
-  
-  <xsl:template name="error-responses">
-    <xsl:param name="configured-response-codes" as="xs:string?"/>
-    <xsl:param name="default-response-codes" as="xs:string+"/>
-    <xsl:variable name="resolved-response-codes" as="xs:string*">
-      <xsl:choose>
-        <xsl:when test="$configured-response-codes">
-          <xsl:sequence select="tokenize($configured-response-codes, '[,; ]+')"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:sequence select="$default-response-codes"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:for-each select="$resolved-response-codes[not(starts-with(., '2'))]">
-      <line indent="4">@ApiResponse(responseCode = "{.}", ref="{$response-component-base-url}{.}"){if (not(position() = last())) then ',' else ()}</line>
-    </xsl:for-each>
-  </xsl:template>
-  -->
     
   <xsl:template name="generate-openapi-header">
     <xsl:result-document href="{$output-uri}/src/main/java/nl/imvertor/resource/OpenApiDefinition.java" method="text">  
@@ -665,6 +449,66 @@
       </xsl:variable>
       <xsl:sequence select="string-join($lines)"/>
     </xsl:result-document>
+  </xsl:template>
+  
+  <xsl:template name="validate-operation">
+    <xsl:if test="not(normalize-space(operation-id))">
+      <xsl:sequence select="imf:message(., 'ERROR', 'Operation ID not specified of OpenAPI operation', '')"/>
+    </xsl:if>
+    <xsl:variable name="operation-id" select="operation-id" as="xs:string"/>
+    <xsl:if test="not(normalize-space(method))">
+      <xsl:sequence select="imf:message(., 'ERROR', 'HTTP method of OpenAPI operation not specified', 'Operation ID: ' || $operation-id)"/>
+    </xsl:if>
+    <xsl:if test="path = '/nopath'">
+      <xsl:sequence select="imf:message(., 'ERROR', 'Path of OpenAPI operation not specified', 'Operation ID: ' || $operation-id)"/>
+    </xsl:if>
+    <xsl:if test="tag = 'NoTag'">
+      <xsl:sequence select="imf:message(., 'WARN', 'Tag of OpenAPI operation not specified', 'Operation ID: ' || $operation-id)"/>
+    </xsl:if>
+    <xsl:for-each select="parameters/parameter">
+      <xsl:if test="not(normalize-space(name))">
+        <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI parameter name is not specified', 'Operation ID: ' || $operation-id || ', parameter name: ' || name)"/>  
+      </xsl:if>
+      <xsl:if test="not(normalize-space(parameter-type))">
+        <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI parameter type is not specified', 'Operation ID: ' || $operation-id || ', parameter name: ' || name)"/>  
+      </xsl:if>
+      <xsl:if test="parameter-type = 'path' and required = 'false'">
+        <xsl:sequence select="imf:message(., 'WARN', 'OpenAPI parameters with parameter type &quot;path&quot; must be defined as required', 'Operation ID: ' || $operation-id || ', parameter name: ' || name)"/>  
+      </xsl:if>
+    </xsl:for-each> 
+    <xsl:choose>
+      <xsl:when test="method = 'GET' and not(response-body)">
+        <xsl:sequence select="imf:message(., 'ERROR', 'GET OpenAPI operation is missing the Response Body relation', 'Operation ID: ' || $operation-id)"/>
+      </xsl:when>
+      <xsl:when test="method = 'POST' and not(request-body)">
+        <xsl:sequence select="imf:message(., 'ERROR', 'POST OpenAPI operation is missing the Request Body relation', 'Operation ID: ' || $operation-id)"/>
+      </xsl:when>
+      <xsl:when test="method = 'DELETE' and (response-body or request-body)">
+        <xsl:sequence select="imf:message(., 'ERROR', 'DELETE OpenAPI operation cannot have a Request Body relation or Response Body Relation', 'Operation ID: ' || $operation-id)"/>
+      </xsl:when>
+      <xsl:when test="method = 'PUT' and not(request-body)">
+        <xsl:sequence select="imf:message(., 'ERROR', 'PUT OpenAPI operation is missing the Request Body relation', 'Operation ID: ' || $operation-id)"/>
+      </xsl:when>
+      <xsl:when test="method = 'PATCH' and not(request-body)">
+        <xsl:sequence select="imf:message(., 'ERROR', 'PATCH OpenAPI operation is missing the Request Body relation', 'Operation ID: ' || $operation-id)"/>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+  
+  <xsl:template name="get-response-body" as="element(response-body)?">
+    <xsl:param name="request-body" as="element(request-body)?"/>
+    <xsl:param name="response-body" as="element(response-body)?"/>
+    <xsl:param name="operation-id" as="xs:string?"/>
+    <xsl:choose>
+      <xsl:when test="$response-body">
+        <xsl:sequence select="$response-body"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <response-body>
+          <xsl:sequence select="$request-body/*"/>
+        </response-body>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:function name="local:full-resource-package-name" as="xs:string">

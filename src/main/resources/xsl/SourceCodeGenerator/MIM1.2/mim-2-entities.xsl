@@ -564,10 +564,10 @@
   
   <xsl:template match="mim-ext:constructies/mim-ext:Constructie[mim-ext:constructietype = 'OPENAPI OPERATION']">
     <openapi-operation>
-      <method>{(local:kenmerk-ext(., 'OA HTTP method'), 'GET')[1]}</method>
+      <method>{upper-case((local:kenmerk-ext(., 'OA HTTP method'), 'GET')[1])}</method>
       <operation-id>{mim:naam}</operation-id>
-      <path>{local:kenmerk-ext(., 'OA Path')}</path>
-      <tag>{(local:kenmerk-ext(., 'OA Tag'))[1]}</tag>
+      <path>{(local:kenmerk-ext(., 'OA Path'), '/nopath')[1]}</path>
+      <tag>{(local:kenmerk-ext(., 'OA Tag'), 'NoTag')[1]}</tag>
       <summary>{local:kenmerk-ext(., 'OA Summary')}</summary>
       <description>{local:kenmerk-ext(., 'OA Description')}</description>
       <xsl:where-populated>
@@ -577,9 +577,9 @@
             <parameter>
               <name>{normalize-space(mim:naam)}</name>
               <type original-type="{mim:type/mim:Datatype}">{map:get($primitive-mim-type-mapping, (mim:type/mim:Datatype, 'CharacterString')[1])}</type> <!-- TODO: support non-standard MIM types? -->
-              <parameter-type>{(local:kenmerk-ext(., 'OA Parameter type'), 'query')[1]}</parameter-type>
+              <parameter-type>{local:kenmerk-ext(., 'OA Parameter type')}</parameter-type>
               <cardinality>{mim:kardinaliteit}</cardinality>
-              <required>{local:true-or-false(local:kenmerk-ext(., 'OA Required'))}</required>
+              <required>{(local:true-or-false(local:kenmerk-ext(., 'OA Required')), 'false')[1]}</required>
               <description>{local:kenmerk-ext(., 'OA Description')}</description>
               <example>{local:kenmerk-ext(., 'OA Example')}</example>
               <xsl:apply-templates select="mim-ext:kenmerken" mode="kenmerk"/>
@@ -594,8 +594,7 @@
               <name>{mim:naam}</name>
               <package-name>{entity:package-name(local:package-hierarchy(.))}</package-name>  
             </xsl:for-each>
-            <is-collection>{ends-with(normalize-space(mim:kardinaliteit), '*')}</is-collection>
-            <inclusion>{local:kenmerk-ext(., 'inclusion')}</inclusion>  
+            <is-collection>{ends-with(normalize-space(mim:kardinaliteit), '*')}</is-collection> 
           </xsl:for-each>
         </request-body>  
       </xsl:where-populated>
@@ -607,7 +606,6 @@
               <package-name>{entity:package-name(local:package-hierarchy(.))}</package-name>  
             </xsl:for-each>
             <is-collection>{ends-with(normalize-space(mim:kardinaliteit), '*')}</is-collection>
-            <inclusion>{local:kenmerk-ext(., 'inclusion')}</inclusion>  
           </xsl:for-each>
         </response-body>  
       </xsl:where-populated>
@@ -874,7 +872,7 @@
     <xsl:param name="type" as="xs:string"/>
     <xsl:param name="text" as="xs:string"/>
     <xsl:param name="info" as="item()*"/>
-    <xsl:message select="$type || ': ' || $text"/>
+    <xsl:message select="$type || ': ' || $text || ', ' || $info"/>
   </xsl:function>
   
   <xsl:template name="kenmerken">
