@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <!-- 
+         OpenAPI specificatie gebaseerd op https://github.com/Armatiek/imvertor-openapi-generator.
+    --> 
+ 
+    <name>Armatiek-OpenAPI</name>
+    
+    <tagged-values>
+        
+        <!-- Tv's op het informatiemodel (API) -->
+        
+        <tv norm="space" id="CFG-TV-OPENAPI-TITLE">
+            <name lang="nl">OA Title</name>
+            <name lang="en">OA Title</name>
+            <desc lang="nl">De title van de OpenAPI specificatie. Wanneer deze tagged value niet is opgegeven dan wordt de MIM naam van het Informatiemodel gebruikt.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-DESCRIPTION">
+            <name lang="nl">OA Description</name>
+            <name lang="en">OA Description</name>
+            <desc lang="nl">De description van de OpenAPI specificatie of operatie. Wanneer deze tagged value niet is opgegeven dan wordt de MIM definitie van het Informatiemodel gebruikt. 
+                Voor operaties en parameters is de description verplicht.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="1">stereotype-name-openapi-operation</stereo>
+                <stereo minmax="1">stereotype-name-openapi-parameter</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-SUMMARY">
+            <name lang="nl">OA Summary</name>
+            <name lang="en">OA Summary</name>
+            <desc lang="nl">De samenvatting van de OpenAPI operatie. Deze is verplicht.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-operation</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-VERSION">
+            <name lang="nl">OA Version</name>
+            <name lang="en">OA Version</name>
+            <desc lang="nl">De versie van de specificatie die moet worden gegenereerd, bijv. versie '2.0.2'.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-PATHVERSION">
+            <name lang="nl">OA Path version</name>
+            <name lang="en">OA Path version</name>
+            <desc lang="nl">Het versienummer dat wordt opgenomen als onderdeel van de url paden (bijvoorbeeld https://api.example.org/v1/). Dit moet een enkelvoudig nummer zijn zonder punten (geen semver) en zonder prefix 'v'. De default waarde is '1'.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-OPENAPIVERSION">
+            <name lang="nl">OA Open API Version</name>
+            <name lang="en">OA Open API Version</name>
+            <desc lang="nl">De versie van de OpenAPI specificatie die moet worden gegenereerd, versie '3.0.1' of '3.1.0'. De default waarde is '3.0.1'.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-CONTACTNAME">
+            <name lang="nl">OA Contact name</name>
+            <name lang="en">OA Contact name</name>
+            <desc lang="nl">Naam van het contact van de OpenAPI specificatie. Er is geen default waarde voor deze tagged value.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-CONTACTURL">
+            <name lang="nl">OA Contact url</name>
+            <name lang="en">OA Contact url</name>
+            <desc lang="nl">URL van het contact van de OpenAPI specificatie. Er is geen default waarde voor deze tagged value.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-CONTACTEMAIL">
+            <name lang="nl">OA Contact email</name>
+            <name lang="en">OA Contact email</name>
+            <desc lang="nl">Email van het contact van de OpenAPI specificatie. Er is geen default waarde voor deze tagged value.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-OPENAPI-LICENSENAME">
+            <name lang="nl">OA License name</name>
+            <name lang="en">OA License name</name>
+            <desc lang="nl">De license waaronder de OpenAPI specificatie wordt gepubliceerd. De default waarde is "European Union Public License, version 1.2 (EUPL-1.2)".</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-LICENSEURL">
+            <name lang="nl">OA License url</name>
+            <name lang="en">OA License url</name>
+            <desc lang="nl">De license waaronder de OpenAPI specificatie wordt gepubliceerd. De default waarde is "https://eupl.eu/1.2/en".</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-METHODS">
+            <name lang="nl">OA Methods</name>
+            <name lang="en">OA Methods</name>
+            <desc lang="nl">De standaard CRUD operaties die moeten worden ondersteund in de OpenAPI specificatie. 
+                Als bijvoorbeeld de GET method voor zowel items als collecties moet worden ondersteund, alsmede POST, PUT, DELETE, maar geen PATCH, dan moet de waarde van deze tag zijn: getCol,getItem,post,put,delete.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-objecttype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-GETC">
+            <name lang="nl">OA Response codes GET collection</name>
+            <name lang="en">OA Response codes GET collection</name>
+            <desc lang="nl">Ondersteunde response codes voor de GET request, wanneer een collectie van items wordt opgevraagd. 
+                De waarden worden komma gescheiden opgegeven. 
+                Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.
+                </desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-GETI">
+            <name lang="nl">OA Response codes GET item</name>
+            <name lang="en">OA Response codes GET item</name>
+            <desc lang="nl">Ondersteunde response codes voor de GET request, wanneer een enkel item wordt opgevraagd. 
+                De waarden worden komma gescheiden opgegeven. 
+                Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-POST">
+            <name lang="nl">OA Response codes POST</name>
+            <name lang="en">OA Response codes POST</name>
+            <desc lang="nl">Ondersteunde response codes voor de POST request. 
+                De waarden worden komma gescheiden opgegeven. 
+                Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-DEL">
+            <name lang="nl">OA Response codes DEL</name>
+            <name lang="en">OA Response codes DEL</name>
+            <desc lang="nl">Ondersteunde response codes voor de DEL request. 
+                De waarden worden komma gescheiden opgegeven. 
+                Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-PUT">
+            <name lang="nl">OA Response codes PUT</name>
+            <name lang="en">OA Response codes PUT</name>
+            <desc lang="nl">Ondersteunde response codes voor de PUT request. 
+                De waarden worden komma gescheiden opgegeven. 
+                Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-PATCH">
+            <name lang="nl">OA Response codes PATCH</name>
+            <name lang="en">OA Response codes PATCH</name>
+            <desc lang="nl">Ondersteunde response codes voor de PATCH request. 
+                De waarden worden komma gescheiden opgegeven. 
+                Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <!-- Tv's op het objecttype (API) -->
+        
+        <tv norm="space" id="CFG-TV-OPENAPI-EXPOSE">
+            <name lang="nl">OA Expose</name>
+            <name lang="en">OA Expose</name>
+            <desc lang="nl">Via deze tag kan worden aangegeven of endpoints voor dit Objecttype beschikbaar moeten worden gemaakt in de OpenAPI specificatie of niet (default "yes").</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <declared-values lang="nl">
+                <value default="yes">yes</value>
+                <value>no</value>
+            </declared-values>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-openapi-objecttype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <!-- Tv's op de operatie (API) -->
+        
+        <tv norm="space" id="CFG-TV-OPENAPI-TAG">
+            <name lang="nl">OA Tag</name>
+            <name lang="en">OA Tag</name>
+            <desc lang="nl">De groep van operaties waartoe de operaties behoort.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-operation</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-OPENAPI-HTTPMETHOD">
+            <name lang="nl">OA HTTP method</name>
+            <name lang="en">OA HTTP method</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <declared-values lang="nl">
+                <value default="yes">GET</value>
+                <value>POST</value>
+                <value>PUT</value>
+                <value>DEL</value>
+                <value>PATCH</value>
+            </declared-values>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-operation</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-OPENAPI-PATH">
+            <name lang="nl">OA Path</name>
+            <name lang="en">OA Path</name>
+            <desc lang="nl">Wanneer opgegeven op een objecttype, dan betreft het het path van het endpoint voor dit Objecttype, bijvoorbeeld klanten. 
+                Wanneer opgegeven op een operatie, dan betreft het een specifieke method.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+                <stereo minmax="1">stereotype-name-openapi-operation</stereo>
+            </stereotypes>
+        </tv>
+        
+        <!-- Tv's op parameters (API). Een parameter kan zijn een query, path, header of cookie parameter.  -->
+        
+        <tv norm="space" id="CFG-TV-OPENAPI-PARM-TYPE">
+            <name lang="nl">OA Parameter type</name>
+            <name lang="en">OA Parameter type</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <declared-values lang="nl">
+                <value default="yes">query</value>
+                <value>cookie</value>
+                <value>path</value>
+                <value>header</value>
+            </declared-values>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-parameter</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-OPENAPI-PARM-REQUIRED">
+            <name lang="nl">OA Required</name>
+            <name lang="en">OA Required</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <declared-values lang="nl">
+                <value default="yes">yes</value>
+                <value>no</value>
+            </declared-values>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-parameter</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-OPENAPI-PARM-EXAMPLE">
+            <name lang="nl">OA Example</name>
+            <name lang="en">OA Example</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-parameter</stereo>
+            </stereotypes>
+        </tv>
+        
+        <!-- Tv's op referentie naar resultaat (API).  -->
+        
+        <tv norm="space" id="CFG-TV-QR-INCLUSION">
+            <name lang="nl">OA Inclusion</name>
+            <name lang="en">OA Inclusion</name>
+            <desc lang="nl">Opnemen van het resultaat kan via geforceerde referentie, geforceerde imbedding, of beide toestaan.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <declared-values lang="nl">
+                <value>Reference</value>
+                <value>Embedded</value>
+                <value>Both</value>
+            </declared-values>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-GETC">
+            <name lang="nl">OA Operation ID GET collection</name>
+            <name lang="en">OA Operation ID GET collection</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-GETI">
+            <name lang="nl">OA Operation ID GET item</name>
+            <name lang="en">OA Operation ID GET item</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-PUT">
+            <name lang="nl">OA Operation ID PUT</name>
+            <name lang="en">OA Operation ID PUT</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-POST">
+            <name lang="nl">OA Operation ID POST</name>
+            <name lang="en">OA Operation ID POST</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-DEL">
+            <name lang="nl">OA Operation ID DEL</name>
+            <name lang="en">OA Operation ID DEL</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-PATCH">
+            <name lang="nl">OA Operation ID PATCH</name>
+            <name lang="en">OA Operation ID PATCH</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+            </stereotypes>
+        </tv>
+        
+    </tagged-values>
+
+</tagset>

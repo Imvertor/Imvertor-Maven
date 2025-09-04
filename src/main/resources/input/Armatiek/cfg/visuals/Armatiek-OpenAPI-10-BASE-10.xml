@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<visuals type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <name>Armatiek-OpenAPI</name>
+    
+    <stereos>
+        <stereo id="stereotype-name-openapi-informatiemodel-package">
+            <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-openapi-objecttype">
+            <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-openapi-relatiesoort">
+            <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-openapi-operation">
+            <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-openapi-tags">
+            <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-openapi-parameter">
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-openapi-responsebody">
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+        <stereo id="stereotype-name-openapi-requestbody">
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
+    </stereos>
+    
+</visuals>

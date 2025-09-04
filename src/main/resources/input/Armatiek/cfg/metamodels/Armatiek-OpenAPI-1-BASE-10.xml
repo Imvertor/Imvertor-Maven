@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+   
+    <name>Armatiek-OpenAPI</name>
+    
+    <profiles>
+        <profile lang="nl"> 
+            <id>AOAPI</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>Armatiek OpenAPI</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>AOAPI</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>Armatiek OpenAPI</desc>
+        </profile>
+    </profiles>
+    
+    <features>
+        <!-- follows defaults -->
+    </features>
+    
+    <naming>
+        <package>
+            <format>UpperCamel</format>
+        </package>
+        <class>
+            <format>UpperCamel</format>
+        </class>
+        <property>
+            <format>LowerCamel</format>
+        </property>
+        <tv>
+            <format>lowercase</format>
+        </tv>
+        <element>
+            <format>AsIs</format>
+        </element>
+    </naming>
+    
+    
+    <stereotypes xml:id="stereotypes">
+        
+        <stereo id="stereotype-name-openapi-informatiemodel-package" primary="no">
+            <name lang="nl">OpenAPI Definition</name>
+            <name lang="en">OpenAPI Definition</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-openapi-objecttype" primary="no">
+            <name lang="nl">OpenAPI Objecttype</name>
+            <name lang="en">OpenAPI Objecttype</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-openapi-relatiesoort" primary="no">
+            <name lang="nl">OpenAPI Relatie</name>
+            <name lang="en">OpenAPI Relatie</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>association</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-openapi-tags" primary="no">
+            <name lang="nl">OpenAPI Tags</name>
+            <name lang="en">OpenAPI Tags</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>enumeration</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-openapi-operation" primary="yes">
+            <name lang="nl">OpenAPI Operation</name>
+            <name lang="en">OpenAPI Operation</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-openapi-parameter" primary="yes">
+            <name lang="nl">OpenAPI Parameter</name>
+            <name lang="en">OpenAPI Parameter</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-openapi-responsebody" primary="yes">
+            <name lang="nl">OpenAPI Response body</name>
+            <name lang="en">OpenAPI Response body</name>
+            <desc lang="en">Het resultaat van de operatie. 
+                Het aangewezen objecttype heeft een multipliciteit in de relatie.
+                Optioneel wanneer er mogelijk geen resultaat is (0 of 0..1 of 0..*). 
+                Verplicht wanneer minimaal één resultaat verwacht (1 of 1..*). 
+                Meervoudig wanneer meerder resultaten mogelijk zijn (1..* of 0..*).</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>association</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-openapi-requestbody" primary="yes">
+            <name lang="nl">OpenAPI Request body</name>
+            <name lang="en">OpenAPI Request body</name>
+            <desc lang="en">Het object dat wordt gepost. 
+                Het bron-objecttype heeft een multipliciteit in de relatie.
+                Optioneel wanneer er mogelijk geen object wordt geleverd (0 of 0..1 of 0..*). 
+                Verplicht wanneer minimaal één object wordt verwacht (1 of 1..*). 
+                Meervoudig wanneer meerder objecten kunnen worden geleverd (1..* of 0..*).</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>association</construct>
+        </stereo>
+        
+    </stereotypes>
+    
+</metamodel>
