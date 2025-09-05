@@ -50,6 +50,9 @@
     
     <xsl:variable name="use-subheaders-in-respec" select="imf:boolean($configuration-docrules-file/use-subheaders-in-respec)"/>
     
+    <xsl:variable name="show-short-attribute-cardinality" select="imf:boolean($configuration-docrules-file/show-short-attribute-cardinality)"/>
+    <xsl:variable name="show-short-attribute-unit" select="imf:boolean($configuration-docrules-file/show-short-attribute-unit)"/>
+    
     <xsl:template match="book" mode="respec-type">
         <xsl:choose>
             <!-- 
@@ -165,6 +168,10 @@
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-ATTRIBUTES',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
+            <xsl:when test="@type = 'SHORT-ENUMS' and $use-subheaders-in-respec">
+                <xsl:sequence select="imf:create-section-subheader-name($section,$level,'SHORT-ENUMS',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
             <xsl:when test="@type = 'SHORT-ENUMS'">
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-ENUMS',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
@@ -265,8 +272,12 @@
     </xsl:template>
  
     <xsl:template match="content" mode="detail">
+        <xsl:variable name="content-type" select="../../@type"/>
         <xsl:if test="empty(@approach) or (@approach = 'target' and $meta-is-role-based) or @approach = 'association' and not($meta-is-role-based)">
            <table width="100%">
+               <xsl:if test="starts-with($content-type,'OVERVIEW-')">
+                   <xsl:attribute name="class">overview {$content-type}</xsl:attribute>
+               </xsl:if>
                 <xsl:apply-templates select="part[1]" mode="detail-tabletype"/>
                 <xsl:apply-templates select="part[1]" mode="detail-colgroup"/>
                 <tbody>
@@ -333,13 +344,28 @@
                 <colgroup width="50%"/>
                 <colgroup width="50%"/>
             </xsl:when>
-            <xsl:when test="$type = 'SHORT-ATTRIBUTES'"> <!-- 30 50 10 10 -->
+            <xsl:when test="$type = 'SHORT-ATTRIBUTES' and $items = 6"> 
+                <colgroup width="30%"/>
+                <colgroup width="40%"/>
+                <colgroup width="10%"/>
+                <colgroup width="5%"/>
+                <colgroup width="5%"/>
+                <colgroup width="10%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-ATTRIBUTES' and $items = 5"> <!-- waterschapshuis: attributes met eenheid en herkomst -->
+                <colgroup width="30%"/>
+                <colgroup width="40%"/>
+                <colgroup width="10%"/>
+                <colgroup width="10%"/>
+                <colgroup width="10%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-ATTRIBUTES'"> <!-- default: 4 items, met cardinaliteit -->
                 <colgroup width="30%"/>
                 <colgroup width="50%"/>
                 <colgroup width="10%"/>
                 <colgroup width="10%"/>
             </xsl:when>
-            <xsl:when test="$type = 'SHORT-ENUMS' and $items = 3"> <!-- 10 30 60 waterschapshuis: enums met codes. -->
+            <xsl:when test="$type = 'SHORT-ENUMS' and $items = 3"> <!-- waterschapshuis: enums met codes. -->
                 <colgroup width="10%"/>
                 <colgroup width="30%"/>
                 <colgroup width="60%"/>
@@ -545,9 +571,19 @@
                     <td>
                         <xsl:apply-templates select="item[3]" mode="#current"/>
                     </td>
-                    <td>
-                        <xsl:apply-templates select="item[4]" mode="#current"/>
-                    </td>
+                    <xsl:if test="$show-short-attribute-cardinality">
+                        <td>
+                            <xsl:apply-templates select="item[4]" mode="#current"/>
+                        </td>
+                    </xsl:if>
+                    <xsl:if test="$show-short-attribute-unit">
+                        <td>
+                            <xsl:apply-templates select="item[4]" mode="#current"/>
+                        </td>
+                        <td>
+                            <xsl:apply-templates select="item[5]" mode="#current"/>
+                        </td>
+                    </xsl:if>
                 </xsl:when>
                 <xsl:when test="$type = 'SHORT-ENUMS' and $items = 3"> <!-- 10 30 60 -->
                     <td>

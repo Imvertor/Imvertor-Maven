@@ -78,6 +78,11 @@
     
     <xsl:variable name="sort-domain" select="imf:boolean($configuration-docrules-file/sort-in-domain)"/>
     
+    <xsl:variable name="show-short-attribute-cardinality" select="imf:boolean($configuration-docrules-file/show-short-attribute-cardinality)"/>
+    <xsl:variable name="show-short-attribute-unit" select="imf:boolean($configuration-docrules-file/show-short-attribute-unit)"/>
+   
+    <xsl:variable name="url-as-link" select="imf:boolean($configuration-docrules-file/url-as-link)"/>
+    
     <xsl:template match="/imvert:packages">
         <xsl:sequence select="imf:track('Generating modeldoc',())"/>
         
@@ -455,7 +460,7 @@
                             <!-- eerst gegevensgroeptype info -->
                             <!--(4)-->
                             <xsl:apply-templates select="." mode="composition"/>
-                            <!-- en dat de attributen daarin -->
+                            <!-- en dan de attributen daarin -->
                             <xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="gegevensgroeptype"/>
                             <xsl:apply-templates select="$defining-class/imvert:associations/imvert:association" mode="gegevensgroeptype-as-attribute"/>
                         </xsl:if>
@@ -488,7 +493,13 @@
                             <itemtype type="ATTRIBUTE-NAME"/>
                             <itemtype type="ATTRIBUTE-DEFINITION"/>
                             <itemtype type="ATTRIBUTE-FORMAT"/>
-                            <itemtype type="ATTRIBUTE-CARD"/>
+                            <xsl:if test="$show-short-attribute-cardinality">
+                                <itemtype type="ATTRIBUTE-CARD"/>
+                            </xsl:if>
+                            <xsl:if test="$show-short-attribute-unit">
+                                <itemtype type="ATTRIBUTE-EENHEID"/>
+                                <itemtype type="ATTRIBUTE-HERKOMST"/>
+                            </xsl:if>
                             <!-- and add rows -->
                             <xsl:sequence select="$r"/>
                         </content>
@@ -551,7 +562,7 @@
     
     <xsl:template match="imvert:attribute" mode="short">
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
-        <xsl:variable name="global-or-detail" select="
+       <xsl:variable name="global-or-detail" select="
             if ($show-lists-with-metadata) then 'global' else 
             if ($type/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')) then 'detail' else 'global'"/><!-- #428, #545 -->
        <part>
@@ -559,7 +570,13 @@
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/> 
            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link($type,$global-or-detail,imf:plugin-splice(imvert:baretype)))"/>
-           <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
+           <xsl:if test="$show-short-attribute-cardinality">
+               <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))" />
+           </xsl:if>
+           <xsl:if test="$show-short-attribute-unit">
+               <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-EENHEID'))"/>
+               <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-SOURCE'))"/>
+           </xsl:if>
        </part>
     </xsl:template>
 
@@ -570,8 +587,14 @@
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-splice(imvert:baretype)))"/>
-          <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
-        </part>
+           <xsl:if test="$show-short-attribute-cardinality">
+               <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))" />
+           </xsl:if>
+           <xsl:if test="$show-short-attribute-unit">
+               <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-EENHEID'))"/>
+               <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-SOURCE'))"/>
+           </xsl:if>
+       </part>
     </xsl:template>
    
     <xsl:template match="imvert:association" mode="gegevensgroeptype-as-attribute">
@@ -581,7 +604,7 @@
             <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
             <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',xs:string(imvert:type-name/@original)))"/>
-           <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
+            <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
         </part>
     </xsl:template>
     
@@ -603,9 +626,11 @@
               <xsl:variable name="typname" select="imf:get-name($type,true())"/>
               <xsl:sequence select="imf:create-link($type,'detail',$typname)"/>
           </item>
-          <item>
-             <xsl:sequence select="imf:get-cardinality(imvert:min-occurs,imvert:max-occurs)"/>
-          </item>
+          <xsl:if test="$show-short-attribute-cardinality">
+                <item>
+                    <xsl:sequence select="imf:get-cardinality(imvert:min-occurs,imvert:max-occurs)"/>
+                </item>
+          </xsl:if>
        </part>
     </xsl:template>
     
@@ -1144,7 +1169,7 @@
         <xsl:choose>
             <xsl:when test="exists($tv-element)">
                 <xsl:variable name="default-value" select="$configuration-tvset-file//tagged-values/tv[@id = $tv-id]/declared-values/value[imf:boolean(@default)]"/>
-                <xsl:variable name="value" select="if ($tv-element) then imf:get-clean-documentation-string(imf:get-tv-value($tv-element)) else $default-value"/>
+                <xsl:variable name="value" select="if ($tv-element) then imf:get-clean-documentation-string(imf:get-tv-value($tv-element,$url-as-link)) else $default-value"/>
                 <xsl:sequence select="$value"/>
             </xsl:when>
             <xsl:otherwise>
@@ -1177,14 +1202,14 @@
                             <xsl:value-of select="imf:get-subpath(@project,@application,@release)"/>
                         </item>
                         <item>
-                            <xsl:sequence select="imf:get-clean-documentation-string(imf:get-tv-value(.))"/>
+                            <xsl:sequence select="imf:get-clean-documentation-string(imf:get-tv-value(.,$url-as-link))"/>
                         </item>
                     </item>
                 </xsl:for-each>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="tv-element" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
-                <xsl:variable name="tv-value" select="imf:get-tv-value($tv-element)"/>
+                <xsl:variable name="tv-value" select="imf:get-tv-value($tv-element,$url-as-link)"/>
                 <xsl:sequence select="if ($tv-value) then imf:get-clean-documentation-string($tv-value) else ()"/>
             </xsl:otherwise>
         </xsl:choose>
@@ -1875,10 +1900,17 @@
     </xsl:function>
     
     <xsl:function name="imf:get-tv-value" as="item()*">
-       <xsl:param name="tv-element" as="element(tv)?"/>
-       <xsl:variable name="val" select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/node()"/>
-       <xsl:choose>
-            <xsl:when test="imf:is-url(string-join($val,''))">
+        <xsl:param name="tv-element" as="element(tv)?"/>
+        <xsl:param name="link-to-url" as="xs:boolean"/>
+        <xsl:variable name="val" select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/node()"/>
+        <xsl:variable name="is-url" select="imf:is-url(string-join($val,''))"/>
+        <xsl:choose>
+            <xsl:when test="$is-url and $link-to-url">
+                <a href="{$val}" target="_blank">
+                    <xsl:value-of select="$val"/>
+                </a>
+            </xsl:when>
+            <xsl:when test="$is-url">
                 <span class="url">
                     <xsl:value-of select="$val"/>
                 </span>
@@ -1988,7 +2020,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <item>
-                   <xsl:value-of select="imf:plugin-translate-i3n('DATALOCATIE',true()) || ': '"/>
+                    <xsl:value-of select="imf:plugin-translate-i3n('DATALOCATIE',true()) || ': '"/>
                     <xsl:choose>
                         <xsl:when test="$create-link">
                             <a href="{$dataloc}" target="_blank">

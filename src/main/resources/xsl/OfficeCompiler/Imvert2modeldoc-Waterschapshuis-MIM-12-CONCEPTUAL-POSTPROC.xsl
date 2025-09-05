@@ -20,6 +20,10 @@
         <xsl:comment>removed item ASSOCIATION/ROLE-DEFINITION</xsl:comment>
     </xsl:template>
     
+    <xsl:template match="section[@type='OVERVIEW-STRUCTUREDDATATYPE']">
+        <xsl:comment>removed section OVERVIEW-STRUCTUREDDATATYPE</xsl:comment>
+    </xsl:template>
+    
     <xsl:template match="section[@type='OVERVIEW-PRIMITIVEDATATYPE']">
         <xsl:comment>removed section OVERVIEW-PRIMITIVEDATATYPE</xsl:comment>
     </xsl:template>
