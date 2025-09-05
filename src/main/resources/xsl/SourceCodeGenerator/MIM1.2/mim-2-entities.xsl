@@ -11,6 +11,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:functx="http://www.functx.com"
+  xmlns:funct="urn:funct"
   xmlns:imf="http://www.imvertor.org/xsl/functions"
   xmlns:pre="http://www.imvertor.org/xsl/preprocess"
   xmlns:local="urn:local"
@@ -48,6 +49,7 @@
   <xsl:key name="id" match="*[@id]" use="@id"/>
   <xsl:key name="ref" match="mim-ref:*|mim-ext:ConstructieRef" use="substring(@xlink:href, 2)"/>
   <xsl:key name="supertype-ref" match="mim:supertypen/mim:GeneralisatieObjecttypen/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)" use="substring(@xlink:href, 2)"/>
+  <xsl:key name="tag" match="mim:Enumeratie[funct:equals-case-insensitive(mim:naam, 'Tags')]/mim:waarden/mim:Waarde" use="lower-case(mim:naam)"/>
   
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   
@@ -567,17 +569,19 @@
       <method>{upper-case((local:kenmerk-ext(., 'OA HTTP method'), 'GET')[1])}</method>
       <operation-id>{mim:naam}</operation-id>
       <path>{(local:kenmerk-ext(., 'OA Path'), '/nopath')[1]}</path>
-      <tag>{(local:kenmerk-ext(., 'OA Tag'), 'NoTag')[1]}</tag>
+      <xsl:variable name="tag" select="(local:kenmerk-ext(., 'OA Tag'), 'NoTag')[1]" as="xs:string"/>
+      <tag description="{local:definition-as-string(key('tag', lower-case($tag))/mim:definitie)}">{$tag}</tag>
       <summary>{local:kenmerk-ext(., 'OA Summary')}</summary>
       <description>{local:kenmerk-ext(., 'OA Description')}</description>
       <xsl:where-populated>
         <parameters>
           <xsl:for-each select="mim-ext:bevat/mim-ext:Constructie[mim-ext:constructietype = 'OPENAPI PARAMETER']">
             <xsl:sort select="local:kenmerk-ext(., 'positie')" order="ascending"/>
+            <xsl:variable name="parameter-type" select="local:kenmerk-ext(., 'OA Parameter type')" as="xs:string?"/>
             <parameter>
-              <name>{normalize-space(mim:naam)}</name>
+              <name>{mim:naam}</name>
               <type original-type="{mim:type/mim:Datatype}">{map:get($primitive-mim-type-mapping, (mim:type/mim:Datatype, 'CharacterString')[1])}</type> <!-- TODO: support non-standard MIM types? -->
-              <parameter-type>{local:kenmerk-ext(., 'OA Parameter type')}</parameter-type>
+              <parameter-type>{$parameter-type}</parameter-type>
               <cardinality>{mim:kardinaliteit}</cardinality>
               <required>{(local:true-or-false(local:kenmerk-ext(., 'OA Required')), 'false')[1]}</required>
               <description>{local:kenmerk-ext(., 'OA Description')}</description>
@@ -851,12 +855,16 @@
   
   <xsl:function name="local:definition-as-string" as="xs:string?">
     <xsl:param name="definition" as="element()?"/>
-    <xsl:choose>
-      <xsl:when test="$definition">
-        <xsl:variable name="text" select="normalize-space(string-join($definition//text(), ' '))" as="xs:string"/>
-        <xsl:sequence select="if (string-length($text) gt 0) then $text else ()"/>    
-      </xsl:when>
-    </xsl:choose>
+    <xsl:if test="$definition">
+      <xsl:variable name="text" select="normalize-space(string-join($definition//text(), ' '))" as="xs:string"/>
+      <xsl:sequence select="if (string-length($text) gt 0) then $text else ()"/>    
+    </xsl:if>
+  </xsl:function>
+  
+  <xsl:function name="local:get-tag-description" as="xs:string">
+    <xsl:param name="context" as="node()"/>
+    <xsl:param name="tag-name" as="xs:string?"/>
+    <xsl:sequence select="$context//mim:Enumeratie[funct:equals-case-insensitive(mim:naam, 'Tags')]/mim:waarden/mim:Waarde[funct:equals-case-insensitive(mim:naam, 'Tags')]"/>
   </xsl:function>
   
   <xsl:function name="imf:message" as="empty-sequence()" use-when="$runs-in-imvertor-context">

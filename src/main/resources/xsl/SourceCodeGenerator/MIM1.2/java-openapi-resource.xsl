@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xmlns:map="http://www.w3.org/2005/xpath-functions/map"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:functx="http://www.functx.com"
@@ -248,6 +249,7 @@
       <xsl:call-template name="validate-operation"/>
       
       <xsl:variable name="tag" select="current-grouping-key()" as="xs:string"/>
+      <xsl:variable name="tag-description" select="current-group()[1]/tag/@description" as="xs:string?"/>
       <xsl:variable name="class-name" select="funct:uppercase-first(local:to-java-identifier($tag))"/>
       
       <!-- Create separate Java class for every tag: -->
@@ -267,7 +269,7 @@
           <line/>
                     
           <line>@Path("/")</line>
-          <line>@Tag(name = "{$tag}", description = "TODO")</line> <!-- TODO: Tag description -->
+          <line>@Tag(name = "{$tag}", description = "{$tag-description}")</line>
           <line>public class {$class-name} {{</line>
           
           <xsl:variable name="api-path-version" select="(local:feature(/model, 'OA Path version'), '1')[1]" as="xs:string?"/>
@@ -451,20 +453,38 @@
     </xsl:result-document>
   </xsl:template>
   
-  <xsl:template name="validate-operation">
+  <xsl:template name="validate-operation">    
     <xsl:if test="not(normalize-space(operation-id))">
-      <xsl:sequence select="imf:message(., 'ERROR', 'Operation ID not specified of OpenAPI operation', '')"/>
+      <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI operation is missing the Operation ID (name)', '')"/>
     </xsl:if>
     <xsl:variable name="operation-id" select="operation-id" as="xs:string"/>
     <xsl:if test="not(normalize-space(method))">
-      <xsl:sequence select="imf:message(., 'ERROR', 'HTTP method of OpenAPI operation not specified', 'Operation ID: ' || $operation-id)"/>
+      <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI operation is missing the HTTP method', 'Operation ID: ' || $operation-id)"/>
     </xsl:if>
     <xsl:if test="path = '/nopath'">
-      <xsl:sequence select="imf:message(., 'ERROR', 'Path of OpenAPI operation not specified', 'Operation ID: ' || $operation-id)"/>
+      <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI operation is missing the Path, now using &quot;/nopath&quot;', 'Operation ID: ' || $operation-id)"/>
     </xsl:if>
     <xsl:if test="tag = 'NoTag'">
-      <xsl:sequence select="imf:message(., 'WARN', 'Tag of OpenAPI operation not specified', 'Operation ID: ' || $operation-id)"/>
+      <xsl:sequence select="imf:message(., 'WARN', 'OpenAPI operation is missing the Tag, now using &quot;NoTag&quot;', 'Operation ID: ' || $operation-id)"/>
     </xsl:if>
+    <xsl:variable name="regex" expand-text="no">\{(.*?)\}</xsl:variable>
+    <xsl:variable name="param-names-in-path" select="analyze-string(path, $regex)//fn:group" as="xs:string*"/>
+    <xsl:variable name="path-params" select="parameters/parameter[parameter-type = 'path']/name" as="xs:string*"/>
+    
+    <xsl:variable name="context" select="." as="node()"/>
+    <xsl:variable name="parameters-in-path-but-not-declared" select="functx:value-except($param-names-in-path, $path-params)" as="xs:string*"/>
+    <xsl:variable name="declared-path-parameters-not-in-path" select="functx:value-except($path-params, $param-names-in-path)" as="xs:string*"/>
+    <xsl:for-each select="$parameters-in-path-but-not-declared">
+      <xsl:sequence select="imf:message($context, 'ERROR', 
+        'OA Path contains parameter(s) that are not declared as an OpenAPI Parameter with Parameter type &quot;path&quot;', 
+        'Operation ID: ' || $operation-id|| ', parameter names: ' || string-join($parameters-in-path-but-not-declared, ','))"/> 
+    </xsl:for-each>
+    <xsl:for-each select="$declared-path-parameters-not-in-path">
+      <xsl:sequence select="imf:message($context, 'ERROR', 
+        'OpenAPI operation contains OpenAPI &quot;path&quot; parameter(s) that are not used in OA Path', 
+        'Operation ID: ' || $operation-id|| ', parameter names: ' || string-join($declared-path-parameters-not-in-path, ','))"/> 
+    </xsl:for-each>
+    
     <xsl:for-each select="parameters/parameter">
       <xsl:if test="not(normalize-space(name))">
         <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI parameter name is not specified', 'Operation ID: ' || $operation-id || ', parameter name: ' || name)"/>  
@@ -559,7 +579,7 @@
     <xsl:variable name="no-leading-digits" select="replace($no-specials, '^(\d)', '_$1')" as="xs:string"/>
     <xsl:sequence select="functx:words-to-camel-case($no-leading-digits)"/>
   </xsl:function>
- 
+  
   <xsl:function name="local:response-codes" as="xs:string+">
     <xsl:param name="model-element" as="element(model)"/>
     <xsl:param name="method-id" as="xs:string+"/>
