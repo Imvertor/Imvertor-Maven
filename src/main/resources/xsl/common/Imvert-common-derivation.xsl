@@ -24,6 +24,8 @@
 	xmlns:imf="http://www.imvertor.org/xsl/functions"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	
+	xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+	
 	exclude-result-prefixes="#all" 
 	version="2.0">
 	<!-- 
@@ -344,8 +346,8 @@
 	<xsl:function name="imf:get-clean-documentation-string" as="item()*">
 		<xsl:param name="doc-string" as="item()*"/>
 		<xsl:choose>
-			<xsl:when test="$doc-string/*">
-				<xsl:sequence select="$doc-string/*"/>
+			<xsl:when test="$doc-string/node()">
+				<xsl:sequence select="$doc-string"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$doc-string"/>
