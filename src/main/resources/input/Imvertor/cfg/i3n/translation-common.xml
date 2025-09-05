@@ -611,6 +611,16 @@
         <trans lang="nl">Card</trans>
         <trans lang="en">Mult</trans>
     </item>
+    <item>
+        <key>ATTRIBUTE-EENHEID</key>
+        <trans lang="nl">Eenheid</trans>
+        <trans lang="en">Unit</trans>
+    </item>
+    <item>
+        <key>ATTRIBUTE-HERKOMST</key>
+        <trans lang="nl">Herkomst</trans>
+        <trans lang="en">Herkomst</trans>
+    </item>
     
     <item>
         <key>CONSTRAINT-NAME</key>
