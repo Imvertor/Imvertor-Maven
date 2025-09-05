@@ -12,12 +12,16 @@
     <tagged-values>
         
         <tv norm="space" id="CFG-TV-MIMVERSION">
+            <name lang="nl">MIM Versie</name>
+            <name lang="en">MIM version</name>
+            <?x Waarden worden niet meer als keuze aangeboden maar moeten worden ingetikt.
             <declared-values lang="nl">
                 <value>1.0</value>
                 <value>1.1</value>
                 <value>1.1.1</value>
                 <value default="yes">1.2</value>
             </declared-values>
+            x?>
         </tv>
 
         <tv norm="space" id="CFG-TV-TEKSTOPMAAK">
