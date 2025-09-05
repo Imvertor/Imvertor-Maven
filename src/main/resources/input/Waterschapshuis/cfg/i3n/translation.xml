@@ -25,4 +25,22 @@
         <trans lang="en">Details</trans>
     </item>
     
+    <item>
+        <key>OVERVIEW-ENUMERATION</key>
+        <trans lang="nl">Domeinen</trans>
+        <trans lang="en">Domains</trans>
+    </item>
+    <item>
+        <key>DETAILS-ENUMERATION</key>
+        <trans lang="nl">Domein</trans>
+        <trans lang="en">Domain</trans>
+    </item>
+    <item>
+        <key>ENUMERATIE</key>
+        <key>ENUMERATION</key>
+        <trans lang="nl">Domein</trans>
+        <trans lang="en">Domain</trans>
+    </item>
+    
+    
 </picklist>

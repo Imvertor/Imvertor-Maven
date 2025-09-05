@@ -13,7 +13,7 @@
     <!--
         Where to show the explanation? (at-bottom or as-row)
     -->
-    <explanation-location>at-bottom</explanation-location>
+    <explanation-location>as-row</explanation-location>
     
     <!--
         Include incoming associations in the short overview?
@@ -45,6 +45,20 @@
          Sorteer alle constructs in een categorie binnen een domein (zoals alle objecttypen) op naam?
     -->
     <sort-in-domain>yes</sort-in-domain>
+
+    <!--
+        Moeten herkende URLs worden weergegeven als link? (zie #656)
+    -->
+    <url-as-link></url-as-link>
+    
+    <!--
+        Moet de cardinaliteit worden getoond in het verkorte overzicht van attributen?
+    -->
+    <show-short-attribute-cardinality>no</show-short-attribute-cardinality>
+    <!--
+        Moet de eenheid en herkomst worden getoond in het verkorte overzicht van attributen?
+    -->
+    <show-short-attribute-unit>yes</show-short-attribute-unit>
     
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
@@ -64,24 +78,45 @@
     </image-purpose>
     
     <doc-rule id="CFG-DOC-NORMNAAM" order="000">
-        <name lang="nl">Naam (genormaliseerd)</name>
-        <name lang="en">Name (normalized)</name>
-        <levels>
-             <!-- none here -->
-        </levels>
+        <name lang="nl">(vervalt)</name>
+         <!-- vervalt in weergave -->
+    </doc-rule>
+    <doc-rule id="CFG-DOC-DATUMOPNAME" order="000">
+        <name lang="nl">(vervalt)</name>
+        <!-- vervalt in weergave -->
+    </doc-rule>
+    <doc-rule id="CFG-DOC-UNIEKEAANDUIDING" order="000">
+        <name lang="nl">(vervalt)</name>
+        <!-- vervalt in weergave -->
+    </doc-rule>
+    <doc-rule id="CFG-DOC-ALIAS" order="000">
+        <name lang="nl">(vervalt)</name>
+        <!-- vervalt in weergave -->
+    </doc-rule>
+    <doc-rule id="CFG-DOC-INDICATIEABSTRACTOBJECT" order="000">
+        <name lang="nl">(vervalt)</name>
+        <!-- vervalt in weergave -->
     </doc-rule>
     
-    <doc-rule id="CFG-DOC-DATUMOPNAME">
-        <name lang="nl">Datum opname</name>
-        <levels show="none">
-            <!-- nergens tonen -->
-        </levels>
+    <doc-rule id="CFG-DOC-NAAM" order="001">
+        <name lang="nl">Naam</name>
+        <!-- herordening weergave -->
     </doc-rule>
-    <doc-rule id="CFG-DOC-UNIEKEAANDUIDING">
-        <name lang="nl">Unieke aanduiding</name>
-        <levels show="none">
-            <!-- nergens tonen -->
-        </levels>
+    <doc-rule id="CFG-DOC-DEFINITIE" order="002">
+        <name lang="nl">Definitie</name>
+        <!-- herordening weergave -->
     </doc-rule>
-       
+    <doc-rule id="CFG-DOC-TOELICHTING" order="003">
+        <name lang="nl">Toelichting</name>
+        <!-- herordening weergave -->
+    </doc-rule>
+    <doc-rule id="CFG-DOC-HERKOMSTDEFINITIE" order="004">
+        <name lang="nl">Herkomst definitie</name>
+        <!-- herordening weergave -->
+    </doc-rule>
+    <doc-rule id="CFG-DOC-HERKOMST" order="005">
+        <name lang="nl">Herkomst</name>
+        <!-- herordening weergave -->
+    </doc-rule>
+    
 </doc-rules>

@@ -29,17 +29,17 @@ html > body {
 div.head h1.title { 
     font-family: 'Asap-SemiBold', Courier, sans-serif;
     font-size: 28pt;
-    color: #3B5C9D;/* blauw */
+    color: #2d437c;/* blauw */
 }
 div.head h2.subtitle { 
     font-family: 'Asap-SemiBold', Courier, sans-serif;
     font-size: 14pt;
-    color: #3B5C9D;/* blauw */
+    color: #2d437c;/* blauw */
 }
 div.head h2 { 
     font-family: 'Asap-Medium', Courier, sans-serif;
     font-size: 12pt;
-    color: #3B5C9D;/* blauw */
+    color: #2d437c;/* blauw */
 }
 div.head dl dt { 
     font-family: 'Asap-SemiBold', Courier, sans-serif;
@@ -55,20 +55,23 @@ div.head dl dd a[href]{
     color: #F79239;/*  oranje */    
 }
 
+/* Kop van de samenvatting, status */
+section > h2,
+nav > h2,
 section div.header-wrapper h2 { 
     font-family: 'Asap-SemiBold', Courier, sans-serif;
     font-size: 20pt;
-    color: #3B5C9D;/* blauw */
+    color: #2d437c;/* blauw */
 }
 section div.header-wrapper h3 { 
     font-family: 'Asap-SemiBold', Courier, sans-serif;
     font-size: 18pt;
-    color: #3B5C9D;/* blauw */
+    color: #2d437c;/* blauw */
 }
 section div.header-wrapper h4 { 
     font-family: 'Asap-SemiBold', Courier, sans-serif;
     font-size: 17pt;
-    color: #3B5C9D;/* blauw */
+    color: #2d437c;/* blauw */
 }
 section div.header-wrapper h5 { 
     font-family: 'Asap-Regular', Courier, sans-serif;
@@ -93,4 +96,40 @@ div.subheader {
     font-size: 14pt;
     padding-top: 1rem;
     padding-bottom: 0.5rem;
+}
+
+/* Tegengaan dat rijen om-en-om worden gehighlight */
+tr:nth-child(even),
+tr:nth-child(odd) {
+    background: inherit !important;
+}
+
+table {
+    border-bottom: inherit !important;   
+}
+/* Geen lijnen om de  */
+table th, table td {
+    border: none !important;
+}
+
+/* nettere uitlijning van labels en waarden */
+
+th[scope="row"] {
+    padding: 0.25rem 0.25rem 0.25rem 0rem !important;
+}
+table th, 
+table td {
+   padding: 0.25em;
+}
+
+table tr {
+    border-bottom: 1px solid #31b6bf;
+}
+table.overview tr {
+    border-bottom: none;
+}
+
+/* URL getoond als courier */
+span.url {
+     font-family: Courier, sans-serif;
 }
