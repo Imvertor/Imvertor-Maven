@@ -49,6 +49,7 @@ import nl.imvertor.RunInitializer.RunInitializer;
 import nl.imvertor.SchemaValidator.SchemaValidator;
 import nl.imvertor.ShaclCompiler.ShaclCompiler;
 import nl.imvertor.SkosCompiler.SkosCompiler;
+import nl.imvertor.SourcecodeGenerator.SourcecodeGenerator;
 import nl.imvertor.StcCompiler.StcCompiler;
 import nl.imvertor.Validator.Validator;
 import nl.imvertor.XmiCompiler.XmiCompiler;
@@ -189,8 +190,14 @@ public class ChainTranslateAndReport {
 				    if (succeeds)
 				    	succeeds = (new ImvertCompiler()).run();
 				    
+				    /* support "createopenapi" as an alias for the combination of "createsourcecode = yes" and "sourcecodetypes = java-openapi" */
+				    if (configurator.isTrue("cli", "createopenapi", false)) {
+				      configurator.setParm("cli", "createsourcecode", "yes");
+				      configurator.setParm("cli", "sourcecodetypes", "java-openapi");
+				    }
+				    
 		    		// generate the MIM format from Imvertor embellish format
-			    	if (succeeds && (configurator.isTrue("cli","createmimformat",false) || configurator.isTrue("cli","createjsonschema",false)))
+			    	if (succeeds && (configurator.isTrue("cli","createmimformat",false) || configurator.isTrue("cli","createjsonschema",false) || configurator.isTrue("cli","createsourcecode",false)))
 			    		succeeds = (new MIMCompiler()).run();
 				
 			    	// generate the Stelselcatalogus CSV
@@ -218,6 +225,10 @@ public class ChainTranslateAndReport {
 			    			succeeds = (new JsonSchemaCompiler()).run();
 			    	}
 			    	
+					// Generate source code
+					if (succeeds && configurator.isTrue("cli","createsourcecode",false))
+						succeeds = (new SourcecodeGenerator()).run();
+
 				    // compile the history info 
 					if (succeeds && configurator.isTrue("cli","createhistory",false))
 						succeeds = (new HistoryCompiler()).run();

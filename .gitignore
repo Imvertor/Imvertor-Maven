@@ -7,3 +7,4 @@
 /server.properties
 /dependency-reduced-pom.xml
 /pom2.xml
+*.xpr
