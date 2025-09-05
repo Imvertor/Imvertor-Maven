@@ -103,6 +103,11 @@
     <data-location-as-link>no</data-location-as-link>
     
     <!--
+         Moeten waarden van kenmerken die worden herkend als URL worden weergegeven als link? (zie #656)
+    -->
+    <url-as-link>no</url-as-link>
+    
+    <!--
         Sorteer alle constructs in een categorie binnen een domein (zoals alle objecttypen) op naam?
         
         NB dit kan door de analist zelf worden bepaald (project opeenvolging) of je laat het over aan Imvertor.
@@ -114,6 +119,15 @@
         als een gewoon tekstje worden getoond of als refereerbare paragraaf?
     -->
     <use-subheaders-in-respec>no</use-subheaders-in-respec>
+    
+    <!--
+        Moet de cardinaliteit worden getoond in het verkorte overzicht van attributen?
+    -->
+    <show-short-attribute-cardinality>yes</show-short-attribute-cardinality>
+    <!--
+        Moet de eenheid en herkomst worden getoond in het verkorte overzicht van attributen?
+    -->
+    <show-short-attribute-unit>no</show-short-attribute-unit>
     
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
