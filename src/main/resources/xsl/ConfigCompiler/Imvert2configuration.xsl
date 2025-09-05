@@ -484,21 +484,32 @@
                 <xsl:apply-templates select="($doc-rules//show-lists-with-metadata)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//show-relation-name)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//data-location-as-link)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//url-as-link)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//sort-in-domain)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//use-subheaders-in-respec)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//show-short-attribute-cardinality)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//show-short-attribute-unit)[last()]" mode="#current"/>
                 
-                <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
-                    <xsl:sort select="@order" order="ascending"/>
-                    <doc-rule id="{current-grouping-key()}" order="{@order}">
-                        <xsl:apply-templates select="current-group()[last()]/name" mode="#current"/>
-                        <levels>
-                            <xsl:attribute name="show" select="(current-group()/levels/@show)[last()]"/>
-                           <xsl:for-each-group select="current-group()/levels/level" group-by="text()">
-                                <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
-                            </xsl:for-each-group>
-                        </levels>
-                    </doc-rule>
-                </xsl:for-each-group>
+                <xsl:variable name="rules" as="element(doc-rule)*">
+                    <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
+                        <xsl:variable name="order" select="(current-group()/@order)[last()]"/>
+                        <xsl:if test="xs:integer($order) gt 0">
+                            <doc-rule id="{current-grouping-key()}" order="{$order}">
+                                <xsl:apply-templates select="current-group()[last()]/name" mode="#current"/>
+                                <levels>
+                                    <xsl:attribute name="show" select="(current-group()/levels/@show)[last()]"/>
+                                    <xsl:for-each-group select="current-group()/levels/level" group-by="text()">
+                                        <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                                    </xsl:for-each-group>
+                                </levels>
+                            </doc-rule>
+                        </xsl:if>
+                    </xsl:for-each-group>
+                </xsl:variable>
+                <xsl:for-each select="$rules">
+                    <xsl:sort select="@order"/>
+                    <xsl:sequence select="."/>
+                </xsl:for-each>
                 <xsl:for-each-group select="$doc-rules//image-purpose[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="current-grouping-key()"/>
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
