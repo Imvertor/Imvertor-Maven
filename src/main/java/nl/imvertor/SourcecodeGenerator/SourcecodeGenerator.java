@@ -95,16 +95,21 @@ public class SourcecodeGenerator extends Step {
 
     runner.debug(logger, "CHAIN", "Generating source code");
 
-    String mimVersion = configurator.getXParm("appinfo/metamodel-minor-version");
+    // String mimVersion = configurator.getXParm("appinfo/metamodel-minor-version");
+    // transformer.setXslParm("mim-version", mimVersion);
 
-    transformer.setXslParm("mim-version", mimVersion);
-
+    /* We can set MIM version to 1.2 because we are going to transform the MIM serialization to 1.2 anyway: */
+    String mimVersion = "1.2";
+    
     String sourceCodeTypes = configurator.getXParm("cli/sourcecodetypes", false);
     if (sourceCodeTypes == null) {
       sourceCodeTypes = "java-openapi-model,java-openapi-resource";
     } else {
       sourceCodeTypes = configurator.mergeParms(sourceCodeTypes);
     }
+    
+    String xslFileParamMIM_11_to_12 = "properties/IMVERTOR_CODEGEN_MIM_1.1_TO_1.2_XSLPATH";
+    String workFileParamMIM_11_to_12 = "properties/WORK_CODEGEN_MIM_1.1_TO_1.2_FILEPATH";
     
     String xslFileParamMIMResolved = "properties/IMVERTOR_CODEGEN_MIM_RESOLVED_" + mimVersion + "_XSLPATH";
     String workFileParamMIMResolved = "properties/WORK_CODEGEN_MIM_RESOLVED_FILEPATH";
@@ -147,7 +152,7 @@ public class SourcecodeGenerator extends Step {
       String sourcecodeResolveKeuzeRelatiedoelen = configurator.getXParm("cli/sourcecoderesolvekeuzerelatiedoelen", false);
       String sourcecodeResolveKeuzeDatatypen = configurator.getXParm("cli/sourcecoderesolvekeuzedatatypen", false);
       
-      // Should have been stylesheet params of type boolean but this is not supported by transformer. Now rely on XSLT type conversion from strings "true" and "false" to booleans
+      /* Should have been stylesheet params of type boolean but this is not supported by transformer. Now rely on XSLT type conversion from strings "true" and "false" to booleans: */
       if (sourcecodeCopyDownMixins != null)
         transformer.setXslParm("sourcecode-copy-down-mixins", configParamToTrueFalseString(sourcecodeCopyDownMixins, "true"));
       if (sourcecodeResolveKeuzeAttribuutsoorten != null)
@@ -157,8 +162,13 @@ public class SourcecodeGenerator extends Step {
       if (sourcecodeResolveKeuzeDatatypen != null)
         transformer.setXslParm("sourcecode-resolve-keuze-tussen-datatypen", configParamToTrueFalseString(sourcecodeResolveKeuzeDatatypen, "true"));
       
-      succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", workFileParamMIMResolved, xslFileParamMIMResolved);
+      /* Convert MIM 1.1 to 1.2 namespaces : */ 
+      succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", workFileParamMIM_11_to_12, xslFileParamMIM_11_to_12);
       
+      /* Optionally resolve Keuze constructs and copy down mixins: */
+      succeeds = succeeds && transformer.transformStep(workFileParamMIM_11_to_12, workFileParamMIMResolved, xslFileParamMIMResolved);
+      
+      /* Generate the actual Java code: */
       succeeds = succeeds && transformer.transformStep(workFileParamMIMResolved, workFileParam, xslFileParam);
 
       // store to sourcecode folder
