@@ -454,6 +454,10 @@
   </xsl:template>
   
   <xsl:template name="validate-operation">    
+    <!-- 
+    TODO: uniciteit operationId
+    TODO: uniciteit paths
+    -->
     <xsl:if test="not(normalize-space(operation-id))">
       <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI operation is missing the Operation ID ([1])', name)"/>
     </xsl:if>
@@ -465,7 +469,7 @@
       <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI operation &quot;[1]&quot; is missing the Path, now using &quot;/nopath&quot;', $operation-id)"/>
     </xsl:if>
     <xsl:if test="tag = 'NoTag'">
-      <xsl:sequence select="imf:message(., 'WARN', 'OpenAPI operation &quot;[1]&quot; is missing the Tag, now using &quot;NoTag&quot;', $operation-id)"/>
+      <xsl:sequence select="imf:message(., 'WARNING', 'OpenAPI operation &quot;[1]&quot; is missing the Tag, now using &quot;NoTag&quot;', $operation-id)"/>
     </xsl:if>
     <xsl:variable name="regex" expand-text="no">\{(.*?)\}</xsl:variable>
     <xsl:variable name="param-names-in-path" select="analyze-string(path, $regex)//fn:group" as="xs:string*"/>
@@ -494,7 +498,7 @@
         <xsl:sequence select="imf:message(., 'ERROR', 'The &quot;type&quot; of parameter &quot;[1]&quot; of OpenAPI operation &quot;[2]&quot; is not specified', (name, $operation-id))"/>  
       </xsl:if>
       <xsl:if test="parameter-type = 'path' and required = 'false'">
-        <xsl:sequence select="imf:message(., 'WARN', 'The parameter &quot;[1]&quot; of OpenAPI operation &quot;[2]&quot; with type &quot;path&quot; must have &quot;OA Required = yes&quot; according to spec', (name, $operation-id))"/>  
+        <xsl:sequence select="imf:message(., 'WARNING', 'The parameter &quot;[1]&quot; of OpenAPI operation &quot;[2]&quot; with type &quot;path&quot; must have &quot;OA Required = yes&quot; according to spec', (name, $operation-id))"/>  
       </xsl:if>
     </xsl:for-each> 
     <xsl:choose>
