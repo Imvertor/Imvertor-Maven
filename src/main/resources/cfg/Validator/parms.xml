@@ -443,6 +443,11 @@
       <IMVERTOR_METAMODEL_Armatiek-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_3>Imvert2validation-MIM-11.xsl</IMVERTOR_METAMODEL_Armatiek-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_3>
       <IMVERTOR_METAMODEL_Armatiek-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_4>Imvert2validation-MIM-12.xsl</IMVERTOR_METAMODEL_Armatiek-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_4>
       
+      <!--canonize-->
+      <IMVERTOR_METAMODEL_Armatiek-OpenAPI-1-BASE-10_CANONICAL_XSLPATH>Imvert2canonical.xsl</IMVERTOR_METAMODEL_Armatiek-OpenAPI-1-BASE-10_CANONICAL_XSLPATH>
+      <!--validate-->
+      <IMVERTOR_METAMODEL_Armatiek-OpenAPI-1-BASE-10_VALIDATE_XSLPATH>Imvert2validation.xsl</IMVERTOR_METAMODEL_Armatiek-OpenAPI-1-BASE-10_VALIDATE_XSLPATH>
+      
       <!-- 
          ======================================================
          EIGENAAR 
