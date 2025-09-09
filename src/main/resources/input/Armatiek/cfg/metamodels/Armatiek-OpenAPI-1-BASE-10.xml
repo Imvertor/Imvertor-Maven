@@ -96,11 +96,7 @@
         <stereo id="stereotype-name-openapi-responsebody" primary="yes">
             <name lang="nl">OpenAPI Response body</name>
             <name lang="en">OpenAPI Response body</name>
-            <desc lang="en">Het resultaat van de operatie. 
-                Het aangewezen objecttype heeft een multipliciteit in de relatie.
-                Optioneel wanneer er mogelijk geen resultaat is (0 of 0..1 of 0..*). 
-                Verplicht wanneer minimaal één resultaat verwacht (1 of 1..*). 
-                Meervoudig wanneer meerder resultaten mogelijk zijn (1..* of 0..*).</desc>
+            <desc lang="en">Het resultaat van de operatie</desc>
             <desc lang="nl">TODO</desc>
             <construct>association</construct>
         </stereo>
@@ -108,11 +104,7 @@
         <stereo id="stereotype-name-openapi-requestbody" primary="yes">
             <name lang="nl">OpenAPI Request body</name>
             <name lang="en">OpenAPI Request body</name>
-            <desc lang="en">Het object dat wordt gepost. 
-                Het bron-objecttype heeft een multipliciteit in de relatie.
-                Optioneel wanneer er mogelijk geen object wordt geleverd (0 of 0..1 of 0..*). 
-                Verplicht wanneer minimaal één object wordt verwacht (1 of 1..*). 
-                Meervoudig wanneer meerder objecten kunnen worden geleverd (1..* of 0..*).</desc>
+            <desc lang="en">Het object dat wordt gepost</desc>
             <desc lang="nl">TODO</desc>
             <construct>association</construct>
         </stereo>
