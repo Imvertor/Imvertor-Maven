@@ -39,7 +39,7 @@
    </cli-parms>
    
    <properties>
-     
+      <WORK_CODEGEN_MIM_1.1_TO_1.2_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.mim-1.1-to-1.2.xml</WORK_CODEGEN_MIM_1.1_TO_1.2_FILEPATH>
       <WORK_CODEGEN_MIM_RESOLVED_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.mim-resolved.xml</WORK_CODEGEN_MIM_RESOLVED_FILEPATH>
       <WORK_CODEGEN_JAVA_POJO_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-pojo.xml</WORK_CODEGEN_JAVA_POJO_FILEPATH>
       <WORK_CODEGEN_JAVA_JPA_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-jpa.xml</WORK_CODEGEN_JAVA_JPA_FILEPATH>
@@ -53,6 +53,7 @@
       <WORK_CODEGEN_ENTITY_XML_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.entity-xml.xml</WORK_CODEGEN_ENTITY_XML_FILEPATH>
       <WORK_CODEGEN_PLANTUML_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.plantuml.puml</WORK_CODEGEN_PLANTUML_FILEPATH>
         
+      <IMVERTOR_CODEGEN_MIM_1.1_TO_1.2_XSLPATH>MIM11-to-MIM12.xsl</IMVERTOR_CODEGEN_MIM_1.1_TO_1.2_XSLPATH>  
       <IMVERTOR_CODEGEN_MIM_RESOLVED_1.2_XSLPATH>MIM1.2/mim-resolve-model-sugar.xsl</IMVERTOR_CODEGEN_MIM_RESOLVED_1.2_XSLPATH>
       <IMVERTOR_CODEGEN_ENTITY_XML_1.2_XSLPATH>MIM1.2/entity-xml.xsl</IMVERTOR_CODEGEN_ENTITY_XML_1.2_XSLPATH>
       <IMVERTOR_CODEGEN_PLANTUML_1.2_XSLPATH>MIM1.2/plantuml.xsl</IMVERTOR_CODEGEN_PLANTUML_1.2_XSLPATH>

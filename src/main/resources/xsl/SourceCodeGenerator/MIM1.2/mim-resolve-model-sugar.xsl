@@ -23,9 +23,9 @@
   <xsl:key name="ref" match="mim-ref:*|mim-ext:ConstructieRef" use="substring(@xlink:href, 2)"/>
   
   <xsl:param name="sourcecode-copy-down-mixins" select="false()" as="xs:boolean"/>
-  <xsl:param name="sourcecode-resolve-keuze-tussen-attribuutsoorten" select="true()" as="xs:boolean"/>
-  <xsl:param name="sourcecode-resolve-keuze-tussen-relatiedoelen" select="true()" as="xs:boolean"/>
-  <xsl:param name="sourcecode-resolve-keuze-tussen-datatypen" select="true()" as="xs:boolean"/>
+  <xsl:param name="sourcecode-resolve-keuze-tussen-attribuutsoorten" select="false()" as="xs:boolean"/>
+  <xsl:param name="sourcecode-resolve-keuze-tussen-relatiedoelen" select="false()" as="xs:boolean"/>
+  <xsl:param name="sourcecode-resolve-keuze-tussen-datatypen" select="false()" as="xs:boolean"/>
   
   <xsl:template match="(mim:Domein|mim:View)/mim:keuzen/mim:Keuze[mim:keuzeAttributen][$sourcecode-resolve-keuze-tussen-attribuutsoorten]"/>
   <xsl:template match="(mim:Domein|mim:View)/mim:keuzen/mim:Keuze[mim:keuzeDatatypen][$sourcecode-resolve-keuze-tussen-datatypen]"/>

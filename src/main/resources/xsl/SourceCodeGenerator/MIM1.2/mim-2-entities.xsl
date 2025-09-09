@@ -138,7 +138,7 @@
     
     <xsl:variable name="non-mixin-supertype-refs" select="mim:supertypen/mim:GeneralisatieObjecttypen[not(local:is-mixin(.))]/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)" as="element()*"/>  
     <xsl:if test="count($non-mixin-supertype-refs) gt 1">
-      <xsl:sequence select="imf:message(., 'ERROR', 'Multiple inheritance is not supported (besides on mixin/static supertypes)', 'Objecttype: ' || mim:naam)"/>  
+      <xsl:sequence select="imf:message(., 'ERROR', 'Multiple inheritance is not supported (besides on mixin/static supertypes): Objecttype: [1]', mim:naam)"/>  
     </xsl:if>
     <xsl:variable name="mixin-supertype-refs" select="mim:supertypen/mim:GeneralisatieObjecttypen[local:is-mixin(.)]/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)" as="element()*"/>
     <xsl:variable name="supertypes" select="if (self::mim:Objecttype) then local:get-all-supertypes(.) else ()" as="element(mim:Objecttype)*"/>

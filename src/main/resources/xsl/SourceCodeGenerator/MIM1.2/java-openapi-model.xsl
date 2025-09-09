@@ -259,15 +259,17 @@
       <line indent="2">public void setId(String id) {{</line>
       <line indent="4">this.id = id;</line>
       <line indent="2">}}</line>
-      <line/>
-      <line indent="2">public String getUrl() {{</line>
-      <line indent="4">return url;</line>
-      <line indent="2">}}</line>
     </xsl:if>
+    <line/>
+    <line indent="2">public String getUrl() {{</line>
+    <line indent="4">return url;</line>
+    <line indent="2">}}</line>
+    <!--
     <line/>
     <line indent="2">public void setUrl(String url) {{</line>
     <line indent="4">this.url = url;</line>
     <line indent="2">}}</line>
+    -->
   </xsl:template>
   
   <xsl:function name="local:type-or-reference" as="xs:string">
