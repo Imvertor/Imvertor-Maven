@@ -115,6 +115,7 @@ public class ChainTranslateAndReport {
 			configurator.getCli(Reporter.STEP_NAME);
 			configurator.getCli(ReadmeCompiler.STEP_NAME);
 			configurator.getCli(ReleaseCompiler.STEP_NAME);
+			configurator.getCli(SourcecodeGenerator.STEP_NAME);
 
 			configurator.setParmsFromOptions(args);
 			configurator.setParmsFromEnv();
