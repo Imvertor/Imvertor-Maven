@@ -45,7 +45,7 @@
     
     <stereotypes xml:id="stereotypes">
         
-        <stereo id="stereotype-name-informatiemodel-package" primary="yes">
+        <stereo id="stereotype-name-openapi-bootstrap-informatiemodel-package" primary="yes">
             <name lang="nl">OpenAPI Model</name>
             <name lang="en">OpenAPI Model</name>
             <desc lang="en">TODO</desc>

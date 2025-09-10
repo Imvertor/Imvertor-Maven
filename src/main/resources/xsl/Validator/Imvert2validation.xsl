@@ -76,7 +76,8 @@
         ('stereotype-name-informatiemodel-package',
          'stereotype-name-base-package',
          'stereotype-name-variant-package',
-         'stereotype-name-application-package')"/>
+         'stereotype-name-application-package',
+         'stereotype-name-openapi-bootstrap-informatiemodel-package')"/>
    
     <!-- Stereotypes of packages that may define classes -->
     <xsl:variable name="schema-oriented-stereotypes" select="

@@ -40,7 +40,7 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     
-    <xsl:variable name="infomodel-ids" select="('stereotype-name-informatiemodel-package','stereotype-name-base-package','stereotype-name-application-package')"/>
+    <xsl:variable name="infomodel-ids" select="('stereotype-name-informatiemodel-package','stereotype-name-base-package','stereotype-name-application-package','stereotype-name-openapi-bootstrap-informatiemodel-package')"/>
     
     <!-- bepaal welke package de applicatie bevat -->
     <xsl:variable name="base-package" select="
@@ -58,7 +58,8 @@
         'stereotype-name-system-package', 
         'stereotype-name-components-package', 
         'stereotype-name-external-package',
-        'stereotype-name-internal-package')"/>
+        'stereotype-name-internal-package',
+        'stereotype-name-openapi-bootstrap-informatiemodel-package')"/>
     
     <xsl:variable name="domain-mapping" as="node()*">
         <xsl:for-each select="$base-package/descendant-or-self::imvert:package">

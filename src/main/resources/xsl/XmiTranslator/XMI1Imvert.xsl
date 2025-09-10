@@ -1313,7 +1313,8 @@
         imf:get-config-stereotypes('stereotype-name-informatiemodel-package'), 
         imf:get-config-stereotypes('stereotype-name-base-package'), 
         imf:get-config-stereotypes('stereotype-name-variant-package'), 
-        imf:get-config-stereotypes('stereotype-name-application-package')
+        imf:get-config-stereotypes('stereotype-name-application-package'),
+        imf:get-config-stereotypes('stereotype-name-openapi-bootstrap-informatiemodel-package')
         )"></xsl:variable>
     
     <!-- tagged values $ea_xref_property zijn complexe strings; deze worden voor gemakkelijke herkenning omgezet naar een interne XML struktuur -->
