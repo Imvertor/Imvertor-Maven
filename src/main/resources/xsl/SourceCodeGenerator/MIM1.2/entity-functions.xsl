@@ -31,6 +31,12 @@
     <xsl:variable name="package-prefix" select="$entity/ancestor::model/package-prefix" as="xs:string"/>
     <xsl:sequence select="$package-prefix || string-join(for $p in $packages return funct:transform-name($p/name, $transformation), $separator)"/> 
   </xsl:function>
+  
+  <xsl:function name="entity:feature" as="xs:string*">
+    <xsl:param name="context" as="element()"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:sequence select="$context/features/feature[funct:equals-case-insensitive(@name, $name)]/text()[normalize-space()]"/>
+  </xsl:function>
     
   <xsl:function name="funct:transform-name" as="xs:string">
     <xsl:param name="name" as="xs:string"/>

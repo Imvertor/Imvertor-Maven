@@ -38,7 +38,7 @@
       <xsl:map-entry key="'Year'" select="'Short'"/>
       <xsl:map-entry key="'Day'" select="'Byte'"/>
       <xsl:map-entry key="'Month'" select="'Byte'"/>
-      <xsl:map-entry key="'URI'" select="'String'"/>
+      <xsl:map-entry key="'URI'" select="'java.net.URI'"/>
     </xsl:map>
   </xsl:variable>
     

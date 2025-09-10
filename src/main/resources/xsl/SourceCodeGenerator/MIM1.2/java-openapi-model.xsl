@@ -25,7 +25,6 @@
   <!-- TODO -->
   <!-- Min, max constraints -->
   <!-- Type van unieke identifiers --> 
-  <!-- Bij aggregatie gedeeld reference genereren -->
   <!-- Ieder object een id en url geven? --> 
   
   <xsl:variable name="primitive-mim-openapi-type-mapping" as="map(xs:string, element(type))">
@@ -220,12 +219,12 @@
     </xsl:variable>
     <line indent="2">@Schema({if ($description) then 'description = "' || $description || '", ' else ()}requiredMode = {$required-mode})</line>
     
-    <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation)" as="xs:string"/>
+    <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])" as="xs:string"/>
     <line indent="2">private {$resolved-type} {name};</line>
   </xsl:template>
   
   <xsl:template match="field[not(auto-generate = 'true')]" mode="field-getter-setter">
-    <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation)" as="xs:string"/>
+    <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])" as="xs:string"/>
     <line/>
     <line indent="2">public {$resolved-type} {if (type = 'Boolean') then 'is' else 'get'}{functx:capitalize-first(name)}() {{</line>
     <line indent="4">return {name};</line>
@@ -264,20 +263,26 @@
     <line indent="2">public String getUrl() {{</line>
     <line indent="4">return url;</line>
     <line indent="2">}}</line>
-    <!--
-    <line/>
-    <line indent="2">public void setUrl(String url) {{</line>
-    <line indent="4">this.url = url;</line>
-    <line indent="2">}}</line>
-    -->
   </xsl:template>
   
   <xsl:function name="local:type-or-reference" as="xs:string">
     <xsl:param name="type-info" as="element()"/>
     <xsl:param name="cardinality" as="element()"/>
-    <xsl:param name="aggregation" as="xs:string?"/>    
-    <xsl:choose>
-      <xsl:when test="$aggregation = 'shared' and not($type-info/@model-element = 'Enumeratie') and not($type-info/@is-standard = 'true')">
+    <xsl:param name="aggregation" as="xs:string?"/>
+    <xsl:param name="inclusion" as="xs:string?"/>        
+    <xsl:choose> 
+      <xsl:when test="funct:equals-case-insensitive($inclusion, 'Reference')">
+        <xsl:variable name="singular-type" select="'nl.imvertor.mim.model.Reference'" as="xs:string"/>
+        <xsl:value-of select="if ($cardinality/target/max-occurs = $unbounded) then 'List&lt;' || $singular-type || '&gt;' else $singular-type"/>    
+      </xsl:when>
+      <xsl:when test="funct:equals-case-insensitive($inclusion, 'Embedded')">
+        <xsl:sequence select="local:type($type-info, $cardinality)"/>
+      </xsl:when>
+      <xsl:when test="funct:equals-case-insensitive($inclusion, 'Both')">
+        <xsl:variable name="singular-type" select="local:full-package-name($type-info/@package-name) || '.AnyOfReferenceOr' || $type-info" as="xs:string"/>
+        <xsl:value-of select="if ($cardinality/target/max-occurs = $unbounded) then 'List&lt;' || $singular-type || '&gt;' else $singular-type"/>
+      </xsl:when>
+      <xsl:when test="(funct:equals-case-insensitive($aggregation, 'shared')) and not($type-info/@model-element = 'Enumeratie') and not($type-info/@is-standard = 'true')">
         <xsl:variable name="singular-type" select="'nl.imvertor.mim.model.Reference'" as="xs:string"/>
         <xsl:value-of select="if ($cardinality/target/max-occurs = $unbounded) then 'List&lt;' || $singular-type || '&gt;' else $singular-type"/>    
       </xsl:when>
