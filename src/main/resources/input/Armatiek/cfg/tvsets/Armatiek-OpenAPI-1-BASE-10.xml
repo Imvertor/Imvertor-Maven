@@ -77,18 +77,6 @@
                 <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-OPENAPI-OPENAPIVERSION">
-            <name lang="nl">OA Open API Version</name>
-            <name lang="en">OA Open API Version</name>
-            <desc lang="nl">De versie van de OpenAPI specificatie die moet worden gegenereerd, versie '3.0.1' of '3.1.0'. De default waarde is '3.0.1'.</desc>
-            <desc lang="en">TODO</desc>
-            <source>API-1.0</source>
-            <catalog>TODO</catalog>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
-            </stereotypes>
-        </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-CONTACTNAME">
             <name lang="nl">OA Contact name</name>
             <name lang="en">OA Contact name</name>
@@ -148,6 +136,18 @@
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-SERVERURL">
+            <name lang="nl">OA Server url</name>
+            <name lang="en">OA Server url</name>
+            <desc lang="nl">URL naar de target host. Er is geen default waarde voor deze tagged value.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-METHODS">
@@ -335,23 +335,6 @@
                 <value>cookie</value>
                 <value>path</value>
                 <value>header</value>
-            </declared-values>
-            <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-parameter</stereo>
-            </stereotypes>
-        </tv>
-        
-        <tv norm="space" id="CFG-TV-OPENAPI-PARM-REQUIRED">
-            <name lang="nl">OA Required</name>
-            <name lang="en">OA Required</name>
-            <desc lang="nl">TODO</desc>
-            <desc lang="en">TODO</desc>
-            <source>API-1.0</source>
-            <catalog>TODO</catalog>
-            <derive>no</derive>
-            <declared-values lang="nl">
-                <value default="yes">yes</value>
-                <value>no</value>
             </declared-values>
             <stereotypes>
                 <stereo minmax="1">stereotype-name-openapi-parameter</stereo>
