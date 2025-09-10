@@ -464,13 +464,15 @@
   
   <xsl:template name="validate-operation">    
     <!-- 
-    TODO: uniciteit operationId
     TODO: uniciteit paths
-    -->
+    -->    
     <xsl:if test="not(normalize-space(operation-id))">
       <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI operation is missing the Operation ID ([1])', name)"/>
     </xsl:if>
     <xsl:variable name="operation-id" select="operation-id" as="xs:string"/>
+    <xsl:if test="count(//openapi-operation[operation-id = $operation-id]) gt 1">
+      <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI operation id &quot;[1]&quot; is not unique', $operation-id)"/>
+    </xsl:if>
     <xsl:if test="not(normalize-space(method))">
       <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI operation &quot;[1]&quot; is missing the HTTP method', $operation-id)"/>
     </xsl:if>
@@ -599,6 +601,7 @@
   <xsl:function name="local:response-codes" as="xs:string+">
     <xsl:param name="model-element" as="element(model)"/>
     <xsl:param name="method-id" as="xs:string+"/>
+    <xsl:message select="$method-id"/>
     <xsl:variable name="configured-response-codes" select="entity:feature($model-element, 'OA Response Codes ' || $method-id)" as="xs:string?"/>
     <xsl:variable name="default-response-codes" select="map:get($method-id-response-codes-map, $method-id)" as="xs:string+"/>
     <xsl:choose>
