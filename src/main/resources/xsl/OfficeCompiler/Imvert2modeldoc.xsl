@@ -1899,6 +1899,11 @@
         </xsl:choose>  
     </xsl:function>
     
+    <!-- 
+        Haal de tagged value waarde op. 
+        De tagged values kunnen een <body> element hebben als deze een HTML struktuur bevatten. 
+        Wanneer een waarde wordt omgezet naar HTML voegen we hier zelf dat <body> element toe.
+    --> 
     <xsl:function name="imf:get-tv-value" as="item()*">
         <xsl:param name="tv-element" as="element(tv)?"/>
         <xsl:param name="link-to-url" as="xs:boolean"/>
@@ -1906,14 +1911,18 @@
         <xsl:variable name="is-url" select="imf:is-url(string-join($val,''))"/>
         <xsl:choose>
             <xsl:when test="$is-url and $link-to-url">
-                <a href="{$val}" target="_blank">
-                    <xsl:value-of select="$val"/>
-                </a>
+                <body>
+                    <a href="{$val}" target="_blank">
+                        <xsl:value-of select="$val"/>
+                    </a>
+                </body>
             </xsl:when>
             <xsl:when test="$is-url">
-                <span class="url">
-                    <xsl:value-of select="$val"/>
-                </span>
+                <body>
+                    <span class="url">
+                        <xsl:value-of select="$val"/>
+                    </span>
+                </body>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="$val"/>

@@ -346,22 +346,13 @@
 	<xsl:function name="imf:get-clean-documentation-string" as="item()*">
 		<xsl:param name="doc-string" as="item()*"/>
 		<xsl:choose>
-			<xsl:when test="$doc-string/node()">
-				<xsl:sequence select="$doc-string"/>
+			<xsl:when test="$doc-string/*">
+				<xsl:sequence select="$doc-string/*"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$doc-string"/>
 			</xsl:otherwise>
 		</xsl:choose>
-		<?x
-		<xsl:variable name="r1" select="substring-after($doc-string,'&lt;memo&gt;')"/>
-		<xsl:variable name="r2" select="if (normalize-space($r1)) then $r1 else $doc-string"/>
-		<xsl:variable name="r3" select="if (starts-with($r2,'[newline]')) then substring($r2,10) else $r2"/>
-		<xsl:variable name="r4" select="replace($r3,'\[newline\]',' ')"/>
-		<xsl:variable name="r5" select="replace($r4,'&lt;.*?&gt;','')"/>
-		<xsl:variable name="r6" select="replace($r5,'Description:','')"/>
-		<xsl:value-of select="$r6"/>
-		x?>
 	</xsl:function>
 	
 	<!-- return the position on the construct based in the type and position tagged value, and supplier info on position -->
