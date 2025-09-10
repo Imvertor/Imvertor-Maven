@@ -21,6 +21,7 @@
   
   <xsl:param name="package-prefix" as="xs:string" select="'nl.imvertor.model'"/>
   <xsl:param name="resource-package-prefix" as="xs:string" select="'nl.imvertor.resource'"/>
+  <xsl:param name="openapi-spec-version" as="xs:string">api30</xsl:param>
     
   <xsl:variable name="common-base-url" as="xs:string">https://armatiek.github.io/imvertor-openapi-generator/openapi/generiek.yaml</xsl:variable>
   <xsl:variable name="response-component-base-url" as="xs:string">{$common-base-url}#/components/responses/</xsl:variable>
@@ -54,7 +55,7 @@
   </xsl:template>
     
   <xsl:template name="generate-standard-operations"> 
-    <xsl:for-each select=".//entity[(model-element = 'Objecttype') and (is-abstract = 'false') and not(local:feature(., 'OA Expose') = 'no')]">
+    <xsl:for-each select=".//entity[(model-element = 'Objecttype') and (is-abstract = 'false') and not(entity:feature(., 'OA Expose') = 'no')]">
       
       <xsl:variable name="full-resource-package-name" select="local:full-resource-package-name(package-name)" as="xs:string"/>
       <xsl:variable name="resource-class-name" select="name || 'Resource'" as="xs:string"/>
@@ -77,7 +78,7 @@
           <xsl:variable name="identifying-field" select="identifying-attribute/field" as="element(field)?"/>
           <xsl:variable name="id-name" select="($identifying-field/name, 'id')[1]" as="xs:string"/>
           <xsl:variable name="id-type" select="($identifying-field/type, 'String')[1]" as="xs:string"/>
-          <xsl:variable name="path" select="local:feature(., 'OA Path')" as="xs:string?"/>
+          <xsl:variable name="path" select="entity:feature(., 'OA Path')" as="xs:string?"/>
           
           <xsl:variable name="path-parameter-id" as="element(parameter)">
             <parameter>
@@ -90,12 +91,12 @@
             </parameter>
           </xsl:variable>
           
-          <xsl:variable name="api-path-version" select="(local:feature(/model, 'OA Path version'), '1')[1]" as="xs:string?"/>
+          <xsl:variable name="api-path-version" select="(entity:feature(/model, 'OA Path version'), '1')[1]" as="xs:string?"/>
           <line>@Path("/v{$api-path-version}/{if ($path) then $path else lower-case(name)}")</line>
           <line>@Tag(name = "{name}", description = "{local:definition-as-string(definition)}")</line> 
           <line>public class {$resource-class-name} {{</line>
           
-          <xsl:variable name="openapi-methods" select="local:feature(., 'OA Methods')" as="xs:string?"/>
+          <xsl:variable name="openapi-methods" select="entity:feature(., 'OA Methods')" as="xs:string?"/>
           
           <xsl:if test="local:expose-method(., 'getCol', $openapi-methods)">
             <xsl:call-template name="generate-operation">
@@ -272,7 +273,7 @@
           <line>@Tag(name = "{$tag}", description = "{$tag-description}")</line>
           <line>public class {$class-name} {{</line>
           
-          <xsl:variable name="api-path-version" select="(local:feature(/model, 'OA Path version'), '1')[1]" as="xs:string?"/>
+          <xsl:variable name="api-path-version" select="(entity:feature(/model, 'OA Path version'), '1')[1]" as="xs:string?"/>
           
           <!-- Generate all operations for this tag: -->
           <xsl:for-each select="current-group()">
@@ -411,8 +412,8 @@
   <xsl:template name="generate-openapi-header">
     <xsl:result-document href="{$output-uri}/src/main/java/nl/imvertor/resource/OpenApiDefinition.java" method="text">  
       <xsl:variable name="lines-elements" as="element(line)+"> 
-        <xsl:variable name="title" select="local:feature(/model, 'openapi.title')" as="xs:string?"/>
-        <xsl:variable name="description" select="local:feature(/model, 'openapi.description')" as="xs:string?"/>
+        <xsl:variable name="title" select="entity:feature(/model, 'openapi.title')" as="xs:string?"/>
+        <xsl:variable name="description" select="entity:feature(/model, 'openapi.description')" as="xs:string?"/>
         
         <line>package nl.imvertor.resource;</line>
         <line/>
@@ -423,28 +424,36 @@
         <line/>
         <line>@OpenAPIDefinition(</line>
         <line indent="2">info = @Info(</line>
-        <line indent="4">title = "{(local:feature(/model,'openapi.title'), /model/title)[1]}",</line>
-        <line indent="4">description = "{(local:feature(/model,'openapi.description'), local:definition-as-string(/model/definition))[1]}",</line>
-        <line indent="4">version = "{(local:feature(/model,'OA Version'), '1.0.0')[1]}",</line>
+        <line indent="4">title = "{(entity:feature(/model,'openapi.title'), /model/title)[1]}",</line>
+        <line indent="4">description = "{(entity:feature(/model,'openapi.description'), local:definition-as-string(/model/definition))[1]}",</line>
+        <line indent="4">version = "{(entity:feature(/model,'OA Version'), '1.0.0')[1]}",</line>
         <line indent="4">contact = @Contact(</line>
         <line indent="6">{string-join((
-          local:annotation-field('name', local:feature(/model,'OA Contact name')),
-          local:annotation-field('url', local:feature(/model,'OA Contact url')),
-          local:annotation-field('email', local:feature(/model,'OA Contact email'))), ', ')}</line>
+          local:annotation-field('name', entity:feature(/model,'OA Contact name')),
+          local:annotation-field('url', entity:feature(/model,'OA Contact url')),
+          local:annotation-field('email', entity:feature(/model,'OA Contact email'))), ', ')}</line>
         <line indent="4">),</line>
         <line indent="4">license = @License(</line>
         <line indent="6">{string-join((
-          local:annotation-field('name', local:feature(/model,'OA License name')),
-          local:annotation-field('url', local:feature(/model,'OA License url'))), ', ')}</line>
+          local:annotation-field('name', entity:feature(/model,'OA License name')),
+          local:annotation-field('url', entity:feature(/model,'OA License url'))), ', ')}</line>
         <line indent="4">)</line>
         <line indent="2">),</line>
         <line indent="2">servers = {{</line>
-        <xsl:for-each select="local:feature(/model,'OA Server')">
-          <line indent="4">@Server(url = "{.}"){if (position() = last()) then ',' else ()}</line>  
+        <xsl:for-each select="entity:feature(/model,'OA Server url')">
+          <line indent="4">@Server(url = "{.}"){if (not(position() = last())) then ',' else ()}</line>  
         </xsl:for-each>
         <line indent="2">}}</line>
         <line>)</line>
-        <line>public class OpenApiDefinition {{ }}</line>
+        <line>public class OpenApiDefinition {{</line>
+        <line/>
+        <line indent="2">public enum OpenAPISpecVersion {{ API30, API31 }};</line>
+        <line/>
+        <line indent="2">public static OpenAPISpecVersion getOpenAPISpecVersion() {{</line>
+        <line indent="4">return OpenAPISpecVersion.{if ($openapi-spec-version = 'api31') then 'API31' else 'API30'};</line>
+        <line indent="2">}}</line>
+        <line/>
+        <line>}}</line>
       </xsl:variable>
       <xsl:variable name="lines" as="xs:string*">
         <xsl:apply-templates select="$lines-elements"/>  
@@ -550,7 +559,7 @@
     <xsl:param name="context-node" as="node()"/>
     <xsl:param name="method" as="xs:string"/>
     <xsl:param name="openapi-methods" as="xs:string?"/>
-    <xsl:variable name="global-openapi-methods" select="local:feature($context-node/root()/model, 'OA Methods')" as="xs:string?"/> 
+    <xsl:variable name="global-openapi-methods" select="entity:feature($context-node/root()/model, 'OA Methods')" as="xs:string?"/> 
     <xsl:choose>
       <xsl:when test="normalize-space($openapi-methods)">
         <xsl:sequence select="functx:contains-case-insensitive($openapi-methods, $method)"/>
@@ -564,11 +573,13 @@
     </xsl:choose>
   </xsl:function>
   
+  <!--
   <xsl:function name="local:feature" as="xs:string*">
     <xsl:param name="context" as="element()"/>
     <xsl:param name="name" as="xs:string"/>
     <xsl:sequence select="$context/features/feature[funct:equals-case-insensitive(@name, $name)]/text()[normalize-space()]"/>
   </xsl:function>
+  -->
   
   <xsl:function name="local:annotation-field" as="xs:string?">
     <xsl:param name="name" as="xs:string"/>
@@ -588,7 +599,7 @@
   <xsl:function name="local:response-codes" as="xs:string+">
     <xsl:param name="model-element" as="element(model)"/>
     <xsl:param name="method-id" as="xs:string+"/>
-    <xsl:variable name="configured-response-codes" select="local:feature($model-element, 'OA Response Codes ' || $method-id)" as="xs:string?"/>
+    <xsl:variable name="configured-response-codes" select="entity:feature($model-element, 'OA Response Codes ' || $method-id)" as="xs:string?"/>
     <xsl:variable name="default-response-codes" select="map:get($method-id-response-codes-map, $method-id)" as="xs:string+"/>
     <xsl:choose>
       <xsl:when test="$configured-response-codes">

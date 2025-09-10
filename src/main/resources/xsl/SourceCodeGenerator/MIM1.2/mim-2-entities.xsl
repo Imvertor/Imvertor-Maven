@@ -507,6 +507,7 @@
       <xsl:where-populated>
         <choice-id>{@pre:keuze-id}</choice-id>  
       </xsl:where-populated>
+      <xsl:apply-templates select="mim-ext:kenmerken" mode="kenmerk"/>
     </field>
   </xsl:template>
   
@@ -561,6 +562,7 @@
       <xsl:where-populated>
         <choice-id>{@pre:keuze-id}</choice-id>  
       </xsl:where-populated>
+      <xsl:apply-templates select="mim-ext:kenmerken" mode="kenmerk"/>
     </field>
   </xsl:template>
   
@@ -583,7 +585,10 @@
               <type original-type="{mim:type/mim:Datatype}">{map:get($primitive-mim-type-mapping, (mim:type/mim:Datatype, 'CharacterString')[1])}</type> <!-- TODO: support non-standard MIM types? -->
               <parameter-type>{$parameter-type}</parameter-type>
               <cardinality>{mim:kardinaliteit}</cardinality>
+              <!--
               <required>{(local:true-or-false(local:kenmerk-ext(., 'OA Required')), 'false')[1]}</required>
+              -->
+              <required>{local:cardinality(mim:kardinaliteit)/@minOccurs = $ONE}</required>
               <description>{local:kenmerk-ext(., 'OA Description')}</description>
               <example>{local:kenmerk-ext(., 'OA Example')}</example>
               <xsl:apply-templates select="mim-ext:kenmerken" mode="kenmerk"/>
@@ -609,7 +614,10 @@
               <name>{mim:naam}</name>
               <package-name>{entity:package-name(local:package-hierarchy(.))}</package-name>  
             </xsl:for-each>
+            <!--
             <is-collection>{ends-with(normalize-space(mim:kardinaliteit), '*')}</is-collection>
+            -->
+            <is-collection>{local:cardinality(mim:kardinaliteit)/@maxOccurs = $unbounded}</is-collection>
           </xsl:for-each>
         </response-body>  
       </xsl:where-populated>
@@ -632,7 +640,7 @@
     </features>
   </xsl:template>
   
-  <xsl:function name="local:kenmerk-ext" as="xs:string?">
+  <xsl:function name="local:kenmerk-ext" as="xs:string*">
     <xsl:param name="model-element" as="element()"/>
     <xsl:param name="feature-name" as="xs:string"/>
     <xsl:sequence select="$model-element/mim-ext:kenmerken/mim-ext:Kenmerk[lower-case(normalize-space(@naam)) = lower-case(normalize-space($feature-name))]/text()[normalize-space()]"/>
