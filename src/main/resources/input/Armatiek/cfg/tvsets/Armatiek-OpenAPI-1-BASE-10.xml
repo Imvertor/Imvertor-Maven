@@ -297,7 +297,7 @@
                 <value default="yes">GET</value>
                 <value>POST</value>
                 <value>PUT</value>
-                <value>DEL</value>
+                <value>DELETE</value>
                 <value>PATCH</value>
             </declared-values>
             <stereotypes>
