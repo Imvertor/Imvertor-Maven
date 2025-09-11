@@ -78,6 +78,13 @@
          <required>false</required>
          <default>api30</default>
       </cli-parm>
+      <cli-parm>
+         <name>openapischemasonly</name>
+         <arg>yes|no</arg>
+         <tip>Yes if only the schema part of the OpenAPI description should be generated</tip>
+         <required>false</required>
+         <default>no</default>
+      </cli-parm>
    </cli-parms>
    
    <properties>

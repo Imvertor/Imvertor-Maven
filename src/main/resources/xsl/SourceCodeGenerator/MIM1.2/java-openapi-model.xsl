@@ -206,6 +206,8 @@
   <xsl:template match="field[not(auto-generate = 'true')]" mode="field-declaration">
     <line/>
     
+    <xsl:variable name="field-name" select="local:unique-field-name(name)" as="xs:string"/>
+    
     <xsl:call-template name="javadoc">
       <xsl:with-param name="indent" select="2"/>
     </xsl:call-template>
@@ -220,19 +222,20 @@
     <line indent="2">@Schema({if ($description) then 'description = "' || $description || '", ' else ()}requiredMode = {$required-mode})</line>
     
     <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])" as="xs:string"/>
-    <line indent="2">private {$resolved-type} {name};</line>
+    <line indent="2">private {$resolved-type} {$field-name};</line>
   </xsl:template>
   
   <xsl:template match="field[not(auto-generate = 'true')]" mode="field-getter-setter">
+    <xsl:variable name="field-name" select="local:unique-field-name(name)" as="xs:string"/>
     <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])" as="xs:string"/>
     <line/>
-    <line indent="2">public {$resolved-type} {if (type = 'Boolean') then 'is' else 'get'}{functx:capitalize-first(name)}() {{</line>
-    <line indent="4">return {name};</line>
+    <line indent="2">public {$resolved-type} {if (type = 'Boolean') then 'is' else 'get'}{functx:capitalize-first($field-name)}() {{</line>
+    <line indent="4">return {$field-name};</line>
     <line indent="2">}}</line>  
     
     <line/>
-    <line indent="2">public void set{functx:capitalize-first(name)}({$resolved-type} {name}) {{</line>
-    <line indent="4">this.{name} = {name};</line>
+    <line indent="2">public void set{functx:capitalize-first($field-name)}({$resolved-type} {$field-name}) {{</line>
+    <line indent="4">this.{$field-name} = {$field-name};</line>
     <line indent="2">}}</line>
   </xsl:template>
   
@@ -290,6 +293,11 @@
         <xsl:sequence select="local:type($type-info, $cardinality)"/>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:function>
+  
+  <xsl:function name="local:unique-field-name" as="xs:string?">
+    <xsl:param name="name" as="xs:string?"/>
+    <xsl:sequence select="if (funct:equals-case-insensitive($name, 'url')) then '_' || $name else $name"/>
   </xsl:function>
   
 </xsl:stylesheet>
