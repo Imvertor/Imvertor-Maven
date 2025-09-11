@@ -22,6 +22,7 @@
   <xsl:param name="package-prefix" as="xs:string" select="'nl.imvertor.model'"/>
   <xsl:param name="resource-package-prefix" as="xs:string" select="'nl.imvertor.resource'"/>
   <xsl:param name="openapi-spec-version" as="xs:string">api30</xsl:param>
+  <xsl:param name="openapi-schemas-only" as="xs:boolean" select="false()"/>
     
   <xsl:variable name="common-base-url" as="xs:string">https://armatiek.github.io/imvertor-openapi-generator/openapi/generiek.yaml</xsl:variable>
   <xsl:variable name="response-component-base-url" as="xs:string">{$common-base-url}#/components/responses/</xsl:variable>
@@ -399,7 +400,7 @@
     </xsl:if>
     <xsl:for-each select="$parameters">
       <xsl:variable name="required" select="if (parameter-type = 'path') then 'true' else required" as="xs:string"/>
-      <line indent="4">@{funct:uppercase-first(parameter-type)}Param("{name}") @Parameter(description = "{description}", required = {$required}, example = "{example}") {type}{if (ends-with(cardinality, '*')) then '[]' else ()} {name}{if (not(position() = last()) or $request-body) then ',' else ') {'}</line> <!-- TODO: cardinaliteit -->
+      <line indent="4">@{funct:uppercase-first(parameter-type)}Param("{name}") @Parameter(description = "{description}", required = {$required}, example = "{example}") {type}{if (ends-with(cardinality, '*')) then '[]' else ()} {entity:field-name(name)}{if (not(position() = last()) or $request-body) then ',' else ') {'}</line> <!-- TODO: cardinaliteit -->
     </xsl:for-each>
     <xsl:if test="$request-body">
       <line indent="4">@Parameter(description = "De gegevens van het {$request-body/name} object", required = true) {$fqn-request-class-name} {lower-case($request-body/name)}) {{</line>
@@ -453,6 +454,10 @@
         <line indent="4">return OpenAPISpecVersion.{if ($openapi-spec-version = 'api31') then 'API31' else 'API30'};</line>
         <line indent="2">}}</line>
         <line/>
+        <line indent="2">public static boolean getSchemasOnly() {{</line>
+        <line indent="4">return {$openapi-schemas-only};</line>
+        <line indent="2">}}</line>
+        <line/>
         <line>}}</line>
       </xsl:variable>
       <xsl:variable name="lines" as="xs:string*">
@@ -462,26 +467,30 @@
     </xsl:result-document>
   </xsl:template>
   
-  <xsl:template name="validate-operation">    
-    <!-- 
-    TODO: uniciteit paths
-    -->            
-    <xsl:if test="not(normalize-space(operation-id))">
-      <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI operation is missing the Operation ID ([1])', name)"/>
+  <xsl:template name="validate-operation">          
+    <xsl:variable name="operation-id" select="normalize-space(operation-id)" as="xs:string"/>
+    <xsl:variable name="method" select="normalize-space(method)" as="xs:string"/>
+    <xsl:variable name="path" select="normalize-space(path)" as="xs:string"/>
+    
+    <xsl:if test="not($operation-id)">
+      <xsl:sequence select="imf:message(., 'ERROR', 'An OpenAPI Operation is missing the Operation ID (name)', ())"/>
     </xsl:if>
-    <xsl:variable name="operation-id" select="operation-id" as="xs:string"/>
     <xsl:if test="count(//openapi-operation[operation-id = $operation-id]) gt 1">
-      <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI operation id [1] is not unique', $operation-id)"/>
+      <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI Operation ID (name) [1] is not unique', $operation-id)"/>
     </xsl:if>
-    <xsl:if test="not(normalize-space(method))">
-      <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI operation [1] is missing the HTTP method', $operation-id)"/>
+    <xsl:if test="not($method)">
+      <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI Operation [1] is missing the &quot;OA HTTP method&quot;', $operation-id)"/>
     </xsl:if>
     <xsl:if test="path = '/nopath'">
-      <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI operation [1] is missing the Path, now using &quot;/nopath&quot;', $operation-id)"/>
+      <xsl:sequence select="imf:message(., 'ERROR', 'OpenAPI Operation [1] is missing the &quot;OA Path&quot;, now using &quot;/nopath&quot;', $operation-id)"/>
     </xsl:if>
     <xsl:if test="tag = 'NoTag'">
-      <xsl:sequence select="imf:message(., 'WARNING', 'OpenAPI operation [1] is missing the Tag, now using &quot;NoTag&quot;', $operation-id)"/>
+      <xsl:sequence select="imf:message(., 'WARNING', 'OpenAPI Operation [1] is missing the &quot;OA Tag&quot;, now using &quot;NoTag&quot;', $operation-id)"/>
     </xsl:if>
+    <xsl:if test="count(//openapi-operation[method = $method and path = $path]) gt 1">
+      <xsl:sequence select="imf:message(., 'ERROR', 'The combination of &quot;OA HTTP Method&quot; [1] and &quot;OA Path&quot; [2] is not unique', ($method, $path))"/>
+    </xsl:if>
+    
     <xsl:variable name="regex" expand-text="no">\{(.*?)\}</xsl:variable>
     <xsl:variable name="param-names-in-path" select="analyze-string(path, $regex)//fn:group" as="xs:string*"/>
     <xsl:variable name="path-params" select="parameters/parameter[parameter-type = 'path']/name" as="xs:string*"/>
@@ -492,42 +501,42 @@
     <xsl:variable name="declared-path-parameters-not-in-path" select="functx:value-except($path-params, $param-names-in-path)" as="xs:string*"/>
     <xsl:for-each select="$parameters-in-path-but-not-declared">
       <xsl:sequence select="imf:message($context, 'ERROR', 
-        'OA Path of OpenAPI operation [1] contains parameter(s) [2] that are not declared as an OpenAPI Parameter with Parameter type &quot;path&quot;', 
+        '&quot;OA Path&quot; of OpenAPI Operation [1] contains parameter(s) [2] that are not declared as an OpenAPI Parameter with Parameter type &quot;path&quot;', 
         ($operation-id, string-join($parameters-in-path-but-not-declared, ',')))"/> 
     </xsl:for-each>
     <xsl:for-each select="$declared-path-parameters-not-in-path">
       <xsl:sequence select="imf:message($context, 'ERROR', 
-        'OpenAPI operation [1] contains OpenAPI &quot;path&quot; parameter(s) [2] that are not used in OA Path', 
+        'OpenAPI Operation [1] contains OpenAPI &quot;path&quot; parameter(s) [2] that are not used in &quot;OA Path&quot;', 
         ($operation-id, string-join($declared-path-parameters-not-in-path, ',')))"/> 
     </xsl:for-each>
     
     <xsl:for-each select="parameters/parameter">
       <xsl:if test="not(normalize-space(name))">
-        <xsl:sequence select="imf:message(., 'ERROR', 'The &quot;name&quot; of a parameter of OpenAPI operation [1] is not specified', $operation-id)"/>  
+        <xsl:sequence select="imf:message(., 'ERROR', 'The &quot;name&quot; of a parameter of OpenAPI Operation [1] is not specified', $operation-id)"/>  
       </xsl:if>
       <xsl:if test="not(normalize-space(parameter-type))">
-        <xsl:sequence select="imf:message(., 'ERROR', 'The &quot;type&quot; of parameter [1] of OpenAPI operation [2] is not specified', (name, $operation-id))"/>  
+        <xsl:sequence select="imf:message(., 'ERROR', 'The &quot;type&quot; of parameter [1] of OpenAPI Operation [2] is not specified', (name, $operation-id))"/>  
       </xsl:if>
       <xsl:if test="parameter-type = 'path' and required = 'false'">
-        <xsl:sequence select="imf:message(., 'WARNING', 'The parameter [1] of OpenAPI operation [2] with type &quot;path&quot; must have &quot;OA Required = yes&quot; according to spec', (name, $operation-id))"/>  
+        <xsl:sequence select="imf:message(., 'WARNING', 'The parameter [1] of OpenAPI Operation [2] with type &quot;path&quot; must have &quot;OA Required = yes&quot; according to spec', (name, $operation-id))"/>  
       </xsl:if>
     </xsl:for-each>
     
     <xsl:choose>
       <xsl:when test="method = 'GET' and not(response-body)">
-        <xsl:sequence select="imf:message(., 'ERROR', 'GET OpenAPI operation [1] is missing the Response Body relation', $operation-id)"/>
+        <xsl:sequence select="imf:message(., 'ERROR', 'GET OpenAPI Operation [1] is missing the Response Body relation', $operation-id)"/>
       </xsl:when>
       <xsl:when test="method = 'POST' and not(request-body)">
-        <xsl:sequence select="imf:message(., 'ERROR', 'POST OpenAPI operation [1] is missing the Request Body relation', $operation-id)"/>
+        <xsl:sequence select="imf:message(., 'ERROR', 'POST OpenAPI Operation [1] is missing the Request Body relation', $operation-id)"/>
       </xsl:when>
       <xsl:when test="method = 'DELETE' and (response-body or request-body)">
-        <xsl:sequence select="imf:message(., 'ERROR', 'DELETE OpenAPI operation [1] cannot have a Request Body relation or Response Body Relation', $operation-id)"/>
+        <xsl:sequence select="imf:message(., 'ERROR', 'DELETE OpenAPI Operation [1] cannot have a Request Body relation or Response Body Relation', $operation-id)"/>
       </xsl:when>
       <xsl:when test="method = 'PUT' and not(request-body)">
-        <xsl:sequence select="imf:message(., 'ERROR', 'PUT OpenAPI operation [1] is missing the Request Body relation', $operation-id)"/>
+        <xsl:sequence select="imf:message(., 'ERROR', 'PUT OpenAPI Operation [1] is missing the Request Body relation', $operation-id)"/>
       </xsl:when>
       <xsl:when test="method = 'PATCH' and not(request-body)">
-        <xsl:sequence select="imf:message(., 'ERROR', 'PATCH OpenAPI operation [1] is missing the Request Body relation', $operation-id)"/>
+        <xsl:sequence select="imf:message(., 'ERROR', 'PATCH OpenAPI Operation [1] is missing the Request Body relation', $operation-id)"/>
       </xsl:when>
     </xsl:choose>
   </xsl:template>

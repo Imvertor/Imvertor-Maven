@@ -152,6 +152,7 @@ public class SourcecodeGenerator extends Step {
       String sourcecodeResolveKeuzeRelatiedoelen = configurator.getXParm("cli/sourcecoderesolvekeuzerelatiedoelen", false);
       String sourcecodeResolveKeuzeDatatypen = configurator.getXParm("cli/sourcecoderesolvekeuzedatatypen", false);
       String openapiSpecVersion = configurator.getXParm("cli/openapispecversion", false);
+      String openapiSchemasOnly = configurator.getXParm("cli/openapischemasonly", false);
       
       /* Should have been stylesheet params of type boolean but this is not supported by transformer. Now rely on XSLT type conversion from strings "true" and "false" to booleans: */
       if (sourcecodeCopyDownMixins != null)
@@ -164,6 +165,9 @@ public class SourcecodeGenerator extends Step {
         transformer.setXslParm("sourcecode-resolve-keuze-tussen-datatypen", configParamToTrueFalseString(sourcecodeResolveKeuzeDatatypen, "true"));
       if (openapiSpecVersion != null)
         transformer.setXslParm("openapi-spec-version", openapiSpecVersion);
+      if (openapiSchemasOnly != null) {
+        transformer.setXslParm("openapi-schemas-only", configParamToTrueFalseString(openapiSchemasOnly, "false"));
+      }
       
       /* Convert MIM 1.1 to 1.2 namespaces : */ 
       succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", workFileParamMIM_11_to_12, xslFileParamMIM_11_to_12);
