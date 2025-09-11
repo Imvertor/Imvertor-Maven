@@ -52,6 +52,17 @@
         <xsl:sequence select="imf:msg((),$type,$text,$info)"/>
     </xsl:function>
     
+    <!-- complex message but without wiki key parameter -->
+    <xsl:function name="imf:msg" as="empty-sequence()">
+        <xsl:param name="this" as="node()*"/>
+        <xsl:param name="type" as="xs:string"/>
+        <xsl:param name="text" as="xs:string"/>
+        <xsl:param name="info" as="item()*"/>
+        
+        <xsl:variable name="wiki" select="if ($type = ('ERROR', 'WARNING', 'FATAL')) then imf:get-wiki-key($text) else ''"/>
+        <xsl:sequence select="imf:msg($this, $type, $text, $info, $wiki)"/>
+    </xsl:function>
+    
     <!-- 
         complex message, pass context node, type, text, and parameters to insert within text 
         
@@ -62,6 +73,7 @@
         <xsl:param name="type" as="xs:string"/>
         <xsl:param name="text" as="xs:string"/>
         <xsl:param name="info" as="item()*"/>
+        <xsl:param name="wiki" as="xs:string"/>
         
         <xsl:if test="not($type = 'DEBUG') or imf:debug-mode()">
             <xsl:variable name="mthis" select="$this[1]"/>
@@ -72,7 +84,6 @@
                 imf:get-construct-name($mthis)"/>
             <xsl:variable name="id" select="$mthis/imvert:id"/>
             <xsl:variable name="ctext" select="imf:msg-insert-parms($text,$info)"/>
-            <xsl:variable name="wiki" select="if ($type = ('ERROR', 'WARNING', 'FATAL')) then imf:get-wiki-key($text) else ''"/>
             <xsl:message>
                 <!-- note that messages are specially processed by Imvertor -->
                 <xsl:sequence select="imf:create-output-element('imvert-message:src',$xml-stylesheet-identifier)"/>
@@ -148,7 +159,8 @@
             <xsl:otherwise>
                 <xsl:value-of select="$text"/>
             </xsl:otherwise>
-        </xsl:choose>    </xsl:function>
+        </xsl:choose>
+    </xsl:function>
     
     <!-- when sequence passed as msg parameter, return "1", "2" in stead of "1,2" -->
     <xsl:function name="imf:string-group" as="xs:string">
