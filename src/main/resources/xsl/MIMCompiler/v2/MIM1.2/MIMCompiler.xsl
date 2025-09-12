@@ -326,7 +326,7 @@
     </mim:Gegevensgroeptype>
   </xsl:template>
   
-  <xsl:template match="imvert:attribute[not(imvert:stereotype) or (imvert:stereotype/@id = 'stereotype-name-attribute') or (imvert:stereotype/@id = 'stereotype-name-union-element-DEPRECATED')]">
+  <xsl:template match="imvert:attribute[(imvert:stereotype/@id = 'stereotype-name-attribute') or (imvert:stereotype/@id = 'stereotype-name-union-element-DEPRECATED')]">
     <mim:Attribuutsoort source-id="{imvert:stereotype/@id}">
       <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
@@ -1196,6 +1196,9 @@
           <xsl:with-param name="ref-id" select="imvert:type-id" as="xs:string"/>
           <xsl:with-param name="restrict-datatypes" select="false()" as="xs:boolean"/>
         </xsl:call-template>  
+      </xsl:when>
+      <xsl:when test="not(normalize-space($baretype))">
+        <!-- assume enum -->
       </xsl:when>
       <xsl:when test="$baretype[. = $mim12-primitive-datatypes-uc-names]">
         <!-- MIM standaard datatype herkend dat als baretype is ingevoerd ( en dus geen gebruikmaakt van Kadaster-MIM12.xmi): -->

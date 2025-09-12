@@ -769,7 +769,7 @@
         <xsl:variable name="property-names" select="$class/(imvert:atributes | imvert:associations)/*/imvert:name"/>
         <xsl:variable name="name" select="imvert:name"/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
-        <xsl:variable name="is-enumeration" select="$class/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')"/>
+        <xsl:variable name="is-enumeration" select="$class/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist') or $class/imvert:designation = 'enumeration'"/>
         <xsl:variable name="baretype" select="imvert:baretype"/><!-- INTEGER  of AN1000 -->
         <xsl:variable name="type-name" select="imvert:type-name"/><!-- scalar-integer of Integer; scalar when imvert:type-id is not specified--> 
         <xsl:variable name="is-known-baretype" select="empty(imvert:type-id) and $type-name"/><!-- scalar-integer of Integer; scalar when imvert:type-id is not specified--> 

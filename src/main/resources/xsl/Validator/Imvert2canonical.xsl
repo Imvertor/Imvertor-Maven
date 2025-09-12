@@ -132,6 +132,7 @@
         </xsl:choose>
     </xsl:template>
 
+    <?x Imvertor 4.5: deze regel is verwijderd, nu meerdere metamodellen in één model kunnen worden geintegreerd. Deze regel betrof MIM. Zie #659
     <xsl:template match="imvert:class[imvert:designation = 'enumeration']/imvert:attributes/imvert:attribute">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
@@ -142,7 +143,9 @@
             </xsl:if>
         </xsl:copy>
     </xsl:template>
+    x?>
     
+    <?x Imvertor 4.5: deze regel is verwijderd, nu meerdere metamodellen in één model kunnen worden geintegreerd. Deze regel betrof MIM. Zie #659
     <xsl:template match="imvert:class[imvert:designation = 'enumeration']">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
@@ -153,6 +156,7 @@
             </xsl:if>
         </xsl:copy>
     </xsl:template>
+    x?>
     
     <xsl:template match="imvert:association">
         <xsl:choose>
