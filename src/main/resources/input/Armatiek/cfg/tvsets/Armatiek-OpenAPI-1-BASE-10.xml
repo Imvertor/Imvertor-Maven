@@ -56,13 +56,13 @@
         <tv norm="space" id="CFG-TV-OPENAPI-VERSION">
             <name lang="nl">OA Version</name>
             <name lang="en">OA Version</name>
-            <desc lang="nl">De versie van de specificatie die moet worden gegenereerd, bijv. versie '2.0.2'.</desc>
+            <desc lang="nl">De versie van de beschrijving die moet worden gegenereerd, bijv. versie '2.0.2'.</desc>
             <desc lang="en">TODO</desc>
             <source>API-1.0</source>
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-PATHVERSION">
@@ -74,7 +74,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-CONTACTNAME">
@@ -86,7 +86,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-CONTACTURL">
@@ -98,7 +98,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-CONTACTEMAIL">
@@ -110,7 +110,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         
@@ -147,7 +147,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-METHODS">
@@ -160,7 +160,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
                 <stereo minmax="0..1">stereotype-name-openapi-objecttype</stereo>
             </stereotypes>
         </tv>
@@ -177,7 +177,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="0..*">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-GETI">
@@ -191,7 +191,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="0..*">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-POST">
@@ -205,13 +205,13 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="0..*">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-DEL">
             <name lang="nl">OA Response codes DEL</name>
             <name lang="en">OA Response codes DEL</name>
-            <desc lang="nl">Ondersteunde response codes voor de DEL request. 
+            <desc lang="nl">Ondersteunde response codes voor de DELETE request. 
                 De waarden worden komma gescheiden opgegeven. 
                 Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.</desc>
             <desc lang="en">TODO</desc>
@@ -219,7 +219,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="0..*">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-PUT">
@@ -233,7 +233,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="0..*">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-PATCH">
@@ -247,7 +247,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="0..*">stereotype-name-openapi-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         
@@ -315,7 +315,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-objecttype</stereo>
                 <stereo minmax="1">stereotype-name-openapi-operation</stereo>
             </stereotypes>
         </tv>
@@ -350,7 +350,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-parameter</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-parameter</stereo>
             </stereotypes>
         </tv>
         
@@ -370,7 +370,7 @@
                 <value>Both</value>
             </declared-values>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-relatiesoort</stereo>
             </stereotypes>
         </tv>
         
@@ -383,7 +383,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-objecttype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-GETI">
@@ -395,7 +395,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-objecttype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-PUT">
@@ -407,7 +407,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-objecttype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-POST">
@@ -419,7 +419,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-objecttype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-DEL">
@@ -431,7 +431,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-objecttype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-PATCH">
@@ -443,7 +443,7 @@
             <catalog>TODO</catalog>
             <derive>no</derive>
             <stereotypes>
-                <stereo minmax="1">stereotype-name-openapi-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-objecttype</stereo>
             </stereotypes>
         </tv>
         
