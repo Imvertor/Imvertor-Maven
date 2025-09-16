@@ -9,11 +9,54 @@ th, td {
     font-size: 80%;
 }
 
+/*  pas tabellen aan */
+tbody {
+	background-color: white !important;
+}
+
+td {
+	min-width: 1em !important;
+}
+
+div.topline {
+    color: gray;
+    font-size: 80%;
+    border-bottom: 1px solid gray;
+}
+
+/* Tegengaan dat rijen om-en-om worden gehighlight */
 tr:nth-child(even),
 tr:nth-child(odd) {
     background: inherit !important;
 }
 
+/* Geen lijnen om de tabel en haar cellen */
 table {
-    border-bottom: inherit !important;   
+    border: none !important;   
+}
+
+table th, table td {
+    border: none !important;
+}
+
+/* nettere uitlijning van labels en waarden */
+
+th[scope="row"] {
+    padding: 0.25rem 0.25rem 0.25rem 0rem !important;
+}
+table th, 
+table td {
+   padding: 0.25em;
+}
+
+table tr {
+    border-bottom: none;
+}
+table.overview tr {
+    border-bottom: none;
+}
+
+/* URL getoond als courier */
+span.url {
+     font-family: Courier, sans-serif;
 }
