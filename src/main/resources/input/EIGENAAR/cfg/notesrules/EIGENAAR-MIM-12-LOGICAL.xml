@@ -7,14 +7,14 @@
     
     <name>EIGENAAR-MIM-12-LOGICAL</name> 
     
-    <notes-rule lang="nl" default="Omschrijving">
-        <section title="Omschrijving" tagged-value="CFG-TV-OPENAPI-DESCRIPTION">
+    <notes-rule lang="nl" default="OA Description">
+        <section title="OA Description" tagged-value="CFG-TV-OPENAPI-DESCRIPTION">
             <!--  Geen verdere delen herkend binnen deze sectie -->
         </section>
-        <section title="Samenvatting" tagged-value="CFG-TV-OPENAPI-SUMMARY">
+        <section title="OA Summary" tagged-value="CFG-TV-OPENAPI-SUMMARY">
             <!--  Geen verdere delen herkend binnen deze sectie -->
         </section>
-        <section title="Voorbeeld" tagged-value="CFG-TV-OPENAPI-PARM-EXAMPLE">
+        <section title="OA Example" tagged-value="CFG-TV-OPENAPI-PARM-EXAMPLE">
             <!--  Geen verdere delen herkend binnen deze sectie -->
         </section>
     </notes-rule>
