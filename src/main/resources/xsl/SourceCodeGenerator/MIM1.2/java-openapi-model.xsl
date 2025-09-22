@@ -135,14 +135,14 @@
         <line>public class Paginated{name}List {{</line>
         <line/>
         <line indent="2">@Schema(requiredMode = RequiredMode.REQUIRED)</line>
-        <line indent="2">private List&lt;{name}&gt; results;</line>
+        <line indent="2">private List&lt;{name}&gt; resultaten;</line>
         <line/>
-        <line indent="2">public List&lt;{name}&gt; getResults() {{</line>
-        <line indent="4">return this.results;</line>
+        <line indent="2">public List&lt;{name}&gt; getResultaten() {{</line>
+        <line indent="4">return this.resultaten;</line>
         <line indent="2">}}</line>
         <line/>
-        <line indent="2">public void setResults(List&lt;{name}&gt; results) {{</line>
-        <line indent="4">this.results = results;</line>
+        <line indent="2">public void setResultaten(List&lt;{name}&gt; resultaten) {{</line>
+        <line indent="4">this.resultaten = resultaten;</line>
         <line indent="2">}}</line>
         <line/>
         <line>}}</line>
