@@ -39,6 +39,7 @@
                 <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
                 <stereo minmax="1">stereotype-name-openapi-operation</stereo>
                 <stereo minmax="1">stereotype-name-openapi-parameter</stereo>
+                <stereo minmax="1">stereotype-name-openapi-header</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-SUMMARY">
@@ -51,6 +52,19 @@
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="1">stereotype-name-openapi-operation</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-EXAMPLE">
+            <name lang="nl">OA Example</name>
+            <name lang="en">OA Example</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-openapi-parameter</stereo>
+                <stereo minmax="0..1">stereotype-name-openapi-header</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-VERSION">
@@ -150,10 +164,31 @@
                 <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
+        <tv norm="space" id="CFG-TV-OPENAPI-AUTOMODE">
+            <name lang="nl">OA Auto mode</name>
+            <name lang="en">OA Auto mode</name>
+            <desc lang="nl">De gewenste werking van het automatisch genereren van de basic CRUD OpenAPI operations. 
+                "All objecttypes": genereer operations voor alle niet-abstracte Objectypen;
+                "Stereotyped objecttypes": genereer alleen operations voor niet-abstracte Objectypen die ook het stereotype "OpenAPI Objecttype" hebben;
+                "Disabled": genereer geen operations automatisch.
+            </desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <declared-values lang="nl">
+                <value default="yes">All objecttypes</value>
+                <value>Stereotyped objecttypes</value>
+                <value>Disabled</value>
+            </declared-values>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
+            </stereotypes>
+        </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-METHODS">
             <name lang="nl">OA Methods</name>
             <name lang="en">OA Methods</name>
-            <desc lang="nl">De standaard CRUD operaties die moeten worden ondersteund in de OpenAPI specificatie. 
+            <desc lang="nl">De standaard CRUD operaties die moeten worden gegenereerd in de OpenAPI beschrijving. 
                 Als bijvoorbeeld de GET method voor zowel items als collecties moet worden ondersteund, alsmede POST, PUT, DELETE, maar geen PATCH, dan moet de waarde van deze tag zijn: getCol,getItem,post,put,delete.</desc>
             <desc lang="en">TODO</desc>
             <source>API-1.0</source>
@@ -208,9 +243,9 @@
                 <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-DEL">
-            <name lang="nl">OA Response codes DEL</name>
-            <name lang="en">OA Response codes DEL</name>
+        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-DELETE">
+            <name lang="nl">OA Response codes DELETE</name>
+            <name lang="en">OA Response codes DELETE</name>
             <desc lang="nl">Ondersteunde response codes voor de DELETE request. 
                 De waarden worden komma gescheiden opgegeven. 
                 Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.</desc>
@@ -341,19 +376,6 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-OPENAPI-PARM-EXAMPLE">
-            <name lang="nl">OA Example</name>
-            <name lang="en">OA Example</name>
-            <desc lang="nl">TODO</desc>
-            <desc lang="en">TODO</desc>
-            <source>API-1.0</source>
-            <catalog>TODO</catalog>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-openapi-parameter</stereo>
-            </stereotypes>
-        </tv>
-        
         <!-- Tv's op referentie naar resultaat (API).  -->
         
         <tv norm="space" id="CFG-TV-QR-INCLUSION">
@@ -422,9 +444,9 @@
                 <stereo minmax="0..1">stereotype-name-openapi-objecttype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-DEL">
-            <name lang="nl">OA Operation ID DEL</name>
-            <name lang="en">OA Operation ID DEL</name>
+        <tv norm="space" id="CFG-TV-OPENAPI-OPERATIONID-DELETE">
+            <name lang="nl">OA Operation ID DELETE</name>
+            <name lang="en">OA Operation ID DELETE</name>
             <desc lang="nl">TODO</desc>
             <desc lang="en">TODO</desc>
             <source>API-1.0</source>

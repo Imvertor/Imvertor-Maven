@@ -100,6 +100,14 @@
             <construct>attribute</construct>
         </stereo>
         
+        <stereo id="stereotype-name-openapi-header" primary="yes">
+            <name lang="nl">OpenAPI Header</name>
+            <name lang="en">OpenAPI Header</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+        
         <stereo id="stereotype-name-openapi-responsebody" primary="yes">
             <name lang="nl">OpenAPI Response body</name>
             <name lang="en">OpenAPI Response body</name>
