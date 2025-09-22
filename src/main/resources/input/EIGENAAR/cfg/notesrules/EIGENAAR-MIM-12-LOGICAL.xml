@@ -11,12 +11,6 @@
         <section title="OA Description" tagged-value="CFG-TV-OPENAPI-DESCRIPTION">
             <!--  Geen verdere delen herkend binnen deze sectie -->
         </section>
-        <section title="OA Summary" tagged-value="CFG-TV-OPENAPI-SUMMARY">
-            <!--  Geen verdere delen herkend binnen deze sectie -->
-        </section>
-        <section title="OA Example" tagged-value="CFG-TV-OPENAPI-PARM-EXAMPLE">
-            <!--  Geen verdere delen herkend binnen deze sectie -->
-        </section>
     </notes-rule>
     
 </notes-rules>
