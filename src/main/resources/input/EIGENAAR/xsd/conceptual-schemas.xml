@@ -15,6 +15,7 @@
             <cs-ref:MapRef xlink:href="#GML322"/>
             <cs-ref:MapRef xlink:href="#GMLSF"/>
             <cs-ref:MapRef xlink:href="#OPENAPI"/>
+            <cs-ref:MapRef xlink:href="#AEDES"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
@@ -28,6 +29,21 @@
          <xi:include href="../../OGC/xsd/cs-GMLSF.xml"/>
          <xi:include href="../../ARMATIEK/xsd/cs-OpenAPI.xml"/>
          
+         <cs:ConceptualSchema>
+            <!-- TODO Verplaatsen naar eigen plek en aanvullen --> 
+            <cs:id>AEDES</cs:id>
+            <cs:shortName>AEDES</cs:shortName>
+            <cs:version>1.0</cs:version>
+            <cs:phase>3</cs:phase>
+            <cs:desc>AEDES SAMPLE</cs:desc>
+            <cs:source>AEDES</cs:source>
+            <cs:data-location>https://armatiek.nl/AEDES</cs:data-location>
+            <!-- all including conceptual schemas should include the prefix https://armatiek.nl/conceptual-schemas/ in their configuration! -->
+            <cs:url>https://armatiek.nl/conceptual-schemas/AEDES</cs:url>
+            <cs:catalogUrl>https://armatiek.nl/AEDES/[entry]</cs:catalogUrl>
+            
+         </cs:ConceptualSchema>
+         
          <!--maps:-->
          
          <xi:include href="../../MIM/xsd/cm-MIM12.xml"/>
@@ -36,6 +52,52 @@
          <xi:include href="../../OGC/xsd/cm-GMLSF.xml"/>
          <xi:include href="../../ARMATIEK/xsd/cm-OpenAPI.xml"/>
          
+         <cs:Map>
+            <!-- dit zijn constructies tijdelijk opgenomen tbv AEDES model -->
+            <!-- TODO Verplaatsen naar eigen plek en aanvullen --> 
+            <cs:id>AEDES</cs:id>
+            <cs:namespace>https://armatiek.nl/AEDES</cs:namespace>
+            <cs:location>https://armatiek.nl/AEDES.xsd</cs:location><!-- bogus not used for schema generator -->
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0.0</cs:version>
+            <cs:release>20250922</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#AEDES"/>
+            </cs:forSchema>
+            <cs:owner>AEDES</cs:owner>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>Energieprestaties</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Pand</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>OverigBouwwerk</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Perceel</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Kunstwerkdeel</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>WOZObject</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>AdresseerbaarObject</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>KdtNevenGebruiksfunctie</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>KdtOndersteunendeGebruiksfunctie</cs:name>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>KdtGebruiksfunctie</cs:name>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
       </cs:ConceptualSchemasComponents>
    </cs:components>
 </cs:ConceptualSchemas>
