@@ -72,7 +72,8 @@
   
   <xsl:variable name="mim-stereotype-ids" select="$configuration-metamodel-file/stereotypes/stereo[imf:is-mim-construct(.)]/@id" as="xs:string+"/>
   <xsl:variable name="mim-tagged-value-ids" select="$configuration-tvset-file/tagged-values/tv[imf:is-mim-construct(.)]/@id" as="xs:string+"/>
-
+  <xsl:variable name="mim-tagged-value-asnote" select="$configuration-tvset-file/tagged-values/tv[@norm = 'note']" as="element(tv)*"/>
+  
   <xsl:variable name="waardebereik-authentiek" select="$configuration-tvset-file/tagged-values/tv[@id = 'CFG-TV-INDICATIONAUTHENTIC']/declared-values/value" as="xs:string+"/>
   <xsl:variable name="waardebereik-aggregatietype" select="('Compositie', 'Gedeeld', 'Geen')" as="xs:string+"/> 
 
@@ -1496,7 +1497,14 @@
     <xsl:where-populated>
       <mim-ext:kenmerken>
         <xsl:for-each select="imvert:tagged-values/imvert:tagged-value[not(@id = ($mim-tagged-value-ids,'CFG-TV-POSITION'))]">
-          <mim-ext:Kenmerk naam="{imvert:name/@original}">{imvert:value/@original}</mim-ext:Kenmerk>
+          <mim-ext:Kenmerk naam="{imvert:name/@original}">
+            <xsl:choose>
+              <xsl:when test="$mim-tagged-value-asnote/@id = @id">
+                <xsl:sequence select="imvert:value/node()"/>
+              </xsl:when>
+              <xsl:otherwise>{imvert:value/@original}</xsl:otherwise>
+            </xsl:choose>
+          </mim-ext:Kenmerk>
         </xsl:for-each>  
         <!--
         <xsl:where-populated>

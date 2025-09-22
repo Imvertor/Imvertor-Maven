@@ -5,12 +5,10 @@
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <xi:include href="EIGENAAR-MIM-12-CONCEPTUAL.xml"/>
     
+    <xi:include href="../../../Armatiek/cfg/notesrules/Armatiek-OpenAPI-10-BASE-10.xml"/>
+    
     <name>EIGENAAR-MIM-12-LOGICAL</name> 
     
-    <notes-rule lang="nl" default="OA Description">
-        <section title="OA Description" tagged-value="CFG-TV-OPENAPI-DESCRIPTION">
-            <!--  Geen verdere delen herkend binnen deze sectie -->
-        </section>
-    </notes-rule>
+    <!-- niks toe te voegen -->
     
 </notes-rules>
