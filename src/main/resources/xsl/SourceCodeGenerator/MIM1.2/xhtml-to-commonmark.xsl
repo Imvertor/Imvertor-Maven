@@ -72,7 +72,7 @@
   </xsl:template>
   
   <!-- STRONG / BOLD -->
-  <xsl:template match="xhtml:strong | xhtml:b" mode="xhtml">
+  <xsl:template match="xhtml:strong | xhtml:b | xhtml:u" mode="xhtml">
     <xsl:text>**</xsl:text>
     <xsl:apply-templates mode="#current"/>
     <xsl:text>**</xsl:text>
@@ -167,11 +167,11 @@
         <xsl:text>&#10;</xsl:text>
       </xsl:when>
       <xsl:when test="$node/self::xhtml:ol">
-        <xsl:for-each select="$node/li">
+        <xsl:for-each select="$node/xhtml:li">
           <xsl:text>
 </xsl:text>
           <xsl:value-of select="local:repeat(' ', $indent)"/>
-          <xsl:value-of select="count(preceding-sibling::li) + 1"/>
+          <xsl:value-of select="count(preceding-sibling::xhtml:li) + 1"/>
           <xsl:text>. </xsl:text>
           <xsl:apply-templates select="node()[not(self::xhtml:ul or self::xhtml:ol)]" mode="#current"/>
           <xsl:for-each select="xhtml:ul|xhtml:ol">
