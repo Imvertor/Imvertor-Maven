@@ -141,7 +141,7 @@
       <xsl:sequence select="imf:message(., 'ERROR', 'Multiple inheritance is not supported (besides on mixin/static supertypes): Objecttype: [1]', mim:naam, '')"/>  
     </xsl:if>
     <xsl:variable name="mixin-supertype-refs" select="mim:supertypen/mim:GeneralisatieObjecttypen[local:is-mixin(.)]/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)" as="element()*"/>
-    <xsl:variable name="supertypes" select="if (self::mim:Objecttype) then local:get-all-supertypes(.) else ()" as="element(mim:Objecttype)*"/>
+    <xsl:variable name="supertypes" select="if (self::mim:Objecttype) then local:get-all-objecttype-supertypes(.) else ()" as="element(mim:Objecttype)*"/>
     
     <xsl:variable name="non-mixin-supertype-info" select="local:type-to-class($non-mixin-supertype-refs[1])" as="element(class)?"/>
     
@@ -247,7 +247,7 @@
       </definition> 
       <is-id-attribute>false</is-id-attribute>
       <nullable>false</nullable>
-      <xsl:call-template name="kenmerken"/>
+      <xsl:call-template name="attribuutsoort-kenmerken"/>
       <cardinality>
         <source>
           <min-occurs>1</min-occurs>
@@ -304,7 +304,7 @@
       </xsl:choose>
       -->
       <aggregation>composite</aggregation>
-      <xsl:call-template name="kenmerken"/>
+      <xsl:call-template name="attribuutsoort-kenmerken"/>
       <cardinality>
         <source>
           <min-occurs>1</min-occurs>
@@ -469,7 +469,7 @@
           <name original="{mim:naam}">{entity:field-name(mim:naam)}</name>
         </xsl:when>
         <xsl:otherwise>
-          <!-- Add target name to avoid name collisions -->
+          <!-- Add target name to avoid name collisions: -->
           <name original="{mim:naam}{$target/mim:naam}">{entity:field-name(mim:naam)}{entity:class-name($target/mim:naam)}</name>
         </xsl:otherwise> 
       </xsl:choose>  
@@ -781,13 +781,31 @@
     <xsl:sequence select="exists($generalisation-element[mim:mixin = 'true' or mim-ext:kenmerken/mim-ext:Kenmerk[@naam='type'] = 'GENERALISATIE STATIC'])"/>
   </xsl:function>
     
-  <xsl:function name="local:get-all-supertypes" as="element(mim:Objecttype)*">
+  <xsl:function name="local:get-all-objecttype-supertypes" as="element(mim:Objecttype)*">
     <xsl:param name="object-type" as="element(mim:Objecttype)?"/>    
     <xsl:variable name="supertypes" select="
       for $o in $object-type/mim:supertypen/mim:GeneralisatieObjecttypen/mim:supertype/mim-ref:ObjecttypeRef
       return local:resolve-reference($o)" as="element(mim:Objecttype)*"/>
-    <xsl:sequence select="$supertypes, for $o in $supertypes return local:get-all-supertypes($o)"/>
+    <xsl:sequence select="$supertypes, for $o in $supertypes return local:get-all-objecttype-supertypes($o)"/>
   </xsl:function>
+  
+  <xsl:function name="local:get-all-datatype-supertypes" as="element()*">
+    <xsl:param name="datatype" as="element()?"/>    
+    <xsl:variable name="supertypes" select="
+      for $d in $datatype/mim:supertypen/mim:GeneralisatieDatatypen/mim:supertype/mim-ref:DatatypeRef
+      return local:resolve-reference($d)" as="element()*"/>
+    <xsl:sequence select="$supertypes, for $d in $supertypes return local:get-all-datatype-supertypes($d)"/>
+  </xsl:function>
+  
+  <!--
+  <xsl:function name="local:get-base-primitief-datatype" as="element(mim:PrimitiefDatatype)?">
+    <xsl:param name="primitief-datatype" as="element(mim:PrimitiefDatatype)?"/>    
+    <xsl:variable name="supertypes" select="
+      for $p in $primitief-datatype/mim:supertypen/mim:GeneralisatieDatatypen/mim:supertype/mim-ref:DatatypeRef
+      return local:resolve-reference($p)" as="element(mim:PrimitiefDatatype)*"/>
+    <xsl:sequence select="$supertypes, for $p in $supertypes return local:get-all-primitief-datatype-supertypes($p)"/>
+  </xsl:function>
+  -->
   
   <xsl:function name="local:get-all-gegevensgroeptypes" as="element(mim:Gegevensgroeptype)*">
     <xsl:param name="model-element" as="element()?"/>    
@@ -799,7 +817,7 @@
   
   <xsl:function name="local:get-identifying-attribuutsoort-of-objecttype" as="element(mim:Attribuutsoort)?">
     <xsl:param name="object-type" as="element(mim:Objecttype)?"/>    
-    <xsl:variable name="self-and-supertypes" select="$object-type, local:get-all-supertypes($object-type)" as="element(mim:Objecttype)*"/>
+    <xsl:variable name="self-and-supertypes" select="$object-type, local:get-all-objecttype-supertypes($object-type)" as="element(mim:Objecttype)*"/>
     <xsl:variable name="attribuutsoorten" select="for $o in $self-and-supertypes return 
       ($o/mim:attribuutsoorten/mim:Attribuutsoort, 
       local:get-all-gegevensgroeptypes($o)/mim:attribuutsoorten/mim:Attribuutsoort)" as="element(mim:Attribuutsoort)*"/>
@@ -810,7 +828,7 @@
     <xsl:param name="relatiesoort" as="element(mim:Relatiesoort)"/>
     <xsl:variable name="name" select="$relatiesoort/mim:naam" as="xs:string?"/>
     <xsl:variable name="objecttype" select="$relatiesoort/ancestor::mim:Objecttype" as="element(mim:Objecttype)?"/>
-    <xsl:variable name="self-and-supertypes" select="$objecttype, local:get-all-supertypes($objecttype)" as="element(mim:Objecttype)*"/>
+    <xsl:variable name="self-and-supertypes" select="$objecttype, local:get-all-objecttype-supertypes($objecttype)" as="element(mim:Objecttype)*"/>
     <xsl:sequence select="count($self-and-supertypes/mim:relatiesoorten/mim:Relatiesoort[mim:naam = $name]) = 1"/>  
   </xsl:function>
   
@@ -818,31 +836,30 @@
     <xsl:param name="relatiesoort" as="element(mim:Relatiesoort)"/>
     <xsl:variable name="name" select="$relatiesoort/mim:relatierollen/mim:Doel/mim:naam" as="xs:string?"/>
     <xsl:variable name="objecttype" select="$relatiesoort/ancestor::mim:Objecttype" as="element(mim:Objecttype)?"/>
-    <xsl:variable name="self-and-supertypes" select="$objecttype, local:get-all-supertypes($objecttype)" as="element(mim:Objecttype)*"/>
+    <xsl:variable name="self-and-supertypes" select="$objecttype, local:get-all-objecttype-supertypes($objecttype)" as="element(mim:Objecttype)*"/>
     <xsl:sequence select="count($self-and-supertypes/mim:relatiesoorten/mim:Relatiesoort[mim:relatierollen/mim:Doel/mim:naam = $name]) = 1"/>  
   </xsl:function>
   
-  <xsl:function name="local:kenmerk" as="xs:string?">
+  <xsl:function name="local:attribuutsoort-kenmerk" as="xs:string?">
     <xsl:param name="model-element" as="element()?"/>
     <xsl:param name="feature-name" as="xs:string"/>
+    <xsl:variable name="direct-value" select="($model-element/*[funct:equals-case-insensitive(local-name(), $feature-name)]/text()[normalize-space()])[1]" as="xs:string?"/>
+    <xsl:variable name="primitief-datatype" select="$model-element/mim:type/mim-ref:DatatypeRef/local:resolve-reference(.)/self::mim:PrimitiefDatatype" as="element(mim:PrimitiefDatatype)?"/>
     <xsl:choose>
       <xsl:when test="empty($model-element)"/>
-      <xsl:when test="$model-element/*[local-name() = $feature-name]/node()">{$model-element/*[local-name() = $feature-name]}</xsl:when>
-      <xsl:when test="$model-element/mim:type/mim-ref:DatatypeRef">
-        <xsl:sequence select="local:kenmerk(local:resolve-reference($model-element/mim:type/mim-ref:DatatypeRef)/self::mim:PrimitiefDatatype, $feature-name)"/>
-      </xsl:when>
-      <xsl:when test="$model-element/self::mim:PrimitiefDatatype/mim:supertypen/mim:GeneralisatieDatatypen/mim:supertype/mim-ref:DatatypeRef">
-        <xsl:sequence select="local:kenmerk(local:resolve-reference($model-element/self::mim:PrimitiefDatatype/mim:supertypen/mim:GeneralisatieDatatypen/mim:supertype/mim-ref:DatatypeRef)/self::mim:PrimitiefDatatype, $feature-name)"/>
-      </xsl:when>
+      <xsl:when test="exists($direct-value)">{$direct-value}</xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="(($primitief-datatype, local:get-all-datatype-supertypes($primitief-datatype))/*[funct:equals-case-insensitive(local-name(), $feature-name)]/text()[normalize-space()])[1]"/>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
   
-  <xsl:function name="local:kenmerk-lengte" as="map(xs:string, xs:string)?">
+  <xsl:function name="local:attribuutsoort-kenmerk-lengte" as="map(xs:string, xs:string)?">
     <xsl:param name="model-element" as="element()"/>
-    <xsl:variable name="length" select="local:kenmerk($model-element, 'lengte')" as="xs:string?"/>
-    <xsl:variable name="l" select="replace(normalize-space($length), '\s', '')" as="xs:string"/>
+    <xsl:variable name="length" select="local:attribuutsoort-kenmerk($model-element, 'lengte')" as="xs:string?"/>
+    <xsl:variable name="l" select="translate($length, ' ', '')" as="xs:string"/>
     <xsl:choose>
-      <xsl:when test="empty($length)"/>
+      <xsl:when test="not(normalize-space($l))"/>
       <xsl:when test="$l castable as xs:integer">
         <xsl:map>
           <xsl:map-entry key="'min-value'" select="$l"/>
@@ -861,29 +878,29 @@
     </xsl:choose>
   </xsl:function>
   
-  <xsl:function name="local:kenmerk-formeel-patroon" as="xs:string?">
+  <xsl:function name="local:attribuutsoort-kenmerk-formeel-patroon" as="xs:string?">
     <xsl:param name="model-element" as="element()"/>
-    <xsl:sequence select="local:kenmerk($model-element, 'formeelPatroon')"/>
+    <xsl:sequence select="local:attribuutsoort-kenmerk($model-element, 'formeelPatroon')"/>
   </xsl:function>
   
-  <xsl:function name="local:kenmerk-minimumwaarde-inclusief" as="xs:string?">
+  <xsl:function name="local:attribuutsoort-kenmerk-minimumwaarde-inclusief" as="xs:string?">
     <xsl:param name="model-element" as="element()"/>
-    <xsl:sequence select="local:kenmerk($model-element, 'minimumwaardeInclusief')"/>
+    <xsl:sequence select="local:attribuutsoort-kenmerk($model-element, 'minimumwaardeInclusief')"/>
   </xsl:function>
   
-  <xsl:function name="local:kenmerk-minimumwaarde-exclusief" as="xs:string?">
+  <xsl:function name="local:attribuutsoort-kenmerk-minimumwaarde-exclusief" as="xs:string?">
     <xsl:param name="model-element" as="element()"/>
-    <xsl:sequence select="local:kenmerk($model-element, 'minimumwaardeExclusief')"/>
+    <xsl:sequence select="local:attribuutsoort-kenmerk($model-element, 'minimumwaardeExclusief')"/>
   </xsl:function>
   
-  <xsl:function name="local:kenmerk-maximumwaarde-inclusief" as="xs:string?">
+  <xsl:function name="local:attribuutsoort-kenmerk-maximumwaarde-inclusief" as="xs:string?">
     <xsl:param name="model-element" as="element()"/>
-    <xsl:sequence select="local:kenmerk($model-element, 'maximumwaardeInclusief')"/>
+    <xsl:sequence select="local:attribuutsoort-kenmerk($model-element, 'maximumwaardeInclusief')"/>
   </xsl:function>
   
-  <xsl:function name="local:kenmerk-maximumwaarde-exclusief" as="xs:string?">
+  <xsl:function name="local:attribuutsoort-kenmerk-maximumwaarde-exclusief" as="xs:string?">
     <xsl:param name="model-element" as="element()"/>
-    <xsl:sequence select="local:kenmerk($model-element, 'maximumwaardeExclusief')"/>
+    <xsl:sequence select="local:attribuutsoort-kenmerk($model-element, 'maximumwaardeExclusief')"/>
   </xsl:function>
   
   <xsl:function name="local:definition-as-string" as="xs:string?">
@@ -918,8 +935,8 @@
     <xsl:message select="$type || ': ' || $text || ', ' || $info || '(' || $wiki || ')'"/>
   </xsl:function>
   
-  <xsl:template name="kenmerken">
-    <xsl:variable name="length-map" select="local:kenmerk-lengte(.)" as="map(xs:string, xs:string)?"/>
+  <xsl:template name="attribuutsoort-kenmerken">
+    <xsl:variable name="length-map" select="local:attribuutsoort-kenmerk-lengte(.)" as="map(xs:string, xs:string)?"/>
     <xsl:if test="exists($length-map)">
       <xsl:where-populated>
         <length>{map:get($length-map, 'max-value')}</length>
@@ -932,19 +949,19 @@
       </xsl:where-populated>  
     </xsl:if>
     <xsl:where-populated>
-      <formal-pattern>{local:kenmerk-formeel-patroon(.)}</formal-pattern>
+      <formal-pattern>{local:attribuutsoort-kenmerk-formeel-patroon(.)}</formal-pattern>
     </xsl:where-populated>
     <xsl:where-populated>
-      <min-incl>{local:kenmerk-minimumwaarde-inclusief(.)}</min-incl>
+      <min-incl>{local:attribuutsoort-kenmerk-minimumwaarde-inclusief(.)}</min-incl>
     </xsl:where-populated>
     <xsl:where-populated>
-      <min-excl>{local:kenmerk-minimumwaarde-exclusief(.)}</min-excl>
+      <min-excl>{local:attribuutsoort-kenmerk-minimumwaarde-exclusief(.)}</min-excl>
     </xsl:where-populated>
     <xsl:where-populated>
-      <max-incl>{local:kenmerk-maximumwaarde-inclusief(.)}</max-incl>
+      <max-incl>{local:attribuutsoort-kenmerk-maximumwaarde-inclusief(.)}</max-incl>
     </xsl:where-populated>
     <xsl:where-populated>
-      <max-excl>{local:kenmerk-maximumwaarde-exclusief(.)}</max-excl>
+      <max-excl>{local:attribuutsoort-kenmerk-maximumwaarde-exclusief(.)}</max-excl>
     </xsl:where-populated>
   </xsl:template>
   
