@@ -183,7 +183,7 @@
       <fields>
         <xsl:if test="empty($identifying-attribuutsoort)">
           <field>
-            <name>id</name>
+            <name original="id">id</name>
             <type is-enum="false" is-standard="true">Long</type>
             <category/>
             <definition>Field that is not part of the model but added to define an identifying field for this entity</definition>
@@ -239,7 +239,7 @@
   <xsl:template match="mim:datatypen/mim:Codelijst" mode="entity-specific">
     <xsl:variable name="field-name" select="(mim:waardeItem/text(), 'value')[1]" as="xs:string"/>
     <field>
-      <name>{entity:field-name($field-name)}</name>
+      <name original="{$field-name}">{entity:field-name($field-name)}</name>
       <type is-enum="false" is-standard="true">{map:get($primitive-mim-type-mapping, 'CharacterString')}</type>
       <category>Codelijst -> Waardeitem</category>
       <definition>
@@ -273,7 +273,7 @@
     <xsl:variable name="cardinality" select="local:cardinality(mim:kardinaliteit)" as="element(cardinality)"/>
     
     <field>
-      <name>{entity:field-name(mim:naam)}</name>
+      <name original="{mim:naam}">{entity:field-name(mim:naam)}</name>
       <type 
         is-enum="{exists(local:resolve-reference(mim:type/mim-ref:DatatypeRef)/self::mim:Enumeratie)}" 
         is-standard="{$type-info/is-standard-class = 'true'}">
@@ -333,7 +333,7 @@
     <!-- Verwijzing vanuit Objecttype naar Keuze tussen Attribuutsoorten -->
     <xsl:variable name="keuze" select="local:resolve-reference(.)" as="element()"/>
     <field>
-      <name>{entity:field-name(@label)}</name>
+      <name original="{@label}">{entity:field-name(@label)}</name>
       <type 
         is-enum="false" 
         is-standard="false"
@@ -363,7 +363,7 @@
     <!-- Keuze tussen Datatypen --> 
     <xsl:variable name="type-info" select="local:type-to-class(.)" as="element(class)"/>
     <field>
-      <name>{if (@label) then entity:field-name(@label) else 'attr' || position()}</name>
+      <name original="{if (@label) then @label else 'attr' || position()}">{if (@label) then entity:field-name(@label) else 'attr' || position()}</name>
       <type 
         is-enum="{exists(local:resolve-reference(.)/self::mim:Enumeratie)}" 
         is-standard="{$type-info/is-standard-class = 'true'}">
@@ -402,7 +402,7 @@
     <xsl:variable name="referer-relatiesoort" select="local:resolve-referer(ancestor::mim:Keuze)/ancestor::mim:Relatiesoort" as="element()"/>
     <xsl:variable name="referer-relatiesoort-bron" select="if ($is-relatierol-leidend) then $referer-relatiesoort/mim:relatierollen/mim:Bron else ()" as="element(mim:Bron)?"/>
     <field>
-      <name>{entity:field-name(@label)}</name>
+      <name original="{@label}">{entity:field-name(@label)}</name>
       <type 
         is-enum="false" 
         is-standard="false"
@@ -461,15 +461,18 @@
     <xsl:variable name="unidirectional" select="mim:relatierollen/mim:Bron/mim:unidirectioneel" as="xs:string?"/>
     
     <field>
-      <name>
-        <name>
-          <xsl:choose>
-            <xsl:when test="normalize-space(mim:relatierollen/mim:Doel/mim:naam) and local:is-relatierol-doel-name-unique(.)">{entity:field-name(mim:relatierollen/mim:Doel/mim:naam)}</xsl:when>
-            <xsl:when test="local:is-relatiesoort-name-unique(.)">{entity:field-name(mim:naam)}</xsl:when>
-            <xsl:otherwise>{entity:field-name(mim:naam)}{entity:class-name($target/mim:naam)}</xsl:otherwise> <!-- Add target name to avoid name collisions -->
-          </xsl:choose>  
-        </name>
-      </name>
+      <xsl:choose>
+        <xsl:when test="normalize-space(mim:relatierollen/mim:Doel/mim:naam) and local:is-relatierol-doel-name-unique(.)">
+          <name original="{mim:relatierollen/mim:Doel/mim:naam}">{entity:field-name(mim:relatierollen/mim:Doel/mim:naam)}</name>
+        </xsl:when>
+        <xsl:when test="local:is-relatiesoort-name-unique(.)">
+          <name original="{mim:naam}">{entity:field-name(mim:naam)}</name>
+        </xsl:when>
+        <xsl:otherwise>
+          <!-- Add target name to avoid name collisions -->
+          <name original="{mim:naam}{$target/mim:naam}">{entity:field-name(mim:naam)}{entity:class-name($target/mim:naam)}</name>
+        </xsl:otherwise> 
+      </xsl:choose>  
       <type 
         is-enum="false" 
         is-standard="false"
@@ -519,12 +522,15 @@
     <xsl:variable name="unidirectional" select="mim:unidirectioneel" as="xs:string?"/>
     
     <field>
-      <name>
-        <xsl:choose>
-          <xsl:when test="self::mim:ExterneKoppeling or local:is-relatiesoort-name-unique(.)">{entity:field-name(mim:naam)}</xsl:when>
-          <xsl:otherwise>{entity:field-name(mim:naam)}{entity:class-name($target/mim:naam)}</xsl:otherwise> <!-- Add target name to avoid name collisions -->
-        </xsl:choose>  
-      </name> 
+      <xsl:choose>
+        <xsl:when test="self::mim:ExterneKoppeling or local:is-relatiesoort-name-unique(.)">
+          <name original="{mim:naam}">{entity:field-name(mim:naam)}</name>
+        </xsl:when>
+        <xsl:otherwise>
+          <!-- Add target name to avoid name collisions: -->
+          <name original="{mim:naam}{$target/mim:naam}">{entity:field-name(mim:naam)}{entity:class-name($target/mim:naam)}</name>
+        </xsl:otherwise> 
+      </xsl:choose>  
       <type 
         is-enum="false" 
         is-standard="false"
@@ -574,7 +580,9 @@
       <xsl:variable name="tag" select="(local:kenmerk-ext(., 'OA Tag'), 'NoTag')[1]" as="xs:string"/>
       <tag description="{local:definition-as-string(key('tag', lower-case($tag))/mim:definitie)}">{$tag}</tag>
       <summary>{local:kenmerk-ext(., 'OA Summary')}</summary>
-      <description>{local:kenmerk-ext(., 'OA Description')}</description>
+      <description>
+        <xsl:sequence select="local:kenmerk-ext(., 'OA Description')"/>
+      </description>
       <xsl:where-populated>
         <parameters>
           <xsl:for-each select="mim-ext:bevat/mim-ext:Constructie[mim-ext:constructietype = 'OPENAPI PARAMETER']">
@@ -589,7 +597,9 @@
               <required>{(local:true-or-false(local:kenmerk-ext(., 'OA Required')), 'false')[1]}</required>
               -->
               <required>{local:cardinality(mim:kardinaliteit)/@minOccurs = $ONE}</required>
-              <description>{local:kenmerk-ext(., 'OA Description')}</description>
+              <description>
+                <xsl:sequence select="local:kenmerk-ext(., 'OA Description')"/>
+              </description>
               <example>{local:kenmerk-ext(., 'OA Example')}</example>
               <xsl:apply-templates select="mim-ext:kenmerken" mode="kenmerk"/>
             </parameter>
@@ -634,16 +644,31 @@
   <xsl:template match="mim-ext:kenmerken" mode="kenmerk">
     <features>
       <xsl:for-each select="mim-ext:Kenmerk">
-        <feature name="{@naam}">{.}</feature>
+        <feature name="{@naam}">
+          <xsl:sequence select="node()"/>
+        </feature>
       </xsl:for-each>
       <xsl:apply-templates/>
     </features>
   </xsl:template>
   
-  <xsl:function name="local:kenmerk-ext" as="xs:string*">
+  <xsl:function name="local:kenmerk-ext" as="item()*">
     <xsl:param name="model-element" as="element()"/>
     <xsl:param name="feature-name" as="xs:string"/>
-    <xsl:sequence select="$model-element/mim-ext:kenmerken/mim-ext:Kenmerk[lower-case(normalize-space(@naam)) = lower-case(normalize-space($feature-name))]/text()[normalize-space()]"/>
+    <xsl:variable 
+      name="kenmerken" 
+      as="element(mim-ext:Kenmerk)*" 
+      select="$model-element/mim-ext:kenmerken/mim-ext:Kenmerk[funct:equals-case-insensitive(@naam, $feature-name)]"/>
+    <xsl:for-each select="$kenmerken">
+      <xsl:choose>
+        <xsl:when test="xhtml:body">
+          <xsl:sequence select="xhtml:body"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="text()[normalize-space()]"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
   </xsl:function>
   
   <xsl:function name="local:true-or-false" as="xs:string">

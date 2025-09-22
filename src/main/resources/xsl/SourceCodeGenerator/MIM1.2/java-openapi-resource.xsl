@@ -16,6 +16,8 @@
   version="3.0">
     
   <xsl:import href="java-base.xsl"/>
+  
+  <xsl:include href="xhtml-to-commonmark.xsl"/>
       
   <xsl:mode on-no-match="shallow-skip"/>
   
@@ -246,8 +248,8 @@
   </xsl:template>
   
   <xsl:template name="generate-custom-operations">    
-    <xsl:for-each-group select=".//openapi-operation" group-by="tag">      
-      <xsl:variable name="tag" select="current-grouping-key()" as="xs:string"/>
+    <xsl:for-each-group select=".//openapi-operation" group-by="lower-case(tag)">      
+      <xsl:variable name="tag" select="current-group()[1]/tag" as="xs:string"/>
       <xsl:variable name="tag-description" select="current-group()[1]/tag/@description" as="xs:string?"/>
       <xsl:variable name="class-name" select="funct:uppercase-first(local:to-java-identifier($tag))"/>
       
@@ -283,7 +285,7 @@
               <xsl:with-param name="path" select="$path" as="xs:string?"/>
               <xsl:with-param name="method" select="method" as="xs:string"/>
               <xsl:with-param name="summary" select="summary" as="xs:string?"/>
-              <xsl:with-param name="description" select="description" as="xs:string?"/>
+              <xsl:with-param name="description" select="funct:element-to-commonmark(description)" as="xs:string?"/>
               <xsl:with-param name="operation-id" select="operation-id" as="xs:string"/>
               <xsl:with-param name="parameters" select="parameters/parameter" as="element(parameter)*"/>
               <xsl:with-param name="request-body" select="request-body" as="element(request-body)?"/>
@@ -355,7 +357,7 @@
     <xsl:if test="$method = ('GET','POST','PUT','PATCH')">
       <line indent="2">@Produces(MediaType.APPLICATION_JSON)</line>
     </xsl:if>
-    <line indent="2">@Operation(operationId = "{$operation-id}", summary = "{$summary}", description = "{$description}")</line>
+    <line indent="2">@Operation(operationId = "{$operation-id}", summary = {funct:java-string-literal($summary)}, description = {funct:java-string-literal($description)})</line>
     <line indent="2">@ApiResponses(value = {{</line>
     <xsl:variable name="context-node" select="." as="node()"/>
     <xsl:for-each select="$success-response-codes">
@@ -400,7 +402,7 @@
     </xsl:if>
     <xsl:for-each select="$parameters">
       <xsl:variable name="required" select="if (parameter-type = 'path') then 'true' else required" as="xs:string"/>
-      <line indent="4">@{funct:uppercase-first(parameter-type)}Param("{name}") @Parameter(description = "{description}", required = {$required}, example = "{example}") {type}{if (ends-with(cardinality, '*')) then '[]' else ()} {entity:field-name(name)}{if (not(position() = last()) or $request-body) then ',' else ') {'}</line> <!-- TODO: cardinaliteit -->
+      <line indent="4">@{funct:uppercase-first(parameter-type)}Param("{name}") @Parameter(description = {funct:java-string-literal(funct:element-to-commonmark(description))}, required = {$required}, example = {funct:java-string-literal(example)}) {type}{if (ends-with(cardinality, '*')) then '[]' else ()} {entity:field-name(name)}{if (not(position() = last()) or $request-body) then ',' else ') {'}</line> <!-- TODO: cardinaliteit -->
     </xsl:for-each>
     <xsl:if test="$request-body">
       <line indent="4">@Parameter(description = "De gegevens van het {$request-body/name} object", required = true) {$fqn-request-class-name} {lower-case($request-body/name)}) {{</line>
@@ -425,8 +427,8 @@
         <line/>
         <line>@OpenAPIDefinition(</line>
         <line indent="2">info = @Info(</line>
-        <line indent="4">title = "{(entity:feature(/model,'openapi.title'), /model/title)[1]}",</line>
-        <line indent="4">description = "{(entity:feature(/model,'openapi.description'), local:definition-as-string(/model/definition))[1]}",</line>
+        <line indent="4">title = {funct:java-string-literal((entity:feature(/model,'OA Title')[1], /model/title)[1])},</line>
+        <line indent="4">description = {funct:java-string-literal((funct:feature-to-commonmark(/model,'OA Description')[1], funct:element-to-commonmark(/model/definition))[1])},</line>
         <line indent="4">version = "{(entity:feature(/model,'OA Version'), '1.0.0')[1]}",</line>
         <line indent="4">contact = @Contact(</line>
         <line indent="6">{string-join((
@@ -442,7 +444,7 @@
         <line indent="2">),</line>
         <line indent="2">servers = {{</line>
         <xsl:for-each select="entity:feature(/model,'OA Server url')">
-          <line indent="4">@Server(url = "{.}"){if (not(position() = last())) then ',' else ()}</line>  
+          <line indent="4">@Server(url = {funct:java-string-literal(.)}){if (not(position() = last())) then ',' else ()}</line>  
         </xsl:for-each>
         <line indent="2">}}</line>
         <line>)</line>
@@ -589,7 +591,7 @@
   <xsl:function name="local:annotation-field" as="xs:string?">
     <xsl:param name="name" as="xs:string"/>
     <xsl:param name="value" as="xs:string?"/>
-    <xsl:sequence select="if (normalize-space($value)) then $name || ' = &quot;' || $value || '&quot;' else ()"/>
+    <xsl:sequence select="if (normalize-space($value)) then $name || ' = ' || funct:java-string-literal($value) else ()"/>
   </xsl:function>
   
   <xsl:function name="local:to-java-identifier">

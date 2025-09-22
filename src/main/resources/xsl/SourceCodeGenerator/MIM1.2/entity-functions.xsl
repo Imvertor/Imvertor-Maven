@@ -129,4 +129,14 @@
     <xsl:sequence select="replace($flattened, '[^a-zA-Z_0-9-]', '')"/>
   </xsl:function>
   
+  <xsl:function name="funct:java-string-literal" as="xs:string">
+    <xsl:param name="str" as="xs:string?"/>
+    <xsl:variable name="escaped-str" select="functx:left-trim(replace(replace($str, '\\', '\\\\'), '&quot;', '\\&quot;'))" as="xs:string"/>
+    <xsl:choose>
+      <!-- Java multiline text block: -->
+      <xsl:when test="contains($str, $lf)">"""{$lf}{$escaped-str}"""</xsl:when>
+      <xsl:otherwise>"{$escaped-str}"</xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  
 </xsl:stylesheet>
