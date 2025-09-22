@@ -6,6 +6,7 @@
   xmlns:functx="http://www.functx.com"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:oas="urn:oas"
   xmlns:local="urn:local"
   xmlns:entity="urn:entity"
   xmlns:funct="urn:funct"
@@ -14,6 +15,9 @@
   version="3.0">
     
   <xsl:import href="java-base.xsl"/>
+  
+  <xsl:include href="openapi-functions.xsl"/>
+  <xsl:include href="xhtml-to-commonmark.xsl"/>
     
   <xsl:param name="package-prefix" as="xs:string" select="'nl.imvertor.model'"/>
   
@@ -87,18 +91,12 @@
           <line>@{model-element}</line>  
         </xsl:if>
         
-        <xsl:variable name="description" select="local:escape-java(local:definition-as-string(definition))" as="xs:string?"/>
-        <xsl:variable name="description-field" select="if ($description) then 'description = &quot;' || $description || '&quot;' else ()" as="xs:string?"/>
-        <xsl:choose>
-          <xsl:when test="model-element = 'Keuze'">
-            <xsl:variable name="any-of-classes" 
-              select="string-join(for $f in fields/field[not(auto-generate = 'true')] return local:full-package-name($f/type/@package-name) || '.' || $f/type || '.class', ', ')" as="xs:string"/>    
-            <line>@Schema({if ($description-field) then $description-field || ', ' else ()}anyOf = {{ {$any-of-classes} }})</line>
-          </xsl:when>
-          <xsl:otherwise>
-            <line>@Schema({$description-field})</line>    
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:variable name="any-of-classes" 
+          select="if (model-element = 'Keuze') then string-join(for $f in fields/field[not(auto-generate = 'true')] return local:full-package-name($f/type/@package-name) || '.' || $f/type || '.class', ', ') else ()" as="xs:string?"/>
+        
+        <line>@Schema({string-join((
+          oas:annotation-field('description', funct:element-to-commonmark(description)),
+          oas:annotation-field('any-of', $any-of-classes)), ', ')})</line>
         
         <xsl:variable name="super-type-class-name" select="super-type" as="xs:string"/>
         
@@ -212,15 +210,24 @@
       <xsl:with-param name="indent" select="2"/>
     </xsl:call-template>
     
-    <xsl:variable name="description" select="local:escape-java(local:definition-as-string(definition))" as="xs:string?"/>
     <xsl:variable name="required-mode" as="xs:string"> <!-- TODO: is this correct? -->
       <xsl:choose>        
         <xsl:when test="cardinality/target/min-occurs = '0'">RequiredMode.NOT_REQUIRED</xsl:when>
         <xsl:otherwise>RequiredMode.REQUIRED</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <line indent="2">@Schema({if ($description) then 'description = "' || $description || '", ' else ()}requiredMode = {$required-mode})</line>
-    
+    <line indent="2">@Schema({string-join((
+      oas:annotation-field('name', (name/@original, name)[1]),
+      oas:annotation-field('description', funct:element-to-commonmark(description)),
+      oas:annotation-field('requiredMode', $required-mode, false()),
+      oas:annotation-field('minLength', size-min, false()),
+      oas:annotation-field('maxLength', size-max, false()),
+      oas:annotation-field('minimum', (min-incl, min-excl)[1]),
+      oas:annotation-field('maximum', (max-incl, max-excl)[1]),
+      oas:annotation-field('exclusiveMinimum', if (exists(min-excl/text())) then 'true' else (), false()),
+      oas:annotation-field('exclusiveMaximum', if (exists(max-excl/text())) then 'true' else (), false()), 
+      oas:annotation-field('pattern', formal-pattern)
+      ), ', ')})</line>
     <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])" as="xs:string"/>
     <line indent="2">private {$resolved-type} {$field-name};</line>
   </xsl:template>
@@ -242,12 +249,12 @@
   <xsl:template name="identification-field-declarations">
     <xsl:if test="not(identifying-attribute)">
       <line/>
-      <line indent="2">@Schema(description = "Unieke identificatie van de resource waarnaar verwezen wordt", type = "string", requiredMode = RequiredMode.REQUIRED, minLength = 1)</line>
+      <line indent="2">@Schema(name = "id", description = "Unieke identificatie van de resource waarnaar verwezen wordt", type = "string", requiredMode = RequiredMode.REQUIRED, minLength = 1)</line>
       <line indent="2">private String id;</line>  
     </xsl:if>
     
     <line/>
-    <line indent="2">@Schema(description = "URL-referentie naar de resource waarnaar verwezen wordt", type = "string", format = "uri", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY, minLength = 1)</line>
+    <line indent="2">@Schema(name = "url", description = "URL-referentie naar de resource waarnaar verwezen wordt", type = "string", format = "uri", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY, minLength = 1)</line>
     <line indent="2">private String url;</line>
   </xsl:template>
   

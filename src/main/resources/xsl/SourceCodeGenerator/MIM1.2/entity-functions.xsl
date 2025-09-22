@@ -117,16 +117,4 @@
     <xsl:sequence select="lower-case(functx:trim($str1)) = (for $s in $str2 return lower-case(functx:trim($s)))"/>
   </xsl:function>
   
-  <xsl:function name="funct:to-openapi-query-parameter-name">
-    <xsl:param name="str" as="xs:string"/>
-    <xsl:variable name="flattened" select="funct:flatten-diacritics(normalize-space($str))" as="xs:string"/>
-    <xsl:sequence select="replace($flattened, '[^a-zA-Z_0-9-.~]', '')"/>
-  </xsl:function>
-  
-  <xsl:function name="funct:to-openapi-path-parameter-name">
-    <xsl:param name="str" as="xs:string"/>
-    <xsl:variable name="flattened" select="funct:flatten-diacritics(normalize-space($str))" as="xs:string"/>
-    <xsl:sequence select="replace($flattened, '[^a-zA-Z_0-9-]', '')"/>
-  </xsl:function>
-  
 </xsl:stylesheet>

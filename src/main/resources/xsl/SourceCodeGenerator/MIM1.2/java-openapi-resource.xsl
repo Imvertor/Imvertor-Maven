@@ -8,6 +8,7 @@
   xmlns:imf="http://www.imvertor.org/xsl/functions"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:oas="urn:oas"
   xmlns:local="urn:local"
   xmlns:entity="urn:entity"
   xmlns:funct="urn:funct"
@@ -16,6 +17,9 @@
   version="3.0">
     
   <xsl:import href="java-base.xsl"/>
+  
+  <xsl:include href="openapi-functions.xsl"/>
+  <xsl:include href="xhtml-to-commonmark.xsl"/>
       
   <xsl:mode on-no-match="shallow-skip"/>
   
@@ -105,7 +109,7 @@
               <xsl:with-param name="method" select="'GET'" as="xs:string"/>
               <xsl:with-param name="summary" as="xs:string?">Retourneert de lijst van alle {name} objecten</xsl:with-param>
               <xsl:with-param name="description" as="xs:string?">Retourneert een gepagineerde lijst van alle {name} objecten</xsl:with-param>
-              <xsl:with-param name="operation-id" as="xs:string">getAll{name}</xsl:with-param>
+              <xsl:with-param name="operation-id" as="xs:string">{local:operation-id(., 'get collection', 'haalAlle' || name || 'Op')}</xsl:with-param>
               <xsl:with-param name="parameters" select="()" as="element(parameter)*"/>
               <xsl:with-param name="request-body" select="()" as="element(request-body)?"/>
               <xsl:with-param name="response-body" as="element(response-body)?">
@@ -124,7 +128,7 @@
               <xsl:with-param name="method" select="'POST'" as="xs:string"/>
               <xsl:with-param name="summary" as="xs:string?">Maakt een nieuw {name} object</xsl:with-param>
               <xsl:with-param name="description" as="xs:string?">Maakt een nieuw {name} object aan op basis van de aangeleverde gegevens</xsl:with-param>
-              <xsl:with-param name="operation-id" as="xs:string">create{name}</xsl:with-param>
+              <xsl:with-param name="operation-id" as="xs:string">{local:operation-id(., 'post', 'maak' || name || 'Aan')}</xsl:with-param>
               <xsl:with-param name="parameters" select="()" as="element(parameter)*"/>
               <xsl:with-param name="request-body" as="element(request-body)?">
                 <request-body>
@@ -149,7 +153,7 @@
               <xsl:with-param name="method" select="'DELETE'" as="xs:string"/>
               <xsl:with-param name="summary" as="xs:string?">Verwijderd een {name} object</xsl:with-param>
               <xsl:with-param name="description" as="xs:string?">Verwijderd een specifiek {name} object permanent uit het systeem</xsl:with-param>
-              <xsl:with-param name="operation-id" as="xs:string">delete{name}</xsl:with-param>
+              <xsl:with-param name="operation-id" as="xs:string">{local:operation-id(., 'delete', 'verwijder' || name)}</xsl:with-param>
               <xsl:with-param name="parameters" as="element(parameter)*">
                 <xsl:sequence select="$path-parameter-id"/>
               </xsl:with-param>
@@ -164,7 +168,7 @@
               <xsl:with-param name="method" select="'GET'" as="xs:string"/>
               <xsl:with-param name="summary" as="xs:string?">Retourneert een {name} object op basis van zijn unieke identificatie</xsl:with-param>
               <xsl:with-param name="description" as="xs:string?">Retourneert een individueel {name} object op basis van zijn unieke identificatie</xsl:with-param>
-              <xsl:with-param name="operation-id" as="xs:string">get{name}ById</xsl:with-param>
+              <xsl:with-param name="operation-id" as="xs:string">{local:operation-id(., 'get item', 'haal' || name || 'Op')}</xsl:with-param>
               <xsl:with-param name="parameters" as="element(parameter)*">
                 <xsl:sequence select="$path-parameter-id"/>
               </xsl:with-param>
@@ -185,7 +189,7 @@
               <xsl:with-param name="method" select="'PUT'" as="xs:string"/>
               <xsl:with-param name="summary" as="xs:string?">Maakt nieuw of overschrijft bestaand {name} object</xsl:with-param>
               <xsl:with-param name="description" as="xs:string?">Maakt een nieuw of overschrijft (volledig) een bestaand {name} object</xsl:with-param>
-              <xsl:with-param name="operation-id" as="xs:string">update{name}</xsl:with-param>
+              <xsl:with-param name="operation-id" as="xs:string">{local:operation-id(., 'put', 'werk' || name || 'Bij')}</xsl:with-param>
               <xsl:with-param name="parameters" as="element(parameter)*">
                 <xsl:sequence select="$path-parameter-id"/>
               </xsl:with-param>
@@ -212,7 +216,7 @@
               <xsl:with-param name="method" select="'PATCH'" as="xs:string"/>
               <xsl:with-param name="summary" as="xs:string?">Werkt een bestaand {name} object gedeeltelijk bij</xsl:with-param>
               <xsl:with-param name="description" as="xs:string?">Werkt een bestaand {name} object gedeeltelijk bij door alleen de aangeleverde velden te overschrijven</xsl:with-param>
-              <xsl:with-param name="operation-id" as="xs:string">patch{name}</xsl:with-param>
+              <xsl:with-param name="operation-id" as="xs:string">{local:operation-id(., 'patch', 'pas' || name || 'Aan')}</xsl:with-param>
               <xsl:with-param name="parameters" as="element(parameter)*">
                 <xsl:sequence select="$path-parameter-id"/>
               </xsl:with-param>
@@ -246,8 +250,8 @@
   </xsl:template>
   
   <xsl:template name="generate-custom-operations">    
-    <xsl:for-each-group select=".//openapi-operation" group-by="tag">      
-      <xsl:variable name="tag" select="current-grouping-key()" as="xs:string"/>
+    <xsl:for-each-group select=".//openapi-operation" group-by="lower-case(tag)">      
+      <xsl:variable name="tag" select="current-group()[1]/tag" as="xs:string"/>
       <xsl:variable name="tag-description" select="current-group()[1]/tag/@description" as="xs:string?"/>
       <xsl:variable name="class-name" select="funct:uppercase-first(local:to-java-identifier($tag))"/>
       
@@ -283,7 +287,7 @@
               <xsl:with-param name="path" select="$path" as="xs:string?"/>
               <xsl:with-param name="method" select="method" as="xs:string"/>
               <xsl:with-param name="summary" select="summary" as="xs:string?"/>
-              <xsl:with-param name="description" select="description" as="xs:string?"/>
+              <xsl:with-param name="description" select="funct:element-to-commonmark(description)" as="xs:string?"/>
               <xsl:with-param name="operation-id" select="operation-id" as="xs:string"/>
               <xsl:with-param name="parameters" select="parameters/parameter" as="element(parameter)*"/>
               <xsl:with-param name="request-body" select="request-body" as="element(request-body)?"/>
@@ -323,7 +327,7 @@
     
     <xsl:variable name="is-paged" select="($method = 'GET') and ($response-body/is-collection = 'true')" as="xs:boolean"/>
     
-    <xsl:variable name="method-id">
+    <xsl:variable name="method-id" as="xs:string">
       <xsl:choose>
         <xsl:when test="$is-paged">get collection</xsl:when>
         <xsl:when test="$method = 'GET'">get item</xsl:when>
@@ -355,7 +359,7 @@
     <xsl:if test="$method = ('GET','POST','PUT','PATCH')">
       <line indent="2">@Produces(MediaType.APPLICATION_JSON)</line>
     </xsl:if>
-    <line indent="2">@Operation(operationId = "{$operation-id}", summary = "{$summary}", description = "{$description}")</line>
+    <line indent="2">@Operation(operationId = "{$operation-id}", summary = {oas:java-string-literal($summary)}, description = {oas:java-string-literal($description)})</line>
     <line indent="2">@ApiResponses(value = {{</line>
     <xsl:variable name="context-node" select="." as="node()"/>
     <xsl:for-each select="$success-response-codes">
@@ -400,7 +404,7 @@
     </xsl:if>
     <xsl:for-each select="$parameters">
       <xsl:variable name="required" select="if (parameter-type = 'path') then 'true' else required" as="xs:string"/>
-      <line indent="4">@{funct:uppercase-first(parameter-type)}Param("{name}") @Parameter(description = "{description}", required = {$required}, example = "{example}") {type}{if (ends-with(cardinality, '*')) then '[]' else ()} {entity:field-name(name)}{if (not(position() = last()) or $request-body) then ',' else ') {'}</line> <!-- TODO: cardinaliteit -->
+      <line indent="4">@{funct:uppercase-first(parameter-type)}Param("{name}") @Parameter(description = {oas:java-string-literal(funct:element-to-commonmark(description))}, required = {$required}, example = {oas:java-string-literal(example)}) {type}{if (ends-with(cardinality, '*')) then '[]' else ()} {entity:field-name(name)}{if (not(position() = last()) or $request-body) then ',' else ') {'}</line> <!-- TODO: cardinaliteit -->
     </xsl:for-each>
     <xsl:if test="$request-body">
       <line indent="4">@Parameter(description = "De gegevens van het {$request-body/name} object", required = true) {$fqn-request-class-name} {lower-case($request-body/name)}) {{</line>
@@ -425,24 +429,24 @@
         <line/>
         <line>@OpenAPIDefinition(</line>
         <line indent="2">info = @Info(</line>
-        <line indent="4">title = "{(entity:feature(/model,'openapi.title'), /model/title)[1]}",</line>
-        <line indent="4">description = "{(entity:feature(/model,'openapi.description'), local:definition-as-string(/model/definition))[1]}",</line>
+        <line indent="4">title = {oas:java-string-literal((entity:feature(/model,'OA Title')[1], /model/title)[1])},</line>
+        <line indent="4">description = {oas:java-string-literal((funct:feature-to-commonmark(/model,'OA Description')[1], funct:element-to-commonmark(/model/definition))[1])},</line>
         <line indent="4">version = "{(entity:feature(/model,'OA Version'), '1.0.0')[1]}",</line>
         <line indent="4">contact = @Contact(</line>
         <line indent="6">{string-join((
-          local:annotation-field('name', entity:feature(/model,'OA Contact name')),
-          local:annotation-field('url', entity:feature(/model,'OA Contact url')),
-          local:annotation-field('email', entity:feature(/model,'OA Contact email'))), ', ')}</line>
+          oas:annotation-field('name', entity:feature(/model,'OA Contact name')),
+          oas:annotation-field('url', entity:feature(/model,'OA Contact url')),
+          oas:annotation-field('email', entity:feature(/model,'OA Contact email'))), ', ')}</line>
         <line indent="4">),</line>
         <line indent="4">license = @License(</line>
         <line indent="6">{string-join((
-          local:annotation-field('name', entity:feature(/model,'OA License name')),
-          local:annotation-field('url', entity:feature(/model,'OA License url'))), ', ')}</line>
+          oas:annotation-field('name', entity:feature(/model,'OA License name')),
+          oas:annotation-field('url', entity:feature(/model,'OA License url'))), ', ')}</line>
         <line indent="4">)</line>
         <line indent="2">),</line>
         <line indent="2">servers = {{</line>
         <xsl:for-each select="entity:feature(/model,'OA Server url')">
-          <line indent="4">@Server(url = "{.}"){if (not(position() = last())) then ',' else ()}</line>  
+          <line indent="4">@Server(url = {oas:java-string-literal(.)}){if (not(position() = last())) then ',' else ()}</line>  
         </xsl:for-each>
         <line indent="2">}}</line>
         <line>)</line>
@@ -585,13 +589,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
-    
-  <xsl:function name="local:annotation-field" as="xs:string?">
-    <xsl:param name="name" as="xs:string"/>
-    <xsl:param name="value" as="xs:string?"/>
-    <xsl:sequence select="if (normalize-space($value)) then $name || ' = &quot;' || $value || '&quot;' else ()"/>
-  </xsl:function>
-  
+      
   <xsl:function name="local:to-java-identifier">
     <xsl:param name="str" as="xs:string"/>
     <xsl:variable name="normalized" select="normalize-space($str)" as="xs:string"/>
@@ -603,7 +601,7 @@
   
   <xsl:function name="local:response-codes" as="xs:string+">
     <xsl:param name="model-element" as="element(model)"/>
-    <xsl:param name="method-id" as="xs:string+"/>
+    <xsl:param name="method-id" as="xs:string"/>
     <xsl:variable name="configured-response-codes" select="entity:feature($model-element, 'OA Response Codes ' || $method-id)" as="xs:string?"/>
     <xsl:variable name="default-response-codes" select="map:get($method-id-response-codes-map, $method-id)" as="xs:string+"/>
     <xsl:choose>
@@ -614,6 +612,14 @@
         <xsl:sequence select="$default-response-codes"/>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:function>
+  
+  <xsl:function name="local:operation-id" as="xs:string">
+    <xsl:param name="model-element" as="element(entity)"/>
+    <xsl:param name="method-id" as="xs:string"/>
+    <xsl:param name="default" as="xs:string"/>
+    <xsl:variable name="configured-operation-id" select="entity:feature($model-element, 'OA Operation ID ' || $method-id)" as="xs:string?"/>
+    <xsl:sequence select="($configured-operation-id, $default)[1]"/>
   </xsl:function>
   
 </xsl:stylesheet>
