@@ -3,8 +3,14 @@
  * Copyright (C) 
 -->
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <xi:include href="Armatiek-MIM-12-CONCEPTUAL.xml"/>
+    <name>Armatiek-OpenAPI-10-BASE-10</name> 
     
-    <name>Armatiek-MIM-12-LOGICAL</name> 
+    <notes-rule lang="nl">
+        
+        <section title="OA Description" tagged-value="CFG-TV-OPENAPI-DESCRIPTION">
+            <!--  Geen verdere delen herkend binnen deze sectie -->
+        </section>
+        
+    </notes-rule>
     
 </notes-rules>

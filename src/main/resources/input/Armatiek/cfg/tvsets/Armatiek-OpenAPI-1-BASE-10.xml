@@ -26,7 +26,7 @@
                 <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-OPENAPI-DESCRIPTION">
+        <tv norm="note" id="CFG-TV-OPENAPI-DESCRIPTION">
             <name lang="nl">OA Description</name>
             <name lang="en">OA Description</name>
             <desc lang="nl">De description van de OpenAPI specificatie of operatie. Wanneer deze tagged value niet is opgegeven dan wordt de MIM definitie van het Informatiemodel gebruikt. 
