@@ -27,6 +27,9 @@
         <stereo id="stereotype-name-openapi-parameter">
             <toolbox category="MISCELLANEOUS"/>
         </stereo>
+        <stereo id="stereotype-name-openapi-header">
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
         <stereo id="stereotype-name-openapi-responsebody">
             <toolbox category="MISCELLANEOUS"/>
         </stereo>
