@@ -987,7 +987,9 @@
         <xsl:choose>
             <!-- specifiek voor verschil tussen rol- en relatie gebaseerde modellen, zie ook #274-->
             <xsl:when test="$meta-is-role-based">
-                <!-- nog niks -->
+                <xsl:sequence select="imf:report-error(., 
+                    empty($applicable-name), 
+                    'Association role without name')"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:report-warning(., 
