@@ -48,19 +48,19 @@
          <name>language</name>
          <arg>ISO 639-1 codes</arg>
          <tip>Language of the metamodel and model. Specify metamodel:model, like "en:nl", or single code for both.</tip>
-         <required>false</required>
+         <default>nl:nl</default>
       </cli-parm> 
       <cli-parm>
          <name>debug</name>
          <arg>yes|no</arg>
          <tip>Yes if run in debug mode</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>debugmode</name>
          <arg>CODE</arg>
          <tip>If debug=yes, then the debug mode must be any of the codes specified between ";". The main chain is "CHAIN".</tip>
-         <required>false</required>
+         <default>CHAIN</default>
       </cli-parm> 
       <cli-parm>
          <name>profilemode</name>
@@ -72,7 +72,7 @@
          <name>task</name>
          <arg>compile|release</arg>
          <tip>Set task to compile or release</tip>
-         <required>true</required>
+         <default>compile</default>
       </cli-parm> 
       <cli-parm>
          <name>jobid</name>
@@ -109,7 +109,7 @@
          <name>proxyurl</name>
          <arg>URL</arg>
          <tip>Reliable URL for testing internet connection</tip>
-         <required>true</required>
+         <default>htps://no_proxyurl</default>
          <type>url</type>
       </cli-parm> 
       <!--
@@ -124,7 +124,7 @@
          <name>forcecompile</name>
          <arg>yes|no</arg>
          <tip>Force a compile and ignore possible errors</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>docrelease</name>
@@ -136,43 +136,42 @@
          <name>suppresswarnings</name>
          <arg>yes|no</arg>
          <tip>Yes if warnings should be suppressed in documentation</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>messagelevel</name>
          <arg>warning|error</arg>
          <tip>Set the message level to error (no warnings) or warning (errors and warnings)</tip>
-         <required>false</required>
+         <default>warning</default>
       </cli-parm>
       <cli-parm>
          <name>allowmultiplesuppliers</name>
          <arg>yes|no</arg>
          <tip>Allow any construct to have multiple suppliers</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm>
       <cli-parm>
          <name>versionrules</name>
          <arg>name</arg>
          <tip>Name of the version rules file</tip>
-         <required>true</required>
+         <default>[cli/owner]</default>
       </cli-parm>
       <cli-parm>
          <name>normalizeids</name>
          <arg>yes|no</arg>
          <tip>Yes if XMI based ID's should be normalized, i.e. reduced to unique strings valid for Imvertor processing</tip>
-         <required>true</required>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>messagecollapsekeys</name>
          <arg>name(s)</arg>
          <tip>If similar messages should be collapsed, provide a space-separated list of keys for these types of messages.</tip>
-         <required>false</required>
+         <default><!-- none--></default>
       </cli-parm>
       <cli-parm>
          <name>nativescalars</name>
          <arg>yes|no</arg>
          <tip>Yes if scalar types may be entered without reference to a UML datatype</tip>
-         <required>false</required>
          <default>yes</default>
       </cli-parm>
       <cli-parm>
@@ -185,14 +184,12 @@
          <name>xlinkversion</name>
          <arg>id</arg>
          <tip>Version of the xlinks specification</tip>
-         <required>false</required>
          <default>20010627</default>
       </cli-parm>
       <cli-parm>
          <name>signaldeadurls</name>
          <arg>yes|no</arg>
          <tip>Yes if a warning should, be issued for each inaccessible URL detected in notes and tagged values.</tip>
-         <required>false</required>
          <default>no</default>
       </cli-parm>
    </cli-parms>

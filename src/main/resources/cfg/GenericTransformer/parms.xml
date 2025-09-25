@@ -48,38 +48,19 @@
          <name>extension</name>
          <arg>string</arg>
          <tip>Extension, to append to result file name (e.g. ".html")</tip>
-         <required>false</required>
          <type>string</type>
+         <default>.html</default>
       </cli-parm> 
       <cli-parm>
          <name>transinfo</name>
          <arg>string</arg>
          <tip>Information to pass to the transformation stylesheet</tip>
-         <required>false</required>
          <type>string</type>
+         <default><!--geen--></default>
       </cli-parm> 
-      <?x
-      <cli-parm>
-         <name>inexcelfile</name>
-         <arg>filepath</arg>
-         <tip>Input file for tester Excel processor</tip>
-         <required>true</required>
-         <type>file</type>
-      </cli-parm> 
-      <cli-parm>
-         <name>outexcelfile</name>
-         <arg>filepath</arg>
-         <tip>Output file for tester Excel processor</tip>
-         <required>true</required>
-         <type>file</type>
-      </cli-parm>
-      x?>
    </cli-parms>
    
    <properties>
-      <?x <TRANSFORMER_XSLPATH>Tester.xsl</TRANSFORMER_XSLPATH> x?>
-    
-      <?x <TESTER_SERIALIZER_WORK_PATH>${system/work-folder-path}/serializer</TESTER_SERIALIZER_WORK_PATH> x?>
-      
+
    </properties>
 </config>

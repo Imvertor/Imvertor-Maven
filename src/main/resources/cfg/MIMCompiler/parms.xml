@@ -28,28 +28,24 @@
          <name>createmimformat</name>
          <arg>yes|no</arg>
          <tip>Yes if MIM format must be generated</tip>
-         <required>false</required>
-         <default>false</default>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>mimformatname</name>
          <arg>string</arg>
          <tip>The name of the MIM format file generated</tip>
-         <required>false</required>
-         <default>model name</default>
+         <default>[appinfo/application-name]</default>
       </cli-parm> 
       <cli-parm>
          <name>mimformattype</name>
          <arg>xml|rdf-xml|turtle|legacy</arg>
          <tip>The type of the MIM format file generated</tip>
-         <required>false</required>
          <default>xml</default>
       </cli-parm> 
       <cli-parm>
          <name>mimformatversion</name>
          <arg>v1|v2</arg>
          <tip>The version of the MIM compiler</tip>
-         <required>false</required>
          <default>v2</default>
       </cli-parm> 
    </cli-parms>

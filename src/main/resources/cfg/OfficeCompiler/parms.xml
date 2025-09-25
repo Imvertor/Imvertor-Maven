@@ -27,13 +27,14 @@
          <name>createoffice</name>
          <arg>html | doc | none</arg>
          <tip>Create a documentation file in plain HTML, MsWord, or Respec format. By default, create none.</tip>
-         <required>false</required>
+         <default>none</default>
       </cli-parm> 
       <cli-parm>
          <name>createofficevariant</name>
          <arg>msword | respec | documentor</arg>
          <tip>Specify the type of office file. Multiple formats are allowed, separate list by whitespace.</tip>
          <required>When createoffice is set to html</required>
+         <default>documentor</default>
       </cli-parm>
       <cli-parm>
          <name>fullrespec</name>
@@ -45,100 +46,94 @@
          <name>officename</name>
          <arg>template</arg>
          <tip>Name of the office result document file. You may use [...] parameters.</tip>
-         <required>false</required>
+         <default>index</default>
       </cli-parm> 
       <cli-parm>
          <name>createofficemode</name>
          <arg>plain|click</arg>
          <tip>When creating office, use plain or clickable mode.</tip>
-         <required>false</required>
-      </cli-parm> 
-      <cli-parm>
-         <name>createofficeanchor</name>
-         <arg>name|id</arg>
-         <tip>Hyperlink anchors should be IDs (PDF) or based on actual names (HTML).</tip>
-         <required>false</required>
+         <default>click</default>
       </cli-parm> 
       <cli-parm>
          <name>passoffice</name>
-         <arg>ftp|git</arg>
+         <arg>ftp|git|none</arg>
          <tip>Enter "ftp" when the documentation file should be passed on directly to FTP, "git" when updating Github.</tip>
-         <required>false</required>
+         <default>none</default>
       </cli-parm>
       <cli-parm>
          <name>docrules</name>
          <arg>yes|no</arg>
          <tip>The name of the file holding the documentation rules. If omitted, assume metamodel name and version as extracted from the supplied model.</tip>
-         <required>false</required>
+         <default><!--calculated--></default>
       </cli-parm> 
       
       <cli-parm>
          <name>passuser</name>
          <arg>username</arg>
          <tip>FTP user name</tip>
-         <required>When officepass is set to "ftp"</required>
+         <default>no_passuser</default>
       </cli-parm> 
       <cli-parm>
          <name>passpass</name>
          <arg>password</arg>
          <tip>FTP password</tip>
-         <required>When officepass is set to "ftp"</required>
+         <default>no_passpass</default>
       </cli-parm> 
       <cli-parm>
          <name>passftp</name>
          <arg>URL</arg>
          <tip>URL of the ftp file e.g. ftp.example.com</tip>
-         <required>When officepass is set to "ftp"</required>
+         <default>no_passftp</default>
       </cli-parm> 
       <cli-parm>
          <name>passpath</name>
          <arg>remote path</arg>
          <tip>Path on server to the destination file e.g. /data/doc/result.html </tip>
-         <required>When officepass is set to "ftp"</required>
+         <default>no_passpath</default>
       </cli-parm> 
       <cli-parm>
          <name>passprotocol</name>
-         <arg>true|false</arg>
-         <tip>FTP user name</tip>
-         <required>false</required>
+         <arg>yes|no</arg>
+         <tip>Pass using SFTP</tip>
+         <default>yes</default>
       </cli-parm> 
       
       <cli-parm>
          <name>gitcfg</name>
          <arg>name</arg>
          <tip>Name of the GIT configuration used by Imvertor to gain access to the GIT repository. The name must have been configured in the server.</tip>
-         <required>When officepass is set to "git"</required>
+         <default>no_gitcfg</default>
       </cli-parm>  
       <cli-parm>
          <name>giturl</name>
          <arg>URL</arg>
          <tip>URL of the Github IO (pages) location</tip>
-         <required>When officepass is set to "git"</required>
+         <default>no_giturl</default>
       </cli-parm>  
       <cli-parm>
          <name>gitcomment</name>
          <arg>string</arg>
          <tip>Description to pass as comment when committing to GIT.</tip>
-         <required>When officepass is set to "git"</required>
+         <defailt>no_gitcomment</defailt>
       </cli-parm>  
       <cli-parm>
          <name>gitpath</name>
          <arg>path</arg>
          <tip>Subpath to the remote GIT repository, starting with / e.g. /MyOrganization/MyRepository</tip>
-         <required>When officepass is set to "git"</required>
+         <default>no_gitpath</default>
       </cli-parm>  
       <cli-parm>
          <name>includedoclist</name>
          <arg>yes|no</arg>
          <tip>Yes if codelists and reference lists that have a location must be read dynamically from that location and included in the model documentation.</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
     
       <cli-parm>
          <name>documentorfile</name>
          <arg>filepath</arg>
          <tip>Path to the folder or zipfile holding the Documentor files, i.e. MsWord files and binaries used to create full Respec documentation.</tip>
-         <required>false</required>
+         <default><!-- no file passed, fallback to default --></default>
          <type>file</type>
       </cli-parm> 
       
@@ -146,7 +141,7 @@
          <name>includemodelinfo</name>
          <arg>yes|no</arg>
          <tip>Include model metadata in the catalog?</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
       
    </cli-parms>

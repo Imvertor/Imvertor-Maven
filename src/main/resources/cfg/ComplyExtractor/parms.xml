@@ -63,13 +63,13 @@
          <name>debug</name>
          <arg>yes|no</arg>
          <tip>Yes if run in debug mode</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>debugmode</name>
          <arg>mode</arg>
          <tip>Sets the debug mode</tip>
-         <required>false</required>
+         <default>CHAIN</default>
       </cli-parm> 
       <cli-parm>
          <name>owner</name>
@@ -100,7 +100,7 @@
          <name>arguments</name>
          <arg>path</arg>
          <tip>Include these arguments</tip>
-         <required>false</required>
+         <default>/no_arguments</default>
       </cli-parm> 
       
       <!-- niet relevant; anders opzetten: -->

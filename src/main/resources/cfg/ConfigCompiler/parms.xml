@@ -34,56 +34,62 @@
          <name>notesrules</name>
          <arg>name</arg>
          <tip>Name of the configuration folder for notes rules. If omitted, assume metamodel name and version as extracted from the supplied model.</tip>
-         <required>false</required>
+         <default><!--calculated--></default>
       </cli-parm> 
       <cli-parm>
          <name>tvset</name>
          <arg>name</arg>
          <tip>Name of the configuration folder for tagged value set definitions. If omitted, assume metamodel name and version as extracted from the supplied model.</tip>
-         <required>false</required>
+         <default><!--calculated--></default>
       </cli-parm> 
       <cli-parm>
          <name>metamodel</name>
          <arg>name</arg>
          <tip>Name of metamodel used in UML model. If omitted, assume metamodel name and version as extracted from the supplied model.</tip>
-         <required>false</required>
+         <default><!--calculated--></default>
       </cli-parm> 
       <cli-parm>
          <name>createeaprofile</name>
          <arg>yes|no</arg>
          <tip>Should an EA profile be generated?</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
       <cli-parm>
          <name>createeatoolbox</name>
          <arg>yes|no</arg>
          <tip>Should an EA toolbox be generated?</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm>
       
       <cli-parm>
          <name>metamodelname</name>
          <arg>name</arg>
          <tip>Name of the metamodel. When this is a MIM model, specify MIM</tip>
-         <required>false</required>
+         <default>MIM</default>
       </cli-parm>
       <cli-parm>
          <name>metamodelversion</name>
          <arg>version-number</arg>
          <tip>Version of the metamodel. When this is a MIM model, specify the MIM version</tip>
-         <required>false</required>
+         <default>0.0.0</default><!-- als MIM informatiemodel, dan "MIM versie" tag, anders specificeren. -->
       </cli-parm>
       <cli-parm>
          <name>metamodelextension</name>
          <arg>name</arg>
          <tip>Name of the extension on the metamodel. When this is a MIM model, specify the MIM extension name</tip>
-         <required>false</required>
+         <default><!--geen--></default><!-- als MIM informatiemodel, dan "MIM extensie" tag, anders specificeren. Default geen extensie. -->
       </cli-parm>
       <cli-parm>
          <name>metamodelextensionversion</name>
          <arg>version-number</arg>
          <tip>Version of the extension on the metamodel. When this is a MIM model, specify the MIM extension version</tip>
-         <required>false</required>
+         <default><!--geen--></default><!-- als MIM informatiemodel, dan "MIM extensie versie" tag, anders specificeren. Default geen extensie versie. -->
+      </cli-parm>
+      <cli-parm>
+         <name>metamodelnature</name>
+         <arg>name</arg>
+         <tip>What is the nature of the metamodel? Possible ";" delimited values are MIM and OPENAPI</tip>
+         <default>MIM;GROUPING</default>
       </cli-parm>
       
    </cli-parms>

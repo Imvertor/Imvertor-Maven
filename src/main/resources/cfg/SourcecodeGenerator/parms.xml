@@ -26,63 +26,54 @@
          <name>createsourcecode</name>
          <arg>yes|no</arg>
          <tip>Yes if source code must be generated</tip>
-         <required>false</required>
          <default>false</default>
       </cli-parm>  
       <cli-parm>
          <name>sourcecodetype</name>
          <arg>java-pojo|java-jpa|java-openapi|java-openapi-model|java-openapi-resource|plantuml|entity-xml</arg>
          <tip>The type(s) of source code generated (comma separated)</tip>
-         <required>false</required>
          <default>java-pojo</default>
       </cli-parm>
       <cli-parm>
          <name>sourcecodecopydownmixins</name>
          <arg>yes|no</arg>
          <tip>Yes if attributes must be copied from mixin supertypes</tip>
-         <required>false</required>
          <default>false</default>
       </cli-parm>
       <cli-parm>
          <name>sourcecoderesolvekeuzeattribuutsoorten</name>
          <arg>yes|no</arg>
          <tip>Yes if MIM "Keuze tussen attribuutsoorten" constructs must be resolved/simplified</tip>
-         <required>false</required>
          <default>false</default>
       </cli-parm>
       <cli-parm>
          <name>sourcecoderesolvekeuzerelatiedoelen</name>
          <arg>yes|no</arg>
          <tip>Yes if MIM "Keuze tussen relatiedoelen" constructs must be resolved/simplified</tip>
-         <required>false</required>
          <default>false</default>
       </cli-parm>
       <cli-parm>
          <name>sourcecoderesolvekeuzedatatypen</name>
          <arg>yes|no</arg>
          <tip>Yes if MIM "Keuze tussen datatypen" constructs must be resolved/simplified</tip>
-         <required>false</required>
          <default>false</default>
       </cli-parm>
       <cli-parm>
          <name>createopenapi</name>
          <arg>yes|no</arg>
          <tip>Yes if OpenAPI descriptions must be generated. This will also set sourcecodetype to "java-openapi"</tip>
-         <required>false</required>
          <default>false</default>
       </cli-parm>
       <cli-parm>
          <name>openapispecversion</name>
          <arg>api30|api31</arg>
          <tip>The OpenAPI specification version to be generated, "3.0.1" (api30) or "3.1.0" (api31)</tip>
-         <required>false</required>
          <default>api30</default>
       </cli-parm>
       <cli-parm>
          <name>openapischemasonly</name>
          <arg>yes|no</arg>
          <tip>Yes if only the schema part of the OpenAPI description should be generated</tip>
-         <required>false</required>
          <default>no</default>
       </cli-parm>
    </cli-parms>

@@ -28,13 +28,13 @@
          <name>createjsonconcepts</name>
          <arg>yes|no</arg>
          <tip>Yes if JSON concepts must be generated</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>jsonconceptsname</name>
          <arg>string</arg>
          <tip>The name of the JSON concepts file generated</tip>
-         <required>false</required>
+         <default>no_jsonconceptsname</default>
       </cli-parm> 
    </cli-parms>
    

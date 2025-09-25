@@ -28,13 +28,13 @@
          <name>createld</name>
          <arg>yes|no</arg>
          <tip>Yes if Linked Data Turtle must be generated</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>ldrules</name>
          <arg>name</arg>
          <tip>The name of the Linked Data rules file</tip>
-         <required>false</required>
+         <default>/no_ldrules</default>
       </cli-parm> 
       
    </cli-parms>

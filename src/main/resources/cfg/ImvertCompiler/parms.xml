@@ -27,49 +27,49 @@
          <name>validatederivation</name>
          <arg>yes|no</arg>
          <tip>Yes if derivation must be validated</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
       <cli-parm>
          <name>derivedoc</name>
          <arg>yes|no</arg>
          <tip>Yes if derivation of documentation is required</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
       <cli-parm>
          <name>modelistraced</name>
          <arg>yes|no</arg>
          <tip>Yes if the model derivation is implemented by UML tracing</tip>
-         <required>true</required>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>validatetrace</name>
          <arg>full|none</arg>
          <tip>When full, test if each derivable construct is actually derived from at least one supplier construct.</tip>
-         <required>true</required>
+         <default>none</default>
       </cli-parm> 
       <cli-parm>
          <name>mapping</name>
          <arg>name</arg>
          <tip>Name of a mapping to be used for conceptual schemas</tip>
-         <required>false</required>
+         <default>no_mapping</default>
       </cli-parm>
       <cli-parm>
          <name>usefirstmap</name>
          <arg>yes|no</arg>
          <tip>In case a construct in a conceptual schema mapping is duplicated, allow the first construct to be selected, if other resolve mechanisms fail.</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm>
       <cli-parm>
          <name>chop</name>
          <arg>yes|no</arg>
          <tip>Yes if all references to classes/datatypes outside the application should be removed</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>reportshortview</name>
          <arg>yes|no</arg>
          <tip>Yes if a short view on the model must be generated as part of the report.</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm>
    </cli-parms>
    
