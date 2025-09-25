@@ -144,7 +144,7 @@ public class OfficeCompiler extends Step {
 					String mdf = configurator.getXParm("cli/documentorfile",false);
 					
 					Boolean useDefault = false;
-					if (mdf == null && vr.contains("documentor")) { 
+					if ((mdf == null || mdf.equals("")) && vr.contains("documentor")) { 
 						runner.warn(logger, "Documentor processing requested but no modeldoc folder passed. Using default model documentation.");
 						mdf = configurator.getBaseFolder() + "/etc/respec/documentor";
 						useDefault = true;

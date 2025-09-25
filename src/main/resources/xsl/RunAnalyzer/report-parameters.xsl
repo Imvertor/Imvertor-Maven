@@ -54,6 +54,7 @@
                         </xsl:for-each>
                     </ol>
                 </p>
+                <p>In the column "Defined in" the default for this property is specified after "Default:".</p>
             </intro> 
             <content>
                 <!--
@@ -69,7 +70,6 @@
                             <xsl:variable name="cli-info" select="."/>
                             <xsl:variable name="name" select="longKey"/>
                             <xsl:variable name="value" select="$configuration/config/cli/*[name() = $name]"/>
-                            
                             <tr class="{if (empty($value)) then 'cmp-system' else ''}">
                                 <td>
                                     <xsl:value-of select="$name"/> 
@@ -84,14 +84,14 @@
                                     <xsl:value-of select="$cli-info/description"/>
                                 </td>
                                 <td>
-                                    <xsl:value-of select="$cli-info/isRequired"/>
+                                    <xsl:value-of select="if ($cli-info/default) then 'false' else $cli-info/isRequired"/> 
                                 </td>
                                 <td>
                                     <xsl:value-of select="$cli-info/stepName"/> 
                                 </td>
                                 <td>
                                     <xsl:for-each select="reverse($xparms-doc/xparms/xparm[@name = concat('cli/',$name)])">
-                                        <xsl:value-of select="imf:recognize-file(@origin)"/>:
+                                        <xsl:value-of select="if (@origin = 'common') then 'Default' else imf:recognize-file(@origin)"/>:
                                         <xsl:choose>
                                             <xsl:when test="position() = 1">
                                                 <b>
@@ -108,7 +108,7 @@
                             </tr>
                         </xsl:for-each>
                     </xsl:variable>
-                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'Name:10,Args:10,Value:10,Explain:20,Required?:10,Step:10,Defined in:30','table-cli')"/>
+                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'Name:10,Args:10,Value:10,Explain:20,Required?:5,Step:10,Defined in:30','table-cli')"/>
                 </table>
             </content>
         </page>
