@@ -305,6 +305,19 @@
             </stereotypes>
         </tv>
         
+        <tv norm="space" id="CFG-TV-OPENAPI-REFERENCE">
+            <name lang="nl">OA Reference</name>
+            <name lang="en">OA Reference</name>
+            <desc lang="nl">Via deze tag kan een OpenAPI $ref relatie worden gedefinieerd.</desc>
+            <desc lang="en">TODO</desc>
+            <source>API-1.0</source>
+            <catalog>TODO</catalog>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-openapi-reference</stereo>
+            </stereotypes>
+        </tv>
+        
         <!-- Tv's op de operatie (API) -->
         
         <tv norm="space" id="CFG-TV-OPENAPI-TAG">

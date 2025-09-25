@@ -76,6 +76,14 @@
             <construct>association</construct>
         </stereo>
         
+        <stereo id="stereotype-name-openapi-reference" primary="no">
+            <name lang="nl">OpenAPI Reference</name>
+            <name lang="en">OpenAPI Reference</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>class</construct>
+        </stereo>
+        
         <stereo id="stereotype-name-openapi-tags" primary="no">
             <name lang="nl">OpenAPI Tags</name>
             <name lang="en">OpenAPI Tags</name>

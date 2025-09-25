@@ -33,6 +33,9 @@
         <stereo id="stereotype-name-openapi-header">
             <toolbox category="MISCELLANEOUS"/>
         </stereo>
+        <stereo id="stereotype-name-openapi-reference">
+            <toolbox category="MISCELLANEOUS"/>
+        </stereo>
         <stereo id="stereotype-name-openapi-responsebody">
             <toolbox category="MISCELLANEOUS"/>
         </stereo>
