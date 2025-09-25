@@ -27,7 +27,7 @@
          <name>apcfile</name>
          <arg>path</arg>
          <tip>Path to the application specific configuration Excel file</tip>
-         <required>false</required>
+         <default><!--/no_apcfile--></default>
       </cli-parm> 
    </cli-parms>
    <properties>

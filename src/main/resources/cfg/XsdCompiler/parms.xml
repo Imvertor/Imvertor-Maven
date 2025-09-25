@@ -27,61 +27,61 @@
          <name>createxmlschema</name>
          <arg>yes|no</arg>
          <tip>Yes if XML schemas must be generated</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>createxmlschemavariant</name>
          <arg>name</arg>
          <tip>The name of the variant of the XML schema generated</tip>
-         <required>false</required><!-- only required when generating schemas -->
+         <default><!--no name--></default>
       </cli-parm> 
       <cli-parm>
          <name>createcvafile</name>
          <arg>yes|no</arg>
          <tip>Yes if CVA files must be generated</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>externalurl</name>
          <arg>yes|no</arg>
          <tip>Yes if external schemas must be referened by URL</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>shortprefix</name>
          <arg>yes|no</arg>
          <tip>Yes if namespace prefixes for XSDs should be shortened</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>substitutions</name>
          <arg>yes|no</arg>
          <tip>Yes if substitutions should be generated, in stead of choice groups</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>buildcollection</name>
          <arg>yes|no</arg>
          <tip>Yes if collections (and referencing) are used, no if referencing is not used</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>flattenschemas</name>
          <arg>yes|no</arg>
          <tip>Yes if schemas should also be flattened</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>cleanupschemas</name>
          <arg>yes|no</arg>
          <tip>Yes if schemas should be indented and cleared of insignificant whitespace</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>endproductbaseconfig</name>
          <arg>File name</arg><!-- REDMINE #487934 PATH BECOMES FILE NAME -->
          <tip>Name of the Excel file holding the base product configuration</tip>
-         <required>false</required>
+         <default>/no_endproductbaseconfig</default>
          <owner>KING</owner>
       </cli-parm>
       <cli-parm>
@@ -89,85 +89,85 @@
          <name>forcenillable</name>
          <arg>yes|no</arg>
          <tip>Force all properties in the resulting schema to be nillable.</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>elementisqualified</name>
          <arg>yes|no</arg>
-         <tip>The XML schema elements are qualified. Defaults to Yes.</tip>
-         <required>false</required>
+         <tip>The XML schema elements are qualified. </tip>
+         <default>yes</default>
       </cli-parm>
       <cli-parm>
          <name>attributeisqualified</name>
          <arg>yes|no</arg>
-         <tip>The XML schema attributes are qualified. Defaults to No.</tip>
-         <required>false</required>
+         <tip>The XML schema attributes are qualified.</tip>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>xsdsubpath</name>
          <arg>subpath</arg>
          <tip>A path within the result XSD folder to which the XSDs for the model provided are written. Named parameters such as [application-name] may be used.</tip>
-         <required>true</required>
+         <default>[appinfo/application-name]</default>
       </cli-parm>
       <cli-parm>
          <name>STUBnilreason</name>
          <arg>Release number</arg>
          <tip>When specified, pass the release number of Imvertor which nilreason approach must be used. Currently supported: 1.28.</tip>
-         <required>false</required>
+         <default><!--none--></default> 
       </cli-parm>
       <cli-parm>
          <name>codelistoption</name>
          <arg>Name</arg>
          <tip>The codelist option to apply in the ISO19136 schema.</tip>
-         <required>false</required>
+         <default>Option1</default>
       </cli-parm>
       <cli-parm>
          <name>gmlversion</name>
          <arg>version nr</arg>
-         <tip>The GML version to be used for ISO19136 schemas. Example: "3.3".</tip>
-         <required>false</required>
+         <tip>The GML version to be used for ISO19136 schemas.</tip>
+         <default>3.2.2</default>
       </cli-parm>
       <cli-parm>
          <name>sfconformance</name>
          <arg>level nr</arg>
          <tip>The GM 3.2 Simple Feature profile conformance level. Possible values are 0, 1 2.</tip>
-         <required>false</required>
+         <default>0</default>
       </cli-parm>
       <cli-parm>
          <name>xsdfilename</name>
          <arg>name template</arg>
          <tip>The name of each XSD file generated by the ISO19136 module. Named parameters such as [application-name] may be used.</tip>
-         <required>false</required>
+         <default>[application-name]</default>
       </cli-parm>
       <cli-parm>
          <name>identifierdomains</name>
          <arg>yes|no</arg>
          <tip>Generate schemas with IDs with domains. This parameter applies to Kadaster schemas.</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm>  
       <cli-parm>
          <name>creategmlprofile</name>
          <arg>yes|no</arg>
          <tip>Generate a GML profile for the model from XSD files configured. Only avaiable for GML 3.2.2.</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm>  
       <cli-parm>
          <name>gmlprofilename</name>
          <arg>template</arg>
-         <tip>Name of the GML profile XSD file. You may use [...] parameters. Defaults to "[owner]-gml".</tip>
-         <required>false</required>
+         <tip>Name of the GML profile XSD file. You may use [...] parameters. </tip>
+         <default>[owner]-gml</default>
       </cli-parm>  
       <cli-parm>
          <name>gmlprofileversion</name>
          <arg>template</arg>
-         <tip>Version of the GML profile XSD file. You may use [...] parameters. Defaults to "1.0.0-3.2.2".</tip>
-         <required>false</required>
+         <tip>Version of the GML profile XSD file. You may use [...] parameters.</tip>
+         <required>1.0.0-[cli/gmlversion]</required>
       </cli-parm>  
       <cli-parm>
          <name>assocbyreference</name>
          <arg>yes|no</arg>
          <tip>Associations to an objecttype/featuretype must be realized "by reference" in ISO 19136 XML instances</tip>
-         <required>false</required>
+         <default>no</default>
          <context>XSD compiler for ISO 19136 schemas</context>
       </cli-parm>  
    </cli-parms>

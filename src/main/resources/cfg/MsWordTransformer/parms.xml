@@ -35,59 +35,59 @@
          <name>debug</name>
          <arg>yes|no</arg>
          <tip>Yes if run in debug mode</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>debugmode</name>
          <arg>mode</arg>
          <tip>Sets the debug mode</tip>
-         <required>false</required>
+         <default>CHAIN</default>
       </cli-parm> 
      
       <cli-parm>
          <name>owner</name>
          <arg>name</arg>
-         <tip>Explain</tip>
+         <tip>The registered name of the owner of this model.</tip>
          <required>true</required>
       </cli-parm>
       <cli-parm>
          <name>arguments</name>
          <arg>path</arg>
-         <tip>Include these arguments</tip>
-         <required>false</required>
+         <tip>Path of the properties file that should be included</tip>
+         <default>/no_arguments</default>
       </cli-parm> 
       
       <!-- niet relevant; anders opzetten: -->
       
       <cli-parm>
          <name>task</name>
-         <arg>compile</arg>
-         <tip>Explain</tip>
+         <arg>compile|release</arg>
+         <tip>Specify if the model should be compiled or released. This option is only relevant when debugging.</tip>
          <required>true</required>
       </cli-parm> 
       <cli-parm>
          <name>forcecompile</name>
          <arg>false</arg>
-         <tip>Explain</tip>
+         <tip>Specify if Imvertor should continue processing the model even when errors occur. This option is only relevant when debugging.</tip>
          <required>true</required>
       </cli-parm> 
       <cli-parm>
          <name>project</name>
          <arg>name</arg>
-         <tip>Explain</tip>
+         <tip>Specify the project that the model is part of. This option is only relevant when debugging.</tip>
          <required>true</required>
       </cli-parm> 
       <cli-parm>
          <name>application</name>
          <arg>name</arg>
-         <tip>Explain</tip>
+         <tip>The name of the model to be processed.</tip>
          <required>true</required>
       </cli-parm> 
       <cli-parm>
          <name>metamodel</name>
          <arg>name</arg>
-         <tip>Explain</tip>
-         <required>true</required>
+         <tip>The metamodel the the model processed. This parameter is used only when Imvertor cannot decide on a valid metamodel name based on other criteria.</tip>
+         <default>no_metamodel</default>
       </cli-parm> 
       
    </cli-parms>

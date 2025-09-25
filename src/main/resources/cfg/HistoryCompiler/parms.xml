@@ -27,20 +27,20 @@
          <name>createhistory</name>
          <arg>yes|no</arg>
          <tip>Yes if history info should be read from Excel file</tip>
-         <required>true</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>starthistory</name>
          <arg>YYYYMMDD</arg>
          <tip>Release date from which to compile history to be included in documentation; defaults to most recent previous release</tip>
-         <required>false</required>
+         <default><!--calculated--></default>
       </cli-parm> 
       <cli-parm>
          <name>hisfile</name>
          <arg>filepath</arg>
          <tip>Path to the input xls history file</tip>
-         <required>false</required>
          <type>file</type>
+         <default>/no_hisfile</default>
       </cli-parm> 
    </cli-parms>
    <properties>

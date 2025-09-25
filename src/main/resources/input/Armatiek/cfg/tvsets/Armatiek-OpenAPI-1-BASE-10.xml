@@ -3,13 +3,14 @@
  * Copyright (C) 
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
-  
     <!-- 
          OpenAPI specificatie gebaseerd op https://github.com/Armatiek/imvertor-openapi-generator.
     --> 
  
     <name>Armatiek-OpenAPI</name>
     
+    <nature>OPENAPI</nature>
+
     <tagged-values>
         
         <!-- Tv's op het informatiemodel (API) -->

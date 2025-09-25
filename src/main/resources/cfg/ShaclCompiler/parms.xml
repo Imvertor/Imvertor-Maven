@@ -28,19 +28,19 @@
          <name>createshacl</name>
          <arg>yes|no</arg>
          <tip>Yes if SHACL RDF must be generated</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>shaclrules</name>
          <arg>name</arg>
          <tip>The name of the SHACL rules file</tip>
-         <required>false</required>
+         <default>[cli/owner]</default>
       </cli-parm> 
       <cli-parm>
          <name>validateshacl</name>
          <arg>yes|no</arg>
          <tip>Yes if SHACL RDF must be validated after it has been generated</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
       
    </cli-parms>

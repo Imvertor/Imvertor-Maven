@@ -28,25 +28,25 @@
          <name>createskos</name>
          <arg>yes|no</arg>
          <tip>Yes if SKOS RDF must be generated</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>skosrules</name>
          <arg>name</arg>
          <tip>The name of the SKOS rules file</tip>
-         <required>false</required>
+         <default>[cli/owner]</default>
       </cli-parm> 
       <cli-parm>
          <name>validateskos</name>
          <arg>yes|no</arg>
          <tip>Yes if SKOS RDF must be validated after it has been generated</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
       <cli-parm>
          <name>skosusealias</name>
          <arg>yes|no</arg>
          <tip>Yes if the alias should be used, when available, to create the SKOS concept URI</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
       
    </cli-parms>

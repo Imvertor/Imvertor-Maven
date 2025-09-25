@@ -4,8 +4,8 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="Armatiek-MIM-12-CONCEPTUAL.xml"/>
-    
     <name>Armatiek-MIM-12-LOGICAL</name>
-     
+   
+    <!-- OpenAPI constructies hebben geen eigen documentatie regels, en keren niet terug in de Respec documentatie --> 
+    
 </doc-rules>

@@ -27,31 +27,25 @@
       <name>compare</name>
       <arg>supplier|release|none</arg>
       <tip>Compare the model to the supplier, a release, or do not compare.</tip>
-      <required>false</required>
+      <default>none</default>
     </cli-parm>
     <cli-parm>
       <name>comparewith</name>
       <arg>YYYYMMDD</arg>
       <tip>Compare the new model to the same model released at the specified date.</tip>
-      <required>false</required>
+      <default><!--calculated--></default>
     </cli-parm>
     <cli-parm>
       <name>comparekey</name>
       <arg>id|name</arg>
       <tip>Assume the same construct has the same name, or the same ID.</tip>
-      <required>false</required>
-    </cli-parm>
-    <cli-parm>
-      <name>comparemethod</name>
-      <arg>name</arg>
-      <tip>Specify a name of a known compare method or "default". Currently known methods are: "xmldiff" and "xmlunit".</tip>
-      <required>false</required>
+      <default>name</default>
     </cli-parm>
     <cli-parm>
       <name>comparerules</name>
       <arg>name</arg>
       <tip>The name of the file recording the rules for comparison.</tip>
-      <required>false</required>
+      <default><!-- calculated: name of the owner --></default>
     </cli-parm>
   </cli-parms>
 

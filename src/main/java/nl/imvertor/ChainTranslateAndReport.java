@@ -165,10 +165,14 @@ public class ChainTranslateAndReport {
 				    	succeeds = true;
 			    	}
 			    	
+			    	/* Discontinued
+			    	
 			    	// Add information to the Imvertor file that is specific for a particular run
 			    	if (succeeds) // TODO must add condition here
 			    		succeeds = (new ApcModifier()).run();
 					
+					*/
+			    	
 					// analyze the model history file. 
 			    	// this records the state of the previous release.
 			    	if (succeeds) 

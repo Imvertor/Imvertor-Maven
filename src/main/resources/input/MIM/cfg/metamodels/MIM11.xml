@@ -14,6 +14,8 @@
     <desc lang="en">Metamodel for common constructs in MIM 1.1 models</desc>
     <desc lang="nl">Metamodel voor gemeenschappelijkheden in MIM 1.1 modellen</desc>
     
+    <nature>MIM</nature>
+    
     <profiles>
         <profile lang="nl">
             <id>MIM11NL</id>

@@ -6,6 +6,15 @@
 
     <name>Armatiek-OpenAPI</name>
     
+    <nature>OPENAPI</nature>
+
+    <categories>
+        <category id="MISCELLANEOUS">
+            <desc lang="nl">Diverse OpenAPI constructies</desc>
+            <desc lang="en">Miscellaneous OpenAPI constructs</desc>
+        </category>
+    </categories>
+    
     <stereos>
         <stereo id="stereotype-name-openapi-informatiemodel-package">
             <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>

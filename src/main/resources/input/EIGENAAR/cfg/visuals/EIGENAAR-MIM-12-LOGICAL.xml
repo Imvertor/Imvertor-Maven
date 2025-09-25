@@ -9,33 +9,8 @@
     -->
     <xi:include href="EIGENAAR-MIM-12-CONCEPTUAL.xml"/>
    
-    <name>EIGENAAR-MIM-12-LOGICAL</name>
+    <xi:include href="../../../Armatiek/cfg/visuals/Armatiek-OpenAPI-10-BASE-10.xml"/>
     
-    <stereos>
-        <stereo id="stereotype-name-openapi-informatiemodel-package">
-            <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        <stereo id="stereotype-name-openapi-objecttype">
-            <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        <stereo id="stereotype-name-openapi-operation">
-            <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        <stereo id="stereotype-name-openapi-parameter">
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        <stereo id="stereotype-name-openapi-header">
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        <stereo id="stereotype-name-openapi-responsebody">
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        <stereo id="stereotype-name-openapi-requestbody">
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-    </stereos>
+    <name>EIGENAAR-MIM-12-LOGICAL</name>
     
 </visuals>

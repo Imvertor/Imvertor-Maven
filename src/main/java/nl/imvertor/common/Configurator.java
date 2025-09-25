@@ -1186,11 +1186,12 @@ public class Configurator {
 	}
 
 	@SuppressWarnings("static-access")
-	public void createOption(String stepName, String longKey, String description, String argKey, Boolean isRequired) throws Exception {
+	public void createOption(String stepName, String longKey, String description, String argKey, Boolean isRequired, String def) throws Exception {
 		if (longKey == null) throw new Exception("Missing option \"name\" in step " + stepName);
 		if (description == null) throw new Exception("Missing option \"tip\" in step " + stepName);
 		if (argKey == null) throw new Exception("Missing option \"arg\" in step " + stepName);
-		if (isRequired == null) throw new Exception("Missing option \"required\" in step " + stepName);
+		if (isRequired == null && def == null) throw new Exception("Missing option \"required\" in step " + stepName);
+		isRequired = isRequired || def != null; 
 		boolean hasArg = (argKey != null); 
 		Option option;
 		option = OptionBuilder
@@ -1207,15 +1208,20 @@ public class Configurator {
 		options.addOption(option);
 		
 		// store the option to the configurator for final reporting
-		writeCli(stepName,longKey,description,argKey,isRequired);
+		writeCli(stepName,longKey,description,argKey,isRequired,def);
 		
+		// En als een default is opgegeven, zet de waarde van de cli
+		if (def != null) {
+			setParm(workConfiguration, "cli",longKey,def,true);
+			setOptionIsReady(longKey, true);
+		}
 	}
 	
-	public void createOption(String stepName, String shortKey, String longKey, String description, String argKey, boolean isRequired) throws Exception {
-		createOption(stepName, longKey, description, argKey, isRequired);
+	public void createOption(String stepName, String shortKey, String longKey, String description, String argKey, boolean isRequired, String def) throws Exception {
+		createOption(stepName, longKey, description, argKey, isRequired, def);
 	}
 	
-	private void writeCli(String stepName, String longKey, String description, String argKey, Boolean isRequired) {
+	private void writeCli(String stepName, String longKey, String description, String argKey, Boolean isRequired, String def) {
 			int messageIndex = workConfiguration.getMaxIndex("clispecs/clispec") + 2;   // -1 when no messages.
 			workConfiguration.addProperty("clispecs/clispec", "");
 			workConfiguration.addProperty("clispecs/clispec[" + messageIndex + "]/stepName", stepName);
@@ -1223,7 +1229,8 @@ public class Configurator {
 			workConfiguration.addProperty("clispecs/clispec[" + messageIndex + "]/description", description);
 			workConfiguration.addProperty("clispecs/clispec[" + messageIndex + "]/argKey", argKey);
 			workConfiguration.addProperty("clispecs/clispec[" + messageIndex + "]/isRequired", isRequired);
-	}
+			workConfiguration.addProperty("clispecs/clispec[" + messageIndex + "]/default", def);
+			}
 	
 	/**
 	 * Retrieve the cli parameters from the configuration file. 
@@ -1247,6 +1254,7 @@ public class Configurator {
 			String name = null;
 			String arg = null;
 			String tip = null;
+			String def = null;
 			boolean required = false;
 			// iterate over the properties
 			for (int j = 0; j < parms.getLength(); ++j) {
@@ -1257,10 +1265,11 @@ public class Configurator {
 					case "arg" : arg = cvalue;  break;
 					case "tip" : tip = cvalue; break;
 					case "required" : required = cvalue.equals("true"); break;
+					case "default" : def = cvalue; break;
 				}
 			}
 			// and create the cli parameter from these settings
-			createOption(stepName, name, tip, arg, required);
+			createOption(stepName, name, tip, arg, required, def);
 			
 		}
 	}

@@ -27,7 +27,7 @@
          <name>allowduplicatetv</name>
          <arg>yes|no</arg>
          <tip>Yes if the tagged values may be duplicated, recording several values</tip>
-         <required>true</required>
+         <default>no</default>
       </cli-parm> 
       
    </cli-parms>
