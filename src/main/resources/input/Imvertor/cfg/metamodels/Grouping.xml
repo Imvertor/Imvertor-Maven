@@ -9,6 +9,9 @@
     -->
     
     <name>Grouping</name>
+    
+    <nature>GROUPING</nature>
+    
     <desc lang="nl">Metamodel voor Grouping</desc>
     <desc lang="en">Metamodel for Grouping</desc>
     

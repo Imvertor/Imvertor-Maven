@@ -12,6 +12,8 @@
 
     <name>EIGENAAR-MIM-1-LOGICAL</name>
     
+    <nature>MIM</nature>
+    
     <profiles>
         <profile lang="nl"> 
             <id>MEGNLL</id>

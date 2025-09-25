@@ -4,10 +4,11 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-   
     <name>Armatiek-OpenAPI</name>
     
-    <profiles>
+    <nature>OPENAPI</nature>
+    
+    <profiles primary="no">
         <profile lang="nl"> 
             <id>AOAPI</id>
             <!-- <release/> identical to Imvertor release -->
