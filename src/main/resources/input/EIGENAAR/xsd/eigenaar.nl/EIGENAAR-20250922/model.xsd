@@ -1,0 +1,11 @@
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:model="https://eigenaar.nl/model"
+    targetNamespace="https://eigenaar.nl/model"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="1.0">
+    
+    <!-- empty -->
+    
+</xs:schema>
