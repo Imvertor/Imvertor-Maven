@@ -68,7 +68,7 @@
       </xsl:map-entry>
     </xsl:map>
   </xsl:variable>
-    
+      
   <xsl:template match="entity">
     <xsl:variable name="full-package-name" select="local:full-package-name(package-name)" as="xs:string"/>
     <xsl:result-document href="{$output-uri}/src/main/java/{replace($full-package-name, '\.', '/')}/{name}.java" method="text">  
@@ -79,7 +79,7 @@
         <!-- imports: -->
         <line>import nl.imvertor.mim.annotation.*;</line>
         <line>import nl.imvertor.mim.model.*;</line>
-        <line>import io.swagger.v3.oas.annotations.media.Schema;</line>
+        <line>import io.swagger.v3.oas.annotations.media.*;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema.*;</line> 
         <line>import java.util.*;</line>
         <line>import java.time.*;</line>
@@ -119,20 +119,20 @@
       <xsl:sequence select="string-join($lines)"/>
     </xsl:result-document>
     
-    <xsl:result-document href="{$output-uri}/src/main/java/{replace($full-package-name, '\.', '/')}/Paginated{name}List.java" method="text">  
+    <xsl:result-document href="{$output-uri}/src/main/java/{replace($full-package-name, '\.', '/')}/Gepagineerd{name}Lijst.java" method="text">  
       <xsl:variable name="lines-elements" as="element(line)+"> 
         <line>package {$full-package-name};</line>
         <line/>
         
         <!-- imports: -->
-        <line>import nl.imvertor.mim.model.PaginatedBase;</line>
+        <line>import nl.imvertor.mim.model.GepagineerdBase;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;</line>    
         <line>import java.util.*;</line>
         <line/>
         
-        <line>@Schema(allOf = PaginatedBase.class)</line>
-        <line>public class Paginated{name}List {{</line>
+        <line>@Schema(allOf = GepagineerdBase.class)</line>
+        <line>public class Gepagineerd{name}Lijst {{</line>
         <line/>
         <line indent="2">@Schema(requiredMode = RequiredMode.REQUIRED)</line>
         <line indent="2">private List&lt;{name}&gt; resultaten;</line>
@@ -153,18 +153,18 @@
       <xsl:sequence select="string-join($lines)"/>
     </xsl:result-document>
     
-    <xsl:result-document href="{$output-uri}/src/main/java/{replace($full-package-name, '\.', '/')}/AnyOfReferenceOr{name}.java" method="text">  
+    <xsl:result-document href="{$output-uri}/src/main/java/{replace($full-package-name, '\.', '/')}/AnyOfReferentieOr{name}.java" method="text">  
       <xsl:variable name="lines-elements" as="element(line)+"> 
         <line>package {$full-package-name};</line>
         <line/>
         
         <!-- imports: -->
-        <line>import nl.imvertor.mim.model.Reference;</line>
+        <line>import nl.imvertor.mim.model.Referentie;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema;</line>
         <line/>
                 
-        <line>@Schema(anyOf = {{ Reference.class, {name}.class }})</line>
-        <line>public class AnyOfReferenceOr{name} {{ }}</line>
+        <line>@Schema(anyOf = {{ Referentie.class, {name}.class }})</line>
+        <line>public class AnyOfReferentieOr{name} {{ }}</line>
       </xsl:variable>
       <xsl:variable name="lines" as="xs:string*">
         <xsl:apply-templates select="$lines-elements"/>  
@@ -210,31 +210,51 @@
       <xsl:with-param name="indent" select="2"/>
     </xsl:call-template>
     
-    <xsl:variable name="required-mode" as="xs:string"> <!-- TODO: is this correct? -->
-      <xsl:choose>        
-        <xsl:when test="cardinality/target/min-occurs = '0'">RequiredMode.NOT_REQUIRED</xsl:when>
-        <xsl:otherwise>RequiredMode.REQUIRED</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <line indent="2">@Schema({string-join((
+    <xsl:variable name="required-mode" select="if (not(cardinality/target/min-occurs = '0')) then 'RequiredMode.REQUIRED' else ()" as="xs:string?"/>
+    
+    <xsl:variable name="schema" as="xs:string">@Schema({string-join((
       oas:annotation-field('name', (name/@original, name)[1]),
       oas:annotation-field('description', funct:element-to-commonmark(description)),
       oas:annotation-field('requiredMode', $required-mode, false()),
+      oas:annotation-field('nullable', nullable[. = 'true'], false()),
       oas:annotation-field('minLength', size-min, false()),
       oas:annotation-field('maxLength', size-max, false()),
       oas:annotation-field('minimum', (min-incl, min-excl)[1]),
       oas:annotation-field('maximum', (max-incl, max-excl)[1]),
       oas:annotation-field('exclusiveMinimum', if (exists(min-excl/text())) then 'true' else (), false()),
       oas:annotation-field('exclusiveMaximum', if (exists(max-excl/text())) then 'true' else (), false()), 
-      oas:annotation-field('pattern', formal-pattern)
-      ), ', ')})</line>
-    <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])" as="xs:string"/>
+      oas:annotation-field('pattern', formal-pattern),
+      oas:annotation-field('ref', type/@openapi-ref)
+      ), ', ')})</xsl:variable>
+    
+    <xsl:choose>
+      <xsl:when test="(cardinality/target/max-occurs = $unbounded)">
+        <line indent="2">@ArraySchema(schema = {$schema})</line> <!-- TODO: implement minItems, maxItems -->
+      </xsl:when>
+      <xsl:otherwise>
+        <line indent="2">{$schema}</line>
+      </xsl:otherwise>
+    </xsl:choose>
+    
+    <xsl:variable name="resolved-type" as="xs:string">
+      <xsl:choose>
+        <xsl:when test="type/@openapi-ref">{if (cardinality/target/max-occurs = $unbounded) then 'List&lt;Object&gt;' else 'Object'}</xsl:when>
+        <xsl:otherwise>{local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])}</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    
     <line indent="2">private {$resolved-type} {$field-name};</line>
+    
   </xsl:template>
   
   <xsl:template match="field[not(auto-generate = 'true')]" mode="field-getter-setter">
     <xsl:variable name="field-name" select="local:unique-field-name(name)" as="xs:string"/>
-    <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])" as="xs:string"/>
+    <xsl:variable name="resolved-type" as="xs:string">
+      <xsl:choose>
+        <xsl:when test="type/@openapi-ref">{if (cardinality/target/max-occurs = $unbounded) then 'List&lt;Object&gt;' else 'Object'}</xsl:when>
+        <xsl:otherwise>{local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])}</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <line/>
     <line indent="2">public {$resolved-type} {if (type = 'Boolean') then 'is' else 'get'}{functx:capitalize-first($field-name)}() {{</line>
     <line indent="4">return {$field-name};</line>
@@ -249,7 +269,7 @@
   <xsl:template name="identification-field-declarations">
     <xsl:if test="not(identifying-attribute)">
       <line/>
-      <line indent="2">@Schema(name = "id", description = "Unieke identificatie van de resource waarnaar verwezen wordt", type = "string", requiredMode = RequiredMode.REQUIRED, minLength = 1)</line>
+      <line indent="2">@Schema(name = "id", description = "Unieke identificatie van de resource waarnaar verwezen wordt", type = "string", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY, minLength = 1)</line>
       <line indent="2">private String id;</line>  
     </xsl:if>
     
@@ -282,18 +302,18 @@
     <xsl:param name="inclusion" as="xs:string?"/>        
     <xsl:choose> 
       <xsl:when test="funct:equals-case-insensitive($inclusion, 'Reference')">
-        <xsl:variable name="singular-type" select="'nl.imvertor.mim.model.Reference'" as="xs:string"/>
+        <xsl:variable name="singular-type" select="'nl.imvertor.mim.model.Referentie'" as="xs:string"/>
         <xsl:value-of select="if ($cardinality/target/max-occurs = $unbounded) then 'List&lt;' || $singular-type || '&gt;' else $singular-type"/>    
       </xsl:when>
       <xsl:when test="funct:equals-case-insensitive($inclusion, 'Embedded')">
         <xsl:sequence select="local:type($type-info, $cardinality)"/>
       </xsl:when>
       <xsl:when test="funct:equals-case-insensitive($inclusion, 'Both')">
-        <xsl:variable name="singular-type" select="local:full-package-name($type-info/@package-name) || '.AnyOfReferenceOr' || $type-info" as="xs:string"/>
+        <xsl:variable name="singular-type" select="local:full-package-name($type-info/@package-name) || '.AnyOfReferentieOr' || $type-info" as="xs:string"/>
         <xsl:value-of select="if ($cardinality/target/max-occurs = $unbounded) then 'List&lt;' || $singular-type || '&gt;' else $singular-type"/>
       </xsl:when>
       <xsl:when test="(funct:equals-case-insensitive($aggregation, 'shared')) and not($type-info/@model-element = 'Enumeratie') and not($type-info/@is-standard = 'true')">
-        <xsl:variable name="singular-type" select="'nl.imvertor.mim.model.Reference'" as="xs:string"/>
+        <xsl:variable name="singular-type" select="'nl.imvertor.mim.model.Referentie'" as="xs:string"/>
         <xsl:value-of select="if ($cardinality/target/max-occurs = $unbounded) then 'List&lt;' || $singular-type || '&gt;' else $singular-type"/>    
       </xsl:when>
       <xsl:otherwise>

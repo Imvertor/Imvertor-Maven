@@ -343,7 +343,7 @@
     <xsl:variable name="response-objecttype-name" select="$response-body/name" as="xs:string?"/>
     
     <xsl:variable name="request-class-name" select="$request-body/name" as="xs:string?"/>
-    <xsl:variable name="response-class-name" select="if ($is-paged) then 'Paginated' || $response-body/name || 'List' else $response-body/name" as="xs:string?"/>
+    <xsl:variable name="response-class-name" select="if ($is-paged) then 'Gepagineerd' || $response-body/name || 'Lijst' else $response-body/name" as="xs:string?"/>
     
     <xsl:variable name="fqn-request-class-name" select="if ($request-body/package-name) then local:full-package-name($request-body/package-name) || '.' || $request-class-name else ()" as="xs:string?"/>
     <xsl:variable name="fqn-response-class-name" select="if ($response-body/package-name) then local:full-package-name($response-body/package-name) || '.' || $response-class-name else ()" as="xs:string?"/>
