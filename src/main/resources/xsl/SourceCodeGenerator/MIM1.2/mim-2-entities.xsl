@@ -905,8 +905,8 @@
         <xsl:variable name="result" select="analyze-string($l, '(\d*)\.\.(\d*)')" as="element(fn:analyze-string-result)"/>
         <xsl:if test="$result/fn:match">
           <xsl:map>
-            <xsl:map-entry key="'min-value'" select="$result/fn:match/fn:group[@nr='1']/text()"/>
-            <xsl:map-entry key="'max-value'" select="$result/fn:match/fn:group[@nr='2']/text()"/>
+            <xsl:map-entry key="'min-value'" select="xs:string($result/fn:match/fn:group[@nr='1'])"/>
+            <xsl:map-entry key="'max-value'" select="xs:string($result/fn:match/fn:group[@nr='2'])"/>
           </xsl:map>
         </xsl:if>
       </xsl:otherwise>
