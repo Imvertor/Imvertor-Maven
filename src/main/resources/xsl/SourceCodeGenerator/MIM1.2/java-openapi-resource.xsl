@@ -26,7 +26,7 @@
   <xsl:param name="package-prefix" as="xs:string" select="'nl.imvertor.model'"/>
   <xsl:param name="resource-package-prefix" as="xs:string" select="'nl.imvertor.resource'"/>
   <xsl:param name="openapi-spec-version" as="xs:string">api30</xsl:param>
-  <xsl:param name="openapi-schemas-only" as="xs:boolean" select="false()"/>
+  <xsl:param name="openapi-schemas-only" as="xs:string">no</xsl:param>
     
   <xsl:variable name="common-base-url" as="xs:string">https://armatiek.github.io/imvertor-openapi-generator/openapi/generiek.yaml</xsl:variable>
   <xsl:variable name="response-component-base-url" as="xs:string">{$common-base-url}#/components/responses/</xsl:variable>
@@ -459,7 +459,7 @@
         <line indent="2">}}</line>
         <line/>
         <line indent="2">public static boolean getSchemasOnly() {{</line>
-        <line indent="4">return {$openapi-schemas-only};</line>
+        <line indent="4">return {if ($openapi-schemas-only = ('yes', 'true')) then 'true' else 'false'};</line>
         <line indent="2">}}</line>
         <line/>
         <line>}}</line>

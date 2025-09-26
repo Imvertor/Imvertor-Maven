@@ -156,17 +156,17 @@ public class SourcecodeGenerator extends Step {
       
       /* Should have been stylesheet params of type boolean but this is not supported by transformer. Now rely on XSLT type conversion from strings "true" and "false" to booleans: */
       if (sourcecodeCopyDownMixins != null)
-        transformer.setXslParm("sourcecode-copy-down-mixins", configParamToTrueFalseString(sourcecodeCopyDownMixins, "true"));
+        transformer.setXslParm("sourcecode-copy-down-mixins", sourcecodeCopyDownMixins);
       if (sourcecodeResolveKeuzeAttribuutsoorten != null)
-        transformer.setXslParm("sourcecode-resolve-keuze-tussen-attribuutsoorten", configParamToTrueFalseString(sourcecodeResolveKeuzeAttribuutsoorten, "true"));
+        transformer.setXslParm("sourcecode-resolve-keuze-tussen-attribuutsoorten", sourcecodeResolveKeuzeAttribuutsoorten);
       if (sourcecodeResolveKeuzeRelatiedoelen != null)
-        transformer.setXslParm("sourcecode-resolve-keuze-tussen-relatiedoelen", configParamToTrueFalseString(sourcecodeResolveKeuzeRelatiedoelen, "true"));
+        transformer.setXslParm("sourcecode-resolve-keuze-tussen-relatiedoelen", sourcecodeResolveKeuzeRelatiedoelen);
       if (sourcecodeResolveKeuzeDatatypen != null)
-        transformer.setXslParm("sourcecode-resolve-keuze-tussen-datatypen", configParamToTrueFalseString(sourcecodeResolveKeuzeDatatypen, "true"));
+        transformer.setXslParm("sourcecode-resolve-keuze-tussen-datatypen", sourcecodeResolveKeuzeDatatypen);
       if (openapiSpecVersion != null)
         transformer.setXslParm("openapi-spec-version", openapiSpecVersion);
       if (openapiSchemasOnly != null) {
-        transformer.setXslParm("openapi-schemas-only", configParamToTrueFalseString(openapiSchemasOnly, "false"));
+        transformer.setXslParm("openapi-schemas-only", openapiSchemasOnly);
       }
       
       /* Convert MIM 1.1 to 1.2 namespaces : */ 
@@ -198,19 +198,4 @@ public class SourcecodeGenerator extends Step {
     return succeeds;
   }
   
-  private String configParamToTrueFalseString(String configParam, String defaultValue) {
-    if (configParam == null) {
-      return defaultValue;
-    }
-    String param = configParam.toLowerCase();
-    if ("no".equals(param)) {
-      return "false";
-    }
-    if ("yes".equals(param)) {
-      return "true";
-    }
-    return defaultValue;
-  }
-  
-
 }

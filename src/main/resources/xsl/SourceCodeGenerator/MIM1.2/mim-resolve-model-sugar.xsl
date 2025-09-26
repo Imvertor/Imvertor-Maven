@@ -22,18 +22,18 @@
   <xsl:key name="id" match="*[@id]" use="@id"/>
   <xsl:key name="ref" match="mim-ref:*|mim-ext:ConstructieRef" use="substring(@xlink:href, 2)"/>
   
-  <xsl:param name="sourcecode-copy-down-mixins" select="false()" as="xs:boolean"/>
-  <xsl:param name="sourcecode-resolve-keuze-tussen-attribuutsoorten" select="false()" as="xs:boolean"/>
-  <xsl:param name="sourcecode-resolve-keuze-tussen-relatiedoelen" select="false()" as="xs:boolean"/>
-  <xsl:param name="sourcecode-resolve-keuze-tussen-datatypen" select="false()" as="xs:boolean"/>
+  <xsl:param name="sourcecode-copy-down-mixins" select="'no'" as="xs:string"/>
+  <xsl:param name="sourcecode-resolve-keuze-tussen-attribuutsoorten" select="'no'" as="xs:string"/>
+  <xsl:param name="sourcecode-resolve-keuze-tussen-relatiedoelen" select="'no'" as="xs:string"/>
+  <xsl:param name="sourcecode-resolve-keuze-tussen-datatypen" select="'no'" as="xs:string"/>
   
-  <xsl:template match="(mim:Domein|mim:View)/mim:keuzen/mim:Keuze[mim:keuzeAttributen][$sourcecode-resolve-keuze-tussen-attribuutsoorten]"/>
-  <xsl:template match="(mim:Domein|mim:View)/mim:keuzen/mim:Keuze[mim:keuzeDatatypen][$sourcecode-resolve-keuze-tussen-datatypen]"/>
-  <xsl:template match="(mim:Domein|mim:View)/mim:keuzen/mim:Keuze[mim:keuzeRelatiedoelen][$sourcecode-resolve-keuze-tussen-relatiedoelen]"/>
-  <xsl:template match="(mim:Domein|mim:View)/mim:keuzen[$sourcecode-resolve-keuze-tussen-attribuutsoorten and $sourcecode-resolve-keuze-tussen-datatypen and $sourcecode-resolve-keuze-tussen-relatiedoelen]"/>
-  <xsl:template match="mim:supertypen/mim:GeneralisatieObjecttypen[local:is-mixin(.)][mim:supertype/*][$sourcecode-copy-down-mixins]"/>
+  <xsl:template match="(mim:Domein|mim:View)/mim:keuzen/mim:Keuze[mim:keuzeAttributen][local:is-true($sourcecode-resolve-keuze-tussen-attribuutsoorten)]"/>
+  <xsl:template match="(mim:Domein|mim:View)/mim:keuzen/mim:Keuze[mim:keuzeDatatypen][local:is-true($sourcecode-resolve-keuze-tussen-datatypen)]"/>
+  <xsl:template match="(mim:Domein|mim:View)/mim:keuzen/mim:Keuze[mim:keuzeRelatiedoelen][local:is-true($sourcecode-resolve-keuze-tussen-relatiedoelen)]"/>
+  <xsl:template match="(mim:Domein|mim:View)/mim:keuzen[local:is-true($sourcecode-resolve-keuze-tussen-attribuutsoorten) and local:is-true($sourcecode-resolve-keuze-tussen-datatypen) and local:is-true($sourcecode-resolve-keuze-tussen-relatiedoelen)]"/>
+  <xsl:template match="mim:supertypen/mim:GeneralisatieObjecttypen[local:is-mixin(.)][mim:supertype/*][local:is-true($sourcecode-copy-down-mixins)]"/>
   
-  <xsl:template match="mim:Objecttype/mim:keuzen[local:resolve-reference(mim-ref:KeuzeRef)/mim:keuzeAttributen][$sourcecode-resolve-keuze-tussen-attribuutsoorten]"/>
+  <xsl:template match="mim:Objecttype/mim:keuzen[local:resolve-reference(mim-ref:KeuzeRef)/mim:keuzeAttributen][local:is-true($sourcecode-resolve-keuze-tussen-attribuutsoorten)]"/>
     
   <xsl:template match="/*">
     <xsl:copy>
@@ -48,14 +48,14 @@
       <xsl:apply-templates select="@*|node()"/>
       
       <!-- $sourcecode-resolve-keuze-tussen-attribuutsoorten: -->
-      <xsl:if test="$sourcecode-resolve-keuze-tussen-attribuutsoorten and self::mim:attribuutsoorten">
+      <xsl:if test="local:is-true($sourcecode-resolve-keuze-tussen-attribuutsoorten) and self::mim:attribuutsoorten">
         <xsl:apply-templates select="../mim:keuzen/mim-ref:KeuzeRef/local:resolve-reference(.)/mim:keuzeAttributen/mim:Attribuutsoort" mode="keuze-attribuutsoorten">
           <xsl:with-param name="comment" select="'$sourcecode-resolve-keuze-tussen-attribuutsoorten'" as="xs:string"/>
         </xsl:apply-templates>
       </xsl:if>
       
       <!-- $sourcecode-copy-down-mixins: -->
-      <xsl:if test="$sourcecode-copy-down-mixins">
+      <xsl:if test="local:is-true($sourcecode-copy-down-mixins)">
         <xsl:apply-templates select="../mim:supertypen/mim:GeneralisatieObjecttypen[local:is-mixin(.)]/mim:supertype/*/mim:attribuutsoorten"/>  
       </xsl:if>
       
@@ -74,7 +74,7 @@
     </xsl:copy>
   </xsl:template>
   
-  <xsl:template match="mim:Attribuutsoort[local:resolve-reference(mim:type/mim-ref:KeuzeRef)/mim:keuzeDatatypen][$sourcecode-resolve-keuze-tussen-datatypen]">
+  <xsl:template match="mim:Attribuutsoort[local:resolve-reference(mim:type/mim-ref:KeuzeRef)/mim:keuzeDatatypen][local:is-true($sourcecode-resolve-keuze-tussen-datatypen)]">
     <!-- $sourcecode-resolve-keuze-tussen-datatypen -->
     <xsl:variable name="keuze" select="local:resolve-reference(mim:type/mim-ref:KeuzeRef)" as="element(mim:Keuze)"/>
     <xsl:variable name="current" select="." as="element()"/>
@@ -115,7 +115,7 @@
     <xsl:sequence select="$datatype"/>
   </xsl:template>
   
-  <xsl:template match="mim:Relatiesoort[mim:doel/mim-ref:KeuzeRef][$sourcecode-resolve-keuze-tussen-relatiedoelen]">
+  <xsl:template match="mim:Relatiesoort[mim:doel/mim-ref:KeuzeRef][local:is-true($sourcecode-resolve-keuze-tussen-relatiedoelen)]">
     <!-- $sourcecode-resolve-keuze-tussen-relatiedoelen -->
     <xsl:variable name="keuze" select="local:resolve-reference(mim:doel/mim-ref:KeuzeRef)" as="element(mim:Keuze)"/>
     <xsl:variable name="current" select="." as="element()"/>
@@ -160,6 +160,11 @@
   <xsl:function name="local:is-mixin" as="xs:boolean">
     <xsl:param name="generalisation-element" as="element(mim:GeneralisatieObjecttypen)"/>
     <xsl:sequence select="exists($generalisation-element[mim:mixin = 'true' or mim-ext:kenmerken/mim-ext:Kenmerk[@naam='type'] = 'GENERALISATIE STATIC'])"/>
+  </xsl:function>
+  
+  <xsl:function name="local:is-true" as="xs:boolean">
+    <xsl:param name="value" as="xs:string?"/>
+    <xsl:sequence select="$value = ('yes', 'true')"/>
   </xsl:function>
   
 </xsl:stylesheet>

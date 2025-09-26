@@ -26,7 +26,7 @@
          <name>createsourcecode</name>
          <arg>yes|no</arg>
          <tip>Yes if source code must be generated</tip>
-         <default>false</default>
+         <default>no</default>
       </cli-parm>  
       <cli-parm>
          <name>sourcecodetype</name>
@@ -38,31 +38,31 @@
          <name>sourcecodecopydownmixins</name>
          <arg>yes|no</arg>
          <tip>Yes if attributes must be copied from mixin supertypes</tip>
-         <default>false</default>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>sourcecoderesolvekeuzeattribuutsoorten</name>
          <arg>yes|no</arg>
          <tip>Yes if MIM "Keuze tussen attribuutsoorten" constructs must be resolved/simplified</tip>
-         <default>false</default>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>sourcecoderesolvekeuzerelatiedoelen</name>
          <arg>yes|no</arg>
          <tip>Yes if MIM "Keuze tussen relatiedoelen" constructs must be resolved/simplified</tip>
-         <default>false</default>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>sourcecoderesolvekeuzedatatypen</name>
          <arg>yes|no</arg>
          <tip>Yes if MIM "Keuze tussen datatypen" constructs must be resolved/simplified</tip>
-         <default>false</default>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>createopenapi</name>
          <arg>yes|no</arg>
          <tip>Yes if OpenAPI descriptions must be generated. This will also set sourcecodetype to "java-openapi"</tip>
-         <default>false</default>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>openapispecversion</name>
