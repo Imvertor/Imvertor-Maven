@@ -135,7 +135,7 @@
          <metagegeven kardinaliteit="0..*">SKIP Begrip</metagegeven>
          <metagegeven kardinaliteit="0..*">Code</metagegeven>
          <metagegeven kardinaliteit="0..*">SKIP Datum opname</metagegeven>
-         <metagegeven kardinaliteit="0..*">SKIP Definitie</metagegeven>
+         <metagegeven kardinaliteit="0..*">Definitie</metagegeven>
          <metagegeven kardinaliteit="0..*">SKIP Formeel patroon</metagegeven>
          <metagegeven kardinaliteit="0..*">SKIP Herkomst</metagegeven>
          <metagegeven kardinaliteit="0..*">SKIP Herkomst definitie</metagegeven>
