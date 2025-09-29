@@ -76,6 +76,12 @@
          <tip>Yes if only the schema part of the OpenAPI description should be generated</tip>
          <default>no</default>
       </cli-parm>
+      <cli-parm>
+         <name>openapibundledescriptions</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the generated OpenAPI description and all descriptions that are referenced should be bundled to one description</tip>
+         <default>no</default>
+      </cli-parm>
    </cli-parms>
    
    <properties>
