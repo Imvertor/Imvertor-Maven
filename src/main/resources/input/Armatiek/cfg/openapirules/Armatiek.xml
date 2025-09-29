@@ -209,6 +209,10 @@
           </headers>
         </response>
         <response>
+          <status-code>400</status-code>
+          <schema-name>400</schema-name>
+        </response>
+        <response>
           <status-code>401</status-code>
           <schema-name>401</schema-name>
         </response>
@@ -312,6 +316,10 @@
         <response>
           <status-code>415</status-code>
           <schema-name>415</schema-name>
+        </response>
+        <response>
+          <status-code>422</status-code>
+          <schema-name>422</schema-name>
         </response>
         <response>
           <status-code>429</status-code>

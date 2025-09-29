@@ -165,12 +165,10 @@ public class SourcecodeGenerator extends Step {
         transformer.setXslParm("sourcecode-resolve-keuze-tussen-datatypen", sourcecodeResolveKeuzeDatatypen);
       if (openapiSpecVersion != null)
         transformer.setXslParm("openapi-spec-version", openapiSpecVersion);
-      if (openapiSchemasOnly != null) {
+      if (openapiSchemasOnly != null)
         transformer.setXslParm("openapi-schemas-only", openapiSchemasOnly);
-      }
-      if (openApiBundleDescriptions != null) {
+      if (openApiBundleDescriptions != null)
         transformer.setXslParm("openapi-bundle-descriptions", openApiBundleDescriptions);
-      }
       
       /* Convert MIM 1.1 to 1.2 namespaces : */ 
       succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", workFileParamMIM_11_to_12, xslFileParamMIM_11_to_12);

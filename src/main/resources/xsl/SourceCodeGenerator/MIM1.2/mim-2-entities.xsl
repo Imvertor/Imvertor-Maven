@@ -47,8 +47,7 @@
   
   <xsl:key name="id" match="*[@id]" use="@id"/>
   <xsl:key name="ref" match="mim-ref:*|mim-ext:ConstructieRef" use="substring(@xlink:href, 2)"/>
-  <xsl:key name="supertype-ref" match="mim:supertypen/mim:GeneralisatieObjecttypen/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)" use="substring(@xlink:href, 2)"/>
-  <xsl:key name="tag" match="mim:Enumeratie[funct:equals-case-insensitive(mim:naam, 'Tags')]/mim:waarden/mim:Waarde" use="lower-case(mim:naam)"/>
+  <xsl:key name="supertype-ref" match="mim:supertypen/mim:GeneralisatieObjecttypen/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)" use="substring(@xlink:href, 2)"/> 
   
   <xsl:variable name="runs-in-imvertor-context" select="not(system-property('install.dir') = '')" as="xs:boolean" static="yes"/>
   
@@ -133,7 +132,7 @@
     mim:datatypen/mim:GestructureerdDatatype | 
     mim:datatypen/mim:Codelijst | 
     mim:datatypen/mim:Referentielijst |
-    mim-ext:constructies/mim-ext:Constructie[not(mim-ext:constructietype = 'OPENAPI OPERATION')]"> 
+    mim-ext:constructies/mim-ext:Constructie[not(mim-ext:constructietype = ('OPENAPI OPERATION', 'OPENAPI TAGS'))]"> 
     
     <xsl:variable name="non-mixin-supertype-refs" select="mim:supertypen/mim:GeneralisatieObjecttypen[not(local:is-mixin(.))]/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)" as="element()*"/>  
     <xsl:if test="count($non-mixin-supertype-refs) gt 1">
@@ -601,13 +600,13 @@
     </field>
   </xsl:template>
   
-  <xsl:template match="mim-ext:constructies/mim-ext:Constructie[mim-ext:constructietype = 'OPENAPI OPERATION']">
+  <xsl:template match="mim-ext:constructies/mim-ext:Constructie[funct:equals-case-insensitive(mim-ext:constructietype, 'OPENAPI OPERATION')]">
     <openapi-operation>
       <method>{upper-case((local:kenmerk-ext(., 'OA HTTP method'), 'GET')[1])}</method>
       <operation-id>{mim:naam}</operation-id>
       <path>{(local:kenmerk-ext(., 'OA Path'), '/nopath')[1]}</path>
       <xsl:variable name="tag" select="(local:kenmerk-ext(., 'OA Tag'), 'NoTag')[1]" as="xs:string"/>
-      <tag description="{local:definition-as-string(key('tag', lower-case($tag))/mim:definitie)}">{$tag}</tag>
+      <tag>{$tag}</tag>
       <summary>{local:kenmerk-ext(., 'OA Summary')}</summary>
       <description>
         <xsl:sequence select="local:kenmerk-ext(., 'OA Description')"/>
@@ -662,6 +661,33 @@
       </xsl:where-populated>
       <xsl:apply-templates select="mim-ext:kenmerken" mode="kenmerk"/>
     </openapi-operation>
+  </xsl:template>
+  
+  <xsl:template match="mim-ext:constructies/mim-ext:Constructie[funct:equals-case-insensitive(mim-ext:constructietype, 'OPENAPI URLS')]">
+    <openapi-urls>
+      <xsl:for-each select="mim-ext:bevat/mim-ext:Constructie">
+        <url alias="{mim:alias}">{mim:naam}</url>  
+      </xsl:for-each>
+    </openapi-urls>
+  </xsl:template>
+  
+  <xsl:template match="mim-ext:constructies/mim-ext:Constructie[funct:equals-case-insensitive(mim-ext:constructietype, 'OPENAPI TAGS')]">
+    <openapi-tags>
+      <xsl:for-each select="mim-ext:bevat/mim-ext:Constructie">
+        <tag name="{mim:naam}">
+          <xsl:for-each select="mim:definitie">
+            <xsl:choose>
+              <xsl:when test="xhtml:body">
+                <xsl:sequence select="xhtml:body"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:sequence select="text()"/>
+              </xsl:otherwise>
+            </xsl:choose>  
+          </xsl:for-each>
+        </tag>  
+      </xsl:for-each>
+    </openapi-tags>
   </xsl:template>
   
   <xsl:template match="xhtml:*" mode="xhtml">
