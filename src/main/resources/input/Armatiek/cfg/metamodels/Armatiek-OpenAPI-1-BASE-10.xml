@@ -93,6 +93,14 @@
             <construct>enumeration</construct>
         </stereo>
         
+        <stereo id="stereotype-name-openapi-urls" primary="no">
+            <name lang="nl">OpenAPI URLs</name>
+            <name lang="en">OpenAPI URLs</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">TODO</desc>
+            <construct>enumeration</construct>
+        </stereo>
+        
         <stereo id="stereotype-name-openapi-operation" primary="yes">
             <name lang="nl">OpenAPI Operation</name>
             <name lang="en">OpenAPI Operation</name>
@@ -104,14 +112,6 @@
         <stereo id="stereotype-name-openapi-parameter" primary="yes">
             <name lang="nl">OpenAPI Parameter</name>
             <name lang="en">OpenAPI Parameter</name>
-            <desc lang="en">TODO</desc>
-            <desc lang="nl">TODO</desc>
-            <construct>attribute</construct>
-        </stereo>
-        
-        <stereo id="stereotype-name-openapi-header" primary="yes">
-            <name lang="nl">OpenAPI Header</name>
-            <name lang="en">OpenAPI Header</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">TODO</desc>
             <construct>attribute</construct>

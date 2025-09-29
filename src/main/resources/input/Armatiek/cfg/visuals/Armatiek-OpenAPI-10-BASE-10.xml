@@ -36,10 +36,11 @@
             <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
             <toolbox category="MISCELLANEOUS"/>
         </stereo>
-        <stereo id="stereotype-name-openapi-parameter">
+        <stereo id="stereotype-name-openapi-urls">
+            <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
             <toolbox category="MISCELLANEOUS"/>
         </stereo>
-        <stereo id="stereotype-name-openapi-header">
+        <stereo id="stereotype-name-openapi-parameter">
             <toolbox category="MISCELLANEOUS"/>
         </stereo>
         <stereo id="stereotype-name-openapi-reference">

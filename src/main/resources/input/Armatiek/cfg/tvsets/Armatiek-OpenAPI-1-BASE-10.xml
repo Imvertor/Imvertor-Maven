@@ -40,7 +40,6 @@
                 <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
                 <stereo minmax="1">stereotype-name-openapi-operation</stereo>
                 <stereo minmax="1">stereotype-name-openapi-parameter</stereo>
-                <stereo minmax="1">stereotype-name-openapi-header</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-SUMMARY">
@@ -65,7 +64,6 @@
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-openapi-parameter</stereo>
-                <stereo minmax="0..1">stereotype-name-openapi-header</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-OPENAPI-VERSION">
@@ -198,92 +196,6 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
                 <stereo minmax="0..1">stereotype-name-openapi-objecttype</stereo>
-            </stereotypes>
-        </tv>
-        
-        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-GETC">
-            <name lang="nl">OA Response codes GET collection</name>
-            <name lang="en">OA Response codes GET collection</name>
-            <desc lang="nl">Ondersteunde response codes voor de GET request, wanneer een collectie van items wordt opgevraagd. 
-                De waarden worden komma gescheiden opgegeven. 
-                Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.
-                </desc>
-            <desc lang="en">TODO</desc>
-            <source>API-1.0</source>
-            <catalog>TODO</catalog>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-GETI">
-            <name lang="nl">OA Response codes GET item</name>
-            <name lang="en">OA Response codes GET item</name>
-            <desc lang="nl">Ondersteunde response codes voor de GET request, wanneer een enkel item wordt opgevraagd. 
-                De waarden worden komma gescheiden opgegeven. 
-                Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.</desc>
-            <desc lang="en">TODO</desc>
-            <source>API-1.0</source>
-            <catalog>TODO</catalog>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-POST">
-            <name lang="nl">OA Response codes POST</name>
-            <name lang="en">OA Response codes POST</name>
-            <desc lang="nl">Ondersteunde response codes voor de POST request. 
-                De waarden worden komma gescheiden opgegeven. 
-                Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.</desc>
-            <desc lang="en">TODO</desc>
-            <source>API-1.0</source>
-            <catalog>TODO</catalog>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-DELETE">
-            <name lang="nl">OA Response codes DELETE</name>
-            <name lang="en">OA Response codes DELETE</name>
-            <desc lang="nl">Ondersteunde response codes voor de DELETE request. 
-                De waarden worden komma gescheiden opgegeven. 
-                Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.</desc>
-            <desc lang="en">TODO</desc>
-            <source>API-1.0</source>
-            <catalog>TODO</catalog>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-PUT">
-            <name lang="nl">OA Response codes PUT</name>
-            <name lang="en">OA Response codes PUT</name>
-            <desc lang="nl">Ondersteunde response codes voor de PUT request. 
-                De waarden worden komma gescheiden opgegeven. 
-                Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.</desc>
-            <desc lang="en">TODO</desc>
-            <source>API-1.0</source>
-            <catalog>TODO</catalog>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="CFG-TV-OPENAPI-RESPONSECODES-PATCH">
-            <name lang="nl">OA Response codes PATCH</name>
-            <name lang="en">OA Response codes PATCH</name>
-            <desc lang="nl">Ondersteunde response codes voor de PATCH request. 
-                De waarden worden komma gescheiden opgegeven. 
-                Wanneer geen waarden opgegeven, dan wordt door de verwerkende software een specifieke reeks aangenomen.</desc>
-            <desc lang="en">TODO</desc>
-            <source>API-1.0</source>
-            <catalog>TODO</catalog>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-openapi-informatiemodel-package</stereo>
             </stereotypes>
         </tv>
         
