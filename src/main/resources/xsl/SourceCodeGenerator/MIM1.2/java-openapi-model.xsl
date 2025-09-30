@@ -25,50 +25,7 @@
   <xsl:mode name="definition" on-no-match="shallow-copy"/>
   <xsl:mode name="field-declaration" on-no-match="shallow-skip"/>
   <xsl:mode name="field-getter-setter" on-no-match="shallow-skip"/>
-    
-  <!-- TODO -->
-  <!-- Min, max constraints -->
-  <!-- Type van unieke identifiers --> 
-  <!-- Ieder object een id en url geven? --> 
-  
-  <xsl:variable name="primitive-mim-openapi-type-mapping" as="map(xs:string, element(type))">
-    <xsl:map>
-      <xsl:map-entry key="'CharacterString'">
-        <type>string</type> 
-      </xsl:map-entry>
-      <xsl:map-entry key="'Integer'">
-        <type format="int32">number</type>
-      </xsl:map-entry>
-      <xsl:map-entry key="'Real'">
-        <type format="double">number</type>
-      </xsl:map-entry>
-      <xsl:map-entry key="'Decimal'">
-        <type>number</type>
-      </xsl:map-entry>
-      <xsl:map-entry key="'Boolean'">
-        <type>boolean</type>
-      </xsl:map-entry>
-      <xsl:map-entry key="'Date'">
-        <type format="date">string</type>
-      </xsl:map-entry>
-      <xsl:map-entry key="'DateTime'">
-        <type format="date-time">string</type>
-      </xsl:map-entry>
-      <xsl:map-entry key="'Year'">
-        <type format="int32">number</type>
-      </xsl:map-entry>
-      <xsl:map-entry key="'Day'">
-        <type format="int32">number</type>
-      </xsl:map-entry>
-      <xsl:map-entry key="'Month'">
-        <type format="int32">number</type>
-      </xsl:map-entry>
-      <xsl:map-entry key="'URI'">
-        <type format="uri">string</type> 
-      </xsl:map-entry>
-    </xsl:map>
-  </xsl:variable>
-      
+        
   <xsl:template match="entity">
     <xsl:variable name="full-package-name" select="local:full-package-name(package-name)" as="xs:string"/>
     <xsl:result-document href="{$output-uri}/src/main/java/{replace($full-package-name, '\.', '/')}/{name}.java" method="text">  
@@ -95,7 +52,7 @@
           select="if (model-element = 'Keuze') then string-join(for $f in fields/field[not(auto-generate = 'true')] return local:full-package-name($f/type/@package-name) || '.' || $f/type || '.class', ', ') else ()" as="xs:string?"/>
         
         <line>@Schema({string-join((
-          oas:annotation-field('description', funct:element-to-commonmark(description)),
+          oas:annotation-field('description', ((funct:feature-to-commonmark(., 'OA Description'), funct:element-to-commonmark(definition)))[1]),
           oas:annotation-field('any-of', $any-of-classes)), ', ')})</line>
         
         <xsl:variable name="super-type-class-name" select="super-type" as="xs:string"/>
@@ -180,11 +137,12 @@
         <line>package {$full-package-name};</line>
         <line/>
         <line>import nl.imvertor.mim.annotation.*;</line>
+        <line>import io.swagger.v3.oas.annotations.media.*;</line>
         <line/>
         <xsl:call-template name="javadoc"/>
         <line>@{model-element}</line>
+        <line>@Schema({oas:annotation-field('description', ((funct:feature-to-commonmark(., 'OA Description'), funct:element-to-commonmark(definition)))[1])})</line>
         <line>public enum {name} {{</line>
-        <line/>
         <xsl:for-each select="values/value">
           <xsl:call-template name="javadoc">
             <xsl:with-param name="indent">2</xsl:with-param>
@@ -214,7 +172,7 @@
     
     <xsl:variable name="schema" as="xs:string">@Schema({string-join((
       oas:annotation-field('name', (name/@original, name)[1]),
-      oas:annotation-field('description', funct:element-to-commonmark(description)),
+      oas:annotation-field('description', ((funct:feature-to-commonmark(., 'OA Description'), funct:element-to-commonmark(definition)))[1]),
       oas:annotation-field('requiredMode', $required-mode, false()),
       oas:annotation-field('nullable', nullable[. = 'true'], false()),
       oas:annotation-field('minLength', size-min, false()),

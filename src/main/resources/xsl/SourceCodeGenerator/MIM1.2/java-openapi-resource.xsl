@@ -109,7 +109,7 @@
           
           <xsl:variable name="api-path-version" select="(entity:feature(/model, 'OA Path version'), '1')[1]" as="xs:string?"/>
           <line>@Path("/v{$api-path-version}/{if ($path) then $path else lower-case(name)}")</line>
-          <line>@Tag(name = "{name}", description = "{local:definition-as-string(definition)}")</line> 
+          <line>@Tag(name = "{name}", description = {oas:java-string-literal(((funct:feature-to-commonmark(., 'OA Description'), funct:element-to-commonmark(definition)))[1])})</line> 
           <line>public class {$resource-class-name} {{</line>
           
           <xsl:variable name="openapi-methods" select="entity:feature(., 'OA Methods')" as="xs:string?"/>
@@ -289,7 +289,7 @@
           <line/>
                     
           <line>@Path("/")</line>
-          <line>@Tag(name = "{$tag}", description = "{$tag-description}")</line>
+          <line>@Tag(name = "{$tag}", description = {oas:java-string-literal($tag-description)})</line>
           <line>public class {$class-name} {{</line>
           
           <xsl:variable name="api-path-version" select="(entity:feature(/model, 'OA Path version'), '1')[1]" as="xs:string?"/>
@@ -389,7 +389,7 @@
     <xsl:for-each select="$http-method/response[starts-with(status-code, '2')]">
       <xsl:choose>
         <xsl:when test="status-code = '200'">
-          <line indent="4">@ApiResponse(responseCode = "200", description = "{local:description(description, ($response-objecttype-name, $request-objecttype-name)[1])}",</line>
+          <line indent="4">@ApiResponse(responseCode = "200", description = {oas:java-string-literal(local:description(description, ($response-objecttype-name, $request-objecttype-name)[1]))},</line>
           <line indent="6">content = @Content(mediaType = "application/json",</line> 
           <line indent="6">schema = @Schema(implementation = {$fqn-response-class-name}.class)){if (headers/header-name) then ',' else ()}</line>
           <xsl:call-template name="generate-headers">
@@ -398,7 +398,7 @@
           </xsl:call-template>
         </xsl:when>
         <xsl:when test="status-code = '201'">
-          <line indent="4">@ApiResponse(responseCode = "201", description = "{local:description(description, ($response-objecttype-name, $request-objecttype-name)[1])}",</line>
+          <line indent="4">@ApiResponse(responseCode = "201", description = {oas:java-string-literal(local:description(description, ($response-objecttype-name, $request-objecttype-name)[1]))},</line>
           <line indent="6">content = @Content(mediaType = "application/json",</line> 
           <line indent="6">schema = @Schema(implementation = {$fqn-response-class-name}.class)){if (headers/header-name) then ',' else ()}</line>
           <xsl:call-template name="generate-headers">
@@ -407,14 +407,14 @@
           </xsl:call-template>
         </xsl:when>
         <xsl:when test="status-code = '202'">
-          <line indent="4">@ApiResponse(responseCode = "202", description = "{local:description(description, ($response-objecttype-name, $request-objecttype-name)[1])}"{if (headers/header-name) then ',' else ()}</line>
+          <line indent="4">@ApiResponse(responseCode = "202", description = {oas:java-string-literal(local:description(description, ($response-objecttype-name, $request-objecttype-name)[1]))}{if (headers/header-name) then ',' else ()}</line>
           <xsl:call-template name="generate-headers">
             <xsl:with-param name="response" select="." as="element(response)"/>
             <xsl:with-param name="suffix" as="xs:string">,</xsl:with-param>
           </xsl:call-template>
         </xsl:when>
         <xsl:when test="status-code = '204'">
-          <line indent="4">@ApiResponse(responseCode = "204", description = "{local:description(description, ($response-objecttype-name, $request-objecttype-name)[1])}"{if (headers/header-name) then ',' else ()}</line>
+          <line indent="4">@ApiResponse(responseCode = "204", description = {oas:java-string-literal(local:description(description, ($response-objecttype-name, $request-objecttype-name)[1]))}{if (headers/header-name) then ',' else ()}</line>
           <xsl:call-template name="generate-headers">
             <xsl:with-param name="response" select="." as="element(response)"/>
             <xsl:with-param name="suffix" as="xs:string">,</xsl:with-param>
@@ -459,10 +459,7 @@
     
   <xsl:template name="generate-openapi-header">
     <xsl:result-document href="{$output-uri}/src/main/java/nl/imvertor/resource/OpenApiDefinition.java" method="text">  
-      <xsl:variable name="lines-elements" as="element(line)+"> 
-        <xsl:variable name="title" select="entity:feature(/model, 'openapi.title')" as="xs:string?"/>
-        <xsl:variable name="description" select="entity:feature(/model, 'openapi.description')" as="xs:string?"/>
-        
+      <xsl:variable name="lines-elements" as="element(line)+">        
         <line>package nl.imvertor.resource;</line>
         <line/>
         <line>import io.swagger.v3.oas.annotations.OpenAPIDefinition;</line>

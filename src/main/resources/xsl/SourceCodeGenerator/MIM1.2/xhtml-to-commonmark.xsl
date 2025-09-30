@@ -4,6 +4,7 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:functx="http://www.functx.com"
   xmlns:funct="urn:funct"
   xmlns:local="urn:local"
   exclude-result-prefixes="#all"
@@ -23,15 +24,18 @@
   
   <xsl:function name="funct:element-to-commonmark" as="xs:string?">
     <xsl:param name="element" as="element()?"/>  
-    <xsl:choose>
-      <xsl:when test="not($element)"/>
-      <xsl:when test="$element/xhtml:body">
-        <xsl:apply-templates select="$element/xhtml:body" mode="xhtml"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:sequence select="$element/text()[normalize-space()]"/>
-      </xsl:otherwise>
-    </xsl:choose>  
+    <xsl:variable name="commonmark" as="xs:string?">
+      <xsl:choose>
+        <xsl:when test="not($element)"/>
+        <xsl:when test="$element/xhtml:body">
+          <xsl:apply-templates select="$element/xhtml:body" mode="xhtml"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="$element/text()[normalize-space()]"/>
+        </xsl:otherwise>
+      </xsl:choose>  
+    </xsl:variable>
+    <xsl:sequence select="functx:trim($commonmark)"/>
   </xsl:function>
   
   <!-- Utility: repeat a character n times -->
