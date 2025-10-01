@@ -236,7 +236,7 @@
               <xsl:with-param name="parameters" as="element(parameter)*">
                 <xsl:sequence select="$path-parameter-id"/>
               </xsl:with-param>
-              <xsl:with-param name="http-method" select="($openapi-rules-doc//default/http-method[name = 'PATH'])[last()]" as="element(http-method)"/>
+              <xsl:with-param name="http-method" select="($openapi-rules-doc//default/http-method[name = 'PATCH'])[last()]" as="element(http-method)"/>
               <xsl:with-param name="request-body" as="element(request-body)?">
                 <request-body>
                   <name>{name}</name>
