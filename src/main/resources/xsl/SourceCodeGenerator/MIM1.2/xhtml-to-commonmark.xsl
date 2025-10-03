@@ -49,7 +49,6 @@
   <xsl:template match="xhtml:body" mode="xhtml">
     <xsl:variable name="strings" as="xs:string*">
       <xsl:apply-templates mode="#current"/>
-      <xsl:text>&#10;</xsl:text>  
     </xsl:variable>
     <xsl:sequence select="string-join($strings)"/>
   </xsl:template>
@@ -155,11 +154,12 @@
     <xsl:choose>
       <xsl:when test="$node/self::xhtml:ul">
         <xsl:for-each select="$node/xhtml:li">
-          <xsl:text>
-</xsl:text>
           <xsl:value-of select="local:repeat(' ', $indent)"/>
           <xsl:text>- </xsl:text>
-          <xsl:apply-templates select="node()[not(self::xhtml:ul or self::xhtml:ol)]" mode="#current"/>
+          <xsl:variable name="common-mark" as="xs:string*">
+            <xsl:apply-templates select="node()[not(self::xhtml:ul or self::xhtml:ol)]" mode="#current"/>  
+          </xsl:variable>
+          <xsl:sequence select="functx:trim(string-join($common-mark))"/>  
           <!-- handle nested lists inside this li -->
           <xsl:for-each select="xhtml:ul|xhtml:ol">
             <xsl:call-template name="process-list">
@@ -167,23 +167,26 @@
               <xsl:with-param name="indent" select="$indent + 2"/>
             </xsl:call-template>
           </xsl:for-each>
+          <xsl:text>&#10;</xsl:text>
         </xsl:for-each>
         <xsl:text>&#10;</xsl:text>
       </xsl:when>
       <xsl:when test="$node/self::xhtml:ol">
         <xsl:for-each select="$node/xhtml:li">
-          <xsl:text>
-</xsl:text>
           <xsl:value-of select="local:repeat(' ', $indent)"/>
           <xsl:value-of select="count(preceding-sibling::xhtml:li) + 1"/>
           <xsl:text>. </xsl:text>
-          <xsl:apply-templates select="node()[not(self::xhtml:ul or self::xhtml:ol)]" mode="#current"/>
+          <xsl:variable name="common-mark" as="xs:string*">
+            <xsl:apply-templates select="node()[not(self::xhtml:ul or self::xhtml:ol)]" mode="#current"/>
+          </xsl:variable>
+          <xsl:sequence select="functx:trim(string-join($common-mark))"/>
           <xsl:for-each select="xhtml:ul|xhtml:ol">
             <xsl:call-template name="process-list">
               <xsl:with-param name="node" select="."/>
               <xsl:with-param name="indent" select="$indent + 2"/>
             </xsl:call-template>
           </xsl:for-each>
+          <xsl:text>&#10;</xsl:text>
         </xsl:for-each>
         <xsl:text>&#10;</xsl:text>
       </xsl:when>
@@ -207,9 +210,7 @@
     <xsl:apply-templates mode="#current"/>
   </xsl:template>
   
-  <!-- TEXT: collapse sequences of whitespace to single spaces, preserve important whitespace in pre handled above -->
-  <xsl:template match="text()" mode="xhtml">
-    <xsl:value-of select="."/>
-  </xsl:template>
-  
+  <!-- TEXT: remove sequences of insignificant whitespace, preserve important whitespace in pre handled above -->
+  <xsl:template match="xhtml:body/text()[matches(., '^\s+$')]" mode="xhtml"/>
+    
 </xsl:stylesheet>
