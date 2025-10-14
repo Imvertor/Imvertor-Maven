@@ -46,6 +46,7 @@
   <xsl:mode on-no-match="shallow-skip"/>
   <xsl:mode name="preprocess" on-no-match="shallow-copy"/>
   <xsl:mode name="postprocess" on-no-match="shallow-copy"/>
+  <xsl:mode name="xhtml" on-no-match="shallow-copy"/>
   <xsl:mode name="missing-metadata"/>
 
   <xsl:param name="generate-readable-ids" select="'true'" as="xs:string"/>
@@ -1273,8 +1274,7 @@
   
   <xsl:template match="xhtml:*" mode="xhtml">
     <xsl:element name="xhtml:{local-name()}" namespace="http://www.w3.org/1999/xhtml">
-      <xsl:apply-templates select="@*"/>
-      <xsl:apply-templates mode="#current"/>
+      <xsl:apply-templates select="@*|node()" mode="#current"/>
     </xsl:element>
   </xsl:template>
   
