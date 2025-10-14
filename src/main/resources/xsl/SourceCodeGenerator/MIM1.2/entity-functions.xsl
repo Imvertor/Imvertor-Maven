@@ -117,4 +117,15 @@
     <xsl:sequence select="lower-case(functx:trim($str1)) = (for $s in $str2 return lower-case(functx:trim($s)))"/>
   </xsl:function>
   
+  <xsl:function name="funct:split-text" as="xs:string*">
+    <xsl:param name="text" as="xs:string"/>
+    <xsl:param name="separator-chars" as="xs:string+"/>
+    <xsl:sequence select="for $a in tokenize($text, '[' || $separator-chars || ']') return functx:trim($a)"/>
+  </xsl:function>
+  
+  <xsl:function name="funct:split-text" as="xs:string*">
+    <xsl:param name="text" as="xs:string"/>
+    <xsl:sequence select="funct:split-text($text, (';'))"/>
+  </xsl:function>
+  
 </xsl:stylesheet>

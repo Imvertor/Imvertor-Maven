@@ -485,7 +485,7 @@
         <line indent="4">)</line>
         <line indent="2">),</line>
         <line indent="2">servers = {{</line>
-        <xsl:for-each select="entity:feature(/model,'OA Server url')">
+        <xsl:for-each select="funct:split-text(entity:feature(/model,'OA Server url')[1])">
           <line indent="4">@Server(url = {oas:java-string-literal(.)}){if (not(position() = last())) then ',' else ()}</line>  
         </xsl:for-each>
         <line indent="2">}}</line>
