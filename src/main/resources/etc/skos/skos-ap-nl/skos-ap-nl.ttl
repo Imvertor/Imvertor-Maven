@@ -784,7 +784,7 @@ skosapnl:UnambiguousNotations
 skosapnl:UniquePreflabelWithinConceptScheme
   a sh:SPARQLConstraint ;
   sh:message    "Meerdere begrippen met dezelfde voorkeursterm binnen een begrippenkader"@nl ;
-  sh:severity sh:Violation ;
+  sh:severity sh:Warning ;
   sh:prefixes skosapnl: ;
   sh:select """SELECT $this
     WHERE {
