@@ -25,18 +25,23 @@ div.topline {
 }
 
 /* Tegengaan dat rijen om-en-om worden gehighlight */
+
 tr:nth-child(even),
 tr:nth-child(odd) {
     background: inherit !important;
 }
 
-/* Geen lijnen om de tabel en haar cellen */
-table {
+/* Geen lijnen om de tabel en haar cellen als het niet als tabel bedoeld is */
+
+table.overview {
     border: none !important;   
 }
 
-table th, table td {
-    border: none !important;
+table.overview tr, 
+table.overview th, 
+table.overview td {
+   border: none !important;
+   padding: 0em;
 }
 
 /* nettere uitlijning van labels en waarden */
@@ -48,15 +53,12 @@ table th,
 table td {
    padding: 0.25em;
 }
-
 table tr {
-    border-bottom: none;
-}
-table.overview tr {
-    border-bottom: none;
-}
+   border-bottom: none;
+} 
 
 /* URL getoond als courier */
+
 span.url {
      font-family: Courier, sans-serif;
 }

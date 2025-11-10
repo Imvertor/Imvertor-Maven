@@ -9,6 +9,16 @@
     
     <desc>EIGENAAR specific requirements on documentation.</desc>
   
+    <!-- 
+        collect the codelist and enumeration contents in a separate section?
+    -->
+    <lists-to-listing>yes</lists-to-listing>
+    
+    <!--
+        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
+    -->
+    <show-lists-with-metadata>yes</show-lists-with-metadata>
+    
     <!--
         Include incoming associations in the short overview?
     -->

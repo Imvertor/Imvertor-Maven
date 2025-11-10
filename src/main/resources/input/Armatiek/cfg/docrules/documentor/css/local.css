@@ -85,6 +85,9 @@ table td {
 table tr {
     border-bottom: 1px solid #31b6bf;
 }
+table.overview {
+    border: none;
+}
 table.overview tr {
     border-bottom: none;
 }

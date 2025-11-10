@@ -272,11 +272,12 @@
     </xsl:template>
  
     <xsl:template match="content" mode="detail">
-        <xsl:variable name="content-type" select="../../@type"/>
+        <xsl:sequence select="dlogger:save('$content ' || string-join(.//part[1]/item[2],'_'), ../..)"></xsl:sequence>
+        <xsl:variable name="overview-content-type" select="(../@type,../../@type)[starts-with(.,'OVERVIEW-')]"/>
         <xsl:if test="empty(@approach) or (@approach = 'target' and $meta-is-role-based) or @approach = 'association' and not($meta-is-role-based)">
            <table width="100%">
-               <xsl:if test="starts-with($content-type,'OVERVIEW-')">
-                   <xsl:attribute name="class">overview {$content-type}</xsl:attribute>
+               <xsl:if test="$overview-content-type">
+                   <xsl:attribute name="class">overview {$overview-content-type}</xsl:attribute>
                </xsl:if>
                 <xsl:apply-templates select="part[1]" mode="detail-tabletype"/>
                 <xsl:apply-templates select="part[1]" mode="detail-colgroup"/>
