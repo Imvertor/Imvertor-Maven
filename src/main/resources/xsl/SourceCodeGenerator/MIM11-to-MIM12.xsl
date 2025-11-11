@@ -22,6 +22,14 @@
     </mim:Informatiemodel>
   </xsl:template>
   
+  <xsl:template match="mim11:MIMVersie/text()">1.2</xsl:template>
+  
+  <xsl:template match="mim11:relatiemodelleringtype">
+    <mim:relatiemodelleringstype>
+      <xsl:apply-templates/>
+    </mim:relatiemodelleringstype>
+  </xsl:template>
+  
   <xsl:template match="mim11:*">
     <xsl:element namespace="http://www.geostandaarden.nl/mim/mim-core/1.2" name="mim:{local-name()}">
       <xsl:apply-templates select="@* | node()" />
