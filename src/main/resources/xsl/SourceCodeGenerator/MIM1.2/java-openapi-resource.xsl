@@ -41,7 +41,9 @@
         <xsl:sequence select="$doc"/>
       </xsl:when>
       <xsl:otherwise>
+        <!--
         <xsl:sequence select="imf:message(., 'WARNING', 'Openapi-rules document for owner [1] not found, using the one for owner EIGENAAR instead', ($owner), 'OPENAPI019')"/>
+        -->
         <xsl:sequence select="local:openapi-document('EIGENAAR')"/>
       </xsl:otherwise>
     </xsl:choose>
