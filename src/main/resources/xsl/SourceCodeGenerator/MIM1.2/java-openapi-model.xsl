@@ -34,7 +34,6 @@
         <line/>
         
         <!-- imports: -->
-        <line>import nl.imvertor.mim.annotation.*;</line>
         <line>import nl.imvertor.mim.model.*;</line>
         <line>import io.swagger.v3.oas.annotations.media.*;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema.*;</line> 
@@ -45,15 +44,15 @@
         <xsl:call-template name="javadoc"/>
         
         <xsl:if test="not(model-element = 'Keuze')">
-          <line>@{model-element}</line>  
+          <line>@nl.imvertor.mim.annotation.{model-element}</line>  
         </xsl:if>
         
         <xsl:variable name="any-of-classes" 
-          select="if (model-element = 'Keuze') then string-join(for $f in fields/field[not(auto-generate = 'true')] return local:full-package-name($f/type/@package-name) || '.' || $f/type || '.class', ', ') else ()" as="xs:string?"/>
+          select="if (model-element = 'Keuze') then '{' || string-join(for $f in fields/field[not(auto-generate = 'true')] return local:full-package-name($f/type/@package-name) || '.' || $f/type || '.class', ', ') || '}' else ()" as="xs:string?"/>
         
         <line>@Schema({string-join((
           oas:annotation-field('description', ((funct:feature-to-commonmark(., 'OA Description'), funct:element-to-commonmark(definition)))[1]),
-          oas:annotation-field('any-of', $any-of-classes)), ', ')})</line>
+          oas:annotation-field('anyOf', $any-of-classes, false())), ', ')})</line>
         
         <xsl:variable name="super-type-class-name" select="super-type" as="xs:string"/>
         
@@ -140,7 +139,7 @@
         <line>import io.swagger.v3.oas.annotations.media.*;</line>
         <line/>
         <xsl:call-template name="javadoc"/>
-        <line>@{model-element}</line>
+        <line>@nl.imvertor.mim.annotation.{model-element}</line>
         <line>@Schema({oas:annotation-field('description', ((funct:feature-to-commonmark(., 'OA Description'), funct:element-to-commonmark(definition)))[1])})</line>
         <line>public enum {name} {{</line>
         <xsl:for-each select="values/value">
