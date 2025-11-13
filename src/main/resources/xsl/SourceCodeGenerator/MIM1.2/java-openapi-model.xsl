@@ -48,7 +48,16 @@
         </xsl:if>
         
         <xsl:variable name="any-of-classes" 
-          select="if (model-element = 'Keuze') then '{' || string-join(for $f in fields/field[not(auto-generate = 'true')] return local:full-package-name($f/type/@package-name) || '.' || $f/type || '.class', ', ') || '}' else ()" as="xs:string?"/>
+          select="
+            if (model-element = 'Keuze') then '{' || string-join(
+              for $f in fields/field[not(auto-generate = 'true')] 
+              return 
+                if ($f/type/@is-standard = 'true') then 
+                  $f/type || '.class'  
+                else 
+                  local:full-package-name($f/type/@package-name) || '.' || $f/type || '.class', 
+            ', ') || '}' 
+            else ()" as="xs:string?"/>
         
         <line>@Schema({string-join((
           oas:annotation-field('description', ((funct:feature-to-commonmark(., 'OA Description'), funct:element-to-commonmark(definition)))[1]),
