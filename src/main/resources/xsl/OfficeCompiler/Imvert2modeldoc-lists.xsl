@@ -123,6 +123,9 @@
                     <xsl:try>
                         <xsl:variable name="xml" select="if (unparsed-text-available($url)) then document($url) else ()"/>
                         <xsl:choose>
+                            <xsl:when test="empty($url) and not(imf:exists($doclist-xml-url))">
+                                <xsl:sequence select="imf:msg(.,'ERROR','List contents cannot be retrieved, config parameter [1] not set properly',('doclist-xml-url'))"/>
+                            </xsl:when>
                             <xsl:when test="exists($xml) and imvert:stereotype/@id = 'stereotype-name-codelist'">
                                 <xsl:apply-templates select="$xml" mode="codelist">
                                     <xsl:with-param name="construct" select="."/>
