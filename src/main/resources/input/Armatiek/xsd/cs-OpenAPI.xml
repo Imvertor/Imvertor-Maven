@@ -12,7 +12,7 @@
     <cs:shortName>OpenAPI</cs:shortName>
     <cs:version>1.0</cs:version>
     <cs:phase>3</cs:phase>
-    <cs:desc>De primitieve datatypen voor OpenAPI inm aanvulling op de standaard M IM 1.2 primitieve typen</cs:desc>
+    <cs:desc>De primitieve datatypen voor OpenAPI in aanvulling op de standaard MIM 1.2 primitieve typen</cs:desc>
     <cs:source>ARMATIEK</cs:source>
     <cs:data-location>https://armatiek.nl/OpenAPI</cs:data-location>
     <!-- all including conceptual schemas should include the prefix https://armatiek.nl/conceptual-schemas/ in their configuration! -->
