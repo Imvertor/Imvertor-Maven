@@ -6,6 +6,8 @@
   
     <xi:include href="Kadaster-MIM-10.xml"/>
     
+    <xi:include href="../../../Armatiek/cfg/notesrules/Armatiek-OpenAPI-10-BASE-10.xml"/>
+    
     <name>Kadaster MIM 1.1</name>
-  
+    
 </notes-rules>

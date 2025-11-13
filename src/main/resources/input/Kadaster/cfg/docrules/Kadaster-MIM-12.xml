@@ -8,6 +8,8 @@
     
     <xi:include href="Kadaster-MIMEXT-1.xml"/>
     
+    <xi:include href="../../../Armatiek/cfg/docrules/Armatiek-OpenAPI-10-BASE-10.xml"/>
+    
     <name>Kadaster-MIM-12</name>
     
     <desc>Documentatie regels voor Kadaster MIM 1.2</desc>

@@ -9,6 +9,8 @@
   
     <xi:include href="Kadaster-MIMEXT-1.xml"/>
     
+    <xi:include href="../../../Armatiek/cfg/tvsets/Armatiek-OpenAPI-1-BASE-10.xml"/>
+    
     <name>Kadaster MIM 1.* tagged values</name>
     
     <!-- geen aanpassingen -->

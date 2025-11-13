@@ -4,12 +4,10 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../MIM/cfg/docrules/MIM12.xml"/>
-    
     <name>Kadaster-MIMEXT-1</name>
     
     <desc>Kadaster specific requirements on documentation.</desc>
-    
+  
     <!--
         Include incoming associations in the short overview?
     -->
