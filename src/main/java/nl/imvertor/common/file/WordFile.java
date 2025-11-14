@@ -101,14 +101,14 @@ public class WordFile extends AnyFile {
 					outFile.setContent(result);
 					return true;
 				} else if (result.equals("")) {
-					runner.error(logger, "Documentor processing error: empty result");
+					runner.error(logger, "Documentor processing error, status \"" + localFile.getStatus() + "\"","","DPES1");
 					return false;
 				} else {
-					runner.error(logger, "Documentor processing error: \"" + result + "\"");
+					runner.error(logger, "Documentor processing error: \"" + result + "\"","","DPE1");
 					return false;
 				}
 			} catch (Exception e) {
-				runner.error(logger, "Documentor server error: \"" + e.getMessage() + "\"");
+				runner.error(logger, "Documentor server error: \"" + e.getMessage() + "\"","","DSE1");
 			}
 			return false;
 		} else {

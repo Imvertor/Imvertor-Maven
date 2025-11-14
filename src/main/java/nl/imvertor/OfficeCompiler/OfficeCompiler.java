@@ -191,7 +191,7 @@ public class OfficeCompiler extends Step {
 						// nu de bestanden integreren, start bij het masterdoc, als dat er is -- masterdoc wordt bepaald bij het scannen van de files..
 						String masterdocPath = configurator.getXParm("documentor/masterdoc-path",false);
 						if (masterdocPath == null) { 
-							runner.warn(logger, "Documentor processing requested but no modeldoc file \"" + modelName + "/" + modelName + ".docx\" found");
+							runner.warn(logger, "Documentor processing requested but modeldoc file \"" + modelName + "/" + modelName + ".docx\" not found or not processed","","DPRBMF1NFONP");
 							succeeds = false;
 						}
 						// kopieer het masterdoc naar de imvertor workfolder
