@@ -63,7 +63,7 @@
          <name>tvmissingaswarning</name>
          <arg>yes|no|phase</arg>
          <tip>Should missing tagged values be signalled as an error, as a warning, or does this depend on the phase of the model?</tip>
-         <default>yes</default>
+         <default>phase</default>
       </cli-parm> 
       
    </cli-parms>

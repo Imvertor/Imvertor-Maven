@@ -26,9 +26,10 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
     xmlns:functx="http://www.functx.com"
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all" 
-    version="2.0">
+    version="3.0">
 
     <!-- 
        Imvert files represent the full info of the UML specifications needed to compile the XML schema. 
@@ -52,6 +53,10 @@
     
     <xsl:variable name="config-tagged-values" select="imf:get-config-tagged-values()"/>
 
+    <xsl:variable name="phase" select="imf:get-xparm('appinfo/phase')"/>
+    <xsl:variable name="phase-name" select="$configuration-versionrules-file/phase-rule/phase[level = $phase]/name"/>
+    <xsl:variable name="tvmissingaswarning" select="imf:get-xparm('cli/tvmissingaswarning','yes')"/>
+  
     <!-- 
         Templates access application pairs, an process the client constructs. 
         Determine if the client construct is validly derived from supplier construct.
@@ -61,6 +66,20 @@
         <imvert:report>
             <xsl:comment>No data, report through messaging framework</xsl:comment>
             <xsl:apply-templates/>
+            
+            <xsl:variable name="empty-tvs" select="imf:boolean(imf:get-xparm('appinfo/empty-tvs'))"/>
+
+            <xsl:sequence select="imf:report-warning(.,
+                $empty-tvs and $tvmissingaswarning = 'yes'and $phase = ('0','1','2'), 
+                'Some required tagged values were missing, but these are reported as warnings by request',())"/>
+            <xsl:sequence select="imf:report-warning(.,
+                $empty-tvs and $tvmissingaswarning = 'phase' and $phase = ('0','1'), 
+                'Some required tagged values were missing, but these are not reported in this phase [1] ([2])',($phase,$phase-name))"/>
+            <xsl:sequence select="imf:report-warning(.,
+                $empty-tvs and $tvmissingaswarning = 'phase' and $phase = ('2'), 
+                'Some required tagged values were missing, but these are reported as warnings in this phase [1] ([2])',($phase,$phase-name))"/>
+            <!-- let op, phase 3 is altijd error -->
+            
         </imvert:report>
     </xsl:template>
     
@@ -359,9 +378,6 @@
             
             <!-- bepaal wat we willen doen met missende tagged values, zie #572 --> 
             
-            <xsl:variable name="tvmissingaswarning" select="imf:get-xparm('cli/tvmissingaswarning','yes') = 'yes'"/>
-            <xsl:variable name="phase-is-draft" select="$imvert-document/imvert:packages/imvert:phase = ('0','1')"/>
-            
             <xsl:for-each select="$config-tagged-values[stereotypes/stereo/@id = $stereotype-id]"> <!-- i.e. <tv> elements -->
                 <xsl:variable name="tv-name" select="name"/>
                 <xsl:variable name="tv-id" select="@id"/>
@@ -392,9 +408,15 @@
                     <xsl:sequence select="imf:msg($this,'FATAL','Tagged value without name for stereotype [1]',(imf:string-group($selected-stereotype)))"/>
                 </xsl:if>
                 
+                <!-- uitleg zie #459 -->
+                <xsl:if test="$min eq 1 and empty($applicable-values)">
+                    <xsl:sequence select="imf:set-xparm('appinfo/empty-tvs','yes')"/>
+                </xsl:if>
                 <xsl:sequence select="imf:report-validation($this, 
-                    $min eq 1 and empty($applicable-values),
-                    if ($tvmissingaswarning or $phase-is-draft) then 'WARNING' else 'ERROR',
+                    $min eq 1 and empty($applicable-values) 
+                    and 
+                    $phase = ('2', '3'),
+                    if ($tvmissingaswarning and $phase = ('0','1','2')) then 'WARNING' else 'ERROR',
                     'Tagged value [1] not specified but required for [2]',($tv-name,imf:string-group($selected-stereotype)))"/>
                 
                 <xsl:sequence select="imf:report-error($this, 
