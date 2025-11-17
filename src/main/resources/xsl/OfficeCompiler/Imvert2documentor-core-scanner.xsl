@@ -31,8 +31,6 @@
         --> 
         <xsl:variable name="integrated" select="local:integrate($masterdoc-name,())"/>
         
-        <xsl:sequence select="local:log('$integrated',$integrated)"/>
-     
         <xsl:sequence select="$integrated"/>
        
     </xsl:template>

@@ -450,14 +450,10 @@
             </tagset>
 
             <notes-rules root="true">
-                <xsl:sequence select="dlogger:save('Notes-rules1 ' || $language,notes-rules)"></xsl:sequence>
-                
                 <xsl:variable name="notes-rules" select="notes-rules"/> 
                 <xsl:variable name="rules" select="$notes-rules//notes-rule[@lang=($language,'#all')]"/>
                 <xsl:variable name="default" select="($rules/@default)[last()]"/>
            
-                <xsl:sequence select="dlogger:save('Notes-rules2 ' || $language,$rules)"></xsl:sequence>
-                
                 <xsl:apply-templates select="imf:distinct($notes-rules//notes-format)[last()]" mode="#current"/>
                 <notes-rule lang="{$language}" default="{$default}">
                     <xsl:for-each-group select="$rules//section" group-by="@title">

@@ -26,7 +26,6 @@
         <xsl:param name="catalog-path" as="xs:string"/>
         
         <xsl:variable name="cat-xhtml-doc" select="imf:document($catalog-path)/*"/>
-        <xsl:sequence select="local:log('$cat-xhtml',$cat-xhtml-doc)"/>
         <div>
             <xsl:choose>
                 <xsl:when test="$cat-xhtml-doc">
