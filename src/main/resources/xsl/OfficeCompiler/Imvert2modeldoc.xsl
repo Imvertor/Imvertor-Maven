@@ -1017,7 +1017,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:refelement" mode="detail-refelement">
-        <part>
+        <part type="listval">
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:for-each select="imvert:element">
                 <xsl:sequence select="imf:create-element('item',node())"/>

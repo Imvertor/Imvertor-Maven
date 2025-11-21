@@ -440,12 +440,15 @@
                             <xsl:sequence select="$colgroup-config"/>
                         </xsl:when>
                         <xsl:otherwise>
+                            <!-- geen bekende tabel oid. dus geen colgroups genereren. In HTML context wordt e.e.a. uitgelijnd op basis van inhoud. -->
+                            <?x
                             <!-- max number of items found anywhere in contents -->
                             <xsl:variable name="section-items" select="imf:largest(for $part in ancestor::section[1]/content/part return count($part/item))"/>
                             <xsl:variable name="column-size" select="100 div $section-items"/>
                             <xsl:for-each select="for $i in (1 to $section-items) return $i">
                                 <colgroup width="{$column-size}%"/>
                             </xsl:for-each>
+                            x?>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
@@ -747,6 +750,9 @@
             <xsl:when test="exists(item)">
                 <xsl:apply-templates mode="#current"/>
             </xsl:when>
+            <xsl:when test="parent::part[@type = 'listval']">
+                <xsl:sequence select="imf:create-formatted-listvalue-text(.)"/>
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:create-formatted-text(.)"/>
             </xsl:otherwise>
@@ -913,6 +919,11 @@
     
     <xsl:function name="imf:create-formatted-text" as="item()*">
         <xsl:param name="text"/>
+        <xsl:sequence select="$text/node()"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-formatted-listvalue-text" as="item()*">
+        <xsl:param name="text"/>
         <xsl:for-each select="$text/node()">
             <xsl:choose>
                 <xsl:when test="node()">
@@ -927,7 +938,7 @@
                             <xsl:value-of select="."/>
                         </xsl:non-matching-substring>
                     </xsl:analyze-string>
-               </xsl:otherwise>
+                </xsl:otherwise>
             </xsl:choose>
         </xsl:for-each>
         
