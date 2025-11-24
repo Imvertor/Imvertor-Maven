@@ -124,6 +124,7 @@
         Moet de cardinaliteit worden getoond in het verkorte overzicht van attributen?
     -->
     <show-short-attribute-cardinality>yes</show-short-attribute-cardinality>
+    
     <!--
         Moet de eenheid en herkomst worden getoond in het verkorte overzicht van attributen?
     -->

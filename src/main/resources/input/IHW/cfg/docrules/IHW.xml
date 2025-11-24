@@ -15,11 +15,21 @@
     <!-- 
         collect the codelist and enumeration contents in a separate section?
     -->
-    <lists-to-listing>yes</lists-to-listing>
+    <lists-to-listing>no</lists-to-listing>
     
     <!--
         Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
     -->
     <show-lists-with-metadata>no</show-lists-with-metadata>
+    
+    <!--
+        Moet een URL in een data locatie worden weergegeven als link? (zie #565)
+    -->
+    <data-location-as-link>yes</data-location-as-link>
+    
+    <!--
+         Moeten waarden van kenmerken die worden herkend als URL worden weergegeven als link? (zie #656)
+    -->
+    <url-as-link>yes</url-as-link>
     
 </doc-rules>
