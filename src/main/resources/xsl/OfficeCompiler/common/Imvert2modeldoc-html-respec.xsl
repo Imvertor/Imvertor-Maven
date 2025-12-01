@@ -441,6 +441,7 @@
                         </xsl:when>
                         <xsl:otherwise>
                             <!-- geen bekende tabel oid. dus geen colgroups genereren. In HTML context wordt e.e.a. uitgelijnd op basis van inhoud. -->
+                            <colgroup width="20%"/><!-- eerste kolom 20%, zie #682 -->
                             <?x
                             <!-- max number of items found anywhere in contents -->
                             <xsl:variable name="section-items" select="imf:largest(for $part in ancestor::section[1]/content/part return count($part/item))"/>
