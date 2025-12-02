@@ -419,6 +419,7 @@
                             <xsl:apply-templates select="($tv-group/inherit)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/source)" mode="#current"/><!-- retain all sources -->
                             <xsl:apply-templates select="($tv-group/catalog)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($tv-group/mimformat)[last()]" mode="#current"/>
                             <stereotypes>
                                 <xsl:for-each-group select="$tv-group/stereotypes/stereo" group-by=".">
                                     <xsl:sort select="current-grouping-key()"/>

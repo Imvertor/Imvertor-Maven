@@ -22,6 +22,7 @@
                 <value default="yes">1.2</value>
             </declared-values>
             x?>
+            <mimformat>MIMVersie</mimformat>
         </tv>
 
         <tv norm="space" id="CFG-TV-TEKSTOPMAAK">
@@ -35,6 +36,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
+            <mimformat>tekstopmaak</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-IDENTIFICATIE">
@@ -85,6 +87,7 @@
                 <stereo minmax="0..1">stereotype-name-union-for-attributes</stereo>
                 
             </stereotypes>
+            <mimformat>identificatie</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-BASISURI">
@@ -101,9 +104,10 @@
                 <stereo minmax="0..1">stereotype-name-external-package</stereo>
                 <stereo minmax="0..1">stereotype-name-view-package</stereo>
             </stereotypes>
+            <mimformat>basisURI</mimformat>
         </tv>
         
-        <tv norm="space" id="CFG-TV-HEEFTTIJDLIJNGELDIGHEID">
+        <tv norm="janee" id="CFG-TV-HEEFTTIJDLIJNGELDIGHEID">
             <name lang="nl">Heeft tijdlijn geldigheid</name>
             <desc lang="nl">Indicatie of voor dit kenmerk een tijdlijn geldigheid bijgehouden wordt en te bevragen is.</desc>
             <source>MIM-1.2</source>
@@ -118,10 +122,11 @@
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value default="yes">Nee</value>
-                <value>Zie groep</value>
+                <value>Zie groep</value><!-- niet MIM -->
             </declared-values>
+            <mimformat>heeftTijdlijnGeldigheid</mimformat>
         </tv>
-        <tv norm="space" id="CFG-TV-HEEFTTIJDLIJNREGISTRATIE">
+        <tv norm="janee" id="CFG-TV-HEEFTTIJDLIJNREGISTRATIE">
             <name lang="nl">Heeft tijdlijn registratie</name>
             <desc lang="nl">Indicatie of voor dit kenmerk een tijdlijn registratie bijgehouden wordt en te bevragen is.</desc>
             <source>MIM-1.2</source>
@@ -136,11 +141,12 @@
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value default="yes">Nee</value>
-                <value>Zie groep</value>
+                <value>Zie groep</value><!-- niet MIM -->
             </declared-values>
+            <mimformat>heeftTijdlijnRegistratie</mimformat>
         </tv>
         
-        <tv norm="space" id="CFG-TV-INDICATIONMATERIALHISTORY">
+        <tv norm="janee" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <!-- we maken het niet verplicht, overgangssituatie -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -151,8 +157,9 @@
                 <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
                 <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
+            <mimformat>indicatieMaterieleHistorie</mimformat>
         </tv>
-        <tv norm="space" id="CFG-TV-INDICATIONFORMALHISTORY">
+        <tv norm="janee" id="CFG-TV-INDICATIONFORMALHISTORY">
             <!-- we maken het niet verplicht, overgangssituatie -->
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -163,6 +170,7 @@
                 <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
                 <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
+            <mimformat>indicatieFormeleHistorie</mimformat>
         </tv>
             
         <tv norm="space" id="CFG-TV-DOELFORMAAT">
@@ -175,6 +183,7 @@
                 <stereo minmax="1..1">stereotype-name-codelist</stereo>
                 <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
             </stereotypes>
+            <mimformat>doelformaat</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-WAARDEITEM">
@@ -186,6 +195,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-codelist</stereo>
             </stereotypes>
+            <mimformat>waardeItem</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-PROFIELSPECIFICATIE">
@@ -197,6 +207,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-codelist</stereo>
             </stereotypes>
+            <mimformat>profielspecificatie</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-EENHEID">
@@ -209,6 +220,7 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
+            <mimformat>eenheid</mimformat>
         </tv>
         
         <tv id="CFG-TV-MINVALUEINCLUSIVE">
@@ -223,6 +235,7 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
             </stereotypes>
+            <mimformat>minimumwaardeInclusief</mimformat>
         </tv>
         <tv id="CFG-TV-MINVALUEEXCLUSIVE">
             <name lang="nl">Minimumwaarde exclusief</name>
@@ -236,6 +249,7 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
             </stereotypes>
+            <mimformat>minimumwaardeExclusief</mimformat>
         </tv>
         <tv id="CFG-TV-MAXVALUEINCLUSIVE">
             <name lang="nl">Maximumwaarde inclusief</name>
@@ -249,6 +263,7 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
             </stereotypes>
+            <mimformat>maximumwaardeInclusief</mimformat>
         </tv>
         <tv id="CFG-TV-MAXVALUEEXCLUSIVE">
             <name lang="nl">Maximumwaarde exclusief</name>
@@ -262,9 +277,10 @@
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
             </stereotypes>
+            <mimformat>maximumwaardeExclusief</mimformat>
         </tv>
         
-        <tv id="CFG-TV-MIXIN">
+        <tv norm="janee" id="CFG-TV-MIXIN">
             <name lang="nl">Mixin</name>
             <name lang="en">Mixin</name>
             <desc lang="nl">Metagegeven om bij een generalisatie aan te geven dat bij een implementatie die geen multiple inheritance ondersteunt de eigenschappen van de superklasse worden overgenomen door de subklasse. De superklasse zelf komt niet in de implementatie voor.</desc>
@@ -279,6 +295,7 @@
                 <value>Ja</value>
                 <value default="yes">Nee</value>
             </declared-values>
+            <mimformat>mixin</mimformat>
         </tv>
         
         <!-- zie https://github.com/Imvertor/Imvertor-Maven/issues/377 introductie van tussen-s -->
@@ -289,6 +306,7 @@
             <desc lang="en">MIM 1.2: Indication of an alternative to a modeling method defined in MIM, and which choice has been made.</desc>
             <source>MIM-1.2</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-relatiemodelleringstype</catalog>
+            <mimformat>relatiemodelleringstype</mimformat>
         </tv>
         <pseudo-tv norm="space" id="CFG-TV-PSEUDO-RELATIONMODELLING">
             <name lang="nl">Pseudo relatiemodelleringstype</name>
