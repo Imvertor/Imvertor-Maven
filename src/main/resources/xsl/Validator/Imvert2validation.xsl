@@ -812,6 +812,7 @@
             'Attribute of class stereotyped as [1] is not a known class.',imf:string-group($class/imvert:stereotype))"/>
         <!-- When a class is a union, the union attributes must be classes, not value types (baretypes). -->
         <xsl:sequence select="imf:report-error(., 
+            not($is-enumeration) and 
             not(imf:check-multiplicity(imvert:min-occurs,imvert:max-occurs)), 
             'Invalid target multiplicity.')"/>
         <xsl:sequence select="imf:report-warning(., 
