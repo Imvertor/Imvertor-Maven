@@ -925,24 +925,7 @@
     
     <xsl:function name="imf:create-formatted-listvalue-text" as="item()*">
         <xsl:param name="text"/>
-        <xsl:for-each select="$text/node()">
-            <xsl:choose>
-                <xsl:when test="node()">
-                    <xsl:sequence select="."/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:analyze-string select="." regex="\n">
-                        <xsl:matching-substring>
-                            <br/>
-                        </xsl:matching-substring>
-                        <xsl:non-matching-substring>
-                            <xsl:value-of select="."/>
-                        </xsl:non-matching-substring>
-                    </xsl:analyze-string>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:for-each>
-        
+        <xsl:sequence select="$text/node()"/> <!-- pass as-is, for list values this may be HTML, see #685 -->
     </xsl:function>
     
     <xsl:function name="imf:create-section-header-name" as="element()">
