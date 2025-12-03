@@ -8,6 +8,10 @@
     xmlns:local="urn:local"
     xmlns:util="http://www.armatiek.com/xslweb/functions/util"
     
+    
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy" 
+    
+    
     expand-text="yes" 
     >
     
@@ -78,7 +82,7 @@
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="*:td//*:a" mode="pack:process-catalog">
+    <xsl:template match="*:td//*:a[@href]" mode="pack:process-catalog">
         <xsl:variable name="href" select="imf:file-to-url(@href)"/>
         <xsl:variable name="subpath" select="substring-after($href,'/modeldoc/')"/>
         <xsl:variable name="file" select="tokenize($subpath,'/')[last()]"/>
