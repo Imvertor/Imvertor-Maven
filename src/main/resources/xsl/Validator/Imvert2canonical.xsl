@@ -366,25 +366,38 @@
     </xsl:template>
     
     <xsl:template match="imvert:tagged-value" mode="mode-tv">
-        <xsl:variable name="toks" select="tokenize(imvert:value,'\n')"/>
-        <xsl:copy>
-           <xsl:sequence select="@*"/>
-           <xsl:sequence select="imvert:name"/>
-           <xsl:choose>
-               <xsl:when test="count($toks) gt 1">
-                   <imvert:value format="memo">
-                       <body xmlns="http://www.w3.org/1999/xhtml">
-                           <xsl:for-each select="$toks">
-                               <p><xsl:value-of select="."/></p>
-                           </xsl:for-each>
-                       </body>
-                   </imvert:value>
-               </xsl:when>
-               <xsl:otherwise>
-                   <xsl:sequence select="imvert:value"/>
-               </xsl:otherwise>
-           </xsl:choose>
-        </xsl:copy>
+        <xsl:choose>
+            <xsl:when test="imvert:value/xhtml:body">
+                <xsl:copy>
+                    <xsl:sequence select="@*"/>
+                    <xsl:sequence select="imvert:name"/>
+                    <imvert:value format="xhtml">
+                        <xsl:sequence select="imvert:value/xhtml:body"/>
+                    </imvert:value>
+                </xsl:copy>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="toks" select="tokenize(imvert:value,'\n')"/>
+                <xsl:copy>
+                    <xsl:sequence select="@*"/>
+                    <xsl:sequence select="imvert:name"/>
+                    <xsl:choose>
+                        <xsl:when test="count($toks) gt 1">
+                            <imvert:value format="memo">
+                                <body xmlns="http://www.w3.org/1999/xhtml">
+                                    <xsl:for-each select="$toks">
+                                        <p><xsl:value-of select="."/></p>
+                                    </xsl:for-each>
+                                </body>
+                            </imvert:value>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imvert:value"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:copy>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <!-- 
