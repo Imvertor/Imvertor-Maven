@@ -1711,7 +1711,7 @@
     
     <xsl:function name="imf:fetch-additional-tagged-values-quick" as="element(imvert:tagged-values)?">
         <xsl:param name="this" as="element()"/>
-        <xsl:variable name="norm-stereos" select="for $s in $this/UML:ModelElement.stereotype/UML:Stereotype return upper-case($s)"/><!-- bijv. ATTRIBUUTSOORT, IDENTIFICATIE -->
+        <xsl:variable name="norm-stereos" select="for $s in $this/UML:ModelElement.stereotype/UML:Stereotype/@name return upper-case($s)"/><!-- bijv. ATTRIBUUTSOORT, IDENTIFICATIE -->
         <xsl:variable name="tagged-values" select="imf:get-tagged-values-quick($this,true())"/>
         <xsl:variable name="seq" as="element()*">
             <xsl:for-each select="$tagged-values"> <!-- <tv> elements --> 
