@@ -1601,9 +1601,9 @@
         <xsl:variable name="cfg-version" select="$configuration-versionrules-file/version-rule/version"/>
         <xsl:variable name="cfg-version-pattern" select="$cfg-version/pattern"/>
         
-        <xsl:sequence select="imf:report-error($this, 
+        <xsl:sequence select="imf:report-warning($this, 
             not(matches($this/imvert:version,$cfg-version-pattern)), 
-            'Version [1] must be a sequence of [3] (examples: [2])', ($this/imvert:version, imf:string-group($cfg-version/example), imf:string-group($cfg-version/fragment/name)))"/>
+            'Version [1] must be a sequence of [3] (examples: [2])', (imf:string-group($this/imvert:version), imf:string-group($cfg-version/example), imf:string-group($cfg-version/fragment/name)))"/>
     </xsl:function>
   
     <xsl:function name="imf:check-phase">
@@ -1612,9 +1612,9 @@
         <xsl:variable name="cfg-phase" select="$cfg-phases[level = $this/imvert:phase]"/>
         <xsl:variable name="phase-listing" select="for $p in $cfg-phases return concat($p/level,' (', $p/name, ')')"/>
         
-        <xsl:sequence select="imf:report-error($this, 
+        <xsl:sequence select="imf:report-warning($this, 
             empty($cfg-phase), 
-            'Phase [1] must be any of [2]', ($this/imvert:phase, imf:string-group($phase-listing)))"/>
+            'Phase [1] must be any of [2]', (imf:string-group($this/imvert:phase), imf:string-group($phase-listing)))"/>
     </xsl:function>
     
     <xsl:function name="imf:check-release">
