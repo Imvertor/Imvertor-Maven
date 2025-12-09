@@ -232,9 +232,10 @@
 					<!-- if target, then check the tv of the targets -->
 					<xsl:variable name="providing-construct" select="if ($construct/self::imvert:target) then $supplier-construct/imvert:target else $supplier-construct"/>
 					
-					<xsl:variable name="tv" select="($providing-construct/imvert:tagged-values/imvert:tagged-value[@id=$tv-id and normalize-space(imvert:value)])[1]"/>
+					<xsl:variable name="tvs" select="($providing-construct/imvert:tagged-values/imvert:tagged-value[@id=$tv-id and normalize-space(imvert:value)])"/>
 
-					<xsl:if test="exists($tv)">
+					<xsl:for-each select="$tvs">
+						<xsl:variable name="tv" select="."/>
 						<tv 
 							id="{$tv-id}" 
 							name="{$tv/imvert:name}" 
@@ -260,11 +261,11 @@
 								</xsl:when>
 							</xsl:choose>
 						</tv>
-					</xsl:if>
+					</xsl:for-each>
 				</xsl:for-each>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(.)]"/>
+		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[imf:normalize-space(.)]"/>
 	</xsl:function>
 	
 	<xsl:function name="imf:get-UGM-suppliers" as="element(supplier)*">
@@ -293,9 +294,7 @@
 		<xsl:for-each-group select="$all-tv" group-by="@id">
 			<xsl:for-each select="current-group()">
 				<xsl:sort select="@level" data-type="number"/>
-				<xsl:if test="position() = 1">
-					<xsl:sequence select="."/>
-				</xsl:if>
+				<xsl:sequence select="."/>
 			</xsl:for-each>
 		</xsl:for-each-group>
 	</xsl:function>
