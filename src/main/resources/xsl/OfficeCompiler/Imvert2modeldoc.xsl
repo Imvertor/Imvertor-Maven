@@ -1166,11 +1166,14 @@
         <xsl:param name="tv-id"/>
         
         <xsl:variable name="tv-element" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
+        <xsl:sequence select="if ($tv-element[2]) then dlogger:save('$tv-element',$tv-element) else ()"></xsl:sequence>
         <xsl:choose>
             <xsl:when test="exists($tv-element)">
                 <xsl:variable name="default-value" select="$configuration-tvset-file//tagged-values/tv[@id = $tv-id]/declared-values/value[imf:boolean(@default)]"/>
-                <xsl:variable name="value" select="if ($tv-element) then imf:get-clean-documentation-string(imf:get-tv-value($tv-element,$url-as-link)) else $default-value"/>
-                <xsl:sequence select="$value"/>
+                <xsl:for-each select="$tv-element">
+                    <xsl:variable name="value" select="if (node()) then imf:get-clean-documentation-string(imf:get-tv-value(.,$url-as-link)) else $default-value"/>
+                    <xsl:sequence select="$value"/>
+                </xsl:for-each>
             </xsl:when>
             <xsl:otherwise>
                 <!-- terugval optie: afgeleide tagged values niet beschikbaar voor lijstwaarden uitgelezen uit externe bronnen (modeldoc-lists) --> 
