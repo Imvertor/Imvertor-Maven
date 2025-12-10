@@ -268,13 +268,7 @@
         </xsl:apply-templates>
       </mim:keuzen>
     </xsl:where-populated>
-    <xsl:where-populated>
-      <mim-ext:constructies>
-        <xsl:apply-templates select="imvert:class[imf:is-not-mim-construct(.)]">
-          <xsl:sort select="imvert:name"/>
-        </xsl:apply-templates>
-      </mim-ext:constructies>
-    </xsl:where-populated>
+    <xsl:call-template name="extensieConstructies"/>
     <xsl:call-template name="extensieKenmerken"/>
   </xsl:template>
   
@@ -312,6 +306,7 @@
       <xsl:call-template name="relatiesoorten"/>
       <xsl:call-template name="externeKoppelingen"/>
       <xsl:call-template name="keuzeAttribuutsoorten"/>
+      <xsl:call-template name="extensieConstructies"/>
       <xsl:call-template name="extensieKenmerken"/>
     </mim:Objecttype>
   </xsl:template>
@@ -321,9 +316,13 @@
       <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="genereer-metagegevens"/>
+      <xsl:call-template name="supertype">
+        <xsl:with-param name="context" select="." as="element()"/>
+      </xsl:call-template>
       <xsl:call-template name="attribuutsoorten"/>
       <xsl:call-template name="gegevensgroepen"/>
       <xsl:call-template name="relatiesoorten"/>
+      <xsl:call-template name="externeKoppelingen"/>
       <xsl:call-template name="extensieKenmerken"/>
     </mim:Gegevensgroeptype>
   </xsl:template>
@@ -435,6 +434,7 @@
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <xsl:call-template name="genereer-metagegevens"/>
       <xsl:call-template name="attribuutsoorten"/>
+      <xsl:call-template name="gegevensgroepen"/>
       <xsl:call-template name="extensieKenmerken"/>
     </mim:Relatieklasse>
   </xsl:template>
@@ -738,6 +738,11 @@
     <mim:authentiek source-id="CFG-TV-INDICATIONAUTHENTIC">{$mapped-value}</mim:authentiek>
   </xsl:template>
   
+  <xsl:template match="metagegeven[. = 'Basis-URI']">
+    <xsl:param name="context" as="element()"/>
+    <mim:basisURI source-id="CFG-TV-BASISURI">{imf:tagged-values($context, 'CFG-TV-BASISURI')}</mim:basisURI>
+  </xsl:template>
+  
   <xsl:template match="metagegeven[. = 'Begrip']">
     <xsl:param name="context" as="element()"/>
     <xsl:for-each select="imf:tagged-values($context, 'CFG-TV-CONCEPT')">
@@ -767,6 +772,11 @@
     <mim:doelformaat source-id="CFG-TV-DOELFORMAAT">{imf:tagged-values($context, 'CFG-TV-DOELFORMAAT')}</mim:doelformaat>
   </xsl:template>
   
+  <xsl:template match="metagegeven[. = 'Eenheid']">
+    <xsl:param name="context" as="element()"/>
+    <mim:eenheid source-id="CFG-TV-EENHEID">{imf:tagged-values($context, 'CFG-TV-EENHEID')}</mim:eenheid>
+  </xsl:template>
+  
   <xsl:template match="metagegeven[. = 'Formeel patroon']">
     <xsl:param name="context" as="element()"/>
     <mim:formeelPatroon source-id="CFG-TV-FORMALPATTERN">{imf:tagged-values($context, 'CFG-TV-FORMALPATTERN')}</mim:formeelPatroon>
@@ -781,6 +791,16 @@
     </mim:gegevensgroeptype>
   </xsl:template>
   
+  <xsl:template match="metagegeven[. = 'Heeft tijdlijn geldigheid']">
+    <xsl:param name="context" as="element()"/>
+    <mim:heeftTijdlijnGeldigheid source-id="CFG-TV-HEEFTTIJDLIJNGELDIGHEID">{(imf:mim-boolean(imf:tagged-values($context, 'CFG-TV-HEEFTTIJDLIJNGELDIGHEID')[1]))}</mim:heeftTijdlijnGeldigheid>
+  </xsl:template>
+  
+  <xsl:template match="metagegeven[. = 'Heeft tijdlijn registratie']">
+    <xsl:param name="context" as="element()"/>
+    <mim:heeftTijdlijnRegistratie source-id="CFG-TV-HEEFTTIJDLIJNREGISTRATIE">{(imf:mim-boolean(imf:tagged-values($context, 'CFG-TV-HEEFTTIJDLIJNREGISTRATIE')[1]))}</mim:heeftTijdlijnRegistratie>
+  </xsl:template>
+  
   <xsl:template match="metagegeven[. = 'Herkomst']">
     <xsl:param name="context" as="element()"/>
     <mim:herkomst source-id="CFG-TV-SOURCE">{imf:tagged-values($context, 'CFG-TV-SOURCE')}</mim:herkomst>
@@ -789,6 +809,11 @@
   <xsl:template match="metagegeven[. = 'Herkomst definitie']">
     <xsl:param name="context" as="element()"/>
     <mim:herkomstDefinitie source-id="CFG-TV-SOURCEOFDEFINITION">{imf:tagged-values($context, 'CFG-TV-SOURCEOFDEFINITION')}</mim:herkomstDefinitie>
+  </xsl:template>
+  
+  <xsl:template match="metagegeven[. = 'Identificatie']">
+    <xsl:param name="context" as="element()"/>
+    <mim:identificatie source-id="CFG-TV-ID">{imf:clean-id($context/imvert:id)}</mim:identificatie>
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Identificerend']">
@@ -887,11 +912,6 @@
   <xsl:template match="metagegeven[. = 'MIM extensie']">
     <xsl:param name="context" as="element()"/>
     <mim:MIMExtensie source-id="CFG-TV-MIMEXTENSION">{imf:tagged-values-not-traced($context, 'CFG-TV-MIMEXTENSION')}</mim:MIMExtensie>  
-  </xsl:template>
-  
-  <xsl:template match="metagegeven[. = 'MIM extensie versie']">
-    <xsl:param name="context" as="element()"/>
-    <mim:MIMExtensieVersie source-id="CFG-TV-MIMEXTENSIONVERSION">{imf:tagged-values-not-traced($context, 'CFG-TV-MIMEXTENSIONVERSION')}</mim:MIMExtensieVersie>  
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'MIM taal']">
@@ -1039,6 +1059,13 @@
     </xsl:for-each>
   </xsl:template>
   
+  <xsl:template match="metagegeven[. = 'Tekstopmaak']">
+    <xsl:param name="context" as="element()"/>
+    <mim:tekstopmaak source-id="CFG-TV-TEKSTOPMAAK">
+      <xsl:sequence select="imf:tagged-values($context, 'CFG-TV-TEKSTOPMAAK')"/>
+    </mim:tekstopmaak>
+  </xsl:template>
+  
   <xsl:template match="metagegeven[. = 'Toelichting']">
     <xsl:param name="context" as="element()"/>
     <mim:toelichting source-id="CFG-TV-DESCRIPTION">
@@ -1067,7 +1094,7 @@
   
   <xsl:template match="metagegeven[. = 'Unieke aanduiding']">
     <xsl:param name="context" as="element()"/>
-    <!-- TODO -->
+    <mim:uniekeAanduiding source-id="CFG-TV-PSEUDO-ISID">{imf:mim-boolean($context/imvert:is-id)}</mim:uniekeAanduiding>
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Waarde-item']">
@@ -1094,22 +1121,22 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:for-each select="$modelelement/metagegeven[not(. = $metagegevens-to-skip)]">
-          <xsl:variable name="metagegeven" as="element()?">
+          <xsl:variable name="metagegevens" as="element()*"><!-- meerdere als er meerdere tagged values voor hetzelfde metagegeven zijn, vgl. "begrip" -->
             <xsl:apply-templates select=".">
               <xsl:with-param name="context" select="$context" as="element()"/>
             </xsl:apply-templates>  
           </xsl:variable>
           <xsl:variable name="kardinaliteit" select="@kardinaliteit" as="xs:string"/>
           <xsl:choose>
-            <xsl:when test="empty($metagegeven)"/>
-            <xsl:when test="normalize-space($metagegeven) or $metagegeven/*">
-              <xsl:sequence select="$metagegeven"/>
+            <xsl:when test="empty($metagegevens)"/>
+            <xsl:when test="$metagegevens[normalize-space(.)] or $metagegevens/*">
+              <xsl:sequence select="$metagegevens"/>
             </xsl:when>
             <xsl:when test="starts-with($kardinaliteit, '1')">
               <!--
               <xsl:sequence select="imf:message(., 'WARNING', 'Modelelement [1] of type [2] is missing required metadata [3]', ($modelelement-name, $modelelement-type, .))"/>
               -->
-              <xsl:apply-templates select="$metagegeven" mode="missing-metadata"/>
+              <xsl:apply-templates select="$metagegevens" mode="missing-metadata"/>
             </xsl:when>
             <xsl:otherwise>
               <!-- Skip, optional element -->
@@ -1371,7 +1398,12 @@
   
   <xsl:function name="imf:clean-id" as="xs:string">
     <xsl:param name="id" as="xs:string"/>
-    <xsl:value-of select="replace($id, '(EAID_|EAPK_|\&#x7D;|\&#x7B;)', '')"/>
+    <xsl:choose>
+      <xsl:when test="starts-with($id,'EAPK_')">{substring-after($id,'EAPK_')}</xsl:when>
+      <xsl:when test="starts-with($id,'EAID_')">{substring-after($id,'EAID_')}</xsl:when>
+      <xsl:when test="starts-with($id,'{')">{substring($id,2,string-length($id) - 2)}</xsl:when>
+      <xsl:otherwise>{$id}</xsl:otherwise>
+    </xsl:choose>
   </xsl:function>
   
   <xsl:function name="imf:valid-id" as="xs:string?">
@@ -1491,6 +1523,16 @@
         </xsl:element>  
       </xsl:when>
     </xsl:choose>
+  </xsl:template>
+  
+  <xsl:template name="extensieConstructies">
+    <xsl:where-populated>
+      <mim-ext:constructies>
+        <xsl:apply-templates select="imvert:class[imf:is-not-mim-construct(.)]">
+          <xsl:sort select="imvert:name"/>
+        </xsl:apply-templates>
+      </mim-ext:constructies>
+    </xsl:where-populated>
   </xsl:template>
   
   <xsl:template name="extensieKenmerken">

@@ -27,9 +27,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
@@ -112,7 +116,6 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	private Document dom = null;
 	
 	private int wfcode = WFCODE_OKAY; // a code indicating the Wellformedness of the XML file.
-	private String lastError = "";
 	
 	private Vector<String> messages = new Vector<String>();
 	
@@ -122,7 +125,8 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		
 		Configurator configurator = Configurator.getInstance();
 		
-		int test = 4;
+		String testsPath = "src/main/resources/tests";
+		int test = 5;
 		
 		if (test == 1) {
 			//XmlFile file = new XmlFile("D:\\projects\\arjan\\Java development\\CommonHandlers\\sandbox\\EHcache\\config\\ehcache.xml");
@@ -136,9 +140,9 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 			YamlFile yfile1;
 			XmlFile xfile1;
 			
-			jfile1 = new JsonFile(configurator.getResource("tests/XmlFile/Bakstenen basismodel.json"));
-			xfile1 = new XmlFile(configurator.getResource("tests/XmlFile/Bakstenen basismodel.xml"));
-			yfile1 = new YamlFile(configurator.getResource("tests/XmlFile/Bakstenen basismodel.yaml"));
+			jfile1 = new JsonFile(configurator.getResource(testsPath + "/XmlFile/Bakstenen basismodel.json"));
+			xfile1 = new XmlFile(configurator.getResource(testsPath + "/XmlFile/Bakstenen basismodel.xml"));
+			yfile1 = new YamlFile(configurator.getResource(testsPath + "/XmlFile/Bakstenen basismodel.yaml"));
 			
 			jfile1.toXml(xfile1);
 			jfile1.toYaml(yfile1);
@@ -148,8 +152,8 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 			YamlFile yfile1;
 			XmlFile xfile1;
 			
-			xfile1 = new XmlFile(configurator.getResource("tests/XmlFile/Bakstenen basismodel.xml"));
-			yfile1 = new YamlFile(configurator.getResource("tests/XmlFile/Bakstenen basismodel.yaml"));
+			xfile1 = new XmlFile(configurator.getResource(testsPath + "/XmlFile/Bakstenen basismodel.xml"));
+			yfile1 = new YamlFile(configurator.getResource(testsPath + "/XmlFile/Bakstenen basismodel.yaml"));
 			
 			yfile1.toXml(xfile1);
 			
@@ -166,6 +170,16 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 			System.out.println(differences + " differences");
 			
 		}
+		if (test == 5) {
+			//XmlFile file = new XmlFile("D:\\projects\\arjan\\Java development\\CommonHandlers\\sandbox\\EHcache\\config\\ehcache.xml");
+		    XmlFile file = new XmlFile(testsPath + "/XmlFile/parse/Fietsenwinkel.xml");
+		    System.out.println(file.isValid(testsPath + "/XmlFile/parse/xsd/1.2/MIMFORMAT_Mim_relatiesoort.xsd"));
+		    java.util.Iterator<String> v = file.getMessages().iterator();
+		    while (v.hasNext()) {
+		    	System.out.println(v.next());
+		    }
+		}
+		
 		System.out.println("Done " + test); 
 	}
 	
@@ -323,37 +337,70 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 			// must create URL because of strange file name character such as [ and ]
 			String url = this.toURI().toURL().toString();
 			builder.parse(new InputSource(url));
-			
+	
 		} catch (Exception e) {
-			lastError = e.getMessage();
 			wfcode = WFCODE_FATAL;
 		}
 		return wfcode < WFCODE_ERROR;
 	}
 	
+	/**
+	 * Validate by the schema referenced in content
+	 * 
+	 * @return False when parse error
+	 */
 	public boolean isValid() {
+		messages.removeAllElements();
+		return isValid(null);
+	}
+	
+	/**
+	 * Validate by the schema passed
+	 * 
+	 * Voorbeeld van een message line: 
+	 * <br/><code>ERROR::Fietsenwinkel.xml::cvc-complex-type.2.4.a: Invalid content was found starting with element 'mim:naamP'. One of '{"http://www.geostandaarden.nl/mim/mim-core/1.2":naam}' is expected.::28</code>
+	 * <br/>Dus type::file::message::line
+	 * 
+	 * @return False when parse error
+	 */
+	public boolean isValid(String schemaLocation) {
 		messages.removeAllElements();
 		try {
 			wfcode = WFCODE_OKAY;
+			
+			AnyFile schemaFile = null;;
+			Schema schema = null;
+			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			factory.setValidating(true);
+			factory.setValidating(false); // We use schema validation, not DTD validation
 			factory.setNamespaceAware(true);
 			factory.setXIncludeAware(true);
-			factory.setAttribute(
-				    "http://java.sun.com/xml/jaxp/properties/schemaLanguage",
-				    "http://www.w3.org/2001/XMLSchema");
-	
+			
+			if (schemaLocation != null) {
+				schemaFile = new AnyFile(schemaLocation);
+				// Create schema factory and load the schema
+				SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+				// Use StreamSource to ensure schema is properly loaded
+		        StreamSource schemaSource = new StreamSource(schemaFile);
+		        schema = schemaFactory.newSchema(schemaSource);
+		        factory.setSchema(schema);
+			} else {
+				factory.setAttribute(
+					    "http://java.sun.com/xml/jaxp/properties/schemaLanguage",
+					    "http://www.w3.org/2001/XMLSchema");
+			}
+			
 			DocumentBuilder builder = factory.newDocumentBuilder();
 	
 			builder.setErrorHandler(this);    
 			// must create URL because of strange file name character such as [ and ]
 			String url = this.toURI().toURL().toString();
 			builder.parse(new InputSource(url));
-		} catch (Exception e) {
-			lastError = e.getMessage();
-			wfcode = WFCODE_FATAL;
+ 		} catch (Exception e) {
+ 			messages.add("FATAL::" + getName() + "::" + e.getMessage() + "::0");
+ 			wfcode = WFCODE_FATAL;
 		}
-		return wfcode < WFCODE_ERROR;
+		return wfcode < WFCODE_ERROR; // wfcode wordt gezet door error() etc - deze klasse is zijn eigen errorhandler.
 	}
 	
 	public Vector<String> getMessages() {
@@ -361,7 +408,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	}
 	
 	public String getLastError() {
-		return lastError;
+		return messages.lastElement();
 	}
 	
 	/**
@@ -381,17 +428,17 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	
 	@Override
 	public void error(SAXParseException exception) throws SAXException {
-		messages.add("(" + getName() + ")" + exception.getMessage());
+		messages.add("ERROR::" + getName() + "::" + exception.getMessage() + "::" + exception.getLineNumber());
 		wfcode = WFCODE_ERROR;
 	}
 	@Override
 	public void fatalError(SAXParseException exception) throws SAXException {
-		messages.add("(" + getName() + ")" + exception.getMessage());
+		messages.add("FATAL::" + getName() + "::" + exception.getMessage() + "::" + exception.getLineNumber());
 		wfcode = WFCODE_FATAL;
 	}
 	@Override
 	public void warning(SAXParseException exception) throws SAXException {
-		messages.add("(" + getName() + ")" + exception.getMessage());
+		messages.add("WARNING::" + getName() + "::" + exception.getMessage() + "::" + exception.getLineNumber());
         wfcode = WFCODE_WARNING;
 	}
 

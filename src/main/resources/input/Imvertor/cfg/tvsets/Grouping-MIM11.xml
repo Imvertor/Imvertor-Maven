@@ -75,6 +75,7 @@
                 <stereo minmax="0..1">stereotype-name-domain-package</stereo>
                 <stereo minmax="0..1">stereotype-name-view-package</stereo>
             </stereotypes>
+            <minformat>afkorting</minformat>
         </tv>
 
         <tv norm="space" id="CFG-TV-RELEASE">
@@ -91,6 +92,7 @@
                 <stereo minmax="1..1">stereotype-name-internal-package</stereo>
                 <!-- release van kadaster externe schema's wordt ingegenereerd binnen Imvert2concreteSchema.xsl -->
             </stereotypes>
+            <minformat>release</minformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-REFRELEASE">
@@ -102,6 +104,7 @@
                 <stereo minmax="0..1">stereotype-name-view-package</stereo>
                 <stereo minmax="0..1">stereotype-name-external-package</stereo>
             </stereotypes>
+            <minformat>refRelease</minformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-REFVERSION">
@@ -113,6 +116,7 @@
                 <stereo minmax="0..1">stereotype-name-view-package</stereo>
                 <stereo minmax="0..1">stereotype-name-external-package</stereo>
             </stereotypes>
+            <minformat>refVersion</minformat>
         </tv>
 
         <tv norm="space" id="CFG-TV-SUPPLIERPROJECT">
@@ -278,7 +282,7 @@
                 <value default="no">Yes</value>
                 <value default="yes">See package</value>
             </declared-values>
-            
+            <mimformat>isAfgeleid</mimformat>
         </tv>
     
         <tv id="CFG-TV-DESCRIPTION">

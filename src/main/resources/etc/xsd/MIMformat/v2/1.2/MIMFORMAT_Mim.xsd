@@ -32,6 +32,8 @@
   </xs:element>
   <xs:complexType name="Informatiemodel">
     <xs:sequence>
+      <xs:element name="basisURI" type="xs:string" minOccurs="0"/>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
       <xs:element name="herkomst" type="xs:string"/>
@@ -42,9 +44,9 @@
       <xs:element name="informatiemodeltype" type="xs:string"/>
       <xs:element name="informatiedomein" type="xs:string"/>
       <xs:element name="relatiemodelleringstype" type="mim:relatiemodelleringstype"/>
+      <xs:element name="tekstopmaak" type="xs:string" minOccurs="0"/>
       <xs:element name="MIMVersie" type="mim:MIMVersie"/>
       <xs:element name="MIMExtensie" type="xs:string" minOccurs="0"/>
-      <xs:element name="MIMExtensieVersie" type="xs:string" minOccurs="0"/>
       <xs:element name="MIMTaal" type="xs:string" minOccurs="0"/>
       <xs:element name="packages" minOccurs="0">
         <xs:complexType>
@@ -96,6 +98,8 @@
   <xs:element name="Domein" type="mim:Domein"/>
   <xs:complexType name="Domein">
     <xs:sequence>
+      <xs:element name="basisURI" type="xs:string" minOccurs="0"/>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
       <xs:element name="herkomst" type="xs:string"/>
@@ -118,6 +122,8 @@
   <xs:element name="View" type="mim:View"/>
   <xs:complexType name="View">
     <xs:sequence>
+      <xs:element name="basisURI" type="xs:string" minOccurs="0"/>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
       <xs:element name="herkomst" type="xs:string"/>
@@ -141,6 +147,8 @@
   <xs:element name="Extern" type="mim:Extern"/>
   <xs:complexType name="Extern">
     <xs:sequence>
+      <xs:element name="basisURI" type="xs:string" minOccurs="0"/>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
       <xs:element name="herkomst" type="xs:string"/>
@@ -160,6 +168,7 @@
   <xs:element name="Objecttype" type="mim:Objecttype"/>
   <xs:complexType name="Objecttype">
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
@@ -202,6 +211,7 @@
         </xs:complexType>
       </xs:element>
       <xs:element ref="mim:constraints" minOccurs="0"/>
+      <xs:element ref="mim-ext:constructies" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
@@ -212,6 +222,7 @@
   <xs:element name="Gegevensgroeptype" type="mim:Gegevensgroeptype"/>
   <xs:complexType name="Gegevensgroeptype">
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
@@ -220,12 +231,26 @@
       <xs:element name="herkomstDefinitie" type="xs:string"/>
       <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0"/>
       <xs:element name="datumOpname" type="xs:string"/>
+      <xs:element name="supertypen" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim:GeneralisatieObjecttypen" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element ref="mim:attribuutsoorten" minOccurs="0"/>
       <xs:element ref="mim:gegevensgroepen" minOccurs="0"/>
       <xs:element name="relatiesoorten" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
             <xs:element ref="mim:Relatiesoort" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="externeKoppelingen" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim:ExterneKoppeling" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -240,6 +265,7 @@
   <xs:element name="Attribuutsoort" type="mim:Attribuutsoort"/>
   <xs:complexType name="Attribuutsoort">
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
@@ -258,6 +284,7 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element name="eenheid" type="xs:string" minOccurs="0"/>
       <xs:element name="lengte" type="xs:string" minOccurs="0"/>
       <xs:element name="patroon" type="xs:string" minOccurs="0"/>
       <xs:element name="formeelPatroon" type="xs:string" minOccurs="0"/>
@@ -267,6 +294,8 @@
       <xs:element name="maximumwaardeExclusief" type="xs:string" minOccurs="0"/>
       <xs:element name="indicatieMaterieleHistorie" type="mim:boolean"/>
       <xs:element name="indicatieFormeleHistorie" type="mim:boolean"/>
+      <xs:element name="heeftTijdlijnGeldigheid" type="mim:boolean"/>
+      <xs:element name="heeftTijdlijnRegistratie" type="mim:boolean"/>
       <xs:element name="kardinaliteit" type="xs:string"/>
       <xs:element name="authentiek" type="xs:string"/>
       <xs:element name="locatie" type="xs:string" minOccurs="0"/>
@@ -284,6 +313,7 @@
   <xs:element name="Gegevensgroep" type="mim:Gegevensgroep"/>
   <xs:complexType name="Gegevensgroep">
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
@@ -300,16 +330,10 @@
           <xs:documentation>De datum waarop de type gegevensgroep is opgenomen in het informatiemodel.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="indicatieMaterieleHistorie" type="mim:boolean" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation>Indicatie of de materiële historie van de type gegevensgroep te bevragen is. Materiële historie geeft aan wanneer een verandering is opgetreden in de werkelijkheid die heeft geleid tot verandering van de attribuutwaarde.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="indicatieFormeleHistorie" type="mim:boolean" minOccurs="0">
-        <xs:annotation>
-          <xs:documentation>Indicatie of de formele historie van de type gegevensgroep te bevragen is. Formele historie geeft aan wanneer in de administratie een verandering is verwerkt van de attribuutwaarde (wanneer was de verandering bekend en is deze verwerkt).</xs:documentation>
-        </xs:annotation>
-      </xs:element>
+      <xs:element name="indicatieMaterieleHistorie" type="mim:boolean"/>
+      <xs:element name="indicatieFormeleHistorie" type="mim:boolean"/>
+      <xs:element name="heeftTijdlijnGeldigheid" type="mim:boolean"/>
+      <xs:element name="heeftTijdlijnRegistratie" type="mim:boolean"/>
       <xs:element name="kardinaliteit" type="xs:string"/>
       <xs:element name="authentiek" type="xs:string">
         <xs:annotation>
@@ -318,10 +342,10 @@
       </xs:element>
       <xs:element name="gegevensgroeptype">
         <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="mim-ref:GegevensgroeptypeRef" minOccurs="0"/>
-            <xs:element ref="mim-ext:ConstructieRef" minOccurs="0"/>
-          </xs:sequence>
+          <xs:choice>
+            <xs:element ref="mim-ref:GegevensgroeptypeRef"/>
+            <xs:element ref="mim-ext:ConstructieRef"/>
+          </xs:choice>
         </xs:complexType>
       </xs:element>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
@@ -363,6 +387,7 @@
     <xs:complexContent>
       <xs:extension base="mim:Datatype">
         <xs:sequence>
+          <xs:element name="identificatie" type="xs:string"/>
           <xs:element name="naam" type="xs:string"/>
           <xs:element name="alias" type="xs:string" minOccurs="0"/>
           <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
@@ -390,6 +415,7 @@
     <xs:complexContent>
       <xs:extension base="mim:Datatype">
         <xs:sequence>
+          <xs:element name="identificatie" type="xs:string"/>
           <xs:element name="naam" type="xs:string"/>
           <xs:element name="alias" type="xs:string" minOccurs="0"/>
           <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
@@ -417,6 +443,7 @@
   <xs:element name="DataElement" type="mim:DataElement"/>
   <xs:complexType name="DataElement">
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
@@ -434,6 +461,7 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element name="eenheid" type="xs:string" minOccurs="0"/>
       <xs:element name="lengte" type="xs:string" minOccurs="0"/>
       <xs:element name="patroon" type="xs:string" minOccurs="0"/>
       <xs:element name="formeelPatroon" type="xs:string" minOccurs="0"/>
@@ -454,6 +482,7 @@
     <xs:complexContent>
       <xs:extension base="mim:Datatype">
         <xs:sequence>
+          <xs:element name="identificatie" type="xs:string"/>
           <xs:element name="naam" type="xs:string"/>
           <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
           <xs:element name="alias" type="xs:string" minOccurs="0"/>
@@ -478,7 +507,10 @@
   <xs:element name="Waarde" type="mim:Enumeratiewaarde"/>
   <xs:complexType name="Enumeratiewaarde">
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
+      <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="herkomst" type="xs:string" minOccurs="0"/>
       <xs:element name="definitie" type="mim:xhtmlText" minOccurs="0"/>
       <xs:element name="herkomstDefinitie" type="xs:string" minOccurs="0"/>
       <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0"/>
@@ -496,6 +528,7 @@
     <xs:complexContent>
       <xs:extension base="mim:Datatype">
         <xs:sequence>
+          <xs:element name="identificatie" type="xs:string"/>
           <xs:element name="naam" type="xs:string"/>
           <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
           <xs:element name="alias" type="xs:string" minOccurs="0"/>
@@ -510,7 +543,7 @@
           <xs:element name="profielspecificatie" type="xs:string" minOccurs="0"/>
           <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
         </xs:sequence>
-      </xs:extension>
+        </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
@@ -520,6 +553,7 @@
     <xs:complexContent>
       <xs:extension base="mim:Datatype">
         <xs:sequence>
+          <xs:element name="identificatie" type="xs:string"/>
           <xs:element name="naam" type="xs:string"/>
           <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
           <xs:element name="alias" type="xs:string" minOccurs="0"/>
@@ -530,10 +564,6 @@
           <xs:element name="datumOpname" type="xs:string"/>
           <xs:element name="locatie" type="xs:string"/>
           <xs:element name="doelformaat" type="xs:string" minOccurs="0"/>
-          <xs:element name="minimumwaardeInclusief" type="xs:string" minOccurs="0"/>
-          <xs:element name="maximumwaardeInclusief" type="xs:string" minOccurs="0"/>
-          <xs:element name="minimumwaardeExclusief" type="xs:string" minOccurs="0"/>
-          <xs:element name="maximumwaardeExclusief" type="xs:string" minOccurs="0"/>
           <xs:element name="referentieElementen" minOccurs="0">
             <xs:complexType>
               <xs:sequence>
@@ -550,6 +580,7 @@
   <xs:element name="ReferentieElement" type="mim:ReferentieElement"/>
   <xs:complexType name="ReferentieElement">
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
@@ -567,9 +598,14 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element name="eenheid" type="xs:string" minOccurs="0"/>
       <xs:element name="lengte" type="xs:string" minOccurs="0"/>
       <xs:element name="patroon" type="xs:string" minOccurs="0"/>
       <xs:element name="formeelPatroon" type="xs:string" minOccurs="0"/>
+      <xs:element name="minimumwaardeInclusief" type="xs:string" minOccurs="0"/>
+      <xs:element name="maximumwaardeInclusief" type="xs:string" minOccurs="0"/>
+      <xs:element name="minimumwaardeExclusief" type="xs:string" minOccurs="0"/>
+      <xs:element name="maximumwaardeExclusief" type="xs:string" minOccurs="0"/>
       <xs:element name="kardinaliteit" type="xs:string"/>
       <xs:element name="identificerend" type="mim:boolean" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
@@ -582,6 +618,7 @@
   <xs:element name="Relatieklasse" type="mim:Relatieklasse"/>
   <xs:complexType name="Relatieklasse">
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
@@ -590,14 +627,18 @@
       <xs:element name="herkomstDefinitie" type="xs:string"/>
       <xs:element name="toelichting" type="mim:xhtmlText" minOccurs="0"/>
       <xs:element name="datumOpname" type="xs:string"/>
-      <xs:element name="indicatieMaterieleHistorie" type="mim:boolean" minOccurs="0"/>
-      <xs:element name="indicatieFormeleHistorie" type="mim:boolean" minOccurs="0"/>
+      <xs:element name="indicatieMaterieleHistorie" type="mim:boolean"/>
+      <xs:element name="indicatieFormeleHistorie" type="mim:boolean"/>
+      <xs:element name="heeftTijdlijnGeldigheid" type="mim:boolean"/>
+      <xs:element name="heeftTijdlijnRegistratie" type="mim:boolean"/>
       <xs:element name="kardinaliteit" type="xs:string"/>
       <xs:element name="authentiek" type="xs:string"/>
       <xs:element name="indicatieAfleidbaar" type="mim:boolean"/>
       <xs:element name="mogelijkGeenWaarde" type="mim:boolean"/>
+      <xs:element name="unidirectioneel" type="xs:boolean"/>
       <xs:element name="aggregatietype" type="mim:aggregatietype"/>
       <xs:element ref="mim:attribuutsoorten" minOccurs="0"/>
+      <xs:element ref="mim:gegevensgroepen" minOccurs="0"/>
       <xs:element ref="mim:constraints" minOccurs="0"/>
       <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
     </xs:sequence>
@@ -620,6 +661,7 @@
   <xs:element name="GeneralisatieObjecttypen" type="mim:GeneralisatieObjecttypen"/>
   <xs:complexType name="GeneralisatieObjecttypen">
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="datumOpname" type="xs:string"/>
       <xs:element name="mixin" type="mim:boolean" minOccurs="0"/>
       <xs:element name="typeSupertype" type="xs:string" minOccurs="0"/>
@@ -641,6 +683,7 @@
   <xs:element name="GeneralisatieDatatypen" type="mim:GeneralisatieDatatypen"/>
   <xs:complexType name="GeneralisatieDatatypen">
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="datumOpname" type="xs:string"/>
       <xs:element name="supertype">
         <xs:complexType>
@@ -661,6 +704,7 @@
   <xs:element name="Keuze" type="mim:Keuze"/>
   <xs:complexType name="Keuze">
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
@@ -725,11 +769,16 @@
   <xs:element name="ExterneKoppeling" type="mim:ExterneKoppeling"/>
   <xs:complexType name="ExterneKoppeling">
     <xs:sequence>
-      <xs:element name="naam" type="xs:string" minOccurs="0"/>
+      <xs:element name="identificatie" type="xs:string"/>
+      <xs:element name="naam" type="xs:string"/>
       <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
       <xs:element name="datumOpname" type="xs:string"/>
-      <xs:element name="unidirectioneel" type="xs:string"/>
+      <xs:element name="indicatieMaterieleHistorie" type="mim:boolean"/>
+      <xs:element name="indicatieFormeleHistorie" type="mim:boolean"/>
+      <xs:element name="heeftTijdlijnGeldigheid" type="mim:boolean"/>
+      <xs:element name="heeftTijdlijnRegistratie" type="mim:boolean"/>
+      <xs:element name="unidirectioneel" type="xs:boolean"/>
       <xs:element name="aggregatietype" type="mim:aggregatietype"/>
       <xs:element name="kardinaliteit" type="xs:string"/>
       <xs:element name="doel">

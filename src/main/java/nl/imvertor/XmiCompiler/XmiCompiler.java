@@ -27,12 +27,12 @@ import java.util.List;
 
 import javax.xml.xpath.XPathConstants;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.NodeList;
 
 import nl.imvertor.XmiCompiler.XMIImageExporter.Image;
+import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
@@ -58,10 +58,15 @@ public class XmiCompiler extends Step {
 	public static final String STEP_NAME = "XmiCompiler";
 	public static final String VC_IDENTIFIER = "$Id: XmiCompiler.java 7501 2016-04-15 14:37:27Z arjan $";
 
-	private AnyFile passedFile;
-	private XmlFile activeFile;
+	private AnyFile umlFile;
+	private AnyFile activeFile;
 	private AnyFile idFile;
 	private String activeFileOrigin;
+	private String compactXmiFilePath;
+	
+	private String modelType = "unknown";
+
+	private AnyFolder exportFolder;
 	
 	/**
 	 *  run the main translation
@@ -71,147 +76,202 @@ public class XmiCompiler extends Step {
 		// set up the configuration for this step
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
-		runner.info(logger,"Compiling XMI");
+		runner.info(logger,"Compiling the model");
 
-		// check what file is passed on the command line.
-		
-		AnyFile umlFile = new AnyFile(configurator.getFile(configurator.getXParm("cli/umlfile")));
-		boolean refreshXmi = configurator.isTrue("cli", "refreshxmi", false);
-
-		EapFile eapFile = (umlFile.getExtension().toLowerCase().startsWith("eap") || umlFile.getExtension().toLowerCase().equals("qea")) ? new EapFile(umlFile) : null;
-		XmiFile xmiFile = umlFile.getExtension().toLowerCase().equals("xmi") ? new XmiFile(umlFile) : null;
-		ZipFile zipFile = umlFile.getExtension().toLowerCase().equals("zip") ? new ZipFile(umlFile) : null; // holds single XMI, /images, and an optional /modeldoc folder 
-		
-		AnyFolder xmiFolder = umlFile.isDirectory() ? new AnyFolder(umlFile) : null; // may hold a range of files and folders
-		
 		boolean succeeds = true;
 		
-		// assmume no images passed.
+		configurator.setXParm("appinfo/modelimporttype","unknown");
+		
+		// check what file is passed on the command line.
+		
+		umlFile = new AnyFile(configurator.getFile(configurator.getXParm("cli/umlfile")));
+	
+		AnyFolder umlFolder = umlFile.isDirectory() ? new AnyFolder(umlFile) : null; // may hold a range of files and folders
+		ZipFile zipFile = umlFile.getExtension().equals("zip") ? new ZipFile(umlFile) : null; // holds single XMI, /images, and an optional /modeldoc folder 
+		EapFile eapFile = umlFile.getExtension().startsWith("eap") || umlFile.getExtension().equals("qea") ? new EapFile(umlFile) : null;
+		
+		exportFolder = new AnyFolder(configurator.getXParm("properties/WORK_XMI_FOLDER"));
+		
+		// assume no images passed.
 		configurator.setXParm("system/xmi-image-count", 0);
+				
+		/*
+		 * onderstaande keuzes betreft het vullen van de model folder, waarbinnen alle info te vinden is voor de verwerking van het model.
+		 */
+		if (!umlFile.exists())
+	    	
+			runner.fatal(logger,"No such file: " + umlFile,null,"NSF1");
 		
-		if (activeFileOrigin == null && xmiFolder != null) {
-			runner.debug(logger,"CHAIN", "Try XMI folder at: " + xmiFolder);
-			passedFile = xmiFolder;
-			activeFileOrigin = "XMI folder passed";
-		}
-		if (activeFileOrigin == null && zipFile != null) {
-			runner.debug(logger,"CHAIN", "Try compressed XMI file at: " + zipFile);
-			if (zipFile.isFile()) {
-				passedFile = zipFile;
-				activeFileOrigin = "Compressed XMI passed";
-			}
-		}
-		if (activeFileOrigin == null && xmiFile != null) {
-			runner.debug(logger,"CHAIN", "Try XMI file at: " + xmiFile);
-			if (xmiFile.isFile()) {
-				passedFile = xmiFile;
-				activeFileOrigin = "XMI passed";
-			}
-		}
-		if (activeFileOrigin == null && eapFile != null) {
-		    runner.debug(logger,"CHAIN","Try EA file at: " + eapFile);
-		    if (!configurator.isEaEnabled()) {
-		    	runner.error(logger,"EA file is not supported in this environment: " + eapFile);
-		    } else if (!eapFile.isFile()) {
-		    	runner.error(logger,"EA file doesn't exist: " + eapFile);
-		    } else {
-				passedFile = eapFile;
-				activeFileOrigin = "EA passed";
-			}
-		}	
-		
-		if (activeFileOrigin == null) {
-			runner.error(logger,"No such ZIP, XMI or EA file");
-		} else {
-			String filespec = " " + passedFile + " (" + activeFileOrigin + ")";
-			activeFile = new XmlFile(configurator.getXParm("properties/WORK_XMI_FOLDER") + File.separator + passedFile.getName() + ".xmi");
-			String compactXmiFilePath = activeFile.getCanonicalPath() + ".compact.xmi";
+		else if (zipFile != null && zipFile.isFile()) {
 			
-			if (passedFile instanceof EapFile) {
-				// EAP is provided
-				// IM-108 speed up: do not read same EAP twice
-				String f1 = "";
-				idFile = new AnyFile(activeFile.getCanonicalPath() + ".id");
-				activeFile.getParentFile().mkdirs();
-				if (activeFile.exists()) 
-					f1 = (idFile.exists()) ? idFile.getContent() : "";
-				String f2 = passedFile.getFileInfo();
+			AnyFolder tempFolder = new AnyFolder(configurator.getXParm("properties/WORK_ZIP_FOLDER"));
+			
+			zipFile.decompress(tempFolder,true);
+			
+			succeeds = processFilesInDeliveryFolder(tempFolder); // sets the activeFile; may fail when no relevant files found in zip
+			
+			tempFolder.deleteDirectory();
+					
+		} else if (umlFolder != null) { 
+			
+			succeeds = processFilesInDeliveryFolder(umlFolder); // sets the activeFile; may fail when no relevant files found in zip
+	
+		} else if (eapFile != null && configurator.isEaEnabled()) { 
+			
+			XmiFile exportFile = new XmiFile(exportFolder + File.separator + eapFile.getName() + ".xmi");
+			
+		    // dit is development: haal XMI uit de EAP
+			String f1 = "";
+			idFile = new AnyFile(exportFile.getCanonicalPath() + ".id");
+			exportFile.getParentFile().mkdirs();
+			if (exportFile.exists()) 
+				f1 = (idFile.exists()) ? idFile.getContent() : "";
+			String f2 = eapFile.getFileInfo();
+			
+			String projectname = configurator.getXParm("cli/owner") + ": " + configurator.getXParm("cli/project");
+			String modelname = configurator.getXParm("cli/application");
+			
+			compactXmiFilePath = exportFile.getCanonicalPath() + ".compact.xmi";
+			
+			Boolean noSuchModel = checkModel(compactXmiFilePath,projectname,modelname); // when changing the requested model and EA export has not changed, determine that EA should be re-read.
+			
+			boolean refreshXmi = configurator.isTrue("cli", "refreshxmi", false);
+			
+			if (!f1.equals(f2) || refreshXmi || noSuchModel) {
+				runner.info(logger,"Using " + eapFile);
 				
-				String projectname = configurator.getXParm("cli/owner") + ": " + configurator.getXParm("cli/project");
-				String modelname = configurator.getXParm("cli/application");
-		
-				Boolean noSuchModel = checkModel(compactXmiFilePath,projectname,modelname); // when changing the requested model and EA export has not changed, determine that EA should be re-read.
+				// clean the XMI folder here
+				(new OutputFolder(configurator.getXParm("system/work-xmi-folder-path",true))).clear(false);
 				
-				if (!f1.equals(f2) || refreshXmi || noSuchModel) {
-					runner.info(logger,"Reading" + filespec);
-					
-					// clean the XMI folder here
-					(new OutputFolder(configurator.getXParm("system/work-xmi-folder-path",true))).clear(false);
-					
-					// Export images here. The type of image is set to PNG. The images are stored in /XMI folder under /Images.
-					if (configurator.isTrue(configurator.getXParm("cli/createimagemap"))) 
-						((EapFile) passedFile).setExportDiagrams(EapFile.EXPORT_IMAGE_TYPE_PNG);
-					else
-						((EapFile) passedFile).setExportDiagrams(EapFile.EXPORT_IMAGE_TYPE_NONE);
-					
-					if (exportEapToXmi((EapFile) passedFile, activeFile,projectname,modelname) != null) { 
-						// and place file info in ID file
-						idFile.setContent(passedFile.getFileInfo());
-						cleanXMI(activeFile);
-					} else {
-						succeeds = false;
-					}
+				// Export images here. The type of image is set to PNG. The images are stored in /XMI folder under /Images.
+				if (configurator.isTrue(configurator.getXParm("cli/createimagemap"))) 
+					eapFile.setExportDiagrams(EapFile.EXPORT_IMAGE_TYPE_PNG);
+				else
+					eapFile.setExportDiagrams(EapFile.EXPORT_IMAGE_TYPE_NONE);
+				
+				if (exportEapToXmi(eapFile, exportFile,projectname,modelname) != null) { 
+					// and place file info in ID file
+					idFile.setContent(f2);
 				} else {
-					runner.info(logger,"Reusing" + filespec);
+					succeeds = false;
 				}
-				
-				AnyFolder targetFolder = new AnyFolder(activeFile.getParentFile().getCanonicalPath() + "/Images");
-				if (targetFolder.isDirectory() && targetFolder.list().length != 0) {
-					configurator.setXParm("system/xmi-image-count", targetFolder.list().length);
-				} 
-				
-			} else if (passedFile instanceof ZipFile) {
-				// XMI is provided in compressed form
-				AnyFolder tempFolder = new AnyFolder(configurator.getXParm("properties/WORK_ZIP_FOLDER"));
-				((ZipFile) passedFile).decompress(tempFolder);
-				
-				processFilesInDeliveryFolder(tempFolder);
-				
-				tempFolder.deleteDirectory();
-				
-			} else if (passedFile instanceof AnyFolder) { 
-				
-				processFilesInDeliveryFolder(passedFile);
-				
 			} else {
-				// XMI is provided directly
-				runner.info(logger,"Reading" + filespec);
-				passedFile.copyFile(activeFile);
-				cleanXMI(activeFile);
+				runner.info(logger,"Reusing " + eapFile);
 			}
+			
+			activeFile = exportFile;
+				
+			AnyFolder targetFolder = new AnyFolder(exportFile.getParentFile().getCanonicalPath() + "/Images");
+			if (targetFolder.isDirectory() && targetFolder.list().length != 0) {
+				configurator.setXParm("system/xmi-image-count", targetFolder.list().length);
+			} 
+	
+		} else if (eapFile != null) {
+			
+			runner.fatal(logger,"Cannot process EA in this server environment",null,"CPEITSE");
+			succeeds = false;
+			
+		} else {
+			
+			// kopieer het file naar de workfolder
+			compactXmiFilePath = exportFolder + File.separator + umlFile.getName() + ".compact.xmi";
+			umlFile.copyFile(exportFolder);
+			activeFile = new AnyFile(exportFolder,umlFile.getName());
 		
-			if (succeeds) {
-				// first copy this source file to xmi folder when requested; this does not include the images!
-				if (configurator.isTrue("cli","copyxmi",false)) {
-					File targetFile = new File(configurator.getXParm("system/work-xmi-s-folder-path"),"model.xmi");
-					activeFile.copyFile(targetFile);
+		}
+	
+		if (succeeds) {
+		
+			Boolean isEapFile = umlFile.getExtension().startsWith("eap") || umlFile.getExtension().equals("qea");
+			Boolean isXmiFile = activeFile.getExtension().equals("xmi");
+			Boolean isMimFile = activeFile.getExtension().equals("xml");
+			
+			if (activeFileOrigin == null) {
+	
+				if (isMimFile) {
+					runner.debug(logger,"CHAIN", "Try MIM file at: " + activeFile);
+					modelType = "mim";
+					if (activeFile.isFile()) {
+						activeFileOrigin = "MIM passed";
+					}
+				} 
+				else if (isXmiFile) {
+					runner.debug(logger,"CHAIN", "Try XMI file at: " + activeFile);
+					modelType = "xmi";
+					if (activeFile.isFile()) {
+						activeFileOrigin = "XMI passed";
+					}
+				} 
+				else if (isEapFile) {
+					runner.debug(logger,"CHAIN", "Try EAP file at: " + activeFile);
+					modelType = "xmi";
+					if (activeFile.isFile()) {
+						activeFileOrigin = "EA passed";
+					}
+				}	
+			} 
+			
+			if (activeFileOrigin == null) {
+				runner.fatal(logger,"No such ZIP, MIM, XMI or EA file",null,"NSIMPORT");
+			
+			} else {
+				
+				runner.info(logger,"Reading " + activeFileOrigin);
+				
+				if (isXmiFile || isEapFile) {
+					// XMI is provided directly
+					cleanXMI(activeFile);
+				} else {
+					// MIM is provided directly
 				}
-				
-				// then process it.
-				String mode = configurator.getXParm("cli/migrate",false);
-				if (!mode.equals("none")) 
-					migrateXMI(activeFile,mode);
-				
-				configurator.setXParm("system/xmi-export-file-path",activeFile.getCanonicalPath());
-				configurator.setXParm("system/xmi-file-path",compactXmiFilePath);
-				
-				// now compact the XMI file: remove all irrelevant sections
-				runner.debug(logger,"CHAIN", "Compacting XMI: " + activeFile.getCanonicalPath());
-				Transformer transformer = new Transformer();
-		
-				// transform 
-				succeeds = succeeds ? transformer.transformStep("system/xmi-export-file-path", "system/xmi-file-path",  "properties/XMI_CONFIG_XSLPATH") : false ;
-				succeeds = succeeds ? transformer.transformStep("system/xmi-export-file-path", "system/xmi-file-path",  "properties/XMI_COMPACT_XSLPATH") : false ;
+	
+				if (succeeds && modelType.equals("mim")) {
+					configurator.setXParm("appinfo/modelimporttype","mim");
+					configurator.setXParm("system/mim-export-file-path",activeFile.getCanonicalPath());
+					configurator.setXParm("system/mim-cfg-file-path",activeFile.getCanonicalPath() + ".cfg");
+					
+					// Valideer het bestand voordat je het verwerkt
+					XmlFile activeXmlFile = new XmlFile(activeFile);
+					String mimVer = configurator.getXParm("cli/mimversie",false);
+					String mimRel = configurator.getXParm("cli/mimrelatiesoortleidend",false);
+					String mimVersion = (mimVer != null) ? mimVer : activeXmlFile.find("mim:MIMVersie>1.2<") ? "1.2" : "0.0";
+					Boolean relatiesoortLeidend = (mimRel != null) ? mimRel.equals("yes") : activeXmlFile.find("mim:relatiemodelleringstype>Relatiesoort leidend<");
+					String rmt = (relatiesoortLeidend) ? "MIMFORMAT_Mim_relatiesoort.xsd" : "MIMFORMAT_Mim_relatierol.xsd";
+					String schemaLocation = configurator.getXParm("system/etc-folder-path") + "/xsd/MIMformat/v2/" + mimVersion + "/" + rmt;
+					
+					if (activeXmlFile.isValid(schemaLocation)) {
+						// Zet nu om naar imvert formaat
+						Transformer transformer = new Transformer();
+						succeeds = succeeds ? transformer.transformStep("system/mim-export-file-path", "system/mim-cfg-file-path",  "properties/MIM_CONFIG_XSLPATH") : false ;
+					} else {
+					 	runner.fatal(logger,"Invalid MIM document, parse error: \""+ activeXmlFile.getLastError() + "\" based on schema \"" + rmt + "\"",null,"IMDPE1BOS2");
+					}
+				}
+				if (succeeds && modelType.equals("xmi")) {
+					configurator.setXParm("appinfo/modelimporttype","xmi");
+					// first copy this source file to xmi folder when requested; this does not include the images!
+					if (configurator.isTrue("cli","copyxmi",false)) {
+						File targetFile = new File(configurator.getXParm("system/work-xmi-s-folder-path"),"model.xmi");
+						activeFile.copyFile(targetFile);
+					}
+					
+					// then process it.
+					String mode = configurator.getXParm("cli/migrate",false);
+					if (!mode.equals("none")) 
+						migrateXMI(activeFile,mode);
+					
+					configurator.setXParm("system/xmi-export-file-path",activeFile.getCanonicalPath());
+					configurator.setXParm("system/xmi-cfg-file-path",activeFile.getCanonicalPath() + ".cfg");
+					configurator.setXParm("system/xmi-file-path",compactXmiFilePath);
+					
+					// now compact the XMI file: remove all irrelevant sections
+					runner.debug(logger,"CHAIN", "Compacting XMI: " + activeFile.getCanonicalPath());
+					Transformer transformer = new Transformer();
+			
+					// transform 
+					succeeds = succeeds ? transformer.transformStep("system/xmi-export-file-path", "system/xmi-cfg-file-path",  "properties/XMI_CONFIG_XSLPATH") : false ;
+					succeeds = succeeds ? transformer.transformStep("system/xmi-export-file-path", "system/xmi-file-path",  "properties/XMI_COMPACT_XSLPATH") : false ;
+				}
 			}
 		}
 		
@@ -234,12 +294,23 @@ public class XmiCompiler extends Step {
 	 * @param tempFolder
 	 * @throws Exception
 	 */
-	private void processFilesInDeliveryFolder(File tempFolder) throws Exception {
-		File[] files = tempFolder.listFiles(); // may be one file (xmi) or two (xmi and Images folder)
+	private boolean processFilesInDeliveryFolder(AnyFolder tempFolder) throws Exception {
 		
+		// Determine what kind of model is passed: xmi or mim?
+		modelType = "unknown";
+		if (tempFolder.getMatchingFiles("^(.*?)\\.mim$").size() > 0) 
+			modelType = "mim";
+		else if (tempFolder.getMatchingFiles("^(.*?)\\.xmi$").size() > 0) 
+			modelType = "xmi";
+		else
+	    	runner.fatal(logger,"No model found in zip passed",null,"NMFIZP");
+		
+		// verwerk nu de folder
+		File[] files = tempFolder.listFiles(); // may be one file (xmi) or two (xmi and Images folder)
 		if (files.length == 0) 
 			runner.fatal(logger, "No files found in ZIP",null,"NFFIZ");
 		else {
+			int origins = 0;
 			for (int i = 0; i < files.length; i++) {
 				if (files[i].isDirectory()) {
 					AnyFolder sourceFolder = new AnyFolder(files[i]);
@@ -247,25 +318,42 @@ public class XmiCompiler extends Step {
 					sourceFolder.copy(targetFolder);
 					if (sourceFolder.getName().equals("Images")) 
 						configurator.setXParm("system/xmi-image-count", sourceFolder.list().length);
-				} 
-				else if (files[i].getName().endsWith(".xmi")) {
+				} else if (modelType.equals("xmi") && files[i].getName().endsWith(".xmi")) {
 					AnyFile file = new AnyFile(files[i]);
+					activeFile = new XmlFile(exportFolder + File.separator + file.getName());
 					file.copyFile(activeFile);
+					compactXmiFilePath = activeFile.getCanonicalPath() + ".compact.xmi";
 					cleanXMI(activeFile);
+					activeFileOrigin = "Compressed XMI passed";
+					++origins;
+				} else if (modelType.equals("mim") && files[i].getName().endsWith(".xml")) {
+					AnyFile file = new AnyFile(files[i]);
+					activeFile = new XmlFile(exportFolder + File.separator + file.getName());
+					file.copyFile(activeFile);
+					activeFileOrigin = "Compressed MIM passed";
+					++origins;
 				}
 			}
+			if (origins > 1) {
+				configurator.getRunner().fatal(logger, "Cannot handle multiple input types in a single run",null,"CHMIIASR");
+				return false;
+			} else if (origins == 0) {
+				configurator.getRunner().fatal(logger, "No model file found in the delivery folder",null,"NMFFITDF");
+				return false;
+			} 
 		}
+		return true;
 	}
 
-	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile, String projectName, String modelName) throws Exception {
+	private XmlFile exportEapToXmi(EapFile eapFile, AnyFile xmifile, String projectName, String modelName) throws Exception {
 		eapFile.open();
 		String packageGUID = (modelName == null) ? eapFile.getProjectPackageGUID(projectName) : eapFile.getModelPackageGUID(projectName, modelName);
 		XmlFile r = null;
 		if (packageGUID.equals("")) 
 			if (modelName == null)
-				configurator.getRunner().error(logger, "No such project \"" + projectName + "\" found");
+				configurator.getRunner().fatal(logger, "No such project \"" + projectName + "\" found",null,"NSP1F");
 			else
-				configurator.getRunner().error(logger, "No such project/model \"" + projectName + "/" + modelName + "\" found");
+				configurator.getRunner().fatal(logger, "No such project/model \"" + projectName + "/" + modelName + "\" found",null,"NSPM1F");
 		else 
 			r = eapFile.exportToXmiFile(xmifile.getCanonicalPath(), packageGUID);
 		eapFile.close();
@@ -278,7 +366,7 @@ public class XmiCompiler extends Step {
 	 * @param xmiFile
 	 * @throws Exception 
 	 */
-	private void cleanXMI(XmlFile xmiFile) throws Exception {
+	private void cleanXMI(AnyFile xmiFile) throws Exception {
 		
 		// decode alle images uit content naar de Images folder
 		extractImages(xmiFile);
@@ -289,7 +377,7 @@ public class XmiCompiler extends Step {
 			xmiFile.setContent(StringUtils.replacePattern(c, "&#5[0-9]{4};", "?"));
 	}
 	
-	private void extractImages(XmlFile xmiFile) throws Exception {
+	private void extractImages(AnyFile xmiFile) throws Exception {
 		XMIImageExporter exporter = new XMIImageExporter();
 		AnyFile tempFile = new AnyFile(File.createTempFile("extractImages.", ".xmi"));
 		tempFile.deleteOnExit();
@@ -310,7 +398,7 @@ public class XmiCompiler extends Step {
 		}
 	}
 	
-	private void migrateXMI(XmlFile xmiFile, String mode) throws Exception {
+	private void migrateXMI(AnyFile xmiFile, String mode) throws Exception {
 		runner.warn(logger,"This model is subject to migration rules, please consider aligning the model with the metamodel",null,"TMISTMR");
 		AnyFile outFile = new AnyFile(File.createTempFile("migrateXMI.", ".xmi"));
 		outFile.deleteOnExit();
@@ -332,7 +420,5 @@ public class XmiCompiler extends Step {
 		} catch (Exception e) {
 			return true; // something happened; check.
 		}
-		
-		
 	}
 }

@@ -25,7 +25,10 @@ commentaar toegevoegd. Dat is alleen bij de éérste opkomst van een contructie 
                      xmlns:xs="http://www.w3.org/2001/XMLSchema"
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                      xsi:schemaLocation="http://www.geostandaarden.nl/mim/mim-core/1.2 ../MIMFORMAT_Mim_relatiesoort.xsd"
-                     id="fietsenwinkel-d16324e2"><!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-naam-->
+                     id="0EA6D8E1_6BDE_45b4_A590_7969FADB42B8"><!--https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-basis-uri-->
+      <mim:basisURI>https://docs.geostandaarden.nl/mim/primer/Fietsenwinkel</mim:basisURI>
+   <mim:identificatie>0EA6D8E1_6BDE_45b4_A590_7969FADB42B8</mim:identificatie>
+   <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-naam-->
    <mim:naam>Fietsenwinkel</mim:naam>
    <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-herkomst-->
    <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
@@ -36,7 +39,8 @@ commentaar toegevoegd. Dat is alleen bij de éérste opkomst van een contructie 
 Dit model heeft alleen tot doel de aard en toepassing van constructies te illustreren, en is opgezet als een UML realisatie van de in MIM besproken modelelementen. 
 Het model staat bekend als IMFW. 
 Het model is ontwikkeld onder toezicht van de IFO: Internationale Fietsenwinkels Organisatie.
-Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
+Dit model is opgezet conform <xhtml:a href="https://docs.geostandaarden.nl/mim/def-st-mim-20240613"
+                     shape="rect">MIM 1.2</xhtml:a>.</xhtml:p>
       </xhtml:body>
    </mim:definitie>
    <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-herkomst-definitie-->
@@ -56,7 +60,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
    <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-mim-taal-->
    <mim:MIMTaal>NL</mim:MIMTaal>
    <mim:packages><!--https://docs.geostandaarden.nl/mim/mim/#domein-->
-      <mim:Domein index="1750" id="fietsenwinkel-contacten-d16324e36">
+      <mim:Domein index="1765" id="37919E65_136A_43f3_8783_2CAAD848876B">
+         <mim:identificatie>37919E65_136A_43f3_8783_2CAAD848876B</mim:identificatie>
          <mim:naam>Contacten</mim:naam>
          <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
          <mim:definitie>
@@ -67,18 +72,20 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
          <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
          <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
          <mim:datatypen><!--https://docs.geostandaarden.nl/mim/mim/#primitief-datatype-->
-            <mim:PrimitiefDatatype index="3160" id="fietsenwinkel-contacten-iban-d16324e54">
+            <mim:PrimitiefDatatype index="3206" id="E5445462_35D6_40f2_84CB_5C9CCCA20E67">
                <mim:supertypen>
-                  <mim:GeneralisatieDatatypen index="3176" id="fietsenwinkel-contacten-iban-d16324e56">
+                  <mim:GeneralisatieDatatypen index="3222" id="8C444C4C_55DC_4304_9DC5_19426E2C9BE5">
+                     <mim:identificatie>8C444C4C_55DC_4304_9DC5_19426E2C9BE5</mim:identificatie>
                      <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                      <mim:supertype>
-                        <mim:Datatype index="3176">CharacterString</mim:Datatype>
+                        <mim:Datatype index="3222">CharacterString</mim:Datatype>
                      </mim:supertype>
                      <mim-ext:kenmerken>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:GeneralisatieDatatypen>
                </mim:supertypen>
+               <mim:identificatie>E5445462_35D6_40f2_84CB_5C9CCCA20E67</mim:identificatie>
                <mim:naam>IBAN</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -97,7 +104,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                </mim-ext:kenmerken>
             </mim:PrimitiefDatatype>
             <!--https://docs.geostandaarden.nl/mim/mim/#referentielijst-->
-            <mim:Referentielijst index="2389" id="fietsenwinkel-contacten-kvklijst-d16324e88">
+            <mim:Referentielijst index="2404" id="39E798CA_774B_437f_9E55_2A90B4F13A9B">
+               <mim:identificatie>39E798CA_774B_437f_9E55_2A90B4F13A9B</mim:identificatie>
                <mim:naam>KVK lijst</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -110,7 +118,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-locatie-->
                <mim:locatie>https://services.kvk.nl/zoeken/handelsregister/</mim:locatie>
                <mim:referentieElementen><!--https://docs.geostandaarden.nl/mim/mim/#referentie-element-->
-                  <mim:ReferentieElement index="2405" id="fietsenwinkel-contacten-kvklijst-nummer-d16324e108">
+                  <mim:ReferentieElement index="2420" id="43B59F8B-3472-45fc-BB75-093238B476EA">
+                     <mim:identificatie>43B59F8B-3472-45fc-BB75-093238B476EA</mim:identificatie>
                      <mim:naam>nummer</mim:naam>
                      <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                      <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
@@ -118,7 +127,7 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                      <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-type-domein-van-een-waarde-een-gegeven-->
                      <mim:type>
-                        <mim:Datatype index="2405">CharacterString</mim:Datatype>
+                        <mim:Datatype index="2420">CharacterString</mim:Datatype>
                      </mim:type>
                      <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-kardinaliteit-->
                      <mim:kardinaliteit>1</mim:kardinaliteit>
@@ -129,15 +138,15 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:ReferentieElement>
-                  <mim:ReferentieElement index="2431"
-                                         id="fietsenwinkel-contacten-kvklijst-bedrijfsnaam-d16324e131">
+                  <mim:ReferentieElement index="2446" id="702267AD-916B-469e-AFC3-5AF4D1F7E254">
+                     <mim:identificatie>702267AD-916B-469e-AFC3-5AF4D1F7E254</mim:identificatie>
                      <mim:naam>bedrijfsnaam</mim:naam>
                      <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                      <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
                      <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
                      <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="2431">CharacterString</mim:Datatype>
+                        <mim:Datatype index="2446">CharacterString</mim:Datatype>
                      </mim:type>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:identificerend>false</mim:identificerend>
@@ -146,16 +155,37 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:ReferentieElement>
-                  <mim:ReferentieElement index="2456"
-                                         id="fietsenwinkel-contacten-kvklijst-vestigingsadres-d16324e154">
+                  <mim:ReferentieElement index="2471" id="84CC1722-0E48-418a-A54D-C7184E374F48">
+                     <mim:identificatie>84CC1722-0E48-418a-A54D-C7184E374F48</mim:identificatie>
                      <mim:naam>vestigingsadres</mim:naam>
                      <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                      <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
                      <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
                      <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="2456">CharacterString</mim:Datatype>
+                        <mim:Datatype index="2471">CharacterString</mim:Datatype>
                      </mim:type>
+                     <mim:kardinaliteit>1</mim:kardinaliteit>
+                     <mim:identificerend>false</mim:identificerend>
+                     <mim-ext:kenmerken>
+                        <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                        <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                     </mim-ext:kenmerken>
+                  </mim:ReferentieElement>
+                  <mim:ReferentieElement index="2496" id="F0456BB6-66FE-44da-9668-544E9EE2AA94">
+                     <mim:identificatie>F0456BB6-66FE-44da-9668-544E9EE2AA94</mim:identificatie>
+                     <mim:naam>aantal medewerkers</mim:naam>
+                     <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
+                     <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
+                     <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
+                     <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
+                     <mim:type>
+                        <mim:Datatype index="2496">Decimal</mim:Datatype>
+                     </mim:type>
+                     <!--https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-eenheid-->
+                     <mim:eenheid>FTE</mim:eenheid>
+                     <!--https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-minimumwaarde-inclusief-->
+                     <mim:minimumwaardeInclusief>1</mim:minimumwaardeInclusief>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:identificerend>false</mim:identificerend>
                      <mim-ext:kenmerken>
@@ -171,7 +201,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
             </mim:Referentielijst>
          </mim:datatypen>
          <mim:objecttypen><!--https://docs.geostandaarden.nl/mim/mim/#objecttype-->
-            <mim:Objecttype index="2929" id="fietsenwinkel-contacten-bankrekening-d16324e183">
+            <mim:Objecttype index="2975" id="C0EDB7BB_8747_4fca_ACCB_D1D2C182B4C2">
+               <mim:identificatie>C0EDB7BB_8747_4fca_ACCB_D1D2C182B4C2</mim:identificatie>
                <mim:naam>Bankrekening</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -184,8 +215,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-abstract-object-->
                <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
                <mim:attribuutsoorten><!--https://docs.geostandaarden.nl/mim/mim/#attribuutsoort-->
-                  <mim:Attribuutsoort index="2945"
-                                      id="fietsenwinkel-contacten-bankrekening-rekeningnummer-d16324e203">
+                  <mim:Attribuutsoort index="2991" id="B1A50D14-9CB5-496e-9FC7-635EB4B8A1B3">
+                     <mim:identificatie>B1A50D14-9CB5-496e-9FC7-635EB4B8A1B3</mim:identificatie>
                      <mim:naam>Rekeningnummer</mim:naam>
                      <mim:herkomst>IMFW</mim:herkomst>
                      <mim:definitie>
@@ -196,12 +227,16 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim-ref:DatatypeRef index="2945" xlink:href="#fietsenwinkel-contacten-iban-d16324e54">IBAN</mim-ref:DatatypeRef>
+                        <mim-ref:DatatypeRef index="2991" xlink:href="#E5445462_35D6_40f2_84CB_5C9CCCA20E67">IBAN</mim-ref:DatatypeRef>
                      </mim:type>
                      <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-materiele-historie-->
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-indicatie-formele-historie-->
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <!--https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-heeft-tijdlijn-geldigheid-->
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <!--https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-heeft-tijdlijn-registratie-->
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-authentiek-->
                      <mim:authentiek>Overig</mim:authentiek>
@@ -223,7 +258,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
                </mim-ext:kenmerken>
             </mim:Objecttype>
-            <mim:Objecttype index="2710" id="fietsenwinkel-contacten-contact-d16324e250">
+            <mim:Objecttype index="2756" id="B93B30C2_103B_4b4e_A940_5997B0595ACD">
+               <mim:identificatie>B93B30C2_103B_4b4e_A940_5997B0595ACD</mim:identificatie>
                <mim:naam>Contact</mim:naam>
                <mim:herkomst>IFO</mim:herkomst>
                <mim:definitie>
@@ -235,7 +271,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                <mim:datumOpname>14-12-2021</mim:datumOpname>
                <mim:indicatieAbstractObject>true</mim:indicatieAbstractObject>
                <mim:attribuutsoorten>
-                  <mim:Attribuutsoort index="2727" id="fietsenwinkel-contacten-contact-naam-d16324e270">
+                  <mim:Attribuutsoort index="2773" id="6EDFE7CC-4756-4de9-816B-6F51C4851DF5">
+                     <mim:identificatie>6EDFE7CC-4756-4de9-816B-6F51C4851DF5</mim:identificatie>
                      <mim:naam>naam</mim:naam>
                      <mim:herkomst>IMFW</mim:herkomst>
                      <mim:definitie>
@@ -252,10 +289,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      </mim:toelichting>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="2727">CharacterString</mim:Datatype>
+                        <mim:Datatype index="2773">CharacterString</mim:Datatype>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -269,7 +308,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   </mim:Attribuutsoort>
                </mim:attribuutsoorten>
                <mim:gegevensgroepen><!--https://docs.geostandaarden.nl/mim/mim/#gegevensgroep-->
-                  <mim:Gegevensgroep index="2794" id="fietsenwinkel-contacten-contact-postadres-d16324e321">
+                  <mim:Gegevensgroep index="2840" id="2EABD06B-A438-403b-A6AF-B733F790BC2A">
+                     <mim:identificatie>2EABD06B-A438-403b-A6AF-B733F790BC2A</mim:identificatie>
                      <mim:naam>postadres</mim:naam>
                      <mim:herkomst>IMFW</mim:herkomst>
                      <mim:definitie>
@@ -281,10 +321,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>true</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:gegevensgroeptype>
-                        <mim-ref:GegevensgroeptypeRef index="2794" xlink:href="#fietsenwinkel-contacten-adres-d16324e712">Adres</mim-ref:GegevensgroeptypeRef>
+                        <mim-ref:GegevensgroeptypeRef index="2840" xlink:href="#7D1B1870_6B45_49d9_A853_F26E28CC83B2">Adres</mim-ref:GegevensgroeptypeRef>
                      </mim:gegevensgroeptype>
                      <mim-ext:kenmerken>
                         <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
@@ -293,7 +335,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   </mim:Gegevensgroep>
                </mim:gegevensgroepen>
                <mim:relatiesoorten><!--https://docs.geostandaarden.nl/mim/mim/#relatiesoort-->
-                  <mim:Relatiesoort index="2846" id="fietsenwinkel-contacten-contact-betaling-d16324e355">
+                  <mim:Relatiesoort index="2892" id="15A6A6C2_C517_432d_BC60_2D0AECBD3CE1">
+                     <mim:identificatie>15A6A6C2_C517_432d_BC60_2D0AECBD3CE1</mim:identificatie>
                      <mim:naam>betaling</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -305,6 +348,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1..*</mim:kardinaliteit>
                      <mim:kardinaliteitBron>1</mim:kardinaliteitBron>
                      <mim:authentiek>Overig</mim:authentiek>
@@ -316,12 +361,13 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-aggregatietype-->
                      <mim:aggregatietype>Geen</mim:aggregatietype>
                      <mim:doel>
-                        <mim-ref:KeuzeRef index="2846"
+                        <mim-ref:KeuzeRef index="2892"
                                           label="betaling"
-                                          xlink:href="#fietsenwinkel-contacten-betaalmiddel-d16324e866">Betaalmiddel</mim-ref:KeuzeRef>
+                                          xlink:href="#39BFBB8F_AD55_498f_8C9D_A50F7935D68F">Betaalmiddel</mim-ref:KeuzeRef>
                      </mim:doel>
                      <mim:relatierollen>
-                        <mim:Doel id="fietsenwinkel-contacten-contact-betaling-betaalmiddel-d16324e397">
+                        <mim:Doel id="15A6A6C2_C517_432d_BC60_2D0AECBD3CE1_T">
+                           <mim:identificatie>15A6A6C2_C517_432d_BC60_2D0AECBD3CE1_T</mim:identificatie>
                            <mim:naam>betaalmiddel</mim:naam>
                            <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                            <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
@@ -341,7 +387,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
                </mim-ext:kenmerken>
             </mim:Objecttype>
-            <mim:Objecttype index="1894" id="fietsenwinkel-contacten-creditcard-d16324e420">
+            <mim:Objecttype index="1909" id="27A79321_8FC3_4b2e_8962_48A41DC66766">
+               <mim:identificatie>27A79321_8FC3_4b2e_8962_48A41DC66766</mim:identificatie>
                <mim:naam>Creditcard</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -353,8 +400,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                <mim:datumOpname>14-12-2021</mim:datumOpname>
                <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
                <mim:attribuutsoorten>
-                  <mim:Attribuutsoort index="1910"
-                                      id="fietsenwinkel-contacten-creditcard-kaartnummer-d16324e440">
+                  <mim:Attribuutsoort index="1925" id="FEC7927E-5237-4155-B3F5-1AD68904BA44">
+                     <mim:identificatie>FEC7927E-5237-4155-B3F5-1AD68904BA44</mim:identificatie>
                      <mim:naam>Kaartnummer</mim:naam>
                      <mim:herkomst>IMFW</mim:herkomst>
                      <mim:definitie>
@@ -365,12 +412,14 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="1910">CharacterString</mim:Datatype>
+                        <mim:Datatype index="1925">CharacterString</mim:Datatype>
                      </mim:type>
                      <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-lengte-->
                      <mim:lengte>16</mim:lengte>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -382,8 +431,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="1970"
-                                      id="fietsenwinkel-contacten-creditcard-verloopdatum-d16324e484">
+                  <mim:Attribuutsoort index="1985" id="1EAA7930-1983-4106-BE0E-52C804B42F96">
+                     <mim:identificatie>1EAA7930-1983-4106-BE0E-52C804B42F96</mim:identificatie>
                      <mim:naam>Verloopdatum</mim:naam>
                      <mim:herkomst>IMFW</mim:herkomst>
                      <mim:definitie>
@@ -394,11 +443,13 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="1970">CharacterString</mim:Datatype>
+                        <mim:Datatype index="1985">CharacterString</mim:Datatype>
                      </mim:type>
                      <mim:formeelPatroon>\d{2}/\d{2}</mim:formeelPatroon>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -416,7 +467,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
                </mim-ext:kenmerken>
             </mim:Objecttype>
-            <mim:Objecttype index="2149" id="fietsenwinkel-contacten-klant-d16324e533">
+            <mim:Objecttype index="2164" id="3889C13B_D1A6_440e_AB89_1E6AC14950B8">
+               <mim:identificatie>3889C13B_D1A6_440e_AB89_1E6AC14950B8</mim:identificatie>
                <mim:naam>Klant</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -428,12 +480,13 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                <mim:datumOpname>14-12-2021</mim:datumOpname>
                <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
                <mim:supertypen>
-                  <mim:GeneralisatieObjecttypen index="2165" id="fietsenwinkel-contacten-klant-d16324e553">
+                  <mim:GeneralisatieObjecttypen index="2180" id="F91CA689_5B4B_472b_A6F7_E77C7FC850C6">
+                     <mim:identificatie>F91CA689_5B4B_472b_A6F7_E77C7FC850C6</mim:identificatie>
                      <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                      <!--https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-mixin-->
                      <mim:mixin>false</mim:mixin>
                      <mim:supertype>
-                        <mim-ref:ObjecttypeRef index="2165" xlink:href="#fietsenwinkel-contacten-contact-d16324e250">Contact</mim-ref:ObjecttypeRef>
+                        <mim-ref:ObjecttypeRef index="2180" xlink:href="#B93B30C2_103B_4b4e_A940_5997B0595ACD">Contact</mim-ref:ObjecttypeRef>
                      </mim:supertype>
                      <mim-ext:kenmerken>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
@@ -441,7 +494,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   </mim:GeneralisatieObjecttypen>
                </mim:supertypen>
                <mim:attribuutsoorten>
-                  <mim:Attribuutsoort index="2172" id="fietsenwinkel-contacten-klant-nieuwsbrief-d16324e565">
+                  <mim:Attribuutsoort index="2187" id="A3091298-E5EF-41a0-A4F1-8C1D33C8430A">
+                     <mim:identificatie>A3091298-E5EF-41a0-A4F1-8C1D33C8430A</mim:identificatie>
                      <mim:naam>nieuwsbrief</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -452,10 +506,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="2172">Boolean</mim:Datatype>
+                        <mim:Datatype index="2187">Boolean</mim:Datatype>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -469,15 +525,20 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   </mim:Attribuutsoort>
                </mim:attribuutsoorten>
                <mim:externeKoppelingen><!--https://docs.geostandaarden.nl/mim/mim/#externe-koppeling-->
-                  <mim:ExterneKoppeling index="2229" id="fietsenwinkel-contacten-klant-betreft-d16324e608">
+                  <mim:ExterneKoppeling index="2244" id="1D20BC61_6F6A_49a8_A3AF_C972B144BD12">
+                     <mim:identificatie>1D20BC61_6F6A_49a8_A3AF_C972B144BD12</mim:identificatie>
                      <mim:naam>betreft</mim:naam>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
+                     <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                     <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:unidirectioneel>true</mim:unidirectioneel>
                      <mim:aggregatietype>Compositie</mim:aggregatietype>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-doel-->
                      <mim:doel>
-                        <mim-ref:ObjecttypeRef index="2229" xlink:href="#fietsenwinkel-personen-persoon-d16324e2517">Persoon</mim-ref:ObjecttypeRef>
+                        <mim-ref:ObjecttypeRef index="2244" xlink:href="#DAFDB181_6B75_4ad9_8D97_3E59B9E69909">Persoon</mim-ref:ObjecttypeRef>
                      </mim:doel>
                      <mim-ext:kenmerken>
                         <mim-ext:Kenmerk naam="positie">200</mim-ext:Kenmerk>
@@ -490,7 +551,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
                </mim-ext:kenmerken>
             </mim:Objecttype>
-            <mim:Objecttype index="2053" id="fietsenwinkel-contacten-leverancier-d16324e632">
+            <mim:Objecttype index="2068" id="2D448C2E_89D0_4fde_8A11_1146D053F3BD">
+               <mim:identificatie>2D448C2E_89D0_4fde_8A11_1146D053F3BD</mim:identificatie>
                <mim:naam>Leverancier</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -502,11 +564,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                <mim:datumOpname>14-12-2021</mim:datumOpname>
                <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
                <mim:supertypen>
-                  <mim:GeneralisatieObjecttypen index="2069" id="fietsenwinkel-contacten-leverancier-d16324e652">
+                  <mim:GeneralisatieObjecttypen index="2084" id="2C7BF2CD_AFF7_4d5c_B87E_0C1B935CC665">
+                     <mim:identificatie>2C7BF2CD_AFF7_4d5c_B87E_0C1B935CC665</mim:identificatie>
                      <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                      <mim:mixin>false</mim:mixin>
                      <mim:supertype>
-                        <mim-ref:ObjecttypeRef index="2069" xlink:href="#fietsenwinkel-contacten-contact-d16324e250">Contact</mim-ref:ObjecttypeRef>
+                        <mim-ref:ObjecttypeRef index="2084" xlink:href="#B93B30C2_103B_4b4e_A940_5997B0595ACD">Contact</mim-ref:ObjecttypeRef>
                      </mim:supertype>
                      <mim-ext:kenmerken>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
@@ -514,8 +577,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   </mim:GeneralisatieObjecttypen>
                </mim:supertypen>
                <mim:attribuutsoorten>
-                  <mim:Attribuutsoort index="2076"
-                                      id="fietsenwinkel-contacten-leverancier-kvknummer-d16324e664">
+                  <mim:Attribuutsoort index="2091" id="70CE383D-0FE0-466e-85E7-7B8C314799AA">
+                     <mim:identificatie>70CE383D-0FE0-466e-85E7-7B8C314799AA</mim:identificatie>
                      <mim:naam>kvk nummer</mim:naam>
                      <mim:herkomst>IMFW</mim:herkomst>
                      <mim:definitie>
@@ -526,10 +589,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim-ref:DatatypeRef index="2076" xlink:href="#fietsenwinkel-contacten-kvklijst-d16324e88">KVK lijst</mim-ref:DatatypeRef>
+                        <mim-ref:DatatypeRef index="2091" xlink:href="#39E798CA_774B_437f_9E55_2A90B4F13A9B">KVK lijst</mim-ref:DatatypeRef>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -549,7 +614,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
             </mim:Objecttype>
          </mim:objecttypen>
          <mim:gegevensgroeptypen><!--https://docs.geostandaarden.nl/mim/mim/#gegevensgroeptype-->
-            <mim:Gegevensgroeptype index="2504" id="fietsenwinkel-contacten-adres-d16324e712">
+            <mim:Gegevensgroeptype index="2550" id="7D1B1870_6B45_49d9_A853_F26E28CC83B2">
+               <mim:identificatie>7D1B1870_6B45_49d9_A853_F26E28CC83B2</mim:identificatie>
                <mim:naam>Adres</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -560,7 +626,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
                <mim:datumOpname>14-12-2021</mim:datumOpname>
                <mim:attribuutsoorten>
-                  <mim:Attribuutsoort index="2521" id="fietsenwinkel-contacten-adres-postcode-d16324e730">
+                  <mim:Attribuutsoort index="2567" id="0758E192-B24F-456e-AF40-FC6D98783010">
+                     <mim:identificatie>0758E192-B24F-456e-AF40-FC6D98783010</mim:identificatie>
                      <mim:naam>postcode</mim:naam>
                      <mim:herkomst>IMFW</mim:herkomst>
                      <mim:definitie>
@@ -571,12 +638,14 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="2521">CharacterString</mim:Datatype>
+                        <mim:Datatype index="2567">CharacterString</mim:Datatype>
                      </mim:type>
                      <mim:patroon>Vier cijfers, en dan twee letters in kapitaal, opgenomen in de post-nl postcodelijst</mim:patroon>
                      <mim:formeelPatroon>[0-9]{4}[A-Z]{2}</mim:formeelPatroon>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -588,7 +657,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="2584" id="fietsenwinkel-contacten-adres-huisnummer-d16324e776">
+                  <mim:Attribuutsoort index="2630" id="30CD27AB-4B91-495c-B211-99D18B54D52D">
+                     <mim:identificatie>30CD27AB-4B91-495c-B211-99D18B54D52D</mim:identificatie>
                      <mim:naam>huisnummer</mim:naam>
                      <mim:herkomst>IMFW</mim:herkomst>
                      <mim:definitie>
@@ -599,10 +669,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="2584">CharacterString</mim:Datatype>
+                        <mim:Datatype index="2630">CharacterString</mim:Datatype>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -614,7 +686,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="2640" id="fietsenwinkel-contacten-adres-locatie-d16324e818">
+                  <mim:Attribuutsoort index="2686" id="8F418DD7-2A86-405c-B0EB-172E17E8F58A">
+                     <mim:identificatie>8F418DD7-2A86-405c-B0EB-172E17E8F58A</mim:identificatie>
                      <mim:naam>locatie</mim:naam>
                      <mim:herkomst>IMFW</mim:herkomst>
                      <mim:definitie>
@@ -625,11 +698,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim-ref:KeuzeRef index="2640"
-                                          xlink:href="#fietsenwinkel-contacten-geografischelocatie-d16324e893">Geografische locatie</mim-ref:KeuzeRef>
+                        <mim-ref:KeuzeRef index="2686" xlink:href="#1A23AC81_D1EE_4896_93A5_1C697F4DE163">Geografische locatie</mim-ref:KeuzeRef>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>0..1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -649,7 +723,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
             </mim:Gegevensgroeptype>
          </mim:gegevensgroeptypen>
          <mim:keuzen>
-            <mim:Keuze index="2282" id="fietsenwinkel-contacten-betaalmiddel-d16324e866">
+            <mim:Keuze index="2297" id="39BFBB8F_AD55_498f_8C9D_A50F7935D68F">
+               <mim:identificatie>39BFBB8F_AD55_498f_8C9D_A50F7935D68F</mim:identificatie>
                <mim:naam>Betaalmiddel</mim:naam>
                <mim:herkomst>IFO</mim:herkomst>
                <mim:definitie>
@@ -659,15 +734,15 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                </mim:definitie>
                <mim:datumOpname>14-12-2021</mim:datumOpname>
                <mim:keuzeRelatiedoelen>
-                  <mim:Relatiedoel id="fietsenwinkel-contacten-betaalmiddel-d16324e882">
-                     <mim-ref:ObjecttypeRef index="2300"
+                  <mim:Relatiedoel id="5952DCDF_8AED_4633_84E2_D50AFE737F09">
+                     <mim-ref:ObjecttypeRef index="2315"
                                             label="bank"
-                                            xlink:href="#fietsenwinkel-contacten-bankrekening-d16324e183">Bankrekening</mim-ref:ObjecttypeRef>
+                                            xlink:href="#C0EDB7BB_8747_4fca_ACCB_D1D2C182B4C2">Bankrekening</mim-ref:ObjecttypeRef>
                   </mim:Relatiedoel>
-                  <mim:Relatiedoel id="fietsenwinkel-contacten-betaalmiddel-d16324e885">
-                     <mim-ref:ObjecttypeRef index="2335"
+                  <mim:Relatiedoel id="B365B9AD_EA5B_4804_914C_E9FA7420AA4F">
+                     <mim-ref:ObjecttypeRef index="2350"
                                             label="credit"
-                                            xlink:href="#fietsenwinkel-contacten-creditcard-d16324e420">Creditcard</mim-ref:ObjecttypeRef>
+                                            xlink:href="#27A79321_8FC3_4b2e_8962_48A41DC66766">Creditcard</mim-ref:ObjecttypeRef>
                   </mim:Relatiedoel>
                </mim:keuzeRelatiedoelen>
                <mim-ext:kenmerken>
@@ -675,8 +750,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
                </mim-ext:kenmerken>
             </mim:Keuze>
-            <mim:Keuze index="1789"
-                       id="fietsenwinkel-contacten-geografischelocatie-d16324e893">
+            <mim:Keuze index="1804" id="1A23AC81_D1EE_4896_93A5_1C697F4DE163">
+               <mim:identificatie>1A23AC81_D1EE_4896_93A5_1C697F4DE163</mim:identificatie>
                <mim:naam>Geografische locatie</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -686,12 +761,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                </mim:definitie>
                <mim:datumOpname>14-12-2021</mim:datumOpname>
                <mim:keuzeDatatypen>
-                  <mim-ext:ConstructieRef index="1806"
+                  <mim-ext:ConstructieRef index="1821"
                                           label="punt"
-                                          xlink:href="#fietsenwinkel-gml-gmpoint-d16324e2655">GM_Point</mim-ext:ConstructieRef>
-                  <mim-ext:ConstructieRef index="1840"
+                                          xlink:href="#079B935A_189C_456e_B4E0_4C144BFBB6D3">GM_Point</mim-ext:ConstructieRef>
+                  <mim-ext:ConstructieRef index="1855"
                                           label="vlak"
-                                          xlink:href="#fietsenwinkel-gml-gmpolygon-d16324e2663">GM_Polygon</mim-ext:ConstructieRef>
+                                          xlink:href="#0A24E3A4_A056_41f5_90FD_C21F8E1C4E43">GM_Polygon</mim-ext:ConstructieRef>
                </mim:keuzeDatatypen>
                <mim-ext:kenmerken>
                   <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
@@ -708,7 +783,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
             <mim-ext:Kenmerk naam="namespace">https://docs.geostandaarden.nl/mim/primer/Fietsenwinkel/Contacten</mim-ext:Kenmerk>
          </mim-ext:kenmerken>
       </mim:Domein>
-      <mim:Domein index="3216" id="fietsenwinkel-gemeenschappelijketypen-d16324e931">
+      <mim:Domein index="3262" id="12175A05_8FBD_42a4_8E2A_C239A15A3710">
+         <mim:identificatie>12175A05_8FBD_42a4_8E2A_C239A15A3710</mim:identificatie>
          <mim:naam>Gemeenschappelijke typen</mim:naam>
          <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
          <mim:definitie>
@@ -719,8 +795,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
          <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
          <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
          <mim:datatypen><!--https://docs.geostandaarden.nl/mim/mim/#gestructureerd-datatype-->
-            <mim:GestructureerdDatatype index="3290"
-                                        id="fietsenwinkel-gemeenschappelijketypen-dimensies-d16324e949">
+            <mim:GestructureerdDatatype index="3336" id="D3F706FC_6A43_4c26_849E_9A6610B0484D">
+               <mim:identificatie>D3F706FC_6A43_4c26_849E_9A6610B0484D</mim:identificatie>
                <mim:naam>Dimensies</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -730,8 +806,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                </mim:definitie>
                <mim:datumOpname>2021-10-14</mim:datumOpname>
                <mim:dataElementen><!--https://docs.geostandaarden.nl/mim/mim/#data-element-->
-                  <mim:DataElement index="3306"
-                                   id="fietsenwinkel-gemeenschappelijketypen-dimensies-lengte-d16324e965">
+                  <mim:DataElement index="3352" id="40623B27-D874-43e9-89D2-1FA4EC8F66B1">
+                     <mim:identificatie>40623B27-D874-43e9-89D2-1FA4EC8F66B1</mim:identificatie>
                      <mim:naam>lengte</mim:naam>
                      <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                      <mim:definitie>
@@ -741,16 +817,17 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      </mim:definitie>
                      <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="3306">Integer</mim:Datatype>
+                        <mim:Datatype index="3352">Integer</mim:Datatype>
                      </mim:type>
+                     <mim:eenheid>mm</mim:eenheid>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim-ext:kenmerken>
                         <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:DataElement>
-                  <mim:DataElement index="3341"
-                                   id="fietsenwinkel-gemeenschappelijketypen-dimensies-breedte-d16324e990">
+                  <mim:DataElement index="3390" id="795CB9A6-08C9-486f-8D61-E366F6325216">
+                     <mim:identificatie>795CB9A6-08C9-486f-8D61-E366F6325216</mim:identificatie>
                      <mim:naam>breedte</mim:naam>
                      <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                      <mim:definitie>
@@ -760,16 +837,17 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      </mim:definitie>
                      <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="3341">Integer</mim:Datatype>
+                        <mim:Datatype index="3390">Integer</mim:Datatype>
                      </mim:type>
+                     <mim:eenheid>mm</mim:eenheid>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim-ext:kenmerken>
                         <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:DataElement>
-                  <mim:DataElement index="3376"
-                                   id="fietsenwinkel-gemeenschappelijketypen-dimensies-hoogte-d16324e1015">
+                  <mim:DataElement index="3428" id="6627971A-5CC9-41cb-A9AF-5F06E399D7D4">
+                     <mim:identificatie>6627971A-5CC9-41cb-A9AF-5F06E399D7D4</mim:identificatie>
                      <mim:naam>hoogte</mim:naam>
                      <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                      <mim:definitie>
@@ -779,8 +857,9 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      </mim:definitie>
                      <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="3376">Integer</mim:Datatype>
+                        <mim:Datatype index="3428">Integer</mim:Datatype>
                      </mim:type>
+                     <mim:eenheid>mm</mim:eenheid>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim-ext:kenmerken>
                         <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
@@ -793,8 +872,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
                </mim-ext:kenmerken>
             </mim:GestructureerdDatatype>
-            <mim:PrimitiefDatatype index="3247"
-                                   id="fietsenwinkel-gemeenschappelijketypen-garantienummer-d16324e1045">
+            <mim:PrimitiefDatatype index="3293" id="527055C2_F686_4cbf_A2A1_331BA4A2A1E0">
+               <mim:identificatie>527055C2_F686_4cbf_A2A1_331BA4A2A1E0</mim:identificatie>
                <mim:naam>Garantienummer</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -818,21 +897,23 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
             <mim-ext:Kenmerk naam="namespace">https://docs.geostandaarden.nl/mim/primer/Fietsenwinkel/Typen</mim-ext:Kenmerk>
          </mim-ext:kenmerken>
       </mim:Domein>
-      <mim:Domein index="136" id="fietsenwinkel-inventaris-d16324e1078">
+      <mim:Domein index="136" id="5519BCCA_0D21_4104_83DB_4CECC37D50D4">
+         <mim:identificatie>5519BCCA_0D21_4104_83DB_4CECC37D50D4</mim:identificatie>
          <mim:naam>Inventaris</mim:naam>
          <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
          <mim:definitie>
             <xhtml:body>
                <xhtml:p>Een submodel voor klanten van de fabriek.</xhtml:p>
                <xhtml:p>
-                  <xhtml:a>armatiek</xhtml:a>
+                  <xhtml:a href="https://armatiek.nl" shape="rect">armatiek</xhtml:a>
                </xhtml:p>
             </xhtml:body>
          </mim:definitie>
          <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
          <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
          <mim:datatypen><!--https://docs.geostandaarden.nl/mim/mim/#codelijst-->
-            <mim:Codelijst index="653" id="fietsenwinkel-inventaris-kettinglijst-d16324e1102">
+            <mim:Codelijst index="662" id="7A289B92_0934_4073_B688_CBC48FD494CD">
+               <mim:identificatie>7A289B92_0934_4073_B688_CBC48FD494CD</mim:identificatie>
                <mim:naam>Ketting lijst</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -848,7 +929,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
                </mim-ext:kenmerken>
             </mim:Codelijst>
-            <mim:Codelijst index="802" id="fietsenwinkel-inventaris-snaarlijst-d16324e1126">
+            <mim:Codelijst index="811" id="9B715549_F130_4d41_9BA0_4E8D6FFA84EC">
+               <mim:identificatie>9B715549_F130_4d41_9BA0_4E8D6FFA84EC</mim:identificatie>
                <mim:naam>Snaar lijst</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -865,7 +947,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                </mim-ext:kenmerken>
             </mim:Codelijst>
             <!--https://docs.geostandaarden.nl/mim/mim/#enumeratie-->
-            <mim:Enumeratie index="179" id="fietsenwinkel-inventaris-sportfietstypen-d16324e1150">
+            <mim:Enumeratie index="179" id="2B05F37E_ECA2_44e3_AEB3_BF979349B52D">
+               <mim:identificatie>2B05F37E_ECA2_44e3_AEB3_BF979349B52D</mim:identificatie>
                <mim:naam>Sportfiets typen</mim:naam>
                <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                <mim:definitie>
@@ -876,9 +959,13 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                <mim:herkomstDefinitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomstDefinitie>
                <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                <mim:waarden><!--https://docs.geostandaarden.nl/mim/mim/#enumeratiewaarde-->
-                  <mim:Waarde index="195"
-                              id="fietsenwinkel-inventaris-sportfietstypen-cube-d16324e1168">
+                  <mim:Waarde index="195" id="7EE151F6-A18F-4260-B5C7-93CDFB06565A">
+                     <mim:identificatie>7EE151F6-A18F-4260-B5C7-93CDFB06565A</mim:identificatie>
                      <mim:naam>Cube</mim:naam>
+                     <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-begrip-->
+                     <mim:begrip>cubefiets</mim:begrip>
+                     <mim:begrip>cubebike</mim:begrip>
+                     <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
                         <xhtml:body>
                            <xhtml:p>Een sportfiets van type Cube</xhtml:p>
@@ -893,8 +980,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="startwaarde">01</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Waarde>
-                  <mim:Waarde index="220"
-                              id="fietsenwinkel-inventaris-sportfietstypen-bianchi-d16324e1190">
+                  <mim:Waarde index="229" id="4FFE10B7-88A4-4fe4-8FF9-263E87201CB1">
+                     <mim:identificatie>4FFE10B7-88A4-4fe4-8FF9-263E87201CB1</mim:identificatie>
                      <mim:naam>Bianchi</mim:naam>
                      <mim:definitie>
                         <xhtml:body>
@@ -909,8 +996,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="startwaarde">02</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Waarde>
-                  <mim:Waarde index="245"
-                              id="fietsenwinkel-inventaris-sportfietstypen-giant-d16324e1212">
+                  <mim:Waarde index="254" id="876A9FB8-9C42-4693-A88A-95666D0A610D">
+                     <mim:identificatie>876A9FB8-9C42-4693-A88A-95666D0A610D</mim:identificatie>
                      <mim:naam>Giant</mim:naam>
                      <mim:definitie>
                         <xhtml:body>
@@ -924,8 +1011,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Waarde>
-                  <mim:Waarde index="269"
-                              id="fietsenwinkel-inventaris-sportfietstypen-canondale-d16324e1232">
+                  <mim:Waarde index="278" id="AED2BC93-1B93-4700-92C5-0ED787EAF09C">
+                     <mim:identificatie>AED2BC93-1B93-4700-92C5-0ED787EAF09C</mim:identificatie>
                      <mim:naam>Canondale</mim:naam>
                      <mim:definitie>
                         <xhtml:body>
@@ -947,7 +1034,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
             </mim:Enumeratie>
          </mim:datatypen>
          <mim:objecttypen>
-            <mim:Objecttype index="363" id="fietsenwinkel-inventaris-batterij-d16324e1258">
+            <mim:Objecttype index="372" id="70BC0546_B6E0_49b7_9A79_E823F4D86D0A">
+               <mim:identificatie>70BC0546_B6E0_49b7_9A79_E823F4D86D0A</mim:identificatie>
                <mim:naam>Batterij</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -959,8 +1047,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                <mim:datumOpname>14-12-2021</mim:datumOpname>
                <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
                <mim:attribuutsoorten>
-                  <mim:Attribuutsoort index="379"
-                                      id="fietsenwinkel-inventaris-batterij-garantienummer-d16324e1278">
+                  <mim:Attribuutsoort index="388" id="2EAD414F-8494-4982-B9E2-A356F4130D7F">
+                     <mim:identificatie>2EAD414F-8494-4982-B9E2-A356F4130D7F</mim:identificatie>
                      <mim:naam>garantienummer</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -971,11 +1059,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim-ref:DatatypeRef index="379"
-                                             xlink:href="#fietsenwinkel-gemeenschappelijketypen-garantienummer-d16324e1045">Garantienummer</mim-ref:DatatypeRef>
+                        <mim-ref:DatatypeRef index="388" xlink:href="#527055C2_F686_4cbf_A2A1_331BA4A2A1E0">Garantienummer</mim-ref:DatatypeRef>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -987,7 +1076,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="430" id="fietsenwinkel-inventaris-batterij-omvang-d16324e1323">
+                  <mim:Attribuutsoort index="439" id="C064C925-DE8E-43cd-AF04-437794FBE0B6">
+                     <mim:identificatie>C064C925-DE8E-43cd-AF04-437794FBE0B6</mim:identificatie>
                      <mim:naam>omvang</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -998,11 +1088,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim-ref:DatatypeRef index="430"
-                                             xlink:href="#fietsenwinkel-gemeenschappelijketypen-dimensies-d16324e949">Dimensies</mim-ref:DatatypeRef>
+                        <mim-ref:DatatypeRef index="439" xlink:href="#D3F706FC_6A43_4c26_849E_9A6610B0484D">Dimensies</mim-ref:DatatypeRef>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1020,8 +1111,11 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
                </mim-ext:kenmerken>
             </mim:Objecttype>
-            <mim:Objecttype index="1064" id="fietsenwinkel-inventaris-fiets-d16324e1370">
+            <mim:Objecttype index="1073" id="D7087089_5FAD_47f5_836F_CC6167ADADE2">
+               <mim:identificatie>D7087089_5FAD_47f5_836F_CC6167ADADE2</mim:identificatie>
                <mim:naam>Fiets</mim:naam>
+               <mim:begrip>Rijwiel</mim:begrip>
+               <mim:begrip>Fiets</mim:begrip>
                <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                <mim:definitie>
                   <xhtml:body>
@@ -1032,7 +1126,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                <mim:indicatieAbstractObject>true</mim:indicatieAbstractObject>
                <mim:attribuutsoorten>
-                  <mim:Attribuutsoort index="1081" id="fietsenwinkel-inventaris-fiets-id-d16324e1390">
+                  <mim:Attribuutsoort index="1090" id="BCE26786-379F-458f-A285-686F6E8D0B51">
+                     <mim:identificatie>BCE26786-379F-458f-A285-686F6E8D0B51</mim:identificatie>
                      <mim:naam>id</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1048,10 +1143,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      </mim:toelichting>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="1081">CharacterString</mim:Datatype>
+                        <mim:Datatype index="1090">CharacterString</mim:Datatype>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>true</mim:indicatieAfleidbaar>
@@ -1064,8 +1161,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="is-value-derived">true</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="1149"
-                                      id="fietsenwinkel-inventaris-fiets-leveringsdatum-d16324e1442">
+                  <mim:Attribuutsoort index="1158" id="9E323847-C0DA-4ebf-A48A-75A69620B58A">
+                     <mim:identificatie>9E323847-C0DA-4ebf-A48A-75A69620B58A</mim:identificatie>
                      <mim:naam>leveringsdatum</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1076,10 +1173,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="1149">Date</mim:Datatype>
+                        <mim:Datatype index="1158">Date</mim:Datatype>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1091,7 +1190,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="1205" id="fietsenwinkel-inventaris-fiets-omvang-d16324e1484">
+                  <mim:Attribuutsoort index="1214" id="BC07CBCB-E31D-484c-9F48-EE477B258D2B">
+                     <mim:identificatie>BC07CBCB-E31D-484c-9F48-EE477B258D2B</mim:identificatie>
                      <mim:naam>omvang</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1102,11 +1202,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim-ref:DatatypeRef index="1205"
-                                             xlink:href="#fietsenwinkel-gemeenschappelijketypen-dimensies-d16324e949">Dimensies</mim-ref:DatatypeRef>
+                        <mim-ref:DatatypeRef index="1214" xlink:href="#D3F706FC_6A43_4c26_849E_9A6610B0484D">Dimensies</mim-ref:DatatypeRef>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1118,7 +1219,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="1255" id="fietsenwinkel-inventaris-fiets-typenummer-d16324e1526">
+                  <mim:Attribuutsoort index="1264" id="ECD38269-2773-4e23-B0D3-305F8D2AC3F7">
+                     <mim:identificatie>ECD38269-2773-4e23-B0D3-305F8D2AC3F7</mim:identificatie>
                      <mim:naam>typenummer</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1134,10 +1236,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      </mim:toelichting>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="1255">CharacterString</mim:Datatype>
+                        <mim:Datatype index="1264">CharacterString</mim:Datatype>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1149,8 +1253,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="1321"
-                                      id="fietsenwinkel-inventaris-fiets-verkoopprijs-d16324e1576">
+                  <mim:Attribuutsoort index="1330" id="35530575-4E72-4be3-ADEE-A31BE8D7CC6D">
+                     <mim:identificatie>35530575-4E72-4be3-ADEE-A31BE8D7CC6D</mim:identificatie>
                      <mim:naam>verkoopprijs</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1161,10 +1265,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="1321">Decimal</mim:Datatype>
+                        <mim:Datatype index="1330">Decimal</mim:Datatype>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1176,8 +1282,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="1377"
-                                      id="fietsenwinkel-inventaris-fiets-versnellingen-d16324e1618">
+                  <mim:Attribuutsoort index="1386" id="15FDFF94-C39F-4618-B9C5-3148A81C85DC">
+                     <mim:identificatie>15FDFF94-C39F-4618-B9C5-3148A81C85DC</mim:identificatie>
                      <mim:naam>versnellingen</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1193,10 +1299,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      </mim:toelichting>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="1377">Integer</mim:Datatype>
+                        <mim:Datatype index="1386">Integer</mim:Datatype>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>0..1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1208,7 +1316,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="1443" id="fietsenwinkel-inventaris-fiets-volgnummer-d16324e1668">
+                  <mim:Attribuutsoort index="1452" id="C7AFA090-5813-4e32-B75B-5211C0D4D19B">
+                     <mim:identificatie>C7AFA090-5813-4e32-B75B-5211C0D4D19B</mim:identificatie>
                      <mim:naam>volgnummer</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1219,10 +1328,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="1443">Integer</mim:Datatype>
+                        <mim:Datatype index="1452">Integer</mim:Datatype>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1236,8 +1347,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   </mim:Attribuutsoort>
                </mim:attribuutsoorten>
                <mim:relatiesoorten>
-                  <mim:Relatiesoort index="1536"
-                                    id="fietsenwinkel-inventaris-fiets-aangestuurddoor-d16324e1711">
+                  <mim:Relatiesoort index="1545" id="9431CA6C_1468_4755_929D_F4141C8987BE">
+                     <mim:identificatie>9431CA6C_1468_4755_929D_F4141C8987BE</mim:identificatie>
                      <mim:naam>aangestuurd door</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1249,6 +1360,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>0..1</mim:kardinaliteit>
                      <mim:kardinaliteitBron>1</mim:kardinaliteitBron>
                      <mim:authentiek>Overig</mim:authentiek>
@@ -1258,12 +1371,13 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:unidirectioneel>true</mim:unidirectioneel>
                      <mim:aggregatietype>Compositie</mim:aggregatietype>
                      <mim:doel>
-                        <mim-ref:ObjecttypeRef index="1536"
+                        <mim-ref:ObjecttypeRef index="1545"
                                                label="aangestuurdDoor"
-                                               xlink:href="#fietsenwinkel-inventaris-batterij-d16324e1258">Batterij</mim-ref:ObjecttypeRef>
+                                               xlink:href="#70BC0546_B6E0_49b7_9A79_E823F4D86D0A">Batterij</mim-ref:ObjecttypeRef>
                      </mim:doel>
                      <mim:relatierollen>
-                        <mim:Doel id="fietsenwinkel-inventaris-fiets-aangestuurddoor-powerunit-d16324e1753">
+                        <mim:Doel id="9431CA6C_1468_4755_929D_F4141C8987BE_T">
+                           <mim:identificatie>9431CA6C_1468_4755_929D_F4141C8987BE_T</mim:identificatie>
                            <mim:naam>powerunit</mim:naam>
                            <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                            <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
@@ -1277,8 +1391,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="kardinaliteitBron">1</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Relatiesoort>
-                  <mim:Relatiesoort index="1598"
-                                    id="fietsenwinkel-inventaris-fiets-geleverddoor-d16324e1771">
+                  <mim:Relatiesoort index="1607" id="CC306A36_585F_4f08_8728_116C447703DF">
+                     <mim:identificatie>CC306A36_585F_4f08_8728_116C447703DF</mim:identificatie>
                      <mim:naam>geleverd door</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1290,6 +1404,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:kardinaliteitBron>1</mim:kardinaliteitBron>
                      <mim:authentiek>Overig</mim:authentiek>
@@ -1299,12 +1415,13 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:unidirectioneel>true</mim:unidirectioneel>
                      <mim:aggregatietype>Geen</mim:aggregatietype>
                      <mim:doel>
-                        <mim-ref:ObjecttypeRef index="1598"
+                        <mim-ref:ObjecttypeRef index="1607"
                                                label="geleverdDoor"
-                                               xlink:href="#fietsenwinkel-contacten-leverancier-d16324e632">Leverancier</mim-ref:ObjecttypeRef>
+                                               xlink:href="#2D448C2E_89D0_4fde_8A11_1146D053F3BD">Leverancier</mim-ref:ObjecttypeRef>
                      </mim:doel>
                      <mim:relatierollen>
-                        <mim:Doel id="fietsenwinkel-inventaris-fiets-geleverddoor-aanleveraar-d16324e1813">
+                        <mim:Doel id="CC306A36_585F_4f08_8728_116C447703DF_T">
+                           <mim:identificatie>CC306A36_585F_4f08_8728_116C447703DF_T</mim:identificatie>
                            <mim:naam>aanleveraar</mim:naam>
                            <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                            <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
@@ -1318,8 +1435,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         <mim-ext:Kenmerk naam="kardinaliteitBron">1</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Relatiesoort>
-                  <mim:Relatiesoort index="1659"
-                                    id="fietsenwinkel-inventaris-fiets-verkochtaan-d16324e1831">
+                  <mim:Relatiesoort index="1668" id="E0F8AED7_C161_4b0d_9F21_B342E6D26F42">
+                     <mim:identificatie>E0F8AED7_C161_4b0d_9F21_B342E6D26F42</mim:identificatie>
                      <mim:naam>verkocht aan</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1336,6 +1453,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>0..1</mim:kardinaliteit>
                      <mim:kardinaliteitBron>1</mim:kardinaliteitBron>
                      <mim:authentiek>Overig</mim:authentiek>
@@ -1345,12 +1464,13 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                      <mim:unidirectioneel>true</mim:unidirectioneel>
                      <mim:aggregatietype>Geen</mim:aggregatietype>
                      <mim:doel>
-                        <mim-ref:ObjecttypeRef index="1659"
+                        <mim-ref:ObjecttypeRef index="1668"
                                                label="verkochtAan"
-                                               xlink:href="#fietsenwinkel-contacten-klant-d16324e533">Klant</mim-ref:ObjecttypeRef>
+                                               xlink:href="#3889C13B_D1A6_440e_AB89_1E6AC14950B8">Klant</mim-ref:ObjecttypeRef>
                      </mim:doel>
                      <mim:relatierollen>
-                        <mim:Doel id="fietsenwinkel-inventaris-fiets-verkochtaan-ontvanger-d16324e1887">
+                        <mim:Doel id="E0F8AED7_C161_4b0d_9F21_B342E6D26F42_T">
+                           <mim:identificatie>E0F8AED7_C161_4b0d_9F21_B342E6D26F42_T</mim:identificatie>
                            <mim:naam>ontvanger</mim:naam>
                            <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                            <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
@@ -1359,8 +1479,8 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                         </mim:Doel>
                      </mim:relatierollen>
                      <mim:relatieklasse><!--https://docs.geostandaarden.nl/mim/mim/#relatieklasse-->
-                        <mim:Relatieklasse index="3019"
-                                           id="fietsenwinkel-inventaris-fiets-verkochtaan-verkoop-d16324e1899">
+                        <mim:Relatieklasse index="3065" id="C85307A5_A35E_431d_B055_1363DD188AC4">
+                           <mim:identificatie>C85307A5_A35E_431d_B055_1363DD188AC4</mim:identificatie>
                            <mim:naam>Verkoop</mim:naam>
                            <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                            <mim:definitie>
@@ -1373,14 +1493,17 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                            <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                            <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                            <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                           <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                           <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                            <mim:kardinaliteit>1</mim:kardinaliteit>
                            <mim:authentiek><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:authentiek>
                            <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
                            <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
+                           <mim:unidirectioneel>false</mim:unidirectioneel>
                            <mim:aggregatietype>Geen</mim:aggregatietype>
                            <mim:attribuutsoorten>
-                              <mim:Attribuutsoort index="3035"
-                                                  id="fietsenwinkel-inventaris-fiets-verkochtaan-verkoop-verkoopdatum-d16324e1940">
+                              <mim:Attribuutsoort index="3081" id="D19AC338-1D15-4e0a-9E40-C67A582EE004">
+                                 <mim:identificatie>D19AC338-1D15-4e0a-9E40-C67A582EE004</mim:identificatie>
                                  <mim:naam>verkoopdatum</mim:naam>
                                  <mim:herkomst>IMFW</mim:herkomst>
                                  <mim:definitie>
@@ -1391,38 +1514,12 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                                  <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                                  <mim:datumOpname>14-12-2021</mim:datumOpname>
                                  <mim:type>
-                                    <mim:Datatype index="3035">Date</mim:Datatype>
+                                    <mim:Datatype index="3081">Date</mim:Datatype>
                                  </mim:type>
                                  <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                                  <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
-                                 <mim:kardinaliteit>1</mim:kardinaliteit>
-                                 <mim:authentiek>Overig</mim:authentiek>
-                                 <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
-                                 <mim:indicatieClassificerend>false</mim:indicatieClassificerend>
-                                 <mim:mogelijkGeenWaarde>false</mim:mogelijkGeenWaarde>
-                                 <mim:identificerend>false</mim:identificerend>
-                                 <mim-ext:kenmerken>
-                                    <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
-                                    <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
-                                 </mim-ext:kenmerken>
-                              </mim:Attribuutsoort>
-                              <mim:Attribuutsoort index="3092"
-                                                  id="fietsenwinkel-inventaris-fiets-verkochtaan-verkoop-garantienummer-d16324e1985">
-                                 <mim:naam>garantienummer</mim:naam>
-                                 <mim:herkomst>IMFW</mim:herkomst>
-                                 <mim:definitie>
-                                    <xhtml:body>
-                                       <xhtml:p>Garantienummer van de <xhtml:strong>Fiets</xhtml:strong>. Wanneer E-Bike, dan heeft de <xhtml:strong>Batterij</xhtml:strong> een apart garantienummer.</xhtml:p>
-                                    </xhtml:body>
-                                 </mim:definitie>
-                                 <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
-                                 <mim:datumOpname>14-12-2021</mim:datumOpname>
-                                 <mim:type>
-                                    <mim-ref:DatatypeRef index="3092"
-                                                         xlink:href="#fietsenwinkel-gemeenschappelijketypen-garantienummer-d16324e1045">Garantienummer</mim-ref:DatatypeRef>
-                                 </mim:type>
-                                 <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
-                                 <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                                 <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                                 <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                                  <mim:kardinaliteit>1</mim:kardinaliteit>
                                  <mim:authentiek>Overig</mim:authentiek>
                                  <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1435,6 +1532,33 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                                  </mim-ext:kenmerken>
                               </mim:Attribuutsoort>
                            </mim:attribuutsoorten>
+                           <mim:gegevensgroepen>
+                              <mim:Gegevensgroep index="3138" id="A137C206-A40C-4c0e-A0E0-D136860ED8BE">
+                                 <mim:identificatie>A137C206-A40C-4c0e-A0E0-D136860ED8BE</mim:identificatie>
+                                 <mim:naam>verkoopadres</mim:naam>
+                                 <mim:herkomst>IMFW</mim:herkomst>
+                                 <mim:definitie>
+                                    <xhtml:body>
+                                       <xhtml:p>Garantienummer van de <xhtml:strong>Fiets</xhtml:strong>. Wanneer E-Bike, dan heeft de <xhtml:strong>Batterij</xhtml:strong> een apart garantienummer.</xhtml:p>
+                                    </xhtml:body>
+                                 </mim:definitie>
+                                 <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
+                                 <mim:datumOpname>14-12-2021</mim:datumOpname>
+                                 <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
+                                 <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                                 <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                                 <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
+                                 <mim:kardinaliteit>1</mim:kardinaliteit>
+                                 <mim:authentiek>Overig</mim:authentiek>
+                                 <mim:gegevensgroeptype>
+                                    <mim-ref:GegevensgroeptypeRef index="3138" xlink:href="#7D1B1870_6B45_49d9_A853_F26E28CC83B2">Adres</mim-ref:GegevensgroeptypeRef>
+                                 </mim:gegevensgroeptype>
+                                 <mim-ext:kenmerken>
+                                    <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
+                                    <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
+                                 </mim-ext:kenmerken>
+                              </mim:Gegevensgroep>
+                           </mim:gegevensgroepen>
                            <mim-ext:kenmerken>
                               <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
                               <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
@@ -1449,16 +1573,17 @@ Dit model is opgezet conform <xhtml:a>MIM 1.2</xhtml:a>.</xhtml:p>
                   </mim:Relatiesoort>
                </mim:relatiesoorten>
                <mim:keuzen>
-                  <mim-ref:KeuzeRef index="1499"
+                  <mim-ref:KeuzeRef index="1508"
                                     label="aandrijving"
-                                    xlink:href="#fietsenwinkel-inventaris-aandrijving-d16324e2368">Aandrijving</mim-ref:KeuzeRef>
+                                    xlink:href="#792225F5_5E63_49fc_B7C1_FEC2B9E487B8">Aandrijving</mim-ref:KeuzeRef>
                </mim:keuzen>
                <mim-ext:kenmerken>
                   <mim-ext:Kenmerk naam="Is afgeleid">Zie package</mim-ext:Kenmerk>
                   <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
                </mim-ext:kenmerken>
             </mim:Objecttype>
-            <mim:Objecttype index="692" id="fietsenwinkel-inventaris-sportfiets-d16324e2053">
+            <mim:Objecttype index="701" id="7F009296_C9A6_42d9_AE1F_A6BE8BFA8FF0">
+               <mim:identificatie>7F009296_C9A6_42d9_AE1F_A6BE8BFA8FF0</mim:identificatie>
                <mim:naam>Sportfiets</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -1476,11 +1601,12 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                <mim:datumOpname>14-12-2021</mim:datumOpname>
                <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
                <mim:supertypen>
-                  <mim:GeneralisatieObjecttypen index="714" id="fietsenwinkel-inventaris-sportfiets-d16324e2081">
+                  <mim:GeneralisatieObjecttypen index="723" id="C2960BB5_021C_4e3a_A6D6_5B130B35F5DB">
+                     <mim:identificatie>C2960BB5_021C_4e3a_A6D6_5B130B35F5DB</mim:identificatie>
                      <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                      <mim:mixin>false</mim:mixin>
                      <mim:supertype>
-                        <mim-ref:ObjecttypeRef index="714" xlink:href="#fietsenwinkel-inventaris-fiets-d16324e1370">Fiets</mim-ref:ObjecttypeRef>
+                        <mim-ref:ObjecttypeRef index="723" xlink:href="#D7087089_5FAD_47f5_836F_CC6167ADADE2">Fiets</mim-ref:ObjecttypeRef>
                      </mim:supertype>
                      <mim-ext:kenmerken>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
@@ -1488,7 +1614,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                   </mim:GeneralisatieObjecttypen>
                </mim:supertypen>
                <mim:attribuutsoorten>
-                  <mim:Attribuutsoort index="721" id="fietsenwinkel-inventaris-sportfiets-type-d16324e2093">
+                  <mim:Attribuutsoort index="730" id="8620443D-0F62-4c44-8633-5CFD59BA4EFB">
+                     <mim:identificatie>8620443D-0F62-4c44-8633-5CFD59BA4EFB</mim:identificatie>
                      <mim:naam>type</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1499,11 +1626,12 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim-ref:DatatypeRef index="721"
-                                             xlink:href="#fietsenwinkel-inventaris-sportfietstypen-d16324e1150">Sportfiets typen</mim-ref:DatatypeRef>
+                        <mim-ref:DatatypeRef index="730" xlink:href="#2B05F37E_ECA2_44e3_AEB3_BF979349B52D">Sportfiets typen</mim-ref:DatatypeRef>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1521,7 +1649,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                   <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
                </mim-ext:kenmerken>
             </mim:Objecttype>
-            <mim:Objecttype index="307" id="fietsenwinkel-inventaris-stadsfiets-d16324e2140">
+            <mim:Objecttype index="316" id="5A3BD39C_86C8_4541_87FC_D0624260768A">
+               <mim:identificatie>5A3BD39C_86C8_4541_87FC_D0624260768A</mim:identificatie>
                <mim:naam>Stadsfiets</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -1538,11 +1667,12 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                <mim:datumOpname>14-12-2021</mim:datumOpname>
                <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
                <mim:supertypen>
-                  <mim:GeneralisatieObjecttypen index="328" id="fietsenwinkel-inventaris-stadsfiets-d16324e2168">
+                  <mim:GeneralisatieObjecttypen index="337" id="2E329245_8292_4880_BB0A_B60D0B987120">
+                     <mim:identificatie>2E329245_8292_4880_BB0A_B60D0B987120</mim:identificatie>
                      <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
                      <mim:mixin>false</mim:mixin>
                      <mim:supertype>
-                        <mim-ref:ObjecttypeRef index="328" xlink:href="#fietsenwinkel-inventaris-fiets-d16324e1370">Fiets</mim-ref:ObjecttypeRef>
+                        <mim-ref:ObjecttypeRef index="337" xlink:href="#D7087089_5FAD_47f5_836F_CC6167ADADE2">Fiets</mim-ref:ObjecttypeRef>
                      </mim:supertype>
                      <mim-ext:kenmerken>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
@@ -1554,7 +1684,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                   <mim-ext:Kenmerk naam="version">1.0</mim-ext:Kenmerk>
                </mim-ext:kenmerken>
             </mim:Objecttype>
-            <mim:Objecttype index="841" id="fietsenwinkel-inventaris-winkel-d16324e2184">
+            <mim:Objecttype index="850" id="D1D7D872_DF40_406b_B40C_2D4381AD847C">
+               <mim:identificatie>D1D7D872_DF40_406b_B40C_2D4381AD847C</mim:identificatie>
                <mim:naam>Winkel</mim:naam>
                <mim:herkomst>IMFW</mim:herkomst>
                <mim:definitie>
@@ -1575,7 +1706,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                <mim:kwaliteit>99% van alle data voor dit kenmerk is actueel juist. De informatie wordt maandelijks gecontroleerd en verwerkt voor de 1e van de maand.</mim:kwaliteit>
                <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
                <mim:attribuutsoorten>
-                  <mim:Attribuutsoort index="862" id="fietsenwinkel-inventaris-winkel-naam-d16324e2216">
+                  <mim:Attribuutsoort index="871" id="10BE8015-AD8D-4311-868D-3447EF9624AC">
+                     <mim:identificatie>10BE8015-AD8D-4311-868D-3447EF9624AC</mim:identificatie>
                      <mim:naam>naam</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1586,10 +1718,12 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="862">CharacterString</mim:Datatype>
+                        <mim:Datatype index="871">CharacterString</mim:Datatype>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1601,7 +1735,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="919" id="fietsenwinkel-inventaris-winkel-locatie-d16324e2258">
+                  <mim:Attribuutsoort index="928" id="AB20FB5B-4606-4f29-8C8E-A628E244CD98">
+                     <mim:identificatie>AB20FB5B-4606-4f29-8C8E-A628E244CD98</mim:identificatie>
                      <mim:naam>locatie</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1612,11 +1747,12 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim-ref:KeuzeRef index="919"
-                                          xlink:href="#fietsenwinkel-contacten-geografischelocatie-d16324e893">Geografische locatie</mim-ref:KeuzeRef>
+                        <mim-ref:KeuzeRef index="928" xlink:href="#1A23AC81_D1EE_4896_93A5_1C697F4DE163">Geografische locatie</mim-ref:KeuzeRef>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1630,7 +1766,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                   </mim:Attribuutsoort>
                </mim:attribuutsoorten>
                <mim:relatiesoorten>
-                  <mim:Relatiesoort index="970" id="fietsenwinkel-inventaris-winkel-verhandelt-d16324e2301">
+                  <mim:Relatiesoort index="979" id="08144BAA_00A3_4f48_AF37_661CBD3D9DD2">
+                     <mim:identificatie>08144BAA_00A3_4f48_AF37_661CBD3D9DD2</mim:identificatie>
                      <mim:naam>verhandelt</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1642,6 +1779,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>0..*</mim:kardinaliteit>
                      <mim:kardinaliteitBron>1</mim:kardinaliteitBron>
                      <mim:authentiek>Overig</mim:authentiek>
@@ -1651,12 +1790,13 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                      <mim:unidirectioneel>true</mim:unidirectioneel>
                      <mim:aggregatietype>Geen</mim:aggregatietype>
                      <mim:doel>
-                        <mim-ref:ObjecttypeRef index="970"
+                        <mim-ref:ObjecttypeRef index="979"
                                                label="verhandelt"
-                                               xlink:href="#fietsenwinkel-inventaris-fiets-d16324e1370">Fiets</mim-ref:ObjecttypeRef>
+                                               xlink:href="#D7087089_5FAD_47f5_836F_CC6167ADADE2">Fiets</mim-ref:ObjecttypeRef>
                      </mim:doel>
                      <mim:relatierollen>
-                        <mim:Doel id="fietsenwinkel-inventaris-winkel-verhandelt-handelswaar-d16324e2343">
+                        <mim:Doel id="08144BAA_00A3_4f48_AF37_661CBD3D9DD2_T">
+                           <mim:identificatie>08144BAA_00A3_4f48_AF37_661CBD3D9DD2_T</mim:identificatie>
                            <mim:naam>handelswaar</mim:naam>
                            <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
                            <mim:definitie><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:definitie>
@@ -1678,7 +1818,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
             </mim:Objecttype>
          </mim:objecttypen>
          <mim:keuzen>
-            <mim:Keuze index="503" id="fietsenwinkel-inventaris-aandrijving-d16324e2368">
+            <mim:Keuze index="512" id="792225F5_5E63_49fc_B7C1_FEC2B9E487B8">
+               <mim:identificatie>792225F5_5E63_49fc_B7C1_FEC2B9E487B8</mim:identificatie>
                <mim:naam>Aandrijving</mim:naam>
                <mim:herkomst>IFO</mim:herkomst>
                <mim:definitie>
@@ -1688,8 +1829,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                </mim:definitie>
                <mim:datumOpname>14-12-2021</mim:datumOpname>
                <mim:keuzeAttributen>
-                  <mim:Attribuutsoort index="521"
-                                      id="fietsenwinkel-inventaris-aandrijving-kettingaandrijving-d16324e2384">
+                  <mim:Attribuutsoort index="530" id="57F0F429-3830-458e-93EF-FCE1269A981E">
+                     <mim:identificatie>57F0F429-3830-458e-93EF-FCE1269A981E</mim:identificatie>
                      <mim:naam>kettingaandrijving</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1705,11 +1846,12 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                      </mim:toelichting>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim-ref:DatatypeRef index="521"
-                                             xlink:href="#fietsenwinkel-inventaris-kettinglijst-d16324e1102">Ketting lijst</mim-ref:DatatypeRef>
+                        <mim-ref:DatatypeRef index="530" xlink:href="#7A289B92_0934_4073_B688_CBC48FD494CD">Ketting lijst</mim-ref:DatatypeRef>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1721,8 +1863,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="582"
-                                      id="fietsenwinkel-inventaris-aandrijving-snaaraandrijving-d16324e2434">
+                  <mim:Attribuutsoort index="591" id="1943ED4D-59A5-405c-A509-5E5AB9856C94">
+                     <mim:identificatie>1943ED4D-59A5-405c-A509-5E5AB9856C94</mim:identificatie>
                      <mim:naam>snaaraandrijving</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1733,11 +1875,12 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim-ref:DatatypeRef index="582"
-                                             xlink:href="#fietsenwinkel-inventaris-snaarlijst-d16324e1126">Snaar lijst</mim-ref:DatatypeRef>
+                        <mim-ref:DatatypeRef index="591" xlink:href="#9B715549_F130_4d41_9BA0_4E8D6FFA84EC">Snaar lijst</mim-ref:DatatypeRef>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1766,7 +1909,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
          </mim-ext:kenmerken>
       </mim:Domein>
       <!--https://docs.geostandaarden.nl/mim/mim/#view-->
-      <mim:View index="3432" id="fietsenwinkel-personen-d16324e2494">
+      <mim:View index="3494" id="BBA4B1CA_765C_42dc_B396_76DE9B1CED57">
+         <mim:identificatie>BBA4B1CA_765C_42dc_B396_76DE9B1CED57</mim:identificatie>
          <mim:naam>Personen</mim:naam>
          <mim:herkomst>BRP</mim:herkomst>
          <mim:definitie>
@@ -1778,7 +1922,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
          <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
          <mim:locatie>https://www.amsterdam.nl/stelselpedia/brp-index/</mim:locatie>
          <mim:objecttypen>
-            <mim:Objecttype index="3471" id="fietsenwinkel-personen-persoon-d16324e2517">
+            <mim:Objecttype index="3533" id="DAFDB181_6B75_4ad9_8D97_3E59B9E69909">
+               <mim:identificatie>DAFDB181_6B75_4ad9_8D97_3E59B9E69909</mim:identificatie>
                <mim:naam>Persoon</mim:naam>
                <mim:herkomst>IFO</mim:herkomst>
                <mim:definitie>
@@ -1790,7 +1935,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                <mim:datumOpname>14-12-2021</mim:datumOpname>
                <mim:indicatieAbstractObject>false</mim:indicatieAbstractObject>
                <mim:attribuutsoorten>
-                  <mim:Attribuutsoort index="3487" id="fietsenwinkel-personen-persoon-voornaam-d16324e2537">
+                  <mim:Attribuutsoort index="3549" id="84C8E509-D8E3-4791-AC7C-C78B09F3FBAC">
+                     <mim:identificatie>84C8E509-D8E3-4791-AC7C-C78B09F3FBAC</mim:identificatie>
                      <mim:naam>voornaam</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1801,10 +1947,12 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="3487">CharacterString</mim:Datatype>
+                        <mim:Datatype index="3549">CharacterString</mim:Datatype>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>0..1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1816,7 +1964,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                         <mim-ext:Kenmerk naam="positie">100</mim-ext:Kenmerk>
                      </mim-ext:kenmerken>
                   </mim:Attribuutsoort>
-                  <mim:Attribuutsoort index="3544" id="fietsenwinkel-personen-persoon-achternaam-d16324e2582">
+                  <mim:Attribuutsoort index="3606" id="8BC4B052-7A52-49ac-8323-8CFD7BA18CA6">
+                     <mim:identificatie>8BC4B052-7A52-49ac-8323-8CFD7BA18CA6</mim:identificatie>
                      <mim:naam>achternaam</mim:naam>
                      <mim:herkomst>IFO</mim:herkomst>
                      <mim:definitie>
@@ -1827,10 +1976,12 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
                      <mim:herkomstDefinitie>IMFW</mim:herkomstDefinitie>
                      <mim:datumOpname>14-12-2021</mim:datumOpname>
                      <mim:type>
-                        <mim:Datatype index="3544">CharacterString</mim:Datatype>
+                        <mim:Datatype index="3606">CharacterString</mim:Datatype>
                      </mim:type>
                      <mim:indicatieMaterieleHistorie>false</mim:indicatieMaterieleHistorie>
                      <mim:indicatieFormeleHistorie>false</mim:indicatieFormeleHistorie>
+                     <mim:heeftTijdlijnGeldigheid>false</mim:heeftTijdlijnGeldigheid>
+                     <mim:heeftTijdlijnRegistratie>false</mim:heeftTijdlijnRegistratie>
                      <mim:kardinaliteit>1</mim:kardinaliteit>
                      <mim:authentiek>Overig</mim:authentiek>
                      <mim:indicatieAfleidbaar>false</mim:indicatieAfleidbaar>
@@ -1857,7 +2008,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
          </mim-ext:kenmerken>
       </mim:View>
       <!--https://docs.geostandaarden.nl/mim/mim/#extern-->
-      <mim:Extern index="3707" id="OUTSIDE-2">
+      <mim:Extern index="3769" id="OUTSIDE-2">
+         <mim:identificatie>OUTSIDE-2</mim:identificatie>
          <mim:naam>GML</mim:naam>
          <mim:herkomst>OGC</mim:herkomst>
          <mim:definitie>ISO19107 Geographic information – Spatial schema</mim:definitie>
@@ -1865,14 +2017,14 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
          <mim:datumOpname><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:datumOpname>
          <mim:locatie>X</mim:locatie>
          <mim-ext:constructies>
-            <mim-ext:Constructie index="3736" id="fietsenwinkel-gml-gmpoint-d16324e2655">
+            <mim-ext:Constructie index="3798" id="079B935A_189C_456e_B4E0_4C144BFBB6D3">
                <mim-ext:constructietype>INTERFACE</mim-ext:constructietype>
                <mim:naam>GM_Point</mim:naam>
                <mim-ext:kenmerken>
                   <mim-ext:Kenmerk naam="oasnaam">pointGeoJSON</mim-ext:Kenmerk>
                </mim-ext:kenmerken>
             </mim-ext:Constructie>
-            <mim-ext:Constructie index="3742" id="fietsenwinkel-gml-gmpolygon-d16324e2663">
+            <mim-ext:Constructie index="3804" id="0A24E3A4_A056_41f5_90FD_C21F8E1C4E43">
                <mim-ext:constructietype>INTERFACE</mim-ext:constructietype>
                <mim:naam>GM_Polygon</mim:naam>
                <mim-ext:kenmerken>
@@ -1886,7 +2038,8 @@ Voorbeeld: Racefiets, mountainbike.</xhtml:p>
             <mim-ext:Kenmerk naam="namespace">http://www.opengis.net/gml/3.2</mim-ext:Kenmerk>
          </mim-ext:kenmerken>
       </mim:Extern>
-      <mim:Extern index="3755" id="OUTSIDE-3">
+      <mim:Extern index="3817" id="OUTSIDE-3">
+         <mim:identificatie>OUTSIDE-3</mim:identificatie>
          <mim:naam>GMLSF</mim:naam>
          <mim:herkomst><!-- FOUT: De waarde voor dit verplichte metagegeven is niet gespecificeerd in het model --></mim:herkomst>
          <mim:definitie>GML Simple Feature Profile</mim:definitie>

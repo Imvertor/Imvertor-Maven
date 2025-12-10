@@ -95,7 +95,7 @@ public class MsWordTransformer extends Step {
 			boolean succeeds = true;
 			if (filetype.equals("zip")) {
 				ZipFile zipFile = new ZipFile(mswordFile);
-				zipFile.decompress(workFolder);
+				zipFile.decompress(workFolder,true);
 				Iterator<String> it = workFolder.listFilesToVector(false).iterator();
 				while (it.hasNext()) {
 					AnyFile f = new AnyFile(it.next());

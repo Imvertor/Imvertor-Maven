@@ -23,7 +23,11 @@
         Include incoming associations in the short overview?
     -->
     <include-incoming-associations>yes</include-incoming-associations>
-        
+    
+    <!-- visibility of properties: show in accordance with configuration (@show) or compact: only the specified parts -->
+    
+    <show-properties>all</show-properties> <!-- config, all, compact -->
+    
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>

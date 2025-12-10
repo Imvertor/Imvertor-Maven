@@ -175,7 +175,7 @@ public class OfficeCompiler extends Step {
 							runner.debug(logger,"CHAIN","Extracting documentor files");
 							// alles uitpakken naar de workfolder
 							ZipFile zipFile = new ZipFile(docFile);
-							zipFile.decompress(workFolder);
+							zipFile.decompress(workFolder,true);
 						} else {
 							runner.debug(logger,"CHAIN","Copying documentor files");
 							// alles kopieren naar de workfolder

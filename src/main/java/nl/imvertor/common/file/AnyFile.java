@@ -347,7 +347,7 @@ public class AnyFile extends File  {
 	
 	public void copyFile(File targetFile) throws IOException {
 		if (this.isDirectory()) throw new IOException("Kan geen directory als file kopieren: " + this.getCanonicalPath());
-		if (targetFile.isDirectory()) targetFile = new File(targetFile.getAbsolutePath() + File.separator + this.getName());
+		if (targetFile != null && targetFile.isDirectory()) targetFile = new File(targetFile.getAbsolutePath() + File.separator + this.getName());
 		FileUtils.copyFile(this, targetFile, true);
 	}
 	public void copyFile(String targetFile) throws Exception {
@@ -596,10 +596,11 @@ public class AnyFile extends File  {
 		
 		if (lineReader == null)
 			lineReader = new BufferedReader(new InputStreamReader(new FileInputStream(this), getEncoding()));
-	
-		if (!(lineReader.ready() && (line = lineReader.readLine()) != null))
-				lineReader.close();	
-	
+		
+		if (!(lineReader.ready() && (line = lineReader.readLine()) != null)) {
+			lineReader.close();
+			lineReader = null;	
+		}
 		return line;
 	}
 	
@@ -609,8 +610,10 @@ public class AnyFile extends File  {
 	 * @throws IOException 
 	 */
 	public void close() throws IOException {
-		if (lineReader != null) 
+		if (lineReader != null) { 
 			lineReader.close();
+			lineReader = null;
+		}	
 	}
 	
 	/**
@@ -689,6 +692,27 @@ public class AnyFile extends File  {
 		} catch (Exception e) {
 			throw new Exception("URL not found in any mapping file: " + Url);
 		}
+	}
+	
+	/**
+	 * Find a string in the file, an return true when string can be found at least once. 
+	 * Note that this is based on line-by-line searches.
+	 * 
+	 * @param string
+	 * @return
+	 * @throws IOException 
+	 */
+	public boolean find(String string) throws IOException {
+		while (true) {
+			String line = getNextLine();
+			if (line == null) 
+				return false;
+			else if (line.contains(string)) {
+				close();
+				return true;
+			}
+		}
+		
 	}
 }
 
