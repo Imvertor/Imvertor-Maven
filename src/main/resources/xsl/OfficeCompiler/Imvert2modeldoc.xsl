@@ -1463,6 +1463,11 @@
                     <xsl:variable name="max" select="$relation/imvert:max-occurs"/>
                     <xsl:sequence select="imf:create-part-2(.,imf:get-cardinality($min,$max))"/>
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEKARDINALITEITBRON'">
+                    <xsl:variable name="min" select="$relation/imvert:min-occurs-source"/>
+                    <xsl:variable name="max" select="$relation/imvert:max-occurs-source"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-cardinality($min,$max))"/>
+                </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEAUTHENTIEK'">
                     <xsl:sequence select="imf:create-part-2(.,concat(imf:get-formatted-tagged-value($this,'CFG-TV-INDICATIONAUTHENTIC'), imf:authentiek-is-derived($this)))"/>
                 </xsl:when>
