@@ -79,6 +79,9 @@
       <!-- path to xmi config -->
       <XMI_CONFIG_XSLPATH>XMI1config.xsl</XMI_CONFIG_XSLPATH>
       
+      <!-- path to mim config -->
+      <MIM_CONFIG_XSLPATH>MimConfig.xsl</MIM_CONFIG_XSLPATH>
+      
       <!-- path to compacter -->
       <XMI_COMPACT_XSLPATH>XMI1Compact.xsl</XMI_COMPACT_XSLPATH>
       
