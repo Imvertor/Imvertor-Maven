@@ -11,6 +11,47 @@
     
     <tagged-values>
         
+        <tv norm="note" id="CFG-TV-SOURCE">
+            <name lang="nl">Herkomst</name>
+            <name lang="en">Source</name>
+            <desc lang="nl">MIM 1.1: De registratie of het informatiemodel waaraan het modelelement ontleend is dan wel de eigen organisatie indien het door de eigen organisatie toegevoegd is.</desc>
+            <desc lang="en">MIM 1.1: The registration of the information model to which the model element is added is then the own organization if it has been added by the own organization.</desc>
+            <source>MIM-1.2</source>
+            <catalog>https://docs.geostandaarden.nl/mim/mim/#metagegeven-herkomst</catalog>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-relation-role</stereo>
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
+                <stereo minmax="1..1">stereotype-name-view-package</stereo>
+                <stereo minmax="1..1">stereotype-name-external-package</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="1..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="1..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+                <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
+            </stereotypes>
+            <mimformat>herkomst</mimformat>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-CONCEPT">
+            <stereotypes>
+                <stereo minmax="0..*">stereotype-name-enum</stereo>
+            </stereotypes>
+        </tv>
+
         <tv norm="space" id="CFG-TV-MIMVERSION">
             <name lang="nl">MIM Versie</name>
             <name lang="en">MIM version</name>
