@@ -1406,7 +1406,10 @@
         <xsl:otherwise>{$id}</xsl:otherwise>
       </xsl:choose>  
     </xsl:variable>
-    <xsl:value-of select="lower-case(translate($id-with-underscores, '_', '-'))"/>
+    <xsl:variable name="id-with-truncated-suffix" as="xs:string">
+      <xsl:value-of select="if ($generate-readable-ids = 'true') then $id-with-underscores else substring($id-with-underscores, 1, 36)"/>
+    </xsl:variable>
+    <xsl:value-of select="lower-case(translate($id-with-truncated-suffix, '_', '-'))"/>
   </xsl:function>
   
   <xsl:function name="imf:valid-id" as="xs:string?">
