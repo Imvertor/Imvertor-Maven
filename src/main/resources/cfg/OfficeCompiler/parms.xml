@@ -141,7 +141,7 @@
          <name>includemodelinfo</name>
          <arg>yes|no</arg>
          <tip>Include model metadata in the catalog?</tip>
-         <default>yes</default>
+         <default>no</default>
       </cli-parm> 
       
    </cli-parms>
