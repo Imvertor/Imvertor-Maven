@@ -232,10 +232,9 @@
 					<!-- if target, then check the tv of the targets -->
 					<xsl:variable name="providing-construct" select="if ($construct/self::imvert:target) then $supplier-construct/imvert:target else $supplier-construct"/>
 					
-					<xsl:variable name="tvs" select="($providing-construct/imvert:tagged-values/imvert:tagged-value[@id=$tv-id and normalize-space(imvert:value)])"/>
-
-					<xsl:for-each select="$tvs">
-						<xsl:variable name="tv" select="."/>
+					<xsl:variable name="tv" select="($providing-construct/imvert:tagged-values/imvert:tagged-value[@id=$tv-id and normalize-space(imvert:value)])[1]"/>
+					
+					<xsl:if test="exists($tv)">
 						<tv 
 							id="{$tv-id}" 
 							name="{$tv/imvert:name}" 
@@ -261,7 +260,7 @@
 								</xsl:when>
 							</xsl:choose>
 						</tv>
-					</xsl:for-each>
+					</xsl:if>
 				</xsl:for-each>
 			</xsl:for-each>
 		</xsl:variable>
@@ -294,7 +293,9 @@
 		<xsl:for-each-group select="$all-tv" group-by="@id">
 			<xsl:for-each select="current-group()">
 				<xsl:sort select="@level" data-type="number"/>
-				<xsl:sequence select="."/>
+				<xsl:if test="position() = 1">
+					<xsl:sequence select="."/>
+				</xsl:if>
 			</xsl:for-each>
 		</xsl:for-each-group>
 	</xsl:function>
