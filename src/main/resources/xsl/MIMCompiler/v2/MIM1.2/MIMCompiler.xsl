@@ -29,12 +29,13 @@
   xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0"
   xmlns:UML="omg.org/UML1.3" 
   xmlns:imf="http://www.imvertor.org/xsl/functions"    
+  xmlns:ext="http://www.imvertor.org/xsl/extensions"
   xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
   
   xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
   
   expand-text="yes" 
-  exclude-result-prefixes="imvert imf fn UML">
+  exclude-result-prefixes="imvert imf ext fn UML">
   
   <!--
   This stylesheet converts a system.imvert.xml serialisation (Imvertor "embellish" format) to a 
@@ -389,11 +390,13 @@
         <xsl:where-populated>
           <xsl:if test="imvert:source/(imvert:name | imvert:role)">
             <mim:Bron>
-              <xsl:sequence select="imf:generate-id-attr(imvert:source/imvert:id, false())"/>
+              <xsl:variable name="id" select="ext:imvertorGetUUID()" as="xs:string"/>
+              <xsl:sequence select="imf:generate-id-attr($id, false())"/>
               <xsl:for-each select="imvert:source">
                 <xsl:call-template name="genereer-metagegevens">
                   <xsl:with-param name="modelelement-type" select="$rol-type" as="xs:string"/>
                   <xsl:with-param name="modelelement-name" select="imvert:role" as="xs:string?"/>
+                  <xsl:with-param name="id" select="$id" as="xs:string" tunnel="yes"/>
                 </xsl:call-template>  
                 <xsl:call-template name="extensieKenmerken"/>
               </xsl:for-each>  
@@ -403,11 +406,13 @@
         <xsl:where-populated>
           <xsl:if test="imvert:target/(imvert:name | imvert:role)">
             <mim:Doel>
-              <xsl:sequence select="imf:generate-id-attr(imvert:target/imvert:id, false())"/>
+              <xsl:variable name="id" select="ext:imvertorGetUUID()" as="xs:string"/>
+              <xsl:sequence select="imf:generate-id-attr($id, false())"/>
               <xsl:for-each select="imvert:target">
                 <xsl:call-template name="genereer-metagegevens">
                   <xsl:with-param name="modelelement-type" select="$rol-type" as="xs:string"/>
                   <xsl:with-param name="modelelement-name" select="imvert:role" as="xs:string?"/>
+                  <xsl:with-param name="id" select="$id" as="xs:string" tunnel="yes"/>
                 </xsl:call-template>
                 <xsl:call-template name="extensieKenmerken"/>
               </xsl:for-each>
@@ -813,7 +818,8 @@
   
   <xsl:template match="metagegeven[. = 'Identificatie']">
     <xsl:param name="context" as="element()"/>
-    <mim:identificatie source-id="CFG-TV-ID">{imf:clean-id($context/imvert:id)}</mim:identificatie>
+    <xsl:param name="id" as="xs:string?"/>
+    <mim:identificatie source-id="CFG-TV-ID">{imf:clean-id(if ($id) then $id else $context/imvert:id)}</mim:identificatie>
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Identificerend']">
@@ -1406,10 +1412,7 @@
         <xsl:otherwise>{$id}</xsl:otherwise>
       </xsl:choose>  
     </xsl:variable>
-    <xsl:variable name="id-with-truncated-suffix" as="xs:string">
-      <xsl:value-of select="if ($generate-readable-ids = 'true') then $id-with-underscores else substring($id-with-underscores, 1, 36)"/>
-    </xsl:variable>
-    <xsl:value-of select="lower-case(translate($id-with-truncated-suffix, '_', '-'))"/>
+    <xsl:value-of select="lower-case(translate($id-with-underscores, '_', '-'))"/>
   </xsl:function>
   
   <xsl:function name="imf:valid-id" as="xs:string?">
