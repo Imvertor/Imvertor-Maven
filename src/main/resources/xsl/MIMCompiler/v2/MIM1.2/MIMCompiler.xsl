@@ -49,7 +49,7 @@
   <xsl:mode name="xhtml" on-no-match="shallow-copy"/>
   <xsl:mode name="missing-metadata"/>
 
-  <xsl:param name="generate-readable-ids" select="'true'" as="xs:string"/>
+  <xsl:param name="generate-readable-ids" select="'false'" as="xs:string"/>
   <xsl:param name="generate-all-ids" select="'true'" as="xs:string"/>
   <xsl:param name="add-generated-id" select="'true'" as="xs:string"/>
   
@@ -1398,12 +1398,15 @@
   
   <xsl:function name="imf:clean-id" as="xs:string">
     <xsl:param name="id" as="xs:string"/>
-    <xsl:choose>
-      <xsl:when test="starts-with($id,'EAPK_')">{substring-after($id,'EAPK_')}</xsl:when>
-      <xsl:when test="starts-with($id,'EAID_')">{substring-after($id,'EAID_')}</xsl:when>
-      <xsl:when test="starts-with($id,'{')">{substring($id,2,string-length($id) - 2)}</xsl:when>
-      <xsl:otherwise>{$id}</xsl:otherwise>
-    </xsl:choose>
+    <xsl:variable name="id-with-underscores" as="xs:string">
+      <xsl:choose>
+        <xsl:when test="starts-with($id,'EAPK_')">{substring-after($id,'EAPK_')}</xsl:when>
+        <xsl:when test="starts-with($id,'EAID_')">{substring-after($id,'EAID_')}</xsl:when>
+        <xsl:when test="starts-with($id,'{')">{substring($id,2,string-length($id) - 2)}</xsl:when>
+        <xsl:otherwise>{$id}</xsl:otherwise>
+      </xsl:choose>  
+    </xsl:variable>
+    <xsl:value-of select="lower-case(translate($id-with-underscores, '_', '-'))"/>
   </xsl:function>
   
   <xsl:function name="imf:valid-id" as="xs:string?">
