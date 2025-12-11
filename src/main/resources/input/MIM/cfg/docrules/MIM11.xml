@@ -21,7 +21,7 @@
     <!--
         Where to show the explanation? (at-bottom or as-row)
     -->
-    <explanation-location>at-bottom</explanation-location>
+    <explanation-location>as-row</explanation-location>
     
     <!-- 
         Append the role name at end of the association name? 
