@@ -38,6 +38,7 @@ import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.xsl.extensions.ImvertorGetUUID;
 
 /**
  * The MIM compiler takes the imvertor embellish file and transforms it to a MIM compiler format file.
@@ -86,7 +87,8 @@ public class MIMCompiler extends Step {
 		
 		// create a transformer
 		Transformer transformer = new Transformer();
-						
+		transformer.setExtensionFunction(new ImvertorGetUUID());
+		
 		boolean succeeds = true;
 		
 		runner.debug(logger,"CHAIN","Generating MIM format");
