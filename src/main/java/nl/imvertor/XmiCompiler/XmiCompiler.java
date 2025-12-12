@@ -91,6 +91,7 @@ public class XmiCompiler extends Step {
 		EapFile eapFile = umlFile.getExtension().startsWith("eap") || umlFile.getExtension().equals("qea") ? new EapFile(umlFile) : null;
 		
 		exportFolder = new AnyFolder(configurator.getXParm("properties/WORK_XMI_FOLDER"));
+		exportFolder.mkdirs();
 		
 		// assume no images passed.
 		configurator.setXParm("system/xmi-image-count", 0);
@@ -298,7 +299,7 @@ public class XmiCompiler extends Step {
 		
 		// Determine what kind of model is passed: xmi or mim?
 		modelType = "unknown";
-		if (tempFolder.getMatchingFiles("^(.*?)\\.mim$").size() > 0) 
+		if (tempFolder.getMatchingFiles("^(.*?)\\.xml$").size() > 0) 
 			modelType = "mim";
 		else if (tempFolder.getMatchingFiles("^(.*?)\\.xmi$").size() > 0) 
 			modelType = "xmi";
