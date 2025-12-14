@@ -62,7 +62,7 @@ public class XmlComparer {
         Iterable<Difference> differences = myDiff.getDifferences();
 
         FileWriter myWriter = new FileWriter(resultFile,StandardCharsets.UTF_8);
-        myWriter.write("<cmps>");
+        myWriter.write("<cmps xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"compare.xsd\">"); // compare xsd reference is informative only; original is in /etc/compare folder. See #419
 	        
         Integer count = 0;
         for (Difference difference : differences) {
@@ -72,7 +72,7 @@ public class XmlComparer {
         myWriter.write("</cmps>");
 	    myWriter.close();
         
-	    resultFile.prettyPrintXml(false);
+	    //resultFile.prettyPrintXml(false);
 	    
         // Check if XML files are identical
         return count;

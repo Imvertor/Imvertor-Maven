@@ -36,10 +36,6 @@
             <desc lang="nl">Lijsten</desc>
             <desc lang="en">Lists</desc>
         </category>
-        <category id="MISCELLANEOUS">
-            <desc lang="nl">Andere constructies</desc>
-            <desc lang="en">Other constructs</desc>
-        </category>
         <category id="HISTORY">
             <desc lang="nl">Historie</desc>
             <desc lang="en">History</desc>
@@ -147,55 +143,6 @@
         <stereo id="stereotype-name-view-package">
             <toolbox category="PACKAGES"/>
         </stereo>
-        
-        <?x 
-        <stereo id="stereotype-name-system-reference-package">
-            <toolbox category="PACKAGES"/>
-        </stereo>
-        <stereo id="stereotype-name-system-reference-class">
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        <stereo id="stereotype-name-reference">
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        <stereo id="stereotype-name-composite-id">
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo> 
-        <stereo id="stereotype-name-identification">
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        <stereo id="stereotype-name-koppelklasse">
-            <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
-            <toolbox category="OBJECTS"/>
-        </stereo>
-        <stereo id="stereotype-name-voidable">
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        <stereo id="stereotype-name-static-liskov">
-            <toolbox category="RELATIONS"/>
-        </stereo>
-        <stereo id="stereotype-name-static-generalization">
-            <toolbox category="RELATIONS"/>
-        </stereo>
-        <stereo id="stereotype-name-dynamic-generalization">
-            <toolbox category="RELATIONS"/>        
-        </stereo>
-        <stereo id="stereotype-name-formele-historie">
-            <toolbox category="HISTORY"/>
-        </stereo>
-        <stereo id="stereotype-name-formele-levensduur">
-            <toolbox category="HISTORY"/>
-        </stereo>
-        <stereo id="stereotype-name-materiele-historie">
-            <toolbox category="HISTORY"/>
-        </stereo>
-        <stereo id="stereotype-name-materiele-levensduur">
-            <toolbox category="HISTORY"/>
-        </stereo>
-        <stereo id="stereotype-name-anonymous">
-            <toolbox category="MISCELLANEOUS"/>
-        </stereo>
-        x?>
     </stereos>
 
 </visuals>

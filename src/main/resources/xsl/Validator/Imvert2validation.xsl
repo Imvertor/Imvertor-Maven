@@ -76,7 +76,8 @@
         ('stereotype-name-informatiemodel-package',
          'stereotype-name-base-package',
          'stereotype-name-variant-package',
-         'stereotype-name-application-package')"/>
+         'stereotype-name-application-package',
+         'stereotype-name-openapi-bootstrap-informatiemodel-package')"/>
    
     <!-- Stereotypes of packages that may define classes -->
     <xsl:variable name="schema-oriented-stereotypes" select="
@@ -688,7 +689,7 @@
         <!-- skip -->
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union-datatypes')]">
         <!--setup-->
         <xsl:variable name="types" select="for $a in imvert:attributes/imvert:attribute return concat($a/imvert:type-package,'::',$a/imvert:type-name)"/>
         <xsl:variable name="types-are-scalars" select="exists(imvert:attributes/imvert:attribute[empty(imvert:type-id)])"/>
@@ -746,11 +747,13 @@
     <xsl:template match="imvert:class[imvert:designation='enumeration']" priority="1">
         <!--setup-->
         <!--validation-->
-        <xsl:for-each select="imvert:stereotype">
+        <?x
+       <xsl:for-each select="imvert:stereotype">
             <xsl:sequence select="imf:report-error(.., 
                 not(@id = ($enumeration-stereos)), 
                 'UML enumerations should be stereotyped as: [1] and not [2]',(string-join(imf:get-config-stereotypes($enumeration-stereos),' or '),imf:string-group(.)))"/>
         </xsl:for-each>
+        x?>
         <xsl:sequence select="imf:report-error(., 
             imvert:associations/imvert:association, 
             'Enumerations may not have associations')"/>
@@ -766,7 +769,7 @@
         <xsl:variable name="property-names" select="$class/(imvert:atributes | imvert:associations)/*/imvert:name"/>
         <xsl:variable name="name" select="imvert:name"/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
-        <xsl:variable name="is-enumeration" select="$class/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')"/>
+        <xsl:variable name="is-enumeration" select="$class/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist') or $class/imvert:designation = 'enumeration'"/>
         <xsl:variable name="baretype" select="imvert:baretype"/><!-- INTEGER  of AN1000 -->
         <xsl:variable name="type-name" select="imvert:type-name"/><!-- scalar-integer of Integer; scalar when imvert:type-id is not specified--> 
         <xsl:variable name="is-known-baretype" select="empty(imvert:type-id) and $type-name"/><!-- scalar-integer of Integer; scalar when imvert:type-id is not specified--> 
@@ -809,6 +812,7 @@
             'Attribute of class stereotyped as [1] is not a known class.',imf:string-group($class/imvert:stereotype))"/>
         <!-- When a class is a union, the union attributes must be classes, not value types (baretypes). -->
         <xsl:sequence select="imf:report-error(., 
+            not($is-enumeration) and 
             not(imf:check-multiplicity(imvert:min-occurs,imvert:max-occurs)), 
             'Invalid target multiplicity.')"/>
         <xsl:sequence select="imf:report-warning(., 
@@ -984,7 +988,9 @@
         <xsl:choose>
             <!-- specifiek voor verschil tussen rol- en relatie gebaseerde modellen, zie ook #274-->
             <xsl:when test="$meta-is-role-based">
-                <!-- nog niks -->
+                <xsl:sequence select="imf:report-error(., 
+                    empty($applicable-name), 
+                    'Association role without name')"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:report-warning(., 
@@ -1595,9 +1601,9 @@
         <xsl:variable name="cfg-version" select="$configuration-versionrules-file/version-rule/version"/>
         <xsl:variable name="cfg-version-pattern" select="$cfg-version/pattern"/>
         
-        <xsl:sequence select="imf:report-error($this, 
+        <xsl:sequence select="imf:report-warning($this, 
             not(matches($this/imvert:version,$cfg-version-pattern)), 
-            'Version [1] must be a sequence of [3] (examples: [2])', ($this/imvert:version, imf:string-group($cfg-version/example), imf:string-group($cfg-version/fragment/name)))"/>
+            'Version [1] must be a sequence of [3] (examples: [2])', (imf:string-group($this/imvert:version), imf:string-group($cfg-version/example), imf:string-group($cfg-version/fragment/name)))"/>
     </xsl:function>
   
     <xsl:function name="imf:check-phase">
@@ -1606,9 +1612,9 @@
         <xsl:variable name="cfg-phase" select="$cfg-phases[level = $this/imvert:phase]"/>
         <xsl:variable name="phase-listing" select="for $p in $cfg-phases return concat($p/level,' (', $p/name, ')')"/>
         
-        <xsl:sequence select="imf:report-error($this, 
+        <xsl:sequence select="imf:report-warning($this, 
             empty($cfg-phase), 
-            'Phase [1] must be any of [2]', ($this/imvert:phase, imf:string-group($phase-listing)))"/>
+            'Phase [1] must be any of [2]', (imf:string-group($this/imvert:phase), imf:string-group($phase-listing)))"/>
     </xsl:function>
     
     <xsl:function name="imf:check-release">

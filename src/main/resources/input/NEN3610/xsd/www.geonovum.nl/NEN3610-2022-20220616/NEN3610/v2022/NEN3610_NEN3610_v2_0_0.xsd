@@ -24,9 +24,9 @@ Nb. GML constructies zijn als apart package gedefinieerd. </xs:documentation>
    </xs:annotation>
    <xs:import namespace="http://www.opengis.net/gml/3.2"
       schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
-   <xs:element name="FunctioneelGebied" type="NEN3610:FunctioneelGebied" abstract="true"
+   <xs:element name="FunctioneelGebied" type="NEN3610:FunctioneelGebiedType" abstract="true"
                substitutionGroup="NEN3610:GeoObject"/>
-   <xs:complexType name="FunctioneelGebied" abstract="true">
+   <xs:complexType name="FunctioneelGebiedType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 begrensd en benoemd gebied dat door een functionele eenheid wordt beschreven
@@ -36,14 +36,14 @@ Voorbeelden zijn: bedrijventerrein, bungalowpark, plantsoen, begraafplaats, jach
 NEN 3610:2011</xs:documentation>
       </xs:annotation>
       <xs:complexContent>
-         <xs:extension base="NEN3610:GeoObject">
+         <xs:extension base="NEN3610:GeoObjectType">
             <xs:sequence/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:element name="Gebouw" type="NEN3610:Gebouw" abstract="true"
+   <xs:element name="Gebouw" type="NEN3610:GebouwType" abstract="true"
                substitutionGroup="NEN3610:GeoObject"/>
-   <xs:complexType name="Gebouw" abstract="true">
+   <xs:complexType name="GebouwType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 vrijstaande, overdekte en geheel of gedeeltelijke met wanden omsloten toegankelijke ruimte, die direct of indirect met de grond is verbonden.
@@ -53,13 +53,13 @@ Voorbeelden zijn: huis, schuur, flatgebouw, huizenblok, fabriek.
 NEN 3610:2011</xs:documentation>
       </xs:annotation>
       <xs:complexContent>
-         <xs:extension base="NEN3610:GeoObject">
+         <xs:extension base="NEN3610:GeoObjectType">
             <xs:sequence/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:element name="GeoObject" type="NEN3610:GeoObject" abstract="true"/>
-   <xs:complexType name="GeoObject" abstract="true">
+   <xs:element name="GeoObject" type="NEN3610:GeoObjectType" abstract="true"/>
+   <xs:complexType name="GeoObjectType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
             abstractie van een fenomeen in de werkelijkheid, dat direct of indirect is geassocieerd met een locatie relatief ten opzichte van de aarde
@@ -72,9 +72,9 @@ NEN 3610:2011</xs:documentation>
      <xs:sequence/>
      <xs:attribute name="id" type="xs:ID" use="optional"/>
    </xs:complexType>
-   <xs:element name="GeografischGebied" type="NEN3610:GeografischGebied" abstract="true"
+   <xs:element name="GeografischGebied" type="NEN3610:GeografischGebiedType" abstract="true"
                substitutionGroup="NEN3610:GeoObject"/>
-   <xs:complexType name="GeografischGebied" abstract="true">
+   <xs:complexType name="GeografischGebiedType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 geografisch benoemd of aangeduid gebied
@@ -84,13 +84,13 @@ De grenzen zijn niet altijd exact vastgesteld. Voorbeelden zijn: Noordoostpolder
 NEN 3610:2011</xs:documentation>
       </xs:annotation>
       <xs:complexContent>
-         <xs:extension base="NEN3610:GeoObject">
+         <xs:extension base="NEN3610:GeoObjectType">
             <xs:sequence/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:element name="Historie" type="NEN3610:Historie" abstract="false"/>
-   <xs:complexType name="Historie" abstract="false">
+   <xs:element name="Historie" type="NEN3610:HistorieType" abstract="false"/>
+   <xs:complexType name="HistorieType" abstract="false">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Gegevens waarmee historie vastgelegd wordt. Historie betreft alleen voorkomens van objecten, dus het object op een bepaald moment. De historie is materieel (object in de werkelijkheid) en formeel (object in de registratie).
 
@@ -139,9 +139,9 @@ NEN 3610:2011 and StUF 03.01</xs:documentation>
          </xs:element>
       </xs:sequence>
    </xs:complexType>
-   <xs:element name="Inrichtingselement" type="NEN3610:Inrichtingselement" abstract="true"
+   <xs:element name="Inrichtingselement" type="NEN3610:InrichtingselementType" abstract="true"
                substitutionGroup="NEN3610:GeoObject"/>
-   <xs:complexType name="Inrichtingselement" abstract="true">
+   <xs:complexType name="InrichtingselementType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 ruimtelijk object al dan niet ter detaillering dan wel ter inrichting van de overige benoemde ruimtelijke objecten of een ander inrichtingselement
@@ -151,14 +151,14 @@ Inrichtingselementen vormen een diverse klasse. Het zijn objecten die niet zozee
 NEN 3610:2011</xs:documentation>
       </xs:annotation>
       <xs:complexContent>
-         <xs:extension base="NEN3610:GeoObject">
+         <xs:extension base="NEN3610:GeoObjectType">
             <xs:sequence/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:element name="Kunstwerk" type="NEN3610:Kunstwerk" abstract="true"
+   <xs:element name="Kunstwerk" type="NEN3610:KunstwerkType" abstract="true"
                substitutionGroup="NEN3610:GeoObject"/>
-   <xs:complexType name="Kunstwerk" abstract="true">
+   <xs:complexType name="KunstwerkType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 civiel-technisch werk voor de infrastructuur van wegen, water, spoorbanen, waterkeringen en/of leidingen en niet bedoeld voor permanent menselijk verblijf
@@ -168,14 +168,14 @@ Hieronder vallen overbruggingen, waterstaatkundige werken en waterkerende constr
 NEN 3610:2011</xs:documentation>
       </xs:annotation>
       <xs:complexContent>
-         <xs:extension base="NEN3610:GeoObject">
+         <xs:extension base="NEN3610:GeoObjectType">
             <xs:sequence/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:element name="Leiding" type="NEN3610:Leiding" abstract="true"
+   <xs:element name="Leiding" type="NEN3610:LeidingType" abstract="true"
                substitutionGroup="NEN3610:GeoObject"/>
-   <xs:complexType name="Leiding" abstract="true">
+   <xs:complexType name="LeidingType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 buis of kabel bestemd voor de voortgeleiding van energie of materie
@@ -185,13 +185,13 @@ Hoogspanningsleiding, riool, waterleiding, glasvezelkabel, gasleiding.
 NEN 3610:2011</xs:documentation>
       </xs:annotation>
       <xs:complexContent>
-         <xs:extension base="NEN3610:GeoObject">
+         <xs:extension base="NEN3610:GeoObjectType">
             <xs:sequence/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:element name="Levensduur" type="NEN3610:Levensduur" abstract="false"/>
-   <xs:complexType name="Levensduur" abstract="false">
+   <xs:element name="Levensduur" type="NEN3610:LevensduurType" abstract="false"/>
+   <xs:complexType name="LevensduurType" abstract="false">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Gegevens waarmee levensduur vastgelegd wordt. Levensduur betreft alleen het laatste voorkomen van een object in de registratie. De levensduur is materieel (object in de werkelijkheid) en formeel (object in de registratie).
 
@@ -239,8 +239,8 @@ NEN 3610:2011</xs:documentation>
          </xs:element>
       </xs:sequence>
    </xs:complexType>
-   <xs:element name="NEN3610ID" type="NEN3610:NEN3610ID" abstract="false"/>
-   <xs:complexType name="NEN3610ID" abstract="false">
+   <xs:element name="NEN3610ID" type="NEN3610:NEN3610IDType" abstract="false"/>
+   <xs:complexType name="NEN3610IDType" abstract="false">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 identificatiegegevens voor de universeel unieke identificatie van een object
@@ -299,9 +299,9 @@ NEN 3610:2011</xs:documentation>
          </xs:element>
       </xs:sequence>
    </xs:complexType>
-   <xs:element name="PlanologischGebied" type="NEN3610:PlanologischGebied" abstract="true"
+   <xs:element name="PlanologischGebied" type="NEN3610:PlanologischGebiedType" abstract="true"
                substitutionGroup="NEN3610:GeoObject"/>
-   <xs:complexType name="PlanologischGebied" abstract="true">
+   <xs:complexType name="PlanologischGebiedType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 niet-tastbaar begrensd gebied waaraan een bepaalde (toekomstige) bestemming, functionele en/of bestuurlijke ruimtelijke ontwikkeling is gekoppeld
@@ -311,14 +311,14 @@ Planologische gebieden vormen de geo-objecten die worden gebruikt om het beleid 
 NEN 3610:2011</xs:documentation>
       </xs:annotation>
       <xs:complexContent>
-         <xs:extension base="NEN3610:GeoObject">
+         <xs:extension base="NEN3610:GeoObjectType">
             <xs:sequence/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:element name="RegistratiefGebied" type="NEN3610:RegistratiefGebied" abstract="true"
+   <xs:element name="RegistratiefGebied" type="NEN3610:RegistratiefGebiedType" abstract="true"
                substitutionGroup="NEN3610:GeoObject"/>
-   <xs:complexType name="RegistratiefGebied" abstract="true">
+   <xs:complexType name="RegistratiefGebiedType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 op basis van wet- of regelgeving afgebakend gebied dat als eenheid geldt van politiek/bestuurlijke verantwoordelijkheid of voor bedrijfsvoering
@@ -328,14 +328,14 @@ Registratieve gebieden vormen een diverse klasse en omvatten gebieden die onder 
 NEN 3610:2011</xs:documentation>
       </xs:annotation>
       <xs:complexContent>
-         <xs:extension base="NEN3610:GeoObject">
+         <xs:extension base="NEN3610:GeoObjectType">
             <xs:sequence/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:element name="Spoorbaan" type="NEN3610:Spoorbaan" abstract="true"
+   <xs:element name="Spoorbaan" type="NEN3610:SpoorbaanType" abstract="true"
                substitutionGroup="NEN3610:GeoObject"/>
-   <xs:complexType name="Spoorbaan" abstract="true">
+   <xs:complexType name="SpoorbaanType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 gebaand gedeelte voor het verkeer over rails
@@ -345,14 +345,14 @@ Voorbeelden zijn: spoorbaan, metrobaan, trambaan.
 NEN 3610:2011</xs:documentation>
       </xs:annotation>
       <xs:complexContent>
-         <xs:extension base="NEN3610:GeoObject">
+         <xs:extension base="NEN3610:GeoObjectType">
             <xs:sequence/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:element name="Terrein" type="NEN3610:Terrein" abstract="true"
+   <xs:element name="Terrein" type="NEN3610:TerreinType" abstract="true"
                substitutionGroup="NEN3610:GeoObject"/>
-   <xs:complexType name="Terrein" abstract="true">
+   <xs:complexType name="TerreinType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 door een fysiek voorkomen gekarakteriseerd zichtbaar begrensd stuk grond
@@ -362,14 +362,14 @@ Terrein wordt gebruikt om een zichtbaar (tastbaar) begrensd stuk grond aan te ge
 NEN 3610:2011</xs:documentation>
       </xs:annotation>
       <xs:complexContent>
-         <xs:extension base="NEN3610:GeoObject">
+         <xs:extension base="NEN3610:GeoObjectType">
             <xs:sequence/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:element name="Water" type="NEN3610:Water" abstract="true"
+   <xs:element name="Water" type="NEN3610:WaterType" abstract="true"
                substitutionGroup="NEN3610:GeoObject"/>
-   <xs:complexType name="Water" abstract="true">
+   <xs:complexType name="WaterType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 grondoppervlak in principe bedekt met water
@@ -379,14 +379,14 @@ Voorbeelden zijn: rivier, kanaal, beek, zee, meer, oppervlaktewater in algemene 
 NEN 3610:2011</xs:documentation>
       </xs:annotation>
       <xs:complexContent>
-         <xs:extension base="NEN3610:GeoObject">
+         <xs:extension base="NEN3610:GeoObjectType">
             <xs:sequence/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:element name="Weg" type="NEN3610:Weg" abstract="true"
+   <xs:element name="Weg" type="NEN3610:WegType" abstract="true"
                substitutionGroup="NEN3610:GeoObject"/>
-   <xs:complexType name="Weg" abstract="true">
+   <xs:complexType name="WegType" abstract="true">
       <xs:annotation>
          <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">-- Definition --
 gebaand gedeelte voor het wegverkeer en vliegverkeer te land
@@ -396,7 +396,7 @@ Onder de klasse Weg vallen ook start- en landingsbanen voor vliegverkeer.
 NEN 3610:2011</xs:documentation>
       </xs:annotation>
       <xs:complexContent>
-         <xs:extension base="NEN3610:GeoObject">
+         <xs:extension base="NEN3610:GeoObjectType">
             <xs:sequence/>
          </xs:extension>
       </xs:complexContent>

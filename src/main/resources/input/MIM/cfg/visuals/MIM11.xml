@@ -10,7 +10,9 @@
         these visuals specify the basic visual aspects of the UML profile  
     -->
     <name>MIM 1.1</name>
-
+    
+    <nature>MIM</nature>
+    
     <desc lang="en">Visuals for MIM 1.1 models</desc>
     <desc lang="nl">Visuele aspecten van MIM 1.1 modellen</desc>
 

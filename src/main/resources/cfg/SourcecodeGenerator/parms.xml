@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Source code generator</name>
+     <version-control>$Id: $</version-control>
+   </id>
+   
+   <cli-parms>
+      <cli-parm>
+         <name>createsourcecode</name>
+         <arg>yes|no</arg>
+         <tip>Yes if source code must be generated</tip>
+         <default>no</default>
+      </cli-parm>  
+      <cli-parm>
+         <name>sourcecodetype</name>
+         <arg>java-pojo|java-jpa|java-openapi|java-openapi-model|java-openapi-resource|plantuml|entity-xml</arg>
+         <tip>The type(s) of source code generated (comma separated)</tip>
+         <default>java-pojo</default>
+      </cli-parm>
+      <cli-parm>
+         <name>sourcecodecopydownmixins</name>
+         <arg>yes|no</arg>
+         <tip>Yes if attributes must be copied from mixin supertypes</tip>
+         <default>no</default>
+      </cli-parm>
+      <cli-parm>
+         <name>sourcecoderesolvekeuzeattribuutsoorten</name>
+         <arg>yes|no</arg>
+         <tip>Yes if MIM "Keuze tussen attribuutsoorten" constructs must be resolved/simplified</tip>
+         <default>no</default>
+      </cli-parm>
+      <cli-parm>
+         <name>sourcecoderesolvekeuzerelatiedoelen</name>
+         <arg>yes|no</arg>
+         <tip>Yes if MIM "Keuze tussen relatiedoelen" constructs must be resolved/simplified</tip>
+         <default>no</default>
+      </cli-parm>
+      <cli-parm>
+         <name>sourcecoderesolvekeuzedatatypen</name>
+         <arg>yes|no</arg>
+         <tip>Yes if MIM "Keuze tussen datatypen" constructs must be resolved/simplified</tip>
+         <default>no</default>
+      </cli-parm>
+      <cli-parm>
+         <name>createopenapi</name>
+         <arg>yes|no</arg>
+         <tip>Yes if OpenAPI descriptions must be generated. This will also set sourcecodetype to "java-openapi"</tip>
+         <default>no</default>
+      </cli-parm>
+      <cli-parm>
+         <name>openapispecversion</name>
+         <arg>api30|api31</arg>
+         <tip>The OpenAPI specification version to be generated, "3.0.1" (api30) or "3.1.0" (api31)</tip>
+         <default>api30</default>
+      </cli-parm>
+      <cli-parm>
+         <name>openapischemasonly</name>
+         <arg>yes|no</arg>
+         <tip>Yes if only the schema part of the OpenAPI description should be generated</tip>
+         <default>no</default>
+      </cli-parm>
+      <cli-parm>
+         <name>openapibundledescriptions</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the generated OpenAPI description and all descriptions that are referenced should be bundled to one description</tip>
+         <default>no</default>
+      </cli-parm>
+   </cli-parms>
+   
+   <properties>
+      <WORK_CODEGEN_MIM_1.1_TO_1.2_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.mim-1.1-to-1.2.xml</WORK_CODEGEN_MIM_1.1_TO_1.2_FILEPATH>
+      <WORK_CODEGEN_MIM_RESOLVED_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.mim-resolved.xml</WORK_CODEGEN_MIM_RESOLVED_FILEPATH>
+      <WORK_CODEGEN_JAVA_POJO_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-pojo.xml</WORK_CODEGEN_JAVA_POJO_FILEPATH>
+      <WORK_CODEGEN_JAVA_JPA_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-jpa.xml</WORK_CODEGEN_JAVA_JPA_FILEPATH>
+      <WORK_CODEGEN_JAVA_OPENAPI_MODEL_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-openapi-model.xml</WORK_CODEGEN_JAVA_OPENAPI_MODEL_FILEPATH>
+      <WORK_CODEGEN_JAVA_OPENAPI_RESOURCE_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-openapi-resource.xml</WORK_CODEGEN_JAVA_OPENAPI_RESOURCE_FILEPATH>
+      
+      <WORK_CODEGEN_JAVA_POJO_DIRPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-pojo</WORK_CODEGEN_JAVA_POJO_DIRPATH>
+      <WORK_CODEGEN_JAVA_JPA_DIRPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-jpa</WORK_CODEGEN_JAVA_JPA_DIRPATH>
+      <WORK_CODEGEN_JAVA_OPENAPI_MODEL_DIRPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-openapi-model</WORK_CODEGEN_JAVA_OPENAPI_MODEL_DIRPATH>
+      <WORK_CODEGEN_JAVA_OPENAPI_RESOURCE_DIRPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.java-openapi-resource</WORK_CODEGEN_JAVA_OPENAPI_RESOURCE_DIRPATH>
+      <WORK_CODEGEN_ENTITY_XML_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.entity-xml.xml</WORK_CODEGEN_ENTITY_XML_FILEPATH>
+      <WORK_CODEGEN_PLANTUML_FILEPATH>${system/work-imvert-folder-path}/imvertor.41.codegen.plantuml.puml</WORK_CODEGEN_PLANTUML_FILEPATH>
+        
+      <IMVERTOR_CODEGEN_MIM_1.1_TO_1.2_XSLPATH>MIM11-to-MIM12.xsl</IMVERTOR_CODEGEN_MIM_1.1_TO_1.2_XSLPATH>  
+      <IMVERTOR_CODEGEN_MIM_RESOLVED_1.2_XSLPATH>MIM1.2/mim-resolve-model-sugar.xsl</IMVERTOR_CODEGEN_MIM_RESOLVED_1.2_XSLPATH>
+      <IMVERTOR_CODEGEN_ENTITY_XML_1.2_XSLPATH>MIM1.2/entity-xml.xsl</IMVERTOR_CODEGEN_ENTITY_XML_1.2_XSLPATH>
+      <IMVERTOR_CODEGEN_PLANTUML_1.2_XSLPATH>MIM1.2/plantuml.xsl</IMVERTOR_CODEGEN_PLANTUML_1.2_XSLPATH>
+      <IMVERTOR_CODEGEN_JAVA_POJO_1.2_XSLPATH>MIM1.2/java-pojo.xsl</IMVERTOR_CODEGEN_JAVA_POJO_1.2_XSLPATH>
+      <IMVERTOR_CODEGEN_JAVA_JPA_1.2_XSLPATH>MIM1.2/java-jpa.xsl</IMVERTOR_CODEGEN_JAVA_JPA_1.2_XSLPATH>
+      <IMVERTOR_CODEGEN_JAVA_OPENAPI_MODEL_1.2_XSLPATH>MIM1.2/java-openapi-model.xsl</IMVERTOR_CODEGEN_JAVA_OPENAPI_MODEL_1.2_XSLPATH>
+      <IMVERTOR_CODEGEN_JAVA_OPENAPI_RESOURCE_1.2_XSLPATH>MIM1.2/java-openapi-resource.xsl</IMVERTOR_CODEGEN_JAVA_OPENAPI_RESOURCE_1.2_XSLPATH>
+      
+   </properties>
+   
+</config>

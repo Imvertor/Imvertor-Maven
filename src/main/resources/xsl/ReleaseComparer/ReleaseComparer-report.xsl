@@ -39,7 +39,7 @@
     
     <xsl:template match="/config">
        
-        <xsl:variable name="diff-doc" select="imf:document(imf:get-xparm('properties/WORK_COMPARE_DIFF_FILE'))"/>
+        <xsl:variable name="diff-doc" select="imf:document(imf:get-xparm('properties/WORK_COMPAREV2_DIFF_CLEAN_FILE'))"/>
         
         <xsl:variable name="compare-method" select="imf:get-xparm('cli/compare')"/><!-- dat is 'supplier' of 'release' -->
         <xsl:variable name="supplier-subpath" select="imf:get-xparm('appinfo/supplier-subpath')"/>
@@ -56,7 +56,7 @@
         
         <xsl:variable name="rows" as="element(tr)*">
             <xsl:for-each select="$diff-doc/cmps/res/cmp[1]" >
-                <xsl:sort select="@id"/>
+                <xsl:sort select="lower-case(@id)"/>
                 <xsl:choose>
                     <xsl:when test="@property = 'subpath'">
                         <!-- skip -->
@@ -135,7 +135,7 @@
                     <p>This report shows {$cdiff} differences found between <xsl:sequence select="$compare-text"/>. This report is intended to provide sufficient information for manually creating <i>release notes</i> on the model.</p>
                 </intro>
                 <content>
-                    TODO
+                    <p><i>TODO</i></p>
                 </content>
             </page>
         </report>

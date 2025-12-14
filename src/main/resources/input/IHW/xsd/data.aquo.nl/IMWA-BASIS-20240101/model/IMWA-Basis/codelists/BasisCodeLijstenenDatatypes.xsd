@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:Codelijstenendatatypen="https://data.aquo.nl/model/IMWA-Basis/codelists"
+           xmlns:gmlsf="http://www.opengis.net/gmlsf/2.0"
+           xmlns:imvert="http://www.imvertor.org/schema/system"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://data.aquo.nl/model/IMWA-Basis/codelists"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0-1">
+   <xs:annotation>
+      <xs:appinfo source="http://schemas.opengis.net/gmlsfProfile/2.0/gmlsfLevels.xsd">
+         <gmlsf:ComplianceLevel>0</gmlsf:ComplianceLevel>
+      </xs:appinfo>
+   </xs:annotation>
+   <xs:element name="Artikel" type="Codelijstenendatatypen:ArtikelType">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Met dit samengesteld attribuut kan worden aangegeven welk artikelnummer en lid er van toepassing zijn.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="ArtikelType">
+      <xs:sequence>
+         <xs:element name="artikelnummer"
+                     type="xs:integer"
+                     minOccurs="1"
+                     maxOccurs="1"/>
+         <xs:element name="lid" minOccurs="1" maxOccurs="1" type="xs:string"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ArtikelPropertyType">
+      <xs:sequence>
+         <xs:element ref="Codelijstenendatatypen:Artikel"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Waterbeheerder" type="Codelijstenendatatypen:WaterbeheerderType">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: -</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="WaterbeheerderType"/>
+   <xs:complexType name="WaterbeheerderPropertyType">
+      <xs:sequence>
+         <xs:element ref="Codelijstenendatatypen:Waterbeheerder"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Subject_soorten"
+               type="Codelijstenendatatypen:Subject_soortenType">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: -</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="Subject_soortenType"/>
+   <xs:complexType name="Subject_soortenPropertyType">
+      <xs:sequence>
+         <xs:element ref="Codelijstenendatatypen:Subject_soorten"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Waterstaatkundigezonering"
+               type="Codelijstenendatatypen:WaterstaatkundigezoneringType">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: -
+Explanation: Geldig tot: 01-01-2100</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="WaterstaatkundigezoneringType"/>
+   <xs:complexType name="WaterstaatkundigezoneringPropertyType">
+      <xs:sequence>
+         <xs:element ref="Codelijstenendatatypen:Waterstaatkundigezonering"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="WetVerordeningtype"
+               type="Codelijstenendatatypen:WetVerordeningtypeType"/>
+   <xs:complexType name="WetVerordeningtypeType"/>
+   <xs:complexType name="WetVerordeningtypePropertyType">
+      <xs:sequence>
+         <xs:element ref="Codelijstenendatatypen:WetVerordeningtype"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Subject_rollen" type="Codelijstenendatatypen:Subject_rollenType"/>
+   <xs:complexType name="Subject_rollenType"/>
+   <xs:complexType name="Subject_rollenPropertyType">
+      <xs:sequence>
+         <xs:element ref="Codelijstenendatatypen:Subject_rollen"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="functie" type="Codelijstenendatatypen:functieType"/>
+   <xs:complexType name="functieType"/>
+   <xs:complexType name="functiePropertyType">
+      <xs:sequence>
+         <xs:element ref="Codelijstenendatatypen:functie"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="ObjectStatus" type="Codelijstenendatatypen:ObjectStatusType"/>
+   <xs:complexType name="ObjectStatusType"/>
+   <xs:complexType name="ObjectStatusPropertyType">
+      <xs:sequence>
+         <xs:element ref="Codelijstenendatatypen:ObjectStatus"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

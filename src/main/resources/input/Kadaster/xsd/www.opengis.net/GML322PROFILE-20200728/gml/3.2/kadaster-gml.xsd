@@ -856,4 +856,73 @@ patches encapsulates the patches of the surface.</documentation>
       <sequence/>
       <attributeGroup ref="gml:OwnershipAttributeGroup"/>
    </complexType>
+   
+   <!-- #631 -->
+   <complexType name="ArcStringType">
+      <complexContent>
+         <extension base="gml:AbstractCurveSegmentType">
+            <sequence>
+               <choice>
+                  <choice minOccurs="3" maxOccurs="unbounded">
+                     <element ref="gml:pos"/>
+                     <element ref="gml:pointProperty"/>
+                     <element ref="gml:pointRep"/>
+                  </choice>
+                  <element ref="gml:posList"/>
+                  <element ref="gml:coordinates"/>
+               </choice>
+            </sequence>
+            <attribute name="interpolation" type="gml:CurveInterpolationType" fixed="circularArc3Points"/>
+            <attribute name="numArc" type="integer"/>
+         </extension>
+      </complexContent>
+   </complexType>
+   <element name="ArcString" type="gml:ArcStringType" substitutionGroup="gml:AbstractCurveSegment">
+      <annotation>
+         <documentation>An ArcString is a curve segment that uses three-point circular arc interpolation ("circularArc3Points"). The number of arcs in the arc string may be explicitly stated in the attribute numArc. The number of control points in the arc string shall be 2 * numArc + 1.
+            The content model follows the general pattern for the encoding of curve segments.</documentation>
+      </annotation>
+   </element>
+   <complexType name="ArcType">
+      <complexContent>
+         <restriction base="gml:ArcStringType">
+            <sequence>
+               <choice>
+                  <choice minOccurs="3" maxOccurs="3">
+                     <element ref="gml:pos"/>
+                     <element ref="gml:pointProperty"/>
+                     <element ref="gml:pointRep"/>
+                  </choice>
+                  <element ref="gml:posList"/>
+                  <element ref="gml:coordinates"/>
+               </choice>
+            </sequence>
+            <attribute name="numArc" type="integer" fixed="1"/>
+         </restriction>
+      </complexContent>
+   </complexType>
+   <element name="Arc" type="gml:ArcType" substitutionGroup="gml:ArcString">
+      <annotation>
+         <documentation>An Arc is an arc string with only one arc unit, i.e. three control points including the start and end point. As arc is an arc string consisting of a single arc, the attribute "numArc" is fixed to "1".</documentation>
+      </annotation>
+   </element>
+   <simpleType name="CurveInterpolationType">
+      <annotation>
+         <documentation>gml:CurveInterpolationType is a list of codes that may be used to identify the interpolation mechanisms specified by an application schema.</documentation>
+      </annotation>
+      <restriction base="string">
+         <enumeration value="linear"/>
+         <enumeration value="geodesic"/>
+         <enumeration value="circularArc3Points"/>
+         <enumeration value="circularArc2PointWithBulge"/>
+         <enumeration value="circularArcCenterPointWithRadius"/>
+         <enumeration value="elliptical"/>
+         <enumeration value="clothoid"/>
+         <enumeration value="conic"/>
+         <enumeration value="polynomialSpline"/>
+         <enumeration value="cubicSpline"/>
+         <enumeration value="rationalSpline"/>
+      </restriction>
+   </simpleType>
+   
 </schema>

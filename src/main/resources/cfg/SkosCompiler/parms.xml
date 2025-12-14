@@ -28,25 +28,25 @@
          <name>createskos</name>
          <arg>yes|no</arg>
          <tip>Yes if SKOS RDF must be generated</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm>
       <cli-parm>
          <name>skosrules</name>
          <arg>name</arg>
          <tip>The name of the SKOS rules file</tip>
-         <required>false</required>
+         <default>[cli/owner]</default>
       </cli-parm> 
       <cli-parm>
          <name>validateskos</name>
          <arg>yes|no</arg>
          <tip>Yes if SKOS RDF must be validated after it has been generated</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
       <cli-parm>
          <name>skosusealias</name>
          <arg>yes|no</arg>
          <tip>Yes if the alias should be used, when available, to create the SKOS concept URI</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
       
    </cli-parms>
@@ -60,6 +60,11 @@
       <RESULT_SKOS_APPLICATION_FOLDER>${system/work-skos-folder-path}</RESULT_SKOS_APPLICATION_FOLDER>
       
       <IMVERTOR_METAMODEL_BRO_SKOS_XSLPATH>Imvert2Skos-BRO.xsl</IMVERTOR_METAMODEL_BRO_SKOS_XSLPATH>
+   
+      <!-- validatie middels shacl: genereer meldingen in RDF XML en lees die verder uit -->
+      <RESULT_SHACL_VALIDATION_PATH>${system/work-imvert-folder-path}/imvertor.35.shacl-validation.xml</RESULT_SHACL_VALIDATION_PATH>   
+      <RESULT_SHACL_REPORT_PATH>${system/work-imvert-folder-path}/imvertor.35.shacl-report.xml</RESULT_SHACL_REPORT_PATH>   
+      <RESULT_SHACL_VALIDATION_XSLPATH>Imvert2ShaclValidation.xsl</RESULT_SHACL_VALIDATION_XSLPATH>    
       
    </properties>
    

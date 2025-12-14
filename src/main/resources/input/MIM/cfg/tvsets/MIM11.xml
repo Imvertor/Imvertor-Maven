@@ -12,6 +12,8 @@
     
     <name>MIM 1.1 tagged values</name>
     
+    <nature>MIM</nature>
+    
     <tagged-values>
         
         <tv norm="space" id="CFG-TV-CONCEPT">
@@ -41,6 +43,7 @@
                 <stereo minmax="0..*">stereotype-name-generalization</stereo>
                 <stereo minmax="0..*">stereotype-name-externekoppeling</stereo>
             </stereotypes>
+            <mimformat>begrip</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-DATALOCATION">
@@ -58,6 +61,7 @@
                 <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
+            <mimformat>locatie</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-DATERECORDED">
@@ -96,6 +100,7 @@
                 <stereo minmax="1..1">stereotype-name-generalization</stereo>
                 <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
             </stereotypes>
+            <mimformat>datumOpname</mimformat>
         </tv>
         
         <tv norm="note" id="CFG-TV-DEFINITION" origin="system">
@@ -136,6 +141,7 @@
                 <stereo minmax="1..1">stereotype-name-domain-package</stereo>
                 <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
+            <mimformat>definitie</mimformat>
         </tv>
 
         <tv norm="note" id="CFG-TV-DESCRIPTION">
@@ -171,6 +177,7 @@
                 <stereo minmax="0..1">stereotype-name-enum</stereo>
                 <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
+            <mimformat>toelichting</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-FORMALPATTERN">
@@ -188,6 +195,7 @@
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
+            <mimformat>formeelPatroon</mimformat>
         </tv> 
         
         <tv norm="space" id="CFG-TV-IMDOMAIN">
@@ -201,6 +209,7 @@
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
+            <mimformat>informatiedomein</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-IMTYPE">
@@ -218,6 +227,7 @@
                 <value default="yes">Conceptueel</value>
                 <value>Logisch</value>
             </declared-values>
+            <mimformat>informatiemodelType</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-IMRELATIONMODELINGTYPE">
@@ -235,9 +245,10 @@
                 <value default="yes">Relatiesoort leidend</value>
                 <value>Relatierol leidend</value>
             </declared-values>
+            <mimformat>relatiemodelleringstype</mimformat>
         </tv>
        
-        <tv norm="space" id="CFG-TV-INDICATIONCLASSIFICATION">
+        <tv norm="janee" id="CFG-TV-INDICATIONCLASSIFICATION">
             <name lang="nl">Indicatie classificerend</name>
             <name lang="en">Indication classifying</name>
             <desc lang="nl">MIM 1.1: Indicatie dat een attribuutsoort het objecttype waar het bijhoort classificeert in (sub)typen.</desc>
@@ -256,9 +267,10 @@
                 <value>Yes</value>
                 <value default="yes">No</value>
             </declared-values>
+            <mimformat>indicatieClassificerend</mimformat>
         </tv>
         
-        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
+        <tv norm="janee" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <name lang="nl">Indicatie materiële historie</name>
             <name lang="en">Indication material history</name>
             <desc lang="nl">MIM 1.1: Indicatie of de materiële historie van het kenmerk van het object te bevragen is.</desc>
@@ -287,9 +299,10 @@
                 <value default="yes">No</value>
                 <value>See group</value>
             </declared-values>
+            <mimformat>indicatieMaterieleHistorie</mimformat>
         </tv>
         
-        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
+        <tv norm="janee" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
             <name lang="nl">Indicatie formele historie</name>
             <name lang="en">Indication formal history</name>
             <desc lang="nl">MIM 1.1: Indicatie of de formele historie van het kenmerk van het object bijgehouden wordt en te bevragen is.</desc>
@@ -318,6 +331,7 @@
                 <value default="yes">No</value>
                 <value>See group</value>
             </declared-values>
+            <mimformat>indicatieFormeleHistorie</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC">
@@ -350,6 +364,7 @@
                 <value>TODO-Wettelijk gegeven</value>
                 <value>TODO-Overig</value>
             </declared-values>
+            <mimformat>authentiek</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-MIMEXTENSION">
@@ -363,6 +378,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
+            <mimformat>MIMExtensie</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-MIMLANGUAGE">
@@ -380,6 +396,7 @@
                 <value default="yes">NL</value>
                 <value>EN</value>
             </declared-values>
+            <mimformat>MIMTaal</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-MIMVERSION">
@@ -393,11 +410,14 @@
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
-            <declared-values lang="nl">
-                <value>1.0</value>
-                <value>1.1.1</value>
-                <value default="yes">1.1</value>
-            </declared-values>
+            <?x Waarden worden niet meer als keuze aangeboden maar moeten worden ingetikt.
+                <declared-values lang="nl">
+                    <value>1.0</value>
+                    <value>1.1.1</value>
+                    <value default="yes">1.1</value>
+                </declared-values>
+            x?>
+            <mimformat>MIMVersie</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-LENGTH">
@@ -414,6 +434,7 @@
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
                 <stereo minmax="0..1">stereotype-name-simpletype</stereo>
             </stereotypes>
+            <mimformat>lengte</mimformat>
         </tv>
         
         <tv norm="note" id="CFG-TV-PATTERN">
@@ -431,6 +452,7 @@
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
             </stereotypes>
+            <mimformat>patroon</mimformat>
         </tv>
         
         <tv norm="note" id="CFG-TV-POPULATION">
@@ -444,6 +466,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
             </stereotypes>
+            <mimformat>populatie</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-QUALITY">
@@ -457,6 +480,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
             </stereotypes>
+            <mimformat>kwaliteit</mimformat>
         </tv>
         
         <tv norm="note" id="CFG-TV-SOURCE">
@@ -496,6 +520,7 @@
                 <stereo minmax="0..1">stereotype-name-enum</stereo>
                 <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
+            <mimformat>herkomst</mimformat>
         </tv>
         
         <tv norm="note" id="CFG-TV-SOURCEOFDEFINITION">
@@ -536,9 +561,10 @@
                 <stereo minmax="1..1">stereotype-name-domain-package</stereo>
                 <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
+            <mimformat>herkomstDefinitie</mimformat>
         </tv>
         
-        <tv norm="space" id="CFG-TV-VOIDABLE">
+        <tv norm="janee" id="CFG-TV-VOIDABLE">
             <name lang="nl">Mogelijk geen waarde</name>
             <name lang="en">Voidable</name>
             <desc lang="nl">MIM 1.1: Aanduiding dat van een aspect geen waarde is geregistreerd, maar dat onduidelijk is of de waarde er werkelijk ook niet is.</desc>
@@ -559,6 +585,7 @@
                 <value>Yes</value>
                 <value default="yes">No</value>
             </declared-values>
+            <mimformat>mogelijkGeenWaarde</mimformat>
         </tv>
         
         <!-- 

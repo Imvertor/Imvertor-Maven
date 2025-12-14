@@ -27,7 +27,7 @@
          <name>refreshconcepts</name>
          <arg>yes|no|never</arg>
          <tip>Yes to force re-read of concepts, No to read when required only, Never when to ignore concepts alltogether</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
    </cli-parms>
    <properties>

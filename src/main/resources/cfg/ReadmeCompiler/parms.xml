@@ -27,13 +27,13 @@
          <name>contactemail</name>
          <arg>email-address</arg>
          <tip>The email address for support on the (form of the) distributed release</tip>
-         <required>false</required>
+         <default>no_contactemail</default>
       </cli-parm> 
       <cli-parm>
          <name>contacturl</name>
          <arg>url</arg>
          <tip>The URL for support on the (form of the) distributed release</tip>
-         <required>false</required>
+         <default>no_contacturl</default>
       </cli-parm> 
    </cli-parms>
    

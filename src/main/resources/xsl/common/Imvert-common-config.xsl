@@ -290,6 +290,9 @@
             <xsl:when test="$scheme = 'property-name'">
                 <xsl:value-of select="imf:get-normalized-name-sub($name,'R',true())"/>
             </xsl:when>
+            <xsl:when test="$scheme = 'enum-name'">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
             <xsl:when test="$scheme = 'tv-name'">
                 <xsl:value-of select="imf:get-normalized-name-sub($name,'T',true())"/>
             </xsl:when>
@@ -464,6 +467,9 @@
             </xsl:when>
             <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'concept'">
                 <xsl:value-of select="imf:get-concept-by-URI-or-name($value)"/>
+            </xsl:when>
+            <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'janee'">
+                <xsl:value-of select="if ($value = 'true') then 'Ja' else if ($value = 'false') then 'Nee' else $value"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:msg('ERROR','Unknown normalization rule [1] in scheme [2], for value [3]', ($normalization-rule,$normalization-scheme,$value))"/>

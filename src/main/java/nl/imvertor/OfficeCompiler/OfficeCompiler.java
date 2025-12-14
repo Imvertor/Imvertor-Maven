@@ -144,7 +144,7 @@ public class OfficeCompiler extends Step {
 					String mdf = configurator.getXParm("cli/documentorfile",false);
 					
 					Boolean useDefault = false;
-					if (mdf == null && vr.contains("documentor")) { 
+					if ((mdf == null || mdf.equals("")) && vr.contains("documentor")) { 
 						runner.warn(logger, "Documentor processing requested but no modeldoc folder passed. Using default model documentation.");
 						mdf = configurator.getBaseFolder() + "/etc/respec/documentor";
 						useDefault = true;
@@ -191,7 +191,7 @@ public class OfficeCompiler extends Step {
 						// nu de bestanden integreren, start bij het masterdoc, als dat er is -- masterdoc wordt bepaald bij het scannen van de files..
 						String masterdocPath = configurator.getXParm("documentor/masterdoc-path",false);
 						if (masterdocPath == null) { 
-							runner.warn(logger, "Documentor processing requested but no modeldoc file \"" + modelName + "/" + modelName + ".docx\" found");
+							runner.warn(logger, "Documentor processing requested but modeldoc file \"" + modelName + "/" + modelName + ".docx\" not found or not processed","","DPRBMF1NFONP");
 							succeeds = false;
 						}
 						// kopieer het masterdoc naar de imvertor workfolder
@@ -382,7 +382,7 @@ public class OfficeCompiler extends Step {
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_FILEPREPARE_FILE", "properties/IMVERTOR_DOCUMENTOR_FILEPREPARE_XSLPATH","system/cur-imvertor-filepath") : false;
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE", "properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_XSLPATH","system/cur-imvertor-filepath") : false;
 			// vervang het file met de aangepaste XHTML file
-			(new AnyFile(configurator.getXParm("properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE"))).copyFile(outfile);
+			if (succeeds) (new AnyFile(configurator.getXParm("properties/IMVERTOR_DOCUMENTOR_FILEFINALIZE_FILE"))).copyFile(outfile);
 		}
 		return succeeds;
 	}

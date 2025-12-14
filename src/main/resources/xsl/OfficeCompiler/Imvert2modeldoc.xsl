@@ -55,7 +55,7 @@
     
     <xsl:variable name="create-links" select="imf:get-config-string('cli','createofficemode','click') = 'click'"/>
     
-    <xsl:variable name="link-by-eaid" select="($configuration-docrules-file/link-by,'EAID')[1] eq 'EAID'"/>
+    <xsl:variable name="link-by-eaid" select="$configuration-docrules-file/link-by eq 'EAID'"/>
     <xsl:variable name="explanation-location" select="$configuration-docrules-file/explanation-location"/>
     <xsl:variable name="append-role-name" select="imf:boolean($configuration-docrules-file/append-role-name)"/>
     
@@ -65,15 +65,23 @@
     <xsl:variable name="include-incoming-associations" select="imf:boolean($configuration-docrules-file/include-incoming-associations)"/>
     <xsl:variable name="lists-to-listing" select="imf:boolean($configuration-docrules-file/lists-to-listing)"/>
     <xsl:variable name="reveal-composition-name" select="imf:boolean($configuration-docrules-file/reveal-composition-name)"/>
-    <xsl:variable name="show-properties" select="($configuration-docrules-file/show-properties,'config')[1]"/>
-    <xsl:variable name="show-lists-with-metadata" select="imf:boolean(($configuration-docrules-file/show-lists-with-metadata,'no')[1])"/>
+    <xsl:variable name="show-properties" select="$configuration-docrules-file/show-properties"/>
+    <xsl:variable name="show-lists-with-metadata" select="imf:boolean($configuration-docrules-file/show-lists-with-metadata)"/>
+    <xsl:variable name="show-relation-name" select="imf:boolean($configuration-docrules-file/show-relation-name)"/>
     
     <xsl:variable name="has-material-history" select="exists(//imvert:tagged-value[@id = ('CFG-TV-INDICATIONMATERIALHISTORY','CFG-TV-HEEFTTIJDLIJNGELDIGHEID')]/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     <xsl:variable name="has-formal-history" select="exists(//imvert:tagged-value[@id = ('CFG-TV-INDICATIONFORMALHISTORY','CFG-TV-HEEFTTIJDLIJNREGISTRATIE')]/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     
     <xsl:variable name="has-imbroa" select="//imvert:attribute/imvert:stereotype/@id = 'stereotype-name-imbroa'"/>
     
-    <xsl:variable name="gegevensgroep-attribute-container" select="($configuration-docrules-file/gegevensgroep-attribute-container,'object')[1]"/>
+    <xsl:variable name="gegevensgroep-attribute-container" select="$configuration-docrules-file/gegevensgroep-attribute-container"/>
+    
+    <xsl:variable name="sort-domain" select="imf:boolean($configuration-docrules-file/sort-in-domain)"/>
+    
+    <xsl:variable name="show-short-attribute-cardinality" select="imf:boolean($configuration-docrules-file/show-short-attribute-cardinality)"/>
+    <xsl:variable name="show-short-attribute-unit" select="imf:boolean($configuration-docrules-file/show-short-attribute-unit)"/>
+   
+    <xsl:variable name="url-as-link" select="imf:boolean($configuration-docrules-file/url-as-link)"/>
     
     <xsl:template match="/imvert:packages">
         <xsl:sequence select="imf:track('Generating modeldoc',())"/>
@@ -87,11 +95,13 @@
                 <xsl:variable name="sections" as="element()*">
                     <section type="MODEL" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.,'global')}">
                         <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
-                        <section type="OVERVIEW-MODEL">
-                            <content>
-                                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-MODEL')"/>
-                            </content>
-                        </section>
+                        <xsl:if test="imf:boolean(imf:get-xparm('cli/includemodelinfo','no'))">
+                            <section type="OVERVIEW-MODEL">
+                                <content>
+                                    <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-MODEL')"/>
+                                </content>
+                            </section>
+                        </xsl:if>
                     </section>
                     <!-- exclude package replacements (resolved stereotype internal) -->
                     <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
@@ -140,44 +150,66 @@
             <xsl:variable name="sections" as="element(section)*">
                 <section type="OVERVIEW" include="{$include-overview-section-level}">
                     <section type="OVERVIEW-OBJECTTYPE" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-ASSOCIATIONCLASS" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-REFERENCELIST" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-UNION" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-COMPOSITION" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-STRUCTUREDDATATYPE" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-PRIMITIVEDATATYPE" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <xsl:choose>
                         <xsl:when test="$show-lists-with-metadata">
                             <section type="OVERVIEW-CODELIST" include="{$include-overview-sections-by-type}">
-                                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]"/>
+                                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]">
+                                    <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                                </xsl:apply-templates>
                             </section>
                             <section type="OVERVIEW-ENUMERATION" include="{$include-overview-sections-by-type}">
-                                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]"/>
+                                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]">
+                                    <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                                </xsl:apply-templates>
                             </section>
                         </xsl:when>
                         <xsl:otherwise>
                             <section type="OVERVIEW-CODELIST" include="{$include-overview-sections-by-type}">
                                 <content>
-                                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="listoverview"/>
+                                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="listoverview">
+                                        <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                                    </xsl:apply-templates>
                                 </content>
                             </section>
                             <section type="OVERVIEW-ENUMERATION" include="{$include-overview-sections-by-type}">
                                 <content>
-                                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]"  mode="listoverview"/>
+                                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]"  mode="listoverview">
+                                        <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                                    </xsl:apply-templates>
                                 </content>
                             </section>
                         </xsl:otherwise>
@@ -185,36 +217,62 @@
                 </section>
                 <section type="DETAILS" include="{$include-detail-section-level}">
                     <section type="DETAILS-OBJECTTYPE" include="{$include-detail-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]" mode="detail">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="DETAILS-COMPOSITE" include="{$include-detail-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]" mode="detail">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="DETAILS-ASSOCIATIONCLASS" include="{$include-detail-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]" mode="detail">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="DETAILS-UNION" include="{$include-detail-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]" mode="detail">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="DETAILS-STRUCTUREDDATATYPE" include="{$include-detail-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]" mode="detail">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <section type="DETAILS-PRIMITIVEDATATYPE" include="{$include-detail-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]" mode="detail">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
                     </section>
                     <xsl:if test="not($lists-to-listing)">
                         <section type="DETAILS-REFERENCELIST" include="{$include-detail-sections-by-type}">
-                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="detail"/>
+                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="detail">
+                                <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                            </xsl:apply-templates>
                         </section>
                         <section type="DETAILS-CODELIST" include="{$include-detail-sections-by-type}">
-                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="content"/>
+                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="content">
+                                <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                            </xsl:apply-templates>
                         </section>
                         <section type="DETAILS-ENUMERATION" include="{$include-detail-sections-by-type}">
-                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="content"/>
+                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="content">
+                                <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                            </xsl:apply-templates>
                         </section>
                     </xsl:if>
                 </section>
             </xsl:variable>
+            
+            <xsl:if test="imf:boolean(imf:get-xparm('cli/includemodelinfo','no'))">
+                <section type="OVERVIEW-DOMAIN">
+                    <content>
+                        <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-DOMAIN')"/>
+                    </content>
+                </section>
+            </xsl:if>
             <xsl:apply-templates select="$sections" mode="section-include"/>
         </section>
    
@@ -402,7 +460,7 @@
                             <!-- eerst gegevensgroeptype info -->
                             <!--(4)-->
                             <xsl:apply-templates select="." mode="composition"/>
-                            <!-- en dat de attributen daarin -->
+                            <!-- en dan de attributen daarin -->
                             <xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="gegevensgroeptype"/>
                             <xsl:apply-templates select="$defining-class/imvert:associations/imvert:association" mode="gegevensgroeptype-as-attribute"/>
                         </xsl:if>
@@ -435,7 +493,13 @@
                             <itemtype type="ATTRIBUTE-NAME"/>
                             <itemtype type="ATTRIBUTE-DEFINITION"/>
                             <itemtype type="ATTRIBUTE-FORMAT"/>
-                            <itemtype type="ATTRIBUTE-CARD"/>
+                            <xsl:if test="$show-short-attribute-cardinality">
+                                <itemtype type="ATTRIBUTE-CARD"/>
+                            </xsl:if>
+                            <xsl:if test="$show-short-attribute-unit">
+                                <itemtype type="ATTRIBUTE-EENHEID"/>
+                                <itemtype type="ATTRIBUTE-HERKOMST"/>
+                            </xsl:if>
                             <!-- and add rows -->
                             <xsl:sequence select="$r"/>
                         </content>
@@ -498,7 +562,7 @@
     
     <xsl:template match="imvert:attribute" mode="short">
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
-        <xsl:variable name="global-or-detail" select="
+       <xsl:variable name="global-or-detail" select="
             if ($show-lists-with-metadata) then 'global' else 
             if ($type/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')) then 'detail' else 'global'"/><!-- #428, #545 -->
        <part>
@@ -506,7 +570,13 @@
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/> 
            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link($type,$global-or-detail,imf:plugin-splice(imvert:baretype)))"/>
-           <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
+           <xsl:if test="$show-short-attribute-cardinality">
+               <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))" />
+           </xsl:if>
+           <xsl:if test="$show-short-attribute-unit">
+               <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-EENHEID'))"/>
+               <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-SOURCE'))"/>
+           </xsl:if>
        </part>
     </xsl:template>
 
@@ -517,8 +587,14 @@
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-splice(imvert:baretype)))"/>
-          <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
-        </part>
+           <xsl:if test="$show-short-attribute-cardinality">
+               <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))" />
+           </xsl:if>
+           <xsl:if test="$show-short-attribute-unit">
+               <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-EENHEID'))"/>
+               <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-SOURCE'))"/>
+           </xsl:if>
+       </part>
     </xsl:template>
    
     <xsl:template match="imvert:association" mode="gegevensgroeptype-as-attribute">
@@ -528,7 +604,7 @@
             <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
             <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',xs:string(imvert:type-name/@original)))"/>
-           <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
+            <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
         </part>
     </xsl:template>
     
@@ -550,9 +626,11 @@
               <xsl:variable name="typname" select="imf:get-name($type,true())"/>
               <xsl:sequence select="imf:create-link($type,'detail',$typname)"/>
           </item>
-          <item>
-             <xsl:sequence select="imf:get-cardinality(imvert:min-occurs,imvert:max-occurs)"/>
-          </item>
+          <xsl:if test="$show-short-attribute-cardinality">
+                <item>
+                    <xsl:sequence select="imf:get-cardinality(imvert:min-occurs,imvert:max-occurs)"/>
+                </item>
+          </xsl:if>
        </part>
     </xsl:template>
     
@@ -636,8 +714,9 @@
                 
                 maar kan ook een rol betreffen
                 -->
-                <xsl:variable name="relation" select="imvert:name"/>
+                <xsl:variable name="relation" select="if ($show-relation-name) then imvert:name else ()"/>
                 <xsl:variable name="target" select="imvert:target/imvert:role"/>
+              
                 <xsl:variable name="relation-original-name" select="if (exists($relation) and exists($target)) then concat($relation/@original,': ',$target/@original) else ($relation/@original,$target/@original)"/>
                 
                 <xsl:sequence select="imf:create-element('item',if ($incoming) then imf:create-link(../..,'global',../../imvert:name/@original) else string(../../imvert:name/@original))"/>
@@ -647,7 +726,6 @@
                 <xsl:sequence select="imf:create-element('item',('[',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs),']'))"/>
             </item>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
-            
         </part>
     </xsl:template>
   
@@ -685,7 +763,14 @@
                     <xsl:value-of select="imf:get-name(..,true())"/>
                 </item>
                 <item>
-                    <xsl:value-of select="imf:plugin-translate-i3n('ISSPECIALISATIONOF',true())"/>
+                    <xsl:choose>
+                        <xsl:when test="imf:boolean(imf:get-tagged-value(.,'##CFG-TV-MIXIN'))">
+                            <xsl:value-of select="imf:plugin-translate-i3n('ISMIXINSPECIALISATIONOF',true())"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="imf:plugin-translate-i3n('ISSPECIALISATIONOF',true())"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </item>
                 <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',(imvert:type-name/@original,string(imvert:conceptual-schema-type))[1]))"/>
             </item>
@@ -730,7 +815,7 @@
         -->
         <xsl:variable name="is-imbro-list" select="(imf:get-config-string('cli','owner') eq 'BRO') and $has-imbroa"/>
         <!-- Check if ANY value has an alias, in that case assume a code column should be added -->
-        <xsl:variable name="has-code" select="exists(imvert:attributes/imvert:attribute/imvert:alias)"/>
+        <xsl:variable name="has-code" select="exists(imvert:attributes/imvert:attribute/imvert:alias) or exists(imvert:attributes/imvert:attribute/imvert:initial-value)"/>
         <section 
             name="{imf:get-name(.,true())}" 
             type="{if ($is-codelist) then 'DETAIL-CODELIST' else 'DETAIL-ENUMERATION'}" 
@@ -740,12 +825,13 @@
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
                 <part>
-                    <?x <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/> x?>
-                    <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
-                    <xsl:sequence select="imf:add-data-location(.)"/>
+                    <item>
+                        <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+                        <xsl:sequence select="imf:add-data-location(.)"/>
+                    </item>
                 </part>
             </content>
-           <content>
+            <content>
                 <xsl:choose>
                     <xsl:when test="empty(imvert:attributes/imvert:attribute)">
                         <!-- lege lijst -->
@@ -913,22 +999,25 @@
     <xsl:template match="imvert:attribute" mode="detail-enumeratie">
         <xsl:param name="is-imbroa" as="xs:boolean"/>
         <xsl:param name="is-coded" as="xs:boolean"/>
+        
+        <xsl:variable name="display-name" select="imf:get-name(.,true())"/>
+        <xsl:variable name="definition" select="imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION')"/>
         <part>
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:if test="$is-coded">
-                <xsl:sequence select="imf:create-element('item',string(imvert:alias))"/>
+                <xsl:sequence select="imf:create-element('item',string((imvert:initial-value,imvert:alias)[1]))"/>
             </xsl:if>
-            <xsl:sequence select="imf:create-element('item',imf:get-name(.,true()))"/>
+            <xsl:sequence select="imf:create-element('item',$display-name)"/>
             <xsl:if test="$is-imbroa">
                 <xsl:sequence select="imf:create-element('item',if (imvert:stereotype/@id = ('stereotype-name-imbroa')) then '' else '&#x2714;')"/>
                 <xsl:sequence select="imf:create-element('item','&#x2714;')"/>
             </xsl:if>
-            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+            <xsl:sequence select="imf:create-element('item',if ($definition) then $definition else '--')"/>
         </part>
     </xsl:template>
     
     <xsl:template match="imvert:refelement" mode="detail-refelement">
-        <part>
+        <part type="listval">
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:for-each select="imvert:element">
                 <xsl:sequence select="imf:create-element('item',node())"/>
@@ -1077,11 +1166,14 @@
         <xsl:param name="tv-id"/>
         
         <xsl:variable name="tv-element" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
+        <xsl:sequence select="if ($tv-element[2]) then dlogger:save('$tv-element',$tv-element) else ()"></xsl:sequence>
         <xsl:choose>
             <xsl:when test="exists($tv-element)">
                 <xsl:variable name="default-value" select="$configuration-tvset-file//tagged-values/tv[@id = $tv-id]/declared-values/value[imf:boolean(@default)]"/>
-                <xsl:variable name="value" select="if ($tv-element) then imf:get-clean-documentation-string(imf:get-tv-value($tv-element)) else $default-value"/>
-                <xsl:sequence select="$value"/>
+                <xsl:for-each select="$tv-element">
+                    <xsl:variable name="value" select="if (node()) then imf:get-clean-documentation-string(imf:get-tv-value(.,$url-as-link)) else $default-value"/>
+                    <xsl:sequence select="$value"/>
+                </xsl:for-each>
             </xsl:when>
             <xsl:otherwise>
                 <!-- terugval optie: afgeleide tagged values niet beschikbaar voor lijstwaarden uitgelezen uit externe bronnen (modeldoc-lists) --> 
@@ -1113,14 +1205,14 @@
                             <xsl:value-of select="imf:get-subpath(@project,@application,@release)"/>
                         </item>
                         <item>
-                            <xsl:sequence select="imf:get-clean-documentation-string(imf:get-tv-value(.))"/>
+                            <xsl:sequence select="imf:get-clean-documentation-string(imf:get-tv-value(.,$url-as-link))"/>
                         </item>
                     </item>
                 </xsl:for-each>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="tv-element" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
-                <xsl:variable name="tv-value" select="imf:get-tv-value($tv-element)"/>
+                <xsl:variable name="tv-value" select="imf:get-tv-value($tv-element,$url-as-link)"/>
                 <xsl:sequence select="if ($tv-value) then imf:get-clean-documentation-string($tv-value) else ()"/>
             </xsl:otherwise>
         </xsl:choose>
@@ -1196,6 +1288,7 @@
        <xsl:param name="waarde" as="item()*"/>
      
        <xsl:variable name="doc-rule" select="$level/../.."/>
+       <xsl:variable name="suppress" select="$doc-rule/levels/@show = 'none'"/> <!-- moet de weergave geheel worden onderdrukt? -->
        
        <xsl:variable name="name" select="$doc-rule/name"/> 
        <xsl:variable name="doc-rule-id" select="$doc-rule/@id"/>
@@ -1208,6 +1301,9 @@
        
        <xsl:variable name="display-waarde" as="item()*">
            <xsl:choose>
+               <xsl:when test="$suppress">
+                   <!-- skip; this is forced by the levels attribute @show=none -->
+               </xsl:when>
                <xsl:when test="$show-properties = 'config' and $show = 'none'">
                    <!-- skip; this is forced by the configuration -->
                </xsl:when>
@@ -1301,7 +1397,9 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-SOURCEOFDEFINITION'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-TOELICHTING'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DESCRIPTION'))"/>
+                    <xsl:if test="$explanation-location = 'as-row'"> <!-- NB kan ook "at-bottom" zijn; in dat geval niet als row tonen -->
+                        <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DESCRIPTION'))"/>
+                    </xsl:if>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-UITLEG'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-EXPLANATION'))"/>
@@ -1366,6 +1464,11 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEKARDINALITEIT'">
                     <xsl:variable name="min" select="$relation/imvert:min-occurs"/>
                     <xsl:variable name="max" select="$relation/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-cardinality($min,$max))"/>
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEKARDINALITEITBRON'">
+                    <xsl:variable name="min" select="$relation/imvert:min-occurs-source"/>
+                    <xsl:variable name="max" select="$relation/imvert:max-occurs-source"/>
                     <xsl:sequence select="imf:create-part-2(.,imf:get-cardinality($min,$max))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEAUTHENTIEK'">
@@ -1527,6 +1630,32 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:get-constraint-frags($this/imvert:definition)[2])"/>   
                 </xsl:when>
                 
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-BASISURI'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-BASISURI'))"/>   
+                </xsl:when>
+             
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-INFORMATIEMODELTYPE'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-IMTYPE'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-INFORMATIEDOMEIN'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-IMDOMAIN'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-MIMVERSIE'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MIMVERSION'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-MIMEXTENSIE'">
+                    <xsl:sequence select="imf:create-part-2(.,string-join((imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MIMEXTENSION'),imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MIMEXTENSIONVERSION')),' v. '))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-MIMTAAL'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-MIMLANGUAGE'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-RELATIEMODELLERINGSTYPE'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-IMRELATIONMODELINGTYPE'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-TEKSTOPMAAK'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-TEKSTOPMAAK'))"/>   
+                </xsl:when>
+              
                 <xsl:otherwise>
                     <xsl:sequence select="imf:msg($this,'FATAL','No such document rule: [1]',$doc-rule-id)"/>
                 </xsl:otherwise>
@@ -1751,10 +1880,14 @@
         <xsl:variable name="relation-name" select="$relation/imvert:name"/>
         <xsl:variable name="target-name" select="if (not($append-role-name)) then () else $target/imvert:role"/>
         
+        <xsl:variable name="model-name" select="if ($this/self::imvert:packages) then $this/imvert:application else ()"/>
         <xsl:variable name="construct-name" select="if (exists($relation-name) and exists($target-name)) then concat($relation-name,': ',$target-name) else ($relation-name,$target-name)"/>
         <xsl:variable name="construct-original-name" select="if (exists($relation-name) and exists($target-name)) then concat($relation-name/@original,': ',$target-name/@original) else ($relation-name/@original,$target-name/@original)"/>
         <xsl:variable name="name">
             <xsl:choose>
+                <xsl:when test="$model-name">
+                    <xsl:value-of select="$model-name"/>                
+                </xsl:when>
                 <xsl:when test="$original">
                     <xsl:value-of select="$construct-original-name"/>                
                 </xsl:when>
@@ -1774,16 +1907,30 @@
         </xsl:choose>  
     </xsl:function>
     
+    <!-- 
+        Haal de tagged value waarde op. 
+        De tagged values kunnen een <body> element hebben als deze een HTML struktuur bevatten. 
+        Wanneer een waarde wordt omgezet naar HTML voegen we hier zelf dat <body> element toe.
+    --> 
     <xsl:function name="imf:get-tv-value" as="item()*">
-       <xsl:param name="tv-element" as="element(tv)?"/>
-       <xsl:variable name="val" select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/node()"/>
-       <xsl:choose>
-            <xsl:when test="imf:is-url(string-join($val,''))">
-                <span>
+        <xsl:param name="tv-element" as="element(tv)?"/>
+        <xsl:param name="link-to-url" as="xs:boolean"/>
+        <xsl:variable name="val" select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/node()"/>
+        <xsl:variable name="is-url" select="imf:is-url(string-join($val,''))"/>
+        <xsl:choose>
+            <xsl:when test="$is-url and $link-to-url">
+                <body>
                     <a href="{$val}" target="_blank">
                         <xsl:value-of select="$val"/>
                     </a>
-                </span>
+                </body>
+            </xsl:when>
+            <xsl:when test="$is-url">
+                <body>
+                    <span class="url">
+                        <xsl:value-of select="$val"/>
+                    </span>
+                </body>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="$val"/>
@@ -1870,24 +2017,39 @@
     
     <xsl:function name="imf:add-data-location" as="element(item)?">
         <xsl:param name="this" as="element()"/>
+        
+        <!-- eigenlijk moet dit anders: het tonen van metadata op een referentielijst of codelijst zou eigenlijk standaard moeten worden aangezet -->
+        
         <xsl:variable name="dataloc" select="imf:get-formatted-tagged-value($this,'CFG-TV-DATALOCATION')"/>
         
         <xsl:variable name="list-type" select="$this/imvert:stereotype/@id"/>
         <xsl:variable name="show-for-list" select="
-            ($list-type = 'stereotype-name-referentielijst' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-REFERENCELIST']) or
-            ($list-type = 'stereotype-name-codelijst' and $configuration-docrules-file/doc-rule/levels/level[. = 'DISPLAY-GLOBAL-CODELIST'])
+            ($list-type = 'stereotype-name-referentielijst' and $configuration-docrules-file/doc-rule[@id = 'CFG-DOC-DATALOCATIE']/levels/level[. = 'DISPLAY-GLOBAL-REFERENCELIST']/@show = ('config','force')) or
+            ($list-type = 'stereotype-name-codelist' and $configuration-docrules-file/doc-rule[@id = 'CFG-DOC-DATALOCATIE']/levels/level[. = 'DISPLAY-GLOBAL-CODELIST']/@show = ('config','force'))
         "/>
+        <xsl:variable name="create-link" select="imf:is-url($dataloc) and imf:boolean($configuration-docrules-file/data-location-as-link)"/>
         <xsl:choose>
             <xsl:when test="not($show-for-list)">
-                <!-- niet toevoegen: er is niet opgegeven dat de url moet worden getoond op glovbaal, dan ook niet in detail. -->
+                <!-- niet toevoegen: er is niet opgegeven dat de url moet worden getoond op globaal, dan ook niet in detail. -->
             </xsl:when>
             <xsl:when test="not(imf:normalize-space($dataloc))">
                 <!-- niet toevoegen: er is geen datalocatie opgegeven -->
             </xsl:when>
             <xsl:otherwise>
                 <item>
-                    <xsl:text>Data locatie: </xsl:text>
-                    <a href="{$dataloc}"><xsl:value-of select="$dataloc"/></a>
+                    <xsl:value-of select="imf:plugin-translate-i3n('DATALOCATIE',true()) || ': '"/>
+                    <xsl:choose>
+                        <xsl:when test="$create-link">
+                            <a href="{$dataloc}" target="_blank">
+                                <xsl:value-of select="$dataloc"/>
+                            </a>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <span class="url">
+                                <xsl:value-of select="$dataloc"/>
+                            </span>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </item> 
             </xsl:otherwise>
         </xsl:choose>

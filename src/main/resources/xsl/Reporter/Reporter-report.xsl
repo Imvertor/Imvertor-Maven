@@ -136,10 +136,7 @@
                             <xsl:if test="$processing-mode"> in mode <xsl:value-of select="$processing-mode"/></xsl:if>
                         </p>
                         <xsl:if test="$job-id">
-                            <p>Job: 
-                                <a href="{$dashboard-reference}" target="imvertorDashboard">
-                                    <xsl:value-of select="$job-id"/>
-                                </a>, user <xsl:value-of select="$user-id"/></p>  
+                            <p>Job: <xsl:value-of select="$job-id"/>, user <xsl:value-of select="$user-id"/></p>  
                         </xsl:if>
                         <p class="processing-status-{$status}">
                             <xsl:value-of select="imf:get-config-string('appinfo','status-message')"/>

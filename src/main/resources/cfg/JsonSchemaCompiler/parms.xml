@@ -28,25 +28,25 @@
          <name>createjsonschema</name>
          <arg>yes|no</arg>
          <tip>Yes if JSON schema must be generated</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>createjsonschemavariant</name>
          <arg>name</arg>
          <tip>The name of the variant of the JSON schema generated</tip>
-         <required>false</required><!-- only required when generating schemas -->
+         <default>plain</default>
       </cli-parm> 
       <cli-parm>
          <name>jsonschemaname</name>
          <arg>string</arg>
          <tip>The name of the json schema generated</tip>
-         <required>false</required>
+         <default>[appinfo/application-name]</default>
       </cli-parm> 
       <cli-parm>
          <name>jsonschemasource</name>
          <arg>string</arg>
          <tip>This is MIM or any other source. If MIM (default), Json schemas are based on a MIM serialisation.</tip>
-         <required>false</required>
+         <default>MIM</default>
       </cli-parm> 
    </cli-parms>
   

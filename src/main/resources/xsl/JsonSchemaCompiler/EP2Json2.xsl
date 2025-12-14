@@ -417,6 +417,18 @@
                                 <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
                                 <j:map key="items">
                                     <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
+                                    <!-- properties verplaatst, zie #586 -->
+                                    <xsl:sequence select="if ($unit) then imf:ep-to-namevaluepair('unit',$unit) else ()"/><!-- /req/core/iso19103-measure-types -->
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('minimum',imf:get-local-value(ep:min-value-inclusive,ep:data-type))"/>
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('maximum',imf:get-local-value(ep:max-value-inclusive,ep:data-type))"/>
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMinimum',imf:get-local-value(ep:min-value-exclusive,ep:data-type))"/>
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMaximum',imf:get-local-value(ep:max-value-exclusive,ep:data-type))"/>
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('minLength',imf:get-local-value(ep:min-length,'ep:integer'))"/>
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',imf:get-local-value(ep:max-length,'ep:integer'))"/>
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('pattern',(ep:formal-pattern,imf:map-datapattern-to-ep-type(ep:data-type))[1])"/>
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
                                 </j:map>
                                 <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
                             </xsl:when>
@@ -424,17 +436,7 @@
                                 <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>         
                             </xsl:otherwise>
                         </xsl:choose>
-                        <xsl:sequence select="if ($unit) then imf:ep-to-namevaluepair('unit',$unit) else ()"/><!-- /req/core/iso19103-measure-types -->
-                        <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('minimum',imf:get-local-value(ep:min-value-inclusive,ep:data-type))"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('maximum',imf:get-local-value(ep:max-value-inclusive,ep:data-type))"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMinimum',imf:get-local-value(ep:min-value-exclusive,ep:data-type))"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMaximum',imf:get-local-value(ep:max-value-exclusive,ep:data-type))"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('minLength',imf:get-local-value(ep:min-length,'ep:integer'))"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',imf:get-local-value(ep:max-length,'ep:integer'))"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('pattern',(ep:formal-pattern,imf:map-datapattern-to-ep-type(ep:data-type))[1])"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
-                        <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
+                        <!-- properties verplaatst, zie #586 -->
                     </xsl:when>
                     <!-- de construct is een extern ding -->
                     <xsl:when test="ep:external">

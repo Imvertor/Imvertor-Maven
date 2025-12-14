@@ -11,6 +11,6 @@
     exclude-result-prefixes="#all" 
     version="2.0">
     
-    <xsl:import href="Imvert2modeldoc-EIGENAAR-CONCEPTUAL-html-respec.xsl"/>
+    <xsl:import href="Imvert2modeldoc-EIGENAAR-MIM-12-CONCEPTUAL-html-respec.xsl"/>
     
 </xsl:stylesheet>

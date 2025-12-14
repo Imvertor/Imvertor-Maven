@@ -73,6 +73,7 @@
     <xsl:template match="imvert:found-name">
         <xsl:variable name="type" select="
             if (parent::imvert:package) then 'package-name' else 
+            if (parent::imvert:attribute[imvert:stereotype/@id = 'stereotype-name-enum']) then 'enum-name' else
             if (parent::imvert:attribute) then 'property-name' else
             if (parent::imvert:association) then 'property-name' else 'class-name'"/>
         <imvert:name original="{.}">
@@ -131,6 +132,7 @@
         </xsl:choose>
     </xsl:template>
 
+    <?x Imvertor 4.5: deze regel is verwijderd, nu meerdere metamodellen in één model kunnen worden geintegreerd. Deze regel betrof MIM. Zie #659
     <xsl:template match="imvert:class[imvert:designation = 'enumeration']/imvert:attributes/imvert:attribute">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
@@ -141,7 +143,9 @@
             </xsl:if>
         </xsl:copy>
     </xsl:template>
+    x?>
     
+    <?x Imvertor 4.5: deze regel is verwijderd, nu meerdere metamodellen in één model kunnen worden geintegreerd. Deze regel betrof MIM. Zie #659
     <xsl:template match="imvert:class[imvert:designation = 'enumeration']">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
@@ -152,6 +156,7 @@
             </xsl:if>
         </xsl:copy>
     </xsl:template>
+    x?>
     
     <xsl:template match="imvert:association">
         <xsl:choose>
@@ -361,25 +366,38 @@
     </xsl:template>
     
     <xsl:template match="imvert:tagged-value" mode="mode-tv">
-        <xsl:variable name="toks" select="tokenize(imvert:value,'\n')"/>
-        <xsl:copy>
-           <xsl:sequence select="@*"/>
-           <xsl:sequence select="imvert:name"/>
-           <xsl:choose>
-               <xsl:when test="count($toks) gt 1">
-                   <imvert:value format="memo">
-                       <body xmlns="http://www.w3.org/1999/xhtml">
-                           <xsl:for-each select="$toks">
-                               <p><xsl:value-of select="."/></p>
-                           </xsl:for-each>
-                       </body>
-                   </imvert:value>
-               </xsl:when>
-               <xsl:otherwise>
-                   <xsl:sequence select="imvert:value"/>
-               </xsl:otherwise>
-           </xsl:choose>
-        </xsl:copy>
+        <xsl:choose>
+            <xsl:when test="imvert:value/xhtml:body">
+                <xsl:copy>
+                    <xsl:sequence select="@*"/>
+                    <xsl:sequence select="imvert:name"/>
+                    <imvert:value format="xhtml">
+                        <xsl:sequence select="imvert:value/xhtml:body"/>
+                    </imvert:value>
+                </xsl:copy>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="toks" select="tokenize(imvert:value,'\n')"/>
+                <xsl:copy>
+                    <xsl:sequence select="@*"/>
+                    <xsl:sequence select="imvert:name"/>
+                    <xsl:choose>
+                        <xsl:when test="count($toks) gt 1">
+                            <imvert:value format="memo">
+                                <body xmlns="http://www.w3.org/1999/xhtml">
+                                    <xsl:for-each select="$toks">
+                                        <p><xsl:value-of select="."/></p>
+                                    </xsl:for-each>
+                                </body>
+                            </imvert:value>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imvert:value"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:copy>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <!-- 

@@ -61,9 +61,9 @@
         de MIM metamodel versie en extensie is opgegeven als tagged value, of meegeleverd als cli
       -->
       <xsl:variable name="metamodel-owner" select="imf:get-xparm('cli/owner')"/>
-      <xsl:variable name="metamodel-specified-version" select="local:value(($mim-specified-version,$other-specified-version,imf:get-xparm('cli/metamodelversion')))"/>
+      <xsl:variable name="metamodel-version" select="local:value(($mim-specified-version,$other-specified-version,imf:get-xparm('cli/metamodelversion')))"/>
       <xsl:variable name="metamodel-extension" select="local:value(((//UML:TaggedValue[lower-case(@tag) = ('mim extensie','mim extension')])[1]/@value,imf:get-xparm('cli/metamodelextension')))"/>
-      <xsl:variable name="metamodel-extension-version" select="local:value(((//UML:TaggedValue[lower-case(@tag) = ('mim extensie versie','mim extension version')])[1]/@value,imf:get-xparm('cli/metamodelextensionversion')))"/>
+      <xsl:variable name="metamodel-extension-version" select="if (imf:boolean($metamodel-extension)) then local:value(((//UML:TaggedValue[lower-case(@tag) = ('mim extensie versie','mim extension version')])[1]/@value,imf:get-xparm('cli/metamodelextensionversion'))) else ()"/>
       <xsl:variable name="metamodel-name" select="if (exists($mim-specified-version)) then 'MIM' else imf:get-xparm('cli/metamodelname')"/>
       
       <!-- 
@@ -72,9 +72,9 @@
         
         Bij validatie, forceer dat als het metamodel MIM versie 1.* is, dat e.e.a. dan verwerkt wordt met MIM 1.2 (de meest recente minor versie) -->
       -->
-      <xsl:variable name="toks" select="tokenize($metamodel-specified-version,'\.')"/>
-      <xsl:variable name="minor-version" select="if ($toks[2]) then $toks[1] || '.' || $toks[2] else $metamodel-specified-version"/>
-      <xsl:variable name="major-version" select="if ($toks[2]) then $toks[1] else $metamodel-specified-version"/>
+      <xsl:variable name="toks" select="tokenize($metamodel-version,'\.')"/>
+      <xsl:variable name="minor-version" select="if ($toks[2]) then $toks[1] || '.' || $toks[2] else $metamodel-version"/>
+      <xsl:variable name="major-version" select="if ($toks[2]) then $toks[1] else $metamodel-version"/>
       
       <xsl:variable name="metamodel-name-and-version" select="if ($metamodel-name) then local:compact((
         $metamodel-owner,
@@ -97,7 +97,7 @@
       -->
       <xsl:sequence select="imf:set-config-string('appinfo','metamodel-name',$metamodel-name)"/>
       <xsl:sequence select="imf:set-config-string('appinfo','metamodel-minor-version',$minor-version)"/>
-      <xsl:sequence select="imf:set-config-string('appinfo','metamodel-specified-version',$metamodel-specified-version)"/>
+      <xsl:sequence select="imf:set-config-string('appinfo','metamodel-specified-version',$metamodel-version)"/>
       <xsl:sequence select="imf:set-config-string('appinfo','metamodel-major-version',$major-version)"/>
       <xsl:sequence select="imf:set-config-string('appinfo','metamodel-extension',$metamodel-extension)"/>
       <xsl:sequence select="imf:set-config-string('appinfo','metamodel-extension-version',$metamodel-extension-version)"/>

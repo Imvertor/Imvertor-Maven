@@ -56,11 +56,13 @@
             <xsl:when test="exists($imagepar)">
                 <image>
                     <xsl:sequence select="local:pass-metadata(.)"/>
-                    <raw>
-                        <xsl:value-of select="$imagepar/img/@src"/>
-                    </raw>
+                    <xsl:for-each select="$imagepar/img/@src">
+                        <raw>
+                            <xsl:value-of select="."/>
+                        </raw>
+                    </xsl:for-each>
                     <style>
-                        <xsl:value-of select="$imagepar/img/@style"/>
+                        <xsl:value-of select="$imagepar/img[last()]/@style"/>
                     </style>
                     <caption>
                         <xsl:apply-templates select="* except $imagepar"/>

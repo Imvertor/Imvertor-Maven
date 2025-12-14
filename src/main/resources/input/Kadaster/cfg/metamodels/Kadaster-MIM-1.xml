@@ -23,6 +23,8 @@
     
     <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM12.xml"/>
     
+    <xi:include href="../../../Armatiek/cfg/metamodels/Armatiek-OpenAPI-1-BASE-10.xml"/>
+    
     <xi:include href="Kadaster-MIMEXT-1.xml"/>
     
     <name>Kadaster-MIM-1</name>

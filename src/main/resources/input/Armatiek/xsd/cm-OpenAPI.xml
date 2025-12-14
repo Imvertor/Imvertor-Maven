@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:Map xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+    ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+   
+    <cs:id>OPENAPI</cs:id>
+    <cs:namespace>https://armatiek.nl/OpenAPI</cs:namespace>
+    <cs:location>https://armatiek.nl/OpenAPI.xsd</cs:location><!-- bogus not used for schema generator -->
+    <cs:phase>3</cs:phase>
+    <cs:version>1.0.0</cs:version>
+    <cs:release>20250901</cs:release>
+    <cs:forSchema>
+        <cs-ref:ConceptualSchemaRef xlink:href="#OPENAPI"/>
+    </cs:forSchema>
+    <cs:owner>ARMATIEK</cs:owner>
+    <cs:constructs>
+        <cs:Construct>
+            <cs:name>Openapitype</cs:name>
+            <cs:sentinel>false</cs:sentinel>
+            <cs:managedID>EAID_18BFBA8D_E3F4_4d8c_9A8F_4429FA54B041</cs:managedID>
+            <cs:catalogEntries>
+                <cs:CatalogEntry>
+                    <cs:name>#Openapitype</cs:name>
+                </cs:CatalogEntry>
+            </cs:catalogEntries>
+            <cs:xsdTypes>
+                <cs:XsdType>
+                    <cs:name>xs:string</cs:name>
+                    <cs:asAttribute>xs:string</cs:asAttribute>
+                    <cs:asAttributeDesignation>simpletype</cs:asAttributeDesignation>
+                    <cs:primitive>true</cs:primitive>
+                </cs:XsdType>
+            </cs:xsdTypes>
+            <cs:oasTypes>
+                <cs:OasType>
+                    <cs:name>string</cs:name>
+                    <cs:primitive>true</cs:primitive>
+                </cs:OasType>
+            </cs:oasTypes>
+        </cs:Construct>
+    </cs:constructs>
+</cs:Map>

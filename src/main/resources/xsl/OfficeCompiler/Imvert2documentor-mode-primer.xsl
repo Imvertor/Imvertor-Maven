@@ -559,9 +559,9 @@
         <table class="primer-metadata">
             <tbody>
                 <tr>
-                    <th><!-- linksboven leeg --></th>
+                    <th scope="col"><!-- linksboven leeg --></th>
                     <xsl:for-each select="$stereos">
-                        <th>{.}</th>
+                        <th scope="col">{.}</th>
                     </xsl:for-each>
                 </tr>
                 <xsl:for-each select="$metagegevens-hardcoded/metagegeven">

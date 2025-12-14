@@ -51,7 +51,7 @@
         <!--setup-->
         <xsl:sequence select="imf:report-error(., 
             (imvert:min-occurs ne '1' or imvert:max-occurs ne '1'), 
-            'Attribute with stereotype [1] must have cardinality of 1..1', imf:get-config-name-by-id('stereotype-name-union'))"/>
+            'Attribute with stereotype [1] must have cardinality of [2]', (imf:get-config-name-by-id('stereotype-name-union'),'1..1'))"/>
         
         <xsl:next-match/>
     </xsl:template>
@@ -61,11 +61,17 @@
         <xsl:variable name="stereotypes" select="imvert:stereotype"/>
         <xsl:variable name="parent-stereotypes" select="../../imvert:stereotype"/>
         <xsl:variable name="allowed-parent-stereotypes" select="$configuration-metamodel-file/stereotypes/stereo[@id = $stereotypes/@id]/context/parent-stereo" as="xs:string*"/>
+        <xsl:variable name="defining-class" select="imf:get-construct-by-id(imvert:type-id)"/>
         
         <xsl:sequence select="imf:report-validation(., 
             exists($allowed-parent-stereotypes) and not($parent-stereotypes/@id = $allowed-parent-stereotypes), 
             $context-signaltype,
             'Association with stereotype [1] must not appear here, expecting (any of) [2]', (imf:string-group($stereotypes),imf:string-group(for $s in $allowed-parent-stereotypes return imf:get-config-name-by-id($s))))"/>
+        
+        <xsl:variable name="allowed-stereos" select="('stereotype-name-objecttype','stereotype-name-interface','stereotype-name-union-associations')"/>
+        <xsl:sequence select="imf:report-error(., 
+            (not($defining-class/imvert:stereotype/@id = $allowed-stereos)), 
+            'Relation target must be stereotyped as [1] and not [2]', (imf:string-group(imf:get-config-stereotypes($allowed-stereos),' or '),imf:get-config-stereotypes($defining-class/imvert:stereotype/@id)))"/>
         
         <xsl:next-match/>
     </xsl:template>

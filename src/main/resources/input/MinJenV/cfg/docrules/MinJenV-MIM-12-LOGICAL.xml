@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../MIM/cfg/docrules/MIM12.xml"/>
+    
+    <name>MinJenV-MIM-12-LOGICAL</name>
+     
+</doc-rules>

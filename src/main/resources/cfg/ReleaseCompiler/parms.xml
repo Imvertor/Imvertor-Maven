@@ -27,7 +27,7 @@
          <name>createziprelease</name>
          <arg>yes|no</arg>
          <tip>Yes if the released application should be zipped for distribution</tip>
-         <required>true</required>
+         <default>yes</default>
       </cli-parm> 
       <cli-parm>
          <name>releasename</name>
@@ -46,7 +46,7 @@
             For example: -zipfilename release-[project-name]-[application-name]-[version]-[phase]-[release][documentation-release]-[generation-id]
             May result in: "release-MyProject-MyApplication-MyVersion-2-20160301-at-20160323-102945.zip"
          </desc>
-         <required>true</required>
+         <default>[project-name]-[application-name]-[version]-[phase]-[release][documentation-release]-[generation-id]</default>
       </cli-parm> 
       
    </cli-parms>

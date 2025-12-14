@@ -4,9 +4,9 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="IHW-MIM-1-CONCEPTUAL.xml"/>
+    <xi:include href="IHW-MIM-11-CONCEPTUAL.xml"/>
     
-    <name>IHW-MIM-1-LOGICAL</name>
+    <name>IHW-MIM-11-LOGICAL</name>
     
     <desc>IHW specific requirements on documentation.</desc>
     

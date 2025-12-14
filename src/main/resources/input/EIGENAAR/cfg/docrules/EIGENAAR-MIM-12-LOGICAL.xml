@@ -6,6 +6,8 @@
   
     <xi:include href="EIGENAAR-MIM-12-CONCEPTUAL.xml"/>
     
+    <xi:include href="../../../Armatiek/cfg/docrules/Armatiek-OpenAPI-10-BASE-10.xml"/>
+    
     <name>EIGENAAR-MIM-12-LOGICAL</name>
      
 </doc-rules>

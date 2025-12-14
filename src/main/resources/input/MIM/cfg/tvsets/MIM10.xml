@@ -40,7 +40,7 @@
                  <stereo minmax="1..1">stereotype-name-enumeration</stereo> -->
             </stereotypes>
         </tv> 
-        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
+        <tv norm="janee" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <name lang="nl">Indicatie materiële historie</name>
             <name lang="en">Indication material history</name>
             <desc lang="nl">TODO</desc>
@@ -64,7 +64,7 @@
                 <value>See group</value>
             </declared-values>
         </tv>
-        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
+        <tv norm="janee" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
             <name lang="nl">Indicatie formele historie</name>
             <name lang="en">Indication formal history</name>
             <desc lang="nl">TODO</desc>
@@ -157,7 +157,7 @@
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-VOIDABLE">
+        <tv norm="janee" id="CFG-TV-VOIDABLE">
             <name lang="nl">Mogelijk geen waarde</name>
             <name lang="en">Voidable</name>
             <desc lang="nl">Het model element heeft mogelijk géén waarde, bijvoorbeeld omdat de waarde nog niet beschikbaar is of niet mag worden vrijgegeven.</desc>

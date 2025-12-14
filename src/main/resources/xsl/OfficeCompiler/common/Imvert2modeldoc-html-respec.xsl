@@ -48,6 +48,11 @@
     
     <xsl:variable name="diagram-encoding" select="$configuration-docrules-file/diagram-encoding"/><!-- #326 als figure, of als img met tekst eronder -->
     
+    <xsl:variable name="use-subheaders-in-respec" select="imf:boolean($configuration-docrules-file/use-subheaders-in-respec)"/>
+    
+    <xsl:variable name="show-short-attribute-cardinality" select="imf:boolean($configuration-docrules-file/show-short-attribute-cardinality)"/>
+    <xsl:variable name="show-short-attribute-unit" select="imf:boolean($configuration-docrules-file/show-short-attribute-unit)"/>
+    
     <xsl:template match="book" mode="respec-type">
         <xsl:choose>
             <!-- 
@@ -144,6 +149,10 @@
                     <xsl:apply-templates mode="#current"/>
                 </section>
             </xsl:when>
+            <xsl:when test="@type = 'EXPLANATION' and $use-subheaders-in-respec">
+                <xsl:sequence select="imf:create-section-subheader-name($section,$level,'EXPLANATION',$language-model,())"/>
+                <xsl:apply-templates select="content[not(@approach='association')]/part/item" mode="#current"/>
+            </xsl:when>
             <xsl:when test="@type = 'EXPLANATION'">
                 <section class="notoc" level="{$level}">
                     <xsl:sequence select="$idatt"/>
@@ -151,8 +160,20 @@
                     <xsl:apply-templates select="content[not(@approach='association')]/part/item" mode="#current"/>
                 </section>
             </xsl:when>
+            <xsl:when test="@type = 'SHORT-ATTRIBUTES' and $use-subheaders-in-respec">
+                <xsl:sequence select="imf:create-section-subheader-name($section,$level,'SHORT-ATTRIBUTES',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
             <xsl:when test="@type = 'SHORT-ATTRIBUTES'">
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-ATTRIBUTES',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
+            <xsl:when test="@type = 'SHORT-ENUMS' and $use-subheaders-in-respec">
+                <xsl:sequence select="imf:create-section-subheader-name($section,$level,'SHORT-ENUMS',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
+            <xsl:when test="@type = 'SHORT-ENUMS'">
+                <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-ENUMS',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-CONSTRAINTS'">
@@ -161,6 +182,14 @@
             </xsl:when>
             <xsl:when test="@type = 'SHORT-UNIONELEMENTS'">
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-UNIONELEMENTS',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
+            <xsl:when test="@type = 'SHORT-DATAELEMENTS'">
+                <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-DATAELEMENTS',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
+            <xsl:when test="@type = 'SHORT-ASSOCIATIONS' and $use-subheaders-in-respec">
+                <xsl:sequence select="imf:create-section-subheader-name($section,$level,'SHORT-ASSOCIATIONS',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-ASSOCIATIONS'">
@@ -243,8 +272,12 @@
     </xsl:template>
  
     <xsl:template match="content" mode="detail">
+        <xsl:variable name="overview-content-type" select="(../@type,../../@type)[starts-with(.,'OVERVIEW-')]"/>
         <xsl:if test="empty(@approach) or (@approach = 'target' and $meta-is-role-based) or @approach = 'association' and not($meta-is-role-based)">
            <table width="100%">
+               <xsl:if test="$overview-content-type">
+                   <xsl:attribute name="class">overview {$overview-content-type}</xsl:attribute>
+               </xsl:if>
                 <xsl:apply-templates select="part[1]" mode="detail-tabletype"/>
                 <xsl:apply-templates select="part[1]" mode="detail-colgroup"/>
                 <tbody>
@@ -260,7 +293,7 @@
     </xsl:template>
     
     <xsl:template match="itemtype" mode="detail">
-        <th>
+        <th scope="col">
             <xsl:value-of select="
                 if (normalize-space(.)) then string(.) else
                 if (@type) then imf:translate-i3n(@type,$language-model,()) else ''
@@ -286,122 +319,153 @@
         <xsl:variable name="type" select="ancestor::section/@type"/>
         
         <xsl:choose>
-                <xsl:when test="@type = 'COMPOSER' and $type='DETAIL-COMPOSITE-ATTRIBUTE'">
-                    <!-- skip, do not show in detail listings (? #GH-257 - lijkt wel nodig) -->
-                    <colgroup width="30%"/>
-                    <colgroup width="70%"/>
-                </xsl:when>
-                <xsl:when test="@type = 'COMPOSER'"> <!-- 30 50 10 10 -->
-                    <colgroup width="30%"/>
-                    <colgroup width="50%"/>
-                    <colgroup width="10%"/>
-                    <colgroup width="10%"/>
-                </xsl:when>
-                <xsl:when test="$type = 'EXPLANATION'"> <!-- 100 -->
-                    <colgroup width="100%"/>
-                </xsl:when>
-                <xsl:when test="$type = 'SHORT-ASSOCIATIONS'"> <!-- 50 50 -->
-                    <colgroup width="50%"/>
-                    <colgroup width="50%"/>
-                </xsl:when>
-                <xsl:when test="$type = 'SHORT-TYPERELATIONS'"> <!-- 50 50 -->
-                    <colgroup width="50%"/>
-                    <colgroup width="50%"/>
-                </xsl:when>
-                <xsl:when test="$type = 'SHORT-ATTRIBUTES'"> <!-- 30 50 10 10 -->
-                    <colgroup width="30%"/>
-                    <colgroup width="50%"/>
-                    <colgroup width="10%"/>
-                    <colgroup width="10%"/>
-                </xsl:when>
-                <xsl:when test="$type = 'SHORT-DATAELEMENTS'"> <!-- 30 50 10 10 -->
-                    <colgroup width="30%"/>
-                    <colgroup width="50%"/>
-                    <colgroup width="10%"/>
-                    <colgroup width="10%"/>
-                </xsl:when>
-                <xsl:when test="$type = 'SHORT-UNIONELEMENTS'"> <!-- 30 50 10 10 -->
-                    <colgroup width="30%"/>
-                    <colgroup width="50%"/>
-                    <colgroup width="10%"/>
-                    <colgroup width="10%"/>
-                </xsl:when>
-                <xsl:when test="$type = 'SHORT-REFERENCEELEMENTS'"> <!-- 30 50 10 10 -->
-                    <colgroup width="30%"/>
-                    <colgroup width="50%"/>
-                    <colgroup width="10%"/>
-                    <colgroup width="10%"/>
-                </xsl:when>
-                
-                <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 2"> <!-- 40 60 -->
-                    <colgroup width="40%"/>
-                    <colgroup width="60%"/>
-                </xsl:when>
-                <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 3"> <!-- 10 30 60 -->
-                    <colgroup width="10%"/>
-                    <colgroup width="30%"/>
-                    <colgroup width="60%"/>
-                </xsl:when>
-                <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 4"> <!-- 30 10 10 50 -->
-                    <colgroup width="30%"/>
-                    <colgroup width="10%"/>
-                    <colgroup width="10%"/>
-                    <colgroup width="50%"/>
-                </xsl:when>
-                <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 5"> <!-- 30 10 10 50 -->
-                    <colgroup width="20%"/>
-                    <colgroup width="20%"/>
-                    <colgroup width="10%"/>
-                    <colgroup width="10%"/>
-                    <colgroup width="40%"/>
-                </xsl:when>
-                <xsl:when test="$type = ('CONTENTS-REFERENCELIST','DETAIL-CODELIST','DETAIL-REFERENCELIST','DETAIL-ENUMERATION')"><!-- when collapsed -->
-                    <xsl:variable name="colgroup-config" as="element(colgroup)*">
-                        <xsl:variable name="itemtypes" select="../../content/itemtype"/>
-                        <xsl:choose>
-                            <xsl:when test="count($itemtypes) = 5 and $itemtypes[3]/@type = 'IMBRO'">
-                                <colgroup width="20%"/>
-                                <colgroup width="20%"/>
-                                <colgroup width="5%"/>
-                                <colgroup width="5%"/>
-                                <colgroup width="50%"/>
-                            </xsl:when>
-                            <xsl:when test="count($itemtypes) = 4 and $itemtypes[2]/@type = 'IMBRO'">
-                                <colgroup width="20%"/>
-                                <colgroup width="5%"/>
-                                <colgroup width="5%"/>
-                                <colgroup width="70%"/>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:variable>
-                    <xsl:variable name="groups" as="element(colgroup)*">
-                        <xsl:choose>
-                            <xsl:when test="exists($colgroup-config)">
-                                <xsl:sequence select="$colgroup-config"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <!-- max number of items found anywhere in contents -->
-                                <xsl:variable name="section-items" select="imf:largest(for $part in ancestor::section[1]/content/part return count($part/item))"/>
-                                <xsl:variable name="column-size" select="100 div $section-items"/>
-                                <xsl:for-each select="for $i in (1 to $section-items) return $i">
-                                    <colgroup width="{$column-size}%"/>
-                                </xsl:for-each>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:variable>
-                    <xsl:sequence select="subsequence($groups,1,$items - 1)"/> 
-                    <colgroup/><!-- final colgroup fills up the rest of the table space -->     
-                </xsl:when>
-                
-                <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->
-                    <colgroup width="30%"/>
-                    <colgroup width="70%"/>
-                </xsl:when>
-                
-                <xsl:otherwise>
-                    <xsl:sequence select="imf:msg(.,'FATAL','Unknown modeldoc part: [1], items: [2], processing column group', (string-join($type,', ') ,$items))"></xsl:sequence>
-                </xsl:otherwise>
-            </xsl:choose>
+            <xsl:when test="@type = 'COMPOSER' and $type='DETAIL-COMPOSITE-ATTRIBUTE'">
+                <!-- skip, do not show in detail listings (? #GH-257 - lijkt wel nodig) -->
+                <colgroup width="30%"/>
+                <colgroup width="70%"/>
+            </xsl:when>
+            <xsl:when test="@type = 'COMPOSER'"> <!-- 30 50 10 10 -->
+                <colgroup width="30%"/>
+                <colgroup width="50%"/>
+                <colgroup width="10%"/>
+                <colgroup width="10%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'EXPLANATION'"> <!-- 100 -->
+                <colgroup width="100%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-ASSOCIATIONS' and $items = 1"> <!-- 100 -->
+                <colgroup width="100%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-ASSOCIATIONS' and $items = 2"> <!-- 50 50 -->
+                <colgroup width="50%"/>
+                <colgroup width="50%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-TYPERELATIONS'"> <!-- 50 50 -->
+                <colgroup width="50%"/>
+                <colgroup width="50%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-ATTRIBUTES' and $items = 6"> 
+                <colgroup width="30%"/>
+                <colgroup width="40%"/>
+                <colgroup width="10%"/>
+                <colgroup width="5%"/>
+                <colgroup width="5%"/>
+                <colgroup width="10%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-ATTRIBUTES' and $items = 5"> <!-- waterschapshuis: attributes met eenheid en herkomst -->
+                <colgroup width="30%"/>
+                <colgroup width="40%"/>
+                <colgroup width="10%"/>
+                <colgroup width="10%"/>
+                <colgroup width="10%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-ATTRIBUTES'"> <!-- default: 4 items, met cardinaliteit -->
+                <colgroup width="30%"/>
+                <colgroup width="50%"/>
+                <colgroup width="10%"/>
+                <colgroup width="10%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-ENUMS' and $items = 3"> <!-- waterschapshuis: enums met codes. -->
+                <colgroup width="10%"/>
+                <colgroup width="30%"/>
+                <colgroup width="60%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-ENUMS'"> <!-- 40 60 -->
+                <colgroup width="40%"/>
+                <colgroup width="60%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-DATAELEMENTS'"> <!-- 30 50 10 10 -->
+                <colgroup width="30%"/>
+                <colgroup width="50%"/>
+                <colgroup width="10%"/>
+                <colgroup width="10%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-UNIONELEMENTS'"> <!-- 30 50 10 10 -->
+                <colgroup width="30%"/>
+                <colgroup width="50%"/>
+                <colgroup width="10%"/>
+                <colgroup width="10%"/>
+            </xsl:when>
+            <xsl:when test="$type = 'SHORT-REFERENCEELEMENTS'"> <!-- 30 50 10 10 -->
+                <colgroup width="30%"/>
+                <colgroup width="50%"/>
+                <colgroup width="10%"/>
+                <colgroup width="10%"/>
+            </xsl:when>
+            
+            <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 2"> <!-- 40 60 -->
+                <colgroup width="40%"/>
+                <colgroup width="60%"/>
+            </xsl:when>
+            <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 3"> <!-- 10 30 60 -->
+                <colgroup width="10%"/>
+                <colgroup width="30%"/>
+                <colgroup width="60%"/>
+            </xsl:when>
+            <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 4"> <!-- 30 10 10 50 -->
+                <colgroup width="30%"/>
+                <colgroup width="10%"/>
+                <colgroup width="10%"/>
+                <colgroup width="50%"/>
+            </xsl:when>
+            <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 5"> <!-- 30 10 10 50 -->
+                <colgroup width="20%"/>
+                <colgroup width="20%"/>
+                <colgroup width="10%"/>
+                <colgroup width="10%"/>
+                <colgroup width="40%"/>
+            </xsl:when>
+            <xsl:when test="$type = ('CONTENTS-REFERENCELIST','DETAIL-CODELIST','DETAIL-REFERENCELIST','DETAIL-ENUMERATION')"><!-- when collapsed -->
+                <xsl:variable name="colgroup-config" as="element(colgroup)*">
+                    <xsl:variable name="itemtypes" select="../../content/itemtype"/>
+                    <xsl:choose>
+                        <xsl:when test="count($itemtypes) = 5 and $itemtypes[3]/@type = 'IMBRO'">
+                            <colgroup width="20%"/>
+                            <colgroup width="20%"/>
+                            <colgroup width="5%"/>
+                            <colgroup width="5%"/>
+                            <colgroup width="50%"/>
+                        </xsl:when>
+                        <xsl:when test="count($itemtypes) = 4 and $itemtypes[2]/@type = 'IMBRO'">
+                            <colgroup width="20%"/>
+                            <colgroup width="5%"/>
+                            <colgroup width="5%"/>
+                            <colgroup width="70%"/>
+                        </xsl:when>
+                    </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="groups" as="element(colgroup)*">
+                    <xsl:choose>
+                        <xsl:when test="exists($colgroup-config)">
+                            <xsl:sequence select="$colgroup-config"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <!-- geen bekende tabel oid. dus geen colgroups genereren. In HTML context wordt e.e.a. uitgelijnd op basis van inhoud. -->
+                            <colgroup width="20%"/><!-- eerste kolom 20%, zie #682 -->
+                            <?x
+                            <!-- max number of items found anywhere in contents -->
+                            <xsl:variable name="section-items" select="imf:largest(for $part in ancestor::section[1]/content/part return count($part/item))"/>
+                            <xsl:variable name="column-size" select="100 div $section-items"/>
+                            <xsl:for-each select="for $i in (1 to $section-items) return $i">
+                                <colgroup width="{$column-size}%"/>
+                            </xsl:for-each>
+                            x?>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                <xsl:sequence select="subsequence($groups,1,$items - 1)"/> 
+                <colgroup/><!-- final colgroup fills up the rest of the table space -->     
+            </xsl:when>
+            
+            <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->
+                <colgroup width="30%"/>
+                <colgroup width="70%"/>
+            </xsl:when>
+            
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg(.,'FATAL','Unknown modeldoc part: [1], items: [2], processing column group', (string-join($type,', ') ,$items))"></xsl:sequence>
+            </xsl:otherwise>
+        </xsl:choose>
 
     </xsl:template>
     
@@ -416,7 +480,7 @@
                 <?x issue https://github.com/Imvertor/Imvertor-Maven/issues/366
                 <xsl:when test="@type = 'CFG-DOC-NAAM' and $type['DETAILS'] and not($type = ('DETAIL-ATTRIBUTE','DETAIL-ASSOCIATION','DETAIL-UNIONELEMENT'))"> 
                     <!-- https://github.com/Imvertor/Imvertor-Maven/issues/365# -->
-                    <th>
+                    <th scope="row">
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </th>
                     <td>
@@ -428,7 +492,7 @@
                 x?>
                 <xsl:when test="@type = 'CFG-DOC-INDICATIEAUTHENTIEK'">
                     <!-- add suffix info string -->
-                    <th>
+                    <th scope="row">
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </th>
                     <td>
@@ -458,7 +522,14 @@
                         <xsl:apply-templates select="item" mode="#current"/>
                     </td>
                 </xsl:when>
-                <xsl:when test="$type = 'SHORT-ASSOCIATIONS'"> <!-- 50 50 -->
+                <xsl:when test="$type = 'SHORT-ASSOCIATIONS' and $items = 1"> <!-- 100 -->
+                    <td>
+                        <xsl:if test="@type = 'COMPOSED'">- </xsl:if>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                        <xsl:if test="@type = 'COMPOSER'">:</xsl:if>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-ASSOCIATIONS' and $items = 2"> <!-- 50 50 -->
                     <td>
                         <xsl:if test="@type = 'COMPOSED'">- </xsl:if>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
@@ -504,8 +575,29 @@
                     <td>
                         <xsl:apply-templates select="item[3]" mode="#current"/>
                     </td>
+                    <xsl:if test="$show-short-attribute-cardinality">
+                        <td>
+                            <xsl:apply-templates select="item[4]" mode="#current"/>
+                        </td>
+                    </xsl:if>
+                    <xsl:if test="$show-short-attribute-unit">
+                        <td>
+                            <xsl:apply-templates select="item[4]" mode="#current"/>
+                        </td>
+                        <td>
+                            <xsl:apply-templates select="item[5]" mode="#current"/>
+                        </td>
+                    </xsl:if>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-ENUMS' and $items = 3"> <!-- 10 30 60 -->
                     <td>
-                        <xsl:apply-templates select="item[4]" mode="#current"/>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
                     </td>
                 </xsl:when>
                 <xsl:when test="$type = 'SHORT-DATAELEMENTS'">
@@ -537,7 +629,7 @@
                     </td>
                 </xsl:when>
                 <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 2"> <!-- normal without code -->
-                    <th>
+                    <th scope="row">
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </th>
                     <td>
@@ -601,7 +693,7 @@
                     </xsl:for-each>
                 </xsl:when>
                 <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->
-                    <th>
+                    <th scope="row">
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </th>
                     <td>
@@ -658,6 +750,9 @@
             </xsl:when>
             <xsl:when test="exists(item)">
                 <xsl:apply-templates mode="#current"/>
+            </xsl:when>
+            <xsl:when test="parent::part[@type = 'listval']">
+                <xsl:sequence select="imf:create-formatted-listvalue-text(.)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:create-formatted-text(.)"/>
@@ -828,19 +923,38 @@
         <xsl:sequence select="$text/node()"/>
     </xsl:function>
     
+    <xsl:function name="imf:create-formatted-listvalue-text" as="item()*">
+        <xsl:param name="text"/>
+        <xsl:sequence select="$text/node()"/> <!-- pass as-is, for list values this may be HTML, see #685 -->
+    </xsl:function>
+    
     <xsl:function name="imf:create-section-header-name" as="element()">
         <xsl:param name="section"/>
         <xsl:param name="level"/>
         <xsl:param name="type"/>
         <xsl:param name="language-model"/>
         <xsl:param name="name"/>
-
+        
         <xsl:element name="{imf:get-section-header-element-name($level)}">
             <xsl:sequence select="if ($debugging) then '[lvl:' || $level || ']' else ()"/>
             <xsl:sequence select="imf:translate-i3n($type,$language-model,())"/>
             <xsl:sequence select="' '"/>
             <xsl:sequence select="$name"/>
         </xsl:element>
+    </xsl:function>
+    <xsl:function name="imf:create-section-subheader-name" as="element()">
+        <xsl:param name="section"/>
+        <xsl:param name="level"/>
+        <xsl:param name="type"/>
+        <xsl:param name="language-model"/>
+        <xsl:param name="name"/>
+        
+        <div class="subheader">
+            <xsl:sequence select="if ($debugging) then '[lvl:' || $level || ']' else ()"/>
+            <xsl:sequence select="imf:translate-i3n($type,$language-model,())"/>
+            <xsl:sequence select="' '"/>
+            <xsl:sequence select="$name"/>
+        </div>
     </xsl:function>
     
     <xsl:function name="imf:is-valid-idref" as="xs:boolean">

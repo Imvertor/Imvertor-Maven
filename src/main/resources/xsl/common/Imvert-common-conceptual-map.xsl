@@ -118,7 +118,7 @@
                 <xsl:sequence select="$target"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:msg(root($element),'FATAL','Found [1] items with id [2] allowed for names [3], in mapping named [4]', (count($target), $id, imf:string-group($element-type), $conceptual-schema-mapping-name))"/>
+                <xsl:sequence select="imf:msg(root($element),'ERROR','Found [1] items with id [2] allowed for names [3], in mapping named [4]', (count($target), $id, imf:string-group($element-type), $conceptual-schema-mapping-name))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -137,7 +137,7 @@
         <xsl:variable name="applicable-mapping" select="$mappings/cs:name[. = $conceptual-schema-mapping-name]"/>
         <xsl:choose>
             <xsl:when test="count($applicable-mapping) ne 1">
-                <xsl:sequence select="imf:msg((),'FATAL','Found [1] mappings named [2]', (count($applicable-mapping),$conceptual-schema-mapping-name))"/>
+                <xsl:sequence select="imf:msg((),'ERROR','Found [1] mappings named [2]', (count($applicable-mapping),$conceptual-schema-mapping-name))"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates select="$conceptual-schema-mapping-doc/*" mode="imf:prepare-mapping"/>

@@ -6,9 +6,21 @@
   
     <!-- 
         LOGICAL follows CONCEPTUAL
+  
+        OpenAPI specificatie gebaseerd op https://github.com/Armatiek/imvertor-openapi-generator.
     --> 
+ 
     <xi:include href="EIGENAAR-MIM-1-CONCEPTUAL.xml"/>  
+    
+    <xi:include href="../../../Armatiek/cfg/tvsets/Armatiek-OpenAPI-1-BASE-10.xml"/>
     
     <name>EIGENAAR-MIM-1-LOGICAL</name>
     
+    <nature>MIM</nature>
+
+    <tagged-values>
+        
+        
+    </tagged-values>
+
 </tagset>

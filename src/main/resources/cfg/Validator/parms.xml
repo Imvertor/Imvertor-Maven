@@ -27,38 +27,45 @@
          <name>normalizenames</name>
          <arg>yes|no</arg>
          <tip>Yes if names of classes, attributes and relations should be normalized</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
       <cli-parm>
          <name>validatetvassignment</name>
          <arg>yes|no</arg>
          <tip>Yes if tagged value assignment is correct</tip>
-         <required>true</required>
+         <default>yes</default>
       </cli-parm> 
       <cli-parm>
          <name>validatetvoccurs</name>
          <arg>yes|no</arg>
          <tip>Yes if tagged values multiplicity should be checked (min/max occurs)</tip>
-         <required>true</required>
+         <default>yes</default>
       </cli-parm> 
       <cli-parm>
          <name>validatedocmissing</name>
          <arg>yes|no</arg>
          <tip>Yes if the notes fields that are required must be checked (for content)</tip>
-         <required>true</required>
+         <default>yes</default>
       </cli-parm> 
       <cli-parm>
          <name>allowemptymodel</name>
          <arg>yes|no</arg>
          <tip>Yes if the model or any model domain may be empty; this is feasible in development phases</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>stub_requiresalias</name>
          <arg>yes|no</arg>
          <tip>No if aliases for objects and relations should not be tested (STUB)</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
+      <cli-parm>
+         <name>tvmissingaswarning</name>
+         <arg>yes|no|phase</arg>
+         <tip>Should missing tagged values be signalled as an error, as a warning, or does this depend on the phase of the model?</tip>
+         <default>phase</default>
+      </cli-parm> 
+      
    </cli-parms>
    <properties>
       
@@ -255,6 +262,18 @@
       <IMVERTOR_METAMODEL_MinJenV-MIM-1-SIM_VALIDATE_XSLPATH>Imvert2validation.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-1-SIM_VALIDATE_XSLPATH>
       <IMVERTOR_METAMODEL_MinJenV-MIM-1-SIM_VALIDATE_XSLPATH_2>Imvert2validation-KING-MIM-1-SIM.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-1-SIM_VALIDATE_XSLPATH_2>
       
+      <!-- MinJenV als logisch MIM 1.2 model: -->
+      <!--canonize-->
+      <IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_CANONICAL_XSLPATH>Imvert2canonical.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_CANONICAL_XSLPATH>
+      <IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_CANONICAL_XSLPATH_2>Imvert2canonical-MIM-10.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_CANONICAL_XSLPATH_2>
+      <IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_CANONICAL_XSLPATH_3>Imvert2canonical-MIM-11.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_CANONICAL_XSLPATH_3>
+      <IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_CANONICAL_XSLPATH_4>Imvert2canonical-MIM-12.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_CANONICAL_XSLPATH_4>
+      <!--validate-->
+      <IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_VALIDATE_XSLPATH>Imvert2validation.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_VALIDATE_XSLPATH>
+      <IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_VALIDATE_XSLPATH_2>Imvert2validation-MIM-10.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_VALIDATE_XSLPATH_2>
+      <IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_VALIDATE_XSLPATH_3>Imvert2validation-MIM-11.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_VALIDATE_XSLPATH_3>
+      <IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_VALIDATE_XSLPATH_4>Imvert2validation-MIM-12.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-1-LOGICAL_VALIDATE_XSLPATH_4>
+      
       <?X
       <!-- 
          ======================================================
@@ -297,11 +316,24 @@
       <IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH>Imvert2canonical.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH>
       <IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_2>Imvert2canonical-MIM-10.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_2>
       <IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_3>Imvert2canonical-MIM-11.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_3>
-      <IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_4>Imvert2canonical-IHW-MIM-1-CONCEPTUAL.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_4>
+      <IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_4>Imvert2canonical-MIM-12.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_4>
+      <IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_5>Imvert2canonical-IHW-MIM-1-CONCEPTUAL.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_5>
       <!--validate-->
       <IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH>Imvert2validation.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH>
       <IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_2>Imvert2validation-MIM-10.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_2>
       <IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_3>Imvert2validation-MIM-11.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_3>
+      <IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_4>Imvert2validation-MIM-12.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_4>
+      
+      <!--canonize-->
+      <IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_CANONICAL_XSLPATH>Imvert2canonical.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_CANONICAL_XSLPATH>
+      <IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_CANONICAL_XSLPATH_2>Imvert2canonical-MIM-10.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_CANONICAL_XSLPATH_2>
+      <IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_CANONICAL_XSLPATH_3>Imvert2canonical-MIM-11.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_CANONICAL_XSLPATH_3>
+      <IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_CANONICAL_XSLPATH_4>Imvert2canonical-MIM-12.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_CANONICAL_XSLPATH_4>
+      <!--validate-->
+      <IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_VALIDATE_XSLPATH>Imvert2validation.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_VALIDATE_XSLPATH>
+      <IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_VALIDATE_XSLPATH_2>Imvert2validation-MIM-10.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_VALIDATE_XSLPATH_2>
+      <IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_VALIDATE_XSLPATH_3>Imvert2validation-MIM-11.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_VALIDATE_XSLPATH_3>
+      <IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_VALIDATE_XSLPATH_4>Imvert2validation-MIM-12.xsl</IMVERTOR_METAMODEL_IHW-MIM-1-LOGICAL_VALIDATE_XSLPATH_4>
       
       <!-- 
          ======================================================
@@ -423,6 +455,11 @@
       <IMVERTOR_METAMODEL_Armatiek-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_3>Imvert2validation-MIM-11.xsl</IMVERTOR_METAMODEL_Armatiek-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_3>
       <IMVERTOR_METAMODEL_Armatiek-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_4>Imvert2validation-MIM-12.xsl</IMVERTOR_METAMODEL_Armatiek-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_4>
       
+      <!--canonize-->
+      <IMVERTOR_METAMODEL_Armatiek-OpenAPI-1-BASE-10_CANONICAL_XSLPATH>Imvert2canonical.xsl</IMVERTOR_METAMODEL_Armatiek-OpenAPI-1-BASE-10_CANONICAL_XSLPATH>
+      <!--validate-->
+      <IMVERTOR_METAMODEL_Armatiek-OpenAPI-1-BASE-10_VALIDATE_XSLPATH>Imvert2validation.xsl</IMVERTOR_METAMODEL_Armatiek-OpenAPI-1-BASE-10_VALIDATE_XSLPATH>
+      
       <!-- 
          ======================================================
          EIGENAAR 
@@ -508,6 +545,7 @@
       <IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_2>Imvert2canonical-MIM-10.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_2>
       <IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_3>Imvert2canonical-MIM-11.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_3>
       <IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_4>Imvert2canonical-MIM-12.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_4>
+      <IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_5>Imvert2canonical-Waterschapshuis-MIM-12.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-CONCEPTUAL_CANONICAL_XSLPATH_5>
       <!--validate-->
       <IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH>Imvert2validation.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH>
       <IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_2>Imvert2validation-MIM-10.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-CONCEPTUAL_VALIDATE_XSLPATH_2>
@@ -519,6 +557,7 @@
       <IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-LOGICAL_CANONICAL_XSLPATH_2>Imvert2canonical-MIM-10.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-LOGICAL_CANONICAL_XSLPATH_2>
       <IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-LOGICAL_CANONICAL_XSLPATH_3>Imvert2canonical-MIM-11.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-LOGICAL_CANONICAL_XSLPATH_3>
       <IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-LOGICAL_CANONICAL_XSLPATH_4>Imvert2canonical-MIM-12.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-LOGICAL_CANONICAL_XSLPATH_4>
+      <IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-LOGICAL_CANONICAL_XSLPATH_5>Imvert2canonical-Waterschapshuis-MIM-12.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-LOGICAL_CANONICAL_XSLPATH_5>
       <!--validate-->
       <IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-LOGICAL_VALIDATE_XSLPATH>Imvert2validation.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-LOGICAL_VALIDATE_XSLPATH>
       <IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-LOGICAL_VALIDATE_XSLPATH_2>Imvert2validation-MIM-10.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-1-LOGICAL_VALIDATE_XSLPATH_2>

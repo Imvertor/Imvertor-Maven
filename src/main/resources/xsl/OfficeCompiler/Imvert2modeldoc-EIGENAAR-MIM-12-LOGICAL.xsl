@@ -9,6 +9,6 @@
     exclude-result-prefixes="#all" 
     version="2.0">
     
-    <xsl:import href="Imvert2modeldoc-EIGENAAR-CONCEPTUAL.xsl"/>
+    <xsl:import href="Imvert2modeldoc-Armatiek-MIM-12-CONCEPTUAL.xsl"/>
     
 </xsl:stylesheet>

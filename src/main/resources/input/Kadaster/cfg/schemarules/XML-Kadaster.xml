@@ -33,4 +33,7 @@
     <!-- specify if strings must be non-empty -->
     <parameter name="strings-nonempty">true</parameter>
     
+    <!-- specify if version or modelversion or release should occur in the schema folder path -->
+    <parameter name="release-folder-name">release</parameter>
+    
 </xmlschema-rules>

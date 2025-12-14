@@ -46,6 +46,7 @@
   <xsl:mode on-no-match="shallow-skip"/>
   <xsl:mode name="preprocess" on-no-match="shallow-copy"/>
   <xsl:mode name="postprocess" on-no-match="shallow-copy"/>
+  <xsl:mode name="xhtml" on-no-match="shallow-copy"/>
   <xsl:mode name="missing-metadata"/>
 
   <xsl:param name="generate-readable-ids" select="'true'" as="xs:string"/>
@@ -72,7 +73,8 @@
   
   <xsl:variable name="mim-stereotype-ids" select="$configuration-metamodel-file/stereotypes/stereo[imf:is-mim-construct(.)]/@id" as="xs:string+"/>
   <xsl:variable name="mim-tagged-value-ids" select="$configuration-tvset-file/tagged-values/tv[imf:is-mim-construct(.)]/@id" as="xs:string+"/>
-
+  <xsl:variable name="mim-tagged-value-asnote" select="$configuration-tvset-file/tagged-values/tv[@norm = 'note']" as="element(tv)*"/>
+  
   <xsl:variable name="waardebereik-authentiek" select="$configuration-tvset-file/tagged-values/tv[@id = 'CFG-TV-INDICATIONAUTHENTIC']/declared-values/value" as="xs:string+"/>
   <xsl:variable name="waardebereik-aggregatietype" select="('Compositie', 'Gedeeld', 'Geen')" as="xs:string+"/> 
 
@@ -326,7 +328,7 @@
     </mim:Gegevensgroeptype>
   </xsl:template>
   
-  <xsl:template match="imvert:attribute[not(imvert:stereotype) or (imvert:stereotype/@id = 'stereotype-name-attribute') or (imvert:stereotype/@id = 'stereotype-name-union-element-DEPRECATED')]">
+  <xsl:template match="imvert:attribute[(imvert:stereotype/@id = 'stereotype-name-attribute') or (imvert:stereotype/@id = 'stereotype-name-union-element-DEPRECATED')]">
     <mim:Attribuutsoort source-id="{imvert:stereotype/@id}">
       <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
@@ -849,7 +851,7 @@
   
   <xsl:template match="metagegeven[. = 'Kardinaliteit bron']">
     <xsl:param name="context" as="element()"/>
-    <mim:kardinaliteitBron>TODO</mim:kardinaliteitBron>
+    <mim:kardinaliteitBron>{imf:kardinaliteit($context/imvert:min-occurs-source, $context/imvert:max-occurs-source)}</mim:kardinaliteitBron>
     <?x
     <xsl:choose>
       <xsl:when test="$context/self::imvert:source">
@@ -917,6 +919,11 @@
   <xsl:template match="metagegeven[. = 'Maximumwaarde exclusief']">
     <xsl:param name="context" as="element()"/>
     <mim:maximumwaardeExclusief source-id="CFG-TV-MAXVALUEEXCLUSIVE">{imf:tagged-values($context, 'CFG-TV-MAXVALUEEXCLUSIVE')}</mim:maximumwaardeExclusief>  
+  </xsl:template>
+  
+  <xsl:template match="metagegeven[. = 'Mixin']">
+    <xsl:param name="context" as="element()"/>
+    <mim:mixin source-id="CFG-TV-MIXIN">{imf:boolean(imf:tagged-values-not-traced($context, 'CFG-TV-MIXIN'))}</mim:mixin> 
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Mogelijk geen waarde']">
@@ -1192,6 +1199,9 @@
           <xsl:with-param name="restrict-datatypes" select="false()" as="xs:boolean"/>
         </xsl:call-template>  
       </xsl:when>
+      <xsl:when test="not(normalize-space($baretype))">
+        <!-- assume enum -->
+      </xsl:when>
       <xsl:when test="$baretype[. = $mim12-primitive-datatypes-uc-names]">
         <!-- MIM standaard datatype herkend dat als baretype is ingevoerd ( en dus geen gebruikmaakt van Kadaster-MIM12.xmi): -->
         <xsl:variable name="mim12-scalar" select="$configuration-metamodel-file/scalars/scalar[imf:is-mim-construct(.) and name = $baretype]" as="element(scalar)?"/>  
@@ -1264,8 +1274,7 @@
   
   <xsl:template match="xhtml:*" mode="xhtml">
     <xsl:element name="xhtml:{local-name()}" namespace="http://www.w3.org/1999/xhtml">
-      <xsl:apply-templates select="@*"/>
-      <xsl:apply-templates mode="#current"/>
+      <xsl:apply-templates select="@*|node()" mode="#current"/>
     </xsl:element>
   </xsl:template>
   
@@ -1488,7 +1497,14 @@
     <xsl:where-populated>
       <mim-ext:kenmerken>
         <xsl:for-each select="imvert:tagged-values/imvert:tagged-value[not(@id = ($mim-tagged-value-ids,'CFG-TV-POSITION'))]">
-          <mim-ext:Kenmerk naam="{imvert:name/@original}">{imvert:value/@original}</mim-ext:Kenmerk>
+          <mim-ext:Kenmerk naam="{imvert:name/@original}">
+            <xsl:choose>
+              <xsl:when test="$mim-tagged-value-asnote/@id = @id">
+                <xsl:sequence select="imvert:value/node()"/>
+              </xsl:when>
+              <xsl:otherwise>{imvert:value/@original}</xsl:otherwise>
+            </xsl:choose>
+          </mim-ext:Kenmerk>
         </xsl:for-each>  
         <!--
         <xsl:where-populated>

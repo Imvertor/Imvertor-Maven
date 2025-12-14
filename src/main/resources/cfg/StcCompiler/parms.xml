@@ -28,13 +28,13 @@
          <name>createstccsv</name>
          <arg>yes|no</arg>
          <tip>Yes if Stelselcatalogus CSV must be generated</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>stccsvname</name>
          <arg>string</arg>
          <tip>The name of the Stelselcatalogus CSV file generated</tip>
-         <required>false</required>
+         <default>[cli/owner]</default>
       </cli-parm> 
    </cli-parms>
    

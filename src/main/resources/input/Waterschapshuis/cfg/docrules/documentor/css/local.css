@@ -1,2 +1,135 @@
 /* hier de default CSS voor deze owner */
 
+@font-face {
+    font-family: 'Asap-Bold';
+    src: url('fonts/Asap-Bold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Asap-Italic-VariableFont_wght';
+    src: url('fonts/Asap-Italic-VariableFont_wght.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Asap-Medium';
+    src: url('fonts/Asap-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Asap-Regular';
+    src: url('fonts/Asap-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Asap-SemiBold';
+    src: url('fonts/Asap-SemiBold.ttf') format('truetype');
+}
+
+html > body {
+    font-family: 'Asap-Regular', Courier, sans-serif;
+    font-size: 12pt;
+    --logius-table-even-rows: #c6edf0;/* middenaqua */
+}
+div.head h1.title { 
+    font-family: 'Asap-SemiBold', Courier, sans-serif;
+    font-size: 28pt;
+    color: #2d437c;/* blauw */
+}
+div.head h2.subtitle { 
+    font-family: 'Asap-SemiBold', Courier, sans-serif;
+    font-size: 14pt;
+    color: #2d437c;/* blauw */
+}
+div.head h2 { 
+    font-family: 'Asap-Medium', Courier, sans-serif;
+    font-size: 12pt;
+    color: #2d437c;/* blauw */
+}
+div.head dl dt { 
+    font-family: 'Asap-SemiBold', Courier, sans-serif;
+    font-size: 12pt;
+    color: inherit; /* standaard kleur */    
+}
+div.head dl dd { 
+    font-family: 'Asap-Regular', Courier, sans-serif;
+    font-size: 12pt;
+    color: #F79239;/*  oranje */    
+}
+div.head dl dd a[href]{ 
+    color: #F79239;/*  oranje */    
+}
+
+/* Kop van de samenvatting, status */
+section > h2,
+nav > h2,
+section div.header-wrapper h2 { 
+    font-family: 'Asap-SemiBold', Courier, sans-serif;
+    font-size: 20pt;
+    color: #2d437c;/* blauw */
+}
+section div.header-wrapper h3 { 
+    font-family: 'Asap-SemiBold', Courier, sans-serif;
+    font-size: 18pt;
+    color: #2d437c;/* blauw */
+}
+section div.header-wrapper h4 { 
+    font-family: 'Asap-SemiBold', Courier, sans-serif;
+    font-size: 17pt;
+    color: #2d437c;/* blauw */
+}
+section div.header-wrapper h5 { 
+    font-family: 'Asap-Regular', Courier, sans-serif;
+    font-size: 14pt;
+}
+
+table { 
+    background-color: white;
+    border: 1px solid white;
+}
+table th { 
+    background-color: #31b6bf;/* donkeraqua */
+    color: white;
+}
+table th, 
+table td { 
+    /* border: 1px solid white; */
+}
+
+div.subheader {
+    font-family: 'Asap-Regular', Courier, sans-serif;
+    font-size: 14pt;
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+}
+
+/* Tegengaan dat rijen om-en-om worden gehighlight */
+tr:nth-child(even),
+tr:nth-child(odd) {
+    background: inherit !important;
+}
+
+table {
+    border-bottom: inherit !important;   
+}
+/* Geen lijnen om de  */
+table th, table td {
+    border: none !important;
+}
+
+/* nettere uitlijning van labels en waarden */
+
+th[scope="row"] {
+    padding: 0.25rem 0.25rem 0.25rem 0rem !important;
+}
+table th, 
+table td {
+   padding: 0.25em;
+}
+
+table tr {
+    border-bottom: 1px solid #31b6bf;
+}
+table.overview tr {
+    border-bottom: none;
+}
+
+/* URL getoond als courier */
+span.url {
+     font-family: Courier, sans-serif;
+}

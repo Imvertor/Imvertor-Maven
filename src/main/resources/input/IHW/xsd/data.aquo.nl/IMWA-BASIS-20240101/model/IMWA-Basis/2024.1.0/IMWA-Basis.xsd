@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2025 (x64) (https://www.altova.com) by Wijnand van Riel (WeLinkData) -->
+<xs:schema xmlns:cl="https://data.aquo.nl/model/IMWA-Basis/codelists" 
+	xmlns:IMWABasis="https://data.aquo.nl/model/IMWA-Basis/2024.1.0" 
+	xmlns:NEN3610-2022="http://www.geonovum.nl/NEN3610/schemas/v2022" 
+	xmlns:gml="http://www.opengis.net/gml/3.2" 
+	xmlns:gmlsf="http://www.opengis.net/gmlsf/2.0" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="https://data.aquo.nl/model/IMWA-Basis/2024.1.0" 
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified" version="2024.1.0">
+	<xs:annotation>
+		<xs:appinfo source="http://www.imvertor.org/model-info/project">LOGICAL</xs:appinfo>
+		<xs:appinfo source="http://www.imvertor.org/model-info/application">IMWA-Basis</xs:appinfo>
+		<xs:appinfo source="http://www.imvertor.org/model-info/release">20250227</xs:appinfo>
+		<xs:appinfo source="http://www.imvertor.org/model-info/version">1.0</xs:appinfo>
+		<xs:appinfo source="http://www.imvertor.org/model-info/phase">1</xs:appinfo>
+		<xs:appinfo source="http://www.imvertor.org/model-info/uri">https://data.aquo.nl/model/IMWA-Basis</xs:appinfo>
+		<xs:appinfo source="http://www.imvertor.org/model-info/generated">2025-05-07T13:49:44Z</xs:appinfo>
+		<xs:appinfo source="http://www.imvertor.org/xml-schema-info/file-location">IMWA-Basis/unknown/v20250227/IMWA-Basis.xsd</xs:appinfo>
+		<xs:appinfo source="http://www.imvertor.org/xml-schema-info/generated">May 7, 2025 at 13:49:44</xs:appinfo>
+		<xs:appinfo source="http://www.imvertor.org/xml-schema-info/generator">Nightly-build.0</xs:appinfo>
+		<xs:documentation source="http://www.imvertor.org/schema-info/file-location">IMWA-Basis/unknown/v20250227/IMWA-Basis.xsd</xs:documentation>
+		<xs:documentation source="http://www.imvertor.org/schema-info/conversion">
+        This schema is based on an UML specification, which is transformed by the Imvertor software. Imvertor modules are in the public domain, see http://www.imvertor.org.
+    </xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:appinfo source="http://schemas.opengis.net/gmlsfProfile/2.0/gmlsfLevels.xsd">
+			<gmlsf:ComplianceLevel>0</gmlsf:ComplianceLevel>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="https://data.aquo.nl/model/IMWA-Basis/codelists" schemaLocation="http://data.aquo.nl/model/IMWA-Basis/codelists/BasisCodeLijstenenDatatypes.xsd"/>
+	<xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+	<xs:import namespace="http://www.geonovum.nl/NEN3610/schemas/v2022" schemaLocation="http://data.aquo.nl/xsd/NEN3610/NEN3610_v2_0_0.xsd"/>
+	<xs:element name="IMWA_GeoObject" type="NEN3610-2022:GeoObject" substitutionGroup="NEN3610-2022:GeoObject"/>
+	<xs:complexType name="IMWA_GeoObjectType">
+		<xs:complexContent>
+			<xs:extension base="NEN3610-2022:GeoObject">
+				<xs:sequence>
+					<xs:element name="identificatie" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Unieke identificatiecode van een informatieobject binnen de context van een registratie. Toelichting: ‘identificatie’ is de identificatiecode die een object heeft binnen een registratie of binnen een ketenproces voor data-uitwisseling. Binnen de registratie of de data-uitwisseling is het object uniek identificeerbaar. In combinatie met het attribuut domein wordt een object hiermee uniek identificeerbaar op het niveau van verschillende registraties, uitwisselprocessen en ook wereldwijd uniek. De reguliere expressie voor de toegestane tekens is: ([a-z]|[A-Z]|[0-9]|_|-|\,|.|\:|\/)+
+Explanation: ‘identificatie’ is de identificatiecode die een object heeft binnen een registratie of binnen een ketenproces voor data-uitwisseling. Binnen de registratie of de data-uitwisseling is het object uniek identificeerbaar. In combinatie met het attribuut domein wordt een object hiermee uniek identificeerbaar op het niveau van verschillende registraties, uitwisselprocessen en ook wereldwijd uniek. De reguliere expressie voor de toegestane tekens is: ([a-z]|[A-Z]|[0-9]|\_|\-|\,|\.|\:|\/)+</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string"/>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="domein" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Aanduiding van het domein waarbinnen de identificatie uniek is.
+Explanation: Het attribuut domein is een unieke verwijzing naar de registratie- of ketenprocesverantwoordelijke entiteit die de identificatie uitdeelt of regels daartoe heeft opgesteld. In combinatie met het attribuut identificatie wordt een object hiermee uniek identificeerbaar op het niveau van verschillende registraties en ook mondiaal uniek.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string"/>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="externeIdentificatie" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Verwijzing naar een object in een andere bron/registratie. Kan bijvoorbeeld voor kunstwerken worden toegepast voor verwijzing naar VNK ('Scope' is dan VNK).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IMWA_Registratie" type="IMWABasis:IMWA_RegistratieType" nillable="false" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Gestructureerde naam die verwijst naar een stuk data.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="code" type="gml:CodeType" nillable="false" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Gestructureerde naam die verwijst naar een stuk data.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="opmerking" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Opmerking met betrekking tot het object.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="statusObject" type="cl:ObjectStatusPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Definitie: Een aanduiding voor de status waarin een object zich bevindt Toelichting: Hiermee wordt de (actuele) status/toestand bedoeld van een object, zoals bijv.: planvorming, gerealiseerd, niet meer aanwezig.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="url" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Gestructureerde naam die verwijst naar een stuk data.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="IMWA_GeoObjectPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="IMWABasis:IMWA_GeoObject"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="WaterstaatkundigeZonering" type="IMWABasis:WaterstaatkundigeZoneringType" substitutionGroup="IMWABasis:IMWA_GeoObject">
+		<xs:annotation>
+			<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Niet tastbaar begrensd gebied gelegen op/rond een waterstaatswerk met een juridische status die voortvloeit uit een wet/verordening.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="WaterstaatkundigeZoneringType">
+		<xs:complexContent>
+			<xs:extension base="IMWABasis:IMWA_GeoObjectType">
+				<xs:sequence>
+					<xs:element name="geometrieVlak2D" type="gml:SurfacePropertyType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Representatie van het object als 2 dimensionaal vlak</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="zoneringType" type="cl:WaterstaatkundigezoneringPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Aanduiding van het soort/type waterstaatkundige zonering</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="waterbeheerder" type="cl:WaterbeheerderPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Verwijzing naar waterschap via landelijke waterschapscodering</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="wetVerordening" type="cl:WetVerordeningtypePropertyType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Samengesteld attribuut bestaande uit: indicatie soort wet/verordening naam/titulatuur waaronder de wet/verordening bekend is</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="artikel" type="cl:ArtikelPropertyType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Samengesteld attribuut bestaande uit: artikelnummer lid</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="verwijzingNaarTekst" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Verwijzing naar de tekst uit een wet/verordening die van toepassing is op het geo-object via een (hyper)link</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="planstatusEnDatum" type="xs:date" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Samengesteld attribuut bestaande uit: statusaanduiding datum (waarop de status is ingegaan)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="grenstAan" type="IMWABasis:WaterstaatkundigeZoneringPropertyType" nillable="false" minOccurs="1" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: ToDo</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="WaterstaatkundigeZoneringPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="IMWABasis:WaterstaatkundigeZonering"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="Beschermingszone" type="IMWABasis:BeschermingszoneType" substitutionGroup="gml:AbstractFeature">
+		<xs:annotation>
+			<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Aan een waterstaatswerk grenzende zone, waarin ter bescherming van dat werk voorschriften en beperkingen kunnen gelden. Waterwet definitie: aan een waterstaatswerkgrenzende zone, waarin ter bescherming van dat werk voorschriften en beperkingen kunnen gelden;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="BeschermingszoneType">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractFeatureType">
+				<xs:sequence>
+					<xs:element name="waterstaatwerk" type="IMWABasis:WaterstaatkundigeZoneringPropertyType" nillable="false" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: ToDo</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="BeschermingszonePropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="IMWABasis:Beschermingszone"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="WaterbeheerFunctie" type="IMWABasis:WaterbeheerFunctieType" substitutionGroup="gml:AbstractFeature">
+		<xs:annotation>
+			<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Definitie aan te maken</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="WaterbeheerFunctieType">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractFeatureType">
+				<xs:sequence>
+					<xs:element name="functie" type="IMWABasis:WaterbeheerFunctiePropertyType" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="functie" type="IMWABasis:WaterbeheerFunctiePropertyType" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="vervultDoor" type="IMWABasis:IMWA_GeoObjectPropertyType" nillable="false" minOccurs="1" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="WaterbeheerFunctiePropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="IMWABasis:WaterbeheerFunctie"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="Subject" type="IMWABasis:SubjectType" substitutionGroup="gml:AbstractFeature">
+		<xs:annotation>
+			<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Definitie: een natuurlijk dan wel niet-natuurlijk persoon waarvan de waterbeheerder gegevens bewaart Herkomst definitie: project IMWA Watersysteem</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="SubjectType">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractFeatureType">
+				<xs:sequence>
+					<xs:element name="typeSubject" type="cl:Subject_soortenPropertyType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Nadere aanduiding van het type subject.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="naam" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Naam van het subject.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="heeftRol" type="IMWABasis:RolSubjectPropertyType" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubjectPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="IMWABasis:Subject"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="RolSubject" type="IMWABasis:RolSubjectType" substitutionGroup="gml:AbstractFeature"/>
+	<xs:complexType name="RolSubjectType">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractFeatureType">
+				<xs:sequence>
+					<xs:element name="typeRolSubject" type="cl:Subject_rollenPropertyType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Nadere aanduiding van het type rol subject.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="heeftRol" type="IMWABasis:IMWA_GeoObjectPropertyType" nillable="false" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RolSubjectPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="IMWABasis:RolSubject"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="NatuurlijkPersoon" type="IMWABasis:NatuurlijkPersoonType" substitutionGroup="IMWABasis:Subject">
+		<xs:annotation>
+			<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Definitie: Een natuurlijk persoon is ieder wezen dat bevoegd is om rechten en verplichtingen te hebben. Herkomst definitie: Aquo-lex</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="NatuurlijkPersoonType">
+		<xs:complexContent>
+			<xs:extension base="IMWABasis:SubjectType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="NatuurlijkPersoonPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="IMWABasis:NatuurlijkPersoon"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="NietNatuurlijkPersoon" type="IMWABasis:NietNatuurlijkPersoonType" substitutionGroup="IMWABasis:Subject">
+		<xs:annotation>
+			<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Definitie: Een niet-natuurlijk persoon is een organisatievorm die niet aan het bestaan en de belangen van een individueel persoon is gebonden en een afgescheiden vermogen met eigen aansprakelijkheid bezit en een eigen bestaan leidt. Herkomst definitie: Aquo-lex</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="NietNatuurlijkPersoonType">
+		<xs:complexContent>
+			<xs:extension base="IMWABasis:SubjectType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="NietNatuurlijkPersoonPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="IMWABasis:NietNatuurlijkPersoon"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:complexType name="IMWA_RegistratieType">
+		<xs:sequence>
+			<xs:element name="versie" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Versieaanduiding van een informatieobject.
+Explanation: Een versie van een informatieobject is een toestand van een informatieobject met zijn gegevens op een bepaald moment in de tijd. Het attribuut versie maakt geen deel uit van de identificatie van het object, maar kan worden gebruikt om verschillende instanties van hetzelfde informatieobject te identificeren.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="beginGeldigheid" type="gml:GeometryPropertyType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Start van de periode waarop deze versie van het informatieobject geldig is.
+Explanation: Er zijn verschillende datatypen voor de representatie van een tijdsaanduiding: afhankelijk van de gebruikerswensen m.b.t. granulariteit kan o.a. worden gekozen uit typen TM_Instant, Date of DateTime. De start van een periode is het begin van de tijdsaanduiding; het ‘vanaf-moment’. Bij een datum (date) is dat het begin van die dag.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="eindGeldigheid" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Eind van de periode waarop deze versie van het informatieobject geldig is. De periode is tot aan deze tijdsaanduiding. Wanneer deze waarde niet is ingevuld, is de versie nog geldig.
+Explanation: Vanaf het begin van deze tijdsaanduiding is de instantie niet meer geldig. Er zijn verschillende datatypen voor de representatie van een tijdsaanduiding: afhankelijk van de gebruikerswensen m.b.t. granulariteit kan o.a. worden gekozen uit typen TM_Instant, Date of DateTime. Het eind van de periode is tot het begin van de tijdsaanduiding; het ‘tot-moment’.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tijdstipRegistratie" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Tijdsaanduiding van het moment waarop deze versie van het informatieobject is opgenomen in de registratie.
+Explanation: Er zijn verschillende datatypen voor de representatie van een tijdsaanduiding: afhankelijk van de gebruikerswensen m.b.t. granulariteit kan o.a. worden gekozen uit typen TM_Instant, Date of DateTime. Voor tijdstip registratie zal DateTime in vrijwel alle gevallen de beste keuze zijn.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="eindRegistratie" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Eind van de periode dat deze versie van het informatieobject actueel is in de registratie. De periode is tot aan deze tijdsaanduiding. Wanneer deze waarde niet is ingevuld, is de versie nog actueel.
+Explanation: Vanaf deze tijdsaanduiding is deze versie van het informatieobject niet meer actueel in de registratie. Met actueel wordt bedoeld dat er geen nieuwere versie 4 in de registratie is voor dit informatieobject. Aan een lege eindregistratie is ook te zien dat het de actuele versie betreft. Er zijn verschillende datatypen voor de representatie van een tijdsaanduiding: afhankelijk van de gebruikerswensen m.b.t. granulariteit kan o.a. worden gekozen uit typen TM_Instant, Date of DateTime. Voor tijdstipRegistratie zal DateTime in vrijwel alle gevallen de beste keuze zijn. Wanneer bepaalde gegevens op de tijdlijn geldigheid niet meer geldig zijn, te herkennen aan de eindGeldigheid van een versie, wordt bij het vullen van de eindGeldigheid tegelijkertijd ook altijd de eindRegistratie gevuld zodat het duidelijk is vanaf welk moment op de tijdlijn registratie deze gegevens niet meer actueel zijn. De eindRegistratie geeft dus aan wanneer er geregistreerd is dat deze gegevens niet meer actueel zijn.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="objectBeginTijd" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Tijdsaanduiding waarop het object in de werkelijkheid is ontstaan.
+Explanation: Er zijn verschillende datatypen voor de representatie van een tijdsaanduiding: afhankelijk van de gebruikerswensen m.b.t. granulariteit kan o.a. worden gekozen uit typen TM_Instant, Date of DateTime.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="objectEindTijd" type="xs:dateTime" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Tijdsaanduiding waarop het object in de werkelijkheid niet meer geldig is.
+Explanation: Er zijn verschillende datatypen voor de representatie van een tijdsaanduiding: afhankelijk van de gebruikerswensen m.b.t. granulariteit kan o.a. worden gekozen uit typen TM_Instant, Date of DateTime.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--  <xs:complexType name="CodeType">
+      <xs:sequence>
+         <xs:element name="functieCode" minOccurs="1" maxOccurs="1" type="xs:string"/>
+         <xs:element name="productCode" minOccurs="1" maxOccurs="1" type="xs:string"/>
+         <xs:element name="locatieCode" minOccurs="1" maxOccurs="1" type="xs:string"/>
+         <xs:element name="rdsCode" minOccurs="1" maxOccurs="1" type="xs:string"/>
+         <xs:element name="rdsAspect" minOccurs="1" maxOccurs="1" type="xs:string"/>
+      </xs:sequence>
+   </xs:complexType>-->
+</xs:schema>

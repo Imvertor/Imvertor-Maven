@@ -27,13 +27,14 @@
          <name>createoffice</name>
          <arg>html | doc | none</arg>
          <tip>Create a documentation file in plain HTML, MsWord, or Respec format. By default, create none.</tip>
-         <required>false</required>
+         <default>none</default>
       </cli-parm> 
       <cli-parm>
          <name>createofficevariant</name>
          <arg>msword | respec | documentor</arg>
          <tip>Specify the type of office file. Multiple formats are allowed, separate list by whitespace.</tip>
          <required>When createoffice is set to html</required>
+         <default>documentor</default>
       </cli-parm>
       <cli-parm>
          <name>fullrespec</name>
@@ -45,101 +46,102 @@
          <name>officename</name>
          <arg>template</arg>
          <tip>Name of the office result document file. You may use [...] parameters.</tip>
-         <required>false</required>
+         <default>index</default>
       </cli-parm> 
       <cli-parm>
          <name>createofficemode</name>
          <arg>plain|click</arg>
          <tip>When creating office, use plain or clickable mode.</tip>
-         <required>false</required>
-      </cli-parm> 
-      <cli-parm>
-         <name>createofficeanchor</name>
-         <arg>name|id</arg>
-         <tip>Hyperlink anchors should be IDs (PDF) or based on actual names (HTML).</tip>
-         <required>false</required>
+         <default>click</default>
       </cli-parm> 
       <cli-parm>
          <name>passoffice</name>
-         <arg>ftp|git</arg>
+         <arg>ftp|git|none</arg>
          <tip>Enter "ftp" when the documentation file should be passed on directly to FTP, "git" when updating Github.</tip>
-         <required>false</required>
+         <default>none</default>
       </cli-parm>
       <cli-parm>
          <name>docrules</name>
          <arg>yes|no</arg>
          <tip>The name of the file holding the documentation rules. If omitted, assume metamodel name and version as extracted from the supplied model.</tip>
-         <required>false</required>
+         <default><!--calculated--></default>
       </cli-parm> 
       
       <cli-parm>
          <name>passuser</name>
          <arg>username</arg>
          <tip>FTP user name</tip>
-         <required>When officepass is set to "ftp"</required>
+         <default>no_passuser</default>
       </cli-parm> 
       <cli-parm>
          <name>passpass</name>
          <arg>password</arg>
          <tip>FTP password</tip>
-         <required>When officepass is set to "ftp"</required>
+         <default>no_passpass</default>
       </cli-parm> 
       <cli-parm>
          <name>passftp</name>
          <arg>URL</arg>
          <tip>URL of the ftp file e.g. ftp.example.com</tip>
-         <required>When officepass is set to "ftp"</required>
+         <default>no_passftp</default>
       </cli-parm> 
       <cli-parm>
          <name>passpath</name>
          <arg>remote path</arg>
          <tip>Path on server to the destination file e.g. /data/doc/result.html </tip>
-         <required>When officepass is set to "ftp"</required>
+         <default>no_passpath</default>
       </cli-parm> 
       <cli-parm>
          <name>passprotocol</name>
-         <arg>true|false</arg>
-         <tip>FTP user name</tip>
-         <required>false</required>
+         <arg>yes|no</arg>
+         <tip>Pass using SFTP</tip>
+         <default>yes</default>
       </cli-parm> 
       
       <cli-parm>
          <name>gitcfg</name>
          <arg>name</arg>
          <tip>Name of the GIT configuration used by Imvertor to gain access to the GIT repository. The name must have been configured in the server.</tip>
-         <required>When officepass is set to "git"</required>
+         <default>no_gitcfg</default>
       </cli-parm>  
       <cli-parm>
          <name>giturl</name>
          <arg>URL</arg>
          <tip>URL of the Github IO (pages) location</tip>
-         <required>When officepass is set to "git"</required>
+         <default>no_giturl</default>
       </cli-parm>  
       <cli-parm>
          <name>gitcomment</name>
          <arg>string</arg>
          <tip>Description to pass as comment when committing to GIT.</tip>
-         <required>When officepass is set to "git"</required>
+         <defailt>no_gitcomment</defailt>
       </cli-parm>  
       <cli-parm>
          <name>gitpath</name>
          <arg>path</arg>
          <tip>Subpath to the remote GIT repository, starting with / e.g. /MyOrganization/MyRepository</tip>
-         <required>When officepass is set to "git"</required>
+         <default>no_gitpath</default>
       </cli-parm>  
       <cli-parm>
          <name>includedoclist</name>
          <arg>yes|no</arg>
          <tip>Yes if codelists and reference lists that have a location must be read dynamically from that location and included in the model documentation.</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
     
       <cli-parm>
          <name>documentorfile</name>
          <arg>filepath</arg>
          <tip>Path to the folder or zipfile holding the Documentor files, i.e. MsWord files and binaries used to create full Respec documentation.</tip>
-         <required>false</required>
+         <default><!-- no file passed, fallback to default --></default>
          <type>file</type>
+      </cli-parm> 
+      
+      <cli-parm>
+         <name>includemodelinfo</name>
+         <arg>yes|no</arg>
+         <tip>Include model metadata in the catalog?</tip>
+         <default>no</default>
       </cli-parm> 
       
    </cli-parms>
@@ -148,7 +150,7 @@
       <IMVERTOR_LISTS_XSLPATH alias="MDL">Imvert2modeldoc-lists.xsl</IMVERTOR_LISTS_XSLPATH>
       
       <WORK_LISTS_FILE>${system/work-imvert-folder-path}/imvertor.25.1.lists.xml</WORK_LISTS_FILE>
-      <WORK_MODELDOC_FILE>${system/work-imvert-folder-path}/imvertor.25.2.1.embellish.xml</WORK_MODELDOC_FILE>
+      <WORK_MODELDOC_FILE>${system/work-imvert-folder-path}/imvertor.25.2.1.modeldoc.xml</WORK_MODELDOC_FILE>
       <WORK_MODELDOC_FILE_2>${system/work-imvert-folder-path}/imvertor.25.2.2.modeldoc.xml</WORK_MODELDOC_FILE_2>
       <WORK_MODELDOC_FILE_3>${system/work-imvert-folder-path}/imvertor.25.2.3.modeldoc.xml</WORK_MODELDOC_FILE_3>
       <WORK_MSWORD_FILE>${system/work-imvert-folder-path}/imvertor.25.4.msword.html</WORK_MSWORD_FILE>
@@ -217,6 +219,20 @@
       <IMVERTOR_METAMODEL_MinJenV-MBG-11-BSM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-KING-MBG-11-BSM.xsl</IMVERTOR_METAMODEL_MinJenV-MBG-11-BSM_MODELDOC_XSLPATH>
       <IMVERTOR_METAMODEL_MinJenV-MBG-11-BSM_MODELDOC_MSWORD_XSLPATH alias="ITO">Imvert2modeldoc-KING-MBG-11-BSM-html-msword.xsl</IMVERTOR_METAMODEL_MinJenV-MBG-11-BSM_MODELDOC_MSWORD_XSLPATH>
       
+      <IMVERTOR_METAMODEL_MinJenV-MIM-12-SIM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-KING-MIM-11-SIM.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-12-SIM_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_MinJenV-MIM-12-SIM_MODELDOC_MSWORD_XSLPATH alias="ITO">Imvert2modeldoc-KING-MIM-11-SIM-html-msword.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-12-SIM_MODELDOC_MSWORD_XSLPATH>
+      <IMVERTOR_METAMODEL_MinJenV-MIM-12-SIM_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-KING-MIM-11-SIM-html-respec.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-12-SIM_MODELDOC_RESPEC_XSLPATH>
+      
+      <IMVERTOR_METAMODEL_MinJenV-MBG-12-UGM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-KING-MBG-11-UGM.xsl</IMVERTOR_METAMODEL_MinJenV-MBG-12-UGM_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_MinJenV-MBG-12-UGM_MODELDOC_MSWORD_XSLPATH alias="ITO">Imvert2modeldoc-KING-MBG-11-UGM-html-msword.xsl</IMVERTOR_METAMODEL_MinJenV-MBG-12-UGM_MODELDOC_MSWORD_XSLPATH>
+      
+      <IMVERTOR_METAMODEL_MinJenV-MBG-12-BSM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-KING-MBG-11-BSM.xsl</IMVERTOR_METAMODEL_MinJenV-MBG-12-BSM_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_MinJenV-MBG-12-BSM_MODELDOC_MSWORD_XSLPATH alias="ITO">Imvert2modeldoc-KING-MBG-11-BSM-html-msword.xsl</IMVERTOR_METAMODEL_MinJenV-MBG-12-BSM_MODELDOC_MSWORD_XSLPATH>
+      
+      <!-- MinJenV als logisch MIM 1.2 model: -->
+      <IMVERTOR_METAMODEL_MinJenV-MIM-12-LOGICAL_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-EIGENAAR-MIM-12-LOGICAL.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-12-LOGICAL_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_MinJenV-MIM-12-LOGICAL_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-EIGENAAR-MIM-12-LOGICAL-html-respec.xsl</IMVERTOR_METAMODEL_MinJenV-MIM-12-LOGICAL_MODELDOC_RESPEC_XSLPATH>
+      
       <!-- IHW -->
       <IMVERTOR_METAMODEL_IHW-MIM-11-CONCEPTUAL_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-IHW-MIM-11-CONCEPTUAL.xsl</IMVERTOR_METAMODEL_IHW-MIM-11-CONCEPTUAL_MODELDOC_XSLPATH>
       <IMVERTOR_METAMODEL_IHW-MIM-11-CONCEPTUAL_MODELDOC_XSLPATH_2 alias="ITO">Imvert2modeldoc-IHW-MIM-11-CONCEPTUAL-POSTPROC.xsl</IMVERTOR_METAMODEL_IHW-MIM-11-CONCEPTUAL_MODELDOC_XSLPATH_2>
@@ -232,10 +248,6 @@
       
       <IMVERTOR_METAMODEL_Waarderingskamer-MIM-12-BSM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Waarderingskamer-MIM-12-BSM.xsl</IMVERTOR_METAMODEL_Waarderingskamer-MIM-12-BSM_MODELDOC_XSLPATH>
       <IMVERTOR_METAMODEL_Waarderingskamer-MIM-12-BSM_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-Waarderingskamer-MIM-12-BSM-html-respec.xsl</IMVERTOR_METAMODEL_Waarderingskamer-MIM-12-BSM_MODELDOC_RESPEC_XSLPATH>
-      
-      <!-- Waterschapshuis -->
-      <IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Waterschapshuis-MIM-12-CONCEPTUAL.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH>
-      <IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-Waterschapshuis-MIM-12-CONCEPTUAL-html-respec.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_RESPEC_XSLPATH>
       
       <!-- BIJ12 -->
       <IMVERTOR_METAMODEL_BIJ12-MIM-11-CONCEPTUAL_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Geonovum-MIM-11-CONCEPTUAL-PREPROC.xsl</IMVERTOR_METAMODEL_BIJ12-MIM-11-CONCEPTUAL_MODELDOC_XSLPATH>
@@ -303,9 +315,11 @@
       <IMVERTOR_METAMODEL_Logius-MIM-12-LOGICAL_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Logius-MIM-12-LOGICAL.xsl</IMVERTOR_METAMODEL_Logius-MIM-12-LOGICAL_MODELDOC_XSLPATH>
       <IMVERTOR_METAMODEL_Logius-MIM-12-LOGICAL_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-Logius-MIM-12-LOGICAL-html-respec.xsl</IMVERTOR_METAMODEL_Logius-MIM-12-LOGICAL_MODELDOC_RESPEC_XSLPATH>
       
-      <IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Waterschapshuis-MIM-12-CONCEPTUAL.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH>
+      <!-- Waterschapshuis -->
+      <IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Waterschapshuis-MIM-12-CONCEPTUAL-PREPROC.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH_2 alias="ITO">Imvert2modeldoc-Waterschapshuis-MIM-12-CONCEPTUAL.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH_2>
+      <IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH_3 alias="ITO">Imvert2modeldoc-Waterschapshuis-MIM-12-CONCEPTUAL-POSTPROC.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_XSLPATH_3>
       <IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_RESPEC_XSLPATH alias="ITO">Imvert2modeldoc-Waterschapshuis-MIM-12-CONCEPTUAL-html-respec.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_RESPEC_XSLPATH>
-      <IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_MSWORD_XSLPATH alias="ITO">Imvert2modeldoc-Waterschapshuis-MIM-12-CONCEPTUAL-html-msword.xsl</IMVERTOR_METAMODEL_Waterschapshuis-MIM-12-CONCEPTUAL_MODELDOC_MSWORD_XSLPATH>
       
       <!-- Geonovum MIM 1.1 -->
       <IMVERTOR_METAMODEL_Geonovum-MIM-11-CONCEPTUAL_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Geonovum-MIM-11-CONCEPTUAL-PREPROC.xsl</IMVERTOR_METAMODEL_Geonovum-MIM-11-CONCEPTUAL_MODELDOC_XSLPATH>

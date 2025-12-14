@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <!-- MinJenV follows Imvertor and MIM 1.* requirements -->
+    
+    <xi:include href="../../../MIM/cfg/metamodels/MIM12.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping-MIM12.xml"/>
+    
+    <xi:include href="../../../Armatiek/cfg/metamodels/Armatiek-OpenAPI-1-BASE-10.xml"/>
+
+    <name>EIGENAAR-MIM-1-LOGICAL</name>
+    
+    <profiles>
+        <profile lang="nl"> 
+            <id>MEGNLL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1 EIGENAAR NL LOGISCH</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>MEGENL</id>
+            <!-- <release/> identical to Imvertor release -->
+            <desc>MIM 1 EIGENAAR EN LOGICAL</desc>
+        </profile>
+    </profiles>
+    
+    <features>
+        <feature name="role-based">false</feature>
+        <feature name="allow-multiple-supertypes">true</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+    </features>
+    
+    <stereotypes xml:id="stereotypes">
+        
+           
+    </stereotypes>
+    
+</metamodel>

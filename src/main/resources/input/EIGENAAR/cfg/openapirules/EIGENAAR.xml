@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<openapi-rules 
+  xmlns:xi="http://www.w3.org/2001/XInclude" 
+  xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+  type="config">
+  
+  <xi:include href="../../../Armatiek/cfg/openapirules/Armatiek.xml"/>
+  
+  <name>EIGENAAR</name>
+  <desc/>
+  
+</openapi-rules>

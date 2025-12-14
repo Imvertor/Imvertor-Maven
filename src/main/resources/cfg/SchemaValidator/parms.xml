@@ -27,7 +27,7 @@
          <name>validateschema</name>
          <arg>yes|no</arg>
          <tip>Yes if result schemas must be validated</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
    </cli-parms>
    <properties>

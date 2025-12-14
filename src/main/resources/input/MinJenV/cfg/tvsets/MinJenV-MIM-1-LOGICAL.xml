@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <!-- 
+        LOGICAL follows CONCEPTUAL
+  
+        OpenAPI specificatie gebaseerd op https://github.com/Armatiek/imvertor-openapi-generator.
+    --> 
+ 
+    <xi:include href="../../../MIM/cfg/tvsets/MIM12.xml"/>
+    
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM12.xml"/>
+    
+    <xi:include href="../../../Armatiek/cfg/tvsets/Armatiek-OpenAPI-1-BASE-10.xml"/>
+    
+    <name>MinJenV-MIM-1-LOGICAL</name>
+    
+    <tagged-values>
+        
+        
+    </tagged-values>
+
+</tagset>

@@ -199,7 +199,7 @@ public class XmiCompiler extends Step {
 				
 				// then process it.
 				String mode = configurator.getXParm("cli/migrate",false);
-				if (mode != null) 
+				if (!mode.equals("none")) 
 					migrateXMI(activeFile,mode);
 				
 				configurator.setXParm("system/xmi-export-file-path",activeFile.getCanonicalPath());

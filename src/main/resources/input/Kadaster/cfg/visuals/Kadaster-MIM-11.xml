@@ -8,6 +8,8 @@
     
     <xi:include href="../../../Imvertor/cfg/visuals/Grouping.xml"/>
     
+    <xi:include href="../../../Armatiek/cfg/visuals/Armatiek-OpenAPI-10-BASE-10.xml"/>
+    
     <!-- 
         these visuals specify the basic visual aspects of the UML profile  
     -->

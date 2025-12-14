@@ -27,37 +27,37 @@
          <name>refreshxmi</name>
          <arg>yes|no</arg>
          <tip>Yes if the XMI file generated from EA must be recreated each time.</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       <cli-parm>
          <name>createimagemap</name>
          <arg>yes|no</arg>
          <tip>Specify if an image map should be compiled.</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
       <cli-parm>
          <name>migrate</name>
          <arg>name</arg>
          <tip>Specify a name if the source XMI file must be migrated to a (new) metamodel.</tip>
-         <required>false</required>
+         <default>none</default>
       </cli-parm> 
       <cli-parm>
          <name>copyxmi</name>
          <arg>yes|no</arg>
          <tip>Yes if the XMI file must be copied to the result folder.</tip>
-         <required>false</required>
+         <default>yes</default>
       </cli-parm> 
       <cli-parm>
          <name>sentinel</name>
          <arg>Names</arg>
          <tip>A (possibly empty) list of names of sentinels, separated by ';' and as configured for schema generation.</tip>
-         <required>false</required>
+         <default>GM_SENTINEL;GMLSF_SENTINEL</default>
       </cli-parm> 
       <cli-parm>
          <name>resolveconcepturi</name>
          <arg>yes|no</arg>
          <tip>Yes if an URI entered as a tagged value for a concept must be tested.</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       
    </cli-parms>

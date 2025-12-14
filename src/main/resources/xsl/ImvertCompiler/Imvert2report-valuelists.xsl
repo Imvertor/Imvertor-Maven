@@ -77,9 +77,9 @@
                 <xsl:sequence select="$list/imvert:stereotype"/>
             </td>
             <td>
-               <a href="{$url}">
+                <span class="url">
                     <xsl:value-of select="$url"/>
-                </a>
+                </span>
             </td>
             <td>
                 <xsl:value-of select="$url-origin"/>

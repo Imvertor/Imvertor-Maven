@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <name>Armatiek-OpenAPI-10-BASE-10</name> 
+    
+    <notes-rule lang="nl">
+        
+        <section title="OA Description" tagged-value="CFG-TV-OPENAPI-DESCRIPTION">
+            <!--  Geen verdere delen herkend binnen deze sectie -->
+        </section>
+        
+    </notes-rule>
+    
+</notes-rules>

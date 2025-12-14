@@ -6,6 +6,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="xs"
     version="2.0">
     
@@ -164,7 +166,7 @@
         <xsl:param name="client-construct" as="element()"/>
         <xsl:param name="level" as="xs:integer"/>
         
-        <xsl:variable name="root" select="$client-construct/ancestor::imvert:packages[1]"/>
+        <xsl:variable name="root" select="$client-construct/ancestor-or-self::imvert:packages[1]"/>
         
         <!-- return at least the info on this construct -->
         <xsl:variable name="client-application" select="$root"/>

@@ -33,7 +33,10 @@
     <parameter name="xml-schemalocation-approach">relative</parameter>
     
     <!-- specify if version or release or none must be inserted into the XSD namespaces -->
-    <parameter name="namespace-composition">release</parameter>
+    <parameter name="namespace-composition">version</parameter>
+    
+    <!-- specify if version or modelversion or release should occur in the schema folder path -->
+    <parameter name="release-folder-name">modelversion</parameter>
     
     <!-- specify the minOccurs/maxOccurs when needed ("default") or "always" -->
     <parameter name="specify-xsd-occurrence">always</parameter><!-- only applies to ISO19136 -->

@@ -5,6 +5,10 @@
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <xi:include href="EIGENAAR-MIM-12-CONCEPTUAL.xml"/>
     
+    <xi:include href="../../../Armatiek/cfg/notesrules/Armatiek-OpenAPI-10-BASE-10.xml"/>
+    
     <name>EIGENAAR-MIM-12-LOGICAL</name> 
+    
+    <!-- niks toe te voegen -->
     
 </notes-rules>

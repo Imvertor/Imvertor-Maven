@@ -49,6 +49,7 @@ import nl.imvertor.RunInitializer.RunInitializer;
 import nl.imvertor.SchemaValidator.SchemaValidator;
 import nl.imvertor.ShaclCompiler.ShaclCompiler;
 import nl.imvertor.SkosCompiler.SkosCompiler;
+import nl.imvertor.SourcecodeGenerator.SourcecodeGenerator;
 import nl.imvertor.StcCompiler.StcCompiler;
 import nl.imvertor.Validator.Validator;
 import nl.imvertor.XmiCompiler.XmiCompiler;
@@ -114,6 +115,7 @@ public class ChainTranslateAndReport {
 			configurator.getCli(Reporter.STEP_NAME);
 			configurator.getCli(ReadmeCompiler.STEP_NAME);
 			configurator.getCli(ReleaseCompiler.STEP_NAME);
+			configurator.getCli(SourcecodeGenerator.STEP_NAME);
 
 			configurator.setParmsFromOptions(args);
 			configurator.setParmsFromEnv();
@@ -136,8 +138,8 @@ public class ChainTranslateAndReport {
 			    // Create the XMI file from EAP or other sources
 			    succeeds = succeeds && (new XmiCompiler()).run();
 				
-			    // Build the configuration file
-			    succeeds = succeeds && (new ConfigCompiler()).run();
+			    // Build the configuration file. Ignore possible errors in XMI compilation.
+			    (new ConfigCompiler()).run();
 			 
 			    Transformer.setMayProfile(true);
 			 
@@ -163,10 +165,14 @@ public class ChainTranslateAndReport {
 				    	succeeds = true;
 			    	}
 			    	
+			    	/* Discontinued
+			    	
 			    	// Add information to the Imvertor file that is specific for a particular run
 			    	if (succeeds) // TODO must add condition here
 			    		succeeds = (new ApcModifier()).run();
 					
+					*/
+			    	
 					// analyze the model history file. 
 			    	// this records the state of the previous release.
 			    	if (succeeds) 
@@ -189,8 +195,14 @@ public class ChainTranslateAndReport {
 				    if (succeeds)
 				    	succeeds = (new ImvertCompiler()).run();
 				    
+				    /* support "createopenapi" as an alias for the combination of "createsourcecode = yes" and "sourcecodetypes = java-openapi" */
+				    if (configurator.isTrue("cli", "createopenapi", false)) {
+				      configurator.setParm("cli", "createsourcecode", "yes");
+				      configurator.setParm("cli", "sourcecodetypes", "java-openapi");
+				    }
+				    
 		    		// generate the MIM format from Imvertor embellish format
-			    	if (succeeds && (configurator.isTrue("cli","createmimformat",false) || configurator.isTrue("cli","createjsonschema",false)))
+			    	if (succeeds && (configurator.isTrue("cli","createmimformat",false) || configurator.isTrue("cli","createjsonschema",false) || configurator.isTrue("cli","createsourcecode",false)))
 			    		succeeds = (new MIMCompiler()).run();
 				
 			    	// generate the Stelselcatalogus CSV
@@ -218,6 +230,10 @@ public class ChainTranslateAndReport {
 			    			succeeds = (new JsonSchemaCompiler()).run();
 			    	}
 			    	
+					// Generate source code
+					if (succeeds && configurator.isTrue("cli","createsourcecode",false))
+						succeeds = (new SourcecodeGenerator()).run();
+
 				    // compile the history info 
 					if (succeeds && configurator.isTrue("cli","createhistory",false))
 						succeeds = (new HistoryCompiler()).run();

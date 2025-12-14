@@ -44,6 +44,7 @@
         </imvert:packages>
     </xsl:template>
     
+    <?x Imvertor 4.5: deze regel is verwijderd, nu meerdere metamodellen in één model kunnen worden geintegreerd. Deze regel betrof MIM. Zie #659
     <!-- 
         enumerations and enums are not required when designation is enumeration. Add when not already specified by the UML 
         see https://github.com/Imvertor/Imvertor-Maven/issues/63
@@ -72,6 +73,7 @@
             </xsl:if>
         </xsl:copy>
     </xsl:template>
+    x?>
     
     <!-- 
         add facets when these are specified as a tagged value 

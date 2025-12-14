@@ -135,15 +135,15 @@
 		<xsl:variable name="customPathFacet">
 			<xsl:choose>
 				<xsl:when test="substring($rawCustomPathFacet,1,1) = '/' and substring($rawCustomPathFacet,string-length($rawCustomPathFacet),1) = '/'">
-					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains 2 slashes. Remove them.',($rawCustomPathFacet,$rawMessageName))"/>
+					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] starts and ends with slashes. Remove them.',($rawCustomPathFacet,$rawMessageName))"/>
 					<xsl:value-of select="substring-before(substring-after($rawCustomPathFacet,'/'),'/')"/>
 				</xsl:when>
 				<xsl:when test="substring($rawCustomPathFacet,1,1) = '/'">
-					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains a slash. Remove it.',($rawCustomPathFacet,$rawMessageName))"/>
+					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] starts or ends with a slash. Remove it.',($rawCustomPathFacet,$rawMessageName))"/>
 					<xsl:value-of select="substring-after($rawCustomPathFacet,'/')"/>
 				</xsl:when>
 				<xsl:when test="substring($rawCustomPathFacet,string-length($rawCustomPathFacet),1) = '/'">
-					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains a slash. Remove it.',($rawCustomPathFacet,$rawMessageName))"/>
+					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] starts or ends with a slash. Remove it.',($rawCustomPathFacet,$rawMessageName))"/>
 					<xsl:value-of select="substring-before($rawCustomPathFacet,'/')"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -231,7 +231,7 @@
 					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
 						<xsl:choose>
 							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct])">
-								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$construct)"/>
+								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1] in message [2].', ($construct, $rawMessageName))"/>
 							</xsl:when>
 							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
 								<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct,$rawMessageName))"/>
@@ -263,9 +263,9 @@
 						</xsl:when>
 						<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
 							<!-- If the amount of entities withn the determined structure is larger than within the calculated structure
-								 comparisson isn't possible and a warnings is generated. The structure within the padtype class doesn't fit with the structure within the query tree.
-								 This might be caused by names not being equal within both structures or by missing structure parts within the query tree. -->
-							<xsl:sequence select="imf:msg(.,'WARNING','The structure of the padtype class within the message [1] does not comply with the structure within the query tree.', ($rawMessageName))" />			
+								 comparisson isn't possible and a warnings is generated. The structure within the padtype class doesn't fit with the structure within the request tree.
+								 This might be caused by names not being equal within both structures or by missing structure parts within the request tree. -->
+							<xsl:sequence select="imf:msg(.,'WARNING','The structure of the padtype class within the message [1] does not comply with the structure within the request tree.', ($rawMessageName))" />			
 							<ep:uriStructure/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -385,7 +385,7 @@
 						<xsl:sequence select="imf:msg(.,'ERROR','An expand parameter is only applicable for hal+json, remove it from the [1] message [2].', ($method, $messageName))" />			
 					</xsl:when>
 					<xsl:when test="$expand = false() and $checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND']">
-						<xsl:sequence select="imf:msg(.,'WARNING','An expand parameter is not applicable for the [1] message [2], remove it.', ($messageName))" />			
+						<xsl:sequence select="imf:msg(.,'WARNING','An expand parameter is not applicable for the [1] message [2], remove it.', ($method, $messageName))" />			
 					</xsl:when>
 				</xsl:choose>
 				
@@ -405,13 +405,12 @@
 					</xsl:when>
 				</xsl:choose>
 				
-				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sort' attribute (dus parameter) wordt gedefinieerd
+				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sorteer' attribute (dus parameter) wordt gedefinieerd
 					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. 
 					 Wel mag er natuurlijk voor worden gekozen een sort attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is. -->
 				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='SORTEER'] and not(contains(upper-case($berichttype),'GC'))">
 					<xsl:sequence select="imf:msg(.,'ERROR','A sorteer parameter is not applicable for the [1] message [2], remove it', ($method,$messageName))" />			
 				</xsl:if>
-				
 				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[(empty(@path) or @path = 'false') and (not(@position) or @position='')]">
 					<xsl:sequence select="imf:msg(.,'WARNING','On one or more query parameters on the [1] message [2] no tagged value Positie has been defined. These parameters will be sorted alphabetically!', ($method, $messageName))" />			
 				</xsl:if>
@@ -628,7 +627,7 @@
 					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
 						<xsl:choose>
 							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct])">
-								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$construct)"/>
+								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1] in message [2].',($construct, $rawMessageName))"/>
 							</xsl:when>
 							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
 								<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct,$rawMessageName))"/>
@@ -661,7 +660,7 @@
 						<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
 							<!-- If the amount of entities within the detremined structure is larger than withn the calculated structure
 								 comparisson isn't possible and a warnings is generated. -->
-							<xsl:sequence select="imf:msg(.,'WARNING','The amount of entities within the message [1] is larger than the amount of entities within the query tree.', ($rawMessageName))" />			
+							<xsl:sequence select="imf:msg(.,'WARNING','The amount of entities within the message [1] is larger than the amount of entities within the request tree.', ($rawMessageName))" />			
 							<ep:uriStructure/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -776,28 +775,26 @@
 					 Daarnaast wordt ook gecheckt of er wel een 'page' parameter is gedefinieerd als er een 'pagesize' parameter is gedefinieerd. -->
 				<xsl:choose>
 					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE'] and not(contains(upper-case($berichttype),'PO'))">
-						<xsl:sequence select="imf:msg(.,'ERROR','A page parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
+						<xsl:sequence select="imf:msg(.,'ERROR','A page parameter is not applicable for [1] message [2], remove it.', ($method, $messageName))" />			
 					</xsl:when>
 					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and not(contains(upper-case($berichttype),'PO'))">
 						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
 					</xsl:when>
 					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGESIZE'] and empty($checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='PAGE'])">
-						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for [1] message [2] since no page parameter has been created, remove it or create a page parameter.', ($method, $messageName))" />			
+						<xsl:sequence select="imf:msg(.,'ERROR','A pagesize parameter is not applicable for the [1] message [2] since no page parameter has been created, remove it or create a page parameter.', ($method, $messageName))" />			
 					</xsl:when>
 				</xsl:choose>
 				
 				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sort' attribute (dus parameter) wordt gedefinieerd
-					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. 
-					 Wel mag er natuurlijk voor worden gekozen een sort attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is. -->
+					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. -->
 				<xsl:choose>
 					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='SORTEER'] and not(contains(upper-case($berichttype),'PO'))">
 						<xsl:sequence select="imf:msg(.,'ERROR','A sorteer parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
 					</xsl:when>
 				</xsl:choose>
 				
-				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'sort' attribute (dus parameter) wordt gedefinieerd
-					 wordt gecheckt of deze wel gedefiniëerd is als sorting van toepassing is. 
-					 Wel mag er natuurlijk voor worden gekozen een sort attribute te definiëren terwijl dat voor het bericht niet strikt noodzakelijk is. -->
+				<!-- Aangezien het uitganspunt is dat in de parameters class expliciet een 'fields' attribute (dus parameter) wordt gedefinieerd
+					 wordt gecheckt of deze wel gedefiniëerd is als dat van toepassing is. -->
 				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='FIELDS'] and not(contains(upper-case($berichttype),'PO'))">
 					<xsl:sequence select="imf:msg(.,'ERROR','A fields parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
 				</xsl:if>
@@ -996,7 +993,7 @@
 					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
 						<xsl:choose>
 							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct])">
-								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$construct)"/>
+								<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1] in message [2].',($construct, $rawMessageName))"/>
 							</xsl:when>
 							<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
 								<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct,$rawMessageName))"/>
@@ -1028,9 +1025,9 @@
 						</xsl:when>
 						<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
 							<!-- If the amount of entities withn the determined structure is larger than within the calculated structure
-								 comparisson isn't possible and a warnings is generated. The structure within the padtype class doesn't fit with the structure within the query tree.
-								 This might be caused by names not being equal within both structures or by missing structure parts within the query tree. -->
-							<xsl:sequence select="imf:msg(.,'WARNING','The structure of the padtype class within the message [1] does not comply with the structure within the query tree.', ($rawMessageName))" />			
+								 comparisson isn't possible and a warnings is generated. The structure within the padtype class doesn't fit with the structure within the request tree.
+								 This might be caused by names not being equal within both structures or by missing structure parts within the request tree. -->
+							<xsl:sequence select="imf:msg(.,'WARNING','The structure of the padtype class within the message [1] does not comply with the structure within the request tree.', ($rawMessageName))" />			
 							<ep:uriStructure/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -1089,7 +1086,7 @@
 					<xsl:sequence select="imf:msg(.,'WARNING','The messagename ([1]) is not correct, according to the request tree in the model it should be [2].', ($messageName,$calculatedMessageName))" />			
 				</xsl:if> ?>
 				
-				<!-- At the moment query parameters become applicable for DELETE massage the following Error messages can be enabled. -->
+				<!-- At the moment query parameters become applicable for DELETE message the following Error messages can be enabled. -->
 				<?x				<!-- Een expand parameter is niet van toepassing op een DELETE bericht. -->
 				<xsl:if test="$checkedUriStructure//ep:uriPart/ep:param[upper-case(ep:name)='EXPAND']">
 					<xsl:sequence select="imf:msg(.,'ERROR','An expand parameter is not applicable for [1] messages, remove it from the [2] message.', ($method, $messageName))" />			
@@ -1486,7 +1483,7 @@
 					<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:entityName != $entityName">
 						<!-- If the entityname of the current uriPart isn't equal to the entityname of the corresponding uriPart within the determined
 							 uri structure it doesn't belong to the path. This is an error and for now a warning is generated. -->
-						<xsl:sequence select="imf:msg(.,'WARNING','The entityname [1] within the message [2] is not available within the query tree or is not on the right position within the path.', ($entityName,$rawMessageName))" />			
+						<xsl:sequence select="imf:msg(.,'WARNING','The entityname [1] within the message [2] is not available within the request tree or is not on the right position within the path.', ($entityName,$rawMessageName))" />			
 						<ep:entityName original="{$originalEntityName}" path="false"><xsl:value-of select="$entityName"/></ep:entityName>
 					</xsl:when>
 					<xsl:when test="empty($determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check])">
@@ -1661,10 +1658,10 @@
 						<xsl:variable name="paramName" select="ep:name"/>
 						<xsl:variable name="originalParamName" select="ep:name/@original"/>
 						<xsl:if test="not($calculatedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName)">
-							<!-- If there is no param within the current calculated urpart which is equal to the name of the param of the corresponding
-								 determined uripart it is reproduced with all necessary properties and with an indcator stating there's an error.
+							<!-- If there is no param within the current calculated uripart which is equal to the name of the param of the corresponding
+								 determined uripart it is reproduced with all necessary properties and with an indicator stating there's an error.
 								 Also a warning is generated. -->
-							<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not avalable as query parameter.', ($paramName,$rawMessageName))" />			
+							<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not avalable as an attribute in one of the classes within the request tree.', ($paramName,$rawMessageName))" />			
 							<ep:param path="false" position="{@position}">
 								<ep:name original="{$originalParamName}"><xsl:value-of select="$paramName"/></ep:name>
 								<xsl:choose>

@@ -1313,7 +1313,8 @@
         imf:get-config-stereotypes('stereotype-name-informatiemodel-package'), 
         imf:get-config-stereotypes('stereotype-name-base-package'), 
         imf:get-config-stereotypes('stereotype-name-variant-package'), 
-        imf:get-config-stereotypes('stereotype-name-application-package')
+        imf:get-config-stereotypes('stereotype-name-application-package'),
+        imf:get-config-stereotypes('stereotype-name-openapi-bootstrap-informatiemodel-package')
         )"></xsl:variable>
     
     <!-- tagged values $ea_xref_property zijn complexe strings; deze worden voor gemakkelijke herkenning omgezet naar een interne XML struktuur -->
@@ -1710,7 +1711,7 @@
     
     <xsl:function name="imf:fetch-additional-tagged-values-quick" as="element(imvert:tagged-values)?">
         <xsl:param name="this" as="element()"/>
-        <xsl:variable name="norm-stereos" select="for $s in $this/UML:ModelElement.stereotype/UML:Stereotype return upper-case($s)"/><!-- bijv. ATTRIBUUTSOORT, IDENTIFICATIE -->
+        <xsl:variable name="norm-stereos" select="for $s in $this/UML:ModelElement.stereotype/UML:Stereotype/@name return upper-case($s)"/><!-- bijv. ATTRIBUUTSOORT, IDENTIFICATIE -->
         <xsl:variable name="tagged-values" select="imf:get-tagged-values-quick($this,true())"/>
         <xsl:variable name="seq" as="element()*">
             <xsl:for-each select="$tagged-values"> <!-- <tv> elements --> 

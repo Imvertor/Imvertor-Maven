@@ -28,7 +28,7 @@
          <name>createyaml</name>
          <arg>yes|no</arg>
          <tip>Yes if YAML must be generated</tip>
-         <required>false</required>
+         <default>no</default>
       </cli-parm> 
       
    </cli-parms>

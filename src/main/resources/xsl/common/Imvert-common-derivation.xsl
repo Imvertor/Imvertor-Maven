@@ -24,6 +24,8 @@
 	xmlns:imf="http://www.imvertor.org/xsl/functions"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	
+	xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+	
 	exclude-result-prefixes="#all" 
 	version="2.0">
 	<!-- 
@@ -231,7 +233,7 @@
 					<xsl:variable name="providing-construct" select="if ($construct/self::imvert:target) then $supplier-construct/imvert:target else $supplier-construct"/>
 					
 					<xsl:variable name="tv" select="($providing-construct/imvert:tagged-values/imvert:tagged-value[@id=$tv-id and normalize-space(imvert:value)])[1]"/>
-
+					
 					<xsl:if test="exists($tv)">
 						<tv 
 							id="{$tv-id}" 
@@ -262,7 +264,7 @@
 				</xsl:for-each>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(.)]"/>
+		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[imf:normalize-space(.)]"/>
 	</xsl:function>
 	
 	<xsl:function name="imf:get-UGM-suppliers" as="element(supplier)*">
@@ -351,15 +353,6 @@
 				<xsl:value-of select="$doc-string"/>
 			</xsl:otherwise>
 		</xsl:choose>
-		<?x
-		<xsl:variable name="r1" select="substring-after($doc-string,'&lt;memo&gt;')"/>
-		<xsl:variable name="r2" select="if (normalize-space($r1)) then $r1 else $doc-string"/>
-		<xsl:variable name="r3" select="if (starts-with($r2,'[newline]')) then substring($r2,10) else $r2"/>
-		<xsl:variable name="r4" select="replace($r3,'\[newline\]',' ')"/>
-		<xsl:variable name="r5" select="replace($r4,'&lt;.*?&gt;','')"/>
-		<xsl:variable name="r6" select="replace($r5,'Description:','')"/>
-		<xsl:value-of select="$r6"/>
-		x?>
 	</xsl:function>
 	
 	<!-- return the position on the construct based in the type and position tagged value, and supplier info on position -->

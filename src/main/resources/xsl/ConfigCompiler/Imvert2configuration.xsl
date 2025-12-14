@@ -306,7 +306,8 @@
                 <stereotypes>
                     <xsl:for-each-group select="$metamodel//stereotypes/stereo" group-by="@id">
                         <xsl:sort select="current-grouping-key()"/>
-                        <stereo id="{current-grouping-key()}" primary="{(current-group()/@primary)[last()]}">
+                        <xsl:variable name="applicable-profile" select="ancestor::metamodel"/>
+                        <stereo id="{current-grouping-key()}" primary="{(current-group()/@primary)[last()]}" nature="{(current-group()[1]/ancestor::metamodel/nature)[1]}">
                             <xsl:variable name="stereo-group" select="current-group()"/>
                             <xsl:sequence select="imf:fetch-applicable-name($stereo-group/name)"/>
                             <xsl:apply-templates select="($stereo-group/desc[@lang=($language,'#all')])[last()]" mode="#current"/>
@@ -342,15 +343,23 @@
                 <xsl:sequence select="imf:fetch-applicable-name($visuals/name)"/>
                 <xsl:for-each-group select="$visuals//categories/category" group-by="@id">
                     <xsl:sort select="current-grouping-key()"/>
-                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                    <category nature="{(current-group()[1]/ancestor::visuals/nature)[1]}">
+                        <xsl:apply-templates select="current-group()[last()]/@*" mode="#current"/>
+                        <xsl:apply-templates select="current-group()[last()]/node()" mode="#current"/>
+                    </category>
                 </xsl:for-each-group>   
                 <xsl:for-each-group select="$visuals//measures/measure" group-by="@id">
                     <xsl:sort select="current-grouping-key()"/>
-                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
-                </xsl:for-each-group>   
+                    <measure nature="{(current-group()[1]/ancestor::visuals/nature)[1]}">
+                        <xsl:apply-templates select="current-group()[last()]/@*" mode="#current"/>
+                        <xsl:apply-templates select="current-group()[last()]/node()" mode="#current"/>
+                    </measure>   </xsl:for-each-group>   
                 <xsl:for-each-group select="$visuals//stereos/stereo" group-by="@id">
                     <xsl:sort select="current-grouping-key()"/>
-                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                    <stereo nature="{(current-group()[1]/ancestor::visuals/nature)[1]}">
+                        <xsl:apply-templates select="current-group()[last()]/@*" mode="#current"/>
+                        <xsl:apply-templates select="current-group()[last()]/node()" mode="#current"/>
+                    </stereo>
                 </xsl:for-each-group>   
             </visuals>
             
@@ -396,7 +405,7 @@
                 <tagged-values>
                     <xsl:for-each-group select="$tagset//tagged-values/tv" group-by="@id">
                         <xsl:sort select="current-grouping-key()"/>
-                        <tv id="{current-grouping-key()}">
+                        <tv id="{current-grouping-key()}" nature="{(current-group()[1]/ancestor::tagset/nature)[1]}">
                             <xsl:variable name="tv-group" select="current-group()"/>
                             <xsl:apply-templates select="($tv-group/@norm)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/@rules)[last()]" mode="#current"/>
@@ -410,6 +419,7 @@
                             <xsl:apply-templates select="($tv-group/inherit)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/source)" mode="#current"/><!-- retain all sources -->
                             <xsl:apply-templates select="($tv-group/catalog)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($tv-group/mimformat)[last()]" mode="#current"/>
                             <stereotypes>
                                 <xsl:for-each-group select="$tv-group/stereotypes/stereo" group-by=".">
                                     <xsl:sort select="current-grouping-key()"/>
@@ -442,17 +452,16 @@
 
             <notes-rules root="true">
                 <xsl:variable name="notes-rules" select="notes-rules"/> 
+                <xsl:variable name="rules" select="$notes-rules//notes-rule[@lang=($language,'#all')]"/>
+                <xsl:variable name="default" select="($rules/@default)[last()]"/>
+           
                 <xsl:apply-templates select="imf:distinct($notes-rules//notes-format)[last()]" mode="#current"/>
-                
-                <xsl:variable name="default" select="$notes-rules//notes-rule[@lang=($language,'#all')]/@default"/>
-                <xsl:for-each-group select="$notes-rules//notes-rule[@lang=($language,'#all')]" group-by="@lang">
-                    <notes-rule lang="{@lang}" default="{@default}">
-                        <xsl:for-each-group select="current-group()/section" group-by="@title">
-                            <xsl:sequence select="current-group()[last()]"/>
-                        </xsl:for-each-group>
-                    </notes-rule>
-                </xsl:for-each-group>
-           </notes-rules>
+                <notes-rule lang="{$language}" default="{$default}">
+                    <xsl:for-each-group select="$rules//section" group-by="@title">
+                        <xsl:sequence select="current-group()[last()]"/>
+                    </xsl:for-each-group>
+                </notes-rule>
+            </notes-rules>
             
             <version-rules root="true">
                 <xsl:variable name="version-rules" select="version-rules"/> 
@@ -465,6 +474,7 @@
              
                 <xsl:apply-templates select="($doc-rules//link-by)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//explanation-location)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//append-role-name)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//diagram-type-strategy)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//include-incoming-associations)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//lists-to-listing)[last()]" mode="#current"/>
@@ -481,18 +491,34 @@
                 <xsl:apply-templates select="($doc-rules//identifying-attribute-with-context)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//gegevensgroep-attribute-container)[last()]" mode="#current"/>
                 <xsl:apply-templates select="($doc-rules//show-lists-with-metadata)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//show-relation-name)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//data-location-as-link)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//url-as-link)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//sort-in-domain)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//use-subheaders-in-respec)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//show-short-attribute-cardinality)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//show-short-attribute-unit)[last()]" mode="#current"/>
                 
-                <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
-                    <xsl:sort select="@order" order="ascending"/>
-                    <doc-rule id="{current-grouping-key()}" order="{@order}">
-                        <xsl:apply-templates select="current-group()[last()]/name" mode="#current"/>
-                        <levels>
-                            <xsl:for-each-group select="current-group()/levels/level" group-by="text()">
-                                <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
-                            </xsl:for-each-group>
-                        </levels>
-                    </doc-rule>
-                </xsl:for-each-group>
+                <xsl:variable name="rules" as="element(doc-rule)*">
+                    <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
+                        <xsl:variable name="order" select="(current-group()/@order)[last()]"/>
+                        <xsl:if test="xs:integer($order) gt 0">
+                            <doc-rule id="{current-grouping-key()}" order="{$order}">
+                                <xsl:apply-templates select="current-group()[last()]/name" mode="#current"/>
+                                <levels>
+                                    <xsl:attribute name="show" select="(current-group()/levels/@show)[last()]"/>
+                                    <xsl:for-each-group select="current-group()/levels/level" group-by="text()">
+                                        <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                                    </xsl:for-each-group>
+                                </levels>
+                            </doc-rule>
+                        </xsl:if>
+                    </xsl:for-each-group>
+                </xsl:variable>
+                <xsl:for-each select="$rules">
+                    <xsl:sort select="@order"/>
+                    <xsl:sequence select="."/>
+                </xsl:for-each>
                 <xsl:for-each-group select="$doc-rules//image-purpose[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:sort select="current-grouping-key()"/>
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>

@@ -4,31 +4,16 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
+    <xi:include href="../../../MIM/cfg/docrules/MIM12.xml"/>
+    
     <name>Geonovum-MIMEXT-1</name>
     
     <desc>Geonovum specific requirements on MIM documentation</desc>
-    
-    <include-overview-section-level>no</include-overview-section-level>
-    
-    <show-properties>compact</show-properties> <!-- config, all, compact -->
-    
+   
     <!--
-        Where to show the explanation? (at-bottom or as-row)
+        Include incoming associations in the short overview?
     -->
-    <explanation-location>as-row</explanation-location>
-    
-    <!-- 
-        Wordt een diagram geplaatst binnen <figure> (met figcaption) of (default) gewoon in een <img>? 
-        Options:
-        - figure
-        - img
-    -->
-    <diagram-encoding>figure</diagram-encoding>
-    
-    <!--
-        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
-    -->
-    <show-lists-with-metadata>yes</show-lists-with-metadata>
+    <include-incoming-associations>no</include-incoming-associations>
     
     <doc-rule id="CFG-DOC-ACTUALITEIT" order="300">
         <name lang="nl">Actualiteit</name>
@@ -73,12 +58,5 @@
         <name lang="nl">Kardinaliteit</name>
         <name lang="en">Multiplicity</name>
     </doc-rule>
-    
-    <!--
-        Include incoming associations in the short overview?
-        Wilko Quak: Deze regel heb ik in overleg met Paul Jannsen toegevoegd met de volgende redenering: Inkomende
-         relaties zijn geen eigenschap van het objecttype dus hebben geen betekenis, er gebeurt niets mee.
-    -->
-    <include-incoming-associations>no</include-incoming-associations>
     
 </doc-rules>
