@@ -562,10 +562,9 @@
             <xsl:when test="$unit-ucum = 'nT'">nT (nanotesla)</xsl:when>
             <xsl:when test="$unit-ucum = 's'">s (seconde)</xsl:when>
             <xsl:when test="$unit-ucum = 'S/m'">S/m (Siemens/meter)</xsl:when>
-            
             <xsl:when test="$unit-ucum = 'mS/m'">mS/m (milliSiemens/meter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'uS/cm'">µS/cm (microSiemens/centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'Ohmm'">Ohm.m (ohm meter)</xsl:when>
-
             <xsl:when test="$unit-ucum = 'um'">µm (micrometer)</xsl:when>
             <xsl:when test="$unit-ucum = 'mm/h'">mm/h (millimeter per uur)</xsl:when>
             <xsl:when test="$unit-ucum = 'm/s'">m/s (meter per seconde)</xsl:when>
@@ -579,16 +578,13 @@
             <xsl:when test="$unit-ucum = 'g/g'">g/g (gram/gram)</xsl:when>
             <xsl:when test="$unit-ucum = 'cm-1'">cm<sup>-1</sup> (per centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'g/kg'">g/kg (gram per kilogram)</xsl:when>
-            
             <xsl:when test="$unit-ucum = 'cm3/cm3'">cm<sup>3</sup>/cm<sup>3</sup> (kubieke centimeter/kubieke centimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'm3'">m<sup>3</sup> (kubieke meter)</xsl:when>
             <xsl:when test="$unit-ucum = 'm3/h'">m<sup>3</sup>/h (kubieke meter per uur)</xsl:when>
             <xsl:when test="$unit-ucum = 'MWh'">MWh (megawattuur)</xsl:when>
             <xsl:when test="$unit-ucum = 'kW'">kW (kilowatt)</xsl:when>
-            
             <xsl:when test="$unit-ucum = 'mm2/mm2'">mm<sup>2</sup>/mm<sup>2</sup> (vierkante millimeter/vierkante millimeter)</xsl:when>
             <xsl:when test="$unit-ucum = 'MPa/MPa'">MPa/MPa (megapascal/megapascal)</xsl:when>
-            
             <xsl:otherwise>
                 <xsl:value-of select="$unit-ucum"/>
             </xsl:otherwise>
