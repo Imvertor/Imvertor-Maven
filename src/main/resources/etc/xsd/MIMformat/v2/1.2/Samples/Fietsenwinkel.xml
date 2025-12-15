@@ -26,7 +26,7 @@ commentaar toegevoegd. Dat is alleen bij de éérste opkomst van een contructie 
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                      xsi:schemaLocation="http://www.geostandaarden.nl/mim/mim-core/1.2 ../MIMFORMAT_Mim_relatiesoort.xsd"
                      id="0EA6D8E1_6BDE_45b4_A590_7969FADB42B8"><!--https://docs.geostandaarden.nl/mim/vv-st-mim-20240408/#metagegeven-basis-uri-->
-      <mim:basisURI>https://docs.geostandaarden.nl/mim/primer/Fietsenwinkel</mim:basisURI>
+   <mim:basisURI>https://docs.geostandaarden.nl/mim/primer/Fietsenwinkel</mim:basisURI>
    <mim:identificatie>0EA6D8E1_6BDE_45b4_A590_7969FADB42B8</mim:identificatie>
    <!--https://docs.geostandaarden.nl/mim/mim/#metagegeven-naam-->
    <mim:naam>Fietsenwinkel</mim:naam>
