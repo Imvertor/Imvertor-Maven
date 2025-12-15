@@ -1119,11 +1119,11 @@
     <xsl:param name="modelelement-type" select="imvert:stereotype" as="xs:string*"/>
     <xsl:param name="modelelement-name" select="imvert:name" as="xs:string?"/>
     <xsl:param name="metagegevens-to-skip" select="()" as="xs:string*"/>
-    <xsl:variable name="modelelement" select="key('key-metagegeven-by-name', for $a in $modelelement-type return lower-case($a), $mim-model)" as="element(modelelement)?"/>
+    <xsl:variable name="modelelement" select="key('key-metagegeven-by-name', for $a in $modelelement-type return lower-case($a), $mim-model)" as="element(modelelement)*"/>
     <xsl:variable name="context" select="." as="element()"/>
     <xsl:choose>
       <xsl:when test="empty($modelelement)">
-        <xsl:sequence select="imf:message(., 'ERROR', 'Modelelement [1] of type [2] is unknown', ($modelelement-name, $modelelement-type, .))"/>
+        <xsl:sequence select="imf:message(., 'ERROR', 'Modelelement [1] of type [2] is unknown', ($modelelement-name, imf:string-group($modelelement-type)))"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:for-each select="$modelelement/metagegeven[not(. = $metagegevens-to-skip)]">
