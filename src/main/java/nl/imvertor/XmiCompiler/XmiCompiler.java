@@ -23,6 +23,7 @@ package nl.imvertor.XmiCompiler;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import javax.xml.xpath.XPathConstants;
@@ -32,7 +33,6 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.NodeList;
 
 import nl.imvertor.XmiCompiler.XMIImageExporter.Image;
-import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
@@ -64,7 +64,8 @@ public class XmiCompiler extends Step {
 	private String activeFileOrigin;
 	private String compactXmiFilePath;
 	
-	private String modelType = "unknown";
+	private String modelType = null;
+	private File modelFile = null;
 
 	private AnyFolder exportFolder;
 	
@@ -103,7 +104,8 @@ public class XmiCompiler extends Step {
 	    	
 			runner.fatal(logger,"No such file: " + umlFile,null,"NSF1");
 		
-		else if (zipFile != null && zipFile.isFile()) {
+		else if (zipFile != null && zipFile.isFile()) { 
+			// zipfile kan van alles bevatten
 			
 			AnyFolder tempFolder = new AnyFolder(configurator.getXParm("properties/WORK_ZIP_FOLDER"));
 			
@@ -113,11 +115,13 @@ public class XmiCompiler extends Step {
 			
 			tempFolder.deleteDirectory();
 					
-		} else if (umlFolder != null) { 
+		} else if (umlFolder != null) {  
+			// het is een referentie naar een folder; bedoeld voor ontwikkelomgeving
 			
 			succeeds = processFilesInDeliveryFolder(umlFolder); // sets the activeFile; may fail when no relevant files found in zip
 	
 		} else if (eapFile != null && configurator.isEaEnabled()) { 
+			// het is een EA FILE; bedoeld voor ontwikkelomgeving
 			
 			XmiFile exportFile = new XmiFile(exportFolder + File.separator + eapFile.getName() + ".xmi");
 			
@@ -161,31 +165,34 @@ public class XmiCompiler extends Step {
 			}
 			
 			activeFile = exportFile;
-				
+			modelType = "xmi";
+			
 			AnyFolder targetFolder = new AnyFolder(exportFile.getParentFile().getCanonicalPath() + "/Images");
 			if (targetFolder.isDirectory() && targetFolder.list().length != 0) {
 				configurator.setXParm("system/xmi-image-count", targetFolder.list().length);
 			} 
 	
-		} else if (eapFile != null) {
+		} else if (eapFile != null) { 
 			
 			runner.fatal(logger,"Cannot process EA in this server environment",null,"CPEITSE");
 			succeeds = false;
 			
-		} else {
+		} else { 
+			// het is een model file. Het kan MIM of XMI zijn; zet alvast de naam van compact XMI.
 			
 			// kopieer het file naar de workfolder
 			compactXmiFilePath = exportFolder + File.separator + umlFile.getName() + ".compact.xmi";
 			umlFile.copyFile(exportFolder);
+			
 			activeFile = new AnyFile(exportFolder,umlFile.getName());
-		
+			determineModelType(activeFile);
 		}
-	
+		
 		if (succeeds) {
 		
 			Boolean isEapFile = umlFile.getExtension().startsWith("eap") || umlFile.getExtension().equals("qea");
-			Boolean isXmiFile = activeFile.getExtension().equals("xmi");
-			Boolean isMimFile = activeFile.getExtension().equals("xml");
+			Boolean isXmiFile = modelType.equals("xmi");
+			Boolean isMimFile = modelType.equals("mim");
 			
 			if (activeFileOrigin == null) {
 	
@@ -298,14 +305,11 @@ public class XmiCompiler extends Step {
 	private boolean processFilesInDeliveryFolder(AnyFolder tempFolder) throws Exception {
 		
 		// Determine what kind of model is passed: xmi or mim?
-		modelType = "unknown";
-		if (tempFolder.getMatchingFiles("^(.*?)\\.xml$").size() > 0) 
-			modelType = "mim";
-		else if (tempFolder.getMatchingFiles("^(.*?)\\.xmi$").size() > 0) 
-			modelType = "xmi";
-		else
-	    	runner.fatal(logger,"No model found in zip passed",null,"NMFIZP");
+		determineModelType(tempFolder);
 		
+		if (modelType == null) 
+			runner.fatal(logger,"Cannot determine type of the model found in zip passed",null,"CDTOTMIZP");
+
 		// verwerk nu de folder
 		File[] files = tempFolder.listFiles(); // may be one file (xmi) or two (xmi and Images folder)
 		if (files.length == 0) 
@@ -319,7 +323,7 @@ public class XmiCompiler extends Step {
 					sourceFolder.copy(targetFolder);
 					if (sourceFolder.getName().equals("Images")) 
 						configurator.setXParm("system/xmi-image-count", sourceFolder.list().length);
-				} else if (modelType.equals("xmi") && files[i].getName().endsWith(".xmi")) {
+				} else if (modelType.equals("xmi") && files[i].getName().equals(modelFile.getName())) {
 					AnyFile file = new AnyFile(files[i]);
 					activeFile = new XmlFile(exportFolder + File.separator + file.getName());
 					file.copyFile(activeFile);
@@ -327,7 +331,7 @@ public class XmiCompiler extends Step {
 					cleanXMI(activeFile);
 					activeFileOrigin = "Compressed XMI passed";
 					++origins;
-				} else if (modelType.equals("mim") && files[i].getName().endsWith(".xml")) {
+				} else if (modelType.equals("mim") && files[i].getName().equals(modelFile.getName())) {
 					AnyFile file = new AnyFile(files[i]);
 					activeFile = new XmlFile(exportFolder + File.separator + file.getName());
 					file.copyFile(activeFile);
@@ -420,6 +424,33 @@ public class XmiCompiler extends Step {
 			return models.getLength() != 1;
 		} catch (Exception e) {
 			return true; // something happened; check.
+		}
+	}
+	
+	/**
+	 * Bepaal op basis van files in de folder welk type model is geleverd: MIM serialisatie of XMI serialisatie.
+	 * De extensie van een file (*.xml of *.xmi of ...) speelt hier geen rol, er wordt gekeken naar de inhoud.
+	 * De herkenning moet kunnen plaatsvinden binnen de eerste 5000 karakters van het bestand.
+	 *  
+	 * @param folder
+	 * @return "mim" of "xmi" of "unknown"
+	 * @throws IOException 
+	 */
+	private void determineModelType(AnyFolder folder) throws Exception {
+		File[] files = folder.listFiles();
+		for (int i = 0; i < files.length; i++)
+			determineModelType(new AnyFile(files[i]));
+	}
+	
+	private void determineModelType(AnyFile file) throws Exception {
+		if (file.isDirectory())
+			return;
+		if (file.hasPatternAtStart(".*?<XMI.*?version=\"1\\.1\"", 5000)) {
+			modelType = "xmi";
+			modelFile = file;
+		} else if (file.hasPatternAtStart(".*?<mim:", 5000)) {
+			modelType = "mim";
+			modelFile = file;
 		}
 	}
 }
