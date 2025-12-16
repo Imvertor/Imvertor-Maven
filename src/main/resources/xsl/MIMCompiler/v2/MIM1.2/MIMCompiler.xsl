@@ -819,7 +819,7 @@
   <xsl:template match="metagegeven[. = 'Identificatie']">
     <xsl:param name="context" as="element()"/>
     <xsl:param name="id" as="xs:string?" tunnel="yes"/>
-    <mim:identificatie source-id="CFG-TV-ID">{imf:clean-id(if ($id) then $id else $context/imvert:id)}</mim:identificatie>
+    <mim:identificatie source-id="CFG-TV-ID">urn:uuid:{imf:clean-id(if ($id) then $id else $context/imvert:id)}</mim:identificatie>
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Identificerend']">

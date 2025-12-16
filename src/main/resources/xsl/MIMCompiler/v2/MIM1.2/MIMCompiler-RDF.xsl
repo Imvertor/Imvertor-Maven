@@ -92,9 +92,6 @@
   <xsl:template match="*[@mm:nodeType = 'modelelement']" priority="1.0">
     <rdf:Description rdf:about="{local:get-id(.)}">
       <rdf:type rdf:resource="{$mim-uri}{(@mm:rdfName, local-name())[1]}"/>
-      <xsl:if test="not(mim-in:identificatie)">
-        <mim:identificatie rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">{if (not($gen-uuids)) then $base-uri else ()}{local:get-id(.)}</mim:identificatie>  
-      </xsl:if>
       <xsl:next-match/>
       <xsl:for-each select="mim-ext:kenmerken/mim-ext:Kenmerk">
         <mim:kenmerk rdf:resource="{local:get-id(.)}"/>
@@ -259,7 +256,7 @@
       <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>
-  
+    
   <xsl:template match="mim-in:relatiemodelleringstype" mode="metagegeven">  
     <mim:relatiemodelleringstype rdf:resource="{$mim-uri}{map:get($relatiemodelleringstype-mapping, .)}"/>
   </xsl:template>
