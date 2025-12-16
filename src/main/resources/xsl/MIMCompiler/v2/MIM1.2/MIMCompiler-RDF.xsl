@@ -40,7 +40,7 @@
   <xsl:variable name="is-werkbank-context" select="function-available('ext:uuid')" as="xs:boolean" static="true"/>  
     
   <xsl:variable name="relatiemodelleringstype" select="/*/mim-in:relatiemodelleringstype" as="xs:string"/>
-  <xsl:variable name="gen-uuids" select="$generate-uuids and function-available('ext:uuid')" as="xs:boolean"/>
+  <xsl:variable name="gen-uuids" select="$generate-uuids and ($is-imvertor-context or $is-werkbank-context)" as="xs:boolean"/>
   <xsl:variable name="urn-prefix" select="if ($gen-uuids) then 'urn:uuid:' else '#'" as="xs:string"/>
   <xsl:variable name="rdf-retain-xhtml" select="true()"/><!-- TODO instelbaar -->
   <xsl:variable name="mim-uri" select="'http://modellen.mim-standaard.nl/def/mim#'" as="xs:string"/>
