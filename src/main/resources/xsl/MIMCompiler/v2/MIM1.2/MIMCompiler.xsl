@@ -229,7 +229,7 @@
     </xsl:variable>
     <xsl:apply-templates select="$intermediate-result" mode="postprocess"/>
     
-    <!-- typeer dit model tbv report -->
+    <!-- typeer dit model tbv report en latere validatie -->
     <xsl:sequence select="imf:set-xparm('system/mim-compiler-model-typering',
       $relatiemodelleringstype
     )"/>
