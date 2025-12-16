@@ -126,7 +126,7 @@ public class MIMCompiler extends Step {
 		}
 		
 		if (isRDFType) {
-			transformer.setXslParm("generate-readable-ids", "true");
+			transformer.setXslParm("generate-readable-ids", "false");
 			transformer.setXslParm("generate-all-ids", "true");
 			transformer.setXslParm("add-generated-id", "true");
 		}
