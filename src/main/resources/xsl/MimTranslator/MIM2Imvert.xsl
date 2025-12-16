@@ -806,30 +806,31 @@
         <xsl:param name="value" as="item()*"/>
         
         <xsl:variable name="orig-value" select="if ($value) then $value else imf:get-kenmerk($this,$tv/name)"/>
-        <xsl:if test="$orig-value">
-            <xsl:variable name="norm-value" select="imf:norm-by-scheme($orig-value,$tv/@norm,'tv')"/>
+        <xsl:for-each select="$orig-value">
+            <xsl:variable name="norm-value" select="imf:norm-by-scheme(.,$tv/@norm,'tv')"/>
             <imvert:tagged-value id="{$tv/@id}">
                 <imvert:name original="{$tv/name/@original}">
                     <xsl:value-of select="$tv/name"/>
                 </imvert:name>
-                <imvert:value original="{$orig-value}">
+                <imvert:value original="{.}">
                     <xsl:sequence select="$norm-value"/>
                 </imvert:value>
             </imvert:tagged-value>
-        </xsl:if>
+        </xsl:for-each>
         
     </xsl:function>
     
     <xsl:function name="imf:norm-by-scheme" as="item()*">
-        <xsl:param name="value" as="item()*"/>
+        <xsl:param name="value" as="item()"/>
         <xsl:param name="normalization-rule" as="xs:string?"/> <!-- e.g. "space", defaults to no norm -->
         <xsl:param name="normalization-scheme" as="xs:string"/> <!-- e.g. "tv" -->
+        
         <xsl:choose>
             <xsl:when test="not(normalize-space($normalization-rule))">
                 <xsl:value-of select="$value"/>
             </xsl:when>
             <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'space'">
-                <xsl:value-of select="normalize-space($value)"/>
+                <xsl:value-of select="imf:normalize-space($value)"/>
             </xsl:when>
             <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'note' and $value/xhtml:body"><!-- MIM werkbank note fields worden geexporteerd als XHTML in een html:body element -->
                 <xsl:sequence select="$value/xhtml:body"/>
