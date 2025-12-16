@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model-definitie 
+  xmlns:mm="http://imvertor.nl/mim/metamodel" 
+  xmlns:mim="http://www.geostandaarden.nl/mim/mim-core/1.2"
+  xmlns:mim-ext="http://www.geostandaarden.nl/mim/mim-ext/1.0"
+  xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+  <elementen>
+    <mim:Attribuutsoort mm:nodeType="modelelement" mm:title="Attribuutsoort" mm:rdfBinding="attribuut"/>
+    <mim:Bron mm:nodeType="modelelement" mm:title="Bron" mm:rdfName="RelatierolBron" mm:rdfBinding="bron"/>
+    <mim:Codelijst mm:nodeType="modelelement" mm:title="Codelijst"/>
+    <mim:Constraint mm:nodeType="modelelement" mm:title="Constraint" mm:rdfBinding="constraint"/>
+    <mim-ext:Constructie mm:nodeType="modelelement" mm:title="Constructie"/>
+    <mim-ext:ConstructieRef mm:nodeType="metagegeven" mm:title="Constructie referentie"/>
+    <mim:DataElement mm:nodeType="modelelement" mm:title="Data-element" mm:rdfBinding="dataElement"/>
+    <mim:Datatype mm:nodeType="metagegeven" mm:title="Datatype"/>
+    <mim-ref:DatatypeRef mm:nodeType="metagegeven" mm:title="Datatype referentie"/>
+    <mim:Doel mm:nodeType="modelelement" mm:title="Doel" mm:rdfName="RelatierolDoel"/>
+    <mim:Domein mm:nodeType="modelelement" mm:title="Domein"/>
+    <mim:Enumeratie mm:nodeType="modelelement" mm:title="Enumeratie"/>
+    <mim:Extern mm:nodeType="modelelement" mm:title="Extern"/>
+    <mim:ExterneKoppeling mm:nodeType="modelelement" mm:title="Externe Koppeling"/>
+    <mim:Gegevensgroep mm:nodeType="modelelement" mm:title="Gegevensgroep" mm:rdfBinding="gegevensgroep"/>
+    <mim:Gegevensgroeptype mm:nodeType="modelelement" mm:title="Gegevensgroeptype" mm:rdfBinding="gegevensgroeptype"/>
+    <mim:GeneralisatieDatatypen mm:nodeType="modelelement" mm:title="Generalisatie" mm:rdfName="Generalisatie"/>
+    <mim:GeneralisatieObjecttypen mm:nodeType="modelelement" mm:title="Generalisatie" mm:rdfName="Generalisatie"/>
+    <mim:GestructureerdDatatype mm:nodeType="modelelement" mm:title="Gestructureerd datatype"/>
+    <mim:Informatiemodel mm:nodeType="modelelement" mm:title="Informatiemodel"/>
+    <mim-ext:Kenmerk mm:nodeType="modelelement" mm:title="Kenmerk"/>
+    <mim:Keuze mm:nodeType="modelelement" mm:title="Keuze"/>
+    <mim-ref:KeuzeRef mm:nodeType="metagegeven" mm:title="Keuze referentie"/>
+    <mim:MIMExtensie mm:nodeType="metagegeven" mm:title="MIM extensie" mm:rdfName="mimextensie"/>
+    <mim:MIMTaal mm:nodeType="metagegeven" mm:title="MIM taal" mm:rdfName="mimtaal"/>
+    <mim:MIMVersie mm:nodeType="metagegeven" mm:title="MIM versie" mm:rdfName="mimversie"/>
+    <mim:Objecttype mm:nodeType="modelelement" mm:title="Objecttype"/>
+    <mim-ref:ObjecttypeRef mm:nodeType="metagegeven" mm:title="Objecttype referentie"/>
+    <mim:PrimitiefDatatype mm:nodeType="modelelement" mm:title="Primitief datatype"/>
+    <mim:ReferentieElement mm:nodeType="modelelement" mm:title="Referentie-element" mm:rdfBinding="referentieElement"/>
+    <mim:Referentielijst mm:nodeType="modelelement" mm:title="Referentielijst"/>
+    <mim:Relatieklasse mm:nodeType="modelelement" mm:title="Relatieklasse"/>
+    <mim:Relatiesoort mm:nodeType="modelelement" mm:title="Relatiesoort"/>
+    <mim:View mm:nodeType="modelelement" mm:title="View"/>
+    <mim:Waarde mm:nodeType="modelelement" mm:title="Enumeratiewaarde" mm:rdfName="Enumeratiewaarde" mm:rdfBinding="waarde"/>
+    <mim:aggregatietype mm:nodeType="metagegeven" mm:title="Aggregatietype" mm:options="Geen;Compositie;Gedeeld" mm:rdfBinding="aggregatietype">Geen</mim:aggregatietype>
+    <mim:alias mm:nodeType="metagegeven" mm:title="Alias"/>
+    <mim:attribuutsoorten mm:nodeType="wrapper" mm:title="Attribuutsoorten" mm:childs="mim:Attribuutsoort"/>
+    <mim:authentiek mm:nodeType="metagegeven" mm:title="Authentiek" mm:options="Authentiek;Basisgegeven;Wettelijk gegeven;Landelijk kerngegeven;Overig" mm:rdfBinding="authentiek">Overig</mim:authentiek>
+    <mim:basisURI mm:nodeType="metagegeven" mm:title="Basis-URI" mm:rdfName="basisUri" mm:rdfType="anyURI"/>
+    <mim:begrip mm:nodeType="metagegeven" mm:title="Begrip" mm:rdfName="begripsterm" mm:rdfBinding="begrip"/>
+    <mim:code mm:nodeType="metagegeven" mm:title="Code"/>
+    <mim:constraints mm:nodeType="wrapper" mm:title="Constraints" mm:childs="mim:Constraint"/>
+    <mim-ext:constructies mm:nodeType="wrapper" mm:title="Constructies" mm:childs="mim-ext:Constructie"/>
+    <mim-ext:constructietype mm:nodeType="metagegeven" mm:title="Constructietype" mm:isCritical="true"/>
+    <mim:dataElementen mm:nodeType="wrapper" mm:title="Data-elementen" mm:childs="mim:DataElement"/>
+    <mim:datatypen mm:nodeType="wrapper" mm:title="Datatypen" mm:childs="mim:Referentielijst;mim:Codelijst;mim:Enumeratie;mim:GestructureerdDatatype;mim:PrimitiefDatatype"/>
+    <mim:datumOpname mm:nodeType="metagegeven" mm:title="Datum opname"/>
+    <mim:definitie mm:nodeType="metagegeven" mm:title="Definitie"/>
+    <mim:doel mm:nodeType="metagegeven" mm:title="Doel" mm:isCritical="true"/>
+    <mim:doelformaat mm:nodeType="metagegeven" mm:title="Doelformaat"/>
+    <mim:domeinen mm:nodeType="wrapper" mm:title="Domeinen" mm:childs="mim:Domein"/>
+    <mim:eenheid mm:nodeType="metagegeven" mm:title="Eenheid"/>
+    <mim:extern mm:nodeType="wrapper" mm:title="Extern" mm:childs="mim:Extern"/>
+    <mim:externeKoppelingen mm:nodeType="wrapper" mm:title="Externe Koppelingen" mm:childs="mim:ExterneKoppeling"/>
+    <mim:formeelPatroon mm:nodeType="metagegeven" mm:title="Formeel patroon"/>
+    <mim:gegevensgroepen mm:nodeType="wrapper" mm:title="Gegevensgroepen" mm:childs="mim:Gegevensgroep"/>
+    <mim:gegevensgroeptype mm:nodeType="metagegeven" mm:title="Gegevensgroeptype" mm:isCritical="true" mm:rdfBinding="gegevensgroeptype"/>
+    <mim:gegevensgroeptypen mm:nodeType="wrapper" mm:title="Gegevensgroeptypen" mm:childs="mim:Gegevensgroeptype"/>
+    <mim:heeftTijdlijnGeldigheid mm:nodeType="metagegeven" mm:title="Heeft tijdlijn geldigheid" mm:rdfType="boolean">true</mim:heeftTijdlijnGeldigheid>
+    <mim:heeftTijdlijnRegistratie mm:nodeType="metagegeven" mm:title="Heeft tijdlijn registratie" mm:rdfType="boolean">true</mim:heeftTijdlijnRegistratie>
+    <mim:herkomst mm:nodeType="metagegeven" mm:title="Herkomst"/>
+    <mim:herkomstDefinitie mm:nodeType="metagegeven" mm:title="Herkomst definitie"/>
+    <mim:identificatie mm:nodeType="metagegeven" mm:title="Identificatie"/>
+    <mim:identificerend mm:nodeType="metagegeven" mm:title="Identificerend" mm:rdfType="boolean">false</mim:identificerend>
+    <mim:indicatieAbstractObject mm:nodeType="metagegeven" mm:title="Indicatie abstract object" mm:rdfType="boolean">false</mim:indicatieAbstractObject>
+    <mim:indicatieAfleidbaar mm:nodeType="metagegeven" mm:title="Indicatie afleidbaar" mm:rdfType="boolean"/>
+    <mim:indicatieClassificerend mm:nodeType="metagegeven" mm:title="Indicatie classificerend" mm:rdfType="boolean">false</mim:indicatieClassificerend>
+    <mim:indicatieFormeleHistorie mm:nodeType="metagegeven" mm:title="Indicatie formele historie" mm:rdfType="boolean">false</mim:indicatieFormeleHistorie>
+    <mim:indicatieMaterieleHistorie mm:nodeType="metagegeven" mm:title="Indicatie materiële historie" mm:rdfType="boolean">false</mim:indicatieMaterieleHistorie>
+    <mim:informatiedomein mm:nodeType="metagegeven" mm:title="Informatiedomein"/>
+    <mim:informatiemodeltype mm:nodeType="metagegeven" mm:title="Informatiemodeltype" mm:options="Conceptueel;Logisch;Technisch" mm:rdfBinding="informatiemodeltype"/>
+    <mim:kardinaliteit mm:nodeType="metagegeven" mm:title="Kardinaliteit" mm:options="1;0..1;0..*;1..*">1</mim:kardinaliteit>
+    <mim:kardinaliteitBron mm:nodeType="metagegeven" mm:title="Kardinaliteit relatie bron" mm:options="1;0..1;0..*;1..*" mm:rdfName="kardinaliteitRelatieBron">1</mim:kardinaliteitBron>
+    <mim-ext:kenmerken mm:nodeType="wrapper" mm:title="Kenmerken" mm:childs="mim-ext:Kenmerk"/>
+    <mim:keuzen mm:nodeType="wrapper" mm:title="Keuzen"/>
+    <mim:keuzeAttributen mm:nodeType="wrapper" mm:title="Attribuutsoorten" mm:childs="mim:Attribuutsoort"/>
+    <mim:keuzeDatatypen mm:nodeType="metagegeven" mm:title="Keuzen tussen datatypen" mm:isCritical="true"/>
+    <mim:keuzeRelatiedoelen mm:nodeType="metagegeven" mm:title="Keuzen tussen relatiedoelen" mm:isCritical="true"/>
+    <mim:kwaliteit mm:nodeType="metagegeven" mm:title="Kwaliteit"/>
+    <mim:lengte mm:nodeType="metagegeven" mm:title="Lengte"/>
+    <mim:locatie mm:nodeType="metagegeven" mm:title="Locatie"/>
+    <mim:maximumwaardeExclusief mm:nodeType="metagegeven" mm:title="Maximumwaarde exclusief"/>
+    <mim:maximumwaardeInclusief mm:nodeType="metagegeven" mm:title="Maximumwaarde inclusief"/>
+    <mim:minimumwaardeExclusief mm:nodeType="metagegeven" mm:title="Minimumwaarde exclusief"/>
+    <mim:minimumwaardeInclusief mm:nodeType="metagegeven" mm:title="Minimumwaarde inclusief"/>
+    <mim:mixin mm:nodeType="metagegeven" mm:title="Mixin" mm:rdfType="boolean">false</mim:mixin>
+    <mim:mogelijkGeenWaarde mm:nodeType="metagegeven" mm:title="Mogelijk geen waarde" mm:rdfType="boolean">false</mim:mogelijkGeenWaarde>
+    <mim:naam mm:nodeType="metagegeven" mm:title="Naam" mm:isCritical="true"/>
+    <mim:objecttypen mm:nodeType="wrapper" mm:title="Objecttypen" mm:childs="mim:Objecttype"/>
+    <mim:packages mm:nodeType="wrapper" mm:title="Packages" mm:childs="mim:Domein;mim:View;mim:Extern"/> 
+    <mim:patroon mm:nodeType="metagegeven" mm:title="Patroon"/>
+    <mim:populatie mm:nodeType="metagegeven" mm:title="Populatie"/>
+    <mim:profielspecificatie mm:nodeType="metagegeven" mm:title="Profielspecificatie"/>
+    <mim:referentieElementen mm:nodeType="wrapper" mm:title="Referentie-elementen" mm:childs="mim:ReferentieElement"/>
+    <mim:relatieklasse mm:nodeType="wrapper" mm:title="Relatieklasse"/>
+    <mim:relatiemodelleringstype mm:nodeType="metagegeven" mm:title="Relatiemodelleringstype" mm:isCritical="true" mm:rdfBinding="relatiemodelleringstype"/>
+    <mim:relatierollen mm:nodeType="wrapper" mm:title="Rollen"/>
+    <mim:relatiesoorten mm:nodeType="wrapper" mm:title="Relatiesoorten"/>
+    <mim:specificatieTekst mm:nodeType="metagegeven" mm:title="Specificatie tekst"/>
+    <mim:specificatieFormeel mm:nodeType="metagegeven" mm:title="Specificatie formeel"/>
+    <mim:supertype mm:nodeType="metagegeven" mm:title="Supertype" mm:rdfBinding="supertype"/>
+    <mim:supertypen mm:nodeType="wrapper" mm:title="Supertypen" mm:rdfBinding="subtype"/>
+    <mim:tekstopmaak mm:nodeType="metagegeven" mm:title="Tekstopmaak"/>    
+    <mim:toelichting mm:nodeType="metagegeven" mm:title="Toelichting"/>
+    <mim:type mm:nodeType="metagegeven" mm:title="Type" mm:isCritical="true" mm:rdfBinding="type"/>
+    <mim:unidirectioneel mm:nodeType="metagegeven" mm:title="Unidirectioneel" mm:rdfType="boolean">true</mim:unidirectioneel>
+    <mim:views mm:nodeType="wrapper" mm:title="Views" mm:childs="mim:View"/>
+    <mim:waarde mm:nodeType="metagegeven" mm:title="Waarde" mm:rdfBinding="waarde"/>
+    <mim:waardeItem mm:nodeType="metagegeven" mm:title="Waarde-item"/>
+    <mim:waarden mm:nodeType="wrapper" mm:title="Waarden" mm:childs="mim:Waarde"/>  
+  </elementen>
+  <structuur>
+    <mim:Extern mm:hasIdAttr="true">
+      <mim:basisURI mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:locatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim-ext:constructies mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Extern>
+    <mim:DataElement mm:hasIdAttr="true">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:type mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:eenheid mm:minOccurs="0" mm:maxOccurs="1"/> 
+      <mim:lengte mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:patroon mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:formeelPatroon mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:minimumwaardeInclusief mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:maximumwaardeInclusief mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:minimumwaardeExclusief mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:maximumwaardeExclusief mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:kardinaliteit mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:DataElement>
+    <mim:Relatieklasse mm:hasIdAttr="true">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieMaterieleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieFormeleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnGeldigheid mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnRegistratie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:kardinaliteit mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:authentiek mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieAfleidbaar mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:mogelijkGeenWaarde mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:unidirectioneel mm:minOccurs="1" mm:maxOccurs="1">true</mim:unidirectioneel> 
+      <mim:aggregatietype mm:minOccurs="1" mm:maxOccurs="1">Geen</mim:aggregatietype>
+      <mim:attribuutsoorten mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:gegevensgroepen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:constraints mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Relatieklasse>
+    <mim:PrimitiefDatatype mm:hasIdAttr="true">
+      <mim:supertypen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:lengte mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:patroon mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:formeelPatroon mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:PrimitiefDatatype>
+    <mim:Keuze mm:hasIdAttr="true" mm:context="">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:keuzeAttributen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:keuzeDatatypen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:keuzeRelatiedoelen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Keuze>
+    <mim:Informatiemodel mm:hasIdAttr="true">
+      <mim:basisURI mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:informatiemodeltype mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:informatiedomein mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:relatiemodelleringstype mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:tekstopmaak mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:MIMVersie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:MIMExtensie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:MIMTaal mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:packages mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Informatiemodel>
+    <mim:Domein mm:hasIdAttr="true">
+      <mim:basisURI mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:datatypen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:objecttypen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:gegevensgroeptypen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:keuzen mm:minOccurs="0" mm:maxOccurs="1" mm:childs="mim:Keuze"/>
+      <mim-ext:constructies mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Domein>
+    <mim:View mm:hasIdAttr="true">
+      <mim:basisURI mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:locatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:datatypen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:objecttypen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:gegevensgroeptypen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:keuzen mm:minOccurs="0" mm:maxOccurs="1" mm:childs="mim:Keuze"/>
+      <mim-ext:constructies mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:View>
+    <mim:Attribuutsoort mm:hasIdAttr="true">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:type mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:eenheid mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:lengte mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:patroon mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:formeelPatroon mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:minimumwaardeInclusief mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:maximumwaardeInclusief mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:minimumwaardeExclusief mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:maximumwaardeExclusief mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:indicatieMaterieleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieFormeleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnGeldigheid mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnRegistratie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:kardinaliteit mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:authentiek mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:locatie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:indicatieAfleidbaar mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieClassificerend mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:mogelijkGeenWaarde mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:identificerend mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Attribuutsoort>
+    <mim:GestructureerdDatatype mm:hasIdAttr="true">
+      <mim:supertypen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:patroon mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:formeelPatroon mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:dataElementen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:GestructureerdDatatype>
+    <mim:Relatiesoort mm:hasIdAttr="true" mm:context="/*/mim:relatiemodelleringstype = 'Relatiesoort leidend'" mm:rmtVariant="Relatiesoort leidend">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieMaterieleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieFormeleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnGeldigheid mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnRegistratie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:kardinaliteit mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:kardinaliteitBron mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:authentiek mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieAfleidbaar mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:mogelijkGeenWaarde mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:identificerend mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:unidirectioneel mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:aggregatietype mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:doel mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:relatierollen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:relatieklasse mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Relatiesoort>
+    <mim:Bron mm:hasIdAttr="true" mm:context="/*/mim:relatiemodelleringstype = 'Relatiesoort leidend'" mm:rmtVariant="Relatiesoort leidend">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Bron>
+    <mim:Doel mm:hasIdAttr="true" mm:context="/*/mim:relatiemodelleringstype = 'Relatiesoort leidend'" mm:rmtVariant="Relatiesoort leidend">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Doel>
+    <mim:Relatiesoort mm:hasIdAttr="true" mm:context="/*/mim:relatiemodelleringstype = 'Relatierol leidend'" mm:rmtVariant="Relatierol leidend">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:unidirectioneel mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:aggregatietype mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:doel mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:relatierollen mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:relatieklasse mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Relatiesoort>
+    <mim:Bron mm:hasIdAttr="true" mm:context="/*/mim:relatiemodelleringstype = 'Relatierol leidend'" mm:rmtVariant="Relatierol leidend">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieMaterieleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieFormeleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnGeldigheid mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnRegistratie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:kardinaliteit mm:minOccurs="1" mm:maxOccurs="1"/>
+      <!--
+      <mim:kardinaliteitBron mm:minOccurs="0" mm:maxOccurs="1"/>
+      -->
+      <mim:authentiek mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:mogelijkGeenWaarde mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:identificerend mm:minOccurs="0" mm:maxOccurs="1"/>
+      <!--
+      <mim:aggregatietype mm:minOccurs="0" mm:maxOccurs="1"/>
+      -->
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Bron>
+    <mim:Doel mm:hasIdAttr="true" mm:context="/*/mim:relatiemodelleringstype = 'Relatierol leidend'" mm:rmtVariant="Relatierol leidend">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieMaterieleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieFormeleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnGeldigheid mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnRegistratie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:kardinaliteit mm:minOccurs="1" mm:maxOccurs="1"/>
+      <!--
+      <mim:kardinaliteitBron mm:minOccurs="0" mm:maxOccurs="1"/>
+      -->
+      <mim:authentiek mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:mogelijkGeenWaarde mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:identificerend mm:minOccurs="0" mm:maxOccurs="1"/>
+      <!--
+      <mim:aggregatietype mm:minOccurs="0" mm:maxOccurs="1"/>
+      -->
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Doel>
+    <mim:Gegevensgroep mm:hasIdAttr="true">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieMaterieleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieFormeleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnGeldigheid mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnRegistratie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:kardinaliteit mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:authentiek mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:gegevensgroeptype mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Gegevensgroep>
+    <mim:Referentielijst mm:hasIdAttr="true">
+      <mim:supertypen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:locatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:doelformaat mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:referentieElementen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Referentielijst>
+    <mim:Gegevensgroeptype mm:hasIdAttr="true">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:supertypen mm:minOccurs="0" mm:maxOccurs="1" mm:childs="mim:GeneralisatieObjecttypen"/>
+      <mim:attribuutsoorten mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:gegevensgroepen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:relatiesoorten mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:externeKoppelingen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:constraints mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Gegevensgroeptype>
+    <mim:ReferentieElement mm:hasIdAttr="true">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:type mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:lengte mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:patroon mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:formeelPatroon mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:minimumwaardeInclusief mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:maximumwaardeInclusief mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:minimumwaardeExclusief mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:maximumwaardeExclusief mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:kardinaliteit mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:identificerend mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:ReferentieElement>
+    <mim:Codelijst mm:hasIdAttr="true">
+      <mim:supertypen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:locatie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:doelformaat mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:waardeItem mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:profielspecificatie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Codelijst>
+    <mim:Enumeratie mm:hasIdAttr="true">
+      <mim:supertypen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:waarden mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Enumeratie>
+    <mim:Waarde mm:hasIdAttr="true">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:code mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Waarde>
+    <mim:Objecttype mm:hasIdAttr="true">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:herkomst mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:populatie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:kwaliteit mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:indicatieAbstractObject mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:supertypen mm:minOccurs="0" mm:maxOccurs="1" mm:childs="mim:GeneralisatieObjecttypen"/>
+      <mim:attribuutsoorten mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:gegevensgroepen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:relatiesoorten mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:externeKoppelingen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:keuzen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:constraints mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:constructies mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Objecttype>
+    <mim:ExterneKoppeling mm:hasIdAttr="true">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieMaterieleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:indicatieFormeleHistorie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnGeldigheid mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:heeftTijdlijnRegistratie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:unidirectioneel mm:minOccurs="1" mm:maxOccurs="1">true</mim:unidirectioneel>
+      <mim:aggregatietype mm:minOccurs="1" mm:maxOccurs="1">Geen</mim:aggregatietype>
+      <mim:kardinaliteit mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:doel mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:ExterneKoppeling>
+    <mim:Constraint>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:specificatieTekst mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:specificatieFormeel mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:Constraint>
+    <mim-ext:Kenmerk/>
+    <mim-ext:Constructie mm:hasIdAttr="true">
+      <mim-ext:constructietype mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:definitie mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:code mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:indicatieAbstractObject mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:aggregatietype mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:kardinaliteit mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:kardinaliteitBron mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:unidirectioneel mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:supertypen mm:minOccurs="0" mm:maxOccurs="1" mm:childs="mim:GeneralisatieObjecttypen"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim-ext:Constructie>
+    <mim:GeneralisatieDatatypen mm:hasIdAttr="true">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:supertype mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:GeneralisatieDatatypen>
+    <mim:GeneralisatieObjecttypen mm:hasIdAttr="true">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:mixin mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:supertype mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:GeneralisatieObjecttypen>
+    
+    <mim:domeinen>
+      <mim:Domein mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:domeinen>  
+    <mim:views>
+      <mim:View mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:views>
+    <mim:extern>
+      <mim:Extern mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:extern>
+    <mim:objecttypen>
+      <mim:Objecttype mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:objecttypen>
+    <mim:keuzen>
+      <mim:Keuze/>
+    </mim:keuzen>
+    <mim:relatierollen>
+      <mim:Bron mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:Doel mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:relatierollen>
+    <mim:relatieklasse>
+      <mim:Relatieklasse mm:minOccurs="1" mm:maxOccurs="1"/>
+    </mim:relatieklasse> 
+    <mim:datatypen>
+      <mim:GestructureerdDatatype/>
+      <mim:PrimitiefDatatype/>
+      <mim:Enumeratie/>
+      <mim:Codelijst/>
+      <mim:Referentielijst/>
+    </mim:datatypen>
+    <mim:waarden>
+      <mim:Waarde mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:waarden>
+    <mim:referentieElementen>
+      <mim:ReferentieElement mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:referentieElementen>
+    <mim:dataElementen>
+      <mim:DataElement mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:dataElementen>
+    <mim:attribuutsoorten>
+      <mim:Attribuutsoort mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:attribuutsoorten>
+    <mim:gegevensgroepen>
+      <mim:Gegevensgroep mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:gegevensgroepen>
+    <mim:gegevensgroeptypen>
+      <mim:Gegevensgroeptype mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:gegevensgroeptypen>
+    <mim:relatiesoorten>
+      <mim:Relatiesoort mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:relatiesoorten>
+    <mim:externeKoppelingen>
+      <mim:ExterneKoppeling mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:externeKoppelingen>
+    <mim:keuzeAttributen>
+      <mim:Attribuutsoort minOccurs="2" maxOccurs="unbounded"/>
+    </mim:keuzeAttributen>
+    <mim:keuzeDatatypen>
+      <mim:Datatype/>
+      <mim-ref:DatatypeRef/>
+      <mim-ext:ConstructieRef/>
+    </mim:keuzeDatatypen>
+    <mim:keuzeRelatiedoelen>
+      <mim-ref:ObjecttypeRef minOccurs="2" maxOccurs="unbounded"/>
+    </mim:keuzeRelatiedoelen>
+    <mim:constraints>
+      <mim:Constraint mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim:constraints>
+    <mim-ext:constructies>
+      <mim-ext:Constructie mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim-ext:constructies>
+    <mim-ext:kenmerken>
+      <mim-ext:Kenmerk mm:minOccurs="1" mm:maxOccurs="unbounded"/>
+    </mim-ext:kenmerken>
+  </structuur>
+  
+</model-definitie>
