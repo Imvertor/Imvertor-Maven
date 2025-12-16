@@ -70,7 +70,7 @@
     <mim:heeftTijdlijnRegistratie mm:nodeType="metagegeven" mm:title="Heeft tijdlijn registratie" mm:rdfType="boolean">true</mim:heeftTijdlijnRegistratie>
     <mim:herkomst mm:nodeType="metagegeven" mm:title="Herkomst"/>
     <mim:herkomstDefinitie mm:nodeType="metagegeven" mm:title="Herkomst definitie"/>
-    <mim:identificatie mm:nodeType="metagegeven" mm:title="Identificatie"/>
+    <mim:identificatie mm:nodeType="metagegeven" mm:title="Identificatie" mm:rdfType="anyURI"/>
     <mim:identificerend mm:nodeType="metagegeven" mm:title="Identificerend" mm:rdfType="boolean">false</mim:identificerend>
     <mim:indicatieAbstractObject mm:nodeType="metagegeven" mm:title="Indicatie abstract object" mm:rdfType="boolean">false</mim:indicatieAbstractObject>
     <mim:indicatieAfleidbaar mm:nodeType="metagegeven" mm:title="Indicatie afleidbaar" mm:rdfType="boolean"/>
