@@ -17,13 +17,7 @@
   exclude-result-prefixes="xsl xs map xlink xhtml mim-in mim-ref mim-ext mm local"
   expand-text="yes"
   version="3.0">
-  
-  <!--
-  TODO:
-  Constructie / constructietype  
-  begrip vs begripsterm? 
-  -->
-  
+    
   <xsl:output indent="yes"/>
   
   <xsl:key name="id" match="*[@id]" use="@id"/>
@@ -81,6 +75,13 @@
         <xsl:with-param name="metamodel" select="$merged-metamodel/*" as="element()" tunnel="yes"/>
       </xsl:apply-templates>
     </xsl:variable>
+    <xsl:comment>=========================================================================================
+Dit bestand bevat een RDF/XML serialisatie van een informatiemodel dat is gemodelleerd 
+volgens de "Metamodel Informatie Modellering (MIM)" standaard versie 1.2. Deze
+serialisatie is gegenereerd uit een MIM XML serialisatie. 
+
+Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de standaard.
+=============================================================================================</xsl:comment>
     <rdf:RDF>
       <xsl:if test="not($gen-uuids)">
         <xsl:attribute name="xml:base">{$base-uri}</xsl:attribute>
@@ -256,6 +257,14 @@
       <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>
+  
+  <xsl:template match="mim-in:begrip[local:is-uri(.)]" mode="metagegeven">
+    <mim:begrip rdf:resource="{.}"/>
+  </xsl:template>
+  
+  <xsl:template match="mim-in:begrip[not(local:is-uri(.))]" mode="metagegeven">
+    <mim:begripsterm>{.}</mim:begripsterm>
+  </xsl:template>
     
   <xsl:template match="mim-in:relatiemodelleringstype" mode="metagegeven">  
     <mim:relatiemodelleringstype rdf:resource="{$mim-uri}{map:get($relatiemodelleringstype-mapping, .)}"/>
@@ -331,7 +340,12 @@
     <xsl:value-of select="ext:imvertorGetUUID()"/>
   </xsl:function>
   
-  <xsl:function name="local:generate-uuid" as="xs:string" use-when="not($is-werkbank-context) and not($is-imvertor-context)">{''}</xsl:function>
+  <xsl:function name="local:generate-uuid" as="xs:string" use-when="not($is-werkbank-context) and not($is-imvertor-context)">{'00000000-0000-0000-0000-000000000000'}</xsl:function>
+  
+  <xsl:function name="local:is-uri" as="xs:boolean">
+    <xsl:param name="s" as="xs:string"/>
+    <xsl:sequence select="matches($s, '^https?://', 'i')"/>
+  </xsl:function>
   
   <xsl:template match="@id" mode="uuid">
     <xsl:attribute name="id" select="map:get($uuid-mapping, .)"/>
