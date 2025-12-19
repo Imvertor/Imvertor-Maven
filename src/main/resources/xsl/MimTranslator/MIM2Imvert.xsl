@@ -192,6 +192,9 @@
             
              <xsl:apply-templates/>
             
+            <!-- neem hier ook de relatieklassen op, deze zijn opgenomen in de relatiesoorten -->
+            <xsl:apply-templates select=".//mim:Relatieklasse"/>
+            
             <xsl:sequence select="imf:fetch-tagged-values(.)"/>
             
             <!--TODO dependency? -->
@@ -199,20 +202,19 @@
         </imvert:package>      
     </xsl:template>    
     
-    <xsl:template match="mim:objecttypen/mim:Objecttype">
- 
+    <xsl:template match="mim:objecttypen/mim:Objecttype | mim:relatieklasse/mim:Relatieklasse">
+        
         <imvert:class>
             <xsl:sequence select="imf:get-class-info(.)"/>
             
             <imvert:attributes>
-                <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort">
-                    <xsl:sort select="imf:compile-sort-key(.)"/>
+                <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort | mim:gegevensgroepen/mim:Gegevensgroep"/>
+                <xsl:apply-templates select="mim:keuzen/mim-ref:KeuzeRef">
+                    <xsl:with-param name="keuze-soort">attributen</xsl:with-param>
                 </xsl:apply-templates>
             </imvert:attributes>
             <imvert:associations>
-                <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort">
-                    <xsl:sort select="imf:compile-sort-key(.)"/>
-                </xsl:apply-templates>
+                <xsl:apply-templates select="mim:relatiesoorten/mim:Relatiesoort | mim:externeKoppelingen/mim:ExterneKoppeling"/>
             </imvert:associations>
             
             <xsl:sequence select="imf:fetch-tagged-values(.)"/>
@@ -230,10 +232,29 @@
         </imvert:attribute>        
     </xsl:template>
     
+    <xsl:template match="mim:gegevensgroepen/mim:Gegevensgroep">
+        <imvert:attribute>
+            <xsl:sequence select="imf:get-attass-info(.)"/>
+            <xsl:sequence select="imf:get-attribute-info(.)"/>
+            
+            <xsl:sequence select="imf:fetch-tagged-values(.)"/>
+        </imvert:attribute>        
+    </xsl:template>
+    
     <xsl:template match="mim:relatiesoorten/mim:Relatiesoort">
         <imvert:association>
             <xsl:sequence select="imf:get-attass-info(.)"/>
             <xsl:sequence select="imf:get-association-info(.)"/>
+            
+            <xsl:sequence select="imf:fetch-tagged-values(.)"/>
+        </imvert:association>        
+    </xsl:template>
+    
+    <xsl:template match="mim:externeKoppelingen/mim:ExterneKoppeling">
+        <imvert:association>
+            <xsl:sequence select="imf:get-attass-info(.)"/>
+            <xsl:sequence select="imf:get-association-info(.)"/>
+            
             <xsl:sequence select="imf:fetch-tagged-values(.)"/>
         </imvert:association>        
     </xsl:template>
@@ -243,9 +264,7 @@
             <xsl:sequence select="imf:get-class-info(.)"/>
             
             <imvert:attributes>
-                <xsl:apply-templates select="mim:referentieElementen/mim:ReferentieElement">
-                    <xsl:sort select="imf:compile-sort-key(.)"/>
-                </xsl:apply-templates>
+                <xsl:apply-templates select="mim:referentieElementen/mim:ReferentieElement"/>
             </imvert:attributes>
             
             <xsl:sequence select="imf:fetch-tagged-values(.)"/>
@@ -273,9 +292,7 @@
             <xsl:sequence select="imf:get-class-info(.)"/>
             
             <imvert:attributes>
-                <xsl:apply-templates select="mim:waarden/mim:Waarde">
-                    <xsl:sort select="imf:compile-sort-key(.)"/>
-                </xsl:apply-templates>
+                <xsl:apply-templates select="mim:waarden/mim:Waarde"/>
             </imvert:attributes>
             
             <xsl:sequence select="imf:fetch-tagged-values(.)"/>
@@ -296,9 +313,7 @@
             <xsl:sequence select="imf:get-datatype-info(.)"/>
 
             <imvert:attributes>
-                <xsl:apply-templates select="mim:dataElementen/mim:DataElement">
-                    <xsl:sort select="imf:compile-sort-key(.)"/>
-                </xsl:apply-templates>
+                <xsl:apply-templates select="mim:dataElementen/mim:DataElement"/>
             </imvert:attributes>
             
             <xsl:sequence select="imf:fetch-tagged-values(.)"/>
@@ -382,7 +397,7 @@
     <xsl:template match="mim:keuzen/mim:Keuze[mim:keuzeAttributen]">
         <imvert:class>
             <xsl:sequence select="imf:get-class-info(.)"/>
-    
+            
             <imvert:attributes>
                 <xsl:apply-templates select="mim:keuzeAttributen/mim:*"/>
             </imvert:attributes>
@@ -390,15 +405,35 @@
             <xsl:sequence select="imf:fetch-tagged-values(.)"/>
         </imvert:class>
     </xsl:template>
+    
+    <xsl:template match="mim:keuzen/mim-ref:KeuzeRef">
+        <xsl:param name="keuze-soort" as="xs:string"/>
+        
+        <xsl:variable name="type" select="imf:get-type(@xlink:href)"/>
+        <xsl:variable name="type-name" select="$type/mim:naam"/>
+        
+        <xsl:if test="
+            ($keuze-soort = 'attributen' and $type/mim:keuzeAttributen)
+            ">
+            <imvert:attribute>
+                <xsl:sequence select="imf:create-output-element('imvert:found-name','KEUZE-' || $type-name)"/>
+                <xsl:sequence select="imf:create-output-element('imvert:type-name',$type-name)"/>
+                <xsl:sequence select="imf:create-output-element('imvert:type-id',$type/@id)"/>
+                <xsl:sequence select="imf:create-output-element('imvert:type-package',imf:get-package-name($type/@id))"/>
+                <xsl:sequence select="imf:create-output-element('imvert:min-occurs','1')"/>
+                <xsl:sequence select="imf:create-output-element('imvert:max-occurs','1')"/>
+                <imvert:stereotype id="stereotype-name-union">KEUZE</imvert:stereotype>
+            </imvert:attribute>
+        </xsl:if>
+        
+    </xsl:template>
         
     <xsl:template match="mim:gegevensgroeptypen/mim:Gegevensgroeptype">
         <imvert:class>
             <xsl:sequence select="imf:get-class-info(.)"/>
             
             <imvert:attributes>
-                <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort">
-                    <xsl:sort select="imf:compile-sort-key(.)"/>
-                </xsl:apply-templates>
+                <xsl:apply-templates select="mim:attribuutsoorten/mim:Attribuutsoort"/>
             </imvert:attributes>
             
             <xsl:sequence select="imf:fetch-tagged-values(.)"/>
@@ -529,8 +564,8 @@
         <xsl:sequence select="imf:debug($this,'get-config-info')"/>
         
         <xsl:sequence select="imf:create-output-element('imvert:release',imf:get-kenmerk($this,'release'),true())"/>
-        <xsl:sequence select="imf:create-output-element('imvert:ref-version',imf:get-kenmerk($this,'ref versie'))"/> <!-- optional -->
-        <xsl:sequence select="imf:create-output-element('imvert:ref-release',imf:get-kenmerk($this,'ref release'))"/> <!-- optional -->
+        <xsl:sequence select="imf:create-output-element('imvert:ref-version',imf:get-kenmerk($this,'ref-version'))"/> <!-- optional -->
+        <xsl:sequence select="imf:create-output-element('imvert:ref-release',imf:get-kenmerk($this,'ref-release'))"/> <!-- optional -->
     </xsl:function>
 
     <xsl:function name="imf:get-constraint-info" as="node()*">
@@ -562,9 +597,9 @@
     </xsl:function>    
     
     <xsl:function name="imf:get-attribute-info" as="node()*">
-        <xsl:param name="this" as="node()"/> <!-- mim:Attribuutsoort -->
+        <xsl:param name="this" as="node()"/> <!-- mim:Attribuutsoort of mim:Gegevensgroep -->
         
-        <xsl:sequence select="imf:debug($this,'get-attribute-info')"/>
+        <xsl:sequence select="imf:debug($this,'get-attribute/gegevensgroep-info/keuze-info')"/>
         
         <xsl:variable name="mim-type" select="$this/mim:type/mim:Datatype"/>
         <xsl:choose>
@@ -576,7 +611,7 @@
             </xsl:when>
             <!-- process the typed attributes, referencing type object types -->
             <xsl:otherwise>
-                <xsl:variable name="type" select="imf:get-type($this/mim:type/(mim-ref:*|mim-ext:*)/@xlink:href)"/><!--TODO xslt bug? optimization? -->
+                <xsl:variable name="type" select="imf:get-type($this/(mim:type|mim:gegevensgroeptype)/(mim-ref:*|mim-ext:*)/@xlink:href)"/><!--TODO xslt bug? optimization? -->
                 <xsl:variable name="type-name" select="$type/mim:naam"/>
                 <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-name)"/>
                 <xsl:sequence select="imf:create-output-element('imvert:type-name',$type-name)"/>
@@ -591,6 +626,7 @@
         <xsl:sequence select="imf:create-output-element('imvert:max-occurs',$bounds[2])"/>
         <xsl:sequence select="imf:create-output-element('imvert:position',(imf:get-kenmerk($this,'positie'),'100')[1])"/>
         
+        <xsl:sequence select="imf:create-output-element('imvert:is-value-derived',imf:boolean($this/mim:indicatieAfleidbaar))"/>
         <xsl:sequence select="imf:create-output-element('imvert:initial-value',imf:get-kenmerk($this,'startwaarde'))"/>
         <xsl:sequence select="imf:create-output-element('imvert:read-only',imf:get-kenmerk($this,'readonly'))"/>
         
@@ -600,18 +636,19 @@
         <xsl:param name="this" as="node()"/> <!-- mim:Waarde -->
         
         <xsl:sequence select="imf:create-output-element('imvert:position',(imf:get-kenmerk($this,'positie'),'100')[1])"/>
+        <xsl:sequence select="imf:create-output-element('imvert:initial-value',imf:get-kenmerk($this,'startwaarde'))"/>
         
     </xsl:function>
     
     <xsl:function name="imf:get-association-info" as="node()*">
-        <xsl:param name="this" as="node()"/> <!-- mim:Relatiesoort -->
+        <xsl:param name="this" as="node()"/> <!-- mim:Relatiesoort of mim:ExterneKoppeling-->
         
         <xsl:sequence select="imf:debug($this,'get-association-info')"/>
         
         <xsl:variable name="type" select="imf:get-type($this/mim:doel/(mim-ref:*|mim-ext:*)/@xlink:href)"/>
         <xsl:variable name="type-name" select="$type/mim:naam"/>
         
-        <xsl:variable name="source-bounds" select="imf:get-bounds($this/mim:kardinaliteitBron)"/>
+        <xsl:variable name="source-bounds" select="imf:get-bounds(($this/mim:kardinaliteitBron,'1')[1])"/><!-- dit is default 1 voor externeKoppelingen -->
         <xsl:variable name="target-bounds" select="imf:get-bounds($this/mim:kardinaliteit)"/>
         
         <xsl:sequence select="imf:create-output-element('imvert:type-name',$type-name)"/>
@@ -625,6 +662,16 @@
         <xsl:sequence select="imf:create-output-element('imvert:direction','destination')"/>
         
         <xsl:sequence select="imf:create-output-element('imvert:position',(imf:get-kenmerk($this,'positie'),'200')[1])"/>
+      
+        <xsl:for-each select="$this/mim:relatieklasse/mim:Relatieklasse"><!-- singleton -->
+            <xsl:variable name="type" select="imf:get-type('#' || @id)"/>
+            <xsl:variable name="type-name" select="$type/mim:naam"/>
+            <imvert:association-class>
+                <xsl:sequence select="imf:create-output-element('imvert:type-name',$type-name)"/>
+                <xsl:sequence select="imf:create-output-element('imvert:type-id',$type/@id)"/> 
+                <xsl:sequence select="imf:create-output-element('imvert:type-package',imf:get-package-name($type/@id))"/>
+            </imvert:association-class>
+        </xsl:for-each>
         
         <xsl:for-each select="$this/mim:relatierollen/mim:Bron"><!-- singleton -->
             <imvert:source>
@@ -637,6 +684,7 @@
             </imvert:target>
         </xsl:for-each>
         
+      
     </xsl:function>
 
     <xsl:function name="imf:get-role-info" as="node()*">
@@ -751,20 +799,6 @@
         <xsl:value-of select="if ($toks[2]) then if ($toks[2]='*') then 'unbounded' else $toks[2] else $toks[1]"/>
     </xsl:function>
     
-    <xsl:function name="imf:compile-sort-key" as="xs:string">
-        <xsl:param name="this" as="element()"/>
-        <!--TODO check of natuurlijk sortering werkt -->
-        <xsl:variable name="pos" select="imf:get-kenmerk($this,'positie')"/>
-        <xsl:choose>
-            <xsl:when test="$pos">
-                <xsl:value-of select="imf:left-pad-string-to-length($pos,'0',5)"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="concat('99999.',$this/@id)"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:function>
-    
     <!--
         Bepaalde tagged values zijn in MIM gerepresenteerd als MIM constructie, andere door een Kenmerk.
         Ga door alle bekende tagged values heen, en kijk of een waarde aan het MIM model te onttrekken is. Dit op basis van de naam van een modelelement (mim.*)
@@ -778,22 +812,21 @@
 
         <xsl:variable name="stereo-id" select="$stereotype-info[@name = local-name($this)]/@id"/>
         <xsl:variable name="known-tags" select="$additional-tagged-values[stereotypes/stereo/@id = $stereo-id]"/>
-        
+
         <xsl:where-populated>
             <imvert:tagged-values>
                 <xsl:for-each select="$known-tags"> <!-- tv elementen uit de configuratie -->
                     <xsl:variable name="tv" select="."/>
                     <xsl:choose>
+                        <xsl:when test="$tv/mimformat[@type = 'kenmerk']">
+                            <xsl:sequence select="imf:fetch-tagged-values-sub($this,$tv,())"></xsl:sequence>
+                        </xsl:when>
                         <xsl:when test="$tv/mimformat">
                             <xsl:sequence select="imf:fetch-tagged-values-sub($this,$tv,$this/*[local-name() = $tv/mimformat])"/>
                         </xsl:when>
-                        <!-- hieronder zaken die apart uitgewerkt moeten worden -->
-                        <xsl:when test="$tv/@id = 'CFG-TV-XXX'">
-                            <xsl:sequence select="imf:fetch-tagged-values-sub($this,$tv,())"></xsl:sequence>
-                        </xsl:when>
-                        <xsl:when test="$tv/@id = 'CFG-TV-YYY'">
-                            <xsl:sequence select="imf:fetch-tagged-values-sub($this,$tv,$this/mim:formeelPatroon)"></xsl:sequence>
-                        </xsl:when>
+                        <xsl:otherwise>
+                            <!-- andere tagged values spelen geen rol in de MIM serialisatie -->
+                        </xsl:otherwise>
                     </xsl:choose>
                 </xsl:for-each>
             </imvert:tagged-values> 
