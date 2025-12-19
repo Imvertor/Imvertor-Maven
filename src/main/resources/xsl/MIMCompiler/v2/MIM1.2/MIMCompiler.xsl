@@ -73,7 +73,7 @@
   <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" use-when="$runs-in-imvertor-context"/>
   
   <xsl:variable name="mim-stereotype-ids" select="$configuration-metamodel-file/stereotypes/stereo[imf:is-mim-construct(.)]/@id" as="xs:string+"/>
-  <xsl:variable name="mim-tagged-value-ids" select="$configuration-tvset-file/tagged-values/tv[imf:is-mim-construct(.)]/@id" as="xs:string+"/>
+  <xsl:variable name="mim-tagged-value-ids" select="$configuration-tvset-file/tagged-values/tv[mimformat[not(@type = 'kenmerk')]]/@id" as="xs:string+"/>
   <xsl:variable name="mim-tagged-value-asnote" select="$configuration-tvset-file/tagged-values/tv[@norm = 'note']" as="element(tv)*"/>
   
   <xsl:variable name="waardebereik-authentiek" select="$configuration-tvset-file/tagged-values/tv[@id = 'CFG-TV-INDICATIONAUTHENTIC']/declared-values/value" as="xs:string+"/>
@@ -1095,7 +1095,8 @@
   
   <xsl:template match="metagegeven[. = 'Unidirectioneel']">
     <xsl:param name="context" as="element()"/>
-    <mim:unidirectioneel source-id="CFG-TV-PSEUDO-UNIDIRECTIONAL">{imf:mim-boolean(xs:string($context/imvert:source/imvert:navigable = 'false'))}</mim:unidirectioneel>
+    <xsl:variable name="source" select="$context/imvert:source"/>
+    <mim:unidirectioneel source-id="CFG-TV-PSEUDO-UNIDIRECTIONAL">{if ($source) then imf:mim-boolean(xs:string($source/imvert:navigable = 'false')) else 'true'}</mim:unidirectioneel> <!-- alle externe koppelingen zijn unidirectioneel -->
   </xsl:template>
   
   <xsl:template match="metagegeven[. = 'Unieke aanduiding']">
@@ -1547,7 +1548,8 @@
   <xsl:template name="extensieKenmerken">
     <xsl:where-populated>
       <mim-ext:kenmerken>
-        <xsl:for-each select="imvert:tagged-values/imvert:tagged-value[not(@id = ($mim-tagged-value-ids,'CFG-TV-POSITION'))]">
+        <!-- ga door alle tagged values heen. Zet die om in kenmerken als deze geen vanuit MIM ondersteunde tagged values zijn.  -->
+        <xsl:for-each select="imvert:tagged-values/imvert:tagged-value[not(@id = $mim-tagged-value-ids)]">
           <mim-ext:Kenmerk naam="{imvert:name/@original}">
             <xsl:choose>
               <xsl:when test="$mim-tagged-value-asnote/@id = @id">
@@ -1562,15 +1564,28 @@
           <mim-ext:kenmerk naam="identificerend">{imf:mim-boolean(imvert:is-id)}</mim-ext:kenmerk>
         </xsl:where-populated>
         -->
+        <?x
         <xsl:where-populated>
           <mim-ext:Kenmerk naam="positie">{imvert:position/@original}</mim-ext:Kenmerk>
         </xsl:where-populated>
+        x?>
         <xsl:if test="imvert:min-occurs-source|imvert:max-occurs-source">
           <mim-ext:Kenmerk naam="kardinaliteitBron">{imf:kardinaliteit(imvert:min-occurs-source, imvert:max-occurs-source)}</mim-ext:Kenmerk>
         </xsl:if>
         <xsl:if test="imvert:version">
           <mim-ext:Kenmerk naam="version">{imvert:version}</mim-ext:Kenmerk>
         </xsl:if>
+        <?x
+        <xsl:if test="imvert:release">
+          <mim-ext:Kenmerk naam="release">{imvert:release}</mim-ext:Kenmerk>
+        </xsl:if>
+        <xsl:if test="imvert:ref-release">
+          <mim-ext:Kenmerk naam="ref-release">{imvert:ref-release}</mim-ext:Kenmerk>
+        </xsl:if>
+        <xsl:if test="imvert:ref-version">
+          <mim-ext:Kenmerk naam="ref-version">{imvert:ref-version}</mim-ext:Kenmerk>
+        </xsl:if>
+        x?>
         <xsl:if test="imvert:base-namespace">
           <mim-ext:Kenmerk naam="namespace">{imvert:base-namespace}</mim-ext:Kenmerk>
         </xsl:if>
