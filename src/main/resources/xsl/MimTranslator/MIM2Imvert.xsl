@@ -355,11 +355,10 @@
                        <xsl:sequence select="imf:create-output-element('imvert:type-name',$type/mim:naam)"/>
                        <xsl:sequence select="imf:create-output-element('imvert:type-id',$type/@id)"/>
                        <xsl:sequence select="imf:create-output-element('imvert:type-package',imf:get-package-name($type/@id))"/>
-                       <imvert:min-occurs>1</imvert:min-occurs>
-                       <imvert:max-occurs>1</imvert:max-occurs>
+                       <xsl:sequence select="imf:create-output-element('imvert:min-occurs','1')"/>
+                       <xsl:sequence select="imf:create-output-element('imvert:max-occurs','1')"/>
                        <imvert:stereotype id="stereotype-name-union">KEUZE</imvert:stereotype>
                        <imvert:target>
-                           <imvert:id>{@id}_T</imvert:id>
                            <imvert:navigable>true</imvert:navigable>
                        </imvert:target>
                    </imvert:association>
@@ -377,14 +376,26 @@
             <imvert:attributes>
                 <xsl:for-each select="mim:keuzeDatatypen/*">
                     
-                    <xsl:variable name="type" select="imf:get-type(@xlink:href)"/>
                     <imvert:attribute>
-                        <xsl:sequence select="imf:create-output-element('imvert:found-name',@label)"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:type-name',$type/mim:naam)"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:type-id',$type/@id)"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:type-package',imf:get-package-name($type/@id))"/>
-                        <imvert:min-occurs>1</imvert:min-occurs>
-                        <imvert:max-occurs>1</imvert:max-occurs>
+                        <xsl:choose>
+                            <xsl:when test="@xlink:href">
+                                <!-- referentie naar een type -->
+                                <xsl:variable name="type" select="imf:get-type(@xlink:href)"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:found-name',@label)"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:type-name',$type/mim:naam)"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:type-id',$type/@id)"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:type-package',imf:get-package-name($type/@id))"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <!-- ingebouwd MIM datatyype -->
+                                <xsl:sequence select="imf:create-output-element('imvert:found-name',.)"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:type-name',.)"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:type-id','MIMTYPE_' || .)"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:type-package','OUTSIDE')"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:sequence select="imf:create-output-element('imvert:min-occurs','1')"/>
+                        <xsl:sequence select="imf:create-output-element('imvert:max-occurs','1')"/>
                         <imvert:stereotype id="stereotype-name-union-element">DATATYPE</imvert:stereotype>
                     </imvert:attribute>
                 </xsl:for-each>
