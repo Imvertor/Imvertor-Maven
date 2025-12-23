@@ -27,6 +27,7 @@ import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.xsl.extensions.expath.ImvertorExpathWriteText;
 
 /**
  * create a configuration for the current owner, tagset, metamodel and schemas
@@ -52,8 +53,9 @@ public class ConfigCompiler  extends Step {
 		runner.info(logger,"Compiling the configuration");
 			
 		Transformer transformer = new Transformer();
-		
-		 // transform 
+		transformer.setExtensionFunction(new ImvertorExpathWriteText());
+	
+		// transform 
 		boolean succeeds = true;
 		
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_CONFIG_FILE", "properties/IMVERTOR_CONFIG_XSLPATH") : false ;

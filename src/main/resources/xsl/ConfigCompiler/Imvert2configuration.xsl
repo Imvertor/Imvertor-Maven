@@ -155,6 +155,20 @@
             </xsl:otherwise>
         </xsl:choose>
         
+        <!-- 
+            bewaar nu alle CLI properties zoals die verder worden gebruikt 
+        -->
+        <xsl:variable name="filepath" select="imf:get-xparm('system/work-etc-folder-path') || '/effective.properties'"/>
+        <xsl:variable name="lines" as="xs:string*">
+            <xsl:for-each select="$configuration/config/clispecs/clispec[not(longKey = 'arguments')]">
+                <xsl:sort select="longKey"/>
+                <xsl:variable name="name" select="longKey"/>
+                <xsl:variable name="value" select="$configuration/config/cli/*[name() = $name]"/>
+                <xsl:value-of select="$name || ' = ' || $value"/>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:sequence xmlns:ext="http://www.imvertor.org/xsl/extensions" select="ext:imvertorExpathWriteText($filepath,string-join($lines,'&#10;'))"/>
+
     </xsl:template>
     
     <!-- name normalization on all configuration files -->
