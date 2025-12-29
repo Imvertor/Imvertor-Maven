@@ -159,7 +159,7 @@ public class WordFile extends AnyFile {
 		try {
 			ZipFile thisFile = new ZipFile(this);
 			AnyFolder tempFolder = configurator.getWorkFolder("documentor/msword");
-			thisFile.decompress(tempFolder);
+			thisFile.decompress(tempFolder,true);
 			// run stylesheet om de spaties in code vast te zetten
 			XmlFile wordFile = new XmlFile(tempFolder,"/word/document.xml");
 			XmlFile outFile = new XmlFile(tempFolder,"/word/document.xml.transformed");

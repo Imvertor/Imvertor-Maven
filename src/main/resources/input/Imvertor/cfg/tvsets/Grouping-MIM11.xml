@@ -30,6 +30,7 @@
             <declared-values lang="#all">
                 <value default="yes">model</value>
             </declared-values>
+            <mimformat type="kenmerk">imvertor</mimformat>
         </tv>
         
         <tv norm="compact" id="CFG-TV-LEVEL">
@@ -60,7 +61,8 @@
                 <value default="no">general</value>
                 <value default="yes">specific</value>
             </declared-values>
-        </tv>
+            <mimformat type="kenmerk">niveau</mimformat>
+       </tv>
         
         <tv norm="space" id="CFG-TV-ABBREV">
             <name lang="nl">Afkorting</name>
@@ -75,6 +77,7 @@
                 <stereo minmax="0..1">stereotype-name-domain-package</stereo>
                 <stereo minmax="0..1">stereotype-name-view-package</stereo>
             </stereotypes>
+            <mimformat type="kenmerk">afkorting</mimformat>
         </tv>
 
         <tv norm="space" id="CFG-TV-RELEASE">
@@ -91,6 +94,7 @@
                 <stereo minmax="1..1">stereotype-name-internal-package</stereo>
                 <!-- release van kadaster externe schema's wordt ingegenereerd binnen Imvert2concreteSchema.xsl -->
             </stereotypes>
+            <mimformat type="kenmerk">release</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-REFRELEASE">
@@ -102,6 +106,7 @@
                 <stereo minmax="0..1">stereotype-name-view-package</stereo>
                 <stereo minmax="0..1">stereotype-name-external-package</stereo>
             </stereotypes>
+            <mimformat type="kenmerk">ref-release</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-REFVERSION">
@@ -113,6 +118,7 @@
                 <stereo minmax="0..1">stereotype-name-view-package</stereo>
                 <stereo minmax="0..1">stereotype-name-external-package</stereo>
             </stereotypes>
+            <mimformat type="kenmerk">ref-version</mimformat>
         </tv>
 
         <tv norm="space" id="CFG-TV-SUPPLIERPROJECT">
@@ -126,6 +132,7 @@
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
                 <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
+            <mimformat type="kenmerk">supplier-project</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-SUPPLIERNAME">
@@ -140,6 +147,7 @@
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
                 <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
+            <mimformat type="kenmerk">supplier-name</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-SUPPLIERPACKAGENAME">
@@ -167,6 +175,7 @@
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
                 <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
+            <mimformat type="kenmerk">supplier-release</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-VERSIONID">
@@ -195,6 +204,7 @@
                 <stereo minmax="0..1">stereotype-name-view-package</stereo>
                 <stereo minmax="0..1">stereotype-name-domain-package</stereo>
             </stereotypes>
+            <mimformat type="kenmerk">web locatie</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-INTERNALPROJECT">
@@ -235,6 +245,7 @@
             <stereotypes>
                 <!-- packages -->
                 <stereo minmax="0..1">stereotype-name-project-package</stereo>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
                 <stereo minmax="0..1">stereotype-name-domain-package</stereo>
@@ -278,7 +289,7 @@
                 <value default="no">Yes</value>
                 <value default="yes">See package</value>
             </declared-values>
-            
+            <mimformat type="kenmerk">is afgeleid</mimformat>
         </tv>
     
         <tv id="CFG-TV-DESCRIPTION">
@@ -293,6 +304,7 @@
                 <stereo minmax="0..1">stereotype-name-external-package</stereo>
                 <stereo minmax="0..1">stereotype-name-internal-package</stereo>
             </stereotypes>
+            <mimformat>toelichting</mimformat>
         </tv>  
 
         <tv norm="space" id="CFG-TV-NAME">
@@ -335,6 +347,7 @@
                 <stereo minmax="0..1">stereotype-name-project-package</stereo>
                 <stereo minmax="0..1">stereotype-name-internal-package</stereo>
             </stereotypes>
+            <mimformat>definitie</mimformat>
         </tv>  
         
         <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
@@ -373,6 +386,7 @@
                 
                 <stereo minmax="0..1">stereotype-name-interface</stereo>
             </stereotypes>
+            <mimformat type="kenmerk">positie</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-INCLUDABLE">

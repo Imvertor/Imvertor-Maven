@@ -142,6 +142,7 @@
                 <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
             <source>MIMEXT-1.1.0</source>
+            <mimformat type="kenmerk">MIM extensie versie</mimformat>
         </tv>
         
         

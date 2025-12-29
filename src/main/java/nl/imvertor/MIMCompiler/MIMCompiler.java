@@ -38,6 +38,7 @@ import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.xsl.extensions.ImvertorGetUUID;
 
 /**
  * The MIM compiler takes the imvertor embellish file and transforms it to a MIM compiler format file.
@@ -52,6 +53,11 @@ public class MIMCompiler extends Step {
 	public static final String STEP_NAME = "MIMCompiler";
 	public static final String VC_IDENTIFIER = "$Id: $";
 
+	private File xsdSourceFolder;
+	private File xsdTargetFolder;
+	private String schemaName;
+	private String schemaPath;
+	
 	/**
 	 *  run the main translation
 	 */
@@ -86,6 +92,7 @@ public class MIMCompiler extends Step {
 		
 		// create a transformer
 		Transformer transformer = new Transformer();
+		transformer.setExtensionFunction(new ImvertorGetUUID());
 						
 		boolean succeeds = true;
 		
@@ -119,21 +126,15 @@ public class MIMCompiler extends Step {
 		}
 		
 		if (isRDFType) {
-			transformer.setXslParm("generate-readable-ids", "true");
+			transformer.setXslParm("generate-readable-ids", "false");
 			transformer.setXslParm("generate-all-ids", "true");
 			transformer.setXslParm("add-generated-id", "true");
-				}
+		}
 		
 		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_MIMFORMAT_XMLPATH", xslFileParam); //TODO must relocate generation of WORK_LISTS_FILE to a EMBELLISH step.
 		
-		/*
-		// Debug: test if xml is okay
-		succeeds = succeeds && xmlFile.isValid(); // TODO: add when XML schema is available and schemaLocation is set
-		*/
-		
-		if (isRDFType) {
+		if (isRDFType)
 			succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", "properties/WORK_MIMFORMAT_RDFPATH", "properties/IMVERTOR_MIMFORMAT_" + mimFormatterVersion + "_" + mimVersion + "_RDF_XSLPATH");
-		}
 		
 		// store to mim folder
 		if (succeeds) {
@@ -151,9 +152,13 @@ public class MIMCompiler extends Step {
 			if (!mimFormatType.equals("legacy")) {
 				/* Copy the MIM XML Schema directory: */
 				File xslDir = new File(configurator.getXslPath(configurator.getParm("properties", "IMVERTOR_MIMFORMAT_" + mimFormatterVersion + "_" + mimVersion + "_XSLPATH"))).getParentFile();
-				File xsdSourceFolder = new File(xslDir, "../../../../etc/xsd/MIMformat/" + mimFormatterVersion + "/" + mimVersion);
-				File xsdTargetFolder = new File(xmlFolder, "xsd/" + mimVersion);
+				xsdSourceFolder = new File(xslDir, "../../../../etc/xsd/MIMformat/" + mimFormatterVersion + "/" + mimVersion);
+				xsdTargetFolder = new File(xmlFolder, "xsd/" + mimVersion);
+				
 				FileUtils.copyDirectory(xsdSourceFolder, xsdTargetFolder);
+			
+				schemaName = (configurator.getXParm("system/mim-compiler-model-typering").equals("Relatiesoort leidend")) ? "MIMFORMAT_Mim_relatiesoort.xsd" : "MIMFORMAT_Mim_relatierol.xsd";
+				schemaPath = xsdSourceFolder + "/" + schemaName;
 			
 				succeeds = succeeds && validateMimFile(appXmlFile);
 			}
@@ -217,9 +222,9 @@ public class MIMCompiler extends Step {
 	}
 	
 	private boolean validateMimFile(XmlFile mimFile) throws Exception {
-		boolean valid = mimFile.isValid();
+		boolean valid = mimFile.isValid(schemaPath);
 		if (!valid)
-			runner.error(logger,"Errors found in MIM serialized file. This release should not be distributed. Please notify your administrator.");
+			runner.error(logger,"Errors/wanings found in generated MIM XML file. This release should not be distributed. Please notify your administrator.",null,"EWFIGMXF");
 		return valid;
 	}
 }

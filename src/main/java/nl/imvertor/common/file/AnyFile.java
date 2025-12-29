@@ -20,6 +20,7 @@
 
 package nl.imvertor.common.file;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -43,6 +44,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -347,7 +349,7 @@ public class AnyFile extends File  {
 	
 	public void copyFile(File targetFile) throws IOException {
 		if (this.isDirectory()) throw new IOException("Kan geen directory als file kopieren: " + this.getCanonicalPath());
-		if (targetFile.isDirectory()) targetFile = new File(targetFile.getAbsolutePath() + File.separator + this.getName());
+		if (targetFile != null && targetFile.isDirectory()) targetFile = new File(targetFile.getAbsolutePath() + File.separator + this.getName());
 		FileUtils.copyFile(this, targetFile, true);
 	}
 	public void copyFile(String targetFile) throws Exception {
@@ -596,10 +598,11 @@ public class AnyFile extends File  {
 		
 		if (lineReader == null)
 			lineReader = new BufferedReader(new InputStreamReader(new FileInputStream(this), getEncoding()));
-	
-		if (!(lineReader.ready() && (line = lineReader.readLine()) != null))
-				lineReader.close();	
-	
+		
+		if (!(lineReader.ready() && (line = lineReader.readLine()) != null)) {
+			lineReader.close();
+			lineReader = null;	
+		}
 		return line;
 	}
 	
@@ -609,8 +612,10 @@ public class AnyFile extends File  {
 	 * @throws IOException 
 	 */
 	public void close() throws IOException {
-		if (lineReader != null) 
+		if (lineReader != null) { 
 			lineReader.close();
+			lineReader = null;
+		}	
 	}
 	
 	/**
@@ -689,6 +694,75 @@ public class AnyFile extends File  {
 		} catch (Exception e) {
 			throw new Exception("URL not found in any mapping file: " + Url);
 		}
+	}
+	
+	/**
+	 * Find a string in the file, an return true when string can be found at least once. 
+	 * Note that this is based on line-by-line searches.
+	 * 
+	 * @param string
+	 * @return
+	 * @throws IOException 
+	 */
+	public boolean find(String string) throws IOException {
+		while (true) {
+			String line = getNextLine();
+			if (line == null) 
+				return false;
+			else if (line.contains(string)) {
+				close();
+				return true;
+			}
+		}
+		
+	}
+	
+	/**
+	 * Return the first lines of een line-based file.
+	 * 
+	 * @param numberOfLines Maximum of lines to return.
+	 * @return
+	 * @throws IOException 
+	 */
+	public Vector<String> getFirstLines(int numberOfLines) throws IOException {
+		Vector<String> lines = new Vector<String>();
+		int lineCnt = 0;
+		while (lineCnt < numberOfLines) {
+			String line = getNextLine();
+			if (line == null) 
+				break;
+			else 
+				lines.add(line);
+			lineCnt++;
+		}
+		close();
+		return lines;
+	}
+	
+	/**
+	 * Check of een patroon voorkomt aan het absolute begin van dit file. 
+	 * Probeer het patroon te matchen in de eerste maxBytes van het bestand. 
+	 * 
+	 * @param file
+	 * @param pattern
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean hasPatternAtStart(String regex, int maxBytes) throws Exception {
+	    try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(this))) {
+	        byte[] buffer = new byte[maxBytes];
+	        int bytesRead = bis.read(buffer);
+	        
+	        if (bytesRead <= 0) {
+	            return false;
+	        }
+	        
+	        // Converteer naar String (gebruik geschikte charset)
+	        String content = new String(buffer, 0, bytesRead, StandardCharsets.UTF_8);
+	        
+	    	Matcher matcher = Pattern.compile(regex,Pattern.DOTALL).matcher(content);
+			return matcher.lookingAt(); // Matched vanaf het begin
+	    }
 	}
 }
 

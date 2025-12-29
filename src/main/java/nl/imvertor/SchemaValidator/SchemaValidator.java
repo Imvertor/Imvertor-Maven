@@ -61,14 +61,10 @@ public class SchemaValidator extends Step {
 		
 		configurator.setXParm("appinfo/schema-validation-status", xs);
 		
-		if (xs.equals("requested") || xs.equals("required")) {
-			runner.info(logger,"Validating XML schemas");
-			
-			validateSchemas(); // ignore result boolean
-
-		} else if (xs.equals("impossible")) {
+		if (xs.equals("requested") || xs.equals("required"))
+			validateSchemas(false); // ignore result boolean
+		else if (xs.equals("impossible"))
 			runner.info(logger,"Not validating XML schemas, because schemas will be relocated");
-		}
 		
 		configurator.setStepDone(STEP_NAME);
 
@@ -84,36 +80,40 @@ public class SchemaValidator extends Step {
 	/**
 	 * Validate the schemas. This should not result in any errors.
 	 *   
-	 * @return
+	 * @parajm showMessages Show the messags through messaging framework
+	 * @return True when valid, false when errors/warnings found.
+	 * 
 	 * @throws Exception
 	 */
-	public boolean validateSchemas() throws Exception {
+	public boolean validateSchemas(Boolean showMessages) throws Exception {
 		
 		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getXParm("system/xsd-application-folder-path"));
 		
 		Vector<ErrorHandlerMessage> vl = validateSchemasSub(xsdApplicationFolder);
 		if (vl.size() != 0) 
-			runner.info(logger, vl.size() + " errors/warnings found in generated XSD. This release should not be distributed. Please notify your administrator.");
-		Iterator<ErrorHandlerMessage> it = vl.iterator();
-		int i = 1;
-		while (i <= 10 && it.hasNext()) {
-			ErrorHandlerMessage m = it.next();
-			String msg = "XML schema: " +  StringUtils.substringAfter(m.message, m.code + ": ")  + " [" + URLDecoder.decode(StringUtils.substringAfter(m.file,"/xsd/"), StandardCharsets.UTF_8.name()) + ":" + m.line + "]";
-			switch (m.type.toLowerCase()) {
-				case "error":
-					runner.error(logger, msg,"","#XERCES-" + m.code);
-					break;
-				case "warning":
-					runner.warn(logger, msg,"","#XERCES-" + m.code);
-					break;
-				default: 
-					runner.debug(logger,"CHAIN", msg);
-					break;
+			runner.error(logger, "Errors/warnings found in generated XML schema file. This release should not be distributed. Please notify your administrator.",null,"EWFIGXSF");
+		if (showMessages) {
+			Iterator<ErrorHandlerMessage> it = vl.iterator();
+			int i = 1;
+			while (i <= 10 && it.hasNext()) {
+				ErrorHandlerMessage m = it.next();
+				String msg = "XML schema: " +  StringUtils.substringAfter(m.message, m.code + ": ")  + " [" + URLDecoder.decode(StringUtils.substringAfter(m.file,"/xsd/"), StandardCharsets.UTF_8.name()) + ":" + m.line + "]";
+				switch (m.type.toLowerCase()) {
+					case "error":
+						runner.error(logger, msg,"","#XERCES-" + m.code);
+						break;
+					case "warning":
+						runner.warn(logger, msg,"","#XERCES-" + m.code);
+						break;
+					default: 
+						runner.debug(logger,"CHAIN", msg);
+						break;
+				}
+				i++;
 			}
-			i++;
+			if (i < vl.size()) 
+				runner.info(logger, "No showing " + (vl.size() - i) + " additional messages");
 		}
-		if (i < vl.size()) 
-			runner.info(logger, "No showing " + (vl.size() - i) + " additional messages");
 		configurator.setXParm("appinfo/schema-error-count", vl.size());
 		return (vl.size() == 0) ? true : false;
 	}
