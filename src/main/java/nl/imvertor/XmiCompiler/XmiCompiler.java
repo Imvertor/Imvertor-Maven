@@ -316,13 +316,10 @@ public class XmiCompiler extends Step {
 			runner.fatal(logger, "No files found in ZIP",null,"NFFIZ");
 		else {
 			int origins = 0;
+			// get the file first
 			for (int i = 0; i < files.length; i++) {
 				if (files[i].isDirectory()) {
-					AnyFolder sourceFolder = new AnyFolder(files[i]);
-					AnyFolder targetFolder = new AnyFolder(activeFile.getParentFile().getCanonicalPath() + File.separator + sourceFolder.getName());
-					sourceFolder.copy(targetFolder);
-					if (sourceFolder.getName().equals("Images")) 
-						configurator.setXParm("system/xmi-image-count", sourceFolder.list().length);
+					// ignore
 				} else if (modelType.equals("xmi") && files[i].getName().equals(modelFile.getName())) {
 					AnyFile file = new AnyFile(files[i]);
 					activeFile = new XmlFile(exportFolder + File.separator + file.getName());
@@ -337,6 +334,19 @@ public class XmiCompiler extends Step {
 					file.copyFile(activeFile);
 					activeFileOrigin = "Compressed MIM passed";
 					++origins;
+				}
+			}
+			if (activeFile != null) {
+				// get the images directory
+				for (int i = 0; i < files.length; i++) {
+					if (files[i].isDirectory()) {
+						AnyFolder sourceFolder = new AnyFolder(files[i]);
+						AnyFolder targetFolder = new AnyFolder(activeFile.getParentFile().getCanonicalPath() + File.separator + sourceFolder.getName());
+						sourceFolder.copy(targetFolder);
+						if (sourceFolder.getName().equals("Images")) 
+							configurator.setXParm("system/xmi-image-count", sourceFolder.list().length);
+					} 
+					// else: ignore files
 				}
 			}
 			if (origins > 1) {
