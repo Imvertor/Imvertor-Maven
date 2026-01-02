@@ -144,8 +144,9 @@
       <xsl:variable name="lines-elements" as="element(line)+"> 
         <line>package {$full-package-name};</line>
         <line/>
-        <line>import nl.imvertor.mim.annotation.*;</line>
         <line>import io.swagger.v3.oas.annotations.media.*;</line>
+        <line>import com.fasterxml.jackson.annotation.JsonCreator;</line>
+        <line>import com.fasterxml.jackson.annotation.JsonValue;</line>
         <line/>
         <xsl:call-template name="javadoc"/>
         <line>@nl.imvertor.mim.annotation.{model-element}</line>
@@ -155,9 +156,34 @@
           <xsl:call-template name="javadoc">
             <xsl:with-param name="indent">2</xsl:with-param>
           </xsl:call-template>
-          <line indent="2">{upper-case(funct:replace-special-chars(funct:camel-case(code), '_'))}{if (position()=last()) then () else ','}</line>
-          <line/>
-        </xsl:for-each>        
+          <xsl:variable name="code" select="upper-case(funct:replace-special-chars(funct:camel-case((code,name)[1]), '_'))" as="xs:string"/>
+          <line indent="2">CODE_{$code}("{$code}"){if (position()=last()) then ';' else ','}</line>
+        </xsl:for-each>
+        <line/>
+        <line indent="2">private String value;</line>
+        <line/>
+        <line indent="2">{name}(String value) {{</line>
+        <line indent="4">this.value = value;</line>
+        <line indent="2">}}</line>
+        <line/>
+        <line indent="2">public String getValue() {{</line>
+        <line indent="4">return value;</line>
+        <line indent="2">}}</line>
+        <line/>
+        <line indent="2">@JsonValue</line>
+        <line indent="2">public String toValue() {{</line>
+        <line indent="4">return value;</line>
+        <line indent="2">}}</line>
+        <line/>
+        <line indent="2">@JsonCreator</line>
+        <line indent="2">public static {name} fromValue(String value) {{</line>
+        <line indent="4">for ({name} b : {name}.values()) {{</line>
+        <line indent="6">if (b.value.equals(value)) {{</line>
+        <line indent="8">return b;</line>
+        <line indent="6">}}</line>
+        <line indent="4">}}</line>
+        <line indent="4">throw new IllegalArgumentException("Unexpected value '" + value + "'");</line>
+        <line indent="2">}}</line>
         <line>}}</line>
       </xsl:variable>
       <xsl:variable name="lines" as="xs:string*">
