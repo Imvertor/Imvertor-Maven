@@ -193,7 +193,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
     </xsl:for-each>
   </xsl:template>
   
-  <xsl:template match="mim-in:GeneralisatieObjecttypen|mim-in:GeneralisatieDatatypen">
+  <xsl:template match="mim-in:GeneralisatieObjecttypen|mim-in:GeneralisatieGegevensgroeptypen|mim-in:GeneralisatieDatatypen">
     <mim:subtype rdf:resource="{local:get-id(ancestor::mim-in:*[@mm:nodeType='modelelement'][1])}"/>
     <mim:supertype>
       <xsl:attribute name="rdf:resource">
