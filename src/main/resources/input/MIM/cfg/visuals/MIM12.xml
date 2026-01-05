@@ -11,4 +11,22 @@
     <desc lang="en">Visuals for MIM 1.2 models</desc>
     <desc lang="nl">Visuele aspecten van MIM 1.2 modellen</desc>
     
+    <nature>MIM</nature>
+    
+    <categories>
+        <category id="CONSTRUCTS">
+            <desc lang="nl">Externe constructies</desc>
+            <desc lang="en">External constructs</desc>
+        </category>
+    </categories>
+    
+    <stereos>
+        <stereo id="stereotype-name-interface">
+            <toolbox category="CONSTRUCTS"/>
+        </stereo>
+        <stereo id="stereotype-name-external-package">
+            <toolbox category="CONSTRUCTS"/>
+        </stereo>
+    </stereos>
+    
 </visuals>

@@ -42,6 +42,9 @@
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-EXTERNAL</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-INTERFACE</level>
+            
             <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-MODEL</level>
             
             <level show="implied" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE</level>

@@ -1027,7 +1027,7 @@
         <?x <xsl:variable name="prefix" select="tokenize(normalize-space(imf:get-config-parameter('url-prefix-conceptual-schema')),'\s+')"/> x?>
         <xsl:variable name="is-external" select="$pack/imvert:stereotype/@id = ('stereotype-name-external-package')"/>
         <?x <xsl:variable name="is-conceptual" select="exists($pack/imvert:namespace[(for $p in ($prefix) return starts-with(.,$p)) = true()])"/> x?>
-        <xsl:variable name="is-conceptual" select="true()"/>
+        <xsl:variable name="is-conceptual" select="exists($construct/imvert:namespace)"/><!-- binnengehaald vanuit conceptual schema -->
         
        <xsl:choose>
             <xsl:when test="$is-external and $is-conceptual">

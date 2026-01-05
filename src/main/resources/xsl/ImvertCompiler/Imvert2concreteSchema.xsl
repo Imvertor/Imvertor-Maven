@@ -70,7 +70,7 @@
     
     <xsl:template match="imvert:package">
         <xsl:choose>
-            <xsl:when test="imf:is-conceptual(.)">
+            <xsl:when test="imf:is-conceptual(.) and imvert:namespace">
                 <xsl:variable name="maps" select="imf:get-conceptual-schema-map(imvert:namespace,$conceptual-schema-mapping-name)"/>
                 <xsl:variable name="map" select="$maps[cs:constructs/cs:Construct/cs:name = current()/imvert:class/imvert:name]"/><!-- select the map that declares any of the conceptual constructs -->
                 <xsl:choose>
@@ -89,6 +89,9 @@
                         <xsl:sequence select="imf:msg('ERROR','Cannot determine a map for namespace [1] when using mapping [2]',(imvert:namespace,$conceptual-schema-mapping-name))"/>
                     </xsl:otherwise>
                 </xsl:choose>
+            </xsl:when>
+            <xsl:when test="imf:is-conceptual(.)">
+                <xsl:next-match/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:next-match/>
@@ -212,6 +215,7 @@
         <xsl:variable name="class" select="imf:get-construct-by-id(../imvert:type-id)"/>
         
         <xsl:if test="count($class) gt 1">
+            <xsl:sequence select="dlogger:save('$class',($class,$imvert-document))"></xsl:sequence>
             <xsl:sequence select="imf:msg(.,'FATAL', 'Multiple classes found with same ID: [1]',../imvert:type-id)"/>
         </xsl:if>
         

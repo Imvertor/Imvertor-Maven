@@ -105,7 +105,10 @@
                     </section>
                     <!-- exclude package replacements (resolved stereotype internal) -->
                     <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
+                    <!--external packages inserted last -->
+                    <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-external-package') and empty(imvert:conceptual-schema-version) and empty(imvert:package-replacement)]"/><!-- extern package is herkenbaar aan het niet gekoppeld zijn aan een conceptual schema versie -->
                 </xsl:variable>
+                <xsl:sequence select="dlogger:save('$sections',$sections)"></xsl:sequence>
                 <xsl:apply-templates select="$sections" mode="section-cleanup"/>    
             </chapter>
             
@@ -136,8 +139,8 @@
         </book>
     </xsl:template>
     
-    <xsl:template match="imvert:package"><!-- only domain or view packs -->
-        <section type="{if (imvert:stereotype/@id = 'stereotype-name-domain-package') then 'DOMAIN' else 'VIEW'}" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.,'global')}">
+    <xsl:template match="imvert:package"><!-- only domain or view or external packs -->
+        <section type="{if (imvert:stereotype/@id = 'stereotype-name-domain-package') then 'DOMAIN' else if (imvert:stereotype/@id = 'stereotype-name-view-package') then 'VIEW' else 'EXTERNAL'}" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.,'global')}">
             
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             
@@ -181,6 +184,11 @@
                     </section>
                     <section type="OVERVIEW-PRIMITIVEDATATYPE" include="{$include-overview-sections-by-type}">
                         <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]">
+                            <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
+                        </xsl:apply-templates>
+                    </section>
+                    <section type="OVERVIEW-INTERFACE" include="{$include-overview-sections-by-type}">
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-interface')]">
                             <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
                         </xsl:apply-templates>
                     </section>
@@ -417,6 +425,17 @@
             <xsl:apply-templates select="." mode="type-relations"/>
             <!-- hier alle constraints; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:constraints" mode="short"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
+        </section>
+    </xsl:template>
+    
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-interface')]">
+        <section name="{imf:get-name(.,true())}" type="INTERFACE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
+            <content>
+                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-INTERFACE')"/>
+            </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>

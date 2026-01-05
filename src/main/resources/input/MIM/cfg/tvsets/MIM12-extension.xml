@@ -8,6 +8,26 @@
     
     <tagged-values>
         
+        <tv id="CFG-TV-NAME">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-interface</stereo>
+            </stereotypes>
+        </tv>
+        <tv id="CFG-TV-IDENTIFICATIE">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-interface</stereo>
+            </stereotypes>
+        </tv>
+        <tv id="CFG-TV-DEFINITION">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-interface</stereo>
+            </stereotypes>
+        </tv>
+        <tv id="CFG-TV-DESCRIPTION">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-interface</stereo>
+            </stereotypes>
+        </tv>
         
     </tagged-values>
     

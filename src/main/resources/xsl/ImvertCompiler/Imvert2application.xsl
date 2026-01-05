@@ -25,6 +25,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -38,12 +40,12 @@
     
     <xsl:variable 
         name="external-packages" 
-        select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype/@id = ('stereotype-name-external-package','stereotype-name-system-package')]" 
+        select="/imvert:packages/imvert:package[imvert:stereotype/@id = ('stereotype-name-external-package','stereotype-name-system-package')]" 
         as="node()*"/>
     
     <xsl:variable 
         name="application-package" 
-        select="//imvert:package[imf:boolean(imvert:is-root-package)]"
+        select="/imvert:packages/imvert:package[imf:boolean(imvert:is-root-package)]"
         as="node()*"/>
     
     <!-- override document packages by the packages in the application tree -->
