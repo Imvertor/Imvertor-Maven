@@ -1040,6 +1040,27 @@
             </xsl:for-each>
           </mim:supertypen>
         </xsl:when>
+        <xsl:when test="($context,$first-supertype)/imvert:stereotype/@id = 'stereotype-name-composite'">
+          <mim:supertypen>
+            <xsl:for-each select="imvert:supertype">
+              <mim:GeneralisatieGegevensgroeptypen>
+                <xsl:sequence select="imf:generate-index(.)"/>
+                <xsl:sequence select="imf:generate-id-attr(imvert:id, false())"/>
+                <xsl:call-template name="genereer-metagegevens">
+                  <xsl:with-param name="modelelement-type" as="xs:string">Generalisatie Gegevensgroeptypes</xsl:with-param>
+                  <xsl:with-param name="metagegevens-to-skip" select="('Supertype','Subtype')" as="xs:string+"/>
+                </xsl:call-template>
+                <mim:supertype>
+                  <xsl:call-template name="create-ref-element">
+                    <xsl:with-param name="ref-id" select="imvert:type-id"/>
+                  </xsl:call-template>
+                </mim:supertype>
+                <!--TODO mim:Subtype -->
+                <xsl:call-template name="extensieKenmerken"/>
+              </mim:GeneralisatieGegevensgroeptypen>
+            </xsl:for-each>
+          </mim:supertypen>
+        </xsl:when>
         <xsl:otherwise>
           <mim:supertypen>
             <xsl:for-each select="imvert:supertype">
