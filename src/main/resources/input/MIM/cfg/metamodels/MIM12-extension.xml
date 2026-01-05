@@ -1,0 +1,30 @@
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <name>MIM 1.2 metamodel (common extensions)</name>
+    
+    <nature>MIM</nature>
+    
+    <stereotypes xml:id="stereotypes">
+
+        <!-- 
+            Interface is opgenomen om externe constructies die binnen het model worden gedeclareerd te representeren. 
+            Imvertor grouping heeft ook Interface. Die lijkt op Construct, maar betreft een vorm die buiten het informatiemodel voorkomt.
+            Het biedt alleen toegang tot de conceptual schemas. 
+            Omdat die interface niet wordt verwerkt door Imvertor (EA referenties ernaar resulteren in een stub) kan Interface als een MIM 1.2 extensie worden opgenomen.
+            Interface heeft metadata waarover kan worden gerapporteerd en behoort feitelijk tot MIM, al wordt het daar niet zo benoemd.
+        -->
+        <stereo id="stereotype-name-interface" primary="yes">
+            <name lang="en">Interface</name>
+            <name lang="nl">Interface</name>
+            <desc lang="nl">Een constructie in een gemeenschappelijk maar niet opgenomen model, welke een compleet modelelement in dat model representeert.</desc>
+            <source>MIMEXT-1.0.0</source>
+            <construct>class</construct>
+            <construct>datatype</construct>
+            <context>
+                <parent-stereo>stereotype-name-external-package</parent-stereo>
+            </context>
+        </stereo>
+        
+    </stereotypes>
+
+</metamodel>

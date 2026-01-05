@@ -134,6 +134,9 @@
             <source>MIM-1.1.0</source>
             <catalog>https://docs.geostandaarden.nl/mim/mim/#extern</catalog>
             <construct>package</construct>
+            <context>
+                <parent-stereo>stereotype-name-informatiemodel-package</parent-stereo>
+            </context>
         </stereo>
         
         <stereo id="stereotype-name-composite" primary="yes">

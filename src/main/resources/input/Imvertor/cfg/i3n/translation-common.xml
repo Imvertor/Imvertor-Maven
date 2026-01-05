@@ -746,7 +746,17 @@
         <trans lang="en">Features</trans>
     </item>
     
- 
+    <item>
+        <key>OVERVIEW-INTERFACE</key>
+        <trans lang="nl">Externe constructies</trans>
+        <trans lang="en">External constructs</trans>
+    </item>
+    <item>
+        <key>INTERFACE</key>
+        <trans lang="nl">Externe constructie</trans>
+        <trans lang="en">External construct</trans>
+    </item>
+    
     <!-- intermediate text -->
     
     <item>

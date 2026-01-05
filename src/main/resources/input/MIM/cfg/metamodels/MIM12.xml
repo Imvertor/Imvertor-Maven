@@ -5,6 +5,8 @@
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <xi:include href="MIM11.xml"/>
     
+    <xi:include href="MIM12-extension.xml"/><!-- enkele typische gemeenschappelijke aanvullingen -->
+    
     <name>MIM 1.2</name>
     
     <desc lang="en">Metamodel for common constructs in MIM 1.2 models</desc>

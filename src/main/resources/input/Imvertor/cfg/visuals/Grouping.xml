@@ -34,9 +34,6 @@
         <stereo id="stereotype-name-grp-proxy">
             <toolbox category="GROUPING"/>
         </stereo>
-        <stereo id="stereotype-name-interface">
-            <toolbox category="GROUPING"/>
-        </stereo>
         <stereo id="stereotype-name-obj-proxy">
             <toolbox category="GROUPING"/>
         </stereo>
