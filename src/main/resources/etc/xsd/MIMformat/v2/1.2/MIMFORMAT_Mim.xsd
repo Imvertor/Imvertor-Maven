@@ -234,7 +234,7 @@
       <xs:element name="supertypen" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="mim:GeneralisatieObjecttypen" maxOccurs="unbounded"/>
+            <xs:element ref="mim:GeneralisatieGegevensgroeptypen" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -669,6 +669,27 @@
         <xs:complexType>
           <xs:sequence>
             <xs:element ref="mim-ref:ObjecttypeRef" minOccurs="0"/>
+            <xs:element ref="mim-ext:ConstructieRef" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element ref="mim-ext:kenmerken" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="index" type="xs:integer" use="optional"/>
+  </xs:complexType>
+  
+  <!-- Generalisatie tussen gegevensgroeptypen: -->
+  <xs:element name="GeneralisatieGegevensgroeptypen" type="mim:GeneralisatieGegevensgroeptypen"/>
+  <xs:complexType name="GeneralisatieGegevensgroeptypen">
+    <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
+      <xs:element name="datumOpname" type="xs:string"/>
+      <xs:element name="mixin" type="mim:boolean" minOccurs="0"/>
+      <xs:element name="supertype">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="mim-ref:GegevensgroeptypeRef" minOccurs="0"/>
             <xs:element ref="mim-ext:ConstructieRef" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
