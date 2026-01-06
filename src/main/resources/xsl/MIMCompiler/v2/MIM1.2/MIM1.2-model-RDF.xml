@@ -73,7 +73,7 @@
     <mim:identificatie mm:nodeType="metagegeven" mm:title="Identificatie" mm:rdfType="anyURI"/>
     <mim:identificerend mm:nodeType="metagegeven" mm:title="Identificerend" mm:rdfType="boolean">false</mim:identificerend>
     <mim:indicatieAbstractObject mm:nodeType="metagegeven" mm:title="Indicatie abstract object" mm:rdfType="boolean">false</mim:indicatieAbstractObject>
-    <mim:indicatieAfleidbaar mm:nodeType="metagegeven" mm:title="Indicatie afleidbaar" mm:rdfType="boolean"/>
+    <mim:indicatieAfleidbaar mm:nodeType="metagegeven" mm:title="Indicatie afleidbaar" mm:rdfType="boolean">false</mim:indicatieAfleidbaar>
     <mim:indicatieClassificerend mm:nodeType="metagegeven" mm:title="Indicatie classificerend" mm:rdfType="boolean">false</mim:indicatieClassificerend>
     <mim:indicatieFormeleHistorie mm:nodeType="metagegeven" mm:title="Indicatie formele historie" mm:rdfType="boolean">false</mim:indicatieFormeleHistorie>
     <mim:indicatieMaterieleHistorie mm:nodeType="metagegeven" mm:title="Indicatie materiële historie" mm:rdfType="boolean">false</mim:indicatieMaterieleHistorie>
