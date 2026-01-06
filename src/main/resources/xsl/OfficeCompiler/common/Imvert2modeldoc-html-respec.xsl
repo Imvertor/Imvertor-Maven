@@ -853,13 +853,13 @@
             <div class="imageinfo {$diagram-css-class}">
                 <xsl:choose>
                     <xsl:when test="not($diagram-show-caption)">
-                        <img id="{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
+                        <img id="img-{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
                         <xsl:sequence select="$map"/>
                     </xsl:when>
                     <xsl:when test="$diagram-encoding = 'figure'">
                         <xsl:variable name="id">img-{generate-id()}</xsl:variable>
                         <figure class="uml-diagram">
-                            <img id="{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
+                            <img id="img-{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
                             <figcaption>
                                 <xsl:text> &#8210; Diagram: </xsl:text>
                                 <xsl:sequence select="imf:parse-diagram-title($diagram-name)[1]"/> 
@@ -874,7 +874,7 @@
                         </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>
-                        <img id="{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
+                        <img id="img-{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
                         <xsl:sequence select="$map"/>
                         <!-- create the caption -->
                         <p>

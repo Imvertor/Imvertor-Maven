@@ -134,16 +134,13 @@
     mim:datatypen/mim:Referentielijst |
     mim-ext:constructies/mim-ext:Constructie[not(mim-ext:constructietype = ('OPENAPI OPERATION', 'OPENAPI TAGS'))]"> 
     
-    <xsl:variable name="non-mixin-supertype-refs" select="mim:supertypen/mim:GeneralisatieObjecttypen[not(local:is-mixin(.))]/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)" as="element()*"/>  
+    <xsl:variable name="non-mixin-supertype-refs" select="mim:supertypen/(mim:GeneralisatieObjecttypen|mim:GeneralisatieGegevensgroeptypen)[not(local:is-mixin(.))]/mim:supertype/(mim-ref:ObjecttypeRef|mim-ref:GegevensgroeptypeRef|mim-ext:ConstructieRef)" as="element()*"/>  
     <xsl:if test="count($non-mixin-supertype-refs) gt 1">
-      <xsl:sequence select="imf:message(., 'ERROR', 'Multiple inheritance is not supported (besides on mixin/static supertypes): Objecttype: [1]', mim:naam, '')"/>  
+      <xsl:sequence select="imf:message(., 'ERROR', 'Multiple inheritance is not supported (besides on mixin/static supertypes): Objecttype/Gegevensgroeptype: [1]', mim:naam, '')"/>  
     </xsl:if>
-    <xsl:variable name="mixin-supertype-refs" select="mim:supertypen/mim:GeneralisatieObjecttypen[local:is-mixin(.)]/mim:supertype/(mim-ref:ObjecttypeRef|mim-ext:ConstructieRef)" as="element()*"/>
-    <xsl:variable name="supertypes" select="if (self::mim:Objecttype) then local:get-all-objecttype-supertypes(.) else ()" as="element(mim:Objecttype)*"/>
-    
+    <xsl:variable name="mixin-supertype-refs" select="mim:supertypen/(mim:GeneralisatieObjecttypen|mim:GeneralisatieGegevensgroeptypen)[local:is-mixin(.)]/mim:supertype/(mim-ref:ObjecttypeRef|mim-ref:GegevensgroeptypeRef|mim-ext:ConstructieRef)" as="element()*"/>
     <xsl:variable name="non-mixin-supertype-info" select="local:type-to-class($non-mixin-supertype-refs[1])" as="element(class)?"/>
-    
-    <xsl:variable name="identifying-attribuutsoort" select="if (self::mim:Objecttype) then local:get-identifying-attribuutsoort-of-objecttype(.) else ()" as="element(mim:Attribuutsoort)?"/>
+    <xsl:variable name="identifying-attribuutsoort" select="if (self::mim:Objecttype|self::mim:Gegevensgroeptype) then local:get-identifying-attribuutsoort(.) else ()" as="element(mim:Attribuutsoort)?"/>
     
     <entity>
       <name>{entity:class-name(mim:naam)}</name>
@@ -838,16 +835,16 @@
   
   <!-- Is $generalisation-element a mixin or "static" supertype? -->
   <xsl:function name="local:is-mixin" as="xs:boolean">
-    <xsl:param name="generalisation-element" as="element(mim:GeneralisatieObjecttypen)"/>
+    <xsl:param name="generalisation-element" as="element()"/>
     <xsl:sequence select="exists($generalisation-element[mim:mixin = 'true' or mim-ext:kenmerken/mim-ext:Kenmerk[@naam='type'] = 'GENERALISATIE STATIC'])"/>
   </xsl:function>
     
-  <xsl:function name="local:get-all-objecttype-supertypes" as="element(mim:Objecttype)*">
-    <xsl:param name="object-type" as="element(mim:Objecttype)?"/>    
+  <xsl:function name="local:get-all-supertypes" as="element()*">
+    <xsl:param name="model-element" as="element()?"/>    
     <xsl:variable name="supertypes" select="
-      for $o in $object-type/mim:supertypen/mim:GeneralisatieObjecttypen/mim:supertype/mim-ref:ObjecttypeRef
-      return local:resolve-reference($o)" as="element(mim:Objecttype)*"/>
-    <xsl:sequence select="$supertypes, for $o in $supertypes return local:get-all-objecttype-supertypes($o)"/>
+      for $o in $model-element/mim:supertypen/(mim:GeneralisatieObjecttypen|mim:GeneralisatieGegevensgroeptypen)/mim:supertype/(mim-ref:ObjecttypeRef|mim-ref:GegevensgroeptypeRef)
+      return local:resolve-reference($o)" as="element()*"/>
+    <xsl:sequence select="$supertypes, for $o in $supertypes return local:get-all-supertypes($o)"/>
   </xsl:function>
   
   <xsl:function name="local:get-all-datatype-supertypes" as="element()*">
@@ -876,9 +873,9 @@
     <xsl:sequence select="$gegevensgroeptypes, for $g in $gegevensgroeptypes return local:get-all-gegevensgroeptypes($g)"/>
   </xsl:function>
   
-  <xsl:function name="local:get-identifying-attribuutsoort-of-objecttype" as="element(mim:Attribuutsoort)?">
-    <xsl:param name="object-type" as="element(mim:Objecttype)?"/>    
-    <xsl:variable name="self-and-supertypes" select="$object-type, local:get-all-objecttype-supertypes($object-type)" as="element(mim:Objecttype)*"/>
+  <xsl:function name="local:get-identifying-attribuutsoort" as="element(mim:Attribuutsoort)?">
+    <xsl:param name="model-element" as="element()?"/>    
+    <xsl:variable name="self-and-supertypes" select="$model-element, local:get-all-supertypes($model-element)" as="element()*"/>
     <xsl:variable name="attribuutsoorten" select="for $o in $self-and-supertypes return 
       ($o/mim:attribuutsoorten/mim:Attribuutsoort, 
       local:get-all-gegevensgroeptypes($o)/mim:attribuutsoorten/mim:Attribuutsoort)" as="element(mim:Attribuutsoort)*"/>
@@ -889,7 +886,7 @@
     <xsl:param name="relatiesoort" as="element(mim:Relatiesoort)"/>
     <xsl:variable name="name" select="$relatiesoort/mim:naam" as="xs:string?"/>
     <xsl:variable name="objecttype" select="$relatiesoort/ancestor::mim:Objecttype" as="element(mim:Objecttype)?"/>
-    <xsl:variable name="self-and-supertypes" select="$objecttype, local:get-all-objecttype-supertypes($objecttype)" as="element(mim:Objecttype)*"/>
+    <xsl:variable name="self-and-supertypes" select="$objecttype, local:get-all-supertypes($objecttype)" as="element(mim:Objecttype)*"/>
     <xsl:sequence select="count($self-and-supertypes/mim:relatiesoorten/mim:Relatiesoort[mim:naam = $name]) = 1"/>  
   </xsl:function>
   
@@ -897,7 +894,7 @@
     <xsl:param name="relatiesoort" as="element(mim:Relatiesoort)"/>
     <xsl:variable name="name" select="$relatiesoort/mim:relatierollen/mim:Doel/mim:naam" as="xs:string?"/>
     <xsl:variable name="objecttype" select="$relatiesoort/ancestor::mim:Objecttype" as="element(mim:Objecttype)?"/>
-    <xsl:variable name="self-and-supertypes" select="$objecttype, local:get-all-objecttype-supertypes($objecttype)" as="element(mim:Objecttype)*"/>
+    <xsl:variable name="self-and-supertypes" select="$objecttype, local:get-all-supertypes($objecttype)" as="element(mim:Objecttype)*"/>
     <xsl:sequence select="count($self-and-supertypes/mim:relatiesoorten/mim:Relatiesoort[mim:relatierollen/mim:Doel/mim:naam = $name]) = 1"/>  
   </xsl:function>
   

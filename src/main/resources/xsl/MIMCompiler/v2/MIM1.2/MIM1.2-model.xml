@@ -254,6 +254,15 @@
          <metagegeven kardinaliteit="0..1">Mixin</metagegeven><!-- add 1.2 -->
       </modelelement>
       <modelelement>
+         <naam>Generalisatie Gegevensgroeptypes</naam>
+         <metagegeven kardinaliteit="1">Identificatie</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="1">Datum opname</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Type supertype</metagegeven><!-- zie https://github.com/Imvertor/Imvertor-Maven/issues/356 -->
+         <metagegeven kardinaliteit="1">Supertype</metagegeven>
+         <metagegeven kardinaliteit="1">Subtype</metagegeven><!-- add 1.1.1 -->
+         <metagegeven kardinaliteit="0..1">Mixin</metagegeven><!-- add 1.2 -->
+      </modelelement>
+      <modelelement>
          <naam>Gestructureerd datatype</naam>
          <metagegeven kardinaliteit="1">Identificatie</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="1">Naam</metagegeven>

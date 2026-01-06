@@ -10,4 +10,15 @@
     
     <desc lang="en">Deviations and additions to generic grouping for MIM 1.2 metamodel.</desc>  
     
+    <tagged-values>
+
+        <tv norm="space" id="CFG-TV-ISDERIVED">
+            <stereo minmax="0..1">stereotype-name-interface</stereo>
+        </tv>
+        
+        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
+            <stereo minmax="0..1">stereotype-name-interface</stereo>
+        </tv>
+    
+    </tagged-values>
 </tagset>

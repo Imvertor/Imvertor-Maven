@@ -105,18 +105,6 @@
             </context>
         </stereo>
         
-        <stereo id="stereotype-name-interface" primary="yes">
-            <name lang="en">Interface</name>
-            <name lang="nl">Interface</name>
-            <desc lang="nl">Een constructie in een gemeenschappelijk maar niet opgenomen model, welke een compleet modelelement in dat model representeert.</desc>
-            <source>Grouping</source>
-            <construct>class</construct>
-            <construct>datatype</construct>
-            <context>
-                <parent-stereo>stereotype-name-external-package</parent-stereo>
-            </context>
-        </stereo>
-        
         <stereo id="stereotype-name-recyclebin">
             <name lang="nl">Prullenbak</name>
             <name lang="en">Recyclebin</name>

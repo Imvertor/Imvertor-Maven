@@ -25,6 +25,7 @@
     <mim:Gegevensgroeptype mm:nodeType="modelelement" mm:title="Gegevensgroeptype" mm:rdfBinding="gegevensgroeptype"/>
     <mim:GeneralisatieDatatypen mm:nodeType="modelelement" mm:title="Generalisatie" mm:rdfName="Generalisatie"/>
     <mim:GeneralisatieObjecttypen mm:nodeType="modelelement" mm:title="Generalisatie" mm:rdfName="Generalisatie"/>
+    <mim:GeneralisatieGegevensgroeptypen mm:nodeType="modelelement" mm:title="Generalisatie" mm:rdfName="Generalisatie"/>
     <mim:GestructureerdDatatype mm:nodeType="modelelement" mm:title="Gestructureerd datatype"/>
     <mim:Informatiemodel mm:nodeType="modelelement" mm:title="Informatiemodel"/>
     <mim-ext:Kenmerk mm:nodeType="modelelement" mm:title="Kenmerk"/>
@@ -480,7 +481,7 @@
       <mim:herkomstDefinitie mm:minOccurs="1" mm:maxOccurs="1"/>
       <mim:toelichting mm:minOccurs="0" mm:maxOccurs="1"/>
       <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
-      <mim:supertypen mm:minOccurs="0" mm:maxOccurs="1" mm:childs="mim:GeneralisatieObjecttypen"/>
+      <mim:supertypen mm:minOccurs="0" mm:maxOccurs="1" mm:childs="mim:GeneralisatieGegevensgroeptypen"/>
       <mim:attribuutsoorten mm:minOccurs="0" mm:maxOccurs="1"/>
       <mim:gegevensgroepen mm:minOccurs="0" mm:maxOccurs="1"/>
       <mim:relatiesoorten mm:minOccurs="0" mm:maxOccurs="1"/>
@@ -628,6 +629,13 @@
       <mim:supertype mm:minOccurs="1" mm:maxOccurs="1"/>
       <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
     </mim:GeneralisatieObjecttypen>
+    <mim:GeneralisatieGegevensgroeptypen mm:hasIdAttr="true">
+      <mim:identificatie mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:mixin mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim:supertype mm:minOccurs="1" mm:maxOccurs="1"/>
+      <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
+    </mim:GeneralisatieGegevensgroeptypen>
     
     <mim:domeinen>
       <mim:Domein mm:minOccurs="1" mm:maxOccurs="unbounded"/>

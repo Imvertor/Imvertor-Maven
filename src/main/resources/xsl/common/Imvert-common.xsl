@@ -1019,25 +1019,20 @@
     <!-- 
         true when this construct is (embedded in) a conceptual package 
         Feature #487839 
-        If the namespace (alias) starts with one of the declared prefixes, it is considerd to be conceptual
+        If the ID is "OUTSIDE-*" en stereotype is external, assume conceptual.  
     -->
     <xsl:function name="imf:is-conceptual" as="xs:boolean">
         <xsl:param name="construct" as="element()"/>
         <xsl:variable name="pack" select="$construct/ancestor-or-self::imvert:package" as="element()*"/>
-        <?x <xsl:variable name="prefix" select="tokenize(normalize-space(imf:get-config-parameter('url-prefix-conceptual-schema')),'\s+')"/> x?>
         <xsl:variable name="is-external" select="$pack/imvert:stereotype/@id = ('stereotype-name-external-package')"/>
-        <?x <xsl:variable name="is-conceptual" select="exists($pack/imvert:namespace[(for $p in ($prefix) return starts-with(.,$p)) = true()])"/> x?>
-        <xsl:variable name="is-conceptual" select="true()"/>
+        <xsl:variable name="is-outside" select="$pack[starts-with(imvert:id,'OUTSIDE')]"/><!-- binnengehaald vanuit conceptual schema -->
         
        <xsl:choose>
-            <xsl:when test="$is-external and $is-conceptual">
+            <xsl:when test="$is-external and $is-outside">
                 <xsl:sequence select="true()"/>
             </xsl:when>
-           <xsl:when test="$is-external and imf:member-of($construct,$pack)">
-               <!--<xsl:sequence select="imf:msg($construct, 'WARNING','External packages must start with URL prefix [1]',($prefix))"/>-->
-                <xsl:sequence select="false()"/>
-            </xsl:when>
             <xsl:when test="$is-external">
+                <!-- this is an external poackage that is part of the Information model-->
                 <xsl:sequence select="false()"/>
             </xsl:when>
             <xsl:otherwise>
