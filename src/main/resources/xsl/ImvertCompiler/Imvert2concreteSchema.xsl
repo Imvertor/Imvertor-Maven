@@ -215,7 +215,6 @@
         <xsl:variable name="class" select="imf:get-construct-by-id(../imvert:type-id)"/>
         
         <xsl:if test="count($class) gt 1">
-            <xsl:sequence select="dlogger:save('$class',($class,$imvert-document))"></xsl:sequence>
             <xsl:sequence select="imf:msg(.,'FATAL', 'Multiple classes found with same ID: [1]',../imvert:type-id)"/>
         </xsl:if>
         
