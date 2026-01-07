@@ -98,12 +98,16 @@
           <xsl:variable name="identifying-field" select="identifying-attribute/field" as="element(field)?"/>
           <xsl:variable name="id-name" select="($identifying-field/name, 'id')[1]" as="xs:string"/>
           <xsl:variable name="id-type" select="($identifying-field/type, 'String')[1]" as="xs:string"/>
+          <xsl:variable name="id-package" select="$identifying-field/type/@package-name" as="xs:string?"/>
           <xsl:variable name="path" select="entity:feature(., 'OA Path')" as="xs:string?"/>
           
           <xsl:variable name="path-parameter-id" as="element(parameter)">
             <parameter>
               <name>{$id-name}</name>
               <type>{$id-type}</type>
+              <xsl:if test="$id-package">
+                <package-name>{$id-package}</package-name>  
+              </xsl:if>
               <parameter-type>path</parameter-type>
               <required>true</required>
               <description>{name} ID</description>
@@ -443,7 +447,7 @@
     </xsl:if>
     <xsl:for-each select="$parameters">
       <xsl:variable name="required" select="if (parameter-type = 'path') then 'true' else required" as="xs:string"/>
-      <line indent="4">@{funct:uppercase-first(parameter-type)}Param("{name}") @Parameter(description = {oas:java-string-literal(funct:element-to-commonmark(description))}, required = {$required}, example = {oas:java-string-literal(example)}) {type}{if (ends-with(cardinality, '*')) then '[]' else ()} {entity:field-name(name)}{if (not(position() = last()) or $request-body) then ',' else ') {'}</line> <!-- TODO: cardinaliteit -->
+      <line indent="4">@{funct:uppercase-first(parameter-type)}Param("{name}") @Parameter(description = {oas:java-string-literal(funct:element-to-commonmark(description))}, required = {$required}, example = {oas:java-string-literal(example)}) {if (package-name) then local:full-package-name(package-name) || '.' || type else type}{if (ends-with(cardinality, '*')) then '[]' else ()} {entity:field-name(name)}{if (not(position() = last()) or $request-body) then ',' else ') {'}</line> <!-- TODO: cardinaliteit -->
     </xsl:for-each>
     <xsl:if test="$request-body">
       <line indent="4">@Parameter(description = "De gegevens van het {$request-body/name} object", required = true) {$fqn-request-class-name} {lower-case($request-body/name)}) {{</line>
