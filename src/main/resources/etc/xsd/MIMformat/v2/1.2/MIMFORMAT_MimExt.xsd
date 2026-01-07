@@ -42,7 +42,7 @@
   <xs:element name="Constructie">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="constructietype" type="xs:string"/>
+        <xs:element name="constructietype" maxOccurs="unbounded" type="xs:string"/>
         <xs:any 
           namespace="http://www.geostandaarden.nl/mim/mim-core/1.2 http://www.geostandaarden.nl/mim/mim-ref/1.0 http://www.geostandaarden.nl/mim/mim-ext/1.0"
           minOccurs="0"
