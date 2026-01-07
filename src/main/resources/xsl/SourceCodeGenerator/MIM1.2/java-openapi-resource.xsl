@@ -28,6 +28,8 @@
   <xsl:param name="openapi-spec-version" as="xs:string">api30</xsl:param>
   <xsl:param name="openapi-schemas-only" as="xs:string">no</xsl:param>
   <xsl:param name="openapi-bundle-descriptions" as="xs:string">no</xsl:param>
+  <xsl:param name="openapi-explode-descriptions" as="xs:string">no</xsl:param>
+  <xsl:param name="openapi-base-url" as="xs:string?"/>
   
   <xsl:key name="tag" match="openapi-tags/tag" use="lower-case(@name)"/>
   
@@ -506,6 +508,14 @@
         <line/>
         <line indent="2">public static boolean getBundleDescriptions() {{</line>
         <line indent="4">return {if ($openapi-bundle-descriptions = ('yes', 'true')) then 'true' else 'false'};</line>
+        <line indent="2">}}</line>
+        <line/>
+        <line indent="2">public static boolean getExplodeDescriptions() {{</line>
+        <line indent="4">return {if ($openapi-explode-descriptions = ('yes', 'true')) then 'true' else 'false'};</line>
+        <line indent="2">}}</line>
+        <line/>
+        <line indent="2">public static String getBaseUrl() {{</line>
+        <line indent="4">return "{$openapi-base-url}";</line>
         <line indent="2">}}</line>
         <line/>
         <line>}}</line>

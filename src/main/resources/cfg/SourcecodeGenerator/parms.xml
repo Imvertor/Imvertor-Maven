@@ -82,6 +82,18 @@
          <tip>Yes if the generated OpenAPI description and all descriptions that are referenced should be bundled to one description</tip>
          <default>no</default>
       </cli-parm>
+      <cli-parm>
+         <name>openapiexplodedescriptions</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the JSON schemas of the generated OpenAPI description should also be exploded into multiple OpenAPI descriptions where every description contains only one JSON schema</tip>
+         <default>no</default>
+      </cli-parm>
+      <cli-parm>
+         <name>openapibaseurl</name>
+         <arg>url</arg>
+         <tip>The base url that is used in the $refs in case openapiexplodedescriptions = true. If this url is not specified relative $refs are generated</tip>
+         <default>no</default>
+      </cli-parm>
    </cli-parms>
    
    <properties>

@@ -154,6 +154,8 @@ public class SourcecodeGenerator extends Step {
       String openapiSpecVersion = configurator.getXParm("cli/openapispecversion", false);
       String openapiSchemasOnly = configurator.getXParm("cli/openapischemasonly", false);
       String openApiBundleDescriptions = configurator.getXParm("cli/openapibundledescriptions", false);
+      String openApiExplodeDescriptions = configurator.getXParm("cli/openapiexplodedescriptions", false);
+      String openApiBaseUrl = configurator.getXParm("cli/openapibaseurl", false);
           
       if (sourcecodeCopyDownMixins != null)
         transformer.setXslParm("sourcecode-copy-down-mixins", sourcecodeCopyDownMixins);
@@ -169,6 +171,10 @@ public class SourcecodeGenerator extends Step {
         transformer.setXslParm("openapi-schemas-only", openapiSchemasOnly);
       if (openApiBundleDescriptions != null)
         transformer.setXslParm("openapi-bundle-descriptions", openApiBundleDescriptions);
+      if (openApiExplodeDescriptions != null)
+        transformer.setXslParm("openapi-explode-descriptions", openApiExplodeDescriptions);
+      if (openApiBaseUrl != null)
+        transformer.setXslParm("openapi-base-url", openApiBaseUrl);
       
       /* Convert MIM 1.1 to 1.2 namespaces : */ 
       succeeds = succeeds && transformer.transformStep("properties/WORK_MIMFORMAT_XMLPATH", workFileParamMIM_11_to_12, xslFileParamMIM_11_to_12);
