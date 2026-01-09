@@ -106,7 +106,8 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   
   <!-- Binding metagegevens: -->
   <xsl:template match="mim-in:Informatiemodel|mim-in:Domein|mim-in:View|mim-in:Extern">
-    <xsl:for-each select="(mim-in:packages|mim-in:datatypen|mim-in:objecttypen|mim-in:gegevensgroeptypen|mim-in:keuzen|mim-ext:constructies)/*">
+    <xsl:for-each select="(mim-in:packages|mim-in:datatypen|mim-in:objecttypen|mim-in:gegevensgroeptypen|mim-in:keuzen|mim-ext:constructies|
+      (self::mim-in:Domein|self::mim-in:View|self::mim-in:Extern)//mim-in:relatieklasse)/*">
       <mim:bevatModelelement rdf:resource="{local:get-id(.)}"/>
     </xsl:for-each>
   </xsl:template>
