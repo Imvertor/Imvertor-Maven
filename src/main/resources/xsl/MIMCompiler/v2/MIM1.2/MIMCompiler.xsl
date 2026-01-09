@@ -35,7 +35,7 @@
   xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
   
   expand-text="yes" 
-  exclude-result-prefixes="imvert imf ext fn UML">
+  exclude-result-prefixes="imvert imf ext fn UML cs dlogger">
   
   <!--
   This stylesheet converts a system.imvert.xml serialisation (Imvertor "embellish" format) to a 
