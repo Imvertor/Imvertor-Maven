@@ -188,7 +188,7 @@
                         </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-INTERFACE" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-interface')]">
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-interface','stereotype-name-conceptual')]">
                             <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
                         </xsl:apply-templates>
                     </section>
@@ -429,7 +429,7 @@
         </section>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-interface')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-interface','stereotype-name-conceptual')]">
         <section name="{imf:get-name(.,true())}" type="INTERFACE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>

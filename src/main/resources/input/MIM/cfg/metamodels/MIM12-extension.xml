@@ -7,16 +7,35 @@
     <stereotypes xml:id="stereotypes">
 
         <!-- 
-            Interface is opgenomen om externe constructies die binnen het model worden gedeclareerd te representeren. 
-            Imvertor grouping heeft ook Interface. Die lijkt op Construct, maar betreft een vorm die buiten het informatiemodel voorkomt.
+            Interface en Conceptual zijn opgenomen om externe constructies die binnen het model worden gedeclareerd te representeren. 
+            Imvertor grouping heeft ook Interface. Die lijkt op deze Interface, maar betreft een vorm die buiten het informatiemodel voorkomt.
             Het biedt alleen toegang tot de conceptual schemas. 
+            
             Omdat die interface niet wordt verwerkt door Imvertor (EA referenties ernaar resulteren in een stub) kan Interface als een MIM 1.2 extensie worden opgenomen.
-            Interface heeft metadata waarover kan worden gerapporteerd en behoort feitelijk tot MIM, al wordt het daar niet zo benoemd.
+            
+            We kunnen met twee constructie stereotypen verwijzen naar iets buiten het model:
+            - <<Conceptual>> betreft constructies waarvan wordt aangenomen dat er een conceptual schema mapping voor beschikbaar is. Voorbeelden zijn MIM, GML en allerlei Inspire constructs. 
+            - <<Interface>> betreft constructies die specifiek voor dit informatiemodel zijn opgenomen, en die niet bekend hoeven te zijn aan Imvertor OS. Er hoeft dus geen conceptual schema mapping voor te bestaan.
+            
         -->
         <stereo id="stereotype-name-interface" primary="yes">
-            <name lang="en">Interface</name>
             <name lang="nl">Interface</name>
-            <desc lang="nl">Een constructie in een gemeenschappelijk maar niet opgenomen model, welke een compleet modelelement in dat model representeert.</desc>
+            <name lang="en">Interface</name>
+            <desc lang="nl">Een constructie in een gemeenschappelijk maar niet opgenomen model, welke een compleet modelelement in dat model representeert. 
+                Er is geen koppeling met een conceptueel schema.</desc>
+            <source>MIMEXT-1.0.0</source>
+            <construct>class</construct>
+            <construct>datatype</construct>
+            <context>
+                <parent-stereo>stereotype-name-external-package</parent-stereo>
+            </context>
+        </stereo>
+        
+        <stereo id="stereotype-name-conceptual" primary="yes">
+            <name lang="nl">Conceptueel</name>
+            <name lang="en">Conceptual</name>
+            <desc lang="nl">Een constructie in een gemeenschappelijk maar niet opgenomen model, welke een compleet modelelement in dat model representeert. 
+                Er is een koppeling met een conceptueel schema met de naam gelijk aan het Extern package waar de Conceptueel constructie in is opgenomen.</desc>
             <source>MIMEXT-1.0.0</source>
             <construct>class</construct>
             <construct>datatype</construct>

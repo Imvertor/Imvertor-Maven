@@ -747,6 +747,11 @@
     </item>
     
     <item>
+        <key>EXTERNAL</key>
+        <trans lang="nl">Extern</trans>
+        <trans lang="en">External</trans>
+    </item>
+    <item>
         <key>OVERVIEW-INTERFACE</key>
         <trans lang="nl">Externe constructies</trans>
         <trans lang="en">External constructs</trans>

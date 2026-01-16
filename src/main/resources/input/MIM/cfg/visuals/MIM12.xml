@@ -24,6 +24,9 @@
         <stereo id="stereotype-name-interface">
             <toolbox category="CONSTRUCTS"/>
         </stereo>
+        <stereo id="stereotype-name-conceptual">
+            <toolbox category="CONSTRUCTS"/>
+        </stereo>
         <stereo id="stereotype-name-external-package">
             <toolbox category="CONSTRUCTS"/>
         </stereo>

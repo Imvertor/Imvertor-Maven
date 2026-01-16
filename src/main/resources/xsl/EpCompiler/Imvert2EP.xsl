@@ -245,7 +245,7 @@
         </ep:construct>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface']">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-interface','stereotype-name-conceptual')]">
         <xsl:variable name="attribute" select="($domain-packages//imvert:attribute[imvert:type-id = current()/imvert:id])[1]"/>
         <xsl:if test="$attribute">
             <ep:construct>

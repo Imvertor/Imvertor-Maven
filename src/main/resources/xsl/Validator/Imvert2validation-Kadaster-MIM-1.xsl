@@ -54,7 +54,7 @@
     <xsl:variable name="all-service-packages" select="$domain-package[imf:member-of(.,$all-service-base-packages) or ends-with(imvert:name,'Messages') or ends-with(imvert:name,'Resultaat') ]"/>
     
     <xsl:variable name="datatype-stereos" 
-        select="('stereotype-name-simpletype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
+        select="('stereotype-name-simpletype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-conceptual','stereotype-name-enumeration')"/>
   
     <xsl:variable name="use-identifier-domains" select="imf:boolean(imf:get-xparm('cli/identifierdomains','no'))"/>
     <xsl:variable name="id-domain-values" select="for $a in //imvert:attribute[imf:boolean(imvert:is-id)] return imf:get-tagged-value($a,'##CFG-TV-DOMAIN')"/>

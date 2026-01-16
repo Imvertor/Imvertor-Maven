@@ -158,6 +158,7 @@
         'stereotype-name-referentielijst',
         'stereotype-name-codelist',
         'stereotype-name-interface',
+        'stereotype-name-conceptual',
         'stereotype-name-enumeration')"/>
     
     <xsl:variable name="enumeration-stereos" select="
@@ -685,7 +686,7 @@
             'One of the subtypes is in an earlier release')"/>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-interface')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-interface','stereotype-name-conceptual')]">
         <!-- skip -->
     </xsl:template>
     
@@ -904,7 +905,7 @@
             '[1] type must be an UML class', imf:string-group(imf:get-config-stereotypes('stereotype-name-attributegroup'),' or '))"/>
         
         <xsl:sequence select="imf:report-error(., 
-            imvert:stereotype/@id = 'stereotype-name-attributegroup' and not($defining-class/imvert:stereotype/@id = ('stereotype-name-attribute','stereotype-name-composite','stereotype-name-interface')), 
+            imvert:stereotype/@id = 'stereotype-name-attributegroup' and not($defining-class/imvert:stereotype/@id = ('stereotype-name-attribute','stereotype-name-composite','stereotype-name-interface','stereotype-name-conceptual')), 
             '[1] type is not allowed here: [2]', (
                 imf:string-group(imf:get-config-stereotypes('stereotype-name-attributegroup'),' or '),
                 imf:get-config-stereotypes($defining-class/imvert:stereotype/@id)
@@ -1173,7 +1174,7 @@
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="supers" select="imf:get-superclasses($this)"/>
         <!-- IM-73 if interfaces, remove the class from the list -->
-        <xsl:variable name="super" select="for $s in $supers return if ($s/imvert:stereotype/@id = ('stereotype-name-interface')) then () else $s"/>
+        <xsl:variable name="super" select="for $s in $supers return if ($s/imvert:stereotype/@id = ('stereotype-name-interface','stereotype-name-conceptual')) then () else $s"/>
         <xsl:choose>
             <xsl:when test="exists($super)">
                 <xsl:variable name="results" as="xs:integer*">
@@ -1199,7 +1200,7 @@
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="supers" select="imf:get-superclasses($this)"/>
         <!-- IM-73 if interfaces, remove the class from the list -->
-        <xsl:variable name="super" select="for $s in $supers return if ($s/imvert:stereotype/@id = ('stereotype-name-interface')) then () else $s"/>
+        <xsl:variable name="super" select="for $s in $supers return if ($s/imvert:stereotype/@id = ('stereotype-name-interface','stereotype-name-conceptual')) then () else $s"/>
         <xsl:choose>
             <xsl:when test="exists($super)">
                 <xsl:variable name="results" as="xs:integer*">
