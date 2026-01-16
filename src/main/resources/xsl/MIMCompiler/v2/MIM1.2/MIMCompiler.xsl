@@ -1520,7 +1520,7 @@
         <xsl:sequence select="imf:message(., 'ERROR', 'Invalid reference', ())"/>
       </xsl:when>
       <!-- nieuwe constructies obv. #242 -->
-      <xsl:when test="$target-stereotype-id = 'stereotype-name-interface' and $is-mim-datatype">
+      <xsl:when test="$target-stereotype-id = 'stereotype-name-conceptual' and $is-mim-datatype">
         <mim:Datatype>
           <xsl:sequence select="imf:generate-index(.)"/>
           <xsl:if test="$label">
