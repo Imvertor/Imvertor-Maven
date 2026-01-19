@@ -33,7 +33,7 @@
     <mim-ref:KeuzeRef mm:nodeType="metagegeven" mm:title="Keuze referentie"/>
     <mim:MIMExtensie mm:nodeType="metagegeven" mm:title="MIM extensie" mm:rdfName="mimextensie"/>
     <mim:MIMTaal mm:nodeType="metagegeven" mm:title="MIM taal" mm:rdfName="mimtaal"/>
-    <mim:MIMVersie mm:nodeType="metagegeven" mm:title="MIM versie" mm:rdfName="mimversie"/>
+    <mim:MIMVersie mm:nodeType="metagegeven" mm:title="MIM versie" mm:rdfName="mimversie">1.2</mim:MIMVersie>
     <mim:Objecttype mm:nodeType="modelelement" mm:title="Objecttype"/>
     <mim-ref:ObjecttypeRef mm:nodeType="metagegeven" mm:title="Objecttype referentie"/>
     <mim:PrimitiefDatatype mm:nodeType="modelelement" mm:title="Primitief datatype"/>
@@ -468,7 +468,7 @@
       <mim:datumOpname mm:minOccurs="1" mm:maxOccurs="1"/>
       <mim:locatie mm:minOccurs="1" mm:maxOccurs="1"/>
       <mim:doelformaat mm:minOccurs="0" mm:maxOccurs="1"/>
-      <mim:referentieElementen mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:referentieElementen mm:minOccurs="1" mm:maxOccurs="1"/>
       <mim-ext:kenmerken mm:minOccurs="0" mm:maxOccurs="1"/>
     </mim:Referentielijst>
     <mim:Gegevensgroeptype mm:hasIdAttr="true">
@@ -602,7 +602,7 @@
     <mim-ext:Kenmerk/>
     <mim-ext:Constructie mm:hasIdAttr="true">
       <mim-ext:constructietype mm:minOccurs="1" mm:maxOccurs="1"/>
-      <mim:naam mm:minOccurs="0" mm:maxOccurs="1"/>
+      <mim:naam mm:minOccurs="1" mm:maxOccurs="1"/>
       <mim:begrip mm:minOccurs="0" mm:maxOccurs="1"/>
       <mim:alias mm:minOccurs="0" mm:maxOccurs="1"/>
       <mim:definitie mm:minOccurs="0" mm:maxOccurs="1"/>
