@@ -220,7 +220,7 @@
               </xsl:apply-templates>
               <xsl:apply-templates select="$packages[imvert:stereotype/@id = 'stereotype-name-external-package']">
                 <xsl:sort select="imvert:name"/>
-              </xsl:apply-templates>     
+              </xsl:apply-templates>
             </mim:packages>
           </xsl:where-populated>
           <xsl:call-template name="extensieKenmerken"/>
@@ -627,7 +627,7 @@
         <xsl:call-template name="genereer-metagegevens"/>
         <xsl:where-populated>
           <mim-ext:constructies>
-            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface' and imvert:id]">
+            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-interface','stereotype-name-conceptual') and imvert:id]">
               <xsl:sort select="imvert:name"/>
             </xsl:apply-templates>
           </mim-ext:constructies>
@@ -638,6 +638,25 @@
   </xsl:template>
   
   <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface']" priority="1">     
+    <xsl:variable name="name">
+      <xsl:call-template name="naam">
+        <xsl:with-param name="context" select="." as="element()"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <mim-ext:Constructie>
+      <xsl:sequence select="imf:generate-index(.)"/>
+      <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
+      <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype>
+      <mim:naam source-id="CFG-TV-PSEUDO-NAME">{$name}</mim:naam>
+      <xsl:where-populated>
+        <mim-ext:kenmerken>
+          <!-- hoe geef je kernmerken mee? -->
+        </mim-ext:kenmerken>
+      </xsl:where-populated>
+    </mim-ext:Constructie>
+  </xsl:template>
+  
+  <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-conceptual']" priority="1">     
     <xsl:variable name="name">
       <xsl:call-template name="naam">
         <xsl:with-param name="context" select="." as="element()"/>
