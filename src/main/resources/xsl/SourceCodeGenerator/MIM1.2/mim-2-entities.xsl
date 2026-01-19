@@ -335,7 +335,8 @@
     <!-- Verwijzing vanuit Objecttype naar Keuze tussen Attribuutsoorten -->
     <xsl:variable name="keuze" select="local:resolve-reference(.)" as="element()"/>
     <field>
-      <name original="{@label}">{entity:field-name(@label)}</name>
+      <xsl:variable name="label" select="local:label(.)" as="xs:string?"/>
+      <name original="{$label}">{entity:field-name($label)}</name>
       <type 
         is-enum="false" 
         is-standard="false"
@@ -365,7 +366,8 @@
     <!-- Keuze tussen Datatypen --> 
     <xsl:variable name="type-info" select="local:type-to-class(.)" as="element(class)"/>
     <field>
-      <name original="{if (@label) then @label else 'attr' || position()}">{if (@label) then entity:field-name(@label) else 'attr' || position()}</name>
+      <xsl:variable name="label" select="local:label(.)" as="xs:string?"/>
+      <name original="{if ($label) then $label else 'attr' || position()}">{if ($label) then entity:field-name($label) else 'attr' || position()}</name>
       <xsl:choose>
         <xsl:when test="$type-info/openapi-ref">
           <type openapi-ref="{$type-info/openapi-ref}"/>
@@ -411,7 +413,8 @@
     <xsl:variable name="referer-relatiesoort" select="local:resolve-referer(ancestor::mim:Keuze)/ancestor::mim:Relatiesoort" as="element()"/>
     <xsl:variable name="referer-relatiesoort-bron" select="if ($is-relatierol-leidend) then $referer-relatiesoort/mim:relatierollen/mim:Bron else ()" as="element(mim:Bron)?"/>
     <field>
-      <name original="{@label}">{entity:field-name(@label)}</name>
+      <xsl:variable name="label" select="local:label(.)" as="xs:string?"/>
+      <name original="{$label}">{entity:field-name($label)}</name>
       <type 
         is-enum="false" 
         is-standard="false"
@@ -967,6 +970,11 @@
       <xsl:variable name="text" select="normalize-space(string-join($definition//text(), ' '))" as="xs:string"/>
       <xsl:sequence select="if (string-length($text) gt 0) then $text else ()"/>    
     </xsl:if>
+  </xsl:function>
+  
+  <xsl:function name="local:label" as="xs:string?">
+    <xsl:param name="ref-element" as="element()"/>
+    <xsl:sequence select="if ($ref-element/@label) then $ref-element/@label else local:resolve-reference($ref-element)/mim:naam"/>
   </xsl:function>
   
   <xsl:function name="local:get-tag-description" as="xs:string">
