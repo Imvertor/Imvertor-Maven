@@ -183,7 +183,7 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
       <mim:type>
         <xsl:attribute name="rdf:resource">
           <xsl:choose>
-            <xsl:when test="mim-in:Datatype">{$mim-uri}{mim-in:Datatype}</xsl:when>
+            <xsl:when test="self::mim-in:Datatype">{$mim-uri}{self::mim-in:Datatype}</xsl:when>
             <xsl:when test="@xlink:href">{local:get-id-from-href(@xlink:href)}</xsl:when>
           </xsl:choose>  
         </xsl:attribute>
