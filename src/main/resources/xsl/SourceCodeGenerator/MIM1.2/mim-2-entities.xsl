@@ -269,24 +269,17 @@
     
     <field>
       <name original="{mim:naam}">{entity:field-name(mim:naam)}</name>
-      <xsl:choose>
-        <xsl:when test="$type-info/openapi-ref">
-          <type openapi-ref="{$type-info/openapi-ref}"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <type 
-            is-enum="{exists(local:resolve-reference(mim:type/mim-ref:DatatypeRef)/self::mim:Enumeratie)}" 
-            is-standard="{$type-info/is-standard-class = 'true'}">
-            <xsl:if test="$type-info/package-name">
-              <xsl:attribute name="package-name">{$type-info/package-name}</xsl:attribute>
-            </xsl:if>
-            <xsl:if test="$type-info/model-element">
-              <xsl:attribute name="model-element">{$type-info/model-element}</xsl:attribute> 
-            </xsl:if>
-            <xsl:value-of select="$type-info/name"/>
-          </type>    
-        </xsl:otherwise>
-      </xsl:choose>
+      <type 
+        is-enum="{exists(local:resolve-reference(mim:type/mim-ref:DatatypeRef)/self::mim:Enumeratie)}" 
+        is-standard="{$type-info/is-standard-class = 'true'}">
+        <xsl:if test="$type-info/package-name">
+          <xsl:attribute name="package-name">{$type-info/package-name}</xsl:attribute>
+        </xsl:if>
+        <xsl:if test="$type-info/model-element">
+          <xsl:attribute name="model-element">{$type-info/model-element}</xsl:attribute> 
+        </xsl:if>
+        <xsl:value-of select="$type-info/name"/>
+      </type>    
       <category>{local-name()}{if (not($type-info/is-standard-class = 'true')) then ' -> ' || $type-info/model-element else ()}</category>
       <definition>
         <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
@@ -368,24 +361,17 @@
     <field>
       <xsl:variable name="label" select="local:label(.)" as="xs:string?"/>
       <name original="{if ($label) then $label else 'attr' || position()}">{if ($label) then entity:field-name($label) else 'attr' || position()}</name>
-      <xsl:choose>
-        <xsl:when test="$type-info/openapi-ref">
-          <type openapi-ref="{$type-info/openapi-ref}"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <type 
-            is-enum="{exists(local:resolve-reference(.)/self::mim:Enumeratie)}" 
-            is-standard="{$type-info/is-standard-class = 'true'}">
-            <xsl:if test="$type-info/package-name">
-              <xsl:attribute name="package-name">{$type-info/package-name}</xsl:attribute>
-            </xsl:if>
-            <xsl:if test="$type-info/model-element">
-              <xsl:attribute name="model-element">{$type-info/model-element}</xsl:attribute> 
-            </xsl:if>
-            <xsl:value-of select="$type-info/name"/>
-          </type>
-        </xsl:otherwise>
-      </xsl:choose>
+      <type 
+        is-enum="{exists(local:resolve-reference(.)/self::mim:Enumeratie)}" 
+        is-standard="{$type-info/is-standard-class = 'true'}">
+        <xsl:if test="$type-info/package-name">
+          <xsl:attribute name="package-name">{$type-info/package-name}</xsl:attribute>
+        </xsl:if>
+        <xsl:if test="$type-info/model-element">
+          <xsl:attribute name="model-element">{$type-info/model-element}</xsl:attribute> 
+        </xsl:if>
+        <xsl:value-of select="$type-info/name"/>
+      </type>
       <category>Keuze datatype</category>
       <definition>
         <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
@@ -485,19 +471,11 @@
           <name original="{mim:naam}{$target/mim:naam}">{entity:field-name(mim:naam)}{entity:class-name($target/mim:naam)}</name>
         </xsl:otherwise> 
       </xsl:choose>
-      <xsl:variable name="openapi-ref" select="local:kenmerk-ext($target, 'OA Reference')[1]" as="xs:string?"/>
-      <xsl:choose>
-        <xsl:when test="normalize-space($openapi-ref)">
-          <type openapi-ref="{$openapi-ref}"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <type 
-            is-enum="false" 
-            is-standard="false"
-            package-name="{entity:package-name(local:package-hierarchy($target))}"
-            model-element="{$target/local-name()}">{entity:class-name($target/mim:naam)}</type>
-        </xsl:otherwise>
-      </xsl:choose>
+      <type 
+        is-enum="false" 
+        is-standard="false"
+        package-name="{entity:package-name(local:package-hierarchy($target))}"
+        model-element="{$target/local-name()}">{entity:class-name($target/mim:naam)}</type>
       <category>{local-name()} -> {$target/local-name()}</category>
       <definition>
         <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
@@ -551,19 +529,11 @@
           <name original="{mim:naam}{$target/mim:naam}">{entity:field-name(mim:naam)}{entity:class-name($target/mim:naam)}</name>
         </xsl:otherwise> 
       </xsl:choose>  
-      <xsl:variable name="openapi-ref" select="local:kenmerk-ext($target, 'OA Reference')[1]" as="xs:string?"/>
-      <xsl:choose>
-        <xsl:when test="normalize-space($openapi-ref)">
-          <type openapi-ref="{$openapi-ref}"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <type 
-            is-enum="false" 
-            is-standard="false"
-            package-name="{entity:package-name(local:package-hierarchy($target))}"
-            model-element="{$target/local-name()}">{entity:class-name($target/mim:naam)}</type>    
-        </xsl:otherwise>
-      </xsl:choose>
+      <type 
+        is-enum="false" 
+        is-standard="false"
+        package-name="{entity:package-name(local:package-hierarchy($target))}"
+        model-element="{$target/local-name()}">{entity:class-name($target/mim:naam)}</type>    
       <category>{local-name()} -> {$target/local-name()}</category>
       <definition>
         <xsl:apply-templates select="mim:definitie/node()" mode="xhtml"/>
@@ -759,13 +729,7 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:variable name="resolved-element" select="local:resolve-reference($type[@xlink:href])" as="element()"/>
-          <xsl:variable name="openapi-ref" select="local:kenmerk-ext($resolved-element, 'OA Reference')[1]" as="xs:string?"/>
           <xsl:choose>
-            <xsl:when test="normalize-space($openapi-ref)">
-              <class>
-                <openapi-ref>{$openapi-ref}</openapi-ref>
-              </class>
-            </xsl:when>
             <xsl:when test="$resolved-element/self::mim:PrimitiefDatatype/mim:supertypen/mim:GeneralisatieDatatypen/mim:supertype/mim:Datatype">
               <!-- Use the MIM standard type supertype instead of a custom subclassed entity (we cannot subclass String after all): -->
               <xsl:sequence select="local:type-to-class($resolved-element/self::mim:PrimitiefDatatype/mim:supertypen/mim:GeneralisatieDatatypen/mim:supertype/mim:Datatype)"/>

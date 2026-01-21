@@ -648,11 +648,7 @@
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
       <mim-ext:constructietype>{imvert:stereotype}</mim-ext:constructietype>
       <mim:naam source-id="CFG-TV-PSEUDO-NAME">{$name}</mim:naam>
-      <xsl:where-populated>
-        <mim-ext:kenmerken>
-          <!-- hoe geef je kernmerken mee? -->
-        </mim-ext:kenmerken>
-      </xsl:where-populated>
+      <xsl:call-template name="extensieKenmerken"/>
     </mim-ext:Constructie>
   </xsl:template>
   
