@@ -193,6 +193,26 @@
     </xsl:result-document>
   </xsl:template>
   
+  <xsl:template match="entity[features/feature[@name='OA Reference']]" priority="2.0">
+    <xsl:variable name="full-package-name" select="local:full-package-name(package-name)" as="xs:string"/>
+    <xsl:result-document href="{$output-uri}/src/main/java/{replace($full-package-name, '\.', '/')}/{replace(name, '\.', '/')}.java" method="text">   
+      <xsl:variable name="lines-elements" as="element(line)+"> 
+        <line>package {$full-package-name};</line>
+        <line/>
+        <line>import io.swagger.v3.oas.annotations.media.Schema;</line>
+        <line/>
+        <xsl:call-template name="javadoc"/>
+        <line>@nl.imvertor.mim.annotation.{model-element}</line>
+        <line>@Schema(ref = "{features/feature[@name='OA Reference']}")</line>
+        <line>public interface {name} {{}}</line>
+      </xsl:variable>
+      <xsl:variable name="lines" as="xs:string*">
+        <xsl:apply-templates select="$lines-elements"/>  
+      </xsl:variable>
+      <xsl:sequence select="string-join($lines)"/>
+    </xsl:result-document>
+  </xsl:template>
+  
   <xsl:template match="field[not(auto-generate = 'true')]" mode="field-declaration">
     <line/>
     
@@ -215,8 +235,7 @@
       oas:annotation-field('maximum', (max-incl, max-excl)[1]),
       oas:annotation-field('exclusiveMinimum', if (exists(min-excl/text())) then 'true' else (), false()),
       oas:annotation-field('exclusiveMaximum', if (exists(max-excl/text())) then 'true' else (), false()), 
-      oas:annotation-field('pattern', formal-pattern),
-      oas:annotation-field('ref', type/@openapi-ref)
+      oas:annotation-field('pattern', formal-pattern)
       ), ', ')})</xsl:variable>
     
     <xsl:choose>
@@ -228,12 +247,7 @@
       </xsl:otherwise>
     </xsl:choose>
     
-    <xsl:variable name="resolved-type" as="xs:string">
-      <xsl:choose>
-        <xsl:when test="type/@openapi-ref">{if (cardinality/target/max-occurs = $unbounded) then 'List&lt;Object&gt;' else 'Object'}</xsl:when>
-        <xsl:otherwise>{local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])}</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
+    <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])" as="xs:string"/>
     
     <line indent="2">private {$resolved-type} {$field-name};</line>
     
@@ -241,12 +255,7 @@
   
   <xsl:template match="field[not(auto-generate = 'true')]" mode="field-getter-setter">
     <xsl:variable name="field-name" select="local:unique-field-name(name)" as="xs:string"/>
-    <xsl:variable name="resolved-type" as="xs:string">
-      <xsl:choose>
-        <xsl:when test="type/@openapi-ref">{if (cardinality/target/max-occurs = $unbounded) then 'List&lt;Object&gt;' else 'Object'}</xsl:when>
-        <xsl:otherwise>{local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])}</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
+    <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])" as="xs:string"/>
     <line/>
     <line indent="2">public {$resolved-type} {if (type = 'Boolean') then 'is' else 'get'}{functx:capitalize-first($field-name)}() {{</line>
     <line indent="4">return {$field-name};</line>
