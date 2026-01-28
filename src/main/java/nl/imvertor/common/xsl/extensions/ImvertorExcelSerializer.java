@@ -32,7 +32,9 @@ import net.sf.saxon.value.SequenceType;
 import net.sf.saxon.value.StringValue;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.ExcelFile;
+import nl.imvertor.common.file.OOXmlFile;
 import nl.imvertor.common.file.XmlFile;
 
 /**
@@ -95,6 +97,10 @@ public class ImvertorExcelSerializer extends ExtensionFunctionDefinition {
 					excelFile.toXmlFile(xmlFile);					
 				} else {
 					// assume excel > 2003
+					OOXmlFile excelFile = new OOXmlFile(excelPath);
+					excelFile.setEncoding("UTF-8");
+					xmlFile.getParentFile().mkdirs();
+					excelFile.toXmlFile(xmlFile,OOXmlFile.OFFICE_SERIALIZATION_TO_SIMPLE_WORKBOOK);	
 				}
 				return StringValue.makeStringValue(xmlFile.getCanonicalPath());
 			} catch (Exception e) {
