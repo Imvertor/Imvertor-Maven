@@ -48,4 +48,16 @@
     </xsl:choose>
   </xsl:function>
   
+  <xsl:function name="oas:get-all-subtypes" as="element(entity)*">
+    <xsl:param name="entity" as="element(entity)?"/>    
+    <xsl:variable name="subtypes" select="$entity/root()//entity[super-type/@package-name = $entity/package-name and super-type = $entity/name]" as="element(entity)*"/>
+    <xsl:sequence select="$subtypes, for $s in $subtypes return oas:get-all-subtypes($s)"/>
+  </xsl:function>
+  
+  <xsl:function name="oas:get-all-supertypes" as="element(entity)*">
+    <xsl:param name="entity" as="element(entity)?"/>    
+    <xsl:variable name="supertypes" select="$entity/root()//entity[package-name = $entity/super-type/@package-name and name = $entity/super-type]" as="element(entity)*"/>
+    <xsl:sequence select="for $s in $supertypes return oas:get-all-supertypes($s), $supertypes"/>
+  </xsl:function>
+  
 </xsl:stylesheet>

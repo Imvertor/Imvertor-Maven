@@ -75,7 +75,7 @@
   </xsl:template>
     
   <xsl:template name="generate-standard-operations"> 
-    <xsl:for-each select=".//entity[(model-element = 'Objecttype') and (is-abstract = 'false') and not(entity:feature(., 'OA Expose') = 'no')]">
+    <xsl:for-each select=".//entity[(model-element = 'Objecttype') and not(entity:feature(., 'OA Expose') = 'no')]">
       
       <xsl:variable name="full-resource-package-name" select="local:full-resource-package-name(package-name)" as="xs:string"/>
       <xsl:variable name="resource-class-name" select="name || 'Resource'" as="xs:string"/>

@@ -33,20 +33,25 @@
         <line>package {$full-package-name};</line>
         <line/>
         
+        <xsl:variable name="subtypes" select="oas:get-all-subtypes(.)" as="element(entity)*"/>
+        <xsl:variable name="has-subtypes" select="exists($subtypes)" as="xs:boolean"/>
+        <xsl:variable name="supertypes" select="oas:get-all-supertypes(.)" as="element(entity)*"/>
+        <xsl:variable name="has-supertypes" select="exists($supertypes)" as="xs:boolean"/>
+        
         <!-- imports: -->
         <line>import nl.imvertor.mim.model.*;</line>
         <line>import io.swagger.v3.oas.annotations.media.*;</line>
         <line>import io.swagger.v3.oas.annotations.media.Schema.*;</line> 
         <line>import java.util.*;</line>
         <line>import java.time.*;</line>
-        <line/>
-  
+        
         <xsl:call-template name="javadoc"/>
         
         <xsl:if test="not(model-element = 'Keuze')">
           <line>@nl.imvertor.mim.annotation.{model-element}</line>  
         </xsl:if>
         
+        <!-- Keuzen: -->
         <xsl:variable name="any-of-classes" 
           select="
             if (model-element = 'Keuze') then '{' || string-join(
@@ -59,9 +64,33 @@
             ', ') || '}' 
             else ()" as="xs:string?"/>
         
+        <!-- Polymorfisme: -->
+        <xsl:variable name="concrete-self-entity" select="if (not(is-abstract = 'true')) then . else ()" as="element(entity)?"/>
+        <xsl:variable name="discriminator-property" select="if ($has-subtypes) then 'objectType' else ()" as="xs:string?"/>
+        <xsl:variable name="one-of-classes" as="xs:string?">
+          <xsl:if test="$has-subtypes">
+            <xsl:variable name="types" as="xs:string*">
+              <xsl:for-each select="($concrete-self-entity, $subtypes)">{local:full-package-name(package-name) || '.' || name || '.class'}</xsl:for-each>
+            </xsl:variable>
+            <xsl:sequence select="if (exists($types)) then '{ ' || string-join($types, ', ') || ' }' else ()"/>
+          </xsl:if>
+        </xsl:variable>
+        <xsl:variable name="discriminator-mapping" as="xs:string?">
+          <xsl:variable name="mappings" as="xs:string*">
+            <xsl:for-each select="($concrete-self-entity, $subtypes)">
+              <xsl:text>@DiscriminatorMapping(value = "{lower-case(name)}", schema = {local:full-package-name(package-name) || '.' || name || '.class'})</xsl:text>
+            </xsl:for-each>
+          </xsl:variable>
+          <xsl:sequence select="if (exists($mappings)) then '{ ' || string-join($mappings, ', ') || ' }' else ()"/>
+        </xsl:variable>
+        
         <line>@Schema({string-join((
           oas:annotation-field('description', ((funct:feature-to-commonmark(., 'OA Description'), funct:element-to-commonmark(definition)))[1]),
-          oas:annotation-field('anyOf', $any-of-classes, false())), ', ')})</line>
+          oas:annotation-field('anyOf', $any-of-classes, false()),
+          oas:annotation-field('oneOf', $one-of-classes, false()),
+          oas:annotation-field('discriminatorProperty', $discriminator-property),
+          oas:annotation-field('discriminatorMapping', $discriminator-mapping, false())
+          ), ', ')})</line>
         
         <xsl:variable name="super-type-class-name" select="super-type" as="xs:string"/>
         
@@ -69,9 +98,15 @@
         
         <xsl:if test="not(model-element = 'Keuze')">
           <xsl:call-template name="identification-field-declarations"/>
+          <xsl:if test="$has-subtypes and not($has-supertypes)">
+            <xsl:call-template name="discriminator-field-declarations"/>
+          </xsl:if>
           <xsl:apply-templates select="fields" mode="field-declaration"/>
         
           <xsl:call-template name="identification-field-getters-setters"/>
+          <xsl:if test="$has-subtypes and not($has-supertypes)">
+            <xsl:call-template name="discriminator-field-getters-setters"/>
+          </xsl:if>
           <xsl:apply-templates select="fields" mode="field-getter-setter"/>
         </xsl:if>
         
@@ -293,6 +328,19 @@
     <line/>
     <line indent="2">public String getUrl() {{</line>
     <line indent="4">return url;</line>
+    <line indent="2">}}</line>
+  </xsl:template>
+  
+  <xsl:template name="discriminator-field-declarations">
+    <line/>
+    <line indent="2">@Schema(name = "objectType", description = "De naam van het ObjectType van dit schema", type = "string", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY, minLength = 1)</line>
+    <line indent="2">private String objectType;</line>  
+  </xsl:template>
+  
+  <xsl:template name="discriminator-field-getters-setters">
+    <line/>
+    <line indent="2">public String getObjectType() {{</line>
+    <line indent="4">return objectType;</line>
     <line indent="2">}}</line>
   </xsl:template>
   
