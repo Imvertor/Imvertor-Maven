@@ -44,6 +44,7 @@
         <line>import io.swagger.v3.oas.annotations.media.Schema.*;</line> 
         <line>import java.util.*;</line>
         <line>import java.time.*;</line>
+        <line/>
         
         <xsl:call-template name="javadoc"/>
         
@@ -76,12 +77,14 @@
           </xsl:if>
         </xsl:variable>
         <xsl:variable name="discriminator-mapping" as="xs:string?">
-          <xsl:variable name="mappings" as="xs:string*">
-            <xsl:for-each select="($concrete-self-entity, $subtypes)">
-              <xsl:text>@DiscriminatorMapping(value = "{lower-case(name)}", schema = {local:full-package-name(package-name) || '.' || name || '.class'})</xsl:text>
-            </xsl:for-each>
-          </xsl:variable>
-          <xsl:sequence select="if (exists($mappings)) then '{ ' || string-join($mappings, ', ') || ' }' else ()"/>
+          <xsl:if test="$has-subtypes">
+            <xsl:variable name="mappings" as="xs:string*">
+              <xsl:for-each select="($concrete-self-entity, $subtypes)">
+                <xsl:text>@DiscriminatorMapping(value = "{lower-case(name)}", schema = {local:full-package-name(package-name) || '.' || name || '.class'})</xsl:text>
+              </xsl:for-each>
+            </xsl:variable>
+            <xsl:sequence select="if (exists($mappings)) then '{ ' || string-join($mappings, ', ') || ' }' else ()"/>
+          </xsl:if>
         </xsl:variable>
         
         <line>@Schema({string-join((
@@ -251,6 +254,8 @@
   <xsl:template match="field[not(auto-generate = 'true')]" mode="field-declaration">
     <line/>
     
+    <xsl:variable name="field-context" select="." as="element(field)"/>
+    
     <xsl:variable name="field-name" select="local:unique-field-name(name)" as="xs:string"/>
     
     <xsl:call-template name="javadoc">
@@ -259,38 +264,113 @@
     
     <xsl:variable name="required-mode" select="if (not(cardinality/target/min-occurs = '0')) then 'RequiredMode.REQUIRED' else ()" as="xs:string?"/>
     
-    <xsl:variable name="schema" as="xs:string">@Schema({string-join((
-      oas:annotation-field('name', (name/@original, name)[1]),
-      oas:annotation-field('description', ((funct:feature-to-commonmark(., 'OA Description'), funct:element-to-commonmark(definition)))[1]),
-      oas:annotation-field('requiredMode', $required-mode, false()),
-      oas:annotation-field('nullable', nullable[. = 'true'], false()),
-      oas:annotation-field('minLength', size-min, false()),
-      oas:annotation-field('maxLength', size-max, false()),
-      oas:annotation-field('minimum', (min-incl, min-excl)[1]),
-      oas:annotation-field('maximum', (max-incl, max-excl)[1]),
-      oas:annotation-field('exclusiveMinimum', if (exists(min-excl/text())) then 'true' else (), false()),
-      oas:annotation-field('exclusiveMaximum', if (exists(max-excl/text())) then 'true' else (), false()), 
-      oas:annotation-field('pattern', formal-pattern)
-      ), ', ')})</xsl:variable>
+    <xsl:variable name="type-entity" select="oas:resolve-reference(type)" as="element(entity)?"/>
     
     <xsl:choose>
-      <xsl:when test="(cardinality/target/max-occurs = $unbounded)">
-        <line indent="2">@ArraySchema(schema = {$schema})</line> <!-- TODO: implement minItems, maxItems -->
+      
+      <!-- Keuze tussen primitieve datatypen: -->
+      <xsl:when test="$type-entity[model-element = 'Keuze' and fields/field[(category = 'Keuze datatype') and (type/@is-standard = 'true')]]">
+        <xsl:variable name="one-of-classes" as="xs:string?">
+          <xsl:variable name="classes" as="xs:string*">
+            <xsl:for-each select="$type-entity/fields/field[category = 'Keuze datatype']">{local:type(type, cardinality)}.class</xsl:for-each>
+          </xsl:variable>
+          <xsl:text>{{ {string-join($classes, ', ')} }}</xsl:text>
+        </xsl:variable>
+        <line indent="2">@Schema({string-join((
+          oas:annotation-field('name', (name/@original, name)[1]),
+          oas:annotation-field('oneOf', $one-of-classes, false()),
+          oas:annotation-field('description', ((funct:feature-to-commonmark(., 'OA Description'), funct:element-to-commonmark(definition)))[1]),
+          oas:annotation-field('requiredMode', $required-mode, false()),
+          oas:annotation-field('nullable', nullable[. = 'true'], false()),
+          oas:annotation-field('minLength', size-min, false()),
+          oas:annotation-field('maxLength', size-max, false()),
+          oas:annotation-field('minimum', (min-incl, min-excl)[1]),
+          oas:annotation-field('maximum', (max-incl, max-excl)[1]),
+          oas:annotation-field('exclusiveMinimum', if (exists(min-excl/text())) then 'true' else (), false()),
+          oas:annotation-field('exclusiveMaximum', if (exists(max-excl/text())) then 'true' else (), false()), 
+          oas:annotation-field('pattern', formal-pattern)
+          ), ', ')})</line>
+        <line indent="2">private Object {$field-name};</line>
       </xsl:when>
+      
+      <!-- Keuze tussen atttribuutsoorten: -->
+      <xsl:when test="$type-entity[model-element = 'Keuze' and fields/field[(category = 'Attribuutsoort') and (type/@is-standard = 'true')]]">
+        <xsl:variable name="one-of-classes" as="xs:string?">
+          <xsl:variable name="classes" as="xs:string*">
+            <xsl:for-each select="$type-entity/fields/field[category = 'Attribuutsoort']">{'_' || generate-id($field-context) || generate-id() || functx:substring-after-last(local:type(type, cardinality), '.') || '.class'}</xsl:for-each>
+          </xsl:variable>
+          <xsl:text>{{ {string-join($classes, ', ')} }}</xsl:text>
+        </xsl:variable>
+        <line indent="2">@Schema({string-join((
+          oas:annotation-field('name', (name/@original, name)[1]),
+          oas:annotation-field('oneOf', $one-of-classes, false())
+          ), ', ')})</line>
+        <line indent="2">private Object {$field-name};</line>
+        <xsl:for-each select="$type-entity/fields/field[category = 'Attribuutsoort']">
+          <xsl:variable name="field-type" select="local:type(type, cardinality)" as="xs:string"/>
+          <line/>
+          <line indent="2">@Schema({string-join((
+            oas:annotation-field('implementation', $field-type || '.class', false()),
+            oas:annotation-field('description', ((funct:feature-to-commonmark(., 'OA Description'), funct:element-to-commonmark(definition)))[1]),
+            oas:annotation-field('requiredMode', $required-mode, false()),
+            oas:annotation-field('nullable', nullable[. = 'true'], false()),
+            oas:annotation-field('minLength', size-min, false()),
+            oas:annotation-field('maxLength', size-max, false()),
+            oas:annotation-field('minimum', (min-incl, min-excl)[1]),
+            oas:annotation-field('maximum', (max-incl, max-excl)[1]),
+            oas:annotation-field('exclusiveMinimum', if (exists(min-excl/text())) then 'true' else (), false()),
+            oas:annotation-field('exclusiveMaximum', if (exists(max-excl/text())) then 'true' else (), false()), 
+            oas:annotation-field('pattern', formal-pattern)
+            ), ', ')})</line>
+          <line indent="2">static class {'_' || generate-id($field-context) || generate-id() || functx:substring-after-last(local:type(type, cardinality), '.')} {{}}</line>
+        </xsl:for-each>
+      </xsl:when> 
+      
       <xsl:otherwise>
-        <line indent="2">{$schema}</line>
+        <xsl:variable name="schema" as="xs:string">@Schema({string-join((
+          oas:annotation-field('name', (name/@original, name)[1]),
+          oas:annotation-field('description', ((funct:feature-to-commonmark(., 'OA Description'), funct:element-to-commonmark(definition)))[1]),
+          oas:annotation-field('requiredMode', $required-mode, false()),
+          oas:annotation-field('nullable', nullable[. = 'true'], false()),
+          oas:annotation-field('minLength', size-min, false()),
+          oas:annotation-field('maxLength', size-max, false()),
+          oas:annotation-field('minimum', (min-incl, min-excl)[1]),
+          oas:annotation-field('maximum', (max-incl, max-excl)[1]),
+          oas:annotation-field('exclusiveMinimum', if (exists(min-excl/text())) then 'true' else (), false()),
+          oas:annotation-field('exclusiveMaximum', if (exists(max-excl/text())) then 'true' else (), false()), 
+          oas:annotation-field('pattern', formal-pattern)
+          ), ', ')})</xsl:variable>
+        
+        <xsl:choose>
+          <xsl:when test="(cardinality/target/max-occurs = $unbounded)">
+            <line indent="2">@ArraySchema(schema = {$schema})</line> <!-- TODO: implement minItems, maxItems -->
+          </xsl:when>
+          <xsl:otherwise>
+            <line indent="2">{$schema}</line>
+          </xsl:otherwise>
+        </xsl:choose>
+        
+        <xsl:variable name="resolved-type" as="xs:string" select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])"/>
+          
+        <line indent="2">private {$resolved-type} {$field-name};</line>
+        
       </xsl:otherwise>
     </xsl:choose>
-    
-    <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])" as="xs:string"/>
-    
-    <line indent="2">private {$resolved-type} {$field-name};</line>
     
   </xsl:template>
   
   <xsl:template match="field[not(auto-generate = 'true')]" mode="field-getter-setter">
     <xsl:variable name="field-name" select="local:unique-field-name(name)" as="xs:string"/>
-    <xsl:variable name="resolved-type" select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])" as="xs:string"/>
+    <xsl:variable name="type-entity" select="oas:resolve-reference(type)" as="element(entity)?"/>
+    <xsl:variable name="resolved-type" as="xs:string">
+      <xsl:choose>
+        <!-- Keuze tussen datatypen of attribuutsoorten: -->
+        <xsl:when test="$type-entity[model-element = 'Keuze' and fields/field[(category = ('Keuze datatype', 'Attribuutsoort')) and (type/@is-standard = 'true')]]">Object</xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="local:type-or-reference(type, cardinality, aggregation, entity:feature(., 'OA Inclusion')[1])"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <line/>
     <line indent="2">public {$resolved-type} {if (type = 'Boolean') then 'is' else 'get'}{functx:capitalize-first($field-name)}() {{</line>
     <line indent="4">return {$field-name};</line>

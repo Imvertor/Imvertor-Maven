@@ -11,6 +11,8 @@
   expand-text="true"
   version="3.0">
   
+  <xsl:key name="fqn" match="entity" use="package-name || '.' || name"/>
+  
   <xsl:function name="oas:to-openapi-query-parameter-name">
     <xsl:param name="str" as="xs:string"/>
     <xsl:variable name="flattened" select="funct:flatten-diacritics(normalize-space($str))" as="xs:string"/>
@@ -46,6 +48,11 @@
       <xsl:when test="contains($str, $lf)">"""{$lf}{$escaped-str}"""</xsl:when>
       <xsl:otherwise>"{$escaped-str}"</xsl:otherwise>
     </xsl:choose>
+  </xsl:function>
+  
+  <xsl:function name="oas:resolve-reference" as="element(entity)?">
+    <xsl:param name="type-element" as="element()?"/>
+    <xsl:sequence select="if (empty($type-element)) then () else key('fqn', $type-element/@package-name || '.' || $type-element, $type-element/root())"/>
   </xsl:function>
   
   <xsl:function name="oas:get-all-subtypes" as="element(entity)*">
