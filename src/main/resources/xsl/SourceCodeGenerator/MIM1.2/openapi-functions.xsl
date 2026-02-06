@@ -11,6 +11,8 @@
   expand-text="true"
   version="3.0">
   
+  <xsl:key name="fqn" match="entity" use="package-name || '.' || name"/>
+  
   <xsl:function name="oas:to-openapi-query-parameter-name">
     <xsl:param name="str" as="xs:string"/>
     <xsl:variable name="flattened" select="funct:flatten-diacritics(normalize-space($str))" as="xs:string"/>
@@ -46,6 +48,23 @@
       <xsl:when test="contains($str, $lf)">"""{$lf}{$escaped-str}"""</xsl:when>
       <xsl:otherwise>"{$escaped-str}"</xsl:otherwise>
     </xsl:choose>
+  </xsl:function>
+  
+  <xsl:function name="oas:resolve-reference" as="element(entity)?">
+    <xsl:param name="type-element" as="element()?"/>
+    <xsl:sequence select="if (empty($type-element)) then () else key('fqn', $type-element/@package-name || '.' || $type-element, $type-element/root())"/>
+  </xsl:function>
+  
+  <xsl:function name="oas:get-all-subtypes" as="element(entity)*">
+    <xsl:param name="entity" as="element(entity)?"/>    
+    <xsl:variable name="subtypes" select="$entity/root()//entity[super-type/@package-name = $entity/package-name and super-type = $entity/name]" as="element(entity)*"/>
+    <xsl:sequence select="$subtypes, for $s in $subtypes return oas:get-all-subtypes($s)"/>
+  </xsl:function>
+  
+  <xsl:function name="oas:get-all-supertypes" as="element(entity)*">
+    <xsl:param name="entity" as="element(entity)?"/>    
+    <xsl:variable name="supertypes" select="$entity/root()//entity[package-name = $entity/super-type/@package-name and name = $entity/super-type]" as="element(entity)*"/>
+    <xsl:sequence select="for $s in $supertypes return oas:get-all-supertypes($s), $supertypes"/>
   </xsl:function>
   
 </xsl:stylesheet>
