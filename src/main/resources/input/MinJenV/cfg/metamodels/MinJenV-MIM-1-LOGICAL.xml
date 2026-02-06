@@ -12,18 +12,18 @@
     
     <xi:include href="../../../Armatiek/cfg/metamodels/Armatiek-OpenAPI-1-BASE-10.xml"/>
 
-    <name>EIGENAAR-MIM-1-LOGICAL</name>
+    <name>MinJenV-MIM-1-LOGICAL</name>
     
     <profiles>
         <profile lang="nl"> 
-            <id>MEGNLL</id>
+            <id>MJVNLL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM 1 EIGENAAR NL LOGISCH</desc> 
+            <desc>MIM 1 MinJenV NL LOGISCH</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
-            <id>MEGENL</id>
+            <id>MJVENL</id>
             <!-- <release/> identical to Imvertor release -->
-            <desc>MIM 1 EIGENAAR EN LOGICAL</desc>
+            <desc>MIM 1 MinJenV EN LOGICAL</desc>
         </profile>
     </profiles>
     
