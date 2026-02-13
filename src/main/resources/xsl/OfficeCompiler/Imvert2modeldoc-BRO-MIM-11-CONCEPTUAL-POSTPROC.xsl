@@ -553,6 +553,7 @@
             <xsl:when test="$unit-ucum = 'Cel'">°C (graden Celsius)</xsl:when>
             <xsl:when test="$unit-ucum = 'deg'">° (graden)</xsl:when>
             <xsl:when test="$unit-ucum = 'g/cm3'">g/cm<sup>3</sup> (gram/kubieke centimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'h'">h (uur)</xsl:when>
             <xsl:when test="$unit-ucum = 'kPa'">kPa (kilopascal)</xsl:when>
             <xsl:when test="$unit-ucum = 'm'">m (meter)</xsl:when>
             <xsl:when test="$unit-ucum = 'm/d'">m/d (meter per 24 uur)</xsl:when>
