@@ -402,9 +402,12 @@ public class XmiCompiler extends Step {
 		     FileOutputStream xmiFos = new FileOutputStream(tempFile)) {
 			List<Image> images = exporter.export(xmiFis, xmiFos);
 			for (Image image: images) {
-				try (FileOutputStream imgFos = new FileOutputStream(new File(imageFolder, image.getImageID() + "_" + image.getName()))) {
-					imgFos.write(image.getData());
-					imgFos.close();
+				if (image.getData().length != 0) {
+					File file = new File(imageFolder, image.getImageID() + "_" + image.getName());
+					try (FileOutputStream imgFos = new FileOutputStream(file)) {
+						imgFos.write(image.getData());
+						imgFos.close();
+					}
 				}
 			}
 			xmiFis.close();
