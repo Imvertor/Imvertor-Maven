@@ -462,9 +462,9 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   
   <xsl:variable name="aggregatietype-mapping" as="map(xs:string, xs:string)">
     <xsl:map>
-      <xsl:map-entry key="'Compositie'" select="'Geen'"/>
+      <xsl:map-entry key="'Compositie'" select="'Compositie'"/>
       <xsl:map-entry key="'Gedeeld'" select="'Gedeeld'"/>
-      <xsl:map-entry key="'Geen'" select="'Compositie'"/>
+      <xsl:map-entry key="'Geen'" select="'Geen'"/>
     </xsl:map>
   </xsl:variable>
   
