@@ -1652,7 +1652,10 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-BASISURI'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-BASISURI'))"/>   
                 </xsl:when>
-             
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-XSDNAMESPACE'">
+                    <xsl:sequence select="imf:create-part-2(.,$this/imvert:namespace)"/>   
+                </xsl:when>
+                
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INFORMATIEMODELTYPE'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-IMTYPE'))"/>   
                 </xsl:when>
@@ -1674,7 +1677,7 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-TEKSTOPMAAK'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-TEKSTOPMAAK'))"/>   
                 </xsl:when>
-              
+                
                 <xsl:otherwise>
                     <xsl:sequence select="imf:msg($this,'FATAL','No such document rule: [1]',$doc-rule-id)"/>
                 </xsl:otherwise>

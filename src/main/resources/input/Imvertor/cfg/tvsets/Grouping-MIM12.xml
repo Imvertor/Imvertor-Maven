@@ -21,6 +21,6 @@
             <stereo minmax="0..1">stereotype-name-interface</stereo>
             <stereo minmax="0..1">stereotype-name-conceptual</stereo>
         </tv>
-    
+        
     </tagged-values>
 </tagset>

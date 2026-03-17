@@ -187,6 +187,15 @@
         </levels>
     </doc-rule>
     
+    <doc-rule id="CFG-DOC-XSDNAMESPACE" order="999">
+        <name lang="nl">XSD namespace</name>
+        <name lang="en">XSD namespace</name>
+        <levels>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-MODEL</level>
+            <level show="implied" compile="full" format="plain">DISPLAY-GLOBAL-DOMAIN</level>
+        </levels>
+    </doc-rule>
+    
     <doc-rule id="CFG-DOC-CONSTRAINT-NATURAL" order="400">
         <name lang="nl">Natuurlijke taal</name>
         <name lang="en">Natural language</name>

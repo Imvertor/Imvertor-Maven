@@ -402,6 +402,22 @@
                 <value default="yes">Nee</value>
             </declared-values>
         </tv>
+        
+        <tv norm="space"  id="CFG-TV-XSDNAMESPACE"><!-- #717 -->
+            <name lang="nl">XSD namespace</name>
+            <name lang="en">XSD namespace</name>
+            <desc lang="nl">
+                Namespace van een package. Namespace kan zijn opgenomen als tagged value of als alias van het package.  
+            </desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="1..1">stereotype-name-view-package</stereo>
+            </stereotypes>
+        </tv>
 
         <!-- 
             base en application package volgen de MIM regels voor "informatiemodel". 
