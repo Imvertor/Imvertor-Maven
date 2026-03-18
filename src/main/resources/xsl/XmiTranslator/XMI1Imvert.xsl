@@ -287,9 +287,11 @@
         
         <xsl:variable name="package-name" select="@name" as="xs:string"/>
         <xsl:variable name="package-id" select="@xmi.id" as="xs:string"/>
-        <xsl:variable name="namespace-1.1" select="imf:get-alias(.,'P')"/>
-        <xsl:variable name="namespace-1.2" select="imf:get-profile-tagged-value(.,'xsd namespace',())"/>
-        <xsl:variable name="namespace" select="($namespace-1.2,$namespace-1.1)[1]"/>
+        <xsl:variable name="namespace-1.1" select="imf:reduce-space(imf:get-alias(.,'P'))"/>
+        <xsl:variable name="namespace-1.2" select="imf:reduce-space(imf:get-profile-tagged-value(.,'xsd namespace',()))"/>
+        <xsl:variable name="namespace-uri" select="imf:reduce-space(imf:get-profile-tagged-value(.,'basis-uri',()))"/>
+        <xsl:variable name="namespace" select="($namespace-1.2,$namespace-1.1,$namespace-uri)[1]"/><!-- #717 -->
+        
         <xsl:variable name="metamodel" select="string-join($configuration,' ')"/>
         <xsl:variable name="model-level" select="imf:get-profile-tagged-value(.,'level','compact')"/>
         
@@ -307,7 +309,6 @@
             <xsl:sequence select="imf:get-id-info(.,'P')"/>
             <xsl:sequence select="$supplier-info"/>
             <xsl:sequence select="imf:create-output-element('imvert:namespace',$namespace)"/>
-            <xsl:sequence select="dlogger:save('$namespace',$namespace)"></xsl:sequence>
             <xsl:sequence select="imf:create-output-element('imvert:model-level',$model-level)"/>
             <xsl:sequence select="imf:get-element-documentation-info(.)"/>
             <xsl:sequence select="imf:get-history-info(.)"/>
