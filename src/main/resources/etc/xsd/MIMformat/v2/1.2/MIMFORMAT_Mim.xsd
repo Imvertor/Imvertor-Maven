@@ -564,7 +564,7 @@
           <xs:element name="datumOpname" type="xs:string"/>
           <xs:element name="locatie" type="xs:string"/>
           <xs:element name="doelformaat" type="xs:string" minOccurs="0"/>
-          <xs:element name="referentieElementen" minOccurs="1">
+          <xs:element name="referentieElementen" minOccurs="0">
             <xs:complexType>
               <xs:sequence>
                 <xs:element ref="mim:ReferentieElement" minOccurs="1" maxOccurs="unbounded"/>

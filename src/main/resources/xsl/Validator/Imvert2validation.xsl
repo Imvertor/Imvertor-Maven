@@ -721,18 +721,20 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]">
         <!--setup-->
+        <xsl:variable name="class-inheritance-complete" select="imf:get-full-class-definition(.)"/>
         <!--validation-->
         <xsl:sequence select="imf:report-error(.,
-            empty(imvert:attributes/imvert:attribute), 
+            empty($class-inheritance-complete/imvert:attributes/imvert:attribute), 
             'Datatypes with stereotype [1] must have at least one [2]',(imf:get-config-stereotypes('stereotype-name-complextype'),imf:get-config-stereotypes('stereotype-name-data-element')))"/>
         <xsl:next-match/>
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]">
         <!--setup-->
+        <xsl:variable name="class-inheritance-complete" select="imf:get-full-class-definition(.)"/>
         <!--validation-->
         <xsl:sequence select="imf:report-error(.,
-            empty(imvert:attributes/imvert:attribute), 
+            empty($class-inheritance-complete/imvert:attributes/imvert:attribute), 
             'Datatypes with stereotype [1] must have at least one [2]',(imf:get-config-stereotypes('stereotype-name-referentielijst'),imf:get-config-stereotypes('stereotype-name-referentie-element')))"/>
         <xsl:next-match/>
     </xsl:template>
