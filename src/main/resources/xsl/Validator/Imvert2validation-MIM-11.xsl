@@ -70,7 +70,7 @@
             'Association with stereotype [1] must not appear here, expecting (any of) [2]', (imf:string-group($stereotypes),imf:string-group(for $s in $allowed-parent-stereotypes return imf:get-config-name-by-id($s))))"/>
         
         <xsl:variable name="allowed-stereos" select="('stereotype-name-objecttype','stereotype-name-interface','stereotype-name-conceptual','stereotype-name-union-associations')"/>
-        <xsl:sequence select="imf:report-error(., 
+        <xsl:sequence select="imf:report-warning(., 
             (not($defining-class/imvert:stereotype/@id = $allowed-stereos)), 
             'Relation target must be stereotyped as [1] and not [2]', (imf:string-group(imf:get-config-stereotypes($allowed-stereos),' or '),imf:get-config-stereotypes($defining-class/imvert:stereotype/@id)))"/>
         
