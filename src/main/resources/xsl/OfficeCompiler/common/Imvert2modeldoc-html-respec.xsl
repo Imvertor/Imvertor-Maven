@@ -815,8 +815,22 @@
     <xsl:template match="colgroup/@width" mode="windup">
         <xsl:attribute name="style" select="concat('width: ',.,';')"/>
     </xsl:template>
-    <xsl:template match="a/@name" mode="windup">
-        <xsl:attribute name="id" select="."/>
+    <xsl:template match="a" mode="windup">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:choose>
+                <xsl:when test="@name">
+                    <xsl:attribute name="id" select="."/>
+                    <xsl:apply-templates select="node()" mode="#current"/>
+                </xsl:when>
+                <xsl:when test="@href and node()">
+                    <xsl:apply-templates select="node()" mode="#current"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="'(?)'"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:copy>
     </xsl:template>
     
     <xsl:template name="process-imagemaps">
