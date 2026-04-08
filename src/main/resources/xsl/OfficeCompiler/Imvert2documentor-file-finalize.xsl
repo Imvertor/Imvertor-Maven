@@ -70,7 +70,7 @@
                 </image>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:msg('ERROR','Image without source, at [1]\. Processing [2]',($msword-file-name,preceding::title)[1])"/>
+                <xsl:sequence select="imf:msg('ERROR','Image without source, at section [1]. Processing [2]',($msword-file-name,preceding::title[1]))"/>
                 <error loc="{$msword-file-name}">Plaatje zonder bron, in: {(preceding::title)[1]}</error>
             </xsl:otherwise>
         </xsl:choose>
@@ -368,6 +368,13 @@
         <xsl:sequence select="$table"/> 
         
     </xsl:template>
+    
+    
+    <xsl:template match="img">
+        <xsl:sequence select="imf:msg('WARNING','Image without expected style [3], at section [1]. Processing [2]',(preceding::title[1], $msword-file-name, 'Plaatje'))"/>
+        <xsl:next-match/>
+    </xsl:template>
+        
 
     <xsl:template match="node()|@*">
         <xsl:copy>
