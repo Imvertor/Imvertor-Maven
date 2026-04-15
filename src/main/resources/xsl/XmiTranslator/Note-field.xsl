@@ -11,6 +11,7 @@
     version="2.0">
 
     <xsl:variable name="notes-format" select="$configuration-notesrules-file/notes-format"/>
+    <xsl:variable name="notes-format-allow-markdown" select="imf:boolean($configuration-notesrules-file/notes-format-allow-markdown)"/>
     
     <xsl:template match="xhtml:p|xhtml:ul|xhtml:ol" mode="notes">
         <xsl:choose>
@@ -112,7 +113,22 @@
     </xsl:template>
     
     <xsl:template match="text()" mode="notes">
-        <xsl:value-of select="."/>
+        <xsl:value-of select="if ($notes-format-allow-markdown) then . else imf:escape-markdown(.)"/>
     </xsl:template>
+    
+    <xsl:function name="imf:escape-markdown" as="xs:string*">
+        <xsl:param name="line" as="xs:string"/>
+        <xsl:variable name="res">
+            <xsl:analyze-string select="$line" regex="[\*\[\]\-`_]">
+                <xsl:matching-substring>
+                    <xsl:value-of select="'\' || ."/>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:value-of select="."/>
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        <xsl:sequence select="string-join($res,'')"/>
+    </xsl:function>
     
 </xsl:stylesheet>

@@ -470,6 +470,7 @@
                 <xsl:variable name="default" select="($rules/@default)[last()]"/>
            
                 <xsl:apply-templates select="imf:distinct($notes-rules//notes-format)[last()]" mode="#current"/>
+                <xsl:apply-templates select="imf:distinct($notes-rules//notes-format-allow-markdown)[last()]" mode="#current"/>
                 <notes-rule lang="{$language}" default="{$default}">
                     <xsl:for-each-group select="$rules//section" group-by="@title">
                         <xsl:sequence select="current-group()[last()]"/>
