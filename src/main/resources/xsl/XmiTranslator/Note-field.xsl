@@ -119,7 +119,7 @@
     <xsl:function name="imf:escape-markdown" as="xs:string*">
         <xsl:param name="line" as="xs:string"/>
         <xsl:variable name="res">
-            <xsl:analyze-string select="$line" regex="[\*\[\]\-`_]">
+            <xsl:analyze-string select="$line" regex="[\*\[\]`_]">
                 <xsl:matching-substring>
                     <xsl:value-of select="'\' || ."/>
                 </xsl:matching-substring>
