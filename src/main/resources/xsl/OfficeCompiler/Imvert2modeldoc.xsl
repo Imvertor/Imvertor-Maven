@@ -168,7 +168,7 @@
                         </xsl:apply-templates>
                     </section>
                     <section type="OVERVIEW-UNION" include="{$include-overview-sections-by-type}">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union-attributes','stereotype-name-union-for-attributes','stereotype-name-union-associations','stereotype-name-union-datatypes')]">
                             <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
                         </xsl:apply-templates>
                     </section>
@@ -340,7 +340,7 @@
         </section>
     </xsl:template>
    
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union-attributes','stereotype-name-union-for-attributes')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union-attributes','stereotype-name-union-for-attributes','stereotype-name-union-datatypes')]">
         <section name="{imf:get-name(.,true())}" type="UNION" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
