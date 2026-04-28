@@ -184,6 +184,10 @@
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-UNIONELEMENTS',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
+            <xsl:when test="@type = 'SHORT-UNIONLINKS'">
+                <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-UNIONLINKS',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
             <xsl:when test="@type = 'SHORT-DATAELEMENTS'">
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-DATAELEMENTS',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
@@ -386,6 +390,9 @@
                 <colgroup width="10%"/>
                 <colgroup width="10%"/>
             </xsl:when>
+            <xsl:when test="$type = 'SHORT-UNIONLINKS'"> <!-- 100 -->
+                <colgroup width="100%"/>
+            </xsl:when>
             <xsl:when test="$type = 'SHORT-REFERENCEELEMENTS'"> <!-- 30 50 10 10 -->
                 <colgroup width="30%"/>
                 <colgroup width="50%"/>
@@ -561,6 +568,11 @@
                     </td>
                     <td>
                         <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-UNIONLINKS'"> <!-- 100 -->
+                    <td>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>
                 </xsl:when>
                 <xsl:when test="$type = 'SHORT-ATTRIBUTES'"> <!-- 30 50 10 10 -->

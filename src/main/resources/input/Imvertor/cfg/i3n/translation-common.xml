@@ -538,7 +538,11 @@
         <key>SHORT-UNIONELEMENTS</key>
         <trans lang="nl">Overzicht keuze elementen</trans>
         <trans lang="en">Choice elements overview</trans>
-        
+    </item>
+    <item>
+        <key>SHORT-UNIONLINKS</key>
+        <trans lang="nl">Overzicht keuze elementen</trans>
+        <trans lang="en">Choice elements overview</trans>
     </item>
     <item>
         <key>SHORT-REFERENCEELEMENTS</key>
@@ -703,6 +707,13 @@
         <key>UNIONELEMENT-CARD</key>
         <trans lang="nl">Card</trans>
         <trans lang="en">Card</trans>
+    </item>
+    
+    
+    <item>
+        <key>UNIONELEMENT-LINK</key>
+        <trans lang="nl">Keuze element</trans>
+        <trans lang="en">Choice element</trans>
     </item>
     
     <item>

@@ -340,7 +340,7 @@
         </section>
     </xsl:template>
    
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union-attributes','stereotype-name-union-for-attributes')]">
         <section name="{imf:get-name(.,true())}" type="UNION" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
@@ -353,6 +353,21 @@
             <xsl:apply-templates select="imvert:constraints" mode="short"/>
             <!-- hier alle type relaties -->
             <xsl:apply-templates select="." mode="type-relations"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
+        </section>
+    </xsl:template>
+    
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union-associations')]">
+        <section name="{imf:get-name(.,true())}" type="UNION" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
+            <xsl:sequence select="imf:calculate-node-position(.)"/>
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
+            <content>
+                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-UNION')"/>
+            </content>
+            <!-- hier alle attributen; als ingebedde tabel -->
+            <xsl:apply-templates select="imvert:associations" mode="short-union"/>
+            <!-- hier alle constraints; als ingebedde tabel -->
+            <xsl:apply-templates select="imvert:constraints" mode="short"/>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
@@ -769,6 +784,28 @@
             </item>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
         </part>
+    </xsl:template>
+    
+    <xsl:template match="imvert:associations" mode="short-union">
+        <xsl:variable name="r" as="element()*">
+            <xsl:for-each select="imvert:association">
+                <xsl:variable name="choice-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
+                <part>
+                    <item>
+                        <xsl:sequence select="imf:create-link($choice-class,'global',imvert:type-name/@original)"/>
+                    </item>
+                </part>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:sequence select="dlogger:save('$r ' || (ancestor::*/imvert:name)[1],$r)"></xsl:sequence>
+        <section type="SHORT-UNIONLINKS">
+            <content>
+                <itemtype/>
+                <itemtype type="UNIONELEMENT-LINK"/>
+                <!-- and add rows -->
+                <xsl:sequence select="$r"/>
+            </content>
+        </section>
     </xsl:template>
     
     <xsl:template match="imvert:supertype" mode="short gegevensgroeptype">
