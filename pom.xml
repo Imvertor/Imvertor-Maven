@@ -286,36 +286,11 @@
       <version>6.6.1.202309021850-r</version>
     </dependency>
 
-	  <dependency>
-      <groupId>org.eclipse.mylyn.docs</groupId>
-      <artifactId>org.eclipse.mylyn.wikitext.textile</artifactId>
-      <version>3.0.25</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.mylyn.docs</groupId>
-      <artifactId>org.eclipse.mylyn.wikitext.markdown</artifactId>
-      <version>3.0.25</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.mylyn.docs</groupId>
-      <artifactId>org.eclipse.mylyn.wikitext.tracwiki</artifactId>
-      <version>3.0.25</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.mylyn.docs</groupId>
-      <artifactId>org.eclipse.mylyn.wikitext.mediawiki</artifactId>
-      <version>3.0.25</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.mylyn.docs</groupId>
-      <artifactId>org.eclipse.mylyn.wikitext.confluence</artifactId>
-      <version>3.0.25</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.mylyn.docs</groupId>
-      <artifactId>org.eclipse.mylyn.wikitext.twiki</artifactId>
-      <version>3.0.25</version>
-    </dependency>
+   <dependency>
+	  <groupId>org.commonmark</groupId>
+	  <artifactId>commonmark</artifactId>
+	  <version>0.28.0</version>
+	</dependency>
     
     <dependency>
 	    <groupId>nl.armatiek.saxon</groupId>
