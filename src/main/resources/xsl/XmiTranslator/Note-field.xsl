@@ -7,8 +7,10 @@
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="xs"
-    version="2.0">
+    version="3.0">
 
     <xsl:variable name="notes-format" select="$configuration-notesrules-file/notes-format"/>
     <xsl:variable name="notes-format-allow-markdown" select="imf:boolean($configuration-notesrules-file/notes-format-allow-markdown)"/>
@@ -113,7 +115,10 @@
     </xsl:template>
     
     <xsl:template match="text()" mode="notes">
-        <xsl:value-of select="if ($notes-format-allow-markdown) then . else imf:escape-markdown(.)"/>
+        <xsl:variable name="in-markup" select="parent::*[local-name(.) = ('i','b')]"/>
+        <xsl:variable name="text1" select="if (ends-with(.,' ') and $in-markup) then replace(.,'\s+$','') else ."/>
+        <xsl:variable name="text2" select="if (starts-with($text1,' ') and $in-markup) then replace($text1,'^\s+','') else $text1"/>
+        <xsl:value-of select="if ($notes-format-allow-markdown) then $text2 else imf:escape-markdown($text2)"/>
     </xsl:template>
     
     <xsl:function name="imf:escape-markdown" as="xs:string*">

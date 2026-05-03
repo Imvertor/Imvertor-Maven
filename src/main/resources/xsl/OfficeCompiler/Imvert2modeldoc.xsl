@@ -108,7 +108,6 @@
                     <!--external packages inserted last -->
                     <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-external-package') and empty(imvert:conceptual-schema-version) and empty(imvert:package-replacement)]"/><!-- extern package is herkenbaar aan het niet gekoppeld zijn aan een conceptual schema versie -->
                 </xsl:variable>
-                <xsl:sequence select="dlogger:save('$sections',$sections)"></xsl:sequence>
                 <xsl:apply-templates select="$sections" mode="section-cleanup"/>    
             </chapter>
             
