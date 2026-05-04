@@ -411,11 +411,11 @@
             </desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-informatiemodel-package</stereo>
-                <stereo minmax="1..1">stereotype-name-base-package</stereo>
-                <stereo minmax="1..1">stereotype-name-application-package</stereo>
-                <stereo minmax="1..1">stereotype-name-domain-package</stereo>
-                <stereo minmax="1..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
 
