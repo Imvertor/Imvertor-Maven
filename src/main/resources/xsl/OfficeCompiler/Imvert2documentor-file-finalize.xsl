@@ -371,7 +371,7 @@
     
     
     <xsl:template match="img">
-        <xsl:sequence select="imf:msg('WARNING','Image without expected style [3], at section [1]. Processing [2]',(preceding::title[1], $msword-file-name, 'Plaatje'))"/>
+        <xsl:sequence select="imf:msg('WARNING','Image without expected style [3], at section [1]. Processing [2]',((preceding::title,'(No title)')[1], $msword-file-name, 'Plaatje'))"/>
         <xsl:next-match/>
     </xsl:template>
         
