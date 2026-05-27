@@ -498,12 +498,14 @@
                             <item>&#160;&#160;Type</item>
                             <item>Waardelijst uitbreidbaar</item>
                         </part>
+                        <?x
                         <xsl:if test="$defining-class-type = ('CONTENTS-REFERENCELIST')">
                             <part>
                                 <item>&#160;&#160;Identificerend gegeven</item>
                                 <item><xsl:value-of select="string-join($identifiers,', ')"/></item>
                             </part>
                         </xsl:if>
+                        x?>
                         <!-- alleen genereren als er een IMBRO/A domein is -->
                         <xsl:for-each select="$context/part[@type = 'CFG-DOC-DOMAIN-IMBROA']">
                             <part>
