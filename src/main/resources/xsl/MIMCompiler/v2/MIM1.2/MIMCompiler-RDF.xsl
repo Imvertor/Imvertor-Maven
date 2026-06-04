@@ -52,7 +52,7 @@
   </xsl:variable>
   
   <xsl:template match="/">
-    <xsl:variable name="metamodel" select="document('MIM1.2-model-RDF.xml')" as="document-node()" use-when="$is-imvertor-context"/>
+    <xsl:variable name="metamodel" select="document('MIM-model-RDF.xml')" as="document-node()" use-when="$is-imvertor-context"/>
     <xsl:variable name="metamodel" select="document('../xml/mim-modeldefinitie-rdf-1.2.xml')" as="document-node()" use-when="$is-werkbank-context"/>
     <xsl:variable name="metamodel" use-when="not($is-werkbank-context) and not($is-imvertor-context)" as="document-node()">
       <xsl:document/>
