@@ -813,11 +813,19 @@
             <xsl:apply-templates mode="windup"/>
         </img>
     </xsl:template>
-    <xsl:template match="section[@level ge '7']" mode="windup">
+  
+    <!-- #714 - h7 wordt wel gegenereerd maar valt niet in html. De parent div heeft class deepheader, h7 wordt vervangen door strong -->
+    <xsl:template match="section[h7]" mode="windup">
         <div class="deepheader">
             <xsl:apply-templates select="node()|@*" mode="#current"/>
         </div>
     </xsl:template>
+    <xsl:template match="h7" mode="windup">
+        <strong>
+            <xsl:apply-templates select="node()|@*" mode="#current"/>
+        </strong>
+    </xsl:template>
+    
     <xsl:template match="section/@level" mode="windup">
         <!-- remove -->
     </xsl:template>
