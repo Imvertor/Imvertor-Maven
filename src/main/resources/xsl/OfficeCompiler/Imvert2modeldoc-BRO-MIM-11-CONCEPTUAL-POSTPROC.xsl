@@ -160,8 +160,8 @@
         
         <xsl:variable name="target-role-name" select="imf:get-target-role-name(../@id)"/>
         
+        <xsl:variable name="source" select="part[@type = 'CFG-DOC-BRONOBJECTTYPE']/item[2]"/>
         <xsl:variable name="target" select="part[@type = 'CFG-DOC-GERELATEERDOBJECTTYPE']/item[2]"/>
-        <xsl:variable name="target-name" select="string($target)"/>
         
         <xsl:variable name="is-attribuutgroep" select="../@original-stereotype-id = 'stereotype-name-attributegroup'"/>
         <xsl:variable name="association-type" select="if ($is-attribuutgroep) then 'Gegevensgroep' else 'Associatie'"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 -->
@@ -192,21 +192,12 @@
                 </part>
                 <part type="CFG-DOC-NAAM">
                     <item>Bron</item>
-                    <item><xsl:value-of select="$source-name"/></item>
+                    <item><xsl:sequence select="$source"/><!-- dit is een item met link info --></item>
                 </part>
             </xsl:if>
             <part type="CFG-DOC-NAAM">
                 <item><xsl:value-of select="if ($is-attribuutgroep) then 'Gegevensgroeptype' else 'Doel'"/></item>
-                <item>
-                    <xsl:choose>
-                        <xsl:when test="$is-attribuutgroep">
-                            <xsl:sequence select="$target"/><!-- dit is een item met link info -->
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$target-name"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </item>
+                <item><xsl:sequence select="$target"/><!-- dit is een item met link info --></item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 correctie -->

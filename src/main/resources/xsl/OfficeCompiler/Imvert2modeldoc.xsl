@@ -1587,6 +1587,10 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-RELATIESOORT'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-relatiesoort($relation))"/>
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-BRONOBJECTTYPE'">
+                    <xsl:variable name="defining-class" select="$relation/ancestor::imvert:class"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:create-link($defining-class,'global',$defining-class/imvert:name/@original))"/>
+                </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-GERELATEERDOBJECTTYPE'">
                     <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office($relation/imvert:type-id)"/>
                     <xsl:choose>
