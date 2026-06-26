@@ -22,7 +22,7 @@
     <xsl:variable name="sections" select="//*:section"/>
     
     <xsl:template match="/"> <!-- een <document> -->
-
+    
         <xsl:sequence select="local:log('section: file-finalize ' || $msword-file-name,/)"/>
         
         <document name="{$msword-file-name}" auto="auto">
@@ -208,6 +208,9 @@
             <xsl:attribute name="target" select="'window_' || local:generate-anchor-name(@href)"/>
             <xsl:apply-templates select="node()|@*" mode="#current"/>
         </xsl:copy>
+        <xsl:if test="@href">
+            <xsl:sequence select="local:debug('HREF= '|| @href)"/>
+        </xsl:if>
     </xsl:template>
     
     <!-- 
@@ -459,6 +462,16 @@
     <xsl:function name="local:generate-anchor-name" as="xs:string">
         <xsl:param name="href" as="xs:string"/>
         <xsl:value-of select="replace($href,'[^A-Za-z0-9]','_')"/>
+    </xsl:function>
+    
+    <xsl:function name="local:debug">
+        <xsl:param name="text"/>
+        <xsl:if test="$debugging">
+            <xsl:message select="'debug: ' || $text"/>
+            <span class="debug">
+                <xsl:sequence select="$text"/>
+            </span>
+        </xsl:if>
     </xsl:function>
     
 </xsl:stylesheet>

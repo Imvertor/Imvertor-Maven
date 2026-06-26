@@ -133,6 +133,11 @@ figure.image-type-foto>div {
         max-width: 50%; 
     }
 }
+@media (max-width: 720px) {
+    img.illustratie {
+        max-width: 100%; 
+    }
+}
 figure.image-type-plaatje {
     /* niks speciaals */
 }
