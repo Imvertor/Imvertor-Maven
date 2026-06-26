@@ -127,7 +127,15 @@ figure.image-type-default>div {
 figure.image-type-foto>div {
    /*  geen border */
 }
-
+@media (min-width: 720px) {
+    img.illustratie {
+        float: right;
+        max-width: 50%; 
+    }
+}
+figure.image-type-plaatje {
+    /* niks speciaals */
+}
 figcaption.caption {
    
 }
@@ -254,3 +262,4 @@ div.subheader {
     font-size: 14pt;
     padding-top: 0.5rem;
 }
+

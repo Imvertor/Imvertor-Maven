@@ -48,6 +48,7 @@ var organisationConfig = {
  	        // Specificatie-types
             im: "Informatiemodel",
             hl: "Handleiding",
+            hb: "Handboek",
             rp: "Rapport",
         },
         en: {
@@ -59,6 +60,7 @@ var organisationConfig = {
             // Specificatie-types
             im: "Information model",
             hl: "Guideline",
+            hb: "Handbook",
             rp: "Report",
         },
     },

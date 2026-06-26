@@ -81,6 +81,11 @@
                         <parm req="0" respec-name="logos"                  parms-name="prop-logo-list"              property="Logo" type="logo-list"/>
                         <parm req="0" respec-name="alternateFormats"       parms-name="prop-alternatiefformaat-list" property="Alternatief formaat" type="formats-list"/>
                         
+                        <!-- override de standaard respec settings -->
+                        <parm req="0" respec-name="nl_organisationName"          parms-name="prop-organisationname"             property="organisationName"/>
+                        <parm req="0" respec-name="nl_organisationPublishURL"    parms-name="prop-organisationpublishurl"       property="organisationPublishURL"/>
+                        <parm req="0" respec-name="nl_organisationStylesURL"     parms-name="prop-organisationstylesurl"        property="organisationStylesURL"/>
+                        
                     </parms>
                 </xsl:variable>
                 
@@ -105,7 +110,6 @@
                                 <xsl:sequence select="imf:msg('ERROR','No Documentor value for [1] specified', @property)"></xsl:sequence>
                             </xsl:when>
                         </xsl:choose>
-                        
                         
                         <xsl:if test="$value">
                             <xsl:choose>
@@ -147,6 +151,8 @@
                         </xsl:if>
                     </xsl:for-each>
                 </xsl:variable>
+                <xsl:sequence select="dlogger:save('$respec-parms',$respec-parms)"></xsl:sequence>
+                <xsl:sequence select="dlogger:save('$respec-config',$respec-config)"></xsl:sequence>
                 
                 <script class="remove"><![CDATA[var respecConfig = {{{$respec-config}}};]]></script>
                 

@@ -39,13 +39,13 @@
         </page>
     </xsl:template> 
     
-    <xsl:template match="div[@data-custom-style = 'plaatje']">
+    <xsl:template match="div[@data-custom-style = ('plaatje')]">
         <xsl:variable name="imagepar" select="p[img]"/>
         <xsl:variable name="source" select="@metadata-source"/>
         <xsl:choose>
             <!-- image with location -->
             <xsl:when test="exists($imagepar) and exists($source)">
-                <image src="{$source}" original-id="{@id}" metadata-id="{@metadata-id}">
+                <image src="{$source}" original-id="{@id}" metadata-id="{@metadata-id}" metadata-type="{@data-custom-style}">
                     <xsl:sequence select="local:pass-metadata(.)"/>
                     <!-- TODO test if raw is same als referenced image -->
                     <caption>
@@ -54,7 +54,7 @@
                 </image>
             </xsl:when>
             <xsl:when test="exists($imagepar)">
-                <image>
+                <image  metadata-type="{@data-custom-style}">
                     <xsl:sequence select="local:pass-metadata(.)"/>
                     <xsl:for-each select="$imagepar/img/@src">
                         <raw>
@@ -72,6 +72,24 @@
             <xsl:otherwise>
                 <xsl:sequence select="imf:msg('ERROR','Image without source, at section [1]. Processing [2]',($msword-file-name,preceding::title[1]))"/>
                 <error loc="{$msword-file-name}">Plaatje zonder bron, in: {(preceding::title)[1]}</error>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="div[@data-custom-style = ('illustratie')]">
+        <xsl:variable name="imagepar" select="p[img]"/>
+        <xsl:variable name="source" select="@metadata-source"/>
+        <xsl:choose>
+            <!-- image with location -->
+            <xsl:when test="exists($imagepar) and exists($source)">
+                <img src="{$source}" class="{@data-custom-style}"/>
+            </xsl:when>
+            <xsl:when test="exists($imagepar)">
+                <img src="{$imagepar/img/@src}" class="{@data-custom-style}" />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg('ERROR','Image without source, at section [1]. Processing [2]',($msword-file-name,preceding::title[1]))"/>
+                <error loc="{$msword-file-name}">Illustratie zonder bron, in: {(preceding::title)[1]}</error>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
