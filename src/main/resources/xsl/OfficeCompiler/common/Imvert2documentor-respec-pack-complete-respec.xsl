@@ -278,8 +278,8 @@
         <xsl:param name="normalize" as="xs:boolean"/>
         <xsl:analyze-string select="$line" regex="^(.*?):(.*?)$">
             <xsl:matching-substring>
-                <xsl:variable name="found-key" select="regex-group(1)"/>
-                <xsl:variable name="found-value" select="replace(regex-group(2),'&quot;','\\&quot;')"/>
+                <xsl:variable name="found-key" select="imf:normalize-space(regex-group(1))"/>
+                <xsl:variable name="found-value" select="imf:normalize-space(replace(regex-group(2),'&quot;','\\&quot;'))"/>
                 <xsl:variable name="norm-key" select="if ($normalize) then imf:extract(lower-case($found-key),'[a-z]') else ()"/>
                 <xsl:choose>
                     <xsl:when test="empty($norm-key)">"{$found-key}": "{$found-value}"</xsl:when>
