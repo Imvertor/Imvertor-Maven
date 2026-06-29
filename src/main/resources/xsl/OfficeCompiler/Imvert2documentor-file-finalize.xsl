@@ -186,6 +186,11 @@
             <xsl:apply-templates select="node()"/>
         </span>
     </xsl:template>
+    <xsl:template match="span[@data-custom-style = 'strong']">
+        <strong>
+            <xsl:apply-templates select="node()"/>
+        </strong>
+    </xsl:template>
     
     <xsl:template match="li">
         <xsl:copy>
