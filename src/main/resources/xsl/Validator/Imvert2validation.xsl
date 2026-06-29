@@ -292,8 +292,9 @@
         <xsl:variable name="root-release" select="imvert:release" as="xs:string?"/>
        
         <xsl:variable name="domain-packages" select=".//imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package')]"/>
-        <xsl:variable name="subpackage-releases" select="$domain-packages/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
-        <xsl:variable name="collections" select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-collection')]"/>
+        <xsl:variable name="view-packages" select=".//imvert:package[imvert:stereotype/@id = ('stereotype-name-view-package')]"/>
+        <xsl:variable name="subpackage-releases" select="($domain-packages,$view-packages)/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
+        <xsl:variable name="collections" select="($domain-packages,$view-packages)/imvert:class[imvert:stereotype/@id = ('stereotype-name-collection')]"/>
         <!--validation-->
 
         <xsl:sequence select="imf:report-error(., 
