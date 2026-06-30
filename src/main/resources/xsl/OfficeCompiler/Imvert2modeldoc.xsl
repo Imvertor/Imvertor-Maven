@@ -796,7 +796,6 @@
                 </part>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:sequence select="dlogger:save('$r ' || (ancestor::*/imvert:name)[1],$r)"></xsl:sequence>
         <section type="SHORT-UNIONLINKS">
             <content>
                 <itemtype/>
@@ -1221,7 +1220,6 @@
         <xsl:param name="tv-id"/>
         
         <xsl:variable name="tv-element" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
-        <xsl:sequence select="if ($tv-element[2]) then dlogger:save('$tv-element',$tv-element) else ()"></xsl:sequence>
         <xsl:choose>
             <xsl:when test="exists($tv-element)">
                 <xsl:variable name="default-value" select="$configuration-tvset-file//tagged-values/tv[@id = $tv-id]/declared-values/value[imf:boolean(@default)]"/>

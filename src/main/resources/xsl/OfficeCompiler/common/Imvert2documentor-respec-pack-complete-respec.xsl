@@ -151,8 +151,10 @@
                         </xsl:if>
                     </xsl:for-each>
                 </xsl:variable>
+                <?x
                 <xsl:sequence select="dlogger:save('$respec-parms',$respec-parms)"></xsl:sequence>
                 <xsl:sequence select="dlogger:save('$respec-config',$respec-config)"></xsl:sequence>
+                x?>
                 
                 <script class="remove"><![CDATA[var respecConfig = {{{$respec-config}}};]]></script>
                 
