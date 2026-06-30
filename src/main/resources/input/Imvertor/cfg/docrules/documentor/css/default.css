@@ -130,7 +130,8 @@ figure.image-type-foto>div {
 @media (min-width: 720px) {
     img.illustratie {
         float: right;
-        max-width: 50%; 
+        max-width: 50%;
+        padding: 1rem;
     }
 }
 @media (max-width: 720px) {
