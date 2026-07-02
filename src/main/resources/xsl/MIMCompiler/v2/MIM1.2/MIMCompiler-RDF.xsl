@@ -13,11 +13,17 @@
   xmlns:mm="http://imvertor.nl/mim/metamodel" 
   xmlns:ext="http://www.imvertor.org/xsl/extensions"
   xmlns:local="urn:local"
+  
+  xmlns:imf="http://www.imvertor.org/xsl/functions"
+  xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+  
   extension-element-prefixes="ext"
   exclude-result-prefixes="xsl xs map xlink xhtml mim-in mim-ref mim-ext mm local"
   expand-text="yes"
   version="3.0">
     
+  <xsl:import href="../../../common/Imvert-common.xsl"/>
+  
   <xsl:output indent="yes"/>
   
   <xsl:key name="id" match="*[@id]" use="@id"/>
@@ -195,12 +201,19 @@ Zie: https://docs.geostandaarden.nl/mim/mim/ voor de laatste versie van de stand
   </xsl:template>
   
   <xsl:template match="mim-in:GeneralisatieObjecttypen|mim-in:GeneralisatieGegevensgroeptypen|mim-in:GeneralisatieDatatypen">
-    <mim:subtype rdf:resource="{local:get-id(ancestor::mim-in:*[@mm:nodeType='modelelement'][1])}"/>
+   <mim:subtype rdf:resource="{local:get-id(ancestor::mim-in:*[@mm:nodeType='modelelement'][1])}"/>
     <mim:supertype>
       <xsl:attribute name="rdf:resource">
         <xsl:choose>
           <xsl:when test="mim-in:supertype/mim-in:Datatype">{$mim-uri}{mim-in:supertype/mim-in:Datatype}</xsl:when>
-          <xsl:otherwise>{local:get-id-from-href(mim-in:supertype/mim-ref:*/@xlink:href)}</xsl:otherwise>
+          <xsl:when test="mim-in:supertype/mim-ref:*">{local:get-id-from-href(mim-in:supertype/mim-ref:*/@xlink:href)}</xsl:when>
+           <xsl:when test="mim-in:supertype/mim-ext:*">{local:get-id-from-href(mim-in:supertype/mim-ext:*/@xlink:href)}</xsl:when>
+           <xsl:when test="mim-in:supertype">
+            <xsl:sequence select="imf:msg('FATAL','Unexpected supertype in RDF serialisation: [1]',name(mim-in:supertype))"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:sequence select="imf:msg('FATAL','Unexpected generalisation in RDF serialisation: [1]',name(.))"/>
+          </xsl:otherwise>
         </xsl:choose>  
       </xsl:attribute>
     </mim:supertype>
