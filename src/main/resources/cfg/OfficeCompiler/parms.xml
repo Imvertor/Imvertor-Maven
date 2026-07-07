@@ -144,6 +144,13 @@
          <default>no</default>
       </cli-parm> 
       
+      <cli-parm>
+         <name>officeexpansion</name>
+         <arg>yes|no</arg>
+         <tip>Include all attributes and associations of supertypes in Respec documentation?</tip>
+         <default>no</default>
+      </cli-parm> 
+      
    </cli-parms>
    <properties>
 

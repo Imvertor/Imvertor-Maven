@@ -479,6 +479,7 @@
     <xsl:template match="part" mode="detail">
         <xsl:variable name="items" select="count(item)"/>
         <xsl:variable name="type" select="ancestor::section/@type" as="attribute()*"/>
+        
         <tr>
             <xsl:choose>
                 <xsl:when test="@type = 'COMPOSER' and $type='DETAIL-COMPOSITE-ATTRIBUTE'">
@@ -522,6 +523,11 @@
                     </td>
                     <td>
                         <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="@type = 'TUSSENKOP'">
+                    <td colspan="10" class="tussenkop">
+                        <xsl:apply-templates select="item" mode="#current"/>
                     </td>
                 </xsl:when>
                 <xsl:when test="$type = 'EXPLANATION'"> <!-- 100 -->

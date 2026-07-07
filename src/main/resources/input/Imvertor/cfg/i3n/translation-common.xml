@@ -785,5 +785,10 @@
         <trans lang="nl">overerft eigenschappen van</trans>
         <trans lang="en">inherits properties from</trans>
     </item>
+    <item>
+        <key>ISCOPIEDFROM</key>
+        <trans lang="nl">afkomstig van</trans>
+        <trans lang="en">inherited from</trans>
+    </item>
     
 </picklist>
