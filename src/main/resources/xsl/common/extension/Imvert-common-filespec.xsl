@@ -53,7 +53,7 @@
     -->
     
     <xsl:function name="imf:filespec" as="xs:string*">
-        <xsl:param name="file"/>
+        <xsl:param name="file" as="xs:string"/>
         <xsl:sequence select="ext:imvertorFileSpec($file,'PUNXEFHRWCD')"/>
     </xsl:function>
     

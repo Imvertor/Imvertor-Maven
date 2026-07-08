@@ -764,7 +764,6 @@
         <xsl:param name="info"/>
         <xsl:if test="$debugging">
             <xsl:variable name="display-name" select="imf:get-display-name($this)"/>
-            <!--<xsl:sequence select="dlogger:save('- ' || $display-name,$info)"/>-->
             <xsl:comment>{$display-name} - {$info}</xsl:comment>
         </xsl:if>
     </xsl:function>

@@ -64,7 +64,7 @@
   
   <xsl:variable name="mim-model" as="document-node(element(metamodel))?">
     <xsl:try>
-      <xsl:sequence select="document('MIM' || $mim-version || '-model.xml')"/>  
+      <xsl:sequence select="document('MIM-model.xml')"/>  
       <xsl:catch><!-- empty sequence--></xsl:catch>
     </xsl:try>
   </xsl:variable>
@@ -183,7 +183,7 @@
   <xsl:template match="/imvert:packages">
     <xsl:variable name="intermediate-result" as="document-node()">
       <xsl:document>
-        <xsl:comment select="document('MIM' || $mim-version || '-readme.xml')/readme"/>
+        <xsl:comment select="document('MIM-readme.xml')/readme"/>
         <mim:Informatiemodel
           xmlns:mim="http://www.geostandaarden.nl/mim/mim-core/1.2" 
           xmlns:mim-ref="http://www.geostandaarden.nl/mim/mim-ref/1.0"

@@ -43,7 +43,7 @@
     <xsl:function name="local:log">
         <xsl:param name="key"/>
         <xsl:param name="value"/>
-        <xsl:sequence select="dlogger:save($key,$value)"/>
+        <xsl:sequence select="dlogger:save(($key,'(NOKEY)')[1],$value)"/>
     </xsl:function>
     
 </xsl:stylesheet>

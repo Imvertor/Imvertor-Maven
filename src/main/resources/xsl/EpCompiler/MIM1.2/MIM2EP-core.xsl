@@ -354,7 +354,7 @@
         </ep:construct>
     </xsl:template>
     
-    <xsl:template match="mim-ext:Constructie[mim-ext:constructietype = 'INTERFACE']">
+    <xsl:template match="mim-ext:Constructie[mim-ext:constructietype = ('INTERFACE','CONCEPTUEEL')]">
         <ep:construct>
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Interface (extern)',())"/>
@@ -683,6 +683,7 @@
     </xsl:template>
     
     <xsl:template match="*">
+        <xsl:sequence select="dlogger:save('unknown',.)"></xsl:sequence>
         <xsl:sequence select="imf:msg-comment(.,'ERROR','Unknown element [1]',imf:xpath-string(.))"/>
     </xsl:template>
     

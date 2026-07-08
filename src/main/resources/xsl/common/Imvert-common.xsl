@@ -1457,7 +1457,7 @@
     
     <xsl:function name="imf:normalize-space" as="xs:string">
         <xsl:param name="seq" as="item()*"/>
-        <xsl:sequence select="normalize-space(imf:string-value($seq))"/>
+        <xsl:value-of select="normalize-space(replace(imf:string-value($seq),'&#160;',' '))"/>
     </xsl:function>
     
     <xsl:function name="imf:string-value" as="xs:string">
