@@ -53,13 +53,14 @@
     
     <xsl:variable name="subpath" select="imf:get-subpath(/*/imvert:project,/*/imvert:application,/*/imvert:release)"/>
     
-    <xsl:variable name="create-links" select="imf:get-config-string('cli','createofficemode','click') = 'click'"/>
+    <xsl:variable name="create-links" select="imf:get-xparm('cli/createofficemode','click') = 'click'"/>
     
     <xsl:variable name="link-by-eaid" select="$configuration-docrules-file/link-by eq 'EAID'"/>
     <xsl:variable name="explanation-location" select="$configuration-docrules-file/explanation-location"/>
     <xsl:variable name="append-role-name" select="imf:boolean($configuration-docrules-file/append-role-name)"/>
+    <xsl:variable name="meta-is-role-based" select="imf:boolean(imf:get-xparm('appinfo/meta-is-role-based'))"/>
     
-    <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
+    <xsl:variable name="imagemap-path" select="imf:get-xparm('properties/WORK_BASE_IMAGEMAP_FILE')"/>
     <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
     
     <xsl:variable name="include-incoming-associations" select="imf:boolean($configuration-docrules-file/include-incoming-associations)"/>
@@ -83,7 +84,7 @@
    
     <xsl:variable name="url-as-link" select="imf:boolean($configuration-docrules-file/url-as-link)"/>
     
-    <xsl:variable name="officeexpansion" select="imf:boolean(imf:get-config-string('cli','officeexpansion'))"/>
+    <xsl:variable name="officeexpansion" select="imf:boolean(imf:get-xparm('cli/officeexpansion'))"/>
     
     <xsl:template match="/imvert:packages">
         <xsl:sequence select="imf:track('Generating modeldoc',())"/>
@@ -224,7 +225,8 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </section>
-                <section type="DETAILS" include="{$include-detail-section-level}">
+                <xsl:variable name="assoc-type" select="if ($meta-is-role-based) then 'DETAILS-ROLEBASED' else 'DETAILS'" />
+                <section type="{$assoc-type}" include="{$include-detail-section-level}">
                     <section type="DETAILS-OBJECTTYPE" include="{$include-detail-sections-by-type}">
                         <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]" mode="detail">
                             <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
@@ -993,7 +995,7 @@
             All BRO tables are IMBRO/A tables, holding 4 columns.
             When all values are imbro/a this is redundant info, so in that case we do not add the IMBRO/A coumns.
         -->
-        <xsl:variable name="is-imbro-list" select="(imf:get-config-string('cli','owner') eq 'BRO') and $has-imbroa"/>
+        <xsl:variable name="is-imbro-list" select="(imf:get-xparm('cli/owner') eq 'BRO') and $has-imbroa"/>
         <!-- Check if ANY value has an alias, in that case assume a code column should be added -->
         <xsl:variable name="has-code" select="exists(imvert:attributes/imvert:attribute/imvert:alias) or exists(imvert:attributes/imvert:attribute/imvert:initial-value)"/>
         <section 
@@ -1060,7 +1062,7 @@
     </xsl:template>
   
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="content">
-        <xsl:variable name="is-imbro-list" select="imf:get-config-string('cli','owner') eq 'BRO'"/>
+        <xsl:variable name="is-imbro-list" select="imf:get-xparm('cli/owner') eq 'BRO'"/>
         <section 
             name="{imf:get-name(.,true())}" 
             type="DETAIL-REFERENCELIST" 
@@ -1284,7 +1286,8 @@
     
     <xsl:template match="imvert:association" mode="detail-normal">
      
-        <section name="{imf:get-name(.,true())}" type="DETAIL-ASSOCIATION" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
+        <xsl:variable name="assoc-type" select="if ($meta-is-role-based) then 'DETAIL-ASSOCIATION-ROLEBASED' else 'DETAIL-ASSOCIATION'" />
+        <section name="{imf:get-name(.,true())}" type="{$assoc-type}" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <xsl:if test="imvert:original-stereotype"><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 -->
                 <xsl:attribute name="original-stereotype-id" select="imvert:original-stereotype/@id"/>                
             </xsl:if>
@@ -2128,7 +2131,7 @@
     <xsl:function name="imf:create-section-for-diagrams">
         <xsl:param name="construct"/> <!-- either the packages (=model) or a package or a class -->
         
-        <xsl:variable name="insert-diagrams" select="imf:boolean(imf:get-config-string('cli','createimagemap'))"/> <!-- TODO dit moet beter, eiegnlijk een parameter in modeldoc config -->
+        <xsl:variable name="insert-diagrams" select="imf:boolean(imf:get-xparm('cli/createimagemap'))"/> <!-- TODO dit moet beter, eiegnlijk een parameter in modeldoc config -->
         <xsl:variable name="diagrams-in-construct" select="$imagemap/imvert-imap:diagram[(imvert-imap:in-construct,imvert-imap:in-package)[1] = $construct/imvert:id]"/>
         <xsl:choose>
             <xsl:when test="$insert-diagrams and exists($diagrams-in-construct)">

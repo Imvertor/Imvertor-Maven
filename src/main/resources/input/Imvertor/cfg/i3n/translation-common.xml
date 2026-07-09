@@ -363,7 +363,12 @@
         <trans lang="nl">Attribuut- en relatiesoort details</trans>
         <trans lang="en">Property details</trans>
     </item>
-
+    <item>
+        <key>DETAILS-ROLEBASED</key>
+        <trans lang="nl">Attribuut- en relatierol details</trans>
+        <trans lang="en">Property details</trans>
+    </item>
+    
     <item>
         <key>DETAILS-OBJECTTYPE</key>
         <trans lang="nl">Objecttype details</trans>
@@ -423,6 +428,11 @@
         <key>DETAIL-ASSOCIATION</key>
         <trans lang="nl">Relatiesoort details</trans>
         <trans lang="en">AssociationType</trans>
+    </item>
+    <item>
+        <key>DETAIL-ASSOCIATION-ROLEBASED</key>
+        <trans lang="nl">Relatierol details</trans>
+        <trans lang="en">Association role</trans>
     </item>
     <item>
         <key>DETAIL-EXTERNEKOPPELING</key>
