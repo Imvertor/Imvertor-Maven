@@ -66,9 +66,9 @@
             <xsl:apply-templates select="@*"/>
             <xsl:apply-templates select="section[@type = 'IMAGEMAPS']"/>
             <xsl:apply-templates select="content"/>
-            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[@type = 'DETAILS']/section[@name = $name]/section[@type = 'DETAIL-ATTRIBUTE']"/>
-            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[@type = 'DETAILS']/section[@name = $name]/section[@type = 'DETAIL-ASSOCIATION' and @original-stereotype-id = 'stereotype-name-attributegroup']"/>
-            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[@type = 'DETAILS']/section[@name = $name]/section[@type = 'DETAIL-ASSOCIATION' and not(@original-stereotype-id = 'stereotype-name-attributegroup')]"/>
+            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[starts-with(@type,'DETAILS')]/section[@name = $name]/section[@type = 'DETAIL-ATTRIBUTE']"/>
+            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[starts-with(@type,'DETAILS')]/section[@name = $name]/section[starts-with(@type,'DETAIL-ASSOCIATION') and @original-stereotype-id = 'stereotype-name-attributegroup']"/>
+            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[starts-with(@type,'DETAILS')]/section[@name = $name]/section[starts-with(@type,'DETAIL-ASSOCIATION') and not(@original-stereotype-id = 'stereotype-name-attributegroup')]"/>
         </xsl:copy>            
     </xsl:template>
     
@@ -145,7 +145,7 @@
         </content>
     </xsl:template>
     
-    <xsl:template match="section[@type = 'DETAIL-ASSOCIATION']">
+    <xsl:template match="section[starts-with(@type,'DETAIL-ASSOCIATION')]">
         <xsl:copy>  
            <xsl:apply-templates select="@*"/>
             <xsl:variable name="target-role-name" select="imf:get-target-role-name(@id)"/>
@@ -154,7 +154,7 @@
        </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="section[@type = 'DETAIL-ASSOCIATION']/content[@approach = 'target']">
+    <xsl:template match="section[starts-with(@type,'DETAIL-ASSOCIATION')]/content[@approach = 'target']">
         <xsl:variable name="relation-name" select="../@name"/>
         <xsl:variable name="source-name" select="../../@name"/>
         
