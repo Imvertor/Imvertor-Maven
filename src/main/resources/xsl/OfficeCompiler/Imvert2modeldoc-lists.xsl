@@ -43,7 +43,7 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
-    <xsl:output method="xml" indent="yes"/>
+    <xsl:output method="xml" indent="no"/>
     
     <xsl:variable name="includedoclist" select="imf:boolean(imf:get-config-string('cli','includedoclist'))"/>
     <xsl:variable name="doclist-xml-url" select="imf:get-config-parameter('doclist-xml-url',false())"/>

@@ -57,7 +57,7 @@
     <xsl:include href="../external/relpath_util.xsl"/>
     <xsl:include href="../external/functx.xsl"/>
     
-    <xsl:output encoding="UTF-8" method="xml" indent="yes" exclude-result-prefixes="#all"/>
+    <xsl:output encoding="UTF-8" method="xml" indent="no" exclude-result-prefixes="#all"/>
     
     <!-- TODO how to configure this in metamodel? -->
     <xsl:variable name="baretype-pattern-c">(AN|N)</xsl:variable> <!-- D9.2 changed to N9,2 (or N9.2) -->

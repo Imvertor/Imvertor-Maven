@@ -42,7 +42,7 @@
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     <xsl:import href="../common/extension/extension-parse-html.xsl"/>
     
-    <xsl:output method="xml" indent="yes"/>
+    <xsl:output method="xml" indent="no"/>
     
     <xsl:variable name="stylesheet-code">OFFICE-MD</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
