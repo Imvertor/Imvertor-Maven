@@ -34,11 +34,11 @@
     <xsl:template match="xhtml:b" mode="notes">
         <xsl:choose>
             <xsl:when test="$notes-format = ('markdown')">
-                <xsl:value-of select="if (starts-with(.,' ')) then ' **' else '**'"/>  <!--fix <b>text <b></b> -->
+                <xsl:value-of select="'&lt;b>'"/> 
                 <xsl:apply-templates mode="notes"/>
-                <xsl:value-of select="if (ends-with(.,' ')) then '** ' else '**'"/>  <!--fix <b>text <b></b> -->
+                <xsl:value-of select="'&lt;/b>'"/>
             </xsl:when>
-            <xsl:when test="$notes-format = ('mediawiki')">
+           <xsl:when test="$notes-format = ('mediawiki')">
                 <xsl:value-of select="if (starts-with(.,' ')) then ' &quot;&quot;&quot;' else '&quot;&quot;&quot;'"/> <!--fix <b>text <b></b> -->
                 <xsl:apply-templates mode="notes"/>
                 <xsl:value-of select="if (ends-with(.,' ')) then '&quot;&quot;&quot; ' else '&quot;&quot;&quot;'"/> <!--fix <b>text <b></b> -->
@@ -51,9 +51,9 @@
     <xsl:template match="xhtml:i" mode="notes">
         <xsl:choose>
             <xsl:when test="$notes-format = ('markdown')">
-                <xsl:value-of select="if (starts-with(.,' ')) then ' *' else '*'"/>  <!--fix <b>text <b></b> -->
+                <xsl:value-of select="'&lt;i>'"/> 
                 <xsl:apply-templates mode="notes"/>
-                <xsl:value-of select="if (ends-with(.,' ')) then '* ' else '*'"/>
+                <xsl:value-of select="'&lt;/i>'"/>
             </xsl:when>
             <xsl:when test="$notes-format = ('mediawiki')">
                 <xsl:value-of select="if (starts-with(.,' ')) then ' &quot;&quot;' else '&quot;&quot;'"/>
@@ -115,10 +115,7 @@
     </xsl:template>
     
     <xsl:template match="text()" mode="notes">
-        <xsl:variable name="in-markup" select="parent::*[local-name(.) = ('i','b')]"/>
-        <xsl:variable name="text1" select="if (ends-with(.,' ') and $in-markup) then replace(.,'\s+$','') else ."/>
-        <xsl:variable name="text2" select="if (starts-with($text1,' ') and $in-markup) then replace($text1,'^\s+','') else $text1"/>
-        <xsl:value-of select="if ($notes-format-allow-markdown) then $text2 else imf:escape-markdown($text2)"/>
+        <xsl:value-of select="if ($notes-format-allow-markdown) then . else imf:escape-markdown(.)"/>
     </xsl:template>
     
     <xsl:function name="imf:escape-markdown" as="xs:string*">
