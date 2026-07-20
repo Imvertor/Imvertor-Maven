@@ -26,6 +26,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -133,7 +134,8 @@ public class ImvertorParseHTML extends ExtensionFunctionDefinition {
 	      // and serialize SAX events to XML:
 	      DOMResult result = new DOMResult(doc);
 	      TransformerFactory factory = new TransformerFactoryImpl();
-	      Transformer transformer = factory.newTransformer();            
+	      Transformer transformer = factory.newTransformer();
+	      transformer.setOutputProperty(OutputKeys.INDENT, "no");
 	      transformer.transform(source, result);
 	  } catch (Exception e) {
 		  doc.getDocumentElement().setAttribute("parse-exception", e.getLocalizedMessage());
