@@ -269,3 +269,15 @@ div.subheader {
     padding-top: 0.5rem;
 }
 
+td.tussenkop {
+    font-weight: bold;
+}
+
+table tr:nth-child(odd),
+table tr:nth-child(even) {
+  background-color: inherit;
+}
+table {
+    border-top: 3px solid #005a9c;
+    border-bottom: 3px solid #005a9c;
+}

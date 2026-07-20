@@ -53,13 +53,14 @@
     
     <xsl:variable name="subpath" select="imf:get-subpath(/*/imvert:project,/*/imvert:application,/*/imvert:release)"/>
     
-    <xsl:variable name="create-links" select="imf:get-config-string('cli','createofficemode','click') = 'click'"/>
+    <xsl:variable name="create-links" select="imf:get-xparm('cli/createofficemode','click') = 'click'"/>
     
     <xsl:variable name="link-by-eaid" select="$configuration-docrules-file/link-by eq 'EAID'"/>
     <xsl:variable name="explanation-location" select="$configuration-docrules-file/explanation-location"/>
     <xsl:variable name="append-role-name" select="imf:boolean($configuration-docrules-file/append-role-name)"/>
+    <xsl:variable name="meta-is-role-based" select="imf:boolean(imf:get-xparm('appinfo/meta-is-role-based'))"/>
     
-    <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
+    <xsl:variable name="imagemap-path" select="imf:get-xparm('properties/WORK_BASE_IMAGEMAP_FILE')"/>
     <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
     
     <xsl:variable name="include-incoming-associations" select="imf:boolean($configuration-docrules-file/include-incoming-associations)"/>
@@ -82,6 +83,8 @@
     <xsl:variable name="show-short-attribute-unit" select="imf:boolean($configuration-docrules-file/show-short-attribute-unit)"/>
    
     <xsl:variable name="url-as-link" select="imf:boolean($configuration-docrules-file/url-as-link)"/>
+    
+    <xsl:variable name="officeexpansion" select="imf:boolean(imf:get-xparm('cli/officeexpansion'))"/>
     
     <xsl:template match="/imvert:packages">
         <xsl:sequence select="imf:track('Generating modeldoc',())"/>
@@ -222,7 +225,8 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </section>
-                <section type="DETAILS" include="{$include-detail-section-level}">
+                <xsl:variable name="assoc-type" select="if ($meta-is-role-based) then 'DETAILS-ROLEBASED' else 'DETAILS'" />
+                <section type="{$assoc-type}" include="{$include-detail-section-level}">
                     <section type="DETAILS-OBJECTTYPE" include="{$include-detail-sections-by-type}">
                         <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]" mode="detail">
                             <xsl:sort select="if ($sort-domain) then imvert:name/@original else ()"/>
@@ -471,7 +475,18 @@
         </section>
     </xsl:template>
 
-    <xsl:template match="imvert:attributes" mode="short gegevensgroeptype">
+    <xsl:template match="imvert:attributes" mode="short">
+        <xsl:apply-templates select="." mode="short-or-gegevensgroeptype">
+            <xsl:with-param name="mode">short</xsl:with-param>
+        </xsl:apply-templates>
+    </xsl:template>
+    <xsl:template match="imvert:attributes" mode="gegevensgroeptype">
+        <xsl:apply-templates select="." mode="short-or-gegevensgroeptype">
+            <xsl:with-param name="mode">gegevensgroeptype</xsl:with-param>
+        </xsl:apply-templates>
+    </xsl:template>
+    <xsl:template match="imvert:attributes" mode="short-or-gegevensgroeptype">
+        <xsl:param name="mode" as="xs:string"/>
         
         <xsl:variable name="attribute-kind" select="
             if (../imvert:stereotype/@id = ('stereotype-name-complextype')) then 'D' 
@@ -481,42 +496,10 @@
         
             <!-- (D)ata element or (U)nion element or (A)ttribute -->
         
-        <xsl:variable name="r" as="element()*">
-            <xsl:choose>
-                <xsl:when test="imf:get-config-stereotypes('stereotype-name-association-to-composite') = '#unknown'">
-                    <!-- attribuut groepen zijn als attribuut opgenomen. -->
-                    <xsl:apply-templates select="imvert:attribute[not(imvert:stereotype/@id = ('stereotype-name-attributegroup'))]" mode="#current"/>
-                    <!-- als de class ook gegevensgroepen heeft, die attributen hier invoegen -->
-                    <xsl:for-each select="imvert:attribute[imvert:stereotype/@id = ('stereotype-name-attributegroup')]">
-                        <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
-                        <xsl:if test="$defining-class[imvert:stereotype/@id = ('stereotype-name-composite')]">
-                            <!-- eerst gegevensgroeptype info -->
-                            <!--(4)-->
-                            <xsl:apply-templates select="." mode="composition"/>
-                            <!-- en dan de attributen daarin -->
-                            <xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="gegevensgroeptype"/>
-                            <xsl:apply-templates select="$defining-class/imvert:associations/imvert:association" mode="gegevensgroeptype-as-attribute"/>
-                        </xsl:if>
-                    </xsl:for-each>
-                </xsl:when>
-                <xsl:otherwise>
-                    <!-- attribuut groepen zijn via associatie gekoppeld. -->
-                    <xsl:apply-templates select="imvert:attribute" mode="#current"/>
-                    <!-- als de class ook gegevensgroepen heeft, die attributen hier invoegen -->
-                    <xsl:for-each select="../imvert:associations/imvert:association">
-                        <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
-                        <xsl:if test="$defining-class[imvert:stereotype/@id = ('stereotype-name-composite')]">
-                            <!-- eerst gegevensgroeptype info -->
-                            <!--(4)-->
-                            <xsl:apply-templates select="." mode="composition"/>
-                            <!-- en dat de attributen daarin -->
-                            <xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="gegevensgroeptype"/>
-                            <xsl:apply-templates select="$defining-class/imvert:associations/imvert:association" mode="gegevensgroeptype-as-attribute"/>
-                        </xsl:if>
-                    </xsl:for-each>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
+        <xsl:variable name="r-atts-from-supers" select="if ($officeexpansion) then local:get-supers(..,'att',$mode) else ()" as="element()*"/>
+        <xsl:variable name="r-atts" select="local:get-atts(.,$mode)" as="element()*"/>
+        <xsl:variable name="r" select="($r-atts, $r-atts-from-supers)" as="element()*"/>
+        
         <xsl:if test="exists($r)">
             <xsl:choose>
                 <xsl:when test="$attribute-kind = 'A'">
@@ -579,7 +562,76 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:if>
+       
     </xsl:template>
+    
+    <xsl:function name="local:get-supers">
+        <xsl:param name="this" as="element()"/>
+        <xsl:param name="type" as="xs:string"/><!-- att or ass -->
+        <xsl:param name="mode" as="xs:string"/><!-- "short" of "gegevensgroeptype" -->
+        <xsl:variable name="direct-supertypes" select="imf:get-superclass($this)"/>
+        <xsl:for-each select="$direct-supertypes">
+            <xsl:variable name="props"  as="element()*" select="
+                if ($type = 'att') 
+                then local:get-atts(imvert:attributes,$mode)
+                else local:get-assocs(imvert:associations,false(),$mode)"/>
+            <xsl:variable name="label"  as="xs:string" select="
+                if ($type = 'att') 
+                then 'Attribuutsoorten'
+                else 'Relatiesoorten'"/>
+            
+            <xsl:if test="$props/descendant-or-self::part">
+                <part type="TUSSENKOP">
+                   <item>
+                       <item><xsl:value-of select="$label"/></item>
+                       <item><xsl:value-of select="imf:plugin-translate-i3n('ISCOPIEDFROM',true())"/></item>
+                       <item><xsl:sequence select="imf:create-link(.,'global',imf:get-name(.,true()))"/></item>
+                    </item>
+                </part>
+                <xsl:sequence select="$props"/>
+            </xsl:if>
+            <xsl:sequence select="local:get-supers(.,$type,$mode)"/>
+        </xsl:for-each>
+    </xsl:function>
+    
+    <xsl:function name="local:get-atts" as="element()*">
+        <xsl:param name="attributes" as="element()"/>
+        <xsl:param name="mode" as="xs:string"/><!-- "short" of "gegevensgroeptype" -->
+        <xsl:choose>
+            <xsl:when test="imf:get-config-stereotypes('stereotype-name-association-to-composite') = '#unknown'">
+                <!-- attribuut groepen zijn als attribuut opgenomen. -->
+                <xsl:apply-templates select="$attributes/imvert:attribute[not(imvert:stereotype/@id = ('stereotype-name-attributegroup'))]" mode="short"/>
+                <!-- als de class ook gegevensgroepen heeft, die attributen hier invoegen -->
+                <xsl:for-each select="$attributes/imvert:attribute[imvert:stereotype/@id = ('stereotype-name-attributegroup')]">
+                    <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
+                    <xsl:if test="$defining-class[imvert:stereotype/@id = ('stereotype-name-composite')]">
+                        <!-- eerst gegevensgroeptype info -->
+                        <!--(4)-->
+                        <xsl:apply-templates select="." mode="composition"/>
+                        <!-- en dan de attributen daarin -->
+                        <xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="gegevensgroeptype"/>
+                        <xsl:apply-templates select="$defining-class/imvert:associations/imvert:association" mode="gegevensgroeptype-as-attribute"/>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- attribuut groepen zijn via associatie gekoppeld. -->
+                <xsl:apply-templates select="$attributes/imvert:attribute" mode="short"/>
+                <!-- als de class ook gegevensgroepen heeft, die attributen hier invoegen -->
+                <xsl:for-each select="$attributes/../imvert:associations/imvert:association">
+                    <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
+                    <xsl:if test="$defining-class[imvert:stereotype/@id = ('stereotype-name-composite')]">
+                        <!-- eerst gegevensgroeptype info -->
+                        <!--(4)-->
+                        <xsl:apply-templates select="." mode="composition"/>
+                        <!-- en dat de attributen daarin -->
+                        <xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="gegevensgroeptype"/>
+                        <xsl:apply-templates select="$defining-class/imvert:associations/imvert:association" mode="gegevensgroeptype-as-attribute"/>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
     
     <xsl:template match="imvert:constraints" mode="short">
         <section type="SHORT-CONSTRAINTS">
@@ -689,51 +741,127 @@
         </xsl:if>
     </xsl:template>
     
-    <xsl:template match="imvert:associations" mode="short gegevensgroeptype">
-        <xsl:variable name="id" select="../imvert:id"/>
-        <xsl:variable name="incoming-assocs" select="root(.)//imvert:association[imvert:type-id = $id]"/>
-        <xsl:variable name="incoming-assocs-non-recursive" select="$incoming-assocs[../../imvert:id ne $id]"/>
+    <xsl:template match="imvert:associations" mode="short">
+        <xsl:apply-templates select="." mode="short-or-gegevensgroeptype">
+            <xsl:with-param name="mode">short</xsl:with-param>
+        </xsl:apply-templates>
+    </xsl:template>    
+    <xsl:template match="imvert:associations" mode="gegevensgroeptype">
+        <xsl:apply-templates select="." mode="short-or-gegevensgroeptype">
+            <xsl:with-param name="mode">gegevensgroeptype</xsl:with-param>
+        </xsl:apply-templates>
+    </xsl:template>    
+    <xsl:template match="imvert:associations" mode="short-or-gegevensgroeptype">
+        <xsl:param name="mode" as="xs:string"/>
         
-        <xsl:variable name="r1" as="element()*">
-            <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="#current">
-                <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
-            </xsl:apply-templates>
-            <xsl:if test="$include-incoming-associations">
-                <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="#current">
-                    <xsl:with-param name="incoming" select="true()"/>
-                </xsl:apply-templates>
-            </xsl:if>
-            <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
-        </xsl:variable>
-        <xsl:variable name="r2" as="element()*">
-            <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="#current">
-                <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
-            </xsl:apply-templates>
-            <xsl:if test="$include-incoming-associations">
-                <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="#current">
-                    <xsl:with-param name="incoming" select="true()"/>
-                </xsl:apply-templates>
-            </xsl:if>
-            <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
-        </xsl:variable>
-        
-        <xsl:if test="exists(($r1,$r2))">
+        <xsl:variable name="r-assocs-from-supers" select="if ($officeexpansion) then local:get-supers(..,'ass',$mode) else ()" as="element()*"/>
+        <xsl:variable name="r-assocs" select="local:get-assocs(.,true(),$mode)" as="element()*"/>
+        <xsl:variable name="r" select="($r-assocs, $r-assocs-from-supers)" as="element()*"/>
+       
+        <xsl:if test="exists($r)">
             <section type="SHORT-ASSOCIATIONS">
                 <content approach="association">
                     <itemtype/>
                     <itemtype type="ASSOCIATION-NAME"/>
                     <itemtype type="ASSOCIATION-DEFINITION"/>
-                    <xsl:sequence select="$r1"/>
+                    <xsl:for-each select="$r">
+                        <xsl:sequence select="self::part | self::r1/part"/>
+                    </xsl:for-each>
                 </content>
                 <content approach="target">
                     <itemtype/>
                     <itemtype type="ROLE-NAME"/>
                     <itemtype type="ROLE-DEFINITION"/>
-                    <xsl:sequence select="$r2"/>
+                    <xsl:for-each select="$r">
+                        <xsl:sequence select="self::part | self::r2/part"/>
+                    </xsl:for-each>
                 </content>
             </section>
         </xsl:if>
     </xsl:template>
+    
+    <xsl:function name="local:get-assocs" as="element()*">
+        <xsl:param name="associations" as="element()"/>
+        <xsl:param name="full" as="xs:boolean"/><!-- full betekent: alle associates tonen, of alleen gewone relaties? -->
+        <xsl:param name="mode" as="xs:string"/>
+        
+        <xsl:variable name="id" select="$associations/../imvert:id"/>
+        <xsl:variable name="incoming-assocs" select="root($associations)//imvert:association[imvert:type-id = $id]"/>
+        <xsl:variable name="incoming-assocs-non-recursive" select="$incoming-assocs[../../imvert:id ne $id]"/>
+      
+        <xsl:variable name="r1" as="element()*">
+            <xsl:choose>
+                <xsl:when test="$mode = 'short'">
+                    <xsl:apply-templates select="$associations/imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="short">
+                        <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
+                    </xsl:apply-templates>
+                    <xsl:if test="$full">
+                        <xsl:if test="$include-incoming-associations">
+                            <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="short">
+                                <xsl:with-param name="incoming" select="true()"/>
+                            </xsl:apply-templates>
+                        </xsl:if>
+                        <xsl:apply-templates select="$associations/../imvert:supertype" mode="short"/>
+                    </xsl:if>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="$associations/imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="gegevensgroeptype">
+                        <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
+                    </xsl:apply-templates>
+                    <xsl:if test="$full">
+                        <xsl:if test="$include-incoming-associations">
+                            <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="gegevensgroeptype">
+                                <xsl:with-param name="incoming" select="true()"/>
+                            </xsl:apply-templates>
+                        </xsl:if>
+                        <xsl:apply-templates select="$associations/../imvert:supertype" mode="gegevensgroeptype"/>
+                    </xsl:if>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="r2" as="element()*">
+            <xsl:choose>
+                <xsl:when test="$mode = 'short'">
+                    <xsl:apply-templates select="$associations/imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="short">
+                        <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
+                    </xsl:apply-templates>
+                    <xsl:if test="$full">
+                        <xsl:if test="$include-incoming-associations">
+                            <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="short">
+                                <xsl:with-param name="incoming" select="true()"/>
+                            </xsl:apply-templates>
+                        </xsl:if>
+                        <xsl:apply-templates select="$associations/../imvert:supertype" mode="short"/>
+                    </xsl:if>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="$associations/imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="gegevensgroeptype">
+                        <xsl:sort select="imf:calculate-position(.)" data-type="number" order="ascending"/>
+                    </xsl:apply-templates>
+                    <xsl:if test="$full">
+                        <xsl:if test="$include-incoming-associations">
+                            <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="gegevensgroeptype">
+                                <xsl:with-param name="incoming" select="true()"/>
+                            </xsl:apply-templates>
+                        </xsl:if>
+                        <xsl:apply-templates select="$associations/../imvert:supertype" mode="gegevensgroeptype"/>
+                    </xsl:if>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
+        <xsl:if test="$r1">
+            <r1>
+                <xsl:sequence select="$r1"/>
+            </r1>
+        </xsl:if>
+        <xsl:if test="$r2">
+            <r2>
+                <xsl:sequence select="$r2"/>
+            </r2>
+        </xsl:if>
+        
+    </xsl:function>
     
     <xsl:template match="imvert:association" mode="short gegevensgroeptype">
         <xsl:param name="incoming" as="xs:boolean" select="false()"/>
@@ -867,7 +995,7 @@
             All BRO tables are IMBRO/A tables, holding 4 columns.
             When all values are imbro/a this is redundant info, so in that case we do not add the IMBRO/A coumns.
         -->
-        <xsl:variable name="is-imbro-list" select="(imf:get-config-string('cli','owner') eq 'BRO') and $has-imbroa"/>
+        <xsl:variable name="is-imbro-list" select="(imf:get-xparm('cli/owner') eq 'BRO') and $has-imbroa"/>
         <!-- Check if ANY value has an alias, in that case assume a code column should be added -->
         <xsl:variable name="has-code" select="exists(imvert:attributes/imvert:attribute/imvert:alias) or exists(imvert:attributes/imvert:attribute/imvert:initial-value)"/>
         <section 
@@ -934,7 +1062,7 @@
     </xsl:template>
   
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="content">
-        <xsl:variable name="is-imbro-list" select="imf:get-config-string('cli','owner') eq 'BRO'"/>
+        <xsl:variable name="is-imbro-list" select="imf:get-xparm('cli/owner') eq 'BRO'"/>
         <section 
             name="{imf:get-name(.,true())}" 
             type="DETAIL-REFERENCELIST" 
@@ -1158,7 +1286,8 @@
     
     <xsl:template match="imvert:association" mode="detail-normal">
      
-        <section name="{imf:get-name(.,true())}" type="DETAIL-ASSOCIATION" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
+        <xsl:variable name="assoc-type" select="if ($meta-is-role-based) then 'DETAIL-ASSOCIATION-ROLEBASED' else 'DETAIL-ASSOCIATION'" />
+        <section name="{imf:get-name(.,true())}" type="{$assoc-type}" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <xsl:if test="imvert:original-stereotype"><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 -->
                 <xsl:attribute name="original-stereotype-id" select="imvert:original-stereotype/@id"/>                
             </xsl:if>
@@ -2002,7 +2131,7 @@
     <xsl:function name="imf:create-section-for-diagrams">
         <xsl:param name="construct"/> <!-- either the packages (=model) or a package or a class -->
         
-        <xsl:variable name="insert-diagrams" select="imf:boolean(imf:get-config-string('cli','createimagemap'))"/> <!-- TODO dit moet beter, eiegnlijk een parameter in modeldoc config -->
+        <xsl:variable name="insert-diagrams" select="imf:boolean(imf:get-xparm('cli/createimagemap'))"/> <!-- TODO dit moet beter, eiegnlijk een parameter in modeldoc config -->
         <xsl:variable name="diagrams-in-construct" select="$imagemap/imvert-imap:diagram[(imvert-imap:in-construct,imvert-imap:in-package)[1] = $construct/imvert:id]"/>
         <xsl:choose>
             <xsl:when test="$insert-diagrams and exists($diagrams-in-construct)">
