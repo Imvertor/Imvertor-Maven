@@ -761,7 +761,10 @@
                 </a>
             </xsl:when>
             <xsl:when test="exists(item)">
-                <xsl:apply-templates mode="#current"/>
+                <xsl:for-each select="item">
+                    <xsl:apply-templates select="." mode="#current"/>
+                    <xsl:if test="following-sibling::item">&#8192;</xsl:if> <!-- EN QUAD een space die niet wordt verwijderd zie https://www.compart.com/en/unicode/U+2000 -->
+                </xsl:for-each>
             </xsl:when>
             <xsl:when test="parent::part[@type = 'listval']">
                 <xsl:sequence select="imf:create-formatted-listvalue-text(.)"/>
