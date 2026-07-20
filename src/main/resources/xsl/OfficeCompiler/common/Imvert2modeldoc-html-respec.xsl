@@ -259,7 +259,6 @@
                         <xsl:value-of select="@name"/>
                     </xsl:variable>
                     <xsl:sequence select="imf:create-section-header-name($section,$level,@type,$language-model,$name)"/>
-                    <xsl:sequence select="dlogger:save('type '|| @type,imf:create-section-header-name($section,$level,@type,$language-model,$name))"></xsl:sequence>
                     <xsl:apply-templates mode="detail"/>
                 </section>
             </xsl:when>

@@ -447,7 +447,6 @@
 
     <xsl:function name="pack:mode-primer" as="element(document)">
         <xsl:param name="document" as="element(document)"/>
-        <xsl:sequence select="local:log('mode primer input',$document)"/>
         <xsl:apply-templates select="$document" mode="pack:mode-primer"/>
     </xsl:function>
     
