@@ -1272,9 +1272,11 @@
     <xsl:template match="imvert:association" mode="detail">
         <xsl:variable name="construct" select="../.."/>
         <xsl:choose>
+            <?x vervalt door #752 - een relatie vanuit een gegevengroeptype is een volwaardige relatie
             <xsl:when test="$construct/imvert:stereotype/@id = ('stereotype-name-composite')">
                 <xsl:apply-templates select="." mode="detail-gegevensgroeptype"/>
             </xsl:when>
+            x?>
             <xsl:when test="imvert:stereotype/@id = ('stereotype-name-externekoppeling')">
                 <xsl:apply-templates select="." mode="detail-externekoppeling"/>
             </xsl:when>
@@ -1303,23 +1305,20 @@
         </section>
     </xsl:template>
     
+    <?x vervalt door #752 - een relatie vanuit een gegevengroeptype is een volwaardige relatie
     <xsl:template match="imvert:association" mode="detail-gegevensgroeptype">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
         <section name="{imf:get-name(.,true())}" type="DETAIL-COMPOSITE-ASSOCIATION" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <content>
-                <?x
-                <part type="COMPOSER">
-                    <xsl:sequence select="imf:create-link($construct,'global', imf:get-name($construct,true()))"/>
-                </part>
-                ?>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-COMPOSITE-ASSOCIATION')"/>
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
         
     </xsl:template>
+    x?>
     
     <xsl:template match="imvert:association" mode="detail-externekoppeling">
         <xsl:variable name="construct" select="../.."/>
