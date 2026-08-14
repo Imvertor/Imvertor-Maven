@@ -112,14 +112,6 @@
          <default>htps://no_proxyurl</default>
          <type>url</type>
       </cli-parm> 
-      <!--
-      <cli-parm>
-         <name>metamodel</name>
-         <arg>name</arg>
-         <tip>Name of metamodel used in UML model</tip>
-         <required>true</required>
-      </cli-parm>
-      -->
       <cli-parm>
          <name>forcecompile</name>
          <arg>yes|no</arg>
