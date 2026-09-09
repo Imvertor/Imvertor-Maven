@@ -416,24 +416,13 @@
                             <xsl:when test="ep:max-occurs and ep:max-occurs ne '1'"><!-- de construct is een datatype die meermaals kan voorkomen (requirement 14B)-->
                                 <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
                                 <j:map key="items">
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
                                     <!-- properties verplaatst, zie #586 -->
-                                    <xsl:sequence select="if ($unit) then imf:ep-to-namevaluepair('unit',$unit) else ()"/><!-- /req/core/iso19103-measure-types -->
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('minimum',imf:get-local-value(ep:min-value-inclusive,ep:data-type))"/>
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('maximum',imf:get-local-value(ep:max-value-inclusive,ep:data-type))"/>
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMinimum',imf:get-local-value(ep:min-value-exclusive,ep:data-type))"/>
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMaximum',imf:get-local-value(ep:max-value-exclusive,ep:data-type))"/>
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('minLength',imf:get-local-value(ep:min-length,'ep:integer'))"/>
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',imf:get-local-value(ep:max-length,'ep:integer'))"/>
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('pattern',(ep:formal-pattern,imf:map-datapattern-to-ep-type(ep:data-type))[1])"/>
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
-                                    <xsl:sequence select="imf:ep-to-namevaluepair('default',$initial-value)"/>
+                                    <xsl:sequence select="imf:insert-datatype-properties(.,$unit,$read-only,$initial-value,$nillable)"/> 
                                 </j:map>
                                 <xsl:sequence select="imf:create-minmax(ep:min-occurs,ep:max-occurs)"/>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>         
+                                <xsl:sequence select="imf:insert-datatype-properties(.,$unit,$read-only,$initial-value,$nillable)"/>
                             </xsl:otherwise>
                         </xsl:choose>
                         <!-- properties verplaatst, zie #586 -->
@@ -469,6 +458,29 @@
         </j:array>
     </xsl:template>
     
+    <xsl:function name="imf:insert-datatype-properties" as="element()*">
+        <xsl:param name="this" as="element()"/>        
+        <xsl:param name="unit" as="xs:string?"/>        
+        <xsl:param name="read-only" as="xs:boolean?"/>        
+        <xsl:param name="default" as="xs:string?"/>        
+        <xsl:param name="nillable" as="xs:boolean?"/>        
+        
+        <xsl:for-each select="$this"><!-- singleton -->
+            <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>         
+            <xsl:sequence select="if ($unit) then imf:ep-to-namevaluepair('unit',$unit) else ()"/><!-- /req/core/iso19103-measure-types -->
+            <xsl:sequence select="imf:ep-to-namevaluepair('readOnly',$read-only)"/>
+            <xsl:sequence select="imf:ep-to-namevaluepair('default',$default)"/>
+            <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
+            <xsl:sequence select="imf:ep-to-namevaluepair('minimum',imf:get-local-value(ep:min-value-inclusive,ep:data-type))"/>
+            <xsl:sequence select="imf:ep-to-namevaluepair('maximum',imf:get-local-value(ep:max-value-inclusive,ep:data-type))"/>
+            <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMinimum',imf:get-local-value(ep:min-value-exclusive,ep:data-type))"/>
+            <xsl:sequence select="imf:ep-to-namevaluepair('exclusiveMaximum',imf:get-local-value(ep:max-value-exclusive,ep:data-type))"/>
+            <xsl:sequence select="imf:ep-to-namevaluepair('minLength',imf:get-local-value(ep:min-length,'ep:integer'))"/>
+            <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',imf:get-local-value(ep:max-length,'ep:integer'))"/>
+            <xsl:sequence select="imf:ep-to-namevaluepair('pattern',(ep:formal-pattern,imf:map-datapattern-to-ep-type(ep:data-type))[1])"/>
+        </xsl:for-each>
+    </xsl:function>
+
     <xsl:template match="node()">
         <xsl:apply-templates/>
     </xsl:template>
