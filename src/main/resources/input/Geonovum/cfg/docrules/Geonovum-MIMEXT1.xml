@@ -51,6 +51,9 @@
             
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-OBJECTTYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level><!-- TODO bestaat deze? -->
+   
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
         </levels>
     </doc-rule>
     
