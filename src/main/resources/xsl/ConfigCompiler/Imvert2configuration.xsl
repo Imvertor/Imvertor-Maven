@@ -129,6 +129,12 @@
         </xsl:variable>
         <xsl:sequence select="$config-compact"/>
         
+        <!-- test natures -->
+        <xsl:variable name="sections" select="($config-raw/config//(metamodel[stereotypes/stereo] | tagset[tagged-values/tv] | visuals[measures/*|categories/*|stereos/*]))"/>
+        <xsl:for-each select="$sections[empty(nature)]">
+            <xsl:sequence select="imf:msg('WARNING','No nature found: [1] ([2])',(name, (desc[@lang = $language],'No description')[1]))"/>
+        </xsl:for-each>
+        
         <!-- set some global configuration info -->
         <xsl:variable name="proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy','stereotype-name-prd-proxy'), false())"/>
         <xsl:sequence select="imf:set-config-string('system','supports-proxy',if ($proxy = '#unknown') then 'no' else 'yes')"/>
@@ -321,6 +327,16 @@
                     <xsl:for-each-group select="$metamodel//stereotypes/stereo" group-by="@id">
                         <xsl:sort select="current-grouping-key()"/>
                         <xsl:variable name="applicable-profile" select="ancestor::metamodel"/>
+                        
+                        <xsl:variable name="t" select="(current-group()[1]/ancestor::metamodel/nature)[1]"/>
+                        <xsl:if test="empty($t)">
+                            <xsl:sequence select="dlogger:save('natures',(current-group()[1]/ancestor::metamodel/nature)[1])"></xsl:sequence>
+                            <xsl:sequence select="dlogger:save('nature ' || count(current-group()[1]/ancestor::metamodel/nature),(current-group()[1]/ancestor::metamodel/nature))"></xsl:sequence>
+                            <xsl:sequence select="dlogger:save('metamodel ' || count(current-group()[1]/ancestor::metamodel),current-group()[1]/ancestor::metamodel)"></xsl:sequence>
+                            <xsl:sequence select="dlogger:save('group',current-group()[1])"></xsl:sequence>
+                            <xsl:sequence select="dlogger:save('stereo',current-group())"></xsl:sequence>
+                        </xsl:if>
+                        
                         <stereo id="{current-grouping-key()}" primary="{(current-group()/@primary)[last()]}" nature="{(current-group()[1]/ancestor::metamodel/nature)[1]}">
                             <xsl:variable name="stereo-group" select="current-group()"/>
                             <xsl:sequence select="imf:fetch-applicable-name($stereo-group/name)"/>

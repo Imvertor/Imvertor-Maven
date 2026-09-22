@@ -8,6 +8,8 @@
     
     <desc lang="en">Deviations and additions to generic grouping for MIM 1.1 metamodel.</desc>  
     
+    <nature>MIM</nature>
+    
     <tagged-values>
         
         <tv norm="space" id="CFG-TV-IMVERTOR">

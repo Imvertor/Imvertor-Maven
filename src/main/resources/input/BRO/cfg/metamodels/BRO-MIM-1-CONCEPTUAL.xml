@@ -10,6 +10,8 @@
     
     <name>BRO-MIM-1-CONCEPTUAL</name>
     
+    <nature>MIM</nature>
+    
     <!-- 
         release 0.9.5
         - aanpassing van EA profile, #332

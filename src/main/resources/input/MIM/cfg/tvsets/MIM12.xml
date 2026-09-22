@@ -9,6 +9,8 @@
     
     <name>MIM 1.2 tagged values</name>
     
+    <nature>MIM</nature>
+
     <tagged-values>
         
         <tv norm="note" id="CFG-TV-SOURCE">

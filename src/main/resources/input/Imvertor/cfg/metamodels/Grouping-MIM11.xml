@@ -13,6 +13,8 @@
     <desc lang="nl">Metamodel voor Grouping passend bij MIM 11</desc>
     <desc lang="en">Metamodel for Grouping under MIM11</desc>
     
+    <nature>MIM</nature>
+    
     <stereotypes xml:id="stereotypes">
 
         <stereo id="stereotype-name-system-package" primary="yes">

@@ -12,6 +12,8 @@
     <desc lang="en">Visuals for MIM 1.0 models</desc>
     <desc lang="nl">Visuele aspecten van MIM 1.0 modellen</desc>
 
+    <nature>MIM</nature>
+    
     <measures>
         <measure id="WHITE">16777215</measure>
         <measure id="BLACK">0</measure>

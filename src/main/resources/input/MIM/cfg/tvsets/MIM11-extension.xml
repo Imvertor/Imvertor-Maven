@@ -6,6 +6,8 @@
     
     <name>MIM 1.1 tagged values (common extensions)</name>
     
+    <nature>MIM</nature>
+    
     <tagged-values>
         
         <tv norm="space" id="CFG-TV-OWNER">

@@ -31,6 +31,8 @@
    
    <desc lang="en">Metamodel for KING/VNG information models: semantisch informatiemodel</desc>
    
+   <nature>MIM</nature>
+   
    <profiles>
       <profile lang="nl"> 
          <id>MIGNL</id>

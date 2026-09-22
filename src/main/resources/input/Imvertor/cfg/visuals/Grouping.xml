@@ -12,6 +12,8 @@
     <desc lang="en">Visuals for grouping</desc>
     <desc lang="nl">Visuele aspecten van grouping constructies</desc>
     
+    <nature>GROUPING</nature>
+    
     <measures>
         <!-- geen aanpassingen -->
     </measures>

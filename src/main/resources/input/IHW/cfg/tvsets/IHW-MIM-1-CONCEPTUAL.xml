@@ -27,6 +27,8 @@
     
     <name>IHW-MIM-1-CONCEPTUAL</name>
     
+    <nature>MIM</nature>
+    
     <tagged-values>
         
         <tv norm="space" id="CFG-TV-FEATURECOLLECTION">

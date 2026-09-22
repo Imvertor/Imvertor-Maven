@@ -11,6 +11,7 @@
     <xi:include href="MIM11-extension.xml"/><!-- enkele typische gemeenschappelijke aanvullingen; voorlopend op 111 -->
     
     <name>MIM 1.1</name>
+    
     <desc lang="en">Metamodel for common constructs in MIM 1.1 models</desc>
     <desc lang="nl">Metamodel voor gemeenschappelijkheden in MIM 1.1 modellen</desc>
     

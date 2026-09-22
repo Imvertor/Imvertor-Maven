@@ -23,6 +23,8 @@
     
     <desc lang="nl">Metamodel voor Kadaster specifieke MIM uitbreidingen</desc>
     
+    <nature>MIM</nature>
+    
     <profiles>
         <profile lang="nl"> 
             <id>MKGNL</id>

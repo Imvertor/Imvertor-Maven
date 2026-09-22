@@ -12,6 +12,8 @@
     
     <name>Kadaster MIM extension tagged values</name>
     
+    <nature>MIM</nature>
+    
     <tagged-values>
         <tv norm="space" id="CFG-TV-DOMAIN">
             <name lang="nl">Domein</name>

@@ -14,6 +14,8 @@
     <desc lang="en">Visuals for VNGR SIM modellen</desc>
     <desc lang="nl">Visuele aspecten van VNGR SIM modellen</desc>
     
+    <nature>MIM</nature>
+    
     <measures>
         <!-- geen aanpassingen -->
     </measures>

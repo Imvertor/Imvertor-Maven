@@ -6,6 +6,8 @@
   
   <name>BRO</name>
   
+  <nature>MIM</nature>
+    
   <!-- add specs here to be merged with the calling tvsets -->
     
     <tagged-values xml:id="tagset">

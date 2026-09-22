@@ -24,6 +24,9 @@
     <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM12.xml"/>
     
     <name>Waarderingskamer SIM</name>
+    
+    <nature>MIM</nature>
+    
     <tagged-values>
         <tv norm="space" id="CFG-TV-INDICATIEINONDERZOEK">
             <name lang="nl">Indicatie in onderzoek</name>
