@@ -35,14 +35,14 @@
    
    <profiles>
       <profile lang="nl"> 
-         <id>MIGNL</id>
+         <id>VNGRMIM1-2NL</id>
          <release>1.0</release>
-         <desc>MIG Grouping NL</desc> 
+         <desc>VNGR MIM 1-2 Grouping NL</desc> 
       </profile>
       <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
-         <id>MIGEN</id>
+         <id>VNGRMIM1-2EN</id>
          <release>1.0</release>
-         <desc>MIG Grouping EN</desc>
+         <desc>VNGR MIM 1-2 Grouping EN</desc>
       </profile>
    </profiles>
    
