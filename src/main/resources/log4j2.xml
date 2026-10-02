@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    
+    <Appenders>
+        <!--  Write to standard out: -->
+        <Console name="stdout" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-5p %d{DEFAULT} : %m%n"/>
+        </Console>
+ 
+        <!-- Write to file with rollover: -->
+        <RollingFile name="file" fileName="log/log.txt" filePattern="log/log.txt.%i">
+            <PatternLayout pattern="%d{DEFAULT} %p %c - [%t][%F:%L] - %m%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1"/>
+        </RollingFile>
+    </Appenders>
+ 
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="stdout"/>
+            <AppenderRef ref="file"/>
+        </Root>
+    </Loggers>
+    
+</Configuration>
