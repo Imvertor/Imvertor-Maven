@@ -81,7 +81,8 @@ public class ResourcePusher {
 				cred = new UsernamePasswordCredentialsProvider(user, pass);
 	
 			return git.push()
-				.setCredentialsProvider(cred) 
+				.setCredentialsProvider(cred)
+				.setProgressMonitor(new Log4jProgressMonitor())
 				.call();
 
 		} finally {
