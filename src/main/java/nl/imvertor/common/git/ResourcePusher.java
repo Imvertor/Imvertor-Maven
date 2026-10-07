@@ -150,6 +150,7 @@ public class ResourcePusher {
 		/* Optionally remove the local work directory first: */
 		if (localWorkDir.exists() && removeLocalWorkDir) {
 			org.eclipse.jgit.util.FileUtils.delete(localWorkDir,org.eclipse.jgit.util.FileUtils.RECURSIVE);
+			logger.info("Removing local git repository ...");
 			runner.debug(logger, "GITHUB", "Local workdir removed? " + (localWorkDir.list() == null));
 		}
 
@@ -160,6 +161,7 @@ public class ResourcePusher {
 		/* Create the Git instance: */
 		File gitFile = new File(localWorkDir, ".git");
 		if (!gitFile.isDirectory()) {
+		  logger.info("Cloning remote git repository ...");
 			runner.debug(logger, "GITHUB", "Cloning remote git repository \"" + remoteRepositoryURI + "\" to local work directory \"" + localWorkDir.getAbsolutePath() + "\" ...");
 
 			/* Local work directory does not exists; clone remot repository: */
@@ -169,14 +171,17 @@ public class ResourcePusher {
 					.setDirectory(localWorkDir)
 					.call();
 		} else if (!gitopen) {
+		  logger.info("Opening existing local git repository ...");
 			runner.debug(logger, "GITHUB", "Opening existing local repository \"" + localWorkDir.getAbsolutePath() + "\" ...");
 			/* Open the existing local repository: */
 			git = Git.open(localWorkDir);
 			
+			logger.info("Pulling remote git repository ...");
 			runner.debug(logger, "GITHUB", "Pulling latest files to local repository ...");
 			/* Pull latest remote changes: */
 			PullResult pullResult = git.pull().call();
 		  if (pullResult.isSuccessful()) {
+		    logger.info("Pull successful.");
 		    runner.debug(logger, "GITHUB", "Pull successful");
 		  } else {
 		    if (!FileUtils.deleteQuietly(localWorkDir)) {

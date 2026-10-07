@@ -340,7 +340,7 @@ public class OfficeCompiler extends Step {
 			
 			// create and prepare the GIT resource pusher
 			ResourcePusher rp = new ResourcePusher();
-			rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gittoken, gitemail, true);
+			rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gittoken, gitemail, false);
 			
 			// copy the files to the work folder
 			catfolder.copy(new AnyFolder(gitfolder,"data"));
