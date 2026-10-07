@@ -57,7 +57,7 @@ public class XslFile extends XmlFile {
 
 	protected static final Logger logger = Logger.getLogger(XslFile.class);
 	
-	private static Configuration saxonConfig = new Configuration();
+	private static Configuration saxonConfig = Configuration.newConfiguration(); // best available licensed edition (EE > PE > HE)
 	private static Processor processor;
 	private static XsltCompiler compiler;
 	private HashMap<String, String> parms;

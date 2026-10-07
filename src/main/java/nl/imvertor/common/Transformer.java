@@ -223,7 +223,8 @@ public class Transformer {
 		}
 		XsltTransformer transformer = exec.load();
 		
-		transformer.getUnderlyingController().setMessageEmitter(messageEmitter);
+		// Saxon-EE (multi-threading capable) requires a factory instead of a single shared message emitter
+		transformer.getUnderlyingController().setMessageFactory(() -> new Messenger(messageEmitter.getPipelineConfiguration()));
 		
 		if (errorListener != null)
 			transformer.setErrorListener(errorListener); // for runtime errors

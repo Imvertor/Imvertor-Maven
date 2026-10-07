@@ -20,6 +20,8 @@
 
 package nl.imvertor.common.xsl.extensions;
 
+import java.util.List;
+
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
@@ -83,7 +85,7 @@ public class ImvertorFileSpec extends ExtensionFunctionDefinition {
 				StringValue[] values = new StringValue[spec.length];
 				for (int i = 0; i < spec.length; i++) 
 					values[i] = new StringValue(spec[i]);
-			    return new ZeroOrMore<StringValue>(values);
+			    return new ZeroOrMore<StringValue>(List.of(values));
 				
 			} catch (Exception e) {
 				throw new XPathException(e);
