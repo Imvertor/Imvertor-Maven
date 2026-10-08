@@ -462,7 +462,7 @@
         <xsl:param name="this" as="element()"/>        
         <xsl:param name="unit" as="xs:string?"/>        
         <xsl:param name="read-only" as="xs:boolean?"/>        
-        <xsl:param name="default" as="xs:string?"/>        
+        <xsl:param name="default" as="xs:anyAtomicType?"/>
         <xsl:param name="nillable" as="xs:boolean?"/>        
         
         <xsl:for-each select="$this"><!-- singleton -->
