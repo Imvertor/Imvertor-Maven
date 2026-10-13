@@ -25,6 +25,7 @@ import java.nio.charset.Charset;
 import org.apache.log4j.Logger;
 
 import net.sf.saxon.Configuration;
+import net.sf.saxon.Version;
 import nl.imvertor.ApcModifier.ApcModifier;
 import nl.imvertor.ComplyCompiler.ComplyCompiler;
 import nl.imvertor.ConceptCollector.ConceptCollector;
@@ -61,6 +62,7 @@ import nl.imvertor.YamlCompiler.YamlCompiler;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Release;
 import nl.imvertor.common.Transformer;
+import static java.lang.String.format;
 
 public class ChainTranslateAndReport {
 
@@ -83,8 +85,11 @@ public class ChainTranslateAndReport {
 			configurator.getRunner().info(logger, "JVM " + System.getProperty("java.version") + " on " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
 			configurator.getRunner().info(logger, "JNU encoding " + System.getProperty("sun.jnu.encoding"));
 			configurator.getRunner().info(logger, "Default character encoding " + Charset.defaultCharset());
-			configurator.getRunner().info(logger, "Saxon edition: " + configurator.getSaxonConfiguration().getEditionCode() 
-			    + ", licensed: " + configurator.getSaxonConfiguration().isLicensedFeature(Configuration.LicenseFeature.ENTERPRISE_XSLT));
+			configurator.getRunner().info(logger, format("Saxon edition: %s, version: %s, PE licensed: %b, EE licensed: %b", 
+			    configurator.getSaxonConfiguration().getEditionCode(),
+			    Version.getProductVersion(),
+			    configurator.getSaxonConfiguration().isLicensedFeature(Configuration.LicenseFeature.PROFESSIONAL_EDITION),
+			    configurator.getSaxonConfiguration().isLicensedFeature(Configuration.LicenseFeature.ENTERPRISE_XSLT)));
 					
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();
