@@ -743,6 +743,17 @@
             ($this/imvert:conceptual-schema-type = 'Meetwaarde' and $this/imvert:type-package = 'RO-BRO')
             "/>
 
+        <xsl:variable name="uom" select="(imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-EENHEID'),imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-UNITOFMEASURE'))[1]"/><!-- MIM12 -->
+
+        <!-- #723 a measure type taken from an external schema (e.g. brocom:MeasureNillableType), for which a unit of measure is specified -->
+        <xsl:variable name="is-external-defining-class" select="exists($defining-class/ancestor::imvert:package[imvert:stereotype/@id = ('stereotype-name-external-package','stereotype-name-system-package')])"/>
+        <xsl:variable name="is-external-measure" select="
+            normalize-space($uom)
+            and not($is-gml-measure)
+            and not($is-primitive)
+            and ($is-conceptual-complextype or (($is-datatype or $is-complextype) and $is-external-defining-class))
+            "/>
+
         <xsl:variable name="data-location" select="imf:get-appinfo-location($this)"/>
         
         <xsl:variable name="has-key" select="$defining-class/imvert:attributes/imvert:attribute[imvert:stereotype/@id = 'stereotype-name-key']"/>
@@ -1017,7 +1028,6 @@
                 </xs:element>
             </xsl:when>
             <xsl:when test="$is-gml-measure">
-                <xsl:variable name="uom" select="(imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-EENHEID'),imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-UNITOFMEASURE'))[1]"/><!-- MIM12 -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
@@ -1040,6 +1050,35 @@
                                         <xsl:attribute name="fixed" select="$uom"/>
                                     </xsl:if>
                                 </xs:attribute>
+                            </xs:restriction>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="$is-external-measure">
+                <!--
+                    #723 Restrict the external measure type to the unit of measure specified.
+                    When nillable, the uom is optional, as it must be absent on a nil value (see brocom:MeasureNillableType).
+                    A nilReason cannot be added here, as this is a restriction.
+                -->
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:choose>
+                        <xsl:when test="$is-nillable">
+                            <xsl:attribute name="nillable">true</xsl:attribute>
+                            <xsl:sequence select="imf:create-xml-debug-comment($this,'A voidable external measure type, with unit of measure')"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imf:create-xml-debug-comment($this,'An external measure type, with unit of measure')"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:restriction base="{if ($is-conceptual-complextype) then $type else concat($type,$Type-suffix)}">
+                                <xs:attribute name="uom" type="gml:UomIdentifier" use="{if ($is-nillable) then 'optional' else 'required'}" fixed="{$uom}"/>
                             </xs:restriction>
                         </xs:simpleContent>
                     </xs:complexType>
