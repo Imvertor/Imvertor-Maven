@@ -106,6 +106,7 @@
         <xsl:variable name="package-is-service" select="imf:member-of($package,$all-service-packages)"/>
         <xsl:variable name="class-is-service" select="imvert:stereotype/@id = (('stereotype-name-service','stereotype-name-process'))"/>
         
+        <?x  Removed #766
         <!--
             Only Abstract classes start with _underscore        
         -->
@@ -115,6 +116,7 @@
         <xsl:sequence select="imf:report-warning(., 
             not($is-external) and not(imf:boolean(imvert:abstract)) and starts-with(imvert:name,'_'), 
             'Concrete class name should not start with underscore.')"/>
+        x?>
         
         <!-- services and processes should only occur within service packages -->
         <xsl:sequence select="imf:report-warning(., 
