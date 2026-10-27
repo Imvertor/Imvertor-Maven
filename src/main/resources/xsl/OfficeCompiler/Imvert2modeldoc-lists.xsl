@@ -141,7 +141,7 @@
             <xsl:sequence select="imf:set-config-string('temp','latest-list-url',$loc)"/>
             <xsl:sequence select="imf:set-config-string('temp','latest-list-key',tokenize($loc,'/')[last()])"/>
            
-            <xsl:variable name="referring-attributes" select="//imvert:attribute[imvert:type-id = current()/imvert:id]"/>
+            <xsl:variable name="referring-attributes" select="$imvert-document//imvert:attribute[imvert:type-id = current()/imvert:id]"/>
             <xsl:variable name="referring-attributes-loc" select="$referring-attributes[exists(imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DATALOCATION'))]"/>
             <xsl:variable name="referring-attributes-noloc" select="$referring-attributes[empty(imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DATALOCATION'))]"/>
             
