@@ -1,6 +1,5 @@
-<project 
-  xmlns="http://maven.apache.org/POM/4.0.0" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
@@ -14,24 +13,37 @@
   <!-- ASL = The Apache Software License, Version 2.0, http://www.apache.org/licenses/LICENSE-2.0.txt -->
   <!-- MSL = mozilla license, https://www.mozilla.org/en-US/MPL/2.0/ -->
   <!-- ESL = Eclipse software license, http://www.eclipse.org/legal/epl-v10.html -->
+  
+  <repositories>
+    <repository>
+      <id>repos-armatiek</id>
+      <name>Armatiek Repository</name>
+      <url>https://armatiek.nl/maven2</url>
+    </repository>
+  </repositories>
 
-
-	<repositories>
-	  <repository>
-	    <id>repos-armatiek</id>
-	    <name>Armatiek Repository</name>
-	    <url>https://armatiek.nl/maven2</url>
-	  </repository>
-	</repositories>
+  <properties>
+    <log4j.version>2.26.1</log4j.version>
+    <xmlunit.version>2.9.1</xmlunit.version>
+    <rdf4j.version>5.0.0-M2</rdf4j.version>
+  </properties>
 
   <dependencies>
-
-	<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-	<dependency>
-	    <groupId>org.apache.logging.log4j</groupId>
-	    <artifactId>log4j-core</artifactId>
-	    <version>2.17.1</version>
-	</dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-1.2-api</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>commons-beanutils</groupId>
@@ -61,7 +73,7 @@
       <!-- ASL -->
     </dependency>
 
-   <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
@@ -140,22 +152,22 @@
       <!-- MSL -->
     </dependency>
 
-	<dependency>
-	    <groupId>org.xmlunit</groupId>
-	    <artifactId>xmlunit-jakarta-jaxb-impl</artifactId>
-	    <version>2.9.1</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.xmlunit</groupId>
-	    <artifactId>xmlunit-assertj3</artifactId>
-	    <version>2.9.1</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.xmlunit</groupId>
-	    <artifactId>xmlunit-placeholders</artifactId>
-	    <version>2.9.1</version>
-	</dependency>
-    
+    <dependency>
+      <groupId>org.xmlunit</groupId>
+      <artifactId>xmlunit-jakarta-jaxb-impl</artifactId>
+      <version>${xmlunit.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xmlunit</groupId>
+      <artifactId>xmlunit-assertj3</artifactId>
+      <version>${xmlunit.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xmlunit</groupId>
+      <artifactId>xmlunit-placeholders</artifactId>
+      <version>${xmlunit.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.ccil.cowan.tagsoup</groupId>
       <artifactId>tagsoup</artifactId>
@@ -174,6 +186,12 @@
       <groupId>net.sourceforge.jexcelapi</groupId>
       <artifactId>jxl</artifactId>
       <version>2.6.12</version>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -189,31 +207,30 @@
       <version>1.2</version>
     </dependency>
 
-	<!-- https://mvnrepository.com/artifact/org.eclipse.rdf4j/rdf4j-runtime -->
-	<dependency>
-	    <groupId>org.eclipse.rdf4j</groupId>
-	    <artifactId>rdf4j-runtime</artifactId>
-	    <version>5.0.0-M2</version>
-	    <type>pom</type>
-	</dependency>
+    <!-- https://mvnrepository.com/artifact/org.eclipse.rdf4j/rdf4j-runtime -->
+    <dependency>
+      <groupId>org.eclipse.rdf4j</groupId>
+      <artifactId>rdf4j-runtime</artifactId>
+      <version>${rdf4j.version}</version>
+      <type>pom</type>
+    </dependency>
     <dependency>
       <groupId>org.eclipse.rdf4j</groupId>
       <artifactId>rdf4j-rio-rdfxml</artifactId>
-      <version>5.0.0-M2</version>
+      <version>${rdf4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.rdf4j</groupId>
       <artifactId>rdf4j-rio-turtle</artifactId>
-      <version>5.0.0-M2</version>
+      <version>${rdf4j.version}</version>
     </dependency>
-    
-    <!-- https://mvnrepository.com/artifact/org.eclipse.rdf4j/rdf4j-model -->
-<dependency>
-    <groupId>org.eclipse.rdf4j</groupId>
-    <artifactId>rdf4j-model</artifactId>
-    <version>5.0.0-M2</version>
-</dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.eclipse.rdf4j/rdf4j-model -->
+    <dependency>
+      <groupId>org.eclipse.rdf4j</groupId>
+      <artifactId>rdf4j-model</artifactId>
+      <version>${rdf4j.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -233,7 +250,7 @@
       <artifactId>json</artifactId>
       <version>20231013</version>
     </dependency>
-    
+
     <!-- https://mvnrepository.com/artifact/de.odysseus.staxon/staxon -->
     <dependency>
       <groupId>de.odysseus.staxon</groupId>
@@ -242,35 +259,35 @@
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-	<dependency>
-	  <groupId>com.fasterxml.jackson.core</groupId>
-	  <artifactId>jackson-databind</artifactId>
-	  <version>[2.9.10.1,)</version>
-	</dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>[2.9.10.1,)</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml -->
     <dependency>
-      <groupId>com.fasterxml.jackson.dataformat</groupId> 
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
       <version>2.9.9</version>
     </dependency>
-	<dependency>
-	    <!-- Used to validate RFC 3339 date and date-time -->
-	    <groupId>com.ethlo.time</groupId>
-	    <artifactId>itu</artifactId>
-	    <version>1.10.1</version>
-	</dependency>
+    <dependency>
+      <!-- Used to validate RFC 3339 date and date-time -->
+      <groupId>com.ethlo.time</groupId>
+      <artifactId>itu</artifactId>
+      <version>1.10.1</version>
+    </dependency>
 
-     <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-core -->
-   <dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-core -->
+    <dependency>
       <groupId>org.apache.jena</groupId>
       <artifactId>jena-core</artifactId>
-  	  <version>4.2.0</version>
-  	  <exclusions>
-  	  	<exclusion>
-  	  		<groupId>xml-apis</groupId>
-  	  		<artifactId>xml-apis</artifactId>
-  	  	</exclusion>
-  	  </exclusions>
+      <version>4.2.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.topbraid/shacl -->
@@ -286,46 +303,46 @@
       <version>6.6.1.202309021850-r</version>
     </dependency>
 
-   <dependency>
-	  <groupId>org.commonmark</groupId>
-	  <artifactId>commonmark</artifactId>
-	  <version>0.28.0</version>
-	</dependency>
-    
     <dependency>
-	    <groupId>nl.armatiek.saxon</groupId>
-	    <artifactId>saxon-ext-core</artifactId>
-	    <version>1.1</version>
-	</dependency>
-	<dependency>
-	    <groupId>nl.armatiek.saxon</groupId>
-	    <artifactId>saxon-ext-httpclient</artifactId>
-	    <version>1.1</version>
-	</dependency>
-	<dependency>
-	    <groupId>nl.armatiek.saxon</groupId>
-	    <artifactId>saxon-ext-file</artifactId>
-	    <version>1.1</version>
-	</dependency>
+      <groupId>org.commonmark</groupId>
+      <artifactId>commonmark</artifactId>
+      <version>0.28.0</version>
+    </dependency>
 
-	<dependency>
+    <dependency>
+      <groupId>nl.armatiek.saxon</groupId>
+      <artifactId>saxon-ext-core</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>nl.armatiek.saxon</groupId>
+      <artifactId>saxon-ext-httpclient</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>nl.armatiek.saxon</groupId>
+      <artifactId>saxon-ext-file</artifactId>
+      <version>1.1</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.santuario</groupId>
       <artifactId>xmlsec</artifactId>
       <version>3.0.3</version>
     </dependency>
-    
+
     <dependency>
-	    <groupId>io.github.java-diff-utils</groupId>
-	    <artifactId>java-diff-utils</artifactId>
-	    <version>4.12</version>
-	</dependency>
-  
-	<dependency>
-	    <groupId>com.networknt</groupId>
-	    <artifactId>json-schema-validator</artifactId>
-	    <version>1.3.1</version>
-	</dependency>
-	
+      <groupId>io.github.java-diff-utils</groupId>
+      <artifactId>java-diff-utils</artifactId>
+      <version>4.12</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.networknt</groupId>
+      <artifactId>json-schema-validator</artifactId>
+      <version>1.3.1</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -353,7 +370,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <!--
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -394,10 +411,13 @@
               -->
               <minimizeJar>true</minimizeJar>
               <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                <transformer
+                  implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>nl.imvertor.ChainTranslateAndReport</mainClass>
                 </transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                <transformer
+                  implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"
+                />
               </transformers>
               <filters>
                 <filter>
@@ -425,7 +445,7 @@
                   </includes>
                 </filter>
                 <filter>
-                  <artifact>log4j:log4j</artifact>
+                  <artifact>org.apache.logging.log4j:*</artifact>
                   <includes>
                     <include>**</include>
                   </includes>
@@ -443,7 +463,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
@@ -466,10 +486,10 @@
           </execution>
         </executions>
       </plugin>
-       
+
     </plugins>
   </build>
-  
+
   <distributionManagement>
     <repository>
       <id>github</id>
