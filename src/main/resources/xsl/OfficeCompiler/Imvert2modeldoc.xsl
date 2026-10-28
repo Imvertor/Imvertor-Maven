@@ -1740,7 +1740,7 @@
                     </xsl:choose>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEAFLEIDBAAR'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-ISDERIVED'))"/>   
+                    <xsl:sequence select="imf:create-part-2(.,if (imf:boolean($this/imvert:is-value-derived)) then 'Ja' else ())"/>   
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-WAARDEAFLEIDBAAR'">
                     <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean($relation/imvert:is-value-derived)) then 'YES' else 'NO'"/>
