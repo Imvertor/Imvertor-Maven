@@ -20,15 +20,23 @@
       <name>Armatiek Repository</name>
       <url>https://armatiek.nl/maven2</url>
     </repository>
+    <!-- For Saxon-PE and Saxon-EE: -->
+    <repository>
+      <id>repos-saxonica</id>
+      <name>Saxonica Repository</name>
+      <url>https://maven.saxonica.com/maven</url>
+    </repository>
   </repositories>
 
   <properties>
     <log4j.version>2.26.1</log4j.version>
     <xmlunit.version>2.9.1</xmlunit.version>
     <rdf4j.version>5.0.0-M2</rdf4j.version>
+    <saxon.version>10.9</saxon.version>
   </properties>
 
   <dependencies>
+
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
@@ -143,13 +151,6 @@
       <artifactId>org.apache.xerces</artifactId>
       <version>2.9.0</version>
       <!-- ASL -->
-    </dependency>
-
-    <dependency>
-      <groupId>net.sf.saxon</groupId>
-      <artifactId>Saxon-HE</artifactId>
-      <version>10.3</version>
-      <!-- MSL -->
     </dependency>
 
     <dependency>
@@ -344,6 +345,45 @@
     </dependency>
 
   </dependencies>
+  
+  <profiles>
+    <profile>
+      <!-- Saxon Home Edition (HE): -->
+      <id>Saxon-HE</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>net.sf.saxon</groupId>
+          <artifactId>Saxon-HE</artifactId>
+          <version>${saxon.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <!-- Saxon Professional Edition (PE): -->
+      <id>Saxon-PE</id>
+      <dependencies>
+        <dependency>
+          <groupId>com.saxonica</groupId>
+          <artifactId>Saxon-PE</artifactId>
+          <version>${saxon.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <!-- Saxon Enterprise Edition (EE): -->
+      <id>Saxon-EE</id>
+      <dependencies>
+        <dependency>
+          <groupId>com.saxonica</groupId>
+          <artifactId>Saxon-EE</artifactId>
+          <version>${saxon.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 
   <build>
     <plugins>
@@ -371,30 +411,6 @@
         </executions>
       </plugin>
 
-      <!--
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <archive>
-		          <manifest>
-		            <mainClass>nl.imvertor.ChainTranslateAndReport</mainClass>
-		          </manifest>
-		        </archive>
-        </configuration>
-      </plugin>
-      -->
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -406,9 +422,6 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <!--
-              <finalName>Imvertor-1-SNAPSHOT-jar-with-dependencies</finalName>
-              -->
               <minimizeJar>true</minimizeJar>
               <transformers>
                 <transformer
@@ -420,6 +433,18 @@
                 />
               </transformers>
               <filters>
+                <filter>
+                  <artifact>com.saxonica:Saxon-PE</artifact>
+                  <includes>
+                    <include>**</include>
+                  </includes>
+                </filter>
+                <filter>
+                  <artifact>com.saxonica:Saxon-EE</artifact>
+                  <includes>
+                    <include>**</include>
+                  </includes>
+                </filter>
                 <filter>
                   <artifact>org.eclipse.birt.runtime.3_7_1:org.apache.xerces</artifact>
                   <includes>

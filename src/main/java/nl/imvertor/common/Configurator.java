@@ -206,7 +206,7 @@ public class Configurator {
 			// save the managed folder for regression tests (ref and tst)
 			regtestFolder = new AnyFolder(getServerProperty("managed.dir.reg"));
 
-			saxonConfig = new Configuration();
+			saxonConfig = Configuration.newConfiguration(); // best available licensed edition (EE > PE > HE)
 			
 			// possible addition: saxon 9,8: saxonConfig.setConfigurationProperty(FeatureKeys.TRACE_EXTERNAL_FUNCTIONS, true);
 			
