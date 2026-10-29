@@ -19,7 +19,8 @@
 -->
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:imvert-imap="http://www.imvertor.org/schema/imagemap"
@@ -31,9 +32,14 @@
     xmlns:dcat="http://www.w3.org/ns/dcat#"
     xmlns:rschema="http://www.w3.org/2000/01/rdf-schema#"
     
+    xmlns:saxon="http://saxon.sf.net/"
+    
+    xmlns:tmp="http://www.imvertor.org/xsl/tmp"
+    
     xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
     
     exclude-result-prefixes="#all" 
+    expand-text="yes"
     version="3.0">
     
     <!-- 
@@ -48,48 +54,85 @@
     <xsl:variable name="includedoclist" select="imf:boolean(imf:get-config-string('cli','includedoclist'))"/>
     <xsl:variable name="doclist-xml-url" select="imf:get-config-parameter('doclist-xml-url',false())"/>
     
-    <xsl:template match="/">
-        <xsl:choose>
-            <xsl:when test="$includedoclist and not($doclist-xml-url)">
-                <xsl:sequence select="imf:msg($imvert-document,'ERROR','Property [1] cannot be yes when parameter [2] is not specified',('includedoclist','doclist-xml-url'))"/>
-            </xsl:when>
-            <xsl:when test="$owner = 'BRO'">
-                <!-- TODO aanpassen initialisatie codelists....!
-                    
-                    dit moet beter. dit is ook al onderdeel van modeldoc zelf. de wijze waarop je bepaalt wat de LOC is van de codelist moet apart worden uitgewerkt voor iedere klant of aanpak. 
-                
-                -->
-                    
-                <xsl:variable name="configuration-registration-objects-path" select="concat(imf:get-config-string('system','inp-folder-path'),'/cfg/local/registration-objects.xml')"/>
-                <xsl:variable name="configuration-registration-objects-doc" select="imf:document($configuration-registration-objects-path,true())"/>
-
-                <!-- the abbreviation for the registration object must be set here; this is part of the path in GIT where the catalog is uploaded -->
-                <xsl:variable name="namespace" select="$imvert-document/imvert:packages/imvert:base-namespace"/>
-                <xsl:variable name="abbrev" select="tokenize($namespace,'/')[last()]" as="xs:string?"/>
-                <xsl:variable name="object" select="$configuration-registration-objects-doc//registratieobject[abbrev = $abbrev]"/>
-                
-                <!--check if known. -->
-                <xsl:choose>
-                    <xsl:when test="empty($object)">
-                        <xsl:sequence select="imf:msg($imvert-document,'ERROR','The abbreviation [1] taken from [2] is not valid',($abbrev,$namespace))"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:sequence select="imf:set-config-string('appinfo','model-abbreviation',$abbrev)"/>
-                       <xsl:apply-templates/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:next-match/><!-- TODO: no list handling yet -->
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
+    <xsl:variable name="runs-on-licensed-EE" static="yes" as="xs:boolean"
+        select="starts-with(system-property('xsl:product-version'), 'EE') and system-property('xsl:supports-streaming') = 'yes'"/>
     
+    <xsl:template match="/">
+        <xsl:variable name="unresolved-xml" as="element()?">
+            <xsl:choose>
+                <xsl:when test="$includedoclist and not($doclist-xml-url)">
+                    <xsl:sequence select="imf:msg($imvert-document,'ERROR','Property [1] cannot be yes when parameter [2] is not specified',('includedoclist','doclist-xml-url'))"/>
+                </xsl:when>
+                <xsl:when test="$owner = 'BRO'">
+                    <!-- TODO aanpassen initialisatie codelists....!
+                        
+                        dit moet beter. dit is ook al onderdeel van modeldoc zelf. de wijze waarop je bepaalt wat de LOC is van de codelist moet apart worden uitgewerkt voor iedere klant of aanpak. 
+                    
+                    -->
+                        
+                    <xsl:variable name="configuration-registration-objects-path" select="concat(imf:get-config-string('system','inp-folder-path'),'/cfg/local/registration-objects.xml')"/>
+                    <xsl:variable name="configuration-registration-objects-doc" select="imf:document($configuration-registration-objects-path,true())"/>
+    
+                    <!-- the abbreviation for the registration object must be set here; this is part of the path in GIT where the catalog is uploaded -->
+                    <xsl:variable name="namespace" select="$imvert-document/imvert:packages/imvert:base-namespace"/>
+                    <xsl:variable name="abbrev" select="tokenize($namespace,'/')[last()]" as="xs:string?"/>
+                    <xsl:variable name="object" select="$configuration-registration-objects-doc//registratieobject[abbrev = $abbrev]"/>
+                    
+                    <!-- check if known. -->
+                    <xsl:choose>
+                        <xsl:when test="empty($object)">
+                            <xsl:sequence select="imf:msg($imvert-document,'ERROR','The abbreviation [1] taken from [2] is not valid',($abbrev,$namespace))"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imf:set-config-string('appinfo','model-abbreviation',$abbrev)"/>
+                            <xsl:apply-templates/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:next-match/><!-- TODO: no list handling yet -->
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
+        <xsl:variable name="reflist-urls" select="$unresolved-xml//tmp:url/text()" as="xs:string*"/>
+        
+        <xsl:variable name="url-doc-mapping" as="map(xs:string, document-node()?)">
+            <xsl:map>
+                <!-- For Saxon-EE, fetch the reference lists multithreaded: -->
+                <xsl:for-each select="$reflist-urls" saxon:threads="4" use-when="$runs-on-licensed-EE">
+                    <xsl:map-entry key="." select="imf:fetch-reflist(.)"/>
+                </xsl:for-each>
+                
+                <!-- For non-Saxon-EE, fetch the reference lists single hreaded:  -->
+                <xsl:for-each select="$reflist-urls" use-when="not($runs-on-licensed-EE)">
+                    <xsl:map-entry key="." select="imf:fetch-reflist(.)"/>
+                </xsl:for-each>
+            </xsl:map>
+        </xsl:variable>
+        
+        <xsl:apply-templates select="$unresolved-xml">
+            <xsl:with-param name="url-doc-mapping" select="$url-doc-mapping" as="map(xs:string, document-node()?)" tunnel="yes"/>
+        </xsl:apply-templates>
+        
+    </xsl:template>
+   
+    <xsl:function name="imf:fetch-reflist" as="document-node()?">
+        <xsl:param name="url" as="xs:string?"/>
+        <xsl:try>
+            <xsl:sequence select="if (unparsed-text-available($url)) then document($url) else ()"/>
+            <xsl:catch>
+                <xsl:sequence select="imf:msg((),'ERROR','List contents did not parse okay, please check [1]',($url))"/>
+            </xsl:catch>
+        </xsl:try>
+    </xsl:function>
+
     <!-- codelists that have no entries are assumed to be external, therefore try to read these entries from the TV "data location" -->
     <xsl:template match="imvert:class[
-        imvert:stereotype/@id = ('stereotype-name-codelist') and empty(imvert:attributes/imvert:attribute) 
+        not(tmp:url) and
+        (imvert:stereotype/@id = ('stereotype-name-codelist') and empty(imvert:attributes/imvert:attribute) 
         or
-        imvert:stereotype/@id = ('stereotype-name-referentielijst') 
+        imvert:stereotype/@id = ('stereotype-name-referentielijst')) 
         ]">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
@@ -98,7 +141,7 @@
             <xsl:sequence select="imf:set-config-string('temp','latest-list-url',$loc)"/>
             <xsl:sequence select="imf:set-config-string('temp','latest-list-key',tokenize($loc,'/')[last()])"/>
            
-            <xsl:variable name="referring-attributes" select="//imvert:attribute[imvert:type-id = current()/imvert:id]"/>
+            <xsl:variable name="referring-attributes" select="$imvert-document//imvert:attribute[imvert:type-id = current()/imvert:id]"/>
             <xsl:variable name="referring-attributes-loc" select="$referring-attributes[exists(imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DATALOCATION'))]"/>
             <xsl:variable name="referring-attributes-noloc" select="$referring-attributes[empty(imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DATALOCATION'))]"/>
             
@@ -119,31 +162,9 @@
                 <xsl:when test="normalize-space($loc)">
                     <!-- Wanneer het een URL met xml extensie betreft, dan integraal overnemen. Anders oplossen op basis van de doclist-xml-url. -->
                     <xsl:variable name="url" select="if (matches($loc,'^https?://.*?\.xml$','i')) then $loc else imf:merge-parms($doclist-xml-url)"/>
-                    <xsl:sequence select="imf:msg(.,'DEBUG','Reading [1] entries from: [2]',(imf:get-config-stereotypes(imvert:stereotype/@id),$url))"/>
-                    <xsl:try>
-                        <xsl:variable name="xml" select="if (unparsed-text-available($url)) then document($url) else ()"/>
-                        <xsl:choose>
-                            <xsl:when test="empty($url) and not(imf:exists($doclist-xml-url))">
-                                <xsl:sequence select="imf:msg(.,'ERROR','List contents cannot be retrieved, config parameter [1] not set properly',('doclist-xml-url'))"/>
-                            </xsl:when>
-                            <xsl:when test="exists($xml) and imvert:stereotype/@id = 'stereotype-name-codelist'">
-                                <xsl:apply-templates select="$xml" mode="codelist">
-                                    <xsl:with-param name="construct" select="."/>
-                                </xsl:apply-templates>
-                            </xsl:when>
-                            <xsl:when test="exists($xml) and imvert:stereotype/@id = 'stereotype-name-referentielijst'">
-                                <xsl:apply-templates select="$xml" mode="reflist">
-                                    <xsl:with-param name="construct" select="."/>
-                                </xsl:apply-templates>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:sequence select="imf:msg(.,'ERROR','List contents cannot be retrieved from location [1], tried [2]',($loc, $url))"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <xsl:catch>
-                            <xsl:sequence select="imf:msg(.,'ERROR','List contents did not parse okay, please check [1]',($url))"/>
-                        </xsl:catch>
-                    </xsl:try>
+                    
+                    <!-- Add temporary url element so that documents can be fetched multithreaded: -->
+                    <tmp:url stereotype-id="{imvert:stereotype/@id}" loc="{$loc}">{$url}</tmp:url>
                 </xsl:when>
                 <xsl:when test="exists($referring-attributes-noloc)">
                     <xsl:sequence select="imf:msg(.,'ERROR','Codelist content location not specified',())"/>
@@ -153,6 +174,30 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="tmp:url">
+        <xsl:param name="url-doc-mapping" as="map(xs:string, document-node()?)" tunnel="yes"/>
+        <xsl:sequence select="imf:msg(.,'DEBUG','Reading [1] entries from: [2]',(imf:get-config-stereotypes(@stereotype-id),.))"/>
+        <xsl:variable name="xml" select="map:get($url-doc-mapping, .)" as="document-node()?"/>
+        <xsl:choose>
+            <xsl:when test="empty(.) and not(imf:exists($doclist-xml-url))">
+                <xsl:sequence select="imf:msg(.,'ERROR','List contents cannot be retrieved, config parameter [1] not set properly',('doclist-xml-url'))"/>
+            </xsl:when>
+            <xsl:when test="exists($xml) and @stereotype-id = 'stereotype-name-codelist'">
+                <xsl:apply-templates select="$xml" mode="codelist">
+                    <xsl:with-param name="construct" select="."/>
+                </xsl:apply-templates>
+            </xsl:when>
+            <xsl:when test="exists($xml) and @stereotype-id = 'stereotype-name-referentielijst'">
+                <xsl:apply-templates select="$xml" mode="reflist">
+                    <xsl:with-param name="construct" select="."/>
+                </xsl:apply-templates>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg(.,'ERROR','List contents cannot be retrieved from location [1], tried [2]',(@loc, .))"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
    
     <xsl:template match="node()|@*">
