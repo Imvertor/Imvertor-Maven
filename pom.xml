@@ -27,57 +27,30 @@
       <url>https://maven.saxonica.com/maven</url>
     </repository>
   </repositories>
-  
+
   <properties>
+    <log4j.version>2.26.1</log4j.version>
+    <xmlunit.version>2.9.1</xmlunit.version>
+    <rdf4j.version>5.0.0-M2</rdf4j.version>
     <saxon.version>10.9</saxon.version>
   </properties>
-  
-  <profiles>
-    <profile>
-      <!-- Saxon Home Edition (HE): -->
-      <id>Saxon-HE</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>net.sf.saxon</groupId>
-          <artifactId>Saxon-HE</artifactId>            
-          <version>${saxon.version}</version>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <!-- Saxon Professional Edition (PE): -->
-      <id>Saxon-PE</id>
-      <dependencies>
-        <dependency>
-          <groupId>com.saxonica</groupId>
-          <artifactId>Saxon-PE</artifactId>            
-          <version>${saxon.version}</version>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <!-- Saxon Enterprise Edition (EE): -->
-      <id>Saxon-EE</id>
-      <dependencies>
-        <dependency>
-          <groupId>com.saxonica</groupId>
-          <artifactId>Saxon-EE</artifactId>            
-          <version>${saxon.version}</version>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
-      
+
   <dependencies>
 
-    <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.17.1</version>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-1.2-api</artifactId>
+      <version>${log4j.version}</version>
     </dependency>
 
     <dependency>
@@ -183,17 +156,17 @@
     <dependency>
       <groupId>org.xmlunit</groupId>
       <artifactId>xmlunit-jakarta-jaxb-impl</artifactId>
-      <version>2.9.1</version>
+      <version>${xmlunit.version}</version>
     </dependency>
     <dependency>
       <groupId>org.xmlunit</groupId>
       <artifactId>xmlunit-assertj3</artifactId>
-      <version>2.9.1</version>
+      <version>${xmlunit.version}</version>
     </dependency>
     <dependency>
       <groupId>org.xmlunit</groupId>
       <artifactId>xmlunit-placeholders</artifactId>
-      <version>2.9.1</version>
+      <version>${xmlunit.version}</version>
     </dependency>
 
     <dependency>
@@ -214,6 +187,12 @@
       <groupId>net.sourceforge.jexcelapi</groupId>
       <artifactId>jxl</artifactId>
       <version>2.6.12</version>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -233,27 +212,26 @@
     <dependency>
       <groupId>org.eclipse.rdf4j</groupId>
       <artifactId>rdf4j-runtime</artifactId>
-      <version>5.0.0-M2</version>
+      <version>${rdf4j.version}</version>
       <type>pom</type>
     </dependency>
     <dependency>
       <groupId>org.eclipse.rdf4j</groupId>
       <artifactId>rdf4j-rio-rdfxml</artifactId>
-      <version>5.0.0-M2</version>
+      <version>${rdf4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.rdf4j</groupId>
       <artifactId>rdf4j-rio-turtle</artifactId>
-      <version>5.0.0-M2</version>
+      <version>${rdf4j.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.eclipse.rdf4j/rdf4j-model -->
     <dependency>
       <groupId>org.eclipse.rdf4j</groupId>
       <artifactId>rdf4j-model</artifactId>
-      <version>5.0.0-M2</version>
+      <version>${rdf4j.version}</version>
     </dependency>
-
 
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -367,6 +345,45 @@
     </dependency>
 
   </dependencies>
+  
+  <profiles>
+    <profile>
+      <!-- Saxon Home Edition (HE): -->
+      <id>Saxon-HE</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>net.sf.saxon</groupId>
+          <artifactId>Saxon-HE</artifactId>
+          <version>${saxon.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <!-- Saxon Professional Edition (PE): -->
+      <id>Saxon-PE</id>
+      <dependencies>
+        <dependency>
+          <groupId>com.saxonica</groupId>
+          <artifactId>Saxon-PE</artifactId>
+          <version>${saxon.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <!-- Saxon Enterprise Edition (EE): -->
+      <id>Saxon-EE</id>
+      <dependencies>
+        <dependency>
+          <groupId>com.saxonica</groupId>
+          <artifactId>Saxon-EE</artifactId>
+          <version>${saxon.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 
   <build>
     <plugins>
@@ -453,7 +470,7 @@
                   </includes>
                 </filter>
                 <filter>
-                  <artifact>log4j:log4j</artifact>
+                  <artifact>org.apache.logging.log4j:*</artifact>
                   <includes>
                     <include>**</include>
                   </includes>
