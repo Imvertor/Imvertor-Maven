@@ -460,8 +460,15 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
-                <xsl:sequence select="subsequence($groups,1,$items - 1)"/> 
-                <colgroup/><!-- final colgroup fills up the rest of the table space -->     
+                <xsl:variable name="leading-groups" select="subsequence($groups,1,$items - 1)"/>
+                <xsl:variable name="remaining-columns" select="$items - count($leading-groups)"/>
+                <xsl:sequence select="$leading-groups"/>
+                <!-- final colgroup fills up the rest of the table space; it must span all remaining columns, see #772 -->
+                <colgroup>
+                    <xsl:if test="$remaining-columns gt 1">
+                        <xsl:attribute name="span" select="$remaining-columns"/>
+                    </xsl:if>
+                </colgroup>
             </xsl:when>
             
             <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->

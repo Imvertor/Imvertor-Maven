@@ -51,7 +51,7 @@ public class Log4jProgressMonitor implements ProgressMonitor {
         if (total == UNKNOWN) {
           logger.info(format("JGit: %s: %s", task, done));
         } else {
-          logger.info(format("JGit: %s: %s% (%s/%s)", task, done * 100L / total, done, total));
+          logger.info(format("JGit: %s: %s%% (%s/%s)", task, done * 100L / total, done, total));
         }
       }
     } catch (Exception e) {
