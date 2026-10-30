@@ -35,7 +35,7 @@ jobs:
       run: mvn clean install
       
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B package -PSaxon-EE --file pom.xml
 
     - name: Extract Maven project groupId
       run: echo "maven_groupId=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.groupId}' --non-recursive exec:exec)" >> "$GITHUB_ENV"
