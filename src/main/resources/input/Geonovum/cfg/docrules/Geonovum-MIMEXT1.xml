@@ -14,6 +14,10 @@
         Include incoming associations in the short overview?
     -->
     <include-incoming-associations>no</include-incoming-associations>
+    <!--
+        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
+    -->
+    <show-lists-with-metadata>no</show-lists-with-metadata>
     
     <doc-rule id="CFG-DOC-ACTUALITEIT" order="300">
         <name lang="nl">Actualiteit</name>

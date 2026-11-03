@@ -667,11 +667,12 @@
 
     <xsl:template match="imvert:attribute" mode="gegevensgroeptype">
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
+        <xsl:variable name="prefix" select="if ($show-lists-with-metadata) then 'global' else 'detail'"/> <!-- #781 -->
        <part type="COMPOSED">
            <xsl:sequence select="imf:calculate-node-position(.)"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imf:get-name(.,true())))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
-           <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-splice(imvert:baretype)))"/>
+           <xsl:sequence select="imf:create-element('item',imf:create-link($type,$prefix,imf:plugin-splice(imvert:baretype)))"/>
            <xsl:if test="$show-short-attribute-cardinality">
                <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))" />
            </xsl:if>
