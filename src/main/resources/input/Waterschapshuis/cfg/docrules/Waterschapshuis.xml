@@ -104,19 +104,28 @@
     </doc-rule>
     <doc-rule id="CFG-DOC-DEFINITIE" order="002">
         <name lang="nl">Definitie</name>
-        <!-- herordening weergave -->
+        <!-- herordening weergave en toevoeging kenmerk -->
+        <levels>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-ENUMERATION</level>
+        </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-TOELICHTING" order="003">
         <name lang="nl">Toelichting</name>
-        <!-- herordening weergave -->
+        <!-- herordening weergave en toevoeging kenmerk -->
     </doc-rule>
     <doc-rule id="CFG-DOC-HERKOMSTDEFINITIE" order="004">
         <name lang="nl">Herkomst definitie</name>
-        <!-- herordening weergave -->
+        <!-- herordening weergave en toevoeging kenmerk -->
+        <levels>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-ENUMERATION</level>
+        </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-HERKOMST" order="005">
         <name lang="nl">Herkomst</name>
-        <!-- herordening weergave -->
+        <!-- herordening weergave en toevoeging kenmerk -->
+        <levels>
+            <level show="force" compile="full" format="plain">DISPLAY-GLOBAL-ENUMERATION</level>
+        </levels>
     </doc-rule>
     
 </doc-rules>
