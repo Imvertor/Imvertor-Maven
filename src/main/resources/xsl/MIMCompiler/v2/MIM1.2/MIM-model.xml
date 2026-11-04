@@ -20,8 +20,8 @@
          <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
          <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
          <metagegeven kardinaliteit="0..1">Minimumwaarde inclusief</metagegeven><!-- add 1.2 -->
-         <metagegeven kardinaliteit="0..1">Minimumwaarde exclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="0..1">Maximumwaarde inclusief</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="0..1">Minimumwaarde exclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="0..1">Maximumwaarde exclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="1">Indicatie materiële historie</metagegeven>
          <metagegeven kardinaliteit="1">Indicatie formele historie</metagegeven>
@@ -86,8 +86,8 @@
          <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
          <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
          <metagegeven kardinaliteit="0..1">Minimumwaarde inclusief</metagegeven><!-- add 1.2 -->
-         <metagegeven kardinaliteit="0..1">Minimumwaarde exclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="0..1">Maximumwaarde inclusief</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="0..1">Minimumwaarde exclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="0..1">Maximumwaarde exclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
          <!--<metagegeven kardinaliteit="0..1">Maximumwaarde</metagegeven> vervangen in 1.2 -->
@@ -395,8 +395,8 @@
          <metagegeven kardinaliteit="0..1">Patroon</metagegeven>
          <metagegeven kardinaliteit="0..1">Formeel patroon</metagegeven>
          <metagegeven kardinaliteit="0..1">Minimumwaarde inclusief</metagegeven><!-- add 1.2 -->
-         <metagegeven kardinaliteit="0..1">Minimumwaarde exclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="0..1">Maximumwaarde inclusief</metagegeven><!-- add 1.2 -->
+         <metagegeven kardinaliteit="0..1">Minimumwaarde exclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="0..1">Maximumwaarde exclusief</metagegeven><!-- add 1.2 -->
          <metagegeven kardinaliteit="1">Kardinaliteit</metagegeven>
          <metagegeven kardinaliteit="0..1">Identificerend</metagegeven>
