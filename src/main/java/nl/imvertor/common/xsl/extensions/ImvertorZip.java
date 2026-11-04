@@ -45,18 +45,22 @@ public class ImvertorZip extends ExtensionFunctionDefinition {
 
 	private static final StructuredQName qName = new StructuredQName("", Configurator.NAMESPACE_EXTENSION_FUNCTIONS, "imvertorZip");
 
+	@Override
 	public StructuredQName getFunctionQName() {
 		return qName;
 	}
 
+	@Override
 	public int getMinimumNumberOfArguments() {
 		return 2;
 	}
 
+	@Override
 	public int getMaximumNumberOfArguments() {
 		return 2;
 	}
 
+	@Override
 	public SequenceType[] getArgumentTypes() {
 		return new SequenceType[] { 
 				SequenceType.SINGLE_STRING,
@@ -64,10 +68,22 @@ public class ImvertorZip extends ExtensionFunctionDefinition {
 		};
 	}
 
+	@Override
 	public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
 		return SequenceType.STRING_SEQUENCE;
 	}
+	
+  @Override
+  public boolean dependsOnFocus() {
+    return true;
+  }
 
+  @Override
+  public boolean hasSideEffects() {
+    return true;
+  }
+
+  @Override
 	public ExtensionFunctionCall makeCallExpression() {
 		return new ImvertorZipCall();
 	}
