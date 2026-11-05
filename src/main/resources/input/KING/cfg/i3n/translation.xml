@@ -6,5 +6,10 @@
     <xi:include href="../../../Imvertor/cfg/i3n/translation.xml"/>
   
     <!-- add or override translations here: -->
+    <item>
+        <key>COMPOSITE</key>
+        <trans lang="nl">Gegevensgroeptype</trans>
+        <trans lang="en">Grouptype</trans>
+    </item>
     
 </picklist>
