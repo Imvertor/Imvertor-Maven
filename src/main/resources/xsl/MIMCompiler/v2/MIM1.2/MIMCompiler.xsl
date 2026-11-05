@@ -360,7 +360,7 @@
   </xsl:template>
   
   <xsl:template match="imvert:association[($meta-is-role-based) and 
-    (imvert:stereotype/@id = 'stereotype-name-relatiesoort' or imvert:stereotype/@id = 'stereotype-name-union-association') and not(imf:association-is-keuze-attributes(.))]">
+    (imvert:target/imvert:stereotype/@id = 'stereotype-name-relation-role' or imvert:stereotype/@id = 'stereotype-name-union-association') and not(imf:association-is-keuze-attributes(.))]">
     <mim:Relatiesoort source-id="{imvert:stereotype/@id}">
       <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:call-template name="generate-relatiesoort">
@@ -675,7 +675,7 @@
     </mim-ext:Constructie>
   </xsl:template>
   
-  <xsl:template match="(imvert:class|imvert:attribute|imvert:association)[imf:is-not-mim-construct(.)]">
+  <xsl:template match="(imvert:class|imvert:attribute|imvert:association)[imf:is-not-mim-construct(.)]" priority="-1">
     <mim-ext:Constructie>
       <xsl:sequence select="imf:generate-index(.)"/>
       <xsl:sequence select="imf:generate-id-attr(imvert:id, true())"/>
@@ -1195,7 +1195,7 @@
   <xsl:template name="relatiesoorten">
     <xsl:where-populated>
       <mim:relatiesoorten>
-        <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype/@id = 'stereotype-name-relatiesoort']">
+        <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype/@id = 'stereotype-name-relatiesoort' or imvert:target/imvert:stereotype/@id = 'stereotype-name-relation-role']">
           <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
           <xsl:apply-templates select="."/>
         </xsl:for-each>  
