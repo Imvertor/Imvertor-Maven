@@ -34,8 +34,8 @@ import javax.xml.transform.ErrorListener;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
@@ -218,7 +218,7 @@ public class Transformer {
 				xslCache.put(xslfile.getCanonicalPath(), exec);
 			}
 		} catch (Throwable t) {
-			Exception e = new Exception(t.getMessage() + t.getClass().getName() + ExceptionUtils.getFullStackTrace(t));
+			Exception e = new Exception(t.getMessage() + t.getClass().getName() + ExceptionUtils.getStackTrace(t));
 			configurator.getRunner().fatal(logger,"Fout",e,"","");
 		}
 		XsltTransformer transformer = exec.load();

@@ -2,7 +2,7 @@ package nl.imvertor.common.xsl.extensions;
 
 import java.util.Base64;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more

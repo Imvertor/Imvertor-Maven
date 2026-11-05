@@ -20,7 +20,7 @@
 
 package nl.imvertor.common.xsl.extensions;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
@@ -93,7 +93,7 @@ public class ImvertorFolderSerializer extends ExtensionFunctionDefinition {
 				
 				if (filepath.startsWith("file:/")) filepath = filepath.substring(6);
 				if (folderpath.startsWith("file:/")) folderpath = folderpath.substring(6);
-				boolean includeContents = StringUtils.indexOf(flags, "f") < 0;
+				boolean includeContents = Strings.CS.indexOf(flags, "f") < 0;
 						
 				AnyFolder serializeFolder = new AnyFolder(folderpath);
 				XmlFile xmlFile = new XmlFile(filepath);

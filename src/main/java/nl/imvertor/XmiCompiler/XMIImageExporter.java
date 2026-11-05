@@ -2,19 +2,17 @@ package nl.imvertor.XmiCompiler;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Decoder;
 import java.util.List;
 
-import javax.sound.sampled.AudioFormat.Encoding;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.commons.lang.CharEncoding;
 
 public class XMIImageExporter {
     
@@ -33,7 +31,7 @@ public class XMIImageExporter {
     do {
       switch (reader.getEventType()) {
       case XMLStreamConstants.START_DOCUMENT:
-        writer.writeStartDocument(CharEncoding.UTF_8, reader.getVersion());
+        writer.writeStartDocument(StandardCharsets.UTF_8.name(), reader.getVersion());
         break;
       case XMLStreamConstants.END_DOCUMENT:
         writer.writeEndDocument();
