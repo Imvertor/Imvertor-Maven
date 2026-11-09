@@ -460,7 +460,7 @@
     
     <!-- uitzondering: gegevensgroeptype wordt apart getoond. -->
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]">
-        <section name="{imf:get-name(.,true())}" type="COMPOSITE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
+        <section name="{imf:get-name(.,true())}" type="COMPOSITION" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <xsl:sequence select="imf:calculate-node-position(.)"/>
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
@@ -1136,6 +1136,7 @@
         
         <xsl:variable name="is-gegevensgroep" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')"/>
         <xsl:variable name="in-gegevensgroeptype" select="ancestor::class[imvert:stereotype/@id = ('stereotype-name-composite')]"/>
+        
         <xsl:choose>
             <xsl:when test="imvert:stereotype/@id = ('stereotype-name-referentie-element')">
                 <xsl:apply-templates select="." mode="detail-referentie-element"/>
