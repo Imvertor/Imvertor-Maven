@@ -1055,17 +1055,17 @@
     
     <xsl:function name="imf:format-dateTime" as="xs:string">
         <xsl:param name="datetime"/> <!-- date, time, datetime or string -->
-        <xsl:variable name="dt">
+        <xsl:variable name="dt" as="xs:dateTime">
             <xsl:choose>
                 <xsl:when test="$datetime instance of xs:dateTime">
-                    <xsl:sequence select="$datetime"/>
-                </xsl:when>    
+                    <xsl:sequence select="xs:dateTime($datetime)"/>
+                </xsl:when>
                 <xsl:when test="$datetime instance of xs:date">
-                    <xsl:sequence select="dateTime($datetime,xs:time('00:00:00.000'))"/>
-                </xsl:when>    
+                    <xsl:sequence select="dateTime(xs:date($datetime),xs:time('00:00:00.000'))"/>
+                </xsl:when>
                 <xsl:when test="$datetime instance of xs:time">
-                    <xsl:sequence select="dateTime(xs:date('0001-01-01'),$datetime)"/>
-                </xsl:when> 
+                    <xsl:sequence select="dateTime(xs:date('0001-01-01'),xs:time($datetime))"/>
+                </xsl:when>
                 <xsl:otherwise>
                     <xsl:sequence select="dateTime(xs:date(substring(string($datetime),1,10)),xs:time(substring(string($datetime),12,12)))"/>
                 </xsl:otherwise>
