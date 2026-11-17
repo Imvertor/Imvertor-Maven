@@ -1195,7 +1195,10 @@
   <xsl:template name="relatiesoorten">
     <xsl:where-populated>
       <mim:relatiesoorten>
-        <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype/@id = 'stereotype-name-relatiesoort' or imvert:target/imvert:stereotype/@id = 'stereotype-name-relation-role']">
+        <xsl:for-each select="
+          imvert:associations/imvert:association[imvert:stereotype/@id = 'stereotype-name-relatiesoort' 
+          or 
+          (imvert:target/imvert:stereotype/@id = 'stereotype-name-relation-role' and not(imvert:stereotype/@id = 'stereotype-name-externekoppeling'))]">
           <xsl:sort select="imvert:position" order="ascending" data-type="number"/>
           <xsl:apply-templates select="."/>
         </xsl:for-each>  
