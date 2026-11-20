@@ -13,7 +13,7 @@ en GML) en maakt het rapportages en releases.
 Imvertor is oorspronkelijk ontwikkeld door het Kadaster en wordt beschikbaar gesteld
 onder de [GNU General Public License v3](src/main/resources/gpl.txt) (of later).
 
-Website: <http://www.imvertor.org/>
+Meer info via: <https://armatiek.nl/>
 
 ---
 
@@ -41,16 +41,15 @@ en doorloopt globaal:
 
 1. **Inlezen** – `XmiCompiler` haalt het model op (een EA-project via de Enterprise Architect API, of XMI).
 2. **Configureren** – `ConfigCompiler` bouwt de configuratie voor de opgegeven metamodel/owner-combinatie.
-3. **Vertalen** – `XmiTranslator` of `MimTranslator` zet het model om naar het interne *Imvert*-formaat.
+3. **Vertalen** – `XmiTranslator` en/of `MimTranslator` zet het model om naar het interne *Imvert*-formaat.
 4. **Valideren** – `Validator` controleert het model tegen de regels van het metamodel.
 5. **Genereren** – afhankelijk van de parameters o.a. `XsdCompiler`, `JsonSchemaCompiler`,
    `ShaclCompiler`, `SkosCompiler`, `LDCompiler`, `YamlCompiler`, `OfficeCompiler`,
    `SourcecodeGenerator`, `MIMCompiler`.
 6. **Rapporteren en releasen** – `Reporter`, `ReadmeCompiler`, `ReleaseCompiler`.
 
-Naast de hoofdchain zijn er gespecialiseerde chains, zoals `ChainCompliancy`,
-`ChainRegression`, `ChainMsWordTransformer`, `ChainGenericTransformer`,
-`ChainXsltAnalyzer` en `ChainKING`.
+Naast de hoofdchain zijn er gespecialiseerde chains, zoals `ChainCompliancy` en `ChainGenericTransformer`. 
+Deze chains zijn voor specifieke projecten ontwikkeld en vormen niet de kern van Imvertor.
 
 ## Vereisten
 
@@ -60,7 +59,7 @@ Naast de hoofdchain zijn er gespecialiseerde chains, zoals `ChainCompliancy`,
   (Maven Central, de Armatiek-repository voor de Saxon-extensies en – voor PE/EE –
   de Saxonica-repository)
 - Optioneel: **Enterprise Architect** (Windows) om EA-projectbestanden (zoals `.eap`)
-  direct in te lezen. Zonder EA kun je werken met XMI-invoer.
+  direct in te lezen. Zonder EA kun je werken met XMI-invoer of een XML MIM-serialisatie.
 
 ## Bouwen
 
@@ -132,11 +131,12 @@ Een overzicht van alle parameters per stap staat in de `parms.xml`-bestanden ond
 Een minimale aanroep van de hoofdchain ziet er ongeveer zo uit:
 
 ```bash
-java -Xmx1024m -Dfile.encoding=UTF-8 -Dinstall.dir=/pad/naar/imvertor -Djob.id=mijnrun -Downer.name=Kadaster -jar target/imvertor-0.9.9.jar -arguments /pad/naar/model.properties -umlfile /pad/naar/model.eap -owner Kadaster
+java -Xmx1024m -Dfile.encoding=UTF-8 -Dinstall.dir=/pad/naar/imvertor -Djob.id=mijnrun -Downer.name=Kadaster -jar target/imvertor-0.9.9.jar -arguments /pad/naar/model.properties -umlfile /pad/naar/model.qea -owner Kadaster
 ```
 
 Parameters kun je op de commandoregel meegeven (`-naam waarde`) of verzamelen in een
-properties-bestand dat je met `-arguments` doorgeeft.
+properties-bestand dat je met `-arguments` doorgeeft. 
+De parameter `arguments` wordt eerst uitgelezen, daarna de parameters die los worden meegegeven. 
 
 Kant-en-klare startscripts voor Windows en Linux staan in
 [`src/main/resources/deploy/`](src/main/resources/deploy/)
