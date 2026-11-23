@@ -918,32 +918,64 @@
                             </figcaption>
                         </figure>
                         <xsl:sequence select="$map"/>
-                        <xsl:if test="normalize-space($caption-desc)">    
+                        <xsl:if test="normalize-space($caption-desc)">
                             <!--<xsl:text> &#8212; </xsl:text>-->
-                            <p>
-                                <xsl:sequence select="$caption-nodes"/>
-                            </p>
+                            <!-- #714: do not nest block elements (such as p) inside a p; that produces invalid HTML (stray </p>) -->
+                            <xsl:choose>
+                                <xsl:when test="imf:contains-block-elements($caption-nodes)">
+                                    <div class="diagram-description">
+                                        <xsl:sequence select="$caption-nodes"/>
+                                    </div>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <p>
+                                        <xsl:sequence select="$caption-nodes"/>
+                                    </p>
+                                </xsl:otherwise>
+                            </xsl:choose>
                         </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>
                         <img id="img-{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
                         <xsl:sequence select="$map"/>
                         <!-- create the caption -->
-                        <p>
-                            <b>
-                                <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
-                            </b>
-                            <xsl:if test="normalize-space($caption-desc)">    
-                                <!--<xsl:text> &#8212; </xsl:text>-->
-                                <xsl:sequence select="$caption-nodes"/>
-                            </xsl:if>
-                        </p>    
+                        <xsl:choose>
+                            <xsl:when test="normalize-space($caption-desc) and imf:contains-block-elements($caption-nodes)">
+                                <!-- #714: do not nest block elements (such as p) inside a p -->
+                                <p>
+                                    <b>
+                                        <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
+                                    </b>
+                                </p>
+                                <div class="diagram-description">
+                                    <xsl:sequence select="$caption-nodes"/>
+                                </div>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <p>
+                                    <b>
+                                        <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
+                                    </b>
+                                    <xsl:if test="normalize-space($caption-desc)">
+                                        <!--<xsl:text> &#8212; </xsl:text>-->
+                                        <xsl:sequence select="$caption-nodes"/>
+                                    </xsl:if>
+                                </p>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:otherwise>
                 </xsl:choose>
             </div>
         </xsl:for-each>
     </xsl:template>
     
+    <!-- #714: true when the nodes contain elements that are not allowed inside an HTML p element -->
+    <xsl:function name="imf:contains-block-elements" as="xs:boolean">
+        <xsl:param name="nodes" as="node()*"/>
+        <xsl:variable name="block-names" select="('p','div','ul','ol','dl','table','pre','blockquote','h1','h2','h3','h4','h5','h6','section','figure','hr','address','article','aside','details','fieldset','footer','form','header','main','menu','nav')"/>
+        <xsl:sequence select="exists($nodes/descendant-or-self::*[lower-case(local-name()) = $block-names])"/>
+    </xsl:function>
+
     <xsl:function name="imf:create-anchors" as="element()*">
         <xsl:param name="section-or-item"/>
         <!-- do not use graph_ references. see #360 -->
