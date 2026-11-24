@@ -228,6 +228,7 @@
     <!-- BRO lists -->
     <xsl:template match="/(domeintabel | Waardelijst)" mode="codelist reflist">
         <xsl:param name="construct" as="element()"/>
+        <xsl:sequence select="dlogger:save('lijst ' || name(.), .)"></xsl:sequence>
         <imvert:attributes>
             <xsl:variable name="values" as="element()*"> <!-- imvert:attribute or imvert:refelement -->
                 <xsl:apply-templates select="*" mode="#current"/>
@@ -244,83 +245,10 @@
         </imvert:attributes>
     </xsl:template>
   
-    <!-- BRO codelists -->
- 
-    <xsl:template match="
-          /domeintabel/Waardebepalingsmethode
-        | /domeintabel/Waardebepalingstechniek
-        | /domeintabel/Meetapparaat
-        " mode="codelist">
-        <imvert:attribute origin="system">
-            <imvert:name original="{Code}">
-                <xsl:value-of select="Code"/>
-            </imvert:name>
-            <imvert:id>
-                <xsl:value-of select="concat(local-name(.),'_',ID)"/>
-            </imvert:id>
-            <imvert:stereotype id="stereotype-name-enum">ENUMERATIEWAARDE</imvert:stereotype>
-            <xsl:if test="Kwaliteitsregime = 'IMBRO/A'">
-                <imvert:stereotype id="stereotype-name-imbroa">IMBRO/A</imvert:stereotype>
-            </xsl:if>
-            <imvert:tagged-values>
-                <imvert:tagged-value id="CFG-TV-DEFINITION">
-                    <imvert:value>
-                        <xsl:sequence select="Omschrijving/node()"/>
-                    </imvert:value>
-                </imvert:tagged-value>
-            </imvert:tagged-values>
-        </imvert:attribute>
-    </xsl:template>
-    
-    <xsl:template match="domeintabel/OeverType" mode="codelist">
-        <imvert:attribute origin="system">
-            <imvert:name original="{ID}">
-                <xsl:value-of select="ID"/>
-            </imvert:name>
-            <imvert:id>
-                <xsl:value-of select="concat(local-name(.),'_',ID)"/>
-            </imvert:id>
-            <imvert:stereotype id="stereotype-name-enum">ENUMERATIEWAARDE</imvert:stereotype>
-            <xsl:if test="Kwaliteitsregime = 'IMBRO/A'">
-                <imvert:stereotype id="stereotype-name-imbroa">IMBRO/A</imvert:stereotype>
-            </xsl:if>
-            <imvert:tagged-values>
-                <imvert:tagged-value id="CFG-TV-DEFINITION">
-                    <imvert:value>
-                        <xsl:sequence select="Omschrijving/node()"/>
-                    </imvert:value>
-                </imvert:tagged-value>
-            </imvert:tagged-values>
-        </imvert:attribute>
-    </xsl:template>
-    
-    <xsl:template match="
-        /domeintabel/Kleur
-        | /domeintabel/Kleursterkte
-        " mode="codelist">
-        <imvert:attribute origin="system">
-            <imvert:name original="{Waarde}">
-                <xsl:value-of select="Waarde"/>
-            </imvert:name>
-            <imvert:id>
-                <xsl:value-of select="concat(local-name(.),'_',ID)"/>
-            </imvert:id>
-            <imvert:stereotype id="stereotype-name-enum">ENUMERATIEWAARDE</imvert:stereotype>
-            <xsl:if test="Kwaliteitsregime = 'IMBRO/A'">
-                <imvert:stereotype id="stereotype-name-imbroa">IMBRO/A</imvert:stereotype>
-            </xsl:if>
-            <imvert:tagged-values>
-                <imvert:tagged-value id="CFG-TV-DEFINITION">
-                    <imvert:value>
-                        <xsl:sequence select="Omschrijving/node()"/>
-                    </imvert:value>
-                </imvert:tagged-value>
-            </imvert:tagged-values>
-        </imvert:attribute>
-    </xsl:template>
+    <!-- speciale afhandeling codelijsten verwijderd: #660 -->
     
     <!-- BRO reference lists; vrije kolommen, zoals /Waardelijst/GeologischeGrondsoort/* -->
-    <xsl:template match="/(domeintabel | Waardelijst)/*" mode="reflist">
+    <xsl:template match="/(domeintabel | Waardelijst)/*" mode="codelist reflist">
         <imvert:refelement>
             <xsl:for-each select="*">
                 <imvert:element>
