@@ -1821,7 +1821,7 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-BASISURI'))"/>   
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-XSDNAMESPACE'">
-                    <xsl:sequence select="imf:create-part-2(.,$this/imvert:namespace)"/>   
+                    <xsl:sequence select="imf:create-part-2(.,$this/imvert:namespace/text())"/>   
                 </xsl:when>
                 
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INFORMATIEMODELTYPE'">

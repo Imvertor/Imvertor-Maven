@@ -776,7 +776,7 @@
             <xsl:when test="exists(item)">
                 <xsl:for-each select="item">
                     <xsl:apply-templates select="." mode="#current"/>
-                    <xsl:if test="following-sibling::item">&#8192;</xsl:if> <!-- EN QUAD een space die niet wordt verwijderd zie https://www.compart.com/en/unicode/U+2000 -->
+                    <xsl:if test="following-sibling::item[1][not(imf:contains-block-elements(.))]">&#160;</xsl:if> <!-- &#8192; (EN QUAD een space die niet wordt verwijderd zie https://www.compart.com/en/unicode/U+2000) niet opgenomen omdat w3c validator dit niet accepteert voor HTML, zie #714 -->
                 </xsl:for-each>
             </xsl:when>
             <xsl:when test="parent::part[@type = 'listval']">
