@@ -17,6 +17,11 @@
         collect the codelist and enumeration contents in a separate section?
     -->
     <lists-to-listing>no</lists-to-listing>
+
+    <!--
+         Moeten waarden van kenmerken die worden herkend als URL worden weergegeven als link? (zie #656, #760)
+    -->
+    <url-as-link>yes</url-as-link>
     
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
