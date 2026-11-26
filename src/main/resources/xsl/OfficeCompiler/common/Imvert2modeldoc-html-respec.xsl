@@ -802,6 +802,21 @@
             <xsl:apply-templates select="node()|@*" mode="#current"/>
         </xsl:copy>
     </xsl:template>
+    <!--
+        #760 URL's mogen geen soft hyphens bevatten: bij kopieren/plakken komen deze onzichtbare tekens mee, waardoor de URL niet meer werkt.
+        Voeg in URL's daarom <wbr/> in; dat geeft dezelfde afbreekmogelijkheden zonder tekens aan de tekst toe te voegen.
+    -->
+    <xsl:template match="text()[ancestor::span[@class = 'url'] or matches(normalize-space(.),'^https?://\S+$')]" mode="windup">
+        <xsl:choose>
+            <xsl:when test="imf:boolean(imf:get-config-parameter('insert-html-wordbreaks'))">
+                <xsl:sequence select="imf:insert-word-break-opportunities(.)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="."/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <xsl:template match="text()" mode="windup">
         <xsl:choose>
             <xsl:when test="contains(.,'[')"><!-- probably debugging -->
@@ -1060,7 +1075,22 @@
         </xsl:variable>
         <xsl:value-of select="string-join($r,'')"/>
     </xsl:function>
-    
+
+    <!-- #760 Zelfde afbreekpunten als imf:insert-soft-hyphen, maar met <wbr/> zodat de tekst zelf (bijv. een URL) ongewijzigd blijft -->
+    <xsl:function name="imf:insert-word-break-opportunities" as="node()*">
+        <xsl:param name="text" as="xs:string"/>
+        <xsl:analyze-string select="$text" regex="([a-z]{{1,7}})([A-Z])">
+            <xsl:matching-substring>
+                <xsl:value-of select="regex-group(1)"/>
+                <wbr/>
+                <xsl:value-of select="regex-group(2)"/>
+            </xsl:matching-substring>
+            <xsl:non-matching-substring>
+                <xsl:value-of select="."/>
+            </xsl:non-matching-substring>
+        </xsl:analyze-string>
+    </xsl:function>
+
     <xsl:function name="imf:parse-diagram-title" as="xs:string*">
         <xsl:param name="title" as="xs:string?"/>
         <xsl:variable name="stitle" select="analyze-string($title,'^(.*?)\s+-\s+(\S+)$')/fn:match/fn:group"/>
