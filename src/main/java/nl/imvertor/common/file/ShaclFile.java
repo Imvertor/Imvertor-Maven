@@ -63,10 +63,12 @@ public class ShaclFile extends RdfFile {
 		super(file);
 	}
 	
-	public void validate(Configurator configurator) throws Exception {
-		super.parse(configurator);
-		// and parse this file; this is the validation of the model itself 
-		this.parse(configurator);
+	public boolean validate(Configurator configurator) throws Exception {
+		if (super.parse(configurator))
+			// and parse this file; this is the validation of the model itself 
+			if (this.parse(configurator))
+				return true;
+		return false;	
 	}
 	
 	/**
@@ -74,8 +76,8 @@ public class ShaclFile extends RdfFile {
 	 * 
 	 * @param configurator De Configurator instance
 	**/
-	public void parse(Configurator configurator) throws Exception {
-		this.parse(configurator, "");
+	public boolean parse(Configurator configurator) throws Exception {
+		return this.parse(configurator, "");
 	}
 	
 	/**
@@ -85,9 +87,10 @@ public class ShaclFile extends RdfFile {
 	 *  
 	 * @param configurator  De Configurator instance
 	 * @param ttlDataFilePath Pad naar het Turtle file
+	 * @return Boolean true when no parse errors, false when errors found.
 	 * @throws Exception Een fout die niet betrekking heeft op de validatie van Turtle zelf.
 	 */
-	public void parse(Configurator configurator, String ttlDataFilePath) throws Exception {
+	public boolean parse(Configurator configurator, String ttlDataFilePath) throws Exception {
 
 		Runner runner = Configurator.getInstance().getRunner();
 		
@@ -117,22 +120,24 @@ public class ShaclFile extends RdfFile {
 	            } catch (RepositoryException exception) {
 	                Throwable cause = exception.getCause();
 	                if (cause instanceof ValidationException) {
-	                	runner.warn(logger, "Shacl validator reports RDF error(s)","shacl-parse","SHACL-SVRRE1");
+	                	//runner.warn(logger, "Shacl validator reports RDF error(s)","shacl-parse","SHACL-SVRRE1"); // Niet hier melden.
 	                	
 	                	XmlFile validationReport = new XmlFile(configurator.getXParm("properties/RESULT_SHACL_VALIDATION_PATH"));
 	                	FileOutputStream outputStream = new FileOutputStream(validationReport);
 	                	Model validationReportModel = ((ValidationException) cause).validationReportAsModel(); // use validationReportModel to understand validation violations
 	                    Rio.write(validationReportModel, outputStream, RDFFormat.RDFXML);
 	                    outputStream.close();
-	                       
+	                    return false;
+	                    
 	                } else 
 	                    throw exception;
 	            }
             }
-            
-		} catch (Exception e) {
+        
+        } catch (Exception e) {
 			runner.warn(logger, "Shacl validator schema file \"" + getName() + "\" invalid, cannot validate RDF: \"" + e.getMessage() + "\"","rdf-parse","SHACL-SVSF1ICVR2");
 		}
-		
+        return true;
+        
 	}
 }

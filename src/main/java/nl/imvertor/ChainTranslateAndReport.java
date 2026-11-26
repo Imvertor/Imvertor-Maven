@@ -24,6 +24,8 @@ import java.nio.charset.Charset;
 
 import org.apache.log4j.Logger;
 
+import net.sf.saxon.Configuration;
+import net.sf.saxon.Version;
 import nl.imvertor.ApcModifier.ApcModifier;
 import nl.imvertor.ComplyCompiler.ComplyCompiler;
 import nl.imvertor.ConceptCollector.ConceptCollector;
@@ -36,6 +38,7 @@ import nl.imvertor.JsonConceptsCompiler.JsonConceptsCompiler;
 import nl.imvertor.JsonSchemaCompiler.JsonSchemaCompiler;
 import nl.imvertor.LDCompiler.LDCompiler;
 import nl.imvertor.MIMCompiler.MIMCompiler;
+import nl.imvertor.MimTranslator.MimTranslator;
 import nl.imvertor.ModelHistoryAnalyzer.ModelHistoryAnalyzer;
 import nl.imvertor.OfficeCompiler.OfficeCompiler;
 import nl.imvertor.ParmsCopier.ParmsCopier;
@@ -59,6 +62,7 @@ import nl.imvertor.YamlCompiler.YamlCompiler;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Release;
 import nl.imvertor.common.Transformer;
+import static java.lang.String.format;
 
 public class ChainTranslateAndReport {
 
@@ -81,6 +85,11 @@ public class ChainTranslateAndReport {
 			configurator.getRunner().info(logger, "JVM " + System.getProperty("java.version") + " on " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
 			configurator.getRunner().info(logger, "JNU encoding " + System.getProperty("sun.jnu.encoding"));
 			configurator.getRunner().info(logger, "Default character encoding " + Charset.defaultCharset());
+			configurator.getRunner().info(logger, format("Saxon edition: %s, version: %s, PE licensed: %b, EE licensed: %b", 
+			    configurator.getSaxonConfiguration().getEditionCode(),
+			    Version.getProductVersion(),
+			    configurator.getSaxonConfiguration().isLicensedFeature(Configuration.LicenseFeature.PROFESSIONAL_EDITION),
+			    configurator.getSaxonConfiguration().isLicensedFeature(Configuration.LicenseFeature.ENTERPRISE_XSLT)));
 					
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();
@@ -96,6 +105,7 @@ public class ChainTranslateAndReport {
 			configurator.getCli(ConceptCollector.STEP_NAME);
 			configurator.getCli(ImvertCompiler.STEP_NAME);
 			configurator.getCli(MIMCompiler.STEP_NAME);
+			configurator.getCli(MimTranslator.STEP_NAME);
 			configurator.getCli(SkosCompiler.STEP_NAME);
 			configurator.getCli(StcCompiler.STEP_NAME);
 			configurator.getCli(XsdCompiler.STEP_NAME);
@@ -133,9 +143,9 @@ public class ChainTranslateAndReport {
 		    // initialize this run. 
 		    (new RunInitializer()).run();
 		    
-		    try {
+  		    try {
 		    	   
-			    // Create the XMI file from EAP or other sources
+			    // Create the model source file(s) from the passed file location
 			    succeeds = succeeds && (new XmiCompiler()).run();
 				
 			    // Build the configuration file. Ignore possible errors in XMI compilation.
@@ -143,8 +153,12 @@ public class ChainTranslateAndReport {
 			 
 			    Transformer.setMayProfile(true);
 			 
-			    // Translate XMI to Imvertor format
-			    succeeds = succeeds && (new XmiTranslator()).run();
+			    if (configurator.getXParm("appinfo/modelimporttype").equals("mim"))
+			    	// Translate XMI to Imvertor format
+				    succeeds = succeeds && (new MimTranslator()).run();
+			    else
+		    		// Translate XMI to Imvertor format
+			    	succeeds = succeeds && (new XmiTranslator()).run();
 				
 			    // Validate the Imvertor format against metamodel
 			    succeeds = succeeds && (new Validator()).run();
@@ -205,7 +219,10 @@ public class ChainTranslateAndReport {
 			    	if (succeeds && (configurator.isTrue("cli","createmimformat",false) || configurator.isTrue("cli","createjsonschema",false) || configurator.isTrue("cli","createsourcecode",false)))
 			    		succeeds = (new MIMCompiler()).run();
 				
-			    	// generate the Stelselcatalogus CSV
+			    	//System.err.println("Afgebroken");
+				    //System.exit(0);
+				    
+				    	// generate the Stelselcatalogus CSV
 			        if (succeeds && configurator.isTrue("cli","createstccsv",false))
 			        	succeeds = (new StcCompiler()).run();
 				
@@ -242,8 +259,8 @@ public class ChainTranslateAndReport {
 					if (succeeds && !configurator.getXParm("cli/createoffice").equals("none"))
 						succeeds = (new OfficeCompiler()).run();
 		
-					// compile templates and reports on UML EAP 
-					if (succeeds)
+					// compile templates on UML EAP 
+					if (succeeds && configurator.isTrue("cli","createtemplate",false))
 						succeeds = (new EapCompiler()).run();
 		
 					// compile compliancy Excel

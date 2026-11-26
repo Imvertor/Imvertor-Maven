@@ -24,6 +24,9 @@
     <xi:include href="../../../Imvertor/cfg/tvsets/Grouping-MIM11.xml"/>
 
     <name>KING-MIM-1-SIM</name>
+    
+    <nature>MIM</nature>
+    
     <tagged-values>
 
         <tv norm="space" id="CFG-TV-AANDUIDINGSTRIJDIGHEIDNIETIGHEID">

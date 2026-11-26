@@ -57,7 +57,7 @@
     <xsl:include href="../external/relpath_util.xsl"/>
     <xsl:include href="../external/functx.xsl"/>
     
-    <xsl:output encoding="UTF-8" method="xml" indent="yes" exclude-result-prefixes="#all"/>
+    <xsl:output encoding="UTF-8" method="xml" indent="no" exclude-result-prefixes="#all"/>
     
     <!-- TODO how to configure this in metamodel? -->
     <xsl:variable name="baretype-pattern-c">(AN|N)</xsl:variable> <!-- D9.2 changed to N9,2 (or N9.2) -->
@@ -1019,25 +1019,20 @@
     <!-- 
         true when this construct is (embedded in) a conceptual package 
         Feature #487839 
-        If the namespace (alias) starts with one of the declared prefixes, it is considerd to be conceptual
+        If the ID is "OUTSIDE-*" en stereotype is external, assume conceptual.  
     -->
     <xsl:function name="imf:is-conceptual" as="xs:boolean">
         <xsl:param name="construct" as="element()"/>
         <xsl:variable name="pack" select="$construct/ancestor-or-self::imvert:package" as="element()*"/>
-        <?x <xsl:variable name="prefix" select="tokenize(normalize-space(imf:get-config-parameter('url-prefix-conceptual-schema')),'\s+')"/> x?>
         <xsl:variable name="is-external" select="$pack/imvert:stereotype/@id = ('stereotype-name-external-package')"/>
-        <?x <xsl:variable name="is-conceptual" select="exists($pack/imvert:namespace[(for $p in ($prefix) return starts-with(.,$p)) = true()])"/> x?>
-        <xsl:variable name="is-conceptual" select="true()"/>
+        <xsl:variable name="is-outside" select="$pack[starts-with(imvert:id,'OUTSIDE')]"/><!-- binnengehaald vanuit conceptual schema -->
         
        <xsl:choose>
-            <xsl:when test="$is-external and $is-conceptual">
+            <xsl:when test="$is-external and $is-outside">
                 <xsl:sequence select="true()"/>
             </xsl:when>
-           <xsl:when test="$is-external and imf:member-of($construct,$pack)">
-               <!--<xsl:sequence select="imf:msg($construct, 'WARNING','External packages must start with URL prefix [1]',($prefix))"/>-->
-                <xsl:sequence select="false()"/>
-            </xsl:when>
             <xsl:when test="$is-external">
+                <!-- this is an external poackage that is part of the Information model-->
                 <xsl:sequence select="false()"/>
             </xsl:when>
             <xsl:otherwise>
@@ -1060,17 +1055,17 @@
     
     <xsl:function name="imf:format-dateTime" as="xs:string">
         <xsl:param name="datetime"/> <!-- date, time, datetime or string -->
-        <xsl:variable name="dt">
+        <xsl:variable name="dt" as="xs:dateTime">
             <xsl:choose>
                 <xsl:when test="$datetime instance of xs:dateTime">
-                    <xsl:sequence select="$datetime"/>
-                </xsl:when>    
+                    <xsl:sequence select="xs:dateTime($datetime)"/>
+                </xsl:when>
                 <xsl:when test="$datetime instance of xs:date">
-                    <xsl:sequence select="dateTime($datetime,xs:time('00:00:00.000'))"/>
-                </xsl:when>    
+                    <xsl:sequence select="dateTime(xs:date($datetime),xs:time('00:00:00.000'))"/>
+                </xsl:when>
                 <xsl:when test="$datetime instance of xs:time">
-                    <xsl:sequence select="dateTime(xs:date('0001-01-01'),$datetime)"/>
-                </xsl:when> 
+                    <xsl:sequence select="dateTime(xs:date('0001-01-01'),xs:time($datetime))"/>
+                </xsl:when>
                 <xsl:otherwise>
                     <xsl:sequence select="dateTime(xs:date(substring(string($datetime),1,10)),xs:time(substring(string($datetime),12,12)))"/>
                 </xsl:otherwise>
@@ -1462,7 +1457,7 @@
     
     <xsl:function name="imf:normalize-space" as="xs:string">
         <xsl:param name="seq" as="item()*"/>
-        <xsl:sequence select="normalize-space(imf:string-value($seq))"/>
+        <xsl:value-of select="normalize-space(replace(imf:string-value($seq),'&#160;',' '))"/>
     </xsl:function>
     
     <xsl:function name="imf:string-value" as="xs:string">

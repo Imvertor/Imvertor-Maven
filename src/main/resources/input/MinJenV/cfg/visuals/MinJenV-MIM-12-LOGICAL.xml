@@ -8,6 +8,8 @@
    
     <name>MinJenV-MIM-12-LOGICAL</name>
     
+    <nature>MIM</nature>
+    
     <stereos>
         <stereo id="stereotype-name-openapi-informatiemodel-package">
             <visual backgroundcolor="YELLOW" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>

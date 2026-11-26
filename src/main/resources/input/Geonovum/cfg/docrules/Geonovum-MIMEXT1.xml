@@ -14,6 +14,10 @@
         Include incoming associations in the short overview?
     -->
     <include-incoming-associations>no</include-incoming-associations>
+    <!--
+        Moeten codelijsten en enumeraties worden weergegeven als referentielijsten (met hun metadata) of als overzichtje? cf #545
+    -->
+    <show-lists-with-metadata>yes</show-lists-with-metadata>
     
     <doc-rule id="CFG-DOC-ACTUALITEIT" order="300">
         <name lang="nl">Actualiteit</name>
@@ -51,6 +55,9 @@
             
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-OBJECTTYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level><!-- TODO bestaat deze? -->
+   
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
         </levels>
     </doc-rule>
     

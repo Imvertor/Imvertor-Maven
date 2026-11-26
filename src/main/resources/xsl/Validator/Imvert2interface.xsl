@@ -118,8 +118,8 @@
                     <xsl:if test="imf:boolean($construct/cs:sentinel)">
                         <imvert:sentinel>true</imvert:sentinel>
                     </xsl:if> 
-                    <imvert:stereotype id="stereotype-name-interface">
-                        <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-interface')"/>
+                    <imvert:stereotype id="stereotype-name-conceptual">
+                        <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-conceptual')"/>
                     </imvert:stereotype>
                 </imvert:class>
             </xsl:if> 

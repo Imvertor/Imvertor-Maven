@@ -8,6 +8,8 @@
     <desc lang="en">Tagset for Geonovum Best Practice for OGC - UML to JSON Encoding Rules</desc>
     <desc lang="nl">Tags voor Geonovum Best Practice for OGC - UML to JSON Encoding Rules</desc>
     
+    <nature>MIM</nature>
+    
     <tagged-values>
         
         <tv norm="space" id="CFG-TV-LITERALENCODINGTYPE">

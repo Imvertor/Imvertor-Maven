@@ -257,16 +257,15 @@
         <xsl:copy>
             <xsl:attribute name="original" select="."/>
             <xsl:variable name="found-value" select="normalize-space(lower-case(.))"/>
+            <xsl:variable name="computed-phase" select="imf:compute-phase($found-value)"/>
             <xsl:choose>
-                <xsl:when test="$found-value = '1.0'">1</xsl:when> 
+                <xsl:when test="$computed-phase">{$computed-phase}</xsl:when>
                 <xsl:when test="$found-value = ('concept','klad')">0</xsl:when> 
                 <xsl:when test="$found-value = ('draft','voorstel')">1</xsl:when> 
                 <xsl:when test="$found-value = ('finaldraft','final draft', 'eindvoorstel')">2</xsl:when> 
                 <xsl:when test="$found-value = ('final','gereed')">3</xsl:when>
-                <xsl:when test="$found-value = ('superseded','vervallen','vervangen')">3</xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="imf:compute-phase(.)"/>
-                </xsl:otherwise> 
+                <xsl:when test="$found-value = ('superseded','vervallen','vervangen')">4</xsl:when>
+                <xsl:otherwise>1</xsl:otherwise> 
             </xsl:choose>
         </xsl:copy>
     </xsl:template>

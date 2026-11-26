@@ -16,6 +16,8 @@
     <desc lang="en">Visuals for Logius modellen</desc>
     <desc lang="nl">Visuele aspecten van Logius modellen</desc>
     
+    <nature>MIM</nature>
+    
     <measures>
         <!-- geen aanpassingen -->
     </measures>

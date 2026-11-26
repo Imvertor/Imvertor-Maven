@@ -380,7 +380,6 @@
         </tv>
         
         <tv norm="space" id="CFG-TV-INCLUDABLE">
-            <derive>yes</derive>
             <name lang="nl">Is includeerbaar</name>
             <name lang="en">Is includable</name>
             <desc lang="nl">
@@ -396,8 +395,7 @@
                 <value default="yes">Nee</value>
             </declared-values>
         </tv>
-        
+       
     </tagged-values>
-    
     
 </tagset>

@@ -66,9 +66,9 @@
             <xsl:apply-templates select="@*"/>
             <xsl:apply-templates select="section[@type = 'IMAGEMAPS']"/>
             <xsl:apply-templates select="content"/>
-            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[@type = 'DETAILS']/section[@name = $name]/section[@type = 'DETAIL-ATTRIBUTE']"/>
-            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[@type = 'DETAILS']/section[@name = $name]/section[@type = 'DETAIL-ASSOCIATION' and @original-stereotype-id = 'stereotype-name-attributegroup']"/>
-            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[@type = 'DETAILS']/section[@name = $name]/section[@type = 'DETAIL-ASSOCIATION' and not(@original-stereotype-id = 'stereotype-name-attributegroup')]"/>
+            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[starts-with(@type,'DETAILS')]/section[@name = $name]/section[@type = 'DETAIL-ATTRIBUTE']"/>
+            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[starts-with(@type,'DETAILS')]/section[@name = $name]/section[starts-with(@type,'DETAIL-ASSOCIATION') and @original-stereotype-id = 'stereotype-name-attributegroup']"/>
+            <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[starts-with(@type,'DETAILS')]/section[@name = $name]/section[starts-with(@type,'DETAIL-ASSOCIATION') and not(@original-stereotype-id = 'stereotype-name-attributegroup')]"/>
         </xsl:copy>            
     </xsl:template>
     
@@ -145,7 +145,7 @@
         </content>
     </xsl:template>
     
-    <xsl:template match="section[@type = 'DETAIL-ASSOCIATION']">
+    <xsl:template match="section[starts-with(@type,'DETAIL-ASSOCIATION')]">
         <xsl:copy>  
            <xsl:apply-templates select="@*"/>
             <xsl:variable name="target-role-name" select="imf:get-target-role-name(@id)"/>
@@ -154,14 +154,14 @@
        </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="section[@type = 'DETAIL-ASSOCIATION']/content[@approach = 'target']">
+    <xsl:template match="section[starts-with(@type,'DETAIL-ASSOCIATION')]/content[@approach = 'target']">
         <xsl:variable name="relation-name" select="../@name"/>
         <xsl:variable name="source-name" select="../../@name"/>
         
         <xsl:variable name="target-role-name" select="imf:get-target-role-name(../@id)"/>
         
+        <xsl:variable name="source" select="part[@type = 'CFG-DOC-BRONOBJECTTYPE']/item[2]"/>
         <xsl:variable name="target" select="part[@type = 'CFG-DOC-GERELATEERDOBJECTTYPE']/item[2]"/>
-        <xsl:variable name="target-name" select="string($target)"/>
         
         <xsl:variable name="is-attribuutgroep" select="../@original-stereotype-id = 'stereotype-name-attributegroup'"/>
         <xsl:variable name="association-type" select="if ($is-attribuutgroep) then 'Gegevensgroep' else 'Associatie'"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 -->
@@ -192,21 +192,12 @@
                 </part>
                 <part type="CFG-DOC-NAAM">
                     <item>Bron</item>
-                    <item><xsl:value-of select="$source-name"/></item>
+                    <item><xsl:sequence select="$source"/><!-- dit is een item met link info --></item>
                 </part>
             </xsl:if>
             <part type="CFG-DOC-NAAM">
                 <item><xsl:value-of select="if ($is-attribuutgroep) then 'Gegevensgroeptype' else 'Doel'"/></item>
-                <item>
-                    <xsl:choose>
-                        <xsl:when test="$is-attribuutgroep">
-                            <xsl:sequence select="$target"/><!-- dit is een item met link info -->
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$target-name"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </item>
+                <item><xsl:sequence select="$target"/><!-- dit is een item met link info --></item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/147 correctie -->
@@ -498,12 +489,14 @@
                             <item>&#160;&#160;Type</item>
                             <item>Waardelijst uitbreidbaar</item>
                         </part>
+                        <?x
                         <xsl:if test="$defining-class-type = ('CONTENTS-REFERENCELIST')">
                             <part>
                                 <item>&#160;&#160;Identificerend gegeven</item>
                                 <item><xsl:value-of select="string-join($identifiers,', ')"/></item>
                             </part>
                         </xsl:if>
+                        x?>
                         <!-- alleen genereren als er een IMBRO/A domein is -->
                         <xsl:for-each select="$context/part[@type = 'CFG-DOC-DOMAIN-IMBROA']">
                             <part>

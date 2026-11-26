@@ -6,7 +6,16 @@
   
     <name>Geonovum UGM</name>
     
-    <notes-format>markdown</notes-format><!-- plain, markdown, mediawiki -->
+    <!--
+        De taal waarin notes fields intern worden omgezet. 
+        Beste is gewoon markdown of plain aan te houden.
+    -->
+    <notes-format>markdown</notes-format>
+    
+    <!--
+        is het toegestaan om in notes fields náást HTML constructies ook markdown op te memen? 
+    -->
+    <notes-format-allow-markdown>no</notes-format-allow-markdown>
     
     <notes-rule lang="nl" default="Definitie">
         <section title="Definitie" tagged-value="CFG-TV-DEFINITION">

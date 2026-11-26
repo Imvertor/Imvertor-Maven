@@ -68,10 +68,15 @@ public class ImvertorExpathReadText extends ExtensionFunctionDefinition {
   }
   
   @Override
+  public boolean dependsOnFocus() {
+    return true;
+  }
+  
+  @Override
   public boolean hasSideEffects() {    
     return true;
   }
-
+  
   @Override
   public ExtensionFunctionCall makeCallExpression() {    
     return new ImvertorExpathReadTextCall();

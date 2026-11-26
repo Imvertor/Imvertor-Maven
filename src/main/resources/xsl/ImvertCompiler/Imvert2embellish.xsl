@@ -37,6 +37,8 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
+    <xsl:output encoding="UTF-8" method="xml" indent="no" exclude-result-prefixes="#all"/>
+    
     <xsl:variable name="stylesheet-code">EMB</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     

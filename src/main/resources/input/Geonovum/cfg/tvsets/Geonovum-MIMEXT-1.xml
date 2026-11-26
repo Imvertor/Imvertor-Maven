@@ -13,6 +13,8 @@
     <desc lang="en">Tagset for Geonovum models</desc>
     <desc lang="nl">Tags voor Geonovum modellen</desc>
     
+    <nature>MIM</nature>
+    
     <tagged-values>
         <tv id="CFG-TV-UNITOFMEASURE">
             <name lang="nl">Meeteenheid</name>

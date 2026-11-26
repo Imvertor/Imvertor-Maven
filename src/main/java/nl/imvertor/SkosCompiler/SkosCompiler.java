@@ -93,15 +93,17 @@ public class SkosCompiler extends Step {
 				String skosSchemaUrl = configurator.getXParm("system/skos-schema-url"); // wordt gezet bij het genereren van een SKOS file. 
 				if (skosSchemaUrl != null) {
 					ShaclFile skosSchema = shaclFileByCatalog(skosSchemaUrl);
-					skosFile.validate(configurator, skosSchema);
-				
+					succeeds = skosFile.validate(configurator, skosSchema);
 				} else 
-					skosFile.validate(configurator);
+					succeeds = skosFile.validate(configurator);
 			}
 			// copy to the app folder
 			XmlFile appSkosFile = new XmlFile(skosFolder,"skos.ttl");
 			skosFile.copyFile(appSkosFile);
 			configurator.setXParm("system/skos-created","true");
+			
+			if (!succeeds)
+				runner.error(logger,"Errors/wanings found in generated SKOS file. This release should not be distributed. Please notify your administrator.",null,"EWFIGSF");
 		}
 		
 		return succeeds;

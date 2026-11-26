@@ -2,3 +2,5 @@
 
 # oXygen Project files
 *.xpr
+/saxon-license.lic
+/saxon-license-xx.lic

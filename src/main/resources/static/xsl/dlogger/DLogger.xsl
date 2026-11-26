@@ -114,7 +114,7 @@
                         <xsl:variable name="params" as="element()"><!-- https://www.w3.org/TR/xpath-functions-31/#func-serialize -->
                             <output:serialization-parameters xmlns:output="http://www.w3.org/2010/xslt-xquery-serialization">
                                 <xsl:if test="$ext = 'xml'">
-                                    <output:indent value="yes"/>
+                                    <output:indent value="no"/>
                                     <output:undeclare-prefixes value="yes"/>
                                     <output:version value="1.1"/>
                                 </xsl:if>

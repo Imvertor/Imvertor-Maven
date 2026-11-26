@@ -72,6 +72,11 @@ public class ImvertorExpathWriteBinary extends ExtensionFunctionDefinition {
   }
   
   @Override
+  public boolean dependsOnFocus() {
+    return true;
+  }
+  
+  @Override
   public boolean hasSideEffects() {    
     return true;
   }

@@ -7,10 +7,13 @@
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:dlogger="http://www.armatiek.nl/functions/dlogger-proxy"
+    
     exclude-result-prefixes="xs"
-    version="2.0">
+    version="3.0">
 
     <xsl:variable name="notes-format" select="$configuration-notesrules-file/notes-format"/>
+    <xsl:variable name="notes-format-allow-markdown" select="imf:boolean($configuration-notesrules-file/notes-format-allow-markdown)"/>
     
     <xsl:template match="xhtml:p|xhtml:ul|xhtml:ol" mode="notes">
         <xsl:choose>
@@ -31,11 +34,11 @@
     <xsl:template match="xhtml:b" mode="notes">
         <xsl:choose>
             <xsl:when test="$notes-format = ('markdown')">
-                <xsl:value-of select="if (starts-with(.,' ')) then ' **' else '**'"/>  <!--fix <b>text <b></b> -->
+                <xsl:value-of select="'&lt;b>'"/> 
                 <xsl:apply-templates mode="notes"/>
-                <xsl:value-of select="if (ends-with(.,' ')) then '** ' else '**'"/>  <!--fix <b>text <b></b> -->
+                <xsl:value-of select="'&lt;/b>'"/>
             </xsl:when>
-            <xsl:when test="$notes-format = ('mediawiki')">
+           <xsl:when test="$notes-format = ('mediawiki')">
                 <xsl:value-of select="if (starts-with(.,' ')) then ' &quot;&quot;&quot;' else '&quot;&quot;&quot;'"/> <!--fix <b>text <b></b> -->
                 <xsl:apply-templates mode="notes"/>
                 <xsl:value-of select="if (ends-with(.,' ')) then '&quot;&quot;&quot; ' else '&quot;&quot;&quot;'"/> <!--fix <b>text <b></b> -->
@@ -48,9 +51,9 @@
     <xsl:template match="xhtml:i" mode="notes">
         <xsl:choose>
             <xsl:when test="$notes-format = ('markdown')">
-                <xsl:value-of select="if (starts-with(.,' ')) then ' *' else '*'"/>  <!--fix <b>text <b></b> -->
+                <xsl:value-of select="'&lt;i>'"/> 
                 <xsl:apply-templates mode="notes"/>
-                <xsl:value-of select="if (ends-with(.,' ')) then '* ' else '*'"/>
+                <xsl:value-of select="'&lt;/i>'"/>
             </xsl:when>
             <xsl:when test="$notes-format = ('mediawiki')">
                 <xsl:value-of select="if (starts-with(.,' ')) then ' &quot;&quot;' else '&quot;&quot;'"/>
@@ -112,7 +115,22 @@
     </xsl:template>
     
     <xsl:template match="text()" mode="notes">
-        <xsl:value-of select="."/>
+        <xsl:value-of select="if ($notes-format-allow-markdown) then . else imf:escape-markdown(.)"/>
     </xsl:template>
+    
+    <xsl:function name="imf:escape-markdown" as="xs:string*">
+        <xsl:param name="line" as="xs:string"/>
+        <xsl:variable name="res">
+            <xsl:analyze-string select="$line" regex="[\*\[\]`_]|^-\s">
+                <xsl:matching-substring>
+                    <xsl:value-of select="'\' || ."/>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:value-of select="."/>
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        <xsl:sequence select="string-join($res,'')"/>
+    </xsl:function>
     
 </xsl:stylesheet>

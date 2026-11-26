@@ -41,28 +41,44 @@ public class ImvertorTrack extends ExtensionFunctionDefinition {
 
 	private static final StructuredQName qName = new StructuredQName("", Configurator.NAMESPACE_EXTENSION_FUNCTIONS, "imvertorTrack");
 
+	@Override
 	public StructuredQName getFunctionQName() {
 		return qName;
 	}
 
+	@Override
 	public int getMinimumNumberOfArguments() {
 		return 1;
 	}
 
+	@Override
 	public int getMaximumNumberOfArguments() {
 		return 1;
 	}
 
+	@Override
 	public SequenceType[] getArgumentTypes() {
 		return new SequenceType[] { 
 			SequenceType.SINGLE_STRING
 		};
 	}
 
+	@Override
 	public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
 		return SequenceType.OPTIONAL_BOOLEAN;
 	}
+	
+  @Override
+  public boolean dependsOnFocus() {
+    return true;
+  }
 
+  @Override
+  public boolean hasSideEffects() {
+    return true;
+  }
+
+  @Override
 	public ExtensionFunctionCall makeCallExpression() {
 		return new ImvertorTrackCall();
 	}

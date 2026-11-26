@@ -40,7 +40,7 @@
     <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
     <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
     
-    <xsl:variable name="has-multiple-domains" select="count(/book/chapter/section[@type=('DOMAIN','VIEW')]) gt 1"/>
+    <xsl:variable name="has-multiple-domains" select="count(/book/chapter/section[@type=('DOMAIN','VIEW','EXTERNAL')]) gt 1"/>
     
     <xsl:variable name="document-ids" select="for $id in //@id return string($id)"/>
 
@@ -182,6 +182,10 @@
             </xsl:when>
             <xsl:when test="@type = 'SHORT-UNIONELEMENTS'">
                 <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-UNIONELEMENTS',$language-model,())"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
+            <xsl:when test="@type = 'SHORT-UNIONLINKS'">
+                <xsl:sequence select="imf:create-section-header-name($section,$level,'SHORT-UNIONLINKS',$language-model,())"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-DATAELEMENTS'">
@@ -386,6 +390,9 @@
                 <colgroup width="10%"/>
                 <colgroup width="10%"/>
             </xsl:when>
+            <xsl:when test="$type = 'SHORT-UNIONLINKS'"> <!-- 100 -->
+                <colgroup width="100%"/>
+            </xsl:when>
             <xsl:when test="$type = 'SHORT-REFERENCEELEMENTS'"> <!-- 30 50 10 10 -->
                 <colgroup width="30%"/>
                 <colgroup width="50%"/>
@@ -453,8 +460,15 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
-                <xsl:sequence select="subsequence($groups,1,$items - 1)"/> 
-                <colgroup/><!-- final colgroup fills up the rest of the table space -->     
+                <xsl:variable name="leading-groups" select="subsequence($groups,1,$items - 1)"/>
+                <xsl:variable name="remaining-columns" select="$items - count($leading-groups)"/>
+                <xsl:sequence select="$leading-groups"/>
+                <!-- final colgroup fills up the rest of the table space; it must span all remaining columns, see #772 -->
+                <colgroup>
+                    <xsl:if test="$remaining-columns gt 1">
+                        <xsl:attribute name="span" select="$remaining-columns"/>
+                    </xsl:if>
+                </colgroup>
             </xsl:when>
             
             <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->
@@ -472,6 +486,7 @@
     <xsl:template match="part" mode="detail">
         <xsl:variable name="items" select="count(item)"/>
         <xsl:variable name="type" select="ancestor::section/@type" as="attribute()*"/>
+        
         <tr>
             <xsl:choose>
                 <xsl:when test="@type = 'COMPOSER' and $type='DETAIL-COMPOSITE-ATTRIBUTE'">
@@ -515,6 +530,11 @@
                     </td>
                     <td>
                         <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="@type = 'TUSSENKOP'">
+                    <td colspan="10" class="tussenkop">
+                        <xsl:apply-templates select="item" mode="#current"/>
                     </td>
                 </xsl:when>
                 <xsl:when test="$type = 'EXPLANATION'"> <!-- 100 -->
@@ -561,6 +581,11 @@
                     </td>
                     <td>
                         <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-UNIONLINKS'"> <!-- 100 -->
+                    <td>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>
                 </xsl:when>
                 <xsl:when test="$type = 'SHORT-ATTRIBUTES'"> <!-- 30 50 10 10 -->
@@ -749,7 +774,10 @@
                 </a>
             </xsl:when>
             <xsl:when test="exists(item)">
-                <xsl:apply-templates mode="#current"/>
+                <xsl:for-each select="item">
+                    <xsl:apply-templates select="." mode="#current"/>
+                    <xsl:if test="following-sibling::item[1][not(imf:contains-block-elements(.))]">&#160;</xsl:if> <!-- &#8192; (EN QUAD een space die niet wordt verwijderd zie https://www.compart.com/en/unicode/U+2000) niet opgenomen omdat w3c validator dit niet accepteert voor HTML, zie #714 -->
+                </xsl:for-each>
             </xsl:when>
             <xsl:when test="parent::part[@type = 'listval']">
                 <xsl:sequence select="imf:create-formatted-listvalue-text(.)"/>
@@ -801,11 +829,19 @@
             <xsl:apply-templates mode="windup"/>
         </img>
     </xsl:template>
-    <xsl:template match="section[@level ge '7']" mode="windup">
+  
+    <!-- #714 - h7 wordt wel gegenereerd maar valt niet in html. De parent div heeft class deepheader, h7 wordt vervangen door strong -->
+    <xsl:template match="section[h7]" mode="windup">
         <div class="deepheader">
             <xsl:apply-templates select="node()|@*" mode="#current"/>
         </div>
     </xsl:template>
+    <xsl:template match="h7" mode="windup">
+        <strong>
+            <xsl:apply-templates select="node()|@*" mode="#current"/>
+        </strong>
+    </xsl:template>
+    
     <xsl:template match="section/@level" mode="windup">
         <!-- remove -->
     </xsl:template>
@@ -815,8 +851,22 @@
     <xsl:template match="colgroup/@width" mode="windup">
         <xsl:attribute name="style" select="concat('width: ',.,';')"/>
     </xsl:template>
-    <xsl:template match="a/@name" mode="windup">
-        <xsl:attribute name="id" select="."/>
+    <xsl:template match="a" mode="windup">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:choose>
+                <xsl:when test="@name">
+                    <xsl:attribute name="id" select="."/>
+                    <xsl:apply-templates select="node()" mode="#current"/>
+                </xsl:when>
+                <xsl:when test="@href and node()">
+                    <xsl:apply-templates select="node()" mode="#current"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="'(?)'"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:copy>
     </xsl:template>
     
     <xsl:template name="process-imagemaps">
@@ -841,11 +891,13 @@
                         <xsl:if test="$section">
                             <xsl:variable name="section-name" select="$section/@name"/>
                             <xsl:variable name="section-id" select="$section/@id"/>
-                            <area 
-                                shape="rect" 
-                                alt="{$section-name}"
-                                coords="{imvert-imap:loc[@type = 'imgL']},{imvert-imap:loc[@type = 'imgT']},{imvert-imap:loc[@type = 'imgR']},{imvert-imap:loc[@type = 'imgB']}" 
-                                href="#{$section-id}"/><!-- do not use graph_ references. see #360 -->
+                            <xsl:if test="$section-name"> <!-- #781 -->
+                                <area 
+                                    shape="rect" 
+                                    alt="{$section-name}"
+                                    coords="{imvert-imap:loc[@type = 'imgL']},{imvert-imap:loc[@type = 'imgT']},{imvert-imap:loc[@type = 'imgR']},{imvert-imap:loc[@type = 'imgB']}" 
+                                    href="#{$section-id}"/><!-- do not use graph_ references. see #360 -->
+                            </xsl:if>
                         </xsl:if>
                     </xsl:for-each>
                 </map>
@@ -853,45 +905,77 @@
             <div class="imageinfo {$diagram-css-class}">
                 <xsl:choose>
                     <xsl:when test="not($diagram-show-caption)">
-                        <img id="{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
+                        <img id="img-{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
                         <xsl:sequence select="$map"/>
                     </xsl:when>
                     <xsl:when test="$diagram-encoding = 'figure'">
                         <xsl:variable name="id">img-{generate-id()}</xsl:variable>
                         <figure class="uml-diagram">
-                            <img id="{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
+                            <img id="img-{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
                             <figcaption>
                                 <xsl:text> &#8210; Diagram: </xsl:text>
                                 <xsl:sequence select="imf:parse-diagram-title($diagram-name)[1]"/> 
                             </figcaption>
                         </figure>
                         <xsl:sequence select="$map"/>
-                        <xsl:if test="normalize-space($caption-desc)">    
+                        <xsl:if test="normalize-space($caption-desc)">
                             <!--<xsl:text> &#8212; </xsl:text>-->
-                            <p>
-                                <xsl:sequence select="$caption-nodes"/>
-                            </p>
+                            <!-- #714: do not nest block elements (such as p) inside a p; that produces invalid HTML (stray </p>) -->
+                            <xsl:choose>
+                                <xsl:when test="imf:contains-block-elements($caption-nodes)">
+                                    <div class="diagram-description">
+                                        <xsl:sequence select="$caption-nodes"/>
+                                    </div>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <p>
+                                        <xsl:sequence select="$caption-nodes"/>
+                                    </p>
+                                </xsl:otherwise>
+                            </xsl:choose>
                         </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>
-                        <img id="{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
+                        <img id="img-{$diagram-id}" src="{$diagram-path}" usemap="#imagemap-{$diagram-id}" alt="Diagram: {$caption-desc}"/>
                         <xsl:sequence select="$map"/>
                         <!-- create the caption -->
-                        <p>
-                            <b>
-                                <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
-                            </b>
-                            <xsl:if test="normalize-space($caption-desc)">    
-                                <!--<xsl:text> &#8212; </xsl:text>-->
-                                <xsl:sequence select="$caption-nodes"/>
-                            </xsl:if>
-                        </p>    
+                        <xsl:choose>
+                            <xsl:when test="normalize-space($caption-desc) and imf:contains-block-elements($caption-nodes)">
+                                <!-- #714: do not nest block elements (such as p) inside a p -->
+                                <p>
+                                    <b>
+                                        <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
+                                    </b>
+                                </p>
+                                <div class="diagram-description">
+                                    <xsl:sequence select="$caption-nodes"/>
+                                </div>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <p>
+                                    <b>
+                                        <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
+                                    </b>
+                                    <xsl:if test="normalize-space($caption-desc)">
+                                        <!--<xsl:text> &#8212; </xsl:text>-->
+                                        <xsl:sequence select="$caption-nodes"/>
+                                    </xsl:if>
+                                </p>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:otherwise>
                 </xsl:choose>
             </div>
         </xsl:for-each>
     </xsl:template>
     
+    <!-- #714: true when the nodes contain elements that are not allowed inside an HTML p element -->
+    <xsl:function name="imf:contains-block-elements" as="xs:boolean">
+        <xsl:param name="nodes" as="node()*"/>
+        <xsl:variable name="block-names" select="('p','div','ul','ol','dl','table','pre','blockquote','h1','h2','h3','h4','h5','h6','section','figure','hr','address','article','aside','details','fieldset','footer','form','header','main','menu','nav')"/>
+        <xsl:sequence select="exists($nodes/descendant-or-self::*[lower-case(local-name()) = $block-names])"/>
+    </xsl:function>
+
     <xsl:function name="imf:create-anchors" as="element()*">
         <xsl:param name="section-or-item"/>
         <!-- do not use graph_ references. see #360 -->

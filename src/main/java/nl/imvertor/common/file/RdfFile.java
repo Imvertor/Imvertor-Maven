@@ -59,7 +59,14 @@ public class RdfFile extends AnyFile {
 		//TODO open and maintain model in memory for query and the like.
 	}
 	
-	public void parse(Configurator configurator) throws Exception {
+	/**
+	 * Parse the RDF file
+	 * 
+	 * @param configurator
+	 * @return true when no errors occur. False otherwise.
+	 * @throws Exception
+	 */
+	public boolean parse(Configurator configurator) throws Exception {
 	
 		if (isOpen) close();
 		
@@ -81,6 +88,7 @@ public class RdfFile extends AnyFile {
 				 rdfParser.setRDFHandler(new StatementCollector(model));
 				 try {
 					 rdfParser.parse(inputStream, documentURL.toString()); // playground voor shacl schema's: https://shacl-playground.zazuko.com/
+					 return true;
 				 } catch (Exception e) {
 					// ignore
 			 	 } finally {
@@ -99,7 +107,7 @@ public class RdfFile extends AnyFile {
 		} else {
 			throw new Exception("No such file: " + this.getAbsolutePath());
 		}
-				
+		return false;
 	}
 
 	public void close() {

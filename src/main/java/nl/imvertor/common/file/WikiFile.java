@@ -1,13 +1,8 @@
 package nl.imvertor.common.file;
 
-import org.eclipse.mylyn.wikitext.parser.MarkupParser;
-import org.eclipse.mylyn.wikitext.parser.markup.MarkupLanguage;
-import org.eclipse.mylyn.wikitext.util.ServiceLocator;
-
-import org.eclipse.mylyn.wikitext.mediawiki.MediaWikiLanguage;
-import org.eclipse.mylyn.wikitext.markdown.MarkdownLanguage;
-import org.eclipse.mylyn.wikitext.textile.TextileLanguage;
-import org.eclipse.mylyn.wikitext.confluence.ConfluenceLanguage;
+import org.commonmark.node.*;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 
 public class WikiFile extends AnyFile {
 
@@ -31,32 +26,17 @@ public class WikiFile extends AnyFile {
 	}
 	
 	public void toHtml(AnyFile outfile, int language) throws Exception {	
-		outfile.setContent(getHtmlFormatText(getContent(), language));
+		if (language == FORMAT_MARKDOWN) 
+			outfile.setContent(getHtmlFormatText(getContent(), language));
+		else
+			throw new Exception("Wiki format not supported: " + language);
 	}
 
 	public static String getHtmlFormatText(String wikiFormatText, int language) throws Exception {
-		Object formatClass;
-		switch (language) {
-			case 0:
-				formatClass = new MarkdownLanguage();
-				break;
-			case 1:
-				formatClass = new MediaWikiLanguage();
-				break;
-			case 2:
-				formatClass = new TextileLanguage();
-				break;
-			case 3:
-				formatClass = new ConfluenceLanguage();
-				break;
-			default:
-				throw new Exception("No such wiki language");
-		}
-		
-		MarkupLanguage markupLanguage = ServiceLocator.getInstance().getMarkupLanguage(formatClass.getClass().getName());
-	    MarkupParser parser = new MarkupParser(markupLanguage);
-	    String dirtyHtml = parser.parseToHtml(wikiFormatText);
-	    return dirtyHtml;
+		Parser parser = Parser.builder().build();
+		Node document = parser.parse(wikiFormatText);
+		HtmlRenderer renderer = HtmlRenderer.builder().build();
+		return renderer.render(document);
 	}
 	
 }

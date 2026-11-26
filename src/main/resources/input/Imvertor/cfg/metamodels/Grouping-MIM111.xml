@@ -11,4 +11,6 @@
     <desc lang="nl">Metamodel voor Grouping passend bij MIM 1.1</desc>
     <desc lang="en">Metamodel for Grouping under MIM 1.1</desc>
     
+    <nature>MIM</nature>
+    
 </metamodel>

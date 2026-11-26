@@ -6,8 +6,34 @@
     
     <name>MIM 1.2 tagged values (common extensions)</name>
     
+    <nature>MIM</nature>
+    
     <tagged-values>
         
+        <tv id="CFG-TV-NAME">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-interface</stereo>
+                <stereo minmax="0..1">stereotype-name-conceptual</stereo>
+            </stereotypes>
+        </tv>
+        <tv id="CFG-TV-IDENTIFICATIE">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-interface</stereo>
+                <stereo minmax="0..1">stereotype-name-conceptual</stereo>
+            </stereotypes>
+        </tv>
+        <tv id="CFG-TV-DEFINITION">
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-interface</stereo>
+                <stereo minmax="0..1">stereotype-name-conceptual</stereo>
+            </stereotypes>
+        </tv>
+        <tv id="CFG-TV-DESCRIPTION">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-interface</stereo>
+                <stereo minmax="0..1">stereotype-name-conceptual</stereo>
+            </stereotypes>
+        </tv>
         
     </tagged-values>
     

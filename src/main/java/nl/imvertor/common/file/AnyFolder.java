@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
@@ -417,4 +418,45 @@ public class AnyFolder extends AnyFile {
 	    if (isDirectory())
 	    	list.add(this);
 	}
+	
+	/**
+     * Returns files from a directory that match a regular expression pattern.
+     * 
+     * @param regexPattern The regular expression to match against file names (including extension)
+     * @return A Vector containing the full paths of matching files
+     * @throws IllegalArgumentException if the directory path is invalid or not a directory
+     */
+    public Vector<String> getMatchingFiles(String regexPattern) {
+        Vector<String> matchingFiles = new Vector<>();
+        
+        // Validate directory
+        if (!this.exists()) {
+            throw new IllegalArgumentException("Directory does not exist");
+        }
+        if (!this.isDirectory()) {
+            throw new IllegalArgumentException("Path is not a directory");
+        }
+        
+        // Compile the regex pattern
+        Pattern pattern = Pattern.compile(regexPattern);
+        
+        // List all files in the directory
+        File[] files = this.listFiles();
+        
+        if (files != null) {
+            for (File file : files) {
+                // Only process files, not subdirectories
+                if (file.isFile()) {
+                    String fileName = file.getName();
+                    
+                    // Check if the file name matches the regex pattern
+                    if (pattern.matcher(fileName).matches()) {
+                        matchingFiles.add(file.getAbsolutePath());
+                    }
+                }
+            }
+        }
+        
+        return matchingFiles;
+    }
 }

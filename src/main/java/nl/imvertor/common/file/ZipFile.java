@@ -81,11 +81,14 @@ public class ZipFile extends AnyFile {
     /**
      * Write zip contents to a target folder. 
      * Add to existing contents.
-     * When no such folder, create it. 
-     * @param targetFolder
+     * When no such folder, create it.
+     * Indicate if contents of target folder must be cleared first. 
+     * @param targetFolder De folder waarnaar uit te pakken
+     * @param removeExisting Verwijder alle content voor extractie
      * @throws Exception 
      */
-	public void decompress(AnyFolder targetFolder) throws Exception {
+	public void decompress(AnyFolder targetFolder, Boolean removeExisting) throws Exception {
+		if (targetFolder.exists() && removeExisting) targetFolder.deleteDirectory();
 		ZipUtils.unzipFile(this, targetFolder);
 	}
 	
@@ -108,7 +111,7 @@ public class ZipFile extends AnyFile {
     	AnyFolder workFolder = new AnyFolder(serializeFolder,"work");
     	workFolder.mkdirs();
     	// unzip this file to the workfolder
-    	decompress(workFolder);
+    	decompress(workFolder,true);
     	// create a content file.
     	XmlFile content = new XmlFile(serializeFolder,"__content.xml");
     	FileWriterWithEncoding contentWriter = content.getWriter(false);

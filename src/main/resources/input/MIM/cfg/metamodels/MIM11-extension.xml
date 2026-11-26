@@ -4,6 +4,8 @@
     
     <name>MIM 1.1 metamodel (common extensions)</name>
     
+    <nature>MIM</nature>
+    
     <stereotypes xml:id="stereotypes">
 
         <stereo id="stereotype-name-composite-id">

@@ -77,6 +77,7 @@
         </xsl:copy>
     </xsl:template>
     
+    <?x
     <!-- TODO match phases to defined phases -->
     <xsl:template match="imvert:phase">
         <xsl:copy>
@@ -87,6 +88,7 @@
             </xsl:choose>
         </xsl:copy>
     </xsl:template>
+    x?>
     
     <xsl:template match="imvert:tagged-value[imvert:name = imf:get-normalized-name('Indicatie formele historie','tv-name')]/imvert:value">
         <imvert:value>

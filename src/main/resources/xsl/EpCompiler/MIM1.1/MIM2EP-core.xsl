@@ -46,8 +46,6 @@
     
     <xsl:template match="/">
    
-        <xsl:sequence select="dlogger:save('$bp name',$configuration-jsonschemarules-name)"></xsl:sequence>
-        <xsl:sequence select="dlogger:save('$bp file',$configuration-jsonschemarules-file)"></xsl:sequence>
         <xsl:variable name="step-1" as="element(ep:group)">
             <xsl:apply-templates select="/mim:Informatiemodel"/>    
         </xsl:variable>

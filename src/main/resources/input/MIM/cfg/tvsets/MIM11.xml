@@ -227,7 +227,7 @@
                 <value default="yes">Conceptueel</value>
                 <value>Logisch</value>
             </declared-values>
-            <mimformat>informatiemodelType</mimformat>
+            <mimformat>informatiemodeltype</mimformat>
         </tv>
         
         <tv norm="space" id="CFG-TV-IMRELATIONMODELINGTYPE">

@@ -45,8 +45,7 @@
     <xsl:variable name="annotation-element-names" select="tokenize($configuration-jsonschemarules-file//parameter[@name = 'json-schema-annotations'],'\s+')" as="xs:string*"/>
     
     <xsl:template match="/">
-        <xsl:sequence select="dlogger:save('$bp 2name',$configuration-jsonschemarules-name)"></xsl:sequence>
-        <xsl:sequence select="dlogger:save('$bp 2file',$configuration-jsonschemarules-file)"></xsl:sequence>
+        
        <xsl:variable name="step-1" as="element(ep:group)">
             <xsl:apply-templates select="/mim:Informatiemodel"/>    
         </xsl:variable>
@@ -355,7 +354,7 @@
         </ep:construct>
     </xsl:template>
     
-    <xsl:template match="mim-ext:Constructie[mim-ext:constructietype = 'INTERFACE']">
+    <xsl:template match="mim-ext:Constructie[mim-ext:constructietype = ('INTERFACE','CONCEPTUEEL')]">
         <ep:construct>
             <xsl:sequence select="imf:get-id(.)"/>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Interface (extern)',())"/>
@@ -684,6 +683,7 @@
     </xsl:template>
     
     <xsl:template match="*">
+        <xsl:sequence select="dlogger:save('unknown',.)"></xsl:sequence>
         <xsl:sequence select="imf:msg-comment(.,'ERROR','Unknown element [1]',imf:xpath-string(.))"/>
     </xsl:template>
     

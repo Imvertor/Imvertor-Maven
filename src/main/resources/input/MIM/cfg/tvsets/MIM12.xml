@@ -9,6 +9,8 @@
     
     <name>MIM 1.2 tagged values</name>
     
+    <nature>MIM</nature>
+
     <tagged-values>
         
         <tv norm="note" id="CFG-TV-SOURCE">
@@ -259,6 +261,7 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
             <mimformat>eenheid</mimformat>
@@ -275,6 +278,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
             <mimformat>minimumwaardeInclusief</mimformat>
         </tv>
@@ -289,6 +293,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
             <mimformat>minimumwaardeExclusief</mimformat>
         </tv>
@@ -303,6 +308,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
             <mimformat>maximumwaardeInclusief</mimformat>
         </tv>
@@ -317,6 +323,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
             <mimformat>maximumwaardeExclusief</mimformat>
         </tv>

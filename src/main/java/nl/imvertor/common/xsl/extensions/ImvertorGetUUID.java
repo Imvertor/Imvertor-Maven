@@ -38,39 +38,55 @@ import nl.imvertor.common.Configurator;
 
 public class ImvertorGetUUID extends net.sf.saxon.lib.ExtensionFunctionDefinition {
 
-	private static final StructuredQName qName = new StructuredQName("", Configurator.NAMESPACE_EXTENSION_FUNCTIONS, "imvertorGetUUID");
+  private static final StructuredQName qName = new StructuredQName("", Configurator.NAMESPACE_EXTENSION_FUNCTIONS, "imvertorGetUUID");
 
-	public StructuredQName getFunctionQName() {
-		return qName;
-	}
+  @Override
+  public StructuredQName getFunctionQName() {
+    return qName;
+  }
 
-	public int getMinimumNumberOfArguments() {
-		return 0;
-	}
+  @Override
+  public int getMinimumNumberOfArguments() {
+    return 0;
+  }
 
-	public int getMaximumNumberOfArguments() {
-		return 0;
-	}
+  @Override
+  public int getMaximumNumberOfArguments() {
+    return 0;
+  }
 
-	public SequenceType[] getArgumentTypes() {
-		return new SequenceType[] { };
-	}
+  @Override
+  public SequenceType[] getArgumentTypes() {
+    return new SequenceType[] {};
+  }
 
-	public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
-		return SequenceType.SINGLE_STRING;
-	}
+  @Override
+  public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
+    return SequenceType.SINGLE_STRING;
+  }
 
-	public ExtensionFunctionCall makeCallExpression() {
-		return new GetUUIDCall();
-	}
+  @Override
+  public ExtensionFunctionCall makeCallExpression() {
+    return new GetUUIDCall();
+  }
 
-	private static class GetUUIDCall extends ExtensionFunctionCall {
+  @Override
+  public boolean dependsOnFocus() {
+    return true;
+  }
+  
+  @Override
+  public boolean hasSideEffects() {
+    return true;
+  }
 
-		@Override
-	    public StringValue call(XPathContext context, Sequence[] arguments) throws XPathException {
-			UUID uuid = UUID.randomUUID();
-			//	String variableName = ((StringValue) arguments[0].next()).getStringValue();
-			return StringValue.makeStringValue(uuid.toString());
-		}
-	}
+  private static class GetUUIDCall extends ExtensionFunctionCall {
+
+    @Override
+    public StringValue call(XPathContext context, Sequence[] arguments) throws XPathException {
+      UUID uuid = UUID.randomUUID();
+      return StringValue.makeStringValue(uuid.toString());
+    }
+
+  }
 }

@@ -31,64 +31,75 @@ import nl.imvertor.common.helper.OsExecutor;
 import nl.imvertor.common.helper.OsExecutor.OsExecutorResultHandler;
 
 public class ImvertorOsExecute extends ExtensionFunctionDefinition {
-	
-	private static final StructuredQName qName = new StructuredQName("", "http://www.armatiek.nl/functions", "ImvertorOsExecute");
-	
-	public StructuredQName getFunctionQName() {
-		return qName;
-	}
 
-	public int getMinimumNumberOfArguments() {
-		return 4;
-	}
+  private static final StructuredQName qName = new StructuredQName("", "http://www.armatiek.nl/functions", "ImvertorOsExecute");
 
-	public int getMaximumNumberOfArguments() {
-		return 4;
-	}
+  @Override
+  public StructuredQName getFunctionQName() {
+    return qName;
+  }
 
-	 public SequenceType[] getArgumentTypes() {
-		    return new SequenceType[] { 
-		    		SequenceType.SINGLE_STRING, 
-		    		SequenceType.ANY_SEQUENCE,
-		    		SequenceType.SINGLE_INTEGER, 
-		    		SequenceType.SINGLE_BOOLEAN};
-	}
+  @Override
+  public int getMinimumNumberOfArguments() {
+    return 4;
+  }
 
-	public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
-		return SequenceType.SINGLE_INTEGER;
-	}
+  @Override
+  public int getMaximumNumberOfArguments() {
+    return 4;
+  }
 
-	public ExtensionFunctionCall makeCallExpression() {
-		return new OsExecuteCall();
-	}
+  @Override
+  public SequenceType[] getArgumentTypes() {
+    return new SequenceType[] { SequenceType.SINGLE_STRING, SequenceType.ANY_SEQUENCE, SequenceType.SINGLE_INTEGER,
+        SequenceType.SINGLE_BOOLEAN };
+  }
 
-	private static class OsExecuteCall extends ExtensionFunctionCall {
+  @Override
+  public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
+    return SequenceType.SINGLE_INTEGER;
+  }
+  
+  @Override
+  public boolean dependsOnFocus() {
+    return true;
+  }
+  
+  @Override
+  public boolean hasSideEffects() {    
+    return true;
+  }
 
-		@Override
-	    public IntegerValue call(XPathContext context, Sequence[] arguments) throws XPathException {
-			OsExecutor exec = new OsExecutor();
-			String script = ((StringValue) arguments[0].head()).getStringValue();		
-			CommandLine commandLine = new CommandLine(script);
-			
-			SequenceIterator it = arguments[1].iterate();
-			Item item = it.next();
-			while (item != null) {
-				commandLine.addArgument( item.getStringValue() );
-				item = it.next();
-			}
-			long osexecJobTimeout = ((IntegerValue) arguments[2].head()).longValue();
-			boolean osexecInBackground = ((BooleanValue) arguments[3].head()).effectiveBooleanValue();
+  public ExtensionFunctionCall makeCallExpression() {
+    return new OsExecuteCall();
+  }
 
-			int exitvalue = 0;
-			OsExecutorResultHandler osexecResult;
-			try {
-	            osexecResult = exec.osexec(commandLine, osexecJobTimeout, osexecInBackground);
-	            osexecResult.waitFor();	 
-            }
-	        catch (final Exception e) {
-	           exitvalue = 1;
-	        }
-			return IntegerValue.makeIntegerValue(BigInteger.valueOf(exitvalue));
-		}
-	}
+  private static class OsExecuteCall extends ExtensionFunctionCall {
+
+    @Override
+    public IntegerValue call(XPathContext context, Sequence[] arguments) throws XPathException {
+      OsExecutor exec = new OsExecutor();
+      String script = ((StringValue) arguments[0].head()).getStringValue();
+      CommandLine commandLine = new CommandLine(script);
+
+      SequenceIterator it = arguments[1].iterate();
+      Item item = it.next();
+      while (item != null) {
+        commandLine.addArgument(item.getStringValue());
+        item = it.next();
+      }
+      long osexecJobTimeout = ((IntegerValue) arguments[2].head()).longValue();
+      boolean osexecInBackground = ((BooleanValue) arguments[3].head()).effectiveBooleanValue();
+
+      int exitvalue = 0;
+      OsExecutorResultHandler osexecResult;
+      try {
+        osexecResult = exec.osexec(commandLine, osexecJobTimeout, osexecInBackground);
+        osexecResult.waitFor();
+      } catch (final Exception e) {
+        exitvalue = 1;
+      }
+      return IntegerValue.makeIntegerValue(BigInteger.valueOf(exitvalue));
+    }
+  }
 }

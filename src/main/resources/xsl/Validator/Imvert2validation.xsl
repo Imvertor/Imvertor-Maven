@@ -158,6 +158,7 @@
         'stereotype-name-referentielijst',
         'stereotype-name-codelist',
         'stereotype-name-interface',
+        'stereotype-name-conceptual',
         'stereotype-name-enumeration')"/>
     
     <xsl:variable name="enumeration-stereos" select="
@@ -237,7 +238,7 @@
     <xsl:template match="imvert:package[imf:member-of(..,$application-package)]" priority="102">
         <!-- redmine #487837 Packages in <<application>> moeten bekend stereotype hebben -->
         <xsl:sequence select="imf:report-error(., 
-            not(imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-internal-package','stereotype-name-recyclebin','stereotype-name-folder-package','stereotype-name-view-package')), 
+            not(imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package','stereotype-name-internal-package','stereotype-name-recyclebin','stereotype-name-folder-package','stereotype-name-view-package','stereotype-name-external-package')), 
             'Package with unexpected stereotype(s): [1]', imvert:stereotype)"/>
       
         <xsl:next-match/>
@@ -291,8 +292,9 @@
         <xsl:variable name="root-release" select="imvert:release" as="xs:string?"/>
        
         <xsl:variable name="domain-packages" select=".//imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-message-package')]"/>
-        <xsl:variable name="subpackage-releases" select="$domain-packages/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
-        <xsl:variable name="collections" select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-collection')]"/>
+        <xsl:variable name="view-packages" select=".//imvert:package[imvert:stereotype/@id = ('stereotype-name-view-package')]"/>
+        <xsl:variable name="subpackage-releases" select="($domain-packages,$view-packages)/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
+        <xsl:variable name="collections" select="($domain-packages,$view-packages)/imvert:class[imvert:stereotype/@id = ('stereotype-name-collection')]"/>
         <!--validation-->
 
         <xsl:sequence select="imf:report-error(., 
@@ -685,7 +687,7 @@
             'One of the subtypes is in an earlier release')"/>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-interface')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-interface','stereotype-name-conceptual')]">
         <!-- skip -->
     </xsl:template>
     
@@ -720,10 +722,21 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]">
         <!--setup-->
+        <xsl:variable name="class-inheritance-complete" select="imf:get-full-class-definition(.)"/>
         <!--validation-->
         <xsl:sequence select="imf:report-error(.,
-            empty(imvert:attributes/imvert:attribute), 
-            'Datatypes with stereotype [1] must have attributes',imf:get-config-stereotypes('stereotype-name-complextype'))"/>
+            empty($class-inheritance-complete/imvert:attributes/imvert:attribute), 
+            'Datatypes with stereotype [1] must have at least one [2]',(imf:get-config-stereotypes('stereotype-name-complextype'),imf:get-config-stereotypes('stereotype-name-data-element')))"/>
+        <xsl:next-match/>
+    </xsl:template>
+    
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]">
+        <!--setup-->
+        <xsl:variable name="class-inheritance-complete" select="imf:get-full-class-definition(.)"/>
+        <!--validation-->
+        <xsl:sequence select="imf:report-error(.,
+            empty($class-inheritance-complete/imvert:attributes/imvert:attribute), 
+            'Datatypes with stereotype [1] must have at least one [2]',(imf:get-config-stereotypes('stereotype-name-referentielijst'),imf:get-config-stereotypes('stereotype-name-referentie-element')))"/>
         <xsl:next-match/>
     </xsl:template>
     
@@ -904,7 +917,7 @@
             '[1] type must be an UML class', imf:string-group(imf:get-config-stereotypes('stereotype-name-attributegroup'),' or '))"/>
         
         <xsl:sequence select="imf:report-error(., 
-            imvert:stereotype/@id = 'stereotype-name-attributegroup' and not($defining-class/imvert:stereotype/@id = ('stereotype-name-attribute','stereotype-name-composite','stereotype-name-interface')), 
+            imvert:stereotype/@id = 'stereotype-name-attributegroup' and not($defining-class/imvert:stereotype/@id = ('stereotype-name-attribute','stereotype-name-composite','stereotype-name-interface','stereotype-name-conceptual')), 
             '[1] type is not allowed here: [2]', (
                 imf:string-group(imf:get-config-stereotypes('stereotype-name-attributegroup'),' or '),
                 imf:get-config-stereotypes($defining-class/imvert:stereotype/@id)
@@ -1173,7 +1186,7 @@
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="supers" select="imf:get-superclasses($this)"/>
         <!-- IM-73 if interfaces, remove the class from the list -->
-        <xsl:variable name="super" select="for $s in $supers return if ($s/imvert:stereotype/@id = ('stereotype-name-interface')) then () else $s"/>
+        <xsl:variable name="super" select="for $s in $supers return if ($s/imvert:stereotype/@id = ('stereotype-name-interface','stereotype-name-conceptual')) then () else $s"/>
         <xsl:choose>
             <xsl:when test="exists($super)">
                 <xsl:variable name="results" as="xs:integer*">
@@ -1199,7 +1212,7 @@
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="supers" select="imf:get-superclasses($this)"/>
         <!-- IM-73 if interfaces, remove the class from the list -->
-        <xsl:variable name="super" select="for $s in $supers return if ($s/imvert:stereotype/@id = ('stereotype-name-interface')) then () else $s"/>
+        <xsl:variable name="super" select="for $s in $supers return if ($s/imvert:stereotype/@id = ('stereotype-name-interface','stereotype-name-conceptual')) then () else $s"/>
         <xsl:choose>
             <xsl:when test="exists($super)">
                 <xsl:variable name="results" as="xs:integer*">

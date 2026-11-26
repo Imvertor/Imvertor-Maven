@@ -43,18 +43,22 @@ public class ImvertorParameterFile extends ExtensionFunctionDefinition {
 
 	private static final StructuredQName qName = new StructuredQName("", Configurator.NAMESPACE_EXTENSION_FUNCTIONS, "imvertorParameterFile");
 
+	@Override
 	public StructuredQName getFunctionQName() {
 		return qName;
 	}
 
+	@Override
 	public int getMinimumNumberOfArguments() {
 		return 5;
 	}
 
+	@Override
 	public int getMaximumNumberOfArguments() {
 		return 5;
 	}
 
+	@Override
 	public SequenceType[] getArgumentTypes() {
 		return new SequenceType[] { 
 				SequenceType.SINGLE_STRING,
@@ -65,10 +69,22 @@ public class ImvertorParameterFile extends ExtensionFunctionDefinition {
 				};
 	}
 
+	@Override
 	public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
 		return SequenceType.ANY_SEQUENCE;
 	}
+	
+  @Override
+  public boolean dependsOnFocus() {
+    return true;
+  }
 
+  @Override
+  public boolean hasSideEffects() {
+    return true;
+  }
+
+  @Override
 	public ExtensionFunctionCall makeCallExpression() {
 		return new ImvertorParameterFileCall();
 	}

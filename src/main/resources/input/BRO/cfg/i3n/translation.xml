@@ -42,6 +42,11 @@
         <trans lang="en"><!-- niks--></trans>
     </item>
     <item>
+        <key>DETAIL-ASSOCIATION-ROLEBASED</key>
+        <trans lang="nl"><!-- niks--></trans>
+        <trans lang="en"><!-- niks--></trans>
+    </item>
+    <item>
         <key>DETAIL-UNIONELEMENT</key>
         <trans lang="nl"><!-- niks--></trans>
         <trans lang="en"><!--niks--></trans>

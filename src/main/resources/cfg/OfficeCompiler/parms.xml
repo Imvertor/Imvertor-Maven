@@ -25,8 +25,8 @@
    <cli-parms>
       <cli-parm>
          <name>createoffice</name>
-         <arg>html | doc | none</arg>
-         <tip>Create a documentation file in plain HTML, MsWord, or Respec format. By default, create none.</tip>
+         <arg>html | none</arg>
+         <tip>Create a documentation file in plain HTML, or none. By default, create none.</tip>
          <default>none</default>
       </cli-parm> 
       <cli-parm>
@@ -141,6 +141,13 @@
          <name>includemodelinfo</name>
          <arg>yes|no</arg>
          <tip>Include model metadata in the catalog?</tip>
+         <default>no</default>
+      </cli-parm> 
+      
+      <cli-parm>
+         <name>officeexpansion</name>
+         <arg>yes|no</arg>
+         <tip>Include all attributes and associations of supertypes in Respec documentation?</tip>
          <default>no</default>
       </cli-parm> 
       

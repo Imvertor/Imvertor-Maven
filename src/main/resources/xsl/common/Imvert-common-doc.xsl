@@ -87,6 +87,10 @@
     <xsl:template match="html:ul[not(*)]" mode="clean-xhtml"/>
     <xsl:template match="html:ol[not(*)]" mode="clean-xhtml"/>
   
+    <xsl:template match="html:b[not(normalize-space(.))]" mode="clean-xhtml"/>
+    <xsl:template match="html:i[not(normalize-space(.))]" mode="clean-xhtml"/>
+    <xsl:template match="html:u[not(normalize-space(.))]" mode="clean-xhtml"/>
+    
     <xsl:template match="html:p[html:li|html:ol|html:ul]" mode="clean-xhtml">
         <xsl:apply-templates select="*" mode="#current"/>
     </xsl:template>

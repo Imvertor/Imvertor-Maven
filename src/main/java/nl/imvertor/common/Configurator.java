@@ -108,6 +108,9 @@ public class Configurator {
 	public static final Integer RUN_MODE_RUN = 1;
 	public static final Integer RUN_MODE_DEVELOPMENT = 2;
 	
+	public static final Integer MODEL_IMPORTTYPE_XMI = 0;
+	public static final Integer MODEL_IMPORTTYPE_MIM = 1;
+	
 	public static String currentComponentIdentifier = "";
 	
 	private Configuration saxonConfig;
@@ -157,6 +160,8 @@ public class Configurator {
 	private Integer maxWarnings = 1000;
 	private Integer maxErrors = 1000;
 	
+	private Integer modelImportType = MODEL_IMPORTTYPE_XMI;
+	
 	private Configurator()  {
 		
 		runner = new Runner();
@@ -201,7 +206,7 @@ public class Configurator {
 			// save the managed folder for regression tests (ref and tst)
 			regtestFolder = new AnyFolder(getServerProperty("managed.dir.reg"));
 
-			saxonConfig = new Configuration();
+			saxonConfig = Configuration.newConfiguration(); // best available licensed edition (EE > PE > HE)
 			
 			// possible addition: saxon 9,8: saxonConfig.setConfigurationProperty(FeatureKeys.TRACE_EXTERNAL_FUNCTIONS, true);
 			
@@ -264,6 +269,13 @@ public class Configurator {
 
 	public String getMetamodel() {
 		return metamodel;
+	}
+
+	public Integer getModelImportType() {
+		return modelImportType;
+	}
+	public void setModelImportType(Integer filetype) {
+		modelImportType = filetype;
 	}
 
 	public String getXmlSchemarules() {
@@ -418,6 +430,7 @@ public class Configurator {
 		setXParm(workConfiguration,"system/work-json-s-folder-path",  wf + s + "app" + s + "json-schema", true);
 		setXParm(workConfiguration,"system/work-yaml-folder-path",    wf + s + "app" + s + "yaml", true);
 		setXParm(workConfiguration,"system/work-xmi-s-folder-path",   wf + s + "app" + s + "xmi", true);
+		setXParm(workConfiguration,"system/work-mim-s-folder-path",   wf + s + "app" + s + "mim-work", true);
 		setXParm(workConfiguration,"system/work-msword-folder-path",  wf + s + "app" + s + "msword", true);
 		setXParm(workConfiguration,"system/work-mim-folder-path",     wf + s + "app" + s + "mim", true);				
 		setXParm(workConfiguration,"system/work-stc-folder-path",     wf + s + "app" + s + "stc", true);
@@ -1494,4 +1507,5 @@ public class Configurator {
 	public static String getStylesheetIdentifier(File xslFile) throws IOException {
 		return getInstance().getBaseFolder().toURI().relativize(xslFile.toURI()).getPath();
 	}
+
 }

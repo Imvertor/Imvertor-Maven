@@ -27,6 +27,7 @@
   </xs:element>
   <xs:complexType name="Relatiesoort">
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string"/>
       <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>
@@ -37,13 +38,15 @@
       <xs:element name="datumOpname" type="xs:string"/>
       <xs:element name="indicatieMaterieleHistorie" type="mim:boolean"/>
       <xs:element name="indicatieFormeleHistorie" type="mim:boolean"/>
+      <xs:element name="heeftTijdlijnGeldigheid" type="mim:boolean"/>
+      <xs:element name="heeftTijdlijnRegistratie" type="mim:boolean"/>
       <xs:element name="kardinaliteit" type="xs:string"/>
       <xs:element name="kardinaliteitBron" type="xs:string"/>
       <xs:element name="authentiek" type="xs:string"/>
       <xs:element name="indicatieAfleidbaar" type="mim:boolean"/>
       <xs:element name="mogelijkGeenWaarde" type="mim:boolean"/>
       <xs:element name="identificerend" type="mim:boolean" minOccurs="0"/>
-      <xs:element name="unidirectioneel" type="xs:string"/>
+      <xs:element name="unidirectioneel" type="xs:boolean"/>
       <xs:element name="aggregatietype" type="mim:aggregatietype"/>
       <xs:element name="doel">
         <xs:complexType>
@@ -79,6 +82,7 @@
   <xs:complexType name="Relatierol">
     <!-- Relatiesoort leidend (alternatief 1); relatiemodelleringstype == "Relatiesoort leidend" -->
     <xs:sequence>
+      <xs:element name="identificatie" type="xs:string"/>
       <xs:element name="naam" type="xs:string" minOccurs="0"/>
       <xs:element name="begrip" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="alias" type="xs:string" minOccurs="0"/>

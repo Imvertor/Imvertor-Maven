@@ -131,8 +131,9 @@
         </xsl:variable>        
     
         <xsl:variable name="resolved" select="local:respec-resolve($respec-result)"/>
+        <xsl:variable name="cleaned" select="local:respec-cleanup($resolved)"/>
         
-        <xsl:sequence select="$resolved"/>
+        <xsl:sequence select="$cleaned"/>
         
     </xsl:template>    
    
@@ -383,7 +384,105 @@
         <xsl:sequence select="local:log('info: resolved',node())"/>
     </xsl:template>
     
-    <xsl:template match="node()|@*" mode="local:respec-resolve">
+    <!-- 
+       Corrigeer HTML constructs (last minute), zie #714
+    -->
+    <xsl:function name="local:respec-cleanup" as="element(document)">
+        <xsl:param name="doc" as="element(document)"/>
+        <xsl:variable name="cleaned" as="element(document)">
+            <xsl:apply-templates select="$doc" mode="local:respec-cleanup"/>
+        </xsl:variable>
+        <xsl:sequence select="$cleaned"/>
+    </xsl:function>
+    
+    <xsl:template match="section/@*" mode="local:respec-cleanup">
+          <xsl:choose>
+              <xsl:when test="local-name() = ('metadata-id','original-id','type')">
+                  <!-- remove -->
+              </xsl:when>
+              <xsl:otherwise>
+                  <xsl:next-match/>
+              </xsl:otherwise>
+          </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="(h1|h2|h3|h4|h5|h6)/@*" mode="local:respec-cleanup">
+        <xsl:choose>
+            <xsl:when test="local-name() = ('metadata-id','id')">
+                <!-- remove -->
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="(h7|h8)" mode="local:respec-cleanup">
+        <strong>
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </strong>
+    </xsl:template>
+    
+    <xsl:template match="br/@*" mode="local:respec-cleanup">
+        <xsl:choose>
+            <xsl:when test="local-name() = ('clear')">
+                <!-- remove -->
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="span/@*" mode="local:respec-cleanup">
+        <xsl:choose>
+            <xsl:when test="local-name() = ('origin')">
+                <!-- remove -->
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="img/@*" mode="local:respec-cleanup">
+        <xsl:choose>
+            <xsl:when test="local-name() = ('origin')">
+                <!-- remove -->
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="img" mode="local:respec-cleanup">
+        <xsl:copy>
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:attribute name="alt" select="if (@alt) then @alt else 'Image at: ' || @src"/>
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="@id" mode="local:respec-cleanup">
+        <xsl:variable name="id" select="."/>
+        <xsl:variable name="not-first" select="parent::*/preceding::*[@id = $id]"/>
+        
+        <xsl:sequence select="if ($not-first) then () else ."/>
+    </xsl:template>
+    
+    <xsl:template match="a/@*" mode="local:respec-cleanup">
+        <xsl:choose>
+            <xsl:when test="local-name() = ('shape')">
+                <!-- remove -->
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="node()|@*" mode="local:respec-resolve local:respec-cleanup">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*" mode="#current"/>
         </xsl:copy>

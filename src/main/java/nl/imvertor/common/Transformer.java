@@ -187,7 +187,10 @@ public class Transformer {
 		String task = "Transforming";
 		
 		String relxslfile = (new AnyFile(xslfile)).getRelativePath(configurator.getBaseFolder()); // bedoeld om relatief pad van het file tov. basefolder weer te geven
-		configurator.getRunner().debug(logger,"CHAIN",task + " " + (new AnyFile(infile)).getRelativePath(configurator.getWorkFolder()) + " using " + relxslfile);
+		configurator.getRunner().debug(logger,"CHAIN",task
+				+ "\n - input  " + (new AnyFile(infile)).getRelativePath(configurator.getWorkFolder())
+				+ "\n - output " + (new AnyFile(outfile)).getRelativePath(configurator.getWorkFolder()) 
+				+ "\n - using  " + relxslfile);
 		
 		stylesheetIdentifier  = Configurator.getStylesheetIdentifier(xslfile);
 		
@@ -220,7 +223,8 @@ public class Transformer {
 		}
 		XsltTransformer transformer = exec.load();
 		
-		transformer.getUnderlyingController().setMessageEmitter(messageEmitter);
+		// Saxon-EE (multi-threading capable) requires a factory instead of a single shared message emitter
+		transformer.getUnderlyingController().setMessageFactory(() -> new Messenger(messageEmitter.getPipelineConfiguration()));
 		
 		if (errorListener != null)
 			transformer.setErrorListener(errorListener); // for runtime errors

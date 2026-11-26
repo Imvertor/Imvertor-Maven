@@ -64,25 +64,25 @@ public class XsdCompiler extends Step {
 		String xmlschemarules = configurator.getXmlSchemarules();
 		
 		Boolean done = false;
-		 if (owner.equals("EIGENAAR")) {
-				if (xmlschemarules.equals("XML-ISO19136")) {
-					generateXsdISO19136();
-					supplyExternalSchemas();
-					done = true;
-				} else if (xmlschemarules.equals("XML-Kadaster")) {
-					generateXsdKadaster();
-					supplyExternalSchemas();
-					done = true;
-				} 
-		 } else if (owner.equals("Geonovum")) {
-				if (xmlschemarules.equals("XML-ISO19136")) {
-					generateXsdISO19136();
-					supplyExternalSchemas();
-					done = true;
-				} else if (xmlschemarules.equals("XML-Kadaster")) {
-					generateXsdKadaster();
-					supplyExternalSchemas();
-					done = true;
+		if (owner.equals("EIGENAAR")) {
+			if (xmlschemarules.equals("XML-ISO19136")) {
+				generateXsdISO19136();
+				supplyExternalSchemas();
+				done = true;
+			} else if (xmlschemarules.equals("XML-Kadaster")) {
+				generateXsdKadaster();
+				supplyExternalSchemas();
+				done = true;
+			} 
+		} else if (owner.equals("Geonovum")) {
+			if (xmlschemarules.equals("XML-ISO19136")) {
+				generateXsdISO19136();
+				supplyExternalSchemas();
+				done = true;
+			} else if (xmlschemarules.equals("XML-Kadaster")) {
+				generateXsdKadaster();
+				supplyExternalSchemas();
+				done = true;
 				} 
 		} else if (owner.equals("Kadaster")) {
 			if (xmlschemarules.equals("XML-ISO19136")) {
@@ -129,6 +129,12 @@ public class XsdCompiler extends Step {
 		} else if (owner.equals("BRO")) {
 			if (xmlschemarules.equals("XML-ISO19136")) {
 				generateXsdBRO();
+				supplyExternalSchemas();
+				done = true;
+			} 
+		} else if (owner.equals("Armatiek")) {
+			if (xmlschemarules.equals("XML-Kadaster")) {
+				generateXsdKadaster();
 				supplyExternalSchemas();
 				done = true;
 			} 

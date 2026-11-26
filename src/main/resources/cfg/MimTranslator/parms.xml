@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>MimTranslator parameters</name>
+      <version-control>$Id$</version-control>
+   </id>
+   
+   <properties>
+      <!--  names of the file created by the primary Imvertor file  -->
+      <WORK_BASE_FILE>${system/work-imvert-folder-path}/imvertor.01.base.xml</WORK_BASE_FILE>
+      
+      <!-- path to preprocessor, get the MIM ready to process -->
+      <MIM_PREPROCESS_XSLPATH>MIM2Preprocess.xsl</MIM_PREPROCESS_XSLPATH>
+      
+      <!-- stylesheet that transforms to Imvert -->
+      <MIM_IMVERTOR_XSLPATH alias="IMV">MIM2Imvert.xsl</MIM_IMVERTOR_XSLPATH>
+
+      <!-- rules for parsing notes field -->
+      <configuration-notesrules-file>${system/inp-folder-path}/cfg/notesrules/${appinfo/notesrules}.xml</configuration-notesrules-file>
+
+      <!--  names of the file created by the image map module  -->
+      <WORK_BASE_IMAGEMAP_FILE>${system/work-imvert-folder-path}/imvertor.01.imagemap.xml</WORK_BASE_IMAGEMAP_FILE>
+      <!--  names of the step stylesheets  -->
+      <XMI_IMVERTOR_IMAGEMAP_XSLPATH>MIM2imagemap.xsl</XMI_IMVERTOR_IMAGEMAP_XSLPATH>
+
+   </properties>
+</config>

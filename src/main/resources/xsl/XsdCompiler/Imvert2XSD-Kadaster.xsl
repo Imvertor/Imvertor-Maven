@@ -452,23 +452,24 @@
                             <xsl:variable name="defining-class" select="imf:get-defining-class(.)"/>   
                             <xsl:variable name="defining-class-subclasses" select="imf:get-subclasses($defining-class)"/>   
                             
+                            <xsl:variable name="minOccurs" select="if (imvert:min-occurs) then imvert:min-occurs else '1'"/>
+                            <xsl:variable name="maxOccurs" select="if (imvert:max-occurs) then imvert:max-occurs else '1'"/>
+                            
                             <xsl:choose>
                                 <xsl:when test="imf:is-linkable($defining-class) and imf:boolean($buildcollection) and exists($defining-class-subclasses)"> 
                                     <!-- insert the subtypes rather than the abstract supertype -->
                                     <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice association member, linkable, abstract')"/>
                                     <xsl:for-each select="($defining-class,$defining-class-subclasses)">
-                                        <xs:element ref="{imf:get-reference-class-name(.)}"/>
+                                        <xs:element ref="{imf:get-reference-class-name(.)}" minOccurs="{$minOccurs}" maxOccurs="{$maxOccurs}"/>
                                     </xsl:for-each>
                                 </xsl:when>
                                 <xsl:when test="imf:is-linkable($defining-class) and imf:boolean($buildcollection)"> 
                                     <!-- when the class is linkable, and using collections, use the reference element name -->
                                     <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice association member, linkable')"/>
-                                    <xs:element ref="{imf:get-reference-class-name($defining-class)}"/>
+                                    <xs:element ref="{imf:get-reference-class-name($defining-class)}" minOccurs="{$minOccurs}" maxOccurs="{$maxOccurs}"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:sequence select="imf:create-xml-debug-comment(.,'A choice association member')"/>
-                                    <xsl:variable name="minOccurs" select="if (imvert:min-occurs) then imvert:min-occurs else '1'"/>
-                                    <xsl:variable name="maxOccurs" select="if (imvert:max-occurs) then imvert:max-occurs else '1'"/>
                                     <xs:element ref="{imf:get-qname($defining-class)}" minOccurs="{$minOccurs}" maxOccurs="{$maxOccurs}"/>  
                                 </xsl:otherwise>
                             </xsl:choose>

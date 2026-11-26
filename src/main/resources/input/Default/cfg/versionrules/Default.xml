@@ -1,0 +1,89 @@
+<version-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <name>Default</name>
+    
+    <desc>Default version and phase rules</desc>
+
+    <version-rule>
+        <version id="CFG-VERSION-NEM">
+            <name lang="#all">Nonempty</name>
+            <desc lang="en">Versions must be non-empty.</desc>
+            <pattern>(([1-9]+[0-9]*)*[0-9])\.(([1-9]+[0-9]*)*[0-9])(\.(([1-9]+[0-9]*)*[0-9]))?</pattern>
+            <example>0.1</example>
+            <example>1.0</example>
+            <example>2.2.1</example>
+            <fragment group="1" required="yes">
+                <name lang="#all">Version (not empty)</name>
+            </fragment>
+        </version>
+    </version-rule>   
+    
+    <phase-rule>
+        <phase id="CFG-PHASE-INIT">
+            <name lang="nl">Klad</name>
+            <name lang="en">Concept</name>
+            <level>0</level>
+            <desc lang="nl">Klad versies zijn in ontwikkeling en worden niet intern verspreid.</desc>
+            <!-- 
+                kan optreden als supplier voor ieder level kleiner of gelijk aan 0
+            -->
+            <may-supply>0</may-supply>
+            <!-- mag worden overschreven -->
+            <is-fixed>no</is-fixed>
+            <allow-docrelease>yes</allow-docrelease>
+            <!-- All property files are valid for processing such a model. -->
+            <props/>
+        </phase>
+        <phase id="CFG-PHASE-DRAFT">
+            <name lang="nl">Voorstel</name>
+            <name lang="en">Draft</name>
+            <level>1</level>
+            <desc lang="nl">Voorstel versies zijn in ontwikkeling en kunnen intern worden verspreid.</desc>
+            <!-- 
+                kan optreden als supplier voor ieder level kleiner of gelijk aan 1
+            -->
+            <may-supply>1</may-supply>
+            <!-- mag worden overschreven -->
+            <is-fixed>no</is-fixed>
+            <allow-docrelease>yes</allow-docrelease>
+            <!-- All property files are valid for processing such a model. -->
+            <props/>
+        </phase>
+        <phase id="CFG-PHASE-FINALDRAFT">
+            <name lang="nl">Eindvoorstel</name>
+            <name lang="en">Final draft</name>
+            <level>2</level>
+            <desc lang="nl">Eindvoorstel versies zijn in ontwikkeling en kunnen extern worden verspreid, ter consultatie.</desc>
+            <!-- 
+                kan optreden als supplier voor ieder level kleiner of gelijk aan 2
+            -->
+            <may-supply>2</may-supply>
+            <!-- mag worden overschreven -->
+            <is-fixed>no</is-fixed>
+            <allow-docrelease>yes</allow-docrelease>
+            <!-- All property files are valid for processing such a model. -->
+            <props/>
+        </phase>
+        <phase id="CFG-PHASE-FINAL">
+            <name lang="nl">Gereed</name>
+            <name lang="en">Final</name>
+            <level>3</level>
+            <desc lang="nl">Versies zijn gereed, kunnen extern worden verspreid, en dienen niet meer te worden vervangen.</desc>
+            <!-- 
+                kan optreden als supplier voor ieder level kleiner of gelijk aan 3
+            -->
+            <may-supply>3</may-supply>
+            <!-- mag niet worden overschreven! -->
+            <is-fixed>yes</is-fixed>
+            <allow-docrelease>yes</allow-docrelease>
+        </phase>
+        <phase id="CFG-PHASE-REJECTED">
+            <name lang="nl">Vervangen</name>
+            <name lang="en">Superseded</name>
+            <level>4</level>
+            <desc lang="nl">Deze versie is vervallen of verouderd en mag niet meer worden gebruikt, ook niet als supplier.</desc>
+            <may-supply>-1</may-supply>
+        </phase>
+    </phase-rule>  
+    
+</version-rules>

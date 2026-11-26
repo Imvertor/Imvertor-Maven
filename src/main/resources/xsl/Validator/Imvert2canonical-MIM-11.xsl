@@ -99,7 +99,7 @@
     </xsl:template>
     
     <!-- keuze attribuut heeft betekenis, use case 3 -->
-    <xsl:template match="imvert:attribute/imvert:stereotype[@id = ('stereotype-name-attribute','stereotype-name-attributegroup')]">
+    <xsl:template match="imvert:attribute/imvert:stereotype[@id = ('stereotype-name-attribute')]">
         <xsl:variable name="parent-stereo-id" select="ancestor::imvert:class/imvert:stereotype/@id"/>
         <xsl:sequence select="."/>
         <xsl:if test="$parent-stereo-id = 'stereotype-name-union'">

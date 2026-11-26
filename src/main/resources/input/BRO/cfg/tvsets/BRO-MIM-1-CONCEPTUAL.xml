@@ -14,6 +14,8 @@
     
     <desc lang="nl">Gebaseerd op MIM 1.2</desc>
     
+    <nature>MIM</nature>
+    
     <tagged-values xml:id="tagset">
         
         <tv norm="note" id="CFG-TV-RULES-IMBROA">

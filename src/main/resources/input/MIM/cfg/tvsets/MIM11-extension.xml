@@ -6,6 +6,8 @@
     
     <name>MIM 1.1 tagged values (common extensions)</name>
     
+    <nature>MIM</nature>
+    
     <tagged-values>
         
         <tv norm="space" id="CFG-TV-OWNER">
@@ -142,6 +144,7 @@
                 <stereo minmax="0..1">stereotype-name-informatiemodel-package</stereo>
             </stereotypes>
             <source>MIMEXT-1.1.0</source>
+            <mimformat type="kenmerk">MIM extensie versie</mimformat>
         </tv>
         
         

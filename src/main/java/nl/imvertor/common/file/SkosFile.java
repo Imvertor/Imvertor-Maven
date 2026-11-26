@@ -46,18 +46,20 @@ public class SkosFile extends RdfFile {
 		super(file);
 	}
 
-	public void validate(Configurator configurator, ShaclFile shaclSchemaFile) throws Exception {
-		super.parse(configurator);
-		// and parse this file; this is the validation of the model itself 
-		this.parse(configurator, shaclSchemaFile);
+	public boolean validate(Configurator configurator, ShaclFile shaclSchemaFile) throws Exception {
+		if (super.parse(configurator))
+			// and parse this file; this is the validation of the model itself 
+			if (this.parse(configurator, shaclSchemaFile))
+				return true;
+		return false;
 	}
 
-	public void validate(Configurator configurator) throws Exception {
-		parse(configurator, null);
+	public boolean validate(Configurator configurator) throws Exception {
+		return parse(configurator, null);
 	}
 	
-	public void parse(Configurator configurator, ShaclFile shaclSchemaFile) throws Exception {
-		if (shaclSchemaFile != null)
-		   shaclSchemaFile.parse(configurator, this.getAbsolutePath());
+	public boolean parse(Configurator configurator, ShaclFile shaclSchemaFile) throws Exception {
+		if (shaclSchemaFile == null) return true;
+		return shaclSchemaFile.parse(configurator, this.getAbsolutePath());
 	}
 }

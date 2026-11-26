@@ -127,7 +127,21 @@ figure.image-type-default>div {
 figure.image-type-foto>div {
    /*  geen border */
 }
-
+@media (min-width: 720px) {
+    img.illustratie {
+        float: right;
+        max-width: 50%;
+        padding: 1rem;
+    }
+}
+@media (max-width: 720px) {
+    img.illustratie {
+        max-width: 100%; 
+    }
+}
+figure.image-type-plaatje {
+    /* niks speciaals */
+}
 figcaption.caption {
    
 }
@@ -253,4 +267,17 @@ div.topline {
 div.subheader {
     font-size: 14pt;
     padding-top: 0.5rem;
+}
+
+td.tussenkop {
+    font-weight: bold;
+}
+
+table tr:nth-child(odd),
+table tr:nth-child(even) {
+  background-color: inherit;
+}
+table {
+    border-top: 3px solid #005a9c;
+    border-bottom: 3px solid #005a9c;
 }
